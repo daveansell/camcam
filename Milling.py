@@ -17,7 +17,7 @@ class Milling:
                         },
                         'makespacerouter':{
                                 'prefix':'M17\nG0Z10',
-                                'rendermode':'simplegcode',
+                                'mode':'simplegcode',
                                 'group':'cutter',
                                 'toolchange':'newfile',
 				'mirror_backs':True,

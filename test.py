@@ -31,6 +31,6 @@ Lperspex=box.add_layer('top', material='perspex', thickness=perspex_thickness, z
 
 
 top=box.add_path(Part(name='top', border=RoundedRect(V(0,0), width=width+2*lip, height=height+2*lip, rad=corner_rad+lip, side='out', centred=True), layer='top'))
-top.add_path(RoundedRect(V(0,0), width=width-20, height=height-20, rad=corner_rad+lip, side='in', centred=True),'top')
+top.add_path(ClearRect(V(0,0), width=width-20, height=height-20, rad=corner_rad+lip, side='in', centred=True),'top')
 
 

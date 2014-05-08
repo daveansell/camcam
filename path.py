@@ -616,6 +616,17 @@ class Path(object):
 		newpath=copy.deepcopy(self)
 		newpath.points=[]
 		thisdir=self.find_direction()
+		pointlist=self.points
+		if len(pointlist)==1:
+			if pointlist[0].point_type=='circle':
+				p = copy.copy(pointlist[0])
+				if side=='in':
+					p.radius-=distance
+				elif side=='out':
+					p.radius+=distance
+				newpath.points.append(p)
+				return newpath
+		print "NEWPATH"+str(self.parent)+" "+side
 		if side=='in':
 			if thisdir=='cw':
 				side='right'
@@ -626,17 +637,7 @@ class Path(object):
 				side='left'
 			else:
 				side='right'
-		pointlist=self.points
-		print "NEWPATH"
-		if len(pointlist)==1:
-			if pointlist[0].point_type=='circle':
-				p = copy.copy(pointlist[0])
-				if side=='in':
-					p.radius-=distance
-				elif side=='out':
-					p.radius+=distance
-				newpath.points.append(p)
-				return newpath
+		print thisdir+" "+side
 		for p,point in enumerate(pointlist):
 			thispoint=point.point_transform()
 			if self.closed:
@@ -665,12 +666,23 @@ class Path(object):
 				afterafternextpoint=(pointlist[p+3:p+4] + [None])[0],
 				if afternextpoint !=None:
 					afternextpoint=afternextpoint.point_transform()
-			t=self.offset_point(thispoint, beforelastpoint, lastpoint, nextpoint, afternextpoint, self.segment_point(lastpoint, beforelastpoint, thispoint,beforebeforelastpoint, nextpoint, [], False, False, config), self.segment_point(nextpoint, afternextpoint, thispoint,afterafternextpoint, lastpoint, [], False, False, config), side,distance)
+			t=self.offset_point(
+				thispoint, 
+				beforelastpoint, 
+				lastpoint, 
+				nextpoint, 
+				afternextpoint, 
+				self.segment_point(lastpoint, beforelastpoint, thispoint,beforebeforelastpoint, nextpoint, [], False, False, config), 
+				self.segment_point(nextpoint, afternextpoint, thispoint,afterafternextpoint, lastpoint, [], False, False, config), 
+				side,distance, 
+				thisdir)
 			if t:
 				newpath.points.append(t)
 		return newpath
-	def offset_point(self, thispoint, beforelastpoint, lastpoint, nextpoint, afternextpoint, frompos, topos, side,distance):
+	def offset_point(self, thispoint, beforelastpoint, lastpoint, nextpoint, afternextpoint, frompos, topos, side,distance, thisdir):
+		print "OFFSET POINT distance="+str(distance)
 		t=copy.copy(thispoint)
+		print str(thispoint.pos-lastpoint.pos)+"cross"+str(nextpoint.pos-thispoint.pos)
 		cross=(thispoint.pos-lastpoint.pos).cross(nextpoint.pos-thispoint.pos)[2]
 		a=(-(thispoint.pos-lastpoint.pos).normalize()+(thispoint.pos-nextpoint.pos).normalize())
 		al=a.length()
@@ -678,10 +690,10 @@ class Path(object):
 		angle=math.atan2(a[1], a[0])
 		if cross<0 and side=='left' or cross>0 and side=='right':
 			corner='external'
-			print "EXTERNAL"+str(side)
+#			print "EXTERNAL"+str(side)+" "+str(cross)+" "+thisdir+" "+side
 		else:
 			corner='internal'
-			print "INTERNAL"+str(side)
+#			print "INTERNAL"+str(side)+" "+str(cross)+" "+thisdir+" "+side
 		if thispoint.point_type=='outcurve':
 			if corner=='external':
 				t.radius+=distance
@@ -693,24 +705,24 @@ class Path(object):
 					t.radius=0
 					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos,topos, side, (distance-thispoint.radius)/abs(math.cos(angle)))
 		elif thispoint.point_type=='incurve':
-			if corner=='external' and side=='out' or corner=='internal' and side=='in':
+			if corner=='external':# and side=='out' or corner=='internal' and side=='in':
 				t.radius+=distance
-				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance*2)
+				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, -distance/abs(math.cos(angle)))
 			else:
 				if t.radius>distance:
 					t.radius-=distance
-					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance*2)
+					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
 				else:
 					t.point_type='doubleclear'
 					t.radius=0
 					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, (distance-thispoint.radius)/abs(math.cos(angle)))
 		elif thispoint.point_type=='sharp':
-			if corner=='external' and side=='out' or corner=='internal' and side=='in':
+			if corner=='external':# and side=='out' or corner=='internal' and side=='in':
 				t.radius=distance
 				t.point_type='outcurve'
 			else:
 				t.point_type='clear'
-				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance*ca)
+				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
 		elif thispoint.point_type=='clear' or thispoint.point_type=='doubleclear':
 				t.point_type='doubleclear'
 				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
@@ -768,9 +780,9 @@ class Path(object):
 			a=90
 		vecin=(thispos-frompos).normalize()
 		vecout=(topos-thispos).normalize()
-		print "offse_move_point"+str(distance)
-		print vecin
-		print vecout
+#		print "offse_move_point"+str(distance)
+#		print vecin
+#		print vecout
 		# Find average direction of two vectors
 		avvec=(vecin-vecout).normalize()
 		# then rotate it 90 degrees towards the requested side
@@ -782,11 +794,8 @@ class Path(object):
 	def find_direction(self):
 		total =V(0,0,0)
 		first = True
-		for p in self.points:
-			if first==False:
-				total+=last.cross(p.pos)
-				first=False
-			last=p
+		for p,q in enumerate(self.points):
+			total+=(self.points[p].pos-self.points[(p-1)%len(self.points)].pos).cross(self.points[(p+1)%len(self.points)].pos-self.points[p].pos)
 		if(total[2]>0):
 			return 'ccw'
 		else:
@@ -929,6 +938,8 @@ class Path(object):
 		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'mode']
                 for v in self.varlist:
                         if hasattr(self,v) and getattr(self,v) is not None:
+				if v=='colour':
+					print "pathcolour="+str(pconfig['colour'])
 				config[v]=getattr(self,v)
                         elif pconfig is not False and v in pconfig and pconfig[v] is not None:
                                 config[v]=pconfig[v]
@@ -975,7 +986,9 @@ class Path(object):
 		config=self.generate_config(pconfig)
 		print "path render"
 		if config['side']=='in' or config['side']=='out':
-			thepath=self.offset_path(config['side'],config['cutterrad'],config)
+			c =copy.copy(config)
+			c['opacity']=0.5
+			thepath=self.offset_path(c['side'],c['cutterrad'],c)
 			thepath.output_path(config)
 			config['side']='on'
 			print "bleepa"
@@ -984,7 +997,7 @@ class Path(object):
 				self.output_path(config)
 				print thepath.render_path(self,config) 
 				print  self.render_path(self,config)
-				return thepath.render_path(self,config) + self.render_path(self,config)
+				return thepath.render_path(thepath,c) + self.render_path(self,config)
 			else:
 				print "bleepc"
 				return thepath.render_path(thepath,config)
@@ -1031,7 +1044,12 @@ class Path(object):
 				colour=point['_colour']
 			else:
 				colour=''
-		return comments+"<path d=\""+ret+"\"  stroke-width='0.1px' fill='none' stroke='"+colour+"'/>\n"
+			if '_opacity' in point:
+				opacity = "opacity:"+str(config['opacity'])
+				print "OPACITY"
+			else:
+				opacity = "opacity:1"
+		return comments+"<path d=\""+ret+"\"  style='stroke-width:0.1px;"+opacity+"' fill='none' stroke='"+colour+"'/>\n"
 
 	def render_path_gcode(self,path,config):
 		ret=""
@@ -1094,7 +1112,9 @@ class Path(object):
 	def add_colour(self, config):
 		for cut in self.output:
 			cut['_colour']=self.get_colour(config)
-
+			if 'opacity' in config:
+				cut['_opacity']=config['opacity']
+		print "ADD_COLOU"+str(config)
 	# get the colour this path should be cut in
 	def get_colour(self,config):
 		if 'forcecolour' in config and config['forcecolour']:
@@ -1122,7 +1142,7 @@ class Path(object):
 		downmode=config['downmode']
 		direction=config['direction']
 		self.mode=mode
-
+		
 		self.Fsegments=[]
 		self.Bsegments=[]
 		self.make_segments(direction,self.Fsegments,config)
@@ -1135,7 +1155,6 @@ class Path(object):
 				
 #			if downmode=='ramp'
 #				self.add_out(self.Fsegments[-1].out(self.mode, depths[0]))
-
 			for depth in depths:
 				if downmode=='down':
 					self.cutdown(depth)
@@ -1180,7 +1199,7 @@ class Path(object):
 			self.add_feedrates(config)
 		elif self.mode=='svg':
 			self.add_colour(config)	
-
+		print self.output
 	def cutdown(self,z):
 		if self.mode=='gcode' or self.mode=='simplegcode':
 			return [{"cmd":"G1", "Z":z}]
@@ -1298,6 +1317,8 @@ class Pathgroup(object):
 		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour','rendermode']
                 for v in varslist:
                         if getattr(self,v) is not None:
+				if v=='colour':
+					print "pathgroupcolour="+str(pconfig['colour'])
 				config[v]=getattr(self,v)
                         elif pconfig!=False and pconfig[v] is not None:
                                 config[v]=pconfig[v]
@@ -1474,6 +1495,9 @@ class Part(object):
 		self.comments = []
 		self.parent=False
 		self.internal_borders=[]
+		print config
+		if 'colour' in config:
+			print "*@@@@@COLOUR IN PAERT****"+str(config['colour'])
 		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name']
 		self.otherargs=''
 		for v in self.varlist:
@@ -1508,6 +1532,8 @@ class Part(object):
 		config = {}
                 for v in self.varlist:
                         if hasattr(self,v) and getattr(self,v) is not None:
+				if v=='colour' :
+					print "partcolour="+str(pconfig['colour'])
 				config[v]=getattr(self,v)
 			else:
 				config[v]=None
@@ -1701,9 +1727,11 @@ class Plane(Part):
  	
 	def get_layer_config(self,layer):
 		return self.layers[layer].config
-	def render_part(self,part, mode):
-		self.mode = mode
-		self.modeconfig=milling.mode_config[mode]
+	def render_part(self,part, callmode):
+		self.callmode = callmode
+		self.modeconfig=milling.mode_config[callmode]
+		self.mode=self.modeconfig['mode']
+		self.modeconfig['callmode']=callmode
 		layers = self.get_layers()
 		output=collections.OrderedDict()
 		c=0
@@ -1765,6 +1793,7 @@ class Plane(Part):
 				# make list of rendered paths with metadata, so possibly can sort by cutter
 		out=''
 		if(part.border is not False and part.border is not None):
+			print "&&&&&BORDER&&&&"
 			b=part.border.render(config)
 			if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
 				if part.cutter == lastcutter:
