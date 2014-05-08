@@ -420,12 +420,6 @@ class Path(object):
 	def segment_point(self,thispoint, lastpoint, nextpoint,beforelastpoint, afternextpoint, segment_array, frompoint, do,config):
 #		if frompoint is False:
 #			frompoint=thispoint.pos#
-		print "SEGMENTPPOINT"
-		print do
-		print frompoint
-		print segment_array
-		print config
-		print config['cutterrad']
 		if thispoint.pos==lastpoint.pos and thispoint.point_type!='circle':
 			return frompoint
 		if thispoint.point_type=='sharp':
@@ -633,6 +627,7 @@ class Path(object):
 			else:
 				side='right'
 		pointlist=self.points
+		print "NEWPATH"
 		if len(pointlist)==1:
 			if pointlist[0].point_type=='circle':
 				p = copy.copy(pointlist[0])
@@ -683,8 +678,10 @@ class Path(object):
 		angle=math.atan2(a[1], a[0])
 		if cross<0 and side=='left' or cross>0 and side=='right':
 			corner='external'
+			print "EXTERNAL"+str(side)
 		else:
 			corner='internal'
+			print "INTERNAL"+str(side)
 		if thispoint.point_type=='outcurve':
 			if corner=='external':
 				t.radius+=distance
@@ -694,21 +691,21 @@ class Path(object):
 				else:
 					t.point_type='doubleclear'
 					t.radius=0
-					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos,topos, side, (distance-thispoint.radius)/cos(angle/2))
+					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos,topos, side, (distance-thispoint.radius)/abs(math.cos(angle)))
 		elif thispoint.point_type=='incurve':
-			if corner=='external':
+			if corner=='external' and side=='out' or corner=='internal' and side=='in':
 				t.radius+=distance
 				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance*2)
-			elif corner=='internal':
+			else:
 				if t.radius>distance:
 					t.radius-=distance
 					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance*2)
 				else:
 					t.point_type='doubleclear'
 					t.radius=0
-					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, (distance-thispoint.radius)/cos(angle/2))
+					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, (distance-thispoint.radius)/abs(math.cos(angle)))
 		elif thispoint.point_type=='sharp':
-			if corner=='external':
+			if corner=='external' and side=='out' or corner=='internal' and side=='in':
 				t.radius=distance
 				t.point_type='outcurve'
 			else:
@@ -716,7 +713,10 @@ class Path(object):
 				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance*ca)
 		elif thispoint.point_type=='clear' or thispoint.point_type=='doubleclear':
 				t.point_type='doubleclear'
-				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/math.cos(angle/2))
+				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
+				print "from:to"+str(angle/math.pi*180)
+				print thispoint.pos
+				print t.pos
 		elif thispoint.point_type=='circle':
 			if corner=='external':
                                 t.radius+=distance
@@ -768,10 +768,15 @@ class Path(object):
 			a=90
 		vecin=(thispos-frompos).normalize()
 		vecout=(topos-thispos).normalize()
+		print "offse_move_point"+str(distance)
+		print vecin
+		print vecout
 		# Find average direction of two vectors
-		avvec=(vecin+vecout)/2
+		avvec=(vecin-vecout).normalize()
 		# then rotate it 90 degrees towards the requested side
-		return rotate(avvec*distance,a)*2+thispos
+		print avvec
+		return -avvec*distance+thispos
+#		return rotate(avvec*distance,a)*2+thispos
 
 # find whether the path is setup clockwise or anticlockwise
 	def find_direction(self):
@@ -968,12 +973,21 @@ class Path(object):
 	def render(self,pconfig):
 # Do something about offsets manually so as not to rely on linuxcnc
 		config=self.generate_config(pconfig)
+		print "path render"
 		if config['side']=='in' or config['side']=='out':
-			print "render -offset_path"
-			print self
-			print config
 			thepath=self.offset_path(config['side'],config['cutterrad'],config)
+			thepath.output_path(config)
 			config['side']='on'
+			print "bleepa"
+			if config['overview']:
+				print "bleepb"
+				self.output_path(config)
+				print thepath.render_path(self,config) 
+				print  self.render_path(self,config)
+				return thepath.render_path(self,config) + self.render_path(self,config)
+			else:
+				print "bleepc"
+				return thepath.render_path(thepath,config)
 		else:
 			thepath=self
 		thepath.output_path(config)
@@ -1102,7 +1116,8 @@ class Path(object):
 		# we want a new list for each call, to make it properly recusive
 		config=self.generate_config(pconfig)
 		self.config=config
-
+		for p in self.points:
+			print p.pos
 		mode=pconfig['mode']
 		downmode=config['downmode']
 		direction=config['direction']
@@ -1714,8 +1729,10 @@ class Plane(Part):
 		if 'all' in layers:
 			paths.extend(layers['all'])
 		paths.extend(part.get_own_paths())
+		print paths
 		# iterate through all the paths in the part's layer
 		for path in paths:
+			
 		# if the path is within the bounds of the part then render it
 			if path.obType=="Path" or path.obType=="Part":
 				if part.contains(path)>-1 or hasattr(path,'is_border') and path.is_border:
@@ -1726,7 +1743,9 @@ class Plane(Part):
 						k=getattr(path,self.modeconfig['group'])
 					if k not in output.keys():
 						output[k]=''
+					print "pART CALL RENDER PATH"
 					output[k]+=''.join(path.render(config))
+					print output[k]
 					lastcutter=k
 			if path.obType=="Pathgroup":
 				for p in path.get_paths():
