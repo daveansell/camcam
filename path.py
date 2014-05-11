@@ -127,14 +127,14 @@ class Arc(Segment):
 	def gcode(self,direction=True):
 		if(direction):
 			if self.direction=='cw':
-				return [{"cmd":"G2","X":self.cutto[0],"Y":self.cutto[1], "I":self.centre[0], "J":self.centre[1]}]
+				return [{"cmd":"G3","X":self.cutto[0],"Y":self.cutto[1], "I":self.centre[0]-self.cutfrom[0], "J":self.centre[1]-self.cutfrom[1]}]
 			else:
-				return [{"cmd":"G3","X":self.cutfrom[0],"Y":self.cutto[1], "I":self.centre[0], "J":self.centre[1]}]
+				return [{"cmd":"G2","X":self.cutfrom[0],"Y":self.cutfrom[1], "I":self.centre[0]-self.cutto[0], "J":self.centre[1]-self.cutto[1]}]
 		else:
 			if self.direction=='cw':
-				return [{"cmd":"G3","X":self.cutto[0],"Y":self.cutto[1], "I":self.centre[0], "J":self.centre[1]}]
+				return [{"cmd":"G2","X":self.cutto[0],"Y":self.cutto[1], "I":self.centre[0]-self.cutfrom[0], "J":self.centre[1]-self.cutfrom[1]}]
 			else:
-				return [{"cmd":"G2","X":self.cutfrom[0],"Y":self.cutto[1], "I":self.centre[0], "J":self.centre[1]}]
+				return [{"cmd":"G3","X":self.cutfrom[0],"Y":self.cutfrom[1], "I":self.centre[0]-self.cutto[0], "J":self.centre[1]-self.cutto[1]}]
 	def svg(self,direction=True):
 		# Find if the arc is long or not
 		tempcross=(self.centre-self.cutfrom).cross(self.centre-self.cutto)
@@ -328,6 +328,7 @@ class Path(object):
 
 
 	def comment(self, comment):
+		comment = "".join(x for x in comment if x.isalnum() or x in '-._ ')
 		self.add_out([{'_comment':str(comment)}])
 
 	def overwrite(self,a,b):
@@ -1032,7 +1033,7 @@ class Path(object):
 		if config['mode']=='svg':
 			ret+=self.render_path_svg(self.output,config)
 		elif config['mode']=='gcode' or config['mode']=='simplegcode':
-			ret+=self.render_path_gcode(self.output,config)+'G0Z%0.2f\n'%config['clear_height']
+			ret+=self.render_path_gcode(self.output,config)+'G40\nG0Z%0.2f\n'%config['clear_height']
 		return ret
 
 	def render_path_svg(self,path,config):
@@ -1239,16 +1240,16 @@ class Path(object):
 		if self.mode=='gcode':
 			if side=='on':
 				return [{"cmd":"G40"}]
-			if side=='in':
-				if direction=='cw':
-					return [{"cmd":"G42"}]
-				else:
-					return [{"cmd":"G41"}]
-			else:
-				if direction=='cw':
-					return [{"cmd":"G41"}]
-				else:
-					return [{"cmd":"G42"}]
+#			if side=='in':
+#				if direction=='cw':
+#					return [{"cmd":"G42"}]
+#				else:
+#					return [{"cmd":"G41"}]
+#			else:
+#				if direction=='cw':
+#					return [{"cmd":"G41"}]
+#				else:
+#					return [{"cmd":"G42"}]
 	def cut_filled(self,z0=False,z1=False,side='on',dir=False):
 		print "cut filled\n"
 # find a tangent to the first segment of the path to allow the cutter to work
@@ -1295,7 +1296,9 @@ class Path(object):
 
 
 	def runout(self, cutterrad, direction, mode='down', side='on', ):
+	#	print "runout"
 		if self.mode=='gcode':
+	#		print "runout2"
 			return [{'cmd':'G40'}]
 
 class Pathgroup(object):
@@ -1752,7 +1755,7 @@ class Plane(Part):
 		self.modeconfig['callmode']=callmode
 		self.callmode=callmode
 		layers = self.get_layers()
-		output=collections.OrderedDict()
+		output={} # collections.OrderedDict()
 		c=0
 		lastcutter=False
 		config=copy.copy(self.modeconfig)
@@ -1767,6 +1770,7 @@ class Plane(Part):
 			paths=[]
 		# if we are looking at a back layer and we are in a cutting mode then mirror the image
 		if part.layer in self.layers and self.layers[part.layer].config['isback'] is True and config['mirror_backs'] is True:
+			print "MIRROR BACK"
 			if 'transformations' in config and config['transformations'] is list:
 				config['transformations'].insert(0,{'mirror':[V(0,0),'x']})
 			else:
@@ -1786,6 +1790,8 @@ class Plane(Part):
 						c=c+1
 					else:
 						k=getattr(path,self.modeconfig['group'])
+						if k==False and self.modeconfig['group']=='cutter':
+							k=config['cutter']
 					if k not in output.keys():
 						output[k]=''
 					output[k]+=''.join(path.render(config))
@@ -1810,6 +1816,9 @@ class Plane(Part):
 		if(part.border is not False and part.border is not None):
 			b=part.border.render(config)
 			if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
+				print str(part.cutter)+" "+str(lastcutter)
+				if part.cutter==None:
+					part.cutter=config['cutter']
 				if part.cutter == lastcutter:
 					output[lastcutter]+=b
 				else:

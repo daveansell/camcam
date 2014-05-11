@@ -4,7 +4,7 @@ class Milling:
 		self.mode_config={
                         "dave-emc":{
                                 'prefix':'M03\nG0Z10',
-                                'postfix':'M05\n',
+                                'postfix':'M05\nM02\n',
                                 'settool_prefix':'T',
                                 'settool_postfix':' M6\nM03',
                                 'mode':'gcode',
