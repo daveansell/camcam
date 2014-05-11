@@ -655,22 +655,22 @@ class Path(object):
 				afterafternextpoint=pointlist[(p+3)%len(pointlist)].point_transform()
 			else:
 				nextpoint=(pointlist[p+1:p+2] + [None])[0]
-				if nextpoint !=None:
+				if nextpoint is not None:
 					nextpoint=nextpoint.point_transform()
 				lastpoint=(pointlist[p-1:p] + [None])[0],
-				if lastpoint !=None:
+				if lastpoint is not None:
 					lastpoint=lastpoint.point_transform()
 				beforelastpoint=(pointlist[p-2:p-1] + [None])[0],
-				if beforelastpoint !=None:
+				if beforelastpoint is not None:
 					beforelastpoint=beforelastpoint.point_transform()
 				beforebeforelastpoint=(pointlist[p-3:p-2] + [None])[0],
-				if beforebeforelastpoint !=None:
+				if beforebeforelastpoint is not None:
 					beforebeforelastpoint=beforebeforelastpoint.point_transform()
 				afternextpoint=(pointlist[p+2:p+3] + [None])[0],
-				if afternextpoint !=None:
+				if afternextpoint is not None:
 					afternextpoint=afternextpoint.point_transform()
 				afterafternextpoint=(pointlist[p+3:p+4] + [None])[0],
-				if afternextpoint !=None:
+				if afternextpoint is not None:
 					afternextpoint=afternextpoint.point_transform()
 			t=self.offset_point(
 				thispoint, 
