@@ -36,6 +36,8 @@ arg_meanings = {'order':'A field to sort paths by',
 		'border':'A path to act as the border of the part',
 		'layer':'The layer the part exists in - it can add things to other layers',
 		'name':'The name of the object - str',
+		'partial_fill':'cut a step into the path',
+		'fill_direction':'direction to fill towards',
 }
 def V(x=False,y=False,z=False):
 	if x==False:
@@ -240,7 +242,7 @@ class Point(object):
 #		print "point transform "+str(transformations)
 		if type(transformations) is list:
 			for t in transformations:
-				if t is dict:
+				if type(t) is dict:
 					if 'rotate' in t:
 						p.pos=self.rotate(p.pos, t['rotate'])
 						p.cp1=self.rotate(p.cp1, t['rotate'])
@@ -301,7 +303,7 @@ class Path(object):
 #		print cutter
 		self.transform=False
 		self.otherargs=''
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill']
 		for v in self.varlist:
 			if v in config:
 				setattr(self,v, config[v])
@@ -336,7 +338,7 @@ class Path(object):
 				a[i] =False
 
 	def rotate(self,pos, angle):
-		if self.transform==False:
+		if self.transform==False or self.transform==None:
 			self.transform={}
 		self.transform['rotate']=[pos, angle]
 		
@@ -354,8 +356,8 @@ class Path(object):
 				config['downmode']='down'
 			else:
 				config['downmode']='ramp'
-		else:
-			print "cutter %s NOT FOUND" % config['cutter']
+#		else:
+#			print "cutter %s NOT FOUND" % config['cutter']
 	def set_material(self, config):
 		if config['material'] in milling.materials:
 			mat=milling.materials[config['material']]
@@ -367,8 +369,8 @@ class Path(object):
 				config['spring']=mat['spring']
 			else:
 				config['spring']=0
-		else:
-			print "Material %s NOT FOUND" % config['material']
+#		else:
+#			print "Material %s NOT FOUND" % config['material']
 
 	def add_point(self,pos, point_type='sharp', radius=0, cp1=False, cp2=False, direction=False, transform=False):
 		self.points.append(Point(pos, point_type, radius,cp1, cp2, direction, transform))
@@ -433,20 +435,25 @@ class Path(object):
 			dl=thispoint.radius*math.tan((angle/180)/2*math.pi)
 			startcurve=thispoint.pos-(thispoint.pos-lastpoint.pos).normalize()*dl
 			endcurve = thispoint.pos+(nextpoint.pos-thispoint.pos).normalize()*dl
-			d = math.sqrt(dl*dl+thispoint.radius*thispoint.radius)/((startcurve + endcurve)/2-thispoint.pos).length()
-			centre = thispoint.pos + ((startcurve + endcurve)/2-thispoint.pos)*d
-			if do:
-				segment_array.append(Line(frompoint,startcurve))
-			tempdir=(thispoint.pos-frompoint).cross(nextpoint.pos-thispoint.pos)
-			if tempdir[2]>0:
-				tempd='cw'
-			elif tempdir[2]<0:
-				tempd='ccw'
+			# If these are straight there should be no curve or the maths blows up so just behave like a normal point
+			if(((startcurve + endcurve)/2-thispoint.pos).length()==0):
+				if do:
+					segment_array.append(Line(frompoint,thispoint.pos))
 			else:
-				print "ERROR - straight arc"
-				tempd='cw'	
-			if do:
-				segment_array.append(Arc(startcurve, endcurve, centre,tempd))
+				d = math.sqrt(dl*dl+thispoint.radius*thispoint.radius)/((startcurve + endcurve)/2-thispoint.pos).length()
+				centre = thispoint.pos + ((startcurve + endcurve)/2-thispoint.pos)*d
+				if do:
+					segment_array.append(Line(frompoint,startcurve))
+				tempdir=(thispoint.pos-frompoint).cross(nextpoint.pos-thispoint.pos)
+				if tempdir[2]>0:
+					tempd='cw'
+				elif tempdir[2]<0:
+					tempd='ccw'
+				else:
+					print "ERROR - straight arc"
+					tempd='cw'	
+				if do:
+					segment_array.append(Arc(startcurve, endcurve, centre,tempd))
 			frompoint=endcurve
 		elif thispoint.point_type=='clear':
                         extrapoint=thispoint.pos-(((lastpoint.pos-thispoint.pos).normalize()+(nextpoint.pos-thispoint.pos).normalize())/2).normalize()*config['cutterrad']
@@ -626,18 +633,17 @@ class Path(object):
 					p.radius+=distance
 				newpath.points.append(p)
 				return newpath
-		print "NEWPATH"+str(self.parent)+" "+side
+		
 		if side=='in':
 			if thisdir=='cw':
 				side='right'
 			else:
-				side=='left'
+				side='left'
 		elif side=='out':
 			if thisdir=='cw':
 				side='left'
 			else:
 				side='right'
-		print thisdir+" "+side
 		for p,point in enumerate(pointlist):
 			thispoint=point.point_transform()
 			if self.closed:
@@ -680,9 +686,7 @@ class Path(object):
 				newpath.points.append(t)
 		return newpath
 	def offset_point(self, thispoint, beforelastpoint, lastpoint, nextpoint, afternextpoint, frompos, topos, side,distance, thisdir):
-		print "OFFSET POINT distance="+str(distance)
 		t=copy.copy(thispoint)
-		print str(thispoint.pos-lastpoint.pos)+"cross"+str(nextpoint.pos-thispoint.pos)
 		cross=(thispoint.pos-lastpoint.pos).cross(nextpoint.pos-thispoint.pos)[2]
 		a=(-(thispoint.pos-lastpoint.pos).normalize()+(thispoint.pos-nextpoint.pos).normalize())
 		al=a.length()
@@ -690,10 +694,10 @@ class Path(object):
 		angle=math.atan2(a[1], a[0])
 		if cross<0 and side=='left' or cross>0 and side=='right':
 			corner='external'
-#			print "EXTERNAL"+str(side)+" "+str(cross)+" "+thisdir+" "+side
+#			print "EXTERNAL"+str(side)+" "+str(cross)+" "+str(thisdir)+" "+str(side)
 		else:
 			corner='internal'
-#			print "INTERNAL"+str(side)+" "+str(cross)+" "+thisdir+" "+side
+#			print "INTERNAL"+str(side)+" "+str(cross)+" "+str(thisdir)+" "+str(side)
 		if thispoint.point_type=='outcurve':
 			if corner=='external':
 				t.radius+=distance
@@ -715,7 +719,7 @@ class Path(object):
 				else:
 					t.point_type='doubleclear'
 					t.radius=0
-					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, (distance-thispoint.radius)/abs(math.cos(angle)))
+					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
 		elif thispoint.point_type=='sharp':
 			if corner=='external':# and side=='out' or corner=='internal' and side=='in':
 				t.radius=distance
@@ -726,9 +730,6 @@ class Path(object):
 		elif thispoint.point_type=='clear' or thispoint.point_type=='doubleclear':
 				t.point_type='doubleclear'
 				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
-				print "from:to"+str(angle/math.pi*180)
-				print thispoint.pos
-				print t.pos
 		elif thispoint.point_type=='circle':
 			if corner=='external':
                                 t.radius+=distance
@@ -786,7 +787,6 @@ class Path(object):
 		# Find average direction of two vectors
 		avvec=(vecin-vecout).normalize()
 		# then rotate it 90 degrees towards the requested side
-		print avvec
 		return -avvec*distance+thispos
 #		return rotate(avvec*distance,a)*2+thispos
 
@@ -795,7 +795,7 @@ class Path(object):
 		total =V(0,0,0)
 		first = True
 		for p,q in enumerate(self.points):
-			total+=(self.points[p].pos-self.points[(p-1)%len(self.points)].pos).cross(self.points[(p+1)%len(self.points)].pos-self.points[p].pos)
+			total+=(self.points[p].pos-self.points[(p-1)%len(self.points)].pos).normalize().cross((self.points[(p+1)%len(self.points)].pos-self.points[p].pos).normalize())
 		if(total[2]>0):
 			return 'ccw'
 		else:
@@ -917,6 +917,8 @@ class Path(object):
 
 # find depths you should cut at
 	def get_depths(self,mode, z0, z1, stepdown):
+		if z0==z1:
+			return [1,[]]
 		if self.mode=='svg' or mode=='laser':
 			return [stepdown,[0]]
 		if self.mode=='gcode':
@@ -935,11 +937,9 @@ class Path(object):
 		else:
 			pconfig = False
 		config = {}
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'mode']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'mode','partial_fill','fill_direction']
                 for v in self.varlist:
                         if hasattr(self,v) and getattr(self,v) is not None:
-				if v=='colour':
-					print "pathcolour="+str(pconfig['colour'])
 				config[v]=getattr(self,v)
                         elif pconfig is not False and v in pconfig and pconfig[v] is not None:
                                 config[v]=pconfig[v]
@@ -984,27 +984,48 @@ class Path(object):
 	def render(self,pconfig):
 # Do something about offsets manually so as not to rely on linuxcnc
 		config=self.generate_config(pconfig)
-		print "path render"
 		if config['side']=='in' or config['side']=='out':
 			c =copy.copy(config)
 			c['opacity']=0.5
 			thepath=self.offset_path(c['side'],c['cutterrad'],c)
-			thepath.output_path(config)
-			config['side']='on'
-			print "bleepa"
-			if config['overview']:
-				print "bleepb"
+			thepath.output_path(c)
+			c['side']='on'
+			if config['hide_cuts']:
 				self.output_path(config)
-				print thepath.render_path(self,config) 
-				print  self.render_path(self,config)
-				return thepath.render_path(thepath,c) + self.render_path(self,config)
+				out = self.render_path(self,config)
+			elif config['overview']:
+				self.output_path(config)
+				out = thepath.render_path(thepath,c) + self.render_path(self,config)
 			else:
-				print "bleepc"
-				return thepath.render_path(thepath,config)
+				out = thepath.render_path(thepath,config)
 		else:
 			thepath=self
-		thepath.output_path(config)
-		return thepath.render_path(self,config)
+			thepath.output_path(config)
+			out = thepath.render_path(self,config)
+
+		if not config['hide_cuts']  and 'partial_fill' in config and config['partial_fill']>0:
+			dist=config['partial_fill']-config['cutterrad']
+			numpasses = math.ceil(float(dist)/ config['cutterrad']/0.9)
+			step = config['partial_fill']/numpasses
+		
+			if 'fill_direction' in config:
+				ns=config['fill_direction']
+			else:
+				if config['side']=='in':
+					ns='out'
+				elif config['side']=='out':
+					ns='in'
+				elif config['side']=='left':
+					ns='right'
+				elif config['side']=='right':
+					ns='left'
+				else:
+					ns=c['side']
+			for d in range(1,int(numpasses)):
+				fillpath=thepath.offset_path(ns, step*d, c)
+				fillpath.output_path(c)
+				out += fillpath.render_path(fillpath,c)
+		return out
 
 	def render_path(self,path,config):
 		ret=""
@@ -1045,8 +1066,7 @@ class Path(object):
 			else:
 				colour=''
 			if '_opacity' in point:
-				opacity = "opacity:"+str(config['opacity'])
-				print "OPACITY"
+				opacity = "opacity:"+str(point['_opacity'])
 			else:
 				opacity = "opacity:1"
 		return comments+"<path d=\""+ret+"\"  style='stroke-width:0.1px;"+opacity+"' fill='none' stroke='"+colour+"'/>\n"
@@ -1114,7 +1134,6 @@ class Path(object):
 			cut['_colour']=self.get_colour(config)
 			if 'opacity' in config:
 				cut['_opacity']=config['opacity']
-		print "ADD_COLOU"+str(config)
 	# get the colour this path should be cut in
 	def get_colour(self,config):
 		if 'forcecolour' in config and config['forcecolour']:
@@ -1136,8 +1155,6 @@ class Path(object):
 		# we want a new list for each call, to make it properly recusive
 		config=self.generate_config(pconfig)
 		self.config=config
-		for p in self.points:
-			print p.pos
 		mode=pconfig['mode']
 		downmode=config['downmode']
 		direction=config['direction']
@@ -1149,6 +1166,8 @@ class Path(object):
 		self.make_segments(self.otherDir(direction),self.Bsegments,config)
 # Runin/ ramp
 		step,depths=self.get_depths(config['mode'], config['z0'], config['z1'], config['stepdown'])
+		if len(depths)==0:
+			return False
 # if closed go around and around, if open go back and forth
 		if self.closed:
 			self.runin(config['cutterrad'],config['direction'],config['downmode'],config['side'])
@@ -1199,7 +1218,7 @@ class Path(object):
 			self.add_feedrates(config)
 		elif self.mode=='svg':
 			self.add_colour(config)	
-		print self.output
+#		print self.output
 	def cutdown(self,z):
 		if self.mode=='gcode' or self.mode=='simplegcode':
 			return [{"cmd":"G1", "Z":z}]
@@ -1288,7 +1307,7 @@ class Pathgroup(object):
 		self.obType = "Pathgroup"
 		self.paths=[]
 		self.trace = traceback.extract_stack()
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'stepdown', 'forcecolour']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'stepdown', 'forcecolour', 'rendermode','partial_fill','fill_direction']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in args:
@@ -1302,23 +1321,24 @@ class Pathgroup(object):
 
 	def __deepcopy__(self,memo):
 		conf={}
+		ret=copy.copy(self)#type(self)( **conf)
 		for v in self.varlist:
-			conf[v]=copy.deepcopy(getattr(self,v),memo)
-		ret=type(self)( **conf)
-		ret.parent=copy.copy(self.parent)
+			if v !='parent':
+				setattr(ret, v, copy.deepcopy(getattr(self,v),memo))
+#			conf[v]=copy.deepcopy(getattr(self,v),memo)
+#		ret.parent=copy.copy(self.parent)
 		return ret
 
 	def get_config(self):
 		if self.parent is not False:
 			pconfig = self.parent.get_config()
 		else:
+			print "PATHGROUP has no parent HJK"+str(self)
 			pconfig = False
 		config = {}
-		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour','rendermode']
+		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour','rendermode','partial_fill','fill_direction']
                 for v in varslist:
                         if getattr(self,v) is not None:
-				if v=='colour':
-					print "pathgroupcolour="+str(pconfig['colour'])
 				config[v]=getattr(self,v)
                         elif pconfig!=False and pconfig[v] is not None:
                                 config[v]=pconfig[v]
@@ -1390,9 +1410,9 @@ class Pathgroup(object):
 		config=pconfig
 		for path in paths:
 			if config['mode']=='svg':
-				ret+="<g>\n"+self.render_path(path,config)+"</g>\n"
+				ret+="<g>\n"+path.render_path(path,config)+"</g>\n"
 			else:
-				ret+= self.render_path(path,config)
+				ret+= path.render_path(path,config)
 		return ret
 			
 	def render_path(self,path,config):
@@ -1495,10 +1515,7 @@ class Part(object):
 		self.comments = []
 		self.parent=False
 		self.internal_borders=[]
-		print config
-		if 'colour' in config:
-			print "*@@@@@COLOUR IN PAERT****"+str(config['colour'])
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','fill_direction']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in config:
@@ -1532,8 +1549,6 @@ class Part(object):
 		config = {}
                 for v in self.varlist:
                         if hasattr(self,v) and getattr(self,v) is not None:
-				if v=='colour' :
-					print "partcolour="+str(pconfig['colour'])
 				config[v]=getattr(self,v)
 			else:
 				config[v]=None
@@ -1571,6 +1586,8 @@ class Part(object):
 		else:
 			#self.add_path(path,self.layer)
 			self.border=copy.deepcopy(path)
+			self.border.parent=self
+
 	def add_internal_border(self,path):
 		if hasattr(path,'obType') and path.obType=='Path':
 			p=copy.deepcopy(path)
@@ -1597,7 +1614,6 @@ class Part(object):
 				self.parts.append(path)
 				return path		
 			elif (path.obType=='Path' or path.obType=="Pathgroup"):
-				
 				if layers is False:
 					layers = [self.layer]
 				if type(layers) is not list:
@@ -1613,10 +1629,11 @@ class Part(object):
 #								setattr(self.paths[layer],v,getattr(self,v))
 
 # deepcopy problem:
-					p=copy.copy(path)
+					p=copy.deepcopy(path)
 					p.parent=self.paths[layer]
+					path.parent=self.paths[layer]
 					self.paths[layer].add_path(p)
-					return path
+				return p
 
 			else:
 				print "Attempting to add a non-path or pathgroup to a pathgroup"
@@ -1633,7 +1650,7 @@ class Part(object):
 						layers[l]=[]
 					# if the part should be copied, copy its parts which aren't in its core layer
 					# This means you can add an object in lots of places and mounting holes will be drilled
-					if not hasattr(part,'layer') or part.layer==False or l!=part.layer or milling.mode_config[self.mode]['overview']:
+					if not hasattr(part,'layer') or part.layer==False or l!=part.layer or milling.mode_config[self.callmode]['overview']:
 						for copytrans in part.copies:
 							for p in ls[l]:
 								t=copy.deepcopy(p)
@@ -1696,7 +1713,7 @@ class Plane(Part):
 		self.name=name
 		self.transform=False
 		self.parent=False
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer','partial_fill','fill_direction']
 		self.out=''
 		for v in self.varlist:
                         if v in config:
@@ -1711,12 +1728,12 @@ class Plane(Part):
 				a[i] =False
 
 	# A plane can have several layers
-	def add_layer(self,name, material, thickness, z0=0,zoffset=0, add_back=False, isback=True):
+	def add_layer(self,name, material, thickness, z0=0,zoffset=0, add_back=False, isback=True, colour=False):
 		if add_back:
-			self.layers[name+'#back'] = Layer(name,material, thickness, z0, zoffset, isback=True, back=name)
-			self.layers[name] = Layer(name,material, thickness, z0, zoffset, isback=False, back=name+'#back')
+			self.layers[name+'#back'] = Layer(name,material, thickness, z0, zoffset, isback=True, back=name, colour=colour)
+			self.layers[name] = Layer(name,material, thickness, z0, zoffset, isback=False, back=name+'#back', colour=colour)
 		else:	
-			self.layers[name] = Layer(name,material, thickness, z0, zoffset, isback=isback)
+			self.layers[name] = Layer(name,material, thickness, z0, zoffset, isback=isback, colour=colour)
 	def render_layer(self,layer):
 		"""Render all the parts in a layer"""
 	
@@ -1727,11 +1744,13 @@ class Plane(Part):
  	
 	def get_layer_config(self,layer):
 		return self.layers[layer].config
+
 	def render_part(self,part, callmode):
 		self.callmode = callmode
 		self.modeconfig=milling.mode_config[callmode]
 		self.mode=self.modeconfig['mode']
 		self.modeconfig['callmode']=callmode
+		self.callmode=callmode
 		layers = self.get_layers()
 		output=collections.OrderedDict()
 		c=0
@@ -1746,7 +1765,6 @@ class Plane(Part):
 			config.update(self.get_layer_config(part.layer))
 		else:
 			paths=[]
-		
 		# if we are looking at a back layer and we are in a cutting mode then mirror the image
 		if part.layer in self.layers and self.layers[part.layer].config['isback'] is True and config['mirror_backs'] is True:
 			if 'transformations' in config and config['transformations'] is list:
@@ -1757,7 +1775,6 @@ class Plane(Part):
 		if 'all' in layers:
 			paths.extend(layers['all'])
 		paths.extend(part.get_own_paths())
-		print paths
 		# iterate through all the paths in the part's layer
 		for path in paths:
 			
@@ -1771,9 +1788,7 @@ class Plane(Part):
 						k=getattr(path,self.modeconfig['group'])
 					if k not in output.keys():
 						output[k]=''
-					print "pART CALL RENDER PATH"
 					output[k]+=''.join(path.render(config))
-					print output[k]
 					lastcutter=k
 			if path.obType=="Pathgroup":
 				for p in path.get_paths():
@@ -1782,7 +1797,7 @@ class Plane(Part):
 							k=c
 							c=c+1
 						else:
-							k=getattr(p,self.modeconfig['group'])
+							k=config[self.modeconfig['group']]#getattr(p,self.modeconfig['group'])
 						if k not in output.keys():
 							output[k]=''
 						output[k]+=''.join(p.render(config))
@@ -1793,7 +1808,6 @@ class Plane(Part):
 				# make list of rendered paths with metadata, so possibly can sort by cutter
 		out=''
 		if(part.border is not False and part.border is not None):
-			print "&&&&&BORDER&&&&"
 			b=part.border.render(config)
 			if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
 				if part.cutter == lastcutter:
@@ -1812,19 +1826,21 @@ class Plane(Part):
 			if self.modeconfig['overview']:
 				self.out+='<g>'+out+'</g>'
 			else:
+				filename=self.name+"_"+part.name+".svg"
 				f=open(self.name+"_"+part.name+".svg",'w')
 				print out
 				f.write(self.modeconfig['prefix'] + out +self.modeconfig['postfix'])
 				f.close()
 
 	def writeGcodeFile(self,partName, key, output):
-		f=open(self.name+"_"+str(partName)+"_"+str(key)+".ngc",'w')
+		f=open(self.sanitise_filename(self.name+"_"+str(partName)+"_"+str(key)+".ngc"),'w')
 	#	print output
 		f.write(output)
 		f.close()
-
+	def sanitise_filename(self,filename):
+		return "".join(x for x in filename if x.isalnum() or x in '-._')
 class Layer(object):
-	def __init__(self,name, material, thickness, z0, zoffset, back=False, isback=False):
+	def __init__(self,name, material, thickness, z0, zoffset, back=False, isback=False, colour=False):
 		self.config={}
 		self.config['name']=name
 		self.config['material']=material
@@ -1835,6 +1851,8 @@ class Layer(object):
 		self.config['back']=back
 		# layer should be mirrored when cut
 		self.config['isback']=isback
+		self.config['colour']=colour
+
 	def get_config(self):
 		return self.config
 

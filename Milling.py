@@ -14,6 +14,7 @@ class Milling:
 				'mirror_backs':True,
 				'overview':False,
 				'clear_height':10,
+				'hide_cuts':False,
                         },
                         'makespacerouter':{
                                 'prefix':'M17\nG0Z10',
@@ -23,6 +24,7 @@ class Milling:
 				'mirror_backs':True,
 				'overview':False,
 				'clear_height':10,
+				'hide_cuts':False,
                         },
                         'laser':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -34,6 +36,7 @@ class Milling:
                                 'toolchange':'none',
 				'mirror_backs':True,
 				'overview':False,
+				'hide_cuts':False,
                         },
                         'paper':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -45,6 +48,7 @@ class Milling:
                                 'toolchange':'none',
 				'mirror_backs':False,
 				'overview':False,
+				'hide_cuts':True,
                         },
                         'millsvg':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -55,6 +59,7 @@ class Milling:
                                 'forcecolour':True,
 				'mirror_backs':True,
 				'overview':False,
+				'hide_cuts':False,
                         },
                         'svg':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -64,6 +69,7 @@ class Milling:
                                 'forcestepdown':1000,
 				'mirror_backs':False,
 				'overview':False,
+				'hide_cuts':False,
                         },
                         'diagram':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -73,6 +79,18 @@ class Milling:
                                 'forcestepdown':1000,
 				'mirror_backs':False,
 				'overview':True,
+				'hide_cuts':True,
+                        },
+                        'visualise':{
+                                'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
+                                'postfix':'</g>\n</svg>\n',
+                                'mode':'svg',
+				'group':False,
+                                'forcestepdown':1000,
+				'mirror_backs':False,
+				'overview':True,
+				'hide_cuts':False,
+				
                         }
 
 

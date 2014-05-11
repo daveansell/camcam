@@ -98,7 +98,6 @@ if :param cutter: is not explicitly specified it will use the countersink cutter
 class Circle(Path):
 	def __init__(self, pos, rad, **config):
 		self.init( config)
-		print config
 		"""Cut a circle centre at :param pos: with radius :param rad:"""+self.otherargs
 		self.closed=True
 		self.add_point(pos,'circle',rad)
@@ -150,7 +149,6 @@ class RepeatSpacedGrid(Part):
 			start= start -((dx*(numberx-1))/2+dy*(numbery-1)/2)
                 for i in range(0,numberx):
 			for j in range(0,numbery):
-				print str(i)+"  "+str(start)+" "+str(start+dx*i+dy*j)
                         	self.add_path(ob(start+dx*i+dy*j, **args),layers)
 		self.comment("RepeatSpacedGrid")
 		self.comment("start="+str(start)+" dx="+str(dx)+" dy="+str(dy)+" numberx"+str(numberx)+" numbery"+str(numbery))
@@ -168,7 +166,6 @@ class Hole(Pathgroup):
 					c=copy.copy(config)
 					if i <= len(config['z1']):
 						c['z1']=config['z1'][i]
-						print "Z1 = "+str(c['z1'])
 						self.add_path(Circle(pos, rad[i],  **c))
 					else:
 						c['z1']=config['z1'][len(config['z1'])]
@@ -193,12 +190,19 @@ class HoleLine(Pathgroup):
 
 class Screw(Part):
 	def __init__(self,pos,layer_conf, **config):
-		print layer_conf
 		self.init(config)
 		for l,c in enumerate(layer_conf):
 			conf = copy.deepcopy(layer_conf[c])
-			print "SCREEWCONF"+str(self.transform)
 			self.add_path(Hole(pos, **conf), c)
+
+class FourScrews(Part):
+	def __init__(self, bl, tr, layer_conf, **config):
+		self.init(config)
+		d=tr-bl
+		self.add_path(Screw(bl, layer_conf, **config))
+		self.add_path(Screw(bl+V(d[0], 0), layer_conf, **config))
+		self.add_path(Screw(bl+V(0, d[1]), layer_conf, **config))
+		self.add_path(Screw(tr, layer_conf, **config))
 
 class Bolt(Part):
 	def __init__(self,pos,thread='M4',head='button', length=10, **config):
