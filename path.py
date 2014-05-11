@@ -125,16 +125,16 @@ class Arc(Segment):
 			self.centre=cutfrom+centre
 		
 	def gcode(self,direction=True):
-		if(direction):
+		if(not direction):
+			if self.direction=='cw':
+				return [{"cmd":"G2","X":self.cutfrom[0],"Y":self.cutfrom[1], "I":self.centre[0]-self.cutto[0], "J":self.centre[1]-self.cutto[1]}]
+			else:
+				return [{"cmd":"G3","X":self.cutfrom[0],"Y":self.cutfrom[1], "I":self.centre[0]-self.cutto[0], "J":self.centre[1]-self.cutto[1]}]
+		else:
 			if self.direction=='cw':
 				return [{"cmd":"G3","X":self.cutto[0],"Y":self.cutto[1], "I":self.centre[0]-self.cutfrom[0], "J":self.centre[1]-self.cutfrom[1]}]
 			else:
-				return [{"cmd":"G2","X":self.cutfrom[0],"Y":self.cutfrom[1], "I":self.centre[0]-self.cutto[0], "J":self.centre[1]-self.cutto[1]}]
-		else:
-			if self.direction=='cw':
 				return [{"cmd":"G2","X":self.cutto[0],"Y":self.cutto[1], "I":self.centre[0]-self.cutfrom[0], "J":self.centre[1]-self.cutfrom[1]}]
-			else:
-				return [{"cmd":"G3","X":self.cutfrom[0],"Y":self.cutfrom[1], "I":self.centre[0]-self.cutto[0], "J":self.centre[1]-self.cutto[1]}]
 	def svg(self,direction=True):
 		# Find if the arc is long or not
 		tempcross=(self.centre-self.cutfrom).cross(self.centre-self.cutto)
@@ -251,7 +251,8 @@ class Point(object):
 						p.pos += t['translate']
 						p.cp1 += t['translate']
 						p.cp2 += t['translate']
-					if 'mirror' in t:	
+					if 'mirror' in t:
+						print "DO mirror"	
 						p.pos = self.reflect(p.pos, t['reflect'])
 						p.cp1 = self.reflect(p.cp1, t['reflect'])
 						p.cp2 = self.reflect(p.cp2, t['reflect'])
@@ -283,6 +284,7 @@ class Point(object):
 			out-=t[0]
 			out.reflect(dirvec)
 			out+=t[0]
+			print "reflect"+str(dirvec)+" "+out
 			return out
 		else:
 			return False
@@ -332,11 +334,29 @@ class Path(object):
 		self.add_out([{'_comment':str(comment)}])
 
 	def overwrite(self,a,b):
+		print a
+		print b
 		for i in b.keys():
-			if b[i] is not False:
-				a[i] = b[i]
-			if b[i] is False and i not in a:
-				a[i] =False
+			print i
+			if i!='transformations':
+				if i in b and b[i] is not False and b[i] is not None:
+					a[i] = b[i]
+				if (i not in b or b[i] is False or b[i] is None ) or i not in a:
+					a[i] =None
+			print a[i]
+		if 'transformations' not in a or type(a['transformations']) is not list:
+			if 'transform' in a:
+				a['transformations']=[a['transform']]
+			else:
+				a['transformations']=[]
+		if 'transform' in b and b['transform'] is not False and b['transform'] is not None:
+		#	if type(b['transform']) is list:			
+			a['transformations'].append(b['transform'])
+#		for i in b.keys():
+#			if b[i] is not False and b[i] is not None:
+#				a[i] = b[i]
+#			if (b[i] is False or b[i] is None ) and i not in a:
+#				a[i] = None
 
 	def rotate(self,pos, angle):
 		if self.transform==False or self.transform==None:
@@ -382,6 +402,7 @@ class Path(object):
 			else:
 				print "add_points - adding a non-point"
 	def transform_pointlist(self, pointlist,transformations):
+		print transformations
 		pout=[]
 		for p in pointlist:
 			pout.append(p.point_transform(transformations))
@@ -946,11 +967,11 @@ class Path(object):
                                 config[v]=pconfig[v]
 			else:
 				config[v]=None
-		if pconfig is False or  pconfig['transformations']==False:
+		if pconfig is False or  pconfig['transformations']==False or pconfig['transformations'] is None:
 			config['transformations']=[]
 		else:
 			config['transformations']=pconfig['transformations'][:]
-		if self.transform!=False:
+		if self.transform!=None:
 			config['transformations'].append(self.transform)
 		return config
 
@@ -958,10 +979,15 @@ class Path(object):
 		config={}
 		self.overwrite(config,pconfig)
 		inherited = self.get_config()
+		print "inherited:"+str(inherited)
+#		if('transformations' in config):
+		print 'p:'+str(config)
 		self.overwrite(config, inherited)
-		for k in inherited.keys():
-                        if config[k] is None and k in pconfig:
-                                config[k]=pconfig[k]
+#		if('transformations' in config):
+		print 'pi:'+str(config['transformations'])
+#		for k in inherited.keys():
+ #                       if (config[k] is None or config[k] is False) and k in pconfig:
+  #                              config[k]=pconfig[k]
 		self.set_cutter(config)
 		self.set_material(config)
 		thisdir=self.find_direction()
@@ -974,11 +1000,11 @@ class Path(object):
 				config['direction']='ccw'
 			else:
 				config['direction']=thisdir
-		if config['side']==False:
+		if config['side'] is None or config['side'] is False:
 			config['side']='on' 
-		if config['z0'] is False:
+		if config['z0'] is None or config['z0'] is False:
 			config['z0']=0
-		if config['z1'] is False and config['z0'] is not None and config['thickness'] is not None:
+		if (config['z1'] is False or config['z1'] is None) and config['z0'] is not None and config['thickness'] is not None:
 			config['z1'] = config['z0'] - config['thickness']
 		return config
 #  output the path
@@ -1310,7 +1336,7 @@ class Pathgroup(object):
 		self.obType = "Pathgroup"
 		self.paths=[]
 		self.trace = traceback.extract_stack()
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'stepdown', 'forcecolour', 'rendermode','partial_fill','fill_direction']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'stepdown', 'forcecolour', 'rendermode','partial_fill','fill_direction','cutter']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in args:
@@ -1339,7 +1365,7 @@ class Pathgroup(object):
 			print "PATHGROUP has no parent HJK"+str(self)
 			pconfig = False
 		config = {}
-		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour','rendermode','partial_fill','fill_direction']
+		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour','rendermode','partial_fill','fill_direction','cutter']
                 for v in varslist:
                         if getattr(self,v) is not None:
 				config[v]=getattr(self,v)
@@ -1347,7 +1373,7 @@ class Pathgroup(object):
                                 config[v]=pconfig[v]
 			else:
 				config[v]=None
-		if pconfig is False or  pconfig['transformations']==False:
+		if pconfig is False or  pconfig['transformations'] is False or pconfig['transformations'] is None:
 			config['transformations']=[]
 		else:
 			config['transformations']=pconfig['transformations'][:]
@@ -1725,11 +1751,20 @@ class Plane(Part):
 				self.config[v]=False
 	def overwrite(self,a,b):
 		for i in b.keys():
-			if b[i] is not False:
-				a[i] = b[i]
-			if b[i] is False and i not in a:
-				a[i] =False
-
+			if i!='transformations':
+				if i in b and b[i] is not False and b[i] is not None:
+					a[i] = b[i]
+				if (i not in b or b[i] is False or b[i] is None ) or i not in a:
+					a[i] =None
+		if 'transformations' not in a or type(a['transformations']) is not list:
+			if 'transform' in a:
+				a['transformations']=[a['transform']]
+			else:
+				a['transformations']=[]
+		if 'transform' in b and b['transform'] is not False and b['transform'] is not None:
+		#	if type(b['transform']) is list:			
+			a['transformations'].append(b['transform'])
+		print "ow"+str(a['transformations'])
 	# A plane can have several layers
 	def add_layer(self,name, material, thickness, z0=0,zoffset=0, add_back=False, isback=True, colour=False):
 		if add_back:
@@ -1770,7 +1805,6 @@ class Plane(Part):
 			paths=[]
 		# if we are looking at a back layer and we are in a cutting mode then mirror the image
 		if part.layer in self.layers and self.layers[part.layer].config['isback'] is True and config['mirror_backs'] is True:
-			print "MIRROR BACK"
 			if 'transformations' in config and config['transformations'] is list:
 				config['transformations'].insert(0,{'mirror':[V(0,0),'x']})
 			else:
@@ -1779,6 +1813,7 @@ class Plane(Part):
 		if 'all' in layers:
 			paths.extend(layers['all'])
 		paths.extend(part.get_own_paths())
+		
 		# iterate through all the paths in the part's layer
 		for path in paths:
 			
@@ -1790,7 +1825,7 @@ class Plane(Part):
 						c=c+1
 					else:
 						k=getattr(path,self.modeconfig['group'])
-						if k==False and self.modeconfig['group']=='cutter':
+						if (k==False or k==None) and self.modeconfig['group']=='cutter':
 							k=config['cutter']
 					if k not in output.keys():
 						output[k]=''
@@ -1816,7 +1851,6 @@ class Plane(Part):
 		if(part.border is not False and part.border is not None):
 			b=part.border.render(config)
 			if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
-				print str(part.cutter)+" "+str(lastcutter)
 				if part.cutter==None:
 					part.cutter=config['cutter']
 				if part.cutter == lastcutter:
