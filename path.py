@@ -252,10 +252,9 @@ class Point(object):
 						p.cp1 += t['translate']
 						p.cp2 += t['translate']
 					if 'mirror' in t:
-						print "DO mirror"	
-						p.pos = self.reflect(p.pos, t['reflect'])
-						p.cp1 = self.reflect(p.cp1, t['reflect'])
-						p.cp2 = self.reflect(p.cp2, t['reflect'])
+						p.pos = self.reflect(p.pos, t['mirror'])
+						p.cp1 = self.reflect(p.cp1, t['mirror'])
+						p.cp2 = self.reflect(p.cp2, t['mirror'])
 		return p
 # rotate point about a point 
 	def rotate(self,pos, t):
@@ -270,6 +269,8 @@ class Point(object):
 			return False
 
 	def reflect(self,pos,t):
+		if t is False or t is None or type(t) is list and (t[0] is False or t[0] is None):
+			return pos
 		if type(pos) is Vec and type(t[0]) is Vec:
 			if type(t[1]) is str:
 				if t[1]=='x':
@@ -284,7 +285,6 @@ class Point(object):
 			out-=t[0]
 			out.reflect(dirvec)
 			out+=t[0]
-			print "reflect"+str(dirvec)+" "+out
 			return out
 		else:
 			return False
@@ -334,21 +334,19 @@ class Path(object):
 		self.add_out([{'_comment':str(comment)}])
 
 	def overwrite(self,a,b):
-		print a
-		print b
 		for i in b.keys():
-			print i
 			if i!='transformations':
 				if i in b and b[i] is not False and b[i] is not None:
 					a[i] = b[i]
-				if (i not in b or b[i] is False or b[i] is None ) or i not in a:
+				elif (i not in a or a[i] is False or a[i] is None ) or i not in a:
 					a[i] =None
-			print a[i]
 		if 'transformations' not in a or type(a['transformations']) is not list:
 			if 'transform' in a:
 				a['transformations']=[a['transform']]
 			else:
 				a['transformations']=[]
+		if 'transformations' in b and type(b['transformations']) is list:
+			a['transformations'].extend(b['transformations'])
 		if 'transform' in b and b['transform'] is not False and b['transform'] is not None:
 		#	if type(b['transform']) is list:			
 			a['transformations'].append(b['transform'])
@@ -402,7 +400,6 @@ class Path(object):
 			else:
 				print "add_points - adding a non-point"
 	def transform_pointlist(self, pointlist,transformations):
-		print transformations
 		pout=[]
 		for p in pointlist:
 			pout.append(p.point_transform(transformations))
@@ -979,12 +976,9 @@ class Path(object):
 		config={}
 		self.overwrite(config,pconfig)
 		inherited = self.get_config()
-		print "inherited:"+str(inherited)
 #		if('transformations' in config):
-		print 'p:'+str(config)
 		self.overwrite(config, inherited)
 #		if('transformations' in config):
-		print 'pi:'+str(config['transformations'])
 #		for k in inherited.keys():
  #                       if (config[k] is None or config[k] is False) and k in pconfig:
   #                              config[k]=pconfig[k]
@@ -1754,17 +1748,18 @@ class Plane(Part):
 			if i!='transformations':
 				if i in b and b[i] is not False and b[i] is not None:
 					a[i] = b[i]
-				if (i not in b or b[i] is False or b[i] is None ) or i not in a:
+				elif (i not in a or a[i] is False or a[i] is None ) or i not in a:
 					a[i] =None
 		if 'transformations' not in a or type(a['transformations']) is not list:
 			if 'transform' in a:
 				a['transformations']=[a['transform']]
 			else:
 				a['transformations']=[]
+		if 'transformations' in b and type(b['transformations']) is list:
+			a['transformations'].extend(b['transformations'])
 		if 'transform' in b and b['transform'] is not False and b['transform'] is not None:
 		#	if type(b['transform']) is list:			
 			a['transformations'].append(b['transform'])
-		print "ow"+str(a['transformations'])
 	# A plane can have several layers
 	def add_layer(self,name, material, thickness, z0=0,zoffset=0, add_back=False, isback=True, colour=False):
 		if add_back:
