@@ -24,13 +24,20 @@ side_border=15
 box = camcam.add_plane(Plane('box', cutter='1/8_endmill'))
 
 Ltop=box.add_layer('top', material='pvc', thickness=top_thickness, z0=0, zoffset=0, isback=True)
-Lmid=box.add_layer('mid', material='pvc', thickness=mid_thickness, z0=0, zoffset=-top_thickness, isback=False)
-Lbot=box.add_layer('bottom', material='pvc', thickness=bottom_thickness, z0=0, zoffset=-top_thickness-mid_thickness, isback=False)
-Lperspex=box.add_layer('top', material='perspex', thickness=perspex_thickness, z0=0, zoffset=perspex_z)
 
 
 
-top=box.add_path(Part(name='top', border=RoundedRect(V(0,0), width=width+2*lip, height=height+2*lip, rad=corner_rad+lip, side='out', centred=True), layer='top'))
-top.add_path(ClearRect(V(0,0), width=width-20, height=height-20, rad=corner_rad+lip, side='in', centred=True),'top')
+top=box.add_path(Part(name='top', layer='top'))
+top.add_path(Rect(V(0,0), cornertype="outcurve", width=width-20, height=height-20, rad=10, side='in', centred=True),'top')
+top.add_path(Polygon(V(0,0), 40, 3, 'outcurve', 10))
 
+bottom_border=Path(closed=True, side='out')
+bottom_border.add_point(V(0,0), radius=50, point_type='outcurve')
+bottom_border.add_point(V(60,1), radius=5, point_type='outcurve')
+bottom_border.add_point(V(60,-1), radius=5, point_type='outcurve')
 
+bottom_border=Path(closed=True, side='out')
+bottom_border.add_point(V(0,0), radius=50, point_type='outcurve')
+bottom_border.add_point(V(60,1), radius=5, point_type='sharp')
+bottom_border.add_point(V(60,-1), radius=5, point_type='sharp')
+top.add_path(bottom_border)

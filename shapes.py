@@ -103,6 +103,7 @@ class Circle(Path):
 		self.add_point(pos,'circle',rad)
 		self.comment("Circle")
 		self.comment("pos="+str(pos)+" rad="+str(rad))
+		print pos
 class Cross(Pathgroup):
 	def __init__(self, pos, rad, **config):
 		self.init(config)
@@ -176,6 +177,8 @@ class Hole(Pathgroup):
 			if 'z1' in config and type(config['z1']) is list:
 				print "z1 should only be a list if rad is also  a list "+str(config['z1'])
 			self.add_path(Circle(pos, rad, **config))
+			print "EEE"
+			print self.paths
 		self.comment("Hole")
 		self.comment("pos="+str(pos)+" rad="+str(rad))
 
@@ -191,10 +194,12 @@ class HoleLine(Pathgroup):
 class Screw(Part):
 	def __init__(self,pos,layer_conf, **config):
 		self.init(config)
-		for l,c in enumerate(layer_conf):
+		for c in layer_conf.keys():
+			print c
 			conf = copy.deepcopy(layer_conf[c])
 			self.add_path(Hole(pos, **conf), c)
-
+		print "SCREW"
+		print self.paths
 class FourScrews(Part):
 	def __init__(self, bl, tr, layer_conf, **config):
 		self.init(config)
@@ -229,8 +234,13 @@ The line defines the
 :param endmode: end 'on' or 'off' the reference line
 :param tab_length: approximate tab length
 :param thickness: thickness of the material
-:param cutterrad: radius of the cutter you are using\n"""
+:param cutterrad: radius of the cutter you are using
+:param fudge: a fudge factor that increases the gap along the finger joint\n"""
 		self.init( config)
+		if 'fudge' in config:
+			fudge=config['fudge']
+		else:
+			fudge=0
 		num_tab_pairs= math.floor((end-start).length()/tab_length/2)
 		if startmode==endmode:
 			num_tabs = num_tab_pairs*2+1
@@ -243,7 +253,7 @@ The line defines the
 			perp = rotate((end-start).normalize(),90)
 		parallel=(end-start).normalize( )
 		along=parallel*tab_length
-		cra=(end-start).normalize()*cutterrad
+		cra=(end-start).normalize()*(cutterrad+fudge)
 		crp=perp*cutterrad
 		cutin=perp*thickness
 		if startmode=='on':
@@ -282,20 +292,24 @@ class FingerJointBoxMidSide(Pathgroup):
 			sidemodes={'left':True, 'top':True, 'right':True, 'bottom':True}
 		linemode='internal'
 		cutterrad = milling.tools[cutter]['diameter']/2
+		if 'fudge' in config:
+			fudge=config['fudge']
+		else:
+			fudge=0
 		if sidemodes['left']:
-			self.add_path(FingerJointMid(start=pos+V(0,0), end=pos+V(0,height), side=s, linemode=linemode, startmode=corners['left'], endmode=corners['left'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['bottom'], nextmode=corners['top']))
+			self.add_path(FingerJointMid(start=pos+V(0,0), end=pos+V(0,height), side=s, linemode=linemode, startmode=corners['left'], endmode=corners['left'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['bottom'], nextmode=corners['top'], fudge=fudge))
 		if sidemodes['top']:
-			self.add_path(FingerJointMid(start=pos+V(0,height), end=pos+V(width,height), side=s, linemode=linemode, startmode=corners['top'], endmode=corners['top'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['left'], nextmode=corners['right']))
+			self.add_path(FingerJointMid(start=pos+V(0,height), end=pos+V(width,height), side=s, linemode=linemode, startmode=corners['top'], endmode=corners['top'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['left'], nextmode=corners['right'], fudge=fudge))
 		if sidemodes['right']:
-			self.add_path(FingerJointMid(start=pos+V(width, height), end=pos+V(width,0), side=s, linemode=linemode, startmode=corners['right'], endmode=corners['right'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['top'], nextmode=corners['bottom']))
+			self.add_path(FingerJointMid(start=pos+V(width, height), end=pos+V(width,0), side=s, linemode=linemode, startmode=corners['right'], endmode=corners['right'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['top'], nextmode=corners['bottom'], fudge=fudge))
 		if sidemodes['bottom']:
-			self.add_path(FingerJointMid(start=pos+V(width,0), end=pos+V(0,0), side=s, linemode=linemode, startmode=corners['bottom'], endmode=corners['bottom'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['right'], nextmode=corners['left']))
+			self.add_path(FingerJointMid(start=pos+V(width,0), end=pos+V(0,0), side=s, linemode=linemode, startmode=corners['bottom'], endmode=corners['bottom'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['right'], nextmode=corners['left'], fudge=fudge))
 		self.comment("FingerJointBoxMidSide")
 
 
 
 class FingerJoint(list):
-	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad):
+	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, fudge=0):
 		"""Produce points for a finger joint cut on :param side: of a line from :param start: to :param end:
 The line defines the 
 :param linemode: 'internal' - for a joint that is in a hole in a piece of wood 'external' is a side of a box
@@ -306,7 +320,8 @@ The line defines the
 :param endmode: end 'on' or 'off' the reference line
 :param tab_length: approximate tab length
 :param thickness: thickness of the material
-:param cutterrad: radius of the cutter you are using\n"""
+:param cutterrad: radius of the cutter you are using
+:param fudge: a fudge factor that increases the gap along the finger joint\n"""
 		num_tab_pairs= math.floor((end-start).length()/tab_length/2)
 		if startmode==endmode:
 			num_tabs = num_tab_pairs*2+1
@@ -318,7 +333,7 @@ The line defines the
 		else:
 			perp = rotate((end-start).normalize(),90)
 		along=tab_length*(end-start).normalize()
-		cra=(end-start).normalize()*cutterrad
+		cra=(end-start).normalize()*(cutterrad*fudge)
 		crp=perp*cutterrad
 		cutin=perp*thickness
 		if linemode=='external':
@@ -354,6 +369,10 @@ class FingerJointBoxSide(Path):
 	def __init__(self, pos, width, height, side, corners, sidemodes, tab_length, thickness, cutter,**config):
 		self.init(config)
 		self.closed=True
+		if 'fudge' in config:
+			fudge=config['fudge']
+		else:
+			fudge=0
 		if 'centred' in config and config['centred'] is True:
 			pos-=V(width/2, height/2)
 		if side=='in':
@@ -371,25 +390,25 @@ class FingerJointBoxSide(Path):
 		else:
 			if corners['left']=='off' and corners['bottom']=='off':
 				self.add_point(pos+V(-thickness['left']-cutterrad, -thickness['bottom']-cutterrad),'sharp')
-			self.add_points(FingerJoint(start=pos+V(0,0), end=pos+V(0,height), side=s, linemode=linemode, startmode=corners['left'], endmode=corners['left'], tab_length=tab_length, thickness=thickness['left'], cutterrad=cutterrad))
+			self.add_points(FingerJoint(start=pos+V(0,0), end=pos+V(0,height), side=s, linemode=linemode, startmode=corners['left'], endmode=corners['left'], tab_length=tab_length, thickness=thickness['left'], cutterrad=cutterrad, fudge=fudge))
 		if 'top' in sidemodes and sidemodes['top']=='straight':
 			self.add_point(V(width,height))
 		else:
 			if corners['left']=='off' and corners['top']=='off':
 				self.add_point(pos+V(-thickness['left']-cutterrad, height+thickness['top']+cutterrad),'sharp')
-			self.add_points(FingerJoint(start=pos+V(0,height), end=pos+V(width,height), side=s, linemode=linemode,startmode=corners['top'], endmode=corners['top'], tab_length=tab_length, thickness=thickness['top'], cutterrad=cutterrad))
+			self.add_points(FingerJoint(start=pos+V(0,height), end=pos+V(width,height), side=s, linemode=linemode,startmode=corners['top'], endmode=corners['top'], tab_length=tab_length, thickness=thickness['top'], cutterrad=cutterrad, fudge=fudge))
 		if 'right' in sidemodes and sidemodes['right']=='straight':
 			self.add_point(pos+V(width,0))
 		else:
 			if corners['top']=='off' and corners['right']=='off':
 				self.add_point(pos+V(width+thickness['right']+cutterrad, height+thickness['top']+cutterrad),'sharp')
-			self.add_points(FingerJoint(start=pos+V(width,height), end=pos+V(width,0), side=s, linemode=linemode, startmode=corners['right'], endmode=corners['right'], tab_length=tab_length, thickness=thickness['right'], cutterrad=cutterrad))
+			self.add_points(FingerJoint(start=pos+V(width,height), end=pos+V(width,0), side=s, linemode=linemode, startmode=corners['right'], endmode=corners['right'], tab_length=tab_length, thickness=thickness['right'], cutterrad=cutterrad, fudge=fudge))
 		if 'bottom' in sidemodes and sidemodes['bottom']=='straight':
 			self.add_point(pos+V(0,0))
 		else:
 			if corners['right']=='off' and corners['bottom']=='off':
 				self.add_point(pos+V(width+thickness['right']+cutterrad, -thickness['bottom']-cutterrad),'sharp')
-			self.add_points(FingerJoint(start=pos+V(width,0), end=pos+V(0,0), side=s, linemode=linemode, startmode=corners['bottom'], endmode=corners['bottom'], tab_length=tab_length, thickness=thickness['bottom'], cutterrad=cutterrad))
+			self.add_points(FingerJoint(start=pos+V(width,0), end=pos+V(0,0), side=s, linemode=linemode, startmode=corners['bottom'], endmode=corners['bottom'], tab_length=tab_length, thickness=thickness['bottom'], cutterrad=cutterrad, fudge=fudge))
 		self.comment("FingerJointBoxSide")
 
 class Module(Plane):

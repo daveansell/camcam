@@ -10,9 +10,9 @@ milling=Milling.Milling()
 
 arg_meanings = {'order':'A field to sort paths by',
 	       'transform':"""Transformations you can apply to the object this is a dict, and can include:
-:param rotate: - a list with two members
-    :param 0: - a position to rotate about
-    :param 1: - an angle to rotate""",
+		:param rotate: - a list with two members
+    		:param 0: - a position to rotate about
+    		:param 1: - an angle to rotate""",
     		'side':'side to cut on, can be "on", "in", "out"',
 		'z0':'z value to start cutting at', 
 		'z1':'z value to end cutting at (less than z0)', 
@@ -72,7 +72,7 @@ class Segment(object):
 				temp[0]['Z']=zto
 			return temp
 		elif mode=='simplegcode':
-			temp=self.simplegcode(direction, zfrom, zto)
+			temp=self.simplegcode(zfrom, zto)
 			return temp	
 	def svg(self):
 		return {}
@@ -155,7 +155,14 @@ class Arc(Segment):
 			return [{"cmd":"A","rx":r,"ry":r,"x":self.cutfrom[0],"y":self.cutfrom[1], '_lf':longflag,'_rot':0,'_dir':dirflag}] 
 #			return [{'cmd':'L',"x":self.centre[0],"y":self.centre[1]},{'cmd':'L',"x":self.cutto[0],"y":self.cutto[1]},{"cmd":"A","rx":r,"ry":r,"x":self.cutfrom[0],"y":self.cutfrom[1], '_lf':longflag,'_rot':0,'_dir':dirflag}] 
 	def polygon(self,resolution=1):
-		a=(self.centre-self.cutfrom)
+		dtheta = math.atan(resolution/self.rad)
+		if self.direction=='ccw':
+			dtheta=-dtheta
+		r1 = self.cutfrom-self.radius
+		r2 = self.cutto-self.radius
+		
+		
+		a=self.cutfrom - self.centre
 		angle1=math.atan2(a[1],a[0])
 		b=(self.centre-self.cutto)
 		angle2=math.atan2(b[1],b[2])
@@ -273,9 +280,9 @@ class Point(object):
 			return pos
 		if type(pos) is Vec and type(t[0]) is Vec:
 			if type(t[1]) is str:
-				if t[1]=='x':
-					dirvec=V(0,1)
 				if t[1]=='y':
+					dirvec=V(0,1)
+				if t[1]=='x':
 					dirvec=V(1,0)
 			elif type(t[1]) is Vec:
 				dirvec = t[1]
@@ -283,7 +290,7 @@ class Point(object):
 				print "Reflection direction is not a string or vector"
 			out=Vec(pos)
 			out-=t[0]
-			out.reflect(dirvec)
+			out=out.reflect(dirvec)
 			out+=t[0]
 			return out
 		else:
@@ -475,7 +482,10 @@ class Path(object):
 					segment_array.append(Arc(startcurve, endcurve, centre,tempd))
 			frompoint=endcurve
 		elif thispoint.point_type=='clear':
-                        extrapoint=thispoint.pos-(((lastpoint.pos-thispoint.pos).normalize()+(nextpoint.pos-thispoint.pos).normalize())/2).normalize()*config['cutterrad']
+			angle=(thispoint.pos-lastpoint.pos).angle(nextpoint.pos-thispoint.pos)
+			d=config['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1)
+			print "ANGLE"+str(angle)
+                        extrapoint=thispoint.pos-(((lastpoint.pos-thispoint.pos).normalize()+(nextpoint.pos-thispoint.pos).normalize())/2).normalize()*d
 
 #			extrapoint=thispoint.pos-((lastpoint.pos+nextpoint.pos)/2-thispoint.pos).normalize()*config['cutterrad']
 			if do:
@@ -592,14 +602,14 @@ class Path(object):
 			return [point1-rvec*r1, point2+rvec*r2]
 			
 		if r1>r2:
-			#print "r1>r2 "+str(r1)+" "+str(r2)
+			print "r1>r2 "+str(r1)+" "+str(r2)
 			r=r1-r2
 			temp=self.tangent_point(point2, point1, r, self.otherDir(dir1))
 			rvec=(temp-point1).normalize()
 			#print "rvec"+str(rvec)
 			return [point1+rvec*r1, point2+rvec*r2]
 		elif r1<r2:
-		#	print "r1<r2 "+str(r1)+" "+str(r2)
+			print "r1<r2 "+str(r1)+" "+str(r2)
 			r=r2-r1
 			temp=self.tangent_point(point1, point2, r, dir1)
 			rvec=(temp-point2).normalize()
@@ -624,12 +634,18 @@ class Path(object):
 
 		diff=centre-point
 		offset=rotate(diff.normalize(),a)
-		return centre+offset*r
+#	return centre+offset*r
 
 		d=diff.length()
 		l=math.sqrt(d*d-r*r)
+		theta= math.acos(r/d)
 
-		theta = math.atan2(r,d)
+		rx=-r* math.cos(theta) *diff.normalize()
+		ry=r* math.sin(theta) *offset
+		return centre+rx+ry
+				
+
+		theta = math.atan2(r,l)
 #		theta = math.atan2(diff[1],diff[0])
 		phi = math.asin(r/d)
 			
@@ -709,7 +725,12 @@ class Path(object):
 		cross=(thispoint.pos-lastpoint.pos).cross(nextpoint.pos-thispoint.pos)[2]
 		a=(-(thispoint.pos-lastpoint.pos).normalize()+(thispoint.pos-nextpoint.pos).normalize())
 		al=a.length()
-		ca=math.sqrt(4/al/al -1)
+#	if al=0:
+#		print "ERROR from a tn points are the same"
+#		print self.trace
+#		print thispoint.pos, 
+			
+#	ca=math.sqrt(4/al/al -1)
 		angle=math.atan2(a[1], a[0])
 		if cross<0 and side=='left' or cross>0 and side=='right':
 			corner='external'
@@ -741,8 +762,9 @@ class Path(object):
 					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
 		elif thispoint.point_type=='sharp':
 			if corner=='external':# and side=='out' or corner=='internal' and side=='in':
-				t.radius=distance
-				t.point_type='outcurve'
+#				t.radius=distance
+#				t.point_type='outcurve'
+				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, -distance/abs(math.cos(angle)))
 			else:
 				t.point_type='clear'
 				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
@@ -1082,10 +1104,10 @@ class Path(object):
 				ret+=",%0.2f"%point['y2']
 			if '_comment' in point:
 				comments+="<!--"+point['_comment']+"-->\n"
-			if '_colour' in point:
+			if '_colour' in point and point['_colour'] is not None:
 				colour=point['_colour']
 			else:
-				colour=''
+				colour='black'
 			if '_opacity' in point:
 				opacity = "opacity:"+str(point['_opacity'])
 			else:
@@ -1472,10 +1494,10 @@ class Pathgroup(object):
 				ret+=",%0.2f"%point['y2']
 			if '_comment' in point:
 				comments+="<!--"+point['_comment']+"-->\n"
-			if '_colour' in point:
+			if '_colour' in point and point['colour'] is not None:
 				colour=point['_colour']
 			else:
-				colour=''
+				colour='black'
 		return comments+"<path d=\""+ret+"\"  stroke-width='0.1px' fill='none' stroke='"+colour+"'/>\n"
 
 	def render_path_gcode(self,path):
@@ -1581,6 +1603,7 @@ class Part(object):
 			config['transformations']=pconfig['transformations'][:]
 		if self.transform is not None:
 			config['transformations'].append(self.transform)
+			print config['transformations']
 		return config
 	# is this a part we can render or just a multilayer pathgroup	
 	def renderable(self):
@@ -1774,6 +1797,10 @@ class Plane(Part):
 		"""Render all parts in the Plane"""
 		for part in self.parts:
 			self.render_part(part, mode)
+	def list_all(self):
+		for part in self.parts:
+			if hasattr(part, 'name'):
+				print str(part.name)
  	
 	def get_layer_config(self,layer):
 		return self.layers[layer].config
@@ -1814,7 +1841,7 @@ class Plane(Part):
 			
 		# if the path is within the bounds of the part then render it
 			if path.obType=="Path" or path.obType=="Part":
-				if part.contains(path)>-1 or hasattr(path,'is_border') and path.is_border:
+				if not hasattr(path, 'border') or part.contains(path)>-1 or hasattr(path,'is_border') and path.is_border:
 					if self.modeconfig['group'] is False:
 						k=c
 						c=c+1
@@ -1828,7 +1855,7 @@ class Plane(Part):
 					lastcutter=k
 			if path.obType=="Pathgroup":
 				for p in path.get_paths():
-					if part.contains(p)>-1:
+					if not hasattr(path, 'border') or part.contains(p)>-1:
 						if self.modeconfig['group'] is False:
 							k=c
 							c=c+1
@@ -1856,7 +1883,7 @@ class Plane(Part):
 				output['__border']=b
 		for key in sorted(output.iterkeys()):
 			if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
-				self.writeGcodeFile(part.name,key,self.modeconfig['prefix']+output[key]+self.modeconfig['postfix'])
+				self.writeGcodeFile(part.name,key,self.modeconfig['prefix']+output[key]+self.modeconfig['postfix'], config)
 			elif self.modeconfig['mode']=='svg':
 				out+="<!-- "+str(part.name)+" - "+str(key)+" -->\n"+output[key]
 		if self.modeconfig['mode']=='svg':	
@@ -1870,8 +1897,15 @@ class Plane(Part):
 				f.write(self.modeconfig['prefix'] + out +self.modeconfig['postfix'])
 				f.close()
 
-	def writeGcodeFile(self,partName, key, output):
-		f=open(self.sanitise_filename(self.name+"_"+str(partName)+"_"+str(key)+".ngc"),'w')
+	def writeGcodeFile(self,partName, key, output, config):
+		filename=self.name+"_"+str(partName)+"_"+str(key)
+		if 'cutter' in config:
+			filename+="_cutter-"+str(config['cutter'])
+		if 'material' in config:
+			filename+='_'+str(config['material'])
+		if 'thickness' in config:
+			filename+="_thickness-"+str(config['thickness'])
+		f=open(self.sanitise_filename(filename+".ngc"),'w')
 	#	print output
 		f.write(output)
 		f.close()

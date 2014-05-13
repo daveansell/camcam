@@ -31,6 +31,9 @@ class CamCam:
 		else:
 			for plane in self.planes:
 				plane.render_all(mode)
+	def listparts(self):
+		 for plane in self.planes:
+                                plane.list_all()
 camcam = CamCam()
 milling = Milling.Milling()
 parser = OptionParser()
@@ -38,12 +41,17 @@ modes = ','.join(milling.mode_config.keys())
 
 parser.add_option("-m", "--mode", dest="mode",
                   help="mode the output should be in. Can be one of "+modes, metavar="MODE")
+parser.add_option("-l", "--list",
+                  action="store_true", dest="listparts", default=False,
+                  help="list all parts")
 (options, args) = parser.parse_args()
-print options.mode
-print args
+
+# load all the requested files	
 for arg in args:
-	print arg
 	execfile(arg)
 
-camcam.render(options.mode)
+if options.listparts:
+	camcam.listparts()
+else:
+	camcam.render(options.mode)
 
