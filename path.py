@@ -1943,9 +1943,11 @@ class Plane(Part):
 		#	f=open(parent.name+"_"+self.name+"_"+part.name)
 			if self.modeconfig['overview']:
 				self.out+='<g>'+out+'</g>'
-			else:
+			elif part.name is not None:
+				print self.name
+				print part.name
 				filename=self.name+"_"+part.name+".svg"
-				f=open(self.name+"_"+part.name+".svg",'w')
+				f=open(filename,'w')
 				f.write(self.modeconfig['prefix'] + out +self.modeconfig['postfix'])
 				f.close()
 
