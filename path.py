@@ -38,6 +38,7 @@ arg_meanings = {'order':'A field to sort paths by',
 		'name':'The name of the object - str',
 		'partial_fill':'cut a step into the path',
 		'fill_direction':'direction to fill towards',
+		'precut_z':'the z position the router can move dow quickly to',
 }
 def V(x=False,y=False,z=False):
 	if x==False:
@@ -155,13 +156,32 @@ class Arc(Segment):
 			return [{"cmd":"A","rx":r,"ry":r,"x":self.cutfrom[0],"y":self.cutfrom[1], '_lf':longflag,'_rot':0,'_dir':dirflag}] 
 #			return [{'cmd':'L',"x":self.centre[0],"y":self.centre[1]},{'cmd':'L',"x":self.cutto[0],"y":self.cutto[1]},{"cmd":"A","rx":r,"ry":r,"x":self.cutfrom[0],"y":self.cutfrom[1], '_lf':longflag,'_rot':0,'_dir':dirflag}] 
 	def polygon(self,resolution=1):
-		dtheta = math.atan(resolution/self.rad)
+		r1 = self.cutfrom-self.centre
+		r2 = self.cutto-self.centre
+		dtheta = math.atan(r1.length()/resolution)/math.pi*180
 		if self.direction=='ccw':
 			dtheta=-dtheta
-		r1 = self.cutfrom-self.radius
-		r2 = self.cutto-self.radius
-		
-		
+		r=r1
+		thetasum=0
+		hasrisen=0
+		dot=r.dot(r2)
+		points=[]		
+
+		while thetasum<360:
+			r=rotate(r,dtheta)
+			newdot=r.dot(r2)		
+			if newdot>dot:
+				hasrisen=1
+			if hasrisen and newdot<dot:
+				break
+			points.append(self.centre-r)
+			thetasum+=dtheta
+			dot=newdot
+		if thetasum>360:
+			return [self.cutto]
+		else:
+			return points
+
 		a=self.cutfrom - self.centre
 		angle1=math.atan2(a[1],a[0])
 		b=(self.centre-self.cutto)
@@ -278,6 +298,7 @@ class Point(object):
 	def reflect(self,pos,t):
 		if t is False or t is None or type(t) is list and (t[0] is False or t[0] is None):
 			return pos
+	
 		if type(pos) is Vec and type(t[0]) is Vec:
 			if type(t[1]) is str:
 				if t[1]=='y':
@@ -367,11 +388,17 @@ class Path(object):
 		if self.transform==False or self.transform==None:
 			self.transform={}
 		self.transform['rotate']=[pos, angle]
-		
+
+	def mirror(self, pos, dirvec):	
+		if self.transform==False or self.transform==None:
+			self.transform={}
+		self.transform['mirror']=[pos,dirvec]
+
 	def translate(self,vec):
 		if self.transform==False:
                         self.transform={}
                 self.transform['translate']=vec
+
 	def set_cutter(self, config):
 		if config['cutter'] in milling.tools:
 			tool=milling.tools[config['cutter']]
@@ -482,9 +509,9 @@ class Path(object):
 					segment_array.append(Arc(startcurve, endcurve, centre,tempd))
 			frompoint=endcurve
 		elif thispoint.point_type=='clear':
+			# we want to cut so that the edge of the cutter just touches the point requested
 			angle=(thispoint.pos-lastpoint.pos).angle(nextpoint.pos-thispoint.pos)
 			d=config['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1)
-			print "ANGLE"+str(angle)
                         extrapoint=thispoint.pos-(((lastpoint.pos-thispoint.pos).normalize()+(nextpoint.pos-thispoint.pos).normalize())/2).normalize()*d
 
 #			extrapoint=thispoint.pos-((lastpoint.pos+nextpoint.pos)/2-thispoint.pos).normalize()*config['cutterrad']
@@ -494,7 +521,12 @@ class Path(object):
 				segment_array.append(Line(extrapoint,thispoint.pos))
 			frompoint=thispoint.pos
 		elif thispoint.point_type=='doubleclear':
-                        o=(((lastpoint.pos-thispoint.pos).normalize()+(nextpoint.pos-thispoint.pos).normalize())/2).normalize()*config['cutterrad']
+			if lastpoint.pos==thispoint.pos or thispoint.pos==nextpoint.pos or lastpoint.pos==nextpoint.pos:
+				d=0
+			else:
+				angle=(thispoint.pos-lastpoint.pos).angle(nextpoint.pos-thispoint.pos)
+				d=config['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1)
+                        o=(((lastpoint.pos-thispoint.pos).normalize()+(nextpoint.pos-thispoint.pos).normalize())/2).normalize()*d
 			extrapoint1=thispoint.pos-o
 			extrapoint2=thispoint.pos+o
 			if do:
@@ -962,7 +994,7 @@ class Path(object):
 			return [1,[]]
 		if self.mode=='svg' or mode=='laser':
 			return [stepdown,[0]]
-		if self.mode=='gcode':
+		if self.mode=='gcode' or self.mode=='simplegcode':
 			minsteps=math.ceil(float(abs(z0-z1))/stepdown)
 			step=(z1-z0)/minsteps
 			ret=[]
@@ -978,7 +1010,14 @@ class Path(object):
 		else:
 			pconfig = False
 		config = {}
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'mode','partial_fill','fill_direction']
+		if pconfig is False or  pconfig['transformations']==False or pconfig['transformations'] is None:
+			config['transformations']=[]
+		else:
+			config['transformations']=pconfig['transformations'][:]
+		if self.transform!=None:
+			config['transformations'].append(self.transform)
+			self.transform=None
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'mode','partial_fill','fill_direction','precut_z']
                 for v in self.varlist:
                         if hasattr(self,v) and getattr(self,v) is not None:
 				config[v]=getattr(self,v)
@@ -986,12 +1025,6 @@ class Path(object):
                                 config[v]=pconfig[v]
 			else:
 				config[v]=None
-		if pconfig is False or  pconfig['transformations']==False or pconfig['transformations'] is None:
-			config['transformations']=[]
-		else:
-			config['transformations']=pconfig['transformations'][:]
-		if self.transform!=None:
-			config['transformations'].append(self.transform)
 		return config
 
 	def generate_config(self, pconfig):
@@ -1075,7 +1108,9 @@ class Path(object):
 		if config['mode']=='svg':
 			ret+=self.render_path_svg(self.output,config)
 		elif config['mode']=='gcode' or config['mode']=='simplegcode':
-			ret+=self.render_path_gcode(self.output,config)+'G40\nG0Z%0.2f\n'%config['clear_height']
+			ret+=self.render_path_gcode(self.output,config)
+# 		elif config['mode']=='simplegcode':
+#			ret+=self.render_path_gcode(self.output,config)+'G0Z%0.2f\n'%config['clear_height']
 		return ret
 
 	def render_path_svg(self,path,config):
@@ -1102,7 +1137,7 @@ class Path(object):
 				ret+=" %0.2f"%point['x2']
 			if 'y2' in point:
 				ret+=",%0.2f"%point['y2']
-			if '_comment' in point:
+			if '_comment' in point :
 				comments+="<!--"+point['_comment']+"-->\n"
 			if '_colour' in point and point['_colour'] is not None:
 				colour=point['_colour']
@@ -1117,7 +1152,7 @@ class Path(object):
 	def render_path_gcode(self,path,config):
 		ret=""
 		for point in path:
-			if '_comment' in point:
+			if '_comment' in point and config['comments']:
 				ret+="("+point['_comment']+")"
 			if 'cmd' in point:
 				ret+=point['cmd']
@@ -1212,6 +1247,7 @@ class Path(object):
 		if len(depths)==0:
 			return False
 # if closed go around and around, if open go back and forth
+		firstdepth=1
 		if self.closed:
 			self.runin(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 				
@@ -1224,6 +1260,9 @@ class Path(object):
 					
 				for segment in self.Fsegments:
 					if first==1 and downmode=='ramp':
+						if firstdepth and (mode=='gcode' or mode=='simplemode'):
+							self.add_out(self.quickdown(depth-step+config['precut_z']))
+							firstdepth=0
 						self.add_out(segment.out(direction,mode,depth-step,depth)) 
 					else:
 						self.add_out(segment.out(direction,mode))
@@ -1245,6 +1284,9 @@ class Path(object):
 				first=1
 				for segment in segments:
 					if first==1 and downmode=='ramp':
+						if firstdepth and (mode=='gcode' or mode=='simplemode'):
+							self.add_out(self.quickdown(depth-step+config['precut_z']))
+							firstdepth=0
 						self.add_out(segment.out(direction,mode,depth-step,depth))
 					else:
 						self.add_out(segment.out(direction,mode))
@@ -1257,11 +1299,20 @@ class Path(object):
 					self.add_out(self.Bsegments[0].out(direction,mode))
 			self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 		# If we are in a gcode mode, go through all the cuts and add feed rates to them
+		if self.mode=='gcode':
+			self.add_out( [{"cmd":'G40'}])
 		if self.mode=='gcode' or self.mode=='simplegcode':
+			self.add_out([{'cmd':'G0','Z':config['clear_height']}])
 			self.add_feedrates(config)
 		elif self.mode=='svg':
 			self.add_colour(config)	
 #		print self.output
+	def quickdown(self,z):
+		if self.mode=='gcode' or self.mode=='simplegcode':
+			return [{"cmd":"G0", "Z":z}]
+		else:
+			return[]
+		
 	def cutdown(self,z):
 		if self.mode=='gcode' or self.mode=='simplegcode':
 			return [{"cmd":"G1", "Z":z}]
@@ -1352,7 +1403,7 @@ class Pathgroup(object):
 		self.obType = "Pathgroup"
 		self.paths=[]
 		self.trace = traceback.extract_stack()
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'stepdown', 'forcecolour', 'rendermode','partial_fill','fill_direction','cutter']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'stepdown', 'forcecolour', 'rendermode','partial_fill','fill_direction','cutter','precut_z']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in args:
@@ -1381,7 +1432,14 @@ class Pathgroup(object):
 			print "PATHGROUP has no parent HJK"+str(self)
 			pconfig = False
 		config = {}
-		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour','rendermode','partial_fill','fill_direction','cutter']
+		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour','rendermode','partial_fill','fill_direction','cutter','precut_z']
+		if pconfig is False or  pconfig['transformations'] is False or pconfig['transformations'] is None:
+			config['transformations']=[]
+		else:
+			config['transformations']=pconfig['transformations'][:]
+		if self.transform!=None:
+			config['transformations'].append(self.transform)
+			self.transform=None
                 for v in varslist:
                         if getattr(self,v) is not None:
 				config[v]=getattr(self,v)
@@ -1389,12 +1447,6 @@ class Pathgroup(object):
                                 config[v]=pconfig[v]
 			else:
 				config[v]=None
-		if pconfig is False or  pconfig['transformations'] is False or pconfig['transformations'] is None:
-			config['transformations']=[]
-		else:
-			config['transformations']=pconfig['transformations'][:]
-		if self.transform!=None:
-			config['transformations'].append(self.transform)
 		return config
 
 	def comment(self, comment):
@@ -1560,7 +1612,7 @@ class Part(object):
 		self.comments = []
 		self.parent=False
 		self.internal_borders=[]
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','fill_direction']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','fill_direction','precut_z']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in config:
@@ -1592,18 +1644,18 @@ class Part(object):
 		else:
 			pconfig = False
 		config = {}
-                for v in self.varlist:
-                        if hasattr(self,v) and getattr(self,v) is not None:
-				config[v]=getattr(self,v)
-			else:
-				config[v]=None
 		if pconfig is None or pconfig is False or pconfig['transformations'] is None:
 			config['transformations']=[]
 		else:
 			config['transformations']=pconfig['transformations'][:]
 		if self.transform is not None:
 			config['transformations'].append(self.transform)
-			print config['transformations']
+			self.transform=None
+                for v in self.varlist:
+                        if hasattr(self,v) and getattr(self,v) is not None:
+				config[v]=getattr(self,v)
+			else:
+				config[v]=None
 		return config
 	# is this a part we can render or just a multilayer pathgroup	
 	def renderable(self):
@@ -1759,7 +1811,7 @@ class Plane(Part):
 		self.name=name
 		self.transform=False
 		self.parent=False
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer','partial_fill','fill_direction']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer','partial_fill','fill_direction','precut_z']
 		self.out=''
 		for v in self.varlist:
                         if v in config:
@@ -1863,6 +1915,7 @@ class Plane(Part):
 							k=config[self.modeconfig['group']]#getattr(p,self.modeconfig['group'])
 						if k not in output.keys():
 							output[k]=''
+						print p.render(config)
 						output[k]+=''.join(p.render(config))
 						lastcutter=k
 					
@@ -1893,7 +1946,6 @@ class Plane(Part):
 			else:
 				filename=self.name+"_"+part.name+".svg"
 				f=open(self.name+"_"+part.name+".svg",'w')
-				print out
 				f.write(self.modeconfig['prefix'] + out +self.modeconfig['postfix'])
 				f.close()
 
@@ -1905,7 +1957,7 @@ class Plane(Part):
 			filename+='_'+str(config['material'])
 		if 'thickness' in config:
 			filename+="_thickness-"+str(config['thickness'])
-		f=open(self.sanitise_filename(filename+".ngc"),'w')
+		f=open(self.sanitise_filename(filename+config['file_suffix']),'w')
 	#	print output
 		f.write(output)
 		f.close()
