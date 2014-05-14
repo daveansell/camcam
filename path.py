@@ -159,6 +159,8 @@ class Arc(Segment):
 		r1 = self.cutfrom-self.centre
 		r2 = self.cutto-self.centre
 		dtheta = math.atan(r1.length()/resolution)/math.pi*180
+		if dtheta>60:
+			dtheta=60
 		if self.direction=='ccw':
 			dtheta=-dtheta
 		r=r1
@@ -300,6 +302,7 @@ class Point(object):
 			return pos
 	
 		if type(pos) is Vec and type(t[0]) is Vec:
+			print "in" + str(pos)
 			if type(t[1]) is str:
 				if t[1]=='y':
 					dirvec=V(0,1)
@@ -313,6 +316,7 @@ class Point(object):
 			out-=t[0]
 			out=out.reflect(dirvec)
 			out+=t[0]
+			print "out" + str(out)
 			return out
 		else:
 			return False
