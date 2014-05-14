@@ -46,7 +46,10 @@ class RoundedRect(Rect):
 class ClearRect(Rect):
 	def __init__(self, bl,  **config):
 		self.init(config)
-		config['cornertype']='sharp'
+		if 'side' in config and config['side'] in ['in', 'out']:
+			config['cornertype']='sharp'
+		else:
+			config['cornertype']='clear'
 		self.cut_square(bl,config)
 	def pre_render(config):
 		if 'side' in config and config['side']=='in':

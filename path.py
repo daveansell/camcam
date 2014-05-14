@@ -73,14 +73,14 @@ class Segment(object):
 				temp[0]['Z']=zto
 			return temp
 		elif mode=='simplegcode':
-			temp=self.simplegcode(zfrom, zto)
+			temp=self.simplegcode(zfrom, zto, direction)
 			return temp	
 	def svg(self):
 		return {}
 	def polygon(self):
 		return []
 # render the segment in straight lines
-	def simplegcode(self, zfrom, zto):
+	def simplegcode(self, zfrom, zto, direction):
 		ret=[]
 		polygon=self.polygon()
 		if zfrom!=zto:
@@ -112,7 +112,7 @@ class Line(Segment):
 			return [{"cmd":"L","x":self.cutto[0],"y":self.cutto[1]}] 
 		else:
 			return [{"cmd":"L","x":self.cutfrom[0],"y":self.cutfrom[1]}] 
-	def polygon(self, resolution=1):
+	def polygon(self, resolution=1, direction=1):
 		return [self.cutto]
 class Arc(Segment):
 	def __init__(self, cutfrom, cutto,centre,direction, mode='abs'):
@@ -155,13 +155,15 @@ class Arc(Segment):
 		else:
 			return [{"cmd":"A","rx":r,"ry":r,"x":self.cutfrom[0],"y":self.cutfrom[1], '_lf':longflag,'_rot':0,'_dir':dirflag}] 
 #			return [{'cmd':'L',"x":self.centre[0],"y":self.centre[1]},{'cmd':'L',"x":self.cutto[0],"y":self.cutto[1]},{"cmd":"A","rx":r,"ry":r,"x":self.cutfrom[0],"y":self.cutfrom[1], '_lf':longflag,'_rot':0,'_dir':dirflag}] 
-	def polygon(self,resolution=1):
+	def polygon(self,resolution=1, direction=1):
 		r1 = self.cutfrom-self.centre
 		r2 = self.cutto-self.centre
 		dtheta = math.atan(r1.length()/resolution)/math.pi*180
 		if dtheta>60:
 			dtheta=60
-		if self.direction=='ccw':
+		if self.direction=='cw':
+			dtheta=-dtheta
+		if not direction:
 			dtheta=-dtheta
 		r=r1
 		thetasum=0
@@ -230,7 +232,7 @@ class Quad(Segment):
                         offset = cp - self.cutto
                         return [{"cmd":"Q", "x":self.cutfrom[0], "y":self.cutfrom[1], "i":offset[0], "j":offset[1]}]
 
-	def polygon(self,resolution=1):
+	def polygon(self,resolution=1, direction=1):
 		p0=self.cutfrom
 		p1=self.cp1
 		p2=self.cutto
@@ -1329,7 +1331,7 @@ class Path(object):
 	def move(self,moveto):
 		if type(moveto) is not Vec:
 			print self.trace
-		if self.mode=='gcode':
+		if self.mode=='gcode' or self.mode=='simplegcode':
 			return [{"cmd":"G0","X":moveto[0],"Y":moveto[1]}]
 		elif self.mode=='svg':
 			return [{"cmd":"M","x":moveto[0],"y":moveto[1]}]
