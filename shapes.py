@@ -452,7 +452,8 @@ class Module(Plane):
 				holesY=5
 			
 		edge= RoundedRect(bl=V(0,0), tr=V(width, height), rad=radius, side='out')
-		self.perspex = self.add_path(Part(name='perspex', border=edge, layer='perspex',colour="red"))
+		if not ('no_perspex' in config and  config['no_perspex']):
+			self.perspex = self.add_path(Part(name='perspex', border=edge, layer='perspex',colour="red"))
 		self.base = self.add_path(Part(name='base', border=edge, layer='base'))
 #		self.paper = self.add_path(Part(name='paper', border=edge, layer='paper'))
 
