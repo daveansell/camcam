@@ -106,7 +106,6 @@ class Circle(Path):
 		self.add_point(pos,'circle',rad)
 		self.comment("Circle")
 		self.comment("pos="+str(pos)+" rad="+str(rad))
-		print pos
 class Cross(Pathgroup):
 	def __init__(self, pos, rad, **config):
 		self.init(config)
@@ -180,8 +179,6 @@ class Hole(Pathgroup):
 			if 'z1' in config and type(config['z1']) is list:
 				print "z1 should only be a list if rad is also  a list "+str(config['z1'])
 			self.add_path(Circle(pos, rad, **config))
-			print "EEE"
-			print self.paths
 		self.comment("Hole")
 		self.comment("pos="+str(pos)+" rad="+str(rad))
 
@@ -198,11 +195,8 @@ class Screw(Part):
 	def __init__(self,pos,layer_conf, **config):
 		self.init(config)
 		for c in layer_conf.keys():
-			print c
 			conf = copy.deepcopy(layer_conf[c])
 			self.add_path(Hole(pos, **conf), c)
-		print "SCREW"
-		print self.paths
 class FourScrews(Part):
 	def __init__(self, bl, tr, layer_conf, **config):
 		self.init(config)
@@ -284,11 +278,8 @@ The line defines the
 class FingerJointBoxMidSide(Pathgroup):
 	def __init__(self, pos, width, height, corners, sidemodes, tab_length, thickness, cutter,**config):
 		self.init(config)
-		print "FingerJointBoxMidSide"
-		print pos
 		if 'centred' in config:
 			pos=pos - V(width, height)/2
-		print pos
 		self.closed=True
 		s='left'
 		if sidemodes==True:

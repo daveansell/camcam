@@ -1,3 +1,4 @@
+import os
 import math
 from minivec import Vec, Mat
 import Milling
@@ -82,14 +83,14 @@ class Segment(object):
 # render the segment in straight lines
 	def simplegcode(self, zfrom, zto, direction):
 		ret=[]
-		polygon=self.polygon()
+		polygon=self.polygon(1,direction)
 		if zfrom!=zto:
 			step=(zto-zfrom)/len(polygon)
 			z=zfrom
 		else:
 			z=0
 			step=0
-		for p in self.polygon():
+		for p in polygon:
 			if step!=0:
 				z+=step
 				ret.append({"cmd":"G1","X":p[0],"Y":p[1],"Z":z})
@@ -156,11 +157,17 @@ class Arc(Segment):
 			return [{"cmd":"A","rx":r,"ry":r,"x":self.cutfrom[0],"y":self.cutfrom[1], '_lf':longflag,'_rot':0,'_dir':dirflag}] 
 #			return [{'cmd':'L',"x":self.centre[0],"y":self.centre[1]},{'cmd':'L',"x":self.cutto[0],"y":self.cutto[1]},{"cmd":"A","rx":r,"ry":r,"x":self.cutfrom[0],"y":self.cutfrom[1], '_lf':longflag,'_rot':0,'_dir':dirflag}] 
 	def polygon(self,resolution=1, direction=1):
-		r1 = self.cutfrom-self.centre
-		r2 = self.cutto-self.centre
-		dtheta = math.atan(r1.length()/resolution)/math.pi*180
-		if dtheta>60:
-			dtheta=60
+		if direction:
+			cutfrom=self.cutfrom
+			cutto=self.cutto
+		else:
+			cutfrom=self.cutto
+			cutto=self.cutfrom
+		r1 = cutfrom-self.centre
+		r2 = cutto-self.centre
+		dtheta = math.atan(resolution/r1.length())/math.pi*180
+		if dtheta>45:
+			dtheta=45
 		if self.direction=='cw':
 			dtheta=-dtheta
 		if not direction:
@@ -170,15 +177,15 @@ class Arc(Segment):
 		hasrisen=0
 		dot=r.dot(r2)
 		points=[]		
-
 		while thetasum<360:
 			r=rotate(r,dtheta)
 			newdot=r.dot(r2)		
 			if newdot>dot:
 				hasrisen=1
 			if hasrisen and newdot<dot:
+				points.append(cutto)
 				break
-			points.append(self.centre-r)
+			points.append(self.centre+r)
 			thetasum+=dtheta
 			dot=newdot
 		if thetasum>360:
@@ -186,29 +193,6 @@ class Arc(Segment):
 		else:
 			return points
 
-		a=self.cutfrom - self.centre
-		angle1=math.atan2(a[1],a[0])
-		b=(self.centre-self.cutto)
-		angle2=math.atan2(b[1],b[2])
-
-		rad=(self.centre-self.cutfrom).length()
-		ret=[]
-		if(self.direction=='cw'):
-			angle=angle2-angle1
-			if angle<0:
-				angle+=2*math.pi
-			step=resolution
-		else:
-			angle=angle1-angle2
-			if angle>0:
-				angle-=2*math.pi
-			step=-resolution
-		i=0	
-		while i<angle/step:
-			i+=1
-			ret.append(V(self.cutfrom[0]+math.cos(i*step),self.cutfrom[1]+math.sin(i*step)))
-		# FIXME	
-		return [self.cutto]#ret
 		
 			
 class Quad(Segment):
@@ -304,7 +288,6 @@ class Point(object):
 			return pos
 	
 		if type(pos) is Vec and type(t[0]) is Vec:
-			print "in" + str(pos)
 			if type(t[1]) is str:
 				if t[1]=='y':
 					dirvec=V(0,1)
@@ -318,7 +301,6 @@ class Point(object):
 			out-=t[0]
 			out=out.reflect(dirvec)
 			out+=t[0]
-			print "out" + str(out)
 			return out
 		else:
 			return False
@@ -612,8 +594,9 @@ class Path(object):
 				
 			#	frompoint = #rerun tangent points for next pair of points...
 		elif thispoint.point_type=='circle':
-			segment_array.append(Arc(V(thispoint.pos[0]-thispoint.radius, thispoint.pos[1]),V(thispoint.pos[0]+thispoint.radius, thispoint.pos[1]), thispoint.pos,'cw'))
-			segment_array.append(Arc(V(thispoint.pos[0]+thispoint.radius, thispoint.pos[1]),V(thispoint.pos[0]-thispoint.radius, thispoint.pos[1]), thispoint.pos,'cw'))
+			if do:
+				segment_array.append(Arc(V(thispoint.pos[0]-thispoint.radius, thispoint.pos[1]),V(thispoint.pos[0]+thispoint.radius, thispoint.pos[1]), thispoint.pos,'cw'))
+				segment_array.append(Arc(V(thispoint.pos[0]+thispoint.radius, thispoint.pos[1]),V(thispoint.pos[0]-thispoint.radius, thispoint.pos[1]), thispoint.pos,'cw'))
 		return frompoint
 
 	def findArcCentre(frompos, topos, radius, direction):
@@ -1147,6 +1130,7 @@ class Path(object):
 				comments+="<!--"+point['_comment']+"-->\n"
 			if '_colour' in point and point['_colour'] is not None:
 				colour=point['_colour']
+				print "COLOUR"+str(colour)
 			else:
 				colour='black'
 			if '_opacity' in point:
@@ -1225,8 +1209,9 @@ class Path(object):
 				if config['z1'] is False or abs(config['z1']) > config['thickness']:
 					c=1
 				else:
-					c=abs(config['z1'])/config['thickness']
-				return "#"+hex(c*255)+"00"+hex((1-c)*255)
+					c=int(abs(float(config['z1']))/float(config['thickness'])*255)
+				print "COLOUrget "+str(c)
+				return "#"+format(c,'02x')+"00"+format(256-c, '02x')
 				
 		else:
 				
@@ -1243,7 +1228,6 @@ class Path(object):
 		downmode=config['downmode']
 		direction=config['direction']
 		self.mode=mode
-		
 		self.Fsegments=[]
 		self.Bsegments=[]
 		self.make_segments(direction,self.Fsegments,config)
@@ -1263,7 +1247,6 @@ class Path(object):
 				if downmode=='down':
 					self.cutdown(depth)
 				first=1
-					
 				for segment in self.Fsegments:
 					if first==1 and downmode=='ramp':
 						if firstdepth and (mode=='gcode' or mode=='simplemode'):
@@ -1921,7 +1904,6 @@ class Plane(Part):
 							k=config[self.modeconfig['group']]#getattr(p,self.modeconfig['group'])
 						if k not in output.keys():
 							output[k]=''
-						print p.render(config)
 						output[k]+=''.join(p.render(config))
 						lastcutter=k
 					
@@ -1952,13 +1934,14 @@ class Plane(Part):
 			elif part.name is not None:
 				print self.name
 				print part.name
+				print "WRITE PAET\n"+out
 				filename=self.name+"_"+part.name+".svg"
 				f=open(filename,'w')
-				f.write(self.modeconfig['prefix'] + out +self.modeconfig['postfix'])
+				f.write( self.modeconfig['prefix'] + out + self.modeconfig['postfix'] )
 				f.close()
 
 	def writeGcodeFile(self,partName, key, output, config):
-		filename=self.name+"_"+str(partName)+"_"+str(key)
+		filename=str(partName)+"_"+str(self.name)+"_"+str(key)
 		if 'cutter' in config:
 			filename+="_cutter-"+str(config['cutter'])
 		if 'material' in config:
@@ -1969,6 +1952,10 @@ class Plane(Part):
 	#	print output
 		f.write(output)
 		f.close()
+		if 'dosfile' in config and config['dosfile']:
+			print "/usr/bin/unix2dos "+filename+config['file_suffix']
+			os.system("/usr/bin/unix2dos "+self.sanitise_filename(filename+config['file_suffix']))
+			
 	def sanitise_filename(self,filename):
 		return "".join(x for x in filename if x.isalnum() or x in '-._')
 class Layer(object):
