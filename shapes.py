@@ -455,14 +455,17 @@ class Module(Plane):
 		self.perspex = self.add_path(Part(name='perspex', border=edge, layer='perspex',colour="red"))
 		self.base = self.add_path(Part(name='base', border=edge, layer='base'))
 #		self.paper = self.add_path(Part(name='paper', border=edge, layer='paper'))
+
+		
 		self.add_path(Hole(V(radius,radius),rad=13/2,side='in'),['base','perspex','paper'])
-		self.add_path(RepeatLine(V(fromends, fromedge), V(width-fromends,fromedge), holesX, Bolt, {},layers=['base','perspex','paper']))
 		self.add_path(Hole(V(width-radius,radius),rad=13/2,side='in'),['base','perspex','paper'])
-		self.add_path(RepeatLine(V(width-fromedge, fromends), V(width-fromedge,height-fromends), holesY, Bolt, {},layers=['base','perspex','paper']))
 		self.add_path(Hole(V(width-radius,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
-		self.add_path(RepeatLine(V(width-fromends, height-fromedge), V(fromends,height-fromedge), holesX, Bolt,{},layers=['base','perspex','paper']))
 		self.add_path(Hole(V(radius,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
-		self.add_path(RepeatLine(V(fromedge, height-fromends), V(fromedge,fromends), holesY, Bolt,{},layers=['base','perspex','paper']))
 
-
+		if not ('no_holdown' in config and  config['no_holdown']):
+			self.add_path(RepeatLine(V(fromends, fromedge), V(width-fromends,fromedge), holesX, Bolt, {},layers=['base','perspex','paper']))
+			self.add_path(RepeatLine(V(width-fromedge, fromends), V(width-fromedge,height-fromends), holesY, Bolt, {},layers=['base','perspex','paper']))
+			self.add_path(RepeatLine(V(width-fromends, height-fromedge), V(fromends,height-fromedge), holesX, Bolt,{},layers=['base','perspex','paper']))
+			self.add_path(RepeatLine(V(fromedge, height-fromends), V(fromedge,fromends), holesY, Bolt,{},layers=['base','perspex','paper']))
+			
 

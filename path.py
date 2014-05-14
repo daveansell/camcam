@@ -491,7 +491,7 @@ class Path(object):
 				elif tempdir[2]<0:
 					tempd='ccw'
 				else:
-					print "ERROR - straight arc"
+			#		print "ERROR - straight arc"
 					tempd='cw'	
 				if do:
 					segment_array.append(Arc(startcurve, endcurve, centre,tempd))
@@ -1130,7 +1130,6 @@ class Path(object):
 				comments+="<!--"+point['_comment']+"-->\n"
 			if '_colour' in point and point['_colour'] is not None:
 				colour=point['_colour']
-				print "COLOUR"+str(colour)
 			else:
 				colour='black'
 			if '_opacity' in point:
@@ -1210,8 +1209,17 @@ class Path(object):
 					c=1
 				else:
 					c=int(abs(float(config['z1']))/float(config['thickness'])*255)
-				print "COLOUrget "+str(c)
-				return "#"+format(c,'02x')+"00"+format(256-c, '02x')
+				if config['side']=='in':
+					d="00"
+				elif config['side']=='out':
+					d='40'
+				elif config['side']=='on':
+					d='80'
+				elif config['side']=='left':
+					d='b0'
+				else:
+					d='f0'
+				return "#"+format(c,'02x')+d+format(256-c, '02x')
 				
 		else:
 				
@@ -1882,7 +1890,7 @@ class Plane(Part):
 			
 		# if the path is within the bounds of the part then render it
 			if path.obType=="Path" or path.obType=="Part":
-				if not hasattr(path, 'border') or part.contains(path)>-1 or hasattr(path,'is_border') and path.is_border:
+				if not hasattr(part, 'border') or part.contains(path)>-1 or hasattr(path,'is_border') and path.is_border:
 					if self.modeconfig['group'] is False:
 						k=c
 						c=c+1
@@ -1896,7 +1904,7 @@ class Plane(Part):
 					lastcutter=k
 			if path.obType=="Pathgroup":
 				for p in path.get_paths():
-					if not hasattr(path, 'border') or part.contains(p)>-1:
+					if not hasattr(part, 'border') or part.contains(p)>-1:
 						if self.modeconfig['group'] is False:
 							k=c
 							c=c+1
@@ -1932,9 +1940,6 @@ class Plane(Part):
 			if self.modeconfig['overview']:
 				self.out+='<g>'+out+'</g>'
 			elif part.name is not None:
-				print self.name
-				print part.name
-				print "WRITE PAET\n"+out
 				filename=self.name+"_"+part.name+".svg"
 				f=open(filename,'w')
 				f.write( self.modeconfig['prefix'] + out + self.modeconfig['postfix'] )
