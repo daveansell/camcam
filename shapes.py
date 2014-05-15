@@ -232,7 +232,7 @@ The line defines the
 :param tab_length: approximate tab length
 :param thickness: thickness of the material
 :param cutterrad: radius of the cutter you are using
-:param fudge: a fudge factor that increases the gap along the finger joint\n"""
+:param fudge: a fudge factor that increases the gap along the finger joint when negative - it should be 1/4 of the gap you want\n"""
 		self.init( config)
 		if 'fudge' in config:
 			fudge=config['fudge']
@@ -315,7 +315,7 @@ The line defines the
 :param tab_length: approximate tab length
 :param thickness: thickness of the material
 :param cutterrad: radius of the cutter you are using
-:param fudge: a fudge factor that increases the gap along the finger joint\n"""
+:param fudge: a fudge factor that increases the gap along the finger joint when negative - it should be 1/4 of the gap you want\n"""
 		num_tab_pairs= math.floor((end-start).length()/tab_length/2)
 		if startmode==endmode:
 			num_tabs = num_tab_pairs*2+1
@@ -327,7 +327,7 @@ The line defines the
 		else:
 			perp = rotate((end-start).normalize(),90)
 		along=tab_length*(end-start).normalize()
-		cra=(end-start).normalize()*(cutterrad*fudge)
+		cra=(end-start).normalize()*(cutterrad+fudge)
 		crp=perp*cutterrad
 		cutin=perp*thickness
 		if linemode=='external':
