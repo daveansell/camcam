@@ -1043,7 +1043,10 @@ class Path(object):
 		if config['z0'] is None or config['z0'] is False:
 			config['z0']=0
 		if (config['z1'] is False or config['z1'] is None) and config['z0'] is not None and config['thickness'] is not None:
-			config['z1'] = config['z0'] - config['thickness']
+			if 'z_overshoot' in config:
+				config['z1'] = config['z0'] - config['thickness']- config['z_overshoot']
+			else:
+				config['z1'] = config['z0'] - config['thickness']
 		return config
 #  output the path
 	def render(self,pconfig):

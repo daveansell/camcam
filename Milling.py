@@ -18,6 +18,7 @@ class Milling:
 				'hide_cuts':False,
 				'file_suffix':'.ngc',
 				'comments':True,
+				'z_overshoot':0.5,
                         },
                         'makespacerouter':{
                                 'prefix':'T1M6\nG17\nG0Z10S11000M3\n',
@@ -33,6 +34,7 @@ class Milling:
 				'file_suffix':'.tap',
 				'comments':False,
 				'dosfile':True,
+				'z_overshoot':0.5,
                         },
                         'laser':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -45,6 +47,7 @@ class Milling:
 				'mirror_backs':True,
 				'overview':False,
 				'hide_cuts':False,
+				'z_overshoot':0,
                         },
                         'paper':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -57,6 +60,7 @@ class Milling:
 				'mirror_backs':False,
 				'overview':False,
 				'hide_cuts':True,
+				'z_overshoot':0.01,
                         },
                         'millsvg':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -68,6 +72,7 @@ class Milling:
 				'mirror_backs':True,
 				'overview':False,
 				'hide_cuts':False,
+				'z_overshoot':0,
                         },
                         'svg':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -78,6 +83,7 @@ class Milling:
 				'mirror_backs':False,
 				'overview':False,
 				'hide_cuts':False,
+				'z_overshoot':0,
                         },
                         'diagram':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -88,6 +94,7 @@ class Milling:
 				'mirror_backs':False,
 				'overview':True,
 				'hide_cuts':True,
+				'z_overshoot':0,
                         },
                         'visualise':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -98,6 +105,7 @@ class Milling:
 				'mirror_backs':False,
 				'overview':True,
 				'hide_cuts':False,
+				'z_overshoot':0,
 				
                         }
 
