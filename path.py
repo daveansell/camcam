@@ -1073,7 +1073,7 @@ class Path(object):
 
 		if not config['hide_cuts']  and 'partial_fill' in config and config['partial_fill']>0:
 			dist=config['partial_fill']-config['cutterrad']
-			numpasses = math.ceil(float(dist)/ config['cutterrad']/0.9)
+			numpasses = math.ceil(float(dist)/ config['cutterrad']/1.4)
 			step = config['partial_fill']/numpasses
 		
 			if 'fill_direction' in config:
@@ -1089,10 +1089,20 @@ class Path(object):
 					ns='left'
 				else:
 					ns=c['side']
+			fillpath=copy.deepcopy(thepath)
+			fillpath.points=[]
+			print "QQQQ"+str(numpasses)
 			for d in range(1,int(numpasses)):
-				fillpath=thepath.offset_path(ns, step*d, c)
-				fillpath.output_path(c)
-				out += fillpath.render_path(fillpath,c)
+				print "AAAbbb"
+				print d
+				temppath=thepath.offset_path(ns, step*d, c)
+				print "temmpath"+str(temppath.points)
+				fillpath.add_points(temppath.points)
+			
+			print "thepath"+str(thepath.points)
+			print "fillpath"+str(fillpath.points)
+			fillpath.output_path(c)
+			out += fillpath.render_path(fillpath,c)
 		return out
 
 	def render_path(self,path,config):
@@ -1251,14 +1261,17 @@ class Path(object):
 		firstdepth=1
 		if self.closed:
 			self.runin(config['cutterrad'],config['direction'],config['downmode'],config['side'])
-				
+			if self.find_direction()==direction:
+				segments=self.Fsegments
+			else:
+				segments=self.Bsegments
 #			if downmode=='ramp'
 #				self.add_out(self.Fsegments[-1].out(self.mode, depths[0]))
 			for depth in depths:
 				if downmode=='down':
 					self.cutdown(depth)
 				first=1
-				for segment in self.Fsegments:
+				for segment in segments:
 					if first==1 and downmode=='ramp':
 						if firstdepth and (mode=='gcode' or mode=='simplemode'):
 							self.add_out(self.quickdown(depth-step+config['precut_z']))
