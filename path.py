@@ -1836,7 +1836,7 @@ class Plane(Part):
 		#	if type(b['transform']) is list:			
 			a['transformations'].append(b['transform'])
 	# A plane can have several layers
-	def add_layer(self,name, material, thickness, z0=0,zoffset=0, add_back=False, isback=True, colour=False):
+	def add_layer(self,name, material, thickness, z0=0,zoffset=0, add_back=False, isback=False, colour=False):
 		if add_back:
 			self.layers[name+'#back'] = Layer(name,material, thickness, z0, zoffset, isback=True, back=name, colour=colour)
 			self.layers[name] = Layer(name,material, thickness, z0, zoffset, isback=False, back=name+'#back', colour=colour)
