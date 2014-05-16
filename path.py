@@ -1053,6 +1053,7 @@ class Path(object):
 		return config
 #  output the path
 	def render(self,pconfig):
+		out=""
 # Do something about offsets manually so as not to rely on linuxcnc
 		config=self.generate_config(pconfig)
 		if config['side']=='in' or config['side']=='out':
@@ -1063,14 +1064,16 @@ class Path(object):
 			c['side']='on'
 			if config['hide_cuts']:
 				self.output_path(config)
-				out = self.render_path(self,config)
+				return self.render_path(self,config)
 			elif config['overview']:
 				self.output_path(config)
-				out = thepath.render_path(thepath,c) + self.render_path(self,config)
-			else:
-				out = thepath.render_path(thepath,config)
+				#out = thepath.render_path(thepath,c) + self.render_path(self,config)
+				out = self.render_path(self,config)
+#			else:
+#				out = thepath.render_path(thepath,config)
 		else:
 			thepath=self
+			c=config
 			thepath.output_path(config)
 			out = thepath.render_path(self,config)
 
@@ -1116,8 +1119,9 @@ class Path(object):
 			print "fillpatgh"
 			for a in fillpath.points:
 				print a.pos
-			fillpath.output_path(c)
-			out = fillpath.render_path(fillpath,c)
+			thepath=fillpath
+		thepath.output_path(c)
+		out += thepath.render_path(thepath,c)
 		return out
 
 	def render_path(self,path,config):
