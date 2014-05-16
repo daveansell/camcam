@@ -101,6 +101,7 @@ if :param cutter: is not explicitly specified it will use the countersink cutter
 class Circle(Path):
 	def __init__(self, pos, rad, **config):
 		self.init( config)
+		print "Circle"+str(self.cutter)
 		"""Cut a circle centre at :param pos: with radius :param rad:"""+self.otherargs
 		self.closed=True
 		self.add_point(pos,'circle',rad)
@@ -159,6 +160,7 @@ class RepeatSpacedGrid(Part):
 class Hole(Pathgroup):
 	def __init__(self, pos, rad, **config):
 		self.init(config)
+		print "Hole"+str(self.cutter)
 		"""Cut a hole at :param pos: with radius :param rad:
 :param rad: can be a list as can :param z1:"""+self.otherargs
 		if 'side' not in config:
@@ -196,6 +198,7 @@ class Screw(Part):
 		self.init(config)
 		for c in layer_conf.keys():
 			conf = copy.deepcopy(layer_conf[c])
+			print "screw:"+str(conf)
 			self.add_path(Hole(pos, **conf), c)
 class FourScrews(Part):
 	def __init__(self, bl, tr, layer_conf, **config):

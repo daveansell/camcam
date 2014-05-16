@@ -551,7 +551,6 @@ class Path(object):
 		elif thispoint.point_type=='cubic':
 			print "Cubic curve\n"
 		elif thispoint.point_type=='outcurve':
-			print "outcutve lastpoint"+str(lastpoint.pos)+" thispoint"+str(thispoint.pos)+" nextpoint"+str(nextpoint.pos)
 			if lastpoint.point_type=='outcurve':
 				lr=lastpoint.radius
 			else:
@@ -626,14 +625,12 @@ class Path(object):
 			return [point1-rvec*r1, point2+rvec*r2]
 			
 		if r1>r2:
-			print "r1>r2 "+str(r1)+" "+str(r2)
 			r=r1-r2
 			temp=self.tangent_point(point2, point1, r, self.otherDir(dir1))
 			rvec=(temp-point1).normalize()
 			#print "rvec"+str(rvec)
 			return [point1+rvec*r1, point2+rvec*r2]
 		elif r1<r2:
-			print "r1<r2 "+str(r1)+" "+str(r2)
 			r=r2-r1
 			temp=self.tangent_point(point1, point2, r, dir1)
 			rvec=(temp-point2).normalize()
@@ -758,10 +755,8 @@ class Path(object):
 		angle=math.atan2(a[1], a[0])
 		if cross<0 and side=='left' or cross>0 and side=='right':
 			corner='external'
-#			print "EXTERNAL"+str(side)+" "+str(cross)+" "+str(thisdir)+" "+str(side)
 		else:
 			corner='internal'
-#			print "INTERNAL"+str(side)+" "+str(cross)+" "+str(thisdir)+" "+str(side)
 		if thispoint.point_type=='outcurve':
 			if corner=='external':
 				t.radius+=distance
@@ -846,9 +841,6 @@ class Path(object):
 			a=90
 		vecin=(thispos-frompos).normalize()
 		vecout=(topos-thispos).normalize()
-#		print "offse_move_point"+str(distance)
-#		print vecin
-#		print vecout
 		# Find average direction of two vectors
 		avvec=(vecin-vecout).normalize()
 		# then rotate it 90 degrees towards the requested side
@@ -1056,11 +1048,11 @@ class Path(object):
 		out=""
 # Do something about offsets manually so as not to rely on linuxcnc
 		config=self.generate_config(pconfig)
+		print "CUTTER"+str(config['cutter'])
 		if config['side']=='in' or config['side']=='out':
 			c =copy.copy(config)
 			c['opacity']=0.5
 			thepath=self.offset_path(c['side'],c['cutterrad'],c)
-			thepath.output_path(c)
 			c['side']='on'
 			if config['hide_cuts']:
 				self.output_path(config)
@@ -1074,8 +1066,8 @@ class Path(object):
 		else:
 			thepath=self
 			c=config
-			thepath.output_path(config)
-			out = thepath.render_path(self,config)
+	#		thepath.output_path(config)
+	#		out = thepath.render_path(self,config)
 
 		if not config['hide_cuts']  and 'partial_fill' in config and config['partial_fill']>0 :
 			dist=config['partial_fill']-config['cutterrad']
@@ -1096,9 +1088,6 @@ class Path(object):
 				else:
 					ns=c['side']
 			fillpath=copy.deepcopy(thepath)
-			print "fillpath"
-			for a in fillpath.points:
-				print a.pos
 			if numpasses>1:
 				p=copy.copy(fillpath.points[0])
 				p.point_type='sharp'
@@ -1111,18 +1100,12 @@ class Path(object):
 				p=copy.copy(temppath.points[0])
 				p.point_type='sharp'
 				temppath.add_points([p])
-				print "temppath"
-				for a in temppath.points:
-					print a.pos
 				fillpath.add_points(temppath.points,'start')
 			
-			print "fillpatgh"
-			for a in fillpath.points:
-				print a.pos
 			thepath=fillpath
 		thepath.output_path(c)
 		out += thepath.render_path(thepath,c)
-		return out
+		return [config['cutter'],out]
 
 	def render_path(self,path,config):
 		ret=""
@@ -1212,19 +1195,24 @@ class Path(object):
 			return math.sqrt(config['vertfeed']**2+(config['vertfeed']/dz*ds)**2)
 		
 	def add_feedrates(self, config):
-		for cut in self.output:
+		lastpos={'X':0,'Y':0,'Z':0}
+		for c,cut in enumerate(self.output):
 			if 'X' in cut:
-				x=cut['X']
+				x=cut['X']-lastpos['X']
+				lastpos['X']=cut['X']
 			else:
 				x=0
 			if 'Y' in cut:
-				y=cut['Y']
+				y=cut['Y']-lastpos['Y']
+				lastpos['Y']=cut['Y']
 			else:
 				y=0
 			if 'Z' in cut:
-				z=cut['Z']
+				z=cut['Z']-lastpos['Z']
+				lastpos['Z']=cut['Z']
 			else:
 				z=0
+
 			if x!=0 or y!=0 or z!=0:
 				cut['F']=self.get_feedrate(x,y,z,config)
 
@@ -1352,7 +1340,6 @@ class Path(object):
 			self.output.extend(stuff)
 
 	def move(self,moveto):
-		print "MOVE="+str(moveto)
 		if type(moveto) is not Vec:
 			print self.trace
 		if self.mode=='gcode' or self.mode=='simplegcode':
@@ -1533,13 +1520,16 @@ class Pathgroup(object):
 		return paths
 	def render(self, pconfig):
 		paths = self.output_path( pconfig)
-		ret=self.get_comments(pconfig['mode'])
+		ret={}
+		comments=self.get_comments(pconfig['mode'])
 		config=pconfig
 		for path in paths:
+			print path
+			(k,p)=path.render_path(path,config)
 			if config['mode']=='svg':
-				ret+="<g>\n"+path.render_path(path,config)+"</g>\n"
+				ret[p[0]]+="<g>\n"+p[1]+"</g>\n"
 			else:
-				ret+= path.render_path(path,config)
+				ret[p[0]]+= p[1] #path.render_path(path,config)
 		return ret
 			
 	def render_path(self,path,config):
@@ -1924,28 +1914,30 @@ class Plane(Part):
 		# if the path is within the bounds of the part then render it
 			if path.obType=="Path" or path.obType=="Part":
 				if not hasattr(part, 'border') or part.contains(path)>-1 or hasattr(path,'is_border') and path.is_border:
+					(k,pa)=path.render(config)
 					if self.modeconfig['group'] is False:
 						k=c
 						c=c+1
-					else:
-						k=getattr(path,self.modeconfig['group'])
-						if (k==False or k==None) and self.modeconfig['group']=='cutter':
-							k=config['cutter']
+					#else:
+					#	k=getattr(path,self.modeconfig['group'])
+					#	if (k==False or k==None) and self.modeconfig['group']=='cutter':
+					#		k=config['cutter']
 					if k not in output.keys():
 						output[k]=''
-					output[k]+=''.join(path.render(config))
+					output[k]+=''.join(pa)
 					lastcutter=k
 			if path.obType=="Pathgroup":
 				for p in path.get_paths():
 					if not hasattr(part, 'border') or part.contains(p)>-1:
+						(k,pa)=p.render(config)
 						if self.modeconfig['group'] is False:
 							k=c
 							c=c+1
-						else:
-							k=config[self.modeconfig['group']]#getattr(p,self.modeconfig['group'])
+						#else:
+						#	k=config[self.modeconfig['group']]#getattr(p,self.modeconfig['group'])
 						if k not in output.keys():
 							output[k]=''
-						output[k]+=''.join(p.render(config))
+						output[k]+=''.join(pa)
 						lastcutter=k
 					
 				# this may be a pathgroup - needs flattening - needs config to propagate earlier or upwards- drill a hole of non-infinite depth through several layers??
@@ -1953,12 +1945,12 @@ class Plane(Part):
 				# make list of rendered paths with metadata, so possibly can sort by cutter
 		out=''
 		if(part.border is not False and part.border is not None):
-			b=part.border.render(config)
+			(k,b)=part.border.render(config)
 			if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
 				if part.cutter==None:
 					part.cutter=config['cutter']
 				if part.cutter == lastcutter:
-					output[lastcutter]+=b
+					output[k]+=b
 				else:
 					output['__border']=b
 			else:
