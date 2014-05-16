@@ -245,7 +245,7 @@ class Vec(object):
         dot = selfX * otherX + selfY * otherY + selfZ * otherZ
         selfLength = sqrt(selfX * selfX + selfY * selfY + selfZ * selfZ)
         otherLength = sqrt(otherX * otherX + otherY * otherY + otherZ * otherZ)
-        radians = acos(dot / (selfLength * otherLength))
+	radians = acos(min(max(dot / (selfLength * otherLength), -1), 1))
         return radians * _Deg
 
 

@@ -415,10 +415,13 @@ class Path(object):
 
 	def add_point(self,pos, point_type='sharp', radius=0, cp1=False, cp2=False, direction=False, transform=False):
 		self.points.append(Point(pos, point_type, radius,cp1, cp2, direction, transform))
-	def add_points(self,points):
+	def add_points(self,points, end='end'):
 		for p in points:
 			if type(p) is Point:
-				self.points.append(p)
+				if end=='end':
+					self.points.append(p)
+				else:
+					self.points.insert(0,p)
 			else:
 				print "add_points - adding a non-point"
 	def transform_pointlist(self, pointlist,transformations):
@@ -1071,7 +1074,7 @@ class Path(object):
 			thepath.output_path(config)
 			out = thepath.render_path(self,config)
 
-		if not config['hide_cuts']  and 'partial_fill' in config and config['partial_fill']>0:
+		if not config['hide_cuts']  and 'partial_fill' in config and config['partial_fill']>0 :
 			dist=config['partial_fill']-config['cutterrad']
 			numpasses = math.ceil(float(dist)/ config['cutterrad']/1.4)
 			step = config['partial_fill']/numpasses
@@ -1090,19 +1093,31 @@ class Path(object):
 				else:
 					ns=c['side']
 			fillpath=copy.deepcopy(thepath)
-			fillpath.points=[]
-			print "QQQQ"+str(numpasses)
+			print "fillpath"
+			for a in fillpath.points:
+				print a.pos
+			if numpasses>1:
+				p=copy.copy(fillpath.points[0])
+				p.point_type='sharp'
+				fillpath.add_points([p])
+				fillpath.points[0].point_type='sharp'
+#			fillpath.points=[]
 			for d in range(1,int(numpasses)):
-				print "AAAbbb"
-				print d
 				temppath=thepath.offset_path(ns, step*d, c)
-				print "temmpath"+str(temppath.points)
-				fillpath.add_points(temppath.points)
+#				fillpath.add_points([temppath.points[-1]])
+				p=copy.copy(temppath.points[0])
+				p.point_type='sharp'
+				temppath.add_points([p])
+				print "temppath"
+				for a in temppath.points:
+					print a.pos
+				fillpath.add_points(temppath.points,'start')
 			
-			print "thepath"+str(thepath.points)
-			print "fillpath"+str(fillpath.points)
+			print "fillpatgh"
+			for a in fillpath.points:
+				print a.pos
 			fillpath.output_path(c)
-			out += fillpath.render_path(fillpath,c)
+			out = fillpath.render_path(fillpath,c)
 		return out
 
 	def render_path(self,path,config):
@@ -1261,10 +1276,7 @@ class Path(object):
 		firstdepth=1
 		if self.closed:
 			self.runin(config['cutterrad'],config['direction'],config['downmode'],config['side'])
-			if self.find_direction()==direction:
-				segments=self.Fsegments
-			else:
-				segments=self.Bsegments
+			segments=self.Fsegments
 #			if downmode=='ramp'
 #				self.add_out(self.Fsegments[-1].out(self.mode, depths[0]))
 			for depth in depths:
@@ -1336,6 +1348,7 @@ class Path(object):
 			self.output.extend(stuff)
 
 	def move(self,moveto):
+		print "MOVE="+str(moveto)
 		if type(moveto) is not Vec:
 			print self.trace
 		if self.mode=='gcode' or self.mode=='simplegcode':
