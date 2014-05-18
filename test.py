@@ -36,8 +36,9 @@ bottom_border.add_point(V(0,0), radius=50, point_type='outcurve')
 bottom_border.add_point(V(60,1), radius=5, point_type='outcurve')
 bottom_border.add_point(V(60,-1), radius=5, point_type='outcurve')
 
-bottom_border=Path(closed=True, side='out')
-bottom_border.add_point(V(0,0), radius=50, point_type='outcurve')
-bottom_border.add_point(V(60,1), radius=5, point_type='sharp')
-bottom_border.add_point(V(60,-1), radius=5, point_type='sharp')
+
 top.add_path(bottom_border)
+
+b2= copy.deepcopy(bottom_border)
+b2.rotate(V(50,0),180)
+top.add_path(b2,'top')

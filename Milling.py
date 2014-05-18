@@ -49,6 +49,20 @@ class Milling:
 				'hide_cuts':False,
 				'z_overshoot':0,
                         },
+			'pcbsvg':{
+                                'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
+                                'postfix':'</g>\n</svg>\n',
+                                'mode':'svg',
+                                'forcestepdown':1000,
+                                'linewidth':0.5,
+                                'group':False,
+                                'toolchange':'none',
+				'mirror_backs':True,
+				'overview':False,
+				'hide_cuts':False,
+				'z_overshoot':0,
+				'transformations':[{'scale':1/2.54}]
+			},
                         'paper':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
                                 'postfix':'</g>\n</svg>\n',

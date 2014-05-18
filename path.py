@@ -270,6 +270,10 @@ class Point(object):
 						p.pos = self.reflect(p.pos, t['mirror'])
 						p.cp1 = self.reflect(p.cp1, t['mirror'])
 						p.cp2 = self.reflect(p.cp2, t['mirror'])
+					if 'scale' in t:
+						p.pos = self.scale(p.pos, t['scale'])
+						p.cp1 = self.scale(p.cp1, t['scale'])
+						p.cp2 = self.scale(p.cp2, t['scale'])
 		return p
 # rotate point about a point 
 	def rotate(self,pos, t):
@@ -286,7 +290,6 @@ class Point(object):
 	def reflect(self,pos,t):
 		if t is False or t is None or type(t) is list and (t[0] is False or t[0] is None):
 			return pos
-	
 		if type(pos) is Vec and type(t[0]) is Vec:
 			if type(t[1]) is str:
 				if t[1]=='y':
@@ -304,7 +307,14 @@ class Point(object):
 			return out
 		else:
 			return False
-
+	def scale(self, pos, t):
+		if t is False or t is None or type(t) is list and (t[0] is False or t[0] is None):
+			return pos
+		if type(pos) is Vec and type(t[0]) is Vec:
+			out=Vec(pos)
+			out-=t[0]
+			out*=t[1]
+			out+=t[0]
 
 class Path(object):
 	def __init__(self, closed=False, **config):
@@ -349,7 +359,8 @@ class Path(object):
 		comment = "".join(x for x in comment if x.isalnum() or x in '-._ ')
 		self.add_out([{'_comment':str(comment)}])
 
-	def overwrite(self,a,b):
+	def overwrite(self,ain,b):
+		a=copy.copy(ain)
 		for i in b.keys():
 			if i!='transformations':
 				if i in b and b[i] is not False and b[i] is not None:
@@ -366,6 +377,7 @@ class Path(object):
 		if 'transform' in b and b['transform'] is not False and b['transform'] is not None:
 		#	if type(b['transform']) is list:			
 			a['transformations'].append(b['transform'])
+		return a
 #		for i in b.keys():
 #			if b[i] is not False and b[i] is not None:
 #				a[i] = b[i]
@@ -575,22 +587,12 @@ class Path(object):
 				
 				p2=self.tangent_points( thispoint.pos, thispoint.radius, d2, nextpoint.pos, nextpoint.radius, d3)
 				if do:
-#					if( abs((thispoint.pos-p2[0]).length()-thispoint.radius)>0.1 or abs((thispoint.pos-p1[1]).length()-thispoint.radius)>0.1):
-#						print "Arc1:"+str(p1[1])+","+str(p2[0])+','+str(thispoint.pos)+' '+d2+" r"+str((thispoint.pos-p1[1]).length())+" r"+str((thispoint.pos-p2[0]).length())
-#						print thispoint.radius
-#						print nextpoint.pos
 					segment_array.append( Arc( p1[1],p2[0], thispoint.pos, self.otherDir(d2)))
 				frompoint=p2
 			else:
 				
 				p2 = self.tangent_point(nextpoint.pos, thispoint.pos, thispoint.radius, self.otherDir(d2))
 				if do:
-#					if( abs((thispoint.pos-p2).length()-thispoint.radius)>0.1 or abs((thispoint.pos-p1[1]).length()-thispoint.radius)>0.1):
-#						print "Arc2:"+str(p1[1])+","+str(p2)+','+str(thispoint.pos)+' '+d2+" r"+str((thispoint.pos-p1[1]).length())+" r"+str((thispoint.pos-p2).length())
-#						print thispoint.radius
-#						print lastpoint.pos
-#						print thispoint.pos
-#						print nextpoint.pos
 					segment_array.append( Arc( p1[1],p2, thispoint.pos, self.otherDir(d2)))
 				frompoint=p2
 				
@@ -1000,23 +1002,25 @@ class Path(object):
 			config['transformations']=pconfig['transformations'][:]
 		if self.transform!=None:
 			config['transformations'].append(self.transform)
-			self.transform=None
+		#	self.transform=None
 		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'mode','partial_fill','fill_direction','precut_z']
                 for v in self.varlist:
-                        if hasattr(self,v) and getattr(self,v) is not None:
-				config[v]=getattr(self,v)
-                        elif pconfig is not False and v in pconfig and pconfig[v] is not None:
-                                config[v]=pconfig[v]
-			else:
-				config[v]=None
+			if v !='transform' and v !='transformations':
+	                        if hasattr(self,v) and getattr(self,v) is not None:
+					config[v]=getattr(self,v)
+	                        elif pconfig is not False and v in pconfig and pconfig[v] is not None:
+	                                config[v]=pconfig[v]
+				else:
+					config[v]=None
 		return config
 
 	def generate_config(self, pconfig):
 		config={}
-		self.overwrite(config,pconfig)
+		config=self.overwrite(config,pconfig)
 		inherited = self.get_config()
 #		if('transformations' in config):
-		self.overwrite(config, inherited)
+		config=self.overwrite(config, inherited)
+		
 #		if('transformations' in config):
 #		for k in inherited.keys():
  #                       if (config[k] is None or config[k] is False) and k in pconfig:
@@ -1071,9 +1075,12 @@ class Path(object):
 
 		if not config['hide_cuts']  and 'partial_fill' in config and config['partial_fill']>0 :
 			dist=config['partial_fill']-config['cutterrad']
-			numpasses = math.ceil(float(dist)/ config['cutterrad']/1.4)
-			step = config['partial_fill']/numpasses
-		
+			if dist==0:
+				numpasses=0
+				step=1
+			else:
+				numpasses = math.ceil(abs(float(dist)/ float(config['cutterrad'])/1.4))
+				step = config['partial_fill']/numpasses
 			if 'fill_direction' in config:
 				ns=config['fill_direction']
 			else:
@@ -1151,6 +1158,11 @@ class Path(object):
 				opacity = "opacity:"+str(point['_opacity'])
 			else:
 				opacity = "opacity:1"
+			if '_closed' in point and point['_closed']:
+				z=' Z'
+			else:
+				z=''
+		ret+=z
 		return comments+"<path d=\""+ret+"\"  style='stroke-width:0.1px;"+opacity+"' fill='none' stroke='"+colour+"'/>\n"
 
 	def render_path_gcode(self,path,config):
@@ -1220,7 +1232,9 @@ class Path(object):
 		for cut in self.output:
 			cut['_colour']=self.get_colour(config)
 			if 'opacity' in config:
-				cut['_opacity']=config['opacity']
+				cut['_opacity'] = config['opacity']
+			if 'closed' in config:
+				cut['_closed'] = config['closed']
 	# get the colour this path should be cut in
 	def get_colour(self,config):
 		if 'forcecolour' in config and config['forcecolour']:
@@ -1250,7 +1264,7 @@ class Path(object):
 	def output_path(self, pconfig):#z0=False,z1=False,side='on',direction=False, stepdown=False, downmode='down', transformations=False):
 		""" output a path in whatever the config tells it - pconfig will be inherited from """
 		# we want a new list for each call, to make it properly recusive
-		config=self.generate_config(pconfig)
+		config=pconfig #self.generate_config(pconfig)
 		self.config=config
 		mode=pconfig['mode']
 		downmode=config['downmode']
@@ -1276,7 +1290,7 @@ class Path(object):
 					self.cutdown(depth)
 				first=1
 				for segment in segments:
-					if first==1 and downmode=='ramp':
+					if first==1 and downmode=='ramp' and mode=='gcode' or mode=='simlegcode':
 						if firstdepth and (mode=='gcode' or mode=='simplemode'):
 							self.add_out(self.quickdown(depth-step+config['precut_z']))
 							firstdepth=0
@@ -1456,14 +1470,15 @@ class Pathgroup(object):
 			config['transformations']=pconfig['transformations'][:]
 		if self.transform!=None:
 			config['transformations'].append(self.transform)
-			self.transform=None
+		#	self.transform=None
                 for v in varslist:
-                        if getattr(self,v) is not None:
-				config[v]=getattr(self,v)
-                        elif pconfig!=False and pconfig[v] is not None:
-                                config[v]=pconfig[v]
-			else:
-				config[v]=None
+			if v !='transform' and v !='transformations':
+                	        if getattr(self,v) is not None:
+					config[v]=getattr(self,v)
+                	        elif pconfig!=False and pconfig[v] is not None:
+                	                config[v]=pconfig[v]
+				else:
+					config[v]=None
 		return config
 
 	def comment(self, comment):
@@ -1570,6 +1585,11 @@ class Pathgroup(object):
 				colour=point['_colour']
 			else:
 				colour='black'
+			if '_closed' in point and point['_closed']:
+				z=' Z'
+			else:
+				z=''
+		ret+=z
 		return comments+"<path d=\""+ret+"\"  stroke-width='0.1px' fill='none' stroke='"+colour+"'/>\n"
 
 	def render_path_gcode(self,path):
@@ -1641,7 +1661,7 @@ class Part(object):
 				setattr(self,v,None)
 			self.otherargs+=':param v: '+arg_meanings[v]+"\n"
 		self.output=[]
-		self.transformations=[]
+		self.transform={}
 		if 'border' in config:
 			self.add_border(config['border'])
 		if not hasattr(self, 'cutoutside'):
@@ -1670,12 +1690,14 @@ class Part(object):
 			config['transformations']=pconfig['transformations'][:]
 		if self.transform is not None:
 			config['transformations'].append(self.transform)
-			self.transform=None
+		#	self.transform=None
                 for v in self.varlist:
-                        if hasattr(self,v) and getattr(self,v) is not None:
-				config[v]=getattr(self,v)
-			else:
-				config[v]=None
+			if v !='transform' and v !='transformations':
+                        	if hasattr(self,v) and getattr(self,v) is not None:
+					config[v]=getattr(self,v)
+				else:
+					config[v]=None
+
 		return config
 	# is this a part we can render or just a multilayer pathgroup	
 	def renderable(self):
@@ -1838,7 +1860,9 @@ class Plane(Part):
 				self.config[v]=config[v]
                         else:
 				self.config[v]=False
-	def overwrite(self,a,b):
+	def overwrite(self,ain,b):
+                a=copy.copy(ain)
+
 		for i in b.keys():
 			if i!='transformations':
 				if i in b and b[i] is not False and b[i] is not None:
@@ -1855,6 +1879,7 @@ class Plane(Part):
 		if 'transform' in b and b['transform'] is not False and b['transform'] is not None:
 		#	if type(b['transform']) is list:			
 			a['transformations'].append(b['transform'])
+		return a
 	# A plane can have several layers
 	def add_layer(self,name, material, thickness, z0=0,zoffset=0, add_back=False, isback=False, colour=False):
 		if add_back:
@@ -1888,7 +1913,7 @@ class Plane(Part):
 		c=0
 		lastcutter=False
 		config=copy.copy(self.modeconfig)
-		self.overwrite(config,self.config)
+		config=self.overwrite(config,self.config)
 		if part.layer in layers and part.layer is not False and part.layer is not None:
 			paths=layers[part.layer]
 			config.update(self.get_layer_config(part.layer))
@@ -1913,7 +1938,7 @@ class Plane(Part):
 			
 		# if the path is within the bounds of the part then render it
 			if path.obType=="Path" or path.obType=="Part":
-				if not hasattr(part, 'border') or part.contains(path)>-1 or hasattr(path,'is_border') and path.is_border:
+				if not hasattr(part, 'border') or part.border is None or part.contains(path)>-1 or hasattr(path,'is_border') and path.is_border:
 					(k,pa)=path.render(config)
 					if self.modeconfig['group'] is False:
 						k=c
