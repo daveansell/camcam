@@ -20,6 +20,23 @@ class Milling:
 				'comments':True,
 				'z_overshoot':0.5,
                         },
+                        'eagle':{
+                                'prefix':'GRID MM\n',
+				'normal_layer':21, #tPlace
+				'border_layer':46, #milling
+				'postfix':'',
+                                'mode':'simplegcode',
+                                'group':'cutter',
+                                'toolchange':'newfile',
+				'mirror_backs':True,
+				'overview':False,
+				'clear_height':10,
+				'precut_z':1,
+				'hide_cuts':True,
+				'file_suffix':'.scr',
+				'comments':False,
+				'dosfile':True,
+			},
                         'makespacerouter':{
                                 'prefix':'T1M6\nG17\nG0Z10S11000M3\n',
 				'postfix':'M30\n',
