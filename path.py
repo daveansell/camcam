@@ -1173,22 +1173,22 @@ class Path(object):
 			if 'cmd' in point:
 				ret+=point['cmd']
 			if 'X' in point:
-                                ret+="X%0.2f"%point['X']
+                                ret+="X%0.4f"%point['X']
 			if 'Y' in point:
-                                ret+="Y%0.2f"%point['Y']
+                                ret+="Y%0.4f"%point['Y']
 			if 'Z' in point:
-                                ret+="Z%0.2f"%point['Z']
+                                ret+="Z%0.4f"%point['Z']
 			if 'I' in point:
-                                ret+="I%0.2f"%point['I']
+                                ret+="I%0.4f"%point['I']
 			if 'J' in point:
-                                ret+="J%0.2f"%point['J']
+                                ret+="J%0.4f"%point['J']
 			if 'K' in point:
-                                ret+="K%0.2f"%point['K']
+                                ret+="K%0.4f"%point['K']
 			if 'L' in point:
-                                ret+="L%0.2f"%point['L']
+                                ret+="L%0.4f"%point['L']
 			# the x, y, and z are not accurate as it could be an arc, or bezier, but will probably be conservative
 			if 'F' in point:
-				ret+="F%0.2f"%point['F']
+				ret+="F%0.4f"%point['F']
 			ret+="\n"
 		return ret
  
@@ -1285,6 +1285,8 @@ class Path(object):
 			segments=self.Fsegments
 #			if downmode=='ramp'
 #				self.add_out(self.Fsegments[-1].out(self.mode, depths[0]))
+			
+			print self.Fsegments
 			for depth in depths:
 				if downmode=='down':
 					self.cutdown(depth)

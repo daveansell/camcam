@@ -145,7 +145,7 @@ class Milling:
 		self.tools={
 		"1/4_endmill":{
                         "id":3,
-                        "diameter":3.127,
+                        "diameter":6.35,
                         "endcut":1,
                         "sidecut":1,
                 },
