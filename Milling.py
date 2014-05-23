@@ -21,14 +21,14 @@ class Milling:
 				'z_overshoot':0.5,
                         },
                         'eagle':{
-                                'prefix':'GRID MM\n',
+                                'prefix':'GRID MM\nLAYER 21\n',
 				'normal_layer':21, #tPlace
-				'border_layer':46, #milling
+				'border_layer':20, #dimension
 				'postfix':'',
-                                'mode':'simplegcode',
-                                'group':'cutter',
-                                'toolchange':'newfile',
-				'mirror_backs':True,
+                                'mode':'scr',
+                                'group':False,
+                                'toolchange':'none',
+				'mirror_backs':False,
 				'overview':False,
 				'clear_height':10,
 				'precut_z':1,
@@ -78,7 +78,7 @@ class Milling:
 				'overview':False,
 				'hide_cuts':False,
 				'z_overshoot':0,
-				'transformations':[{'scale':1/2.54}]
+#				'transformations':[{'scale':1/2.54}]
 			},
                         'paper':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',

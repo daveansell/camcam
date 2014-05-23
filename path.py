@@ -73,7 +73,7 @@ class Segment(object):
 			if zfrom!=zto:
 				temp[0]['Z']=zto
 			return temp
-		elif mode=='simplegcode':
+		elif mode=='simplegcode' or mode=='scr':
 			temp=self.simplegcode(zfrom, zto, direction)
 			return temp	
 	def svg(self):
@@ -1060,7 +1060,7 @@ class Path(object):
 			c['side']='on'
 			if config['hide_cuts']:
 				self.output_path(config)
-				return self.render_path(self,config)
+				return [config['cutter'],self.render_path(self,config)]
 			elif config['overview']:
 				self.output_path(config)
 				#out = thepath.render_path(thepath,c) + self.render_path(self,config)
@@ -1112,6 +1112,8 @@ class Path(object):
 			thepath=fillpath
 		thepath.output_path(c)
 		out += thepath.render_path(thepath,c)
+		print "****OUT"
+		print out
 		return [config['cutter'],out]
 
 	def render_path(self,path,config):
@@ -1120,6 +1122,8 @@ class Path(object):
 			ret+=self.render_path_svg(self.output,config)
 		elif config['mode']=='gcode' or config['mode']=='simplegcode':
 			ret+=self.render_path_gcode(self.output,config)
+		elif config['mode']=='scr':
+			ret+=self.render_path_scr(self.output,config)
 # 		elif config['mode']=='simplegcode':
 #			ret+=self.render_path_gcode(self.output,config)+'G0Z%0.2f\n'%config['clear_height']
 		return ret
@@ -1192,6 +1196,24 @@ class Path(object):
 			ret+="\n"
 		return ret
  
+	def render_path_scr(self, path, config):
+		ret=''
+		if '_closed' in path[0] and path[0]['_closed']:
+			closed=True
+		else:
+			closed=False
+		c=0
+		for p,point in enumerate(path):
+			if 'X' in point and 'Y' in point:
+				if closed:
+					ret+='WIRE 0 (%0.2f %0.2f) (%0.2f %0.2f)\n' % ( path[(p-1)%len(path)]['X'], path[(p-1)%len(path)]['Y'], point['X'], point['Y'])
+				elif c:
+					 ret+='WIRE 0 (%0.2f %0.2f) (%0.2f %0.2f)\n' % ( path[(p-1)%len(path)]['X'], path[(p-1)%len(path)]['Y'], point['X'], point['Y'])
+				else:
+					c=1
+		print ret
+		return ret
+
 	# this gets the feed rate we should be using considering that the cutter may be moving in both Z and horizontally. attempts to make it so that vertfeed and sidefeed are not exceeded.
 	def get_feedrate(self, dx, dy, dz, config):
 		ds = math.sqrt(dx**2+dy**2)
@@ -1292,8 +1314,9 @@ class Path(object):
 					self.cutdown(depth)
 				first=1
 				for segment in segments:
+					print "from:"+str(segment.cutfrom)+" to:"+str(segment.cutto)
 					if first==1 and downmode=='ramp' and mode=='gcode' or mode=='simlegcode':
-						if firstdepth and (mode=='gcode' or mode=='simplemode'):
+						if firstdepth and (mode=='gcode' or mode=='simplegcode'):
 							self.add_out(self.quickdown(depth-step+config['precut_z']))
 							firstdepth=0
 						self.add_out(segment.out(direction,mode,depth-step,depth)) 
@@ -1301,7 +1324,7 @@ class Path(object):
 						self.add_out(segment.out(direction,mode))
 					first=0
 			# if we are in ramp mode, redo the first segment
-			if downmode=='ramp':
+			if downmode=='ramp' and mode=='gcode' or mode=='simlegcode':
 				self.add_out(self.Fsegments[0].out(direction,mode))
 			self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 		else:
@@ -1380,21 +1403,23 @@ class Path(object):
 		print "cut filled\n"
 # find a tangent to the first segment of the path to allow the cutter to work
 	def runin(self, cutterrad, direction, mode='down', side='on', ):
-		if self.isreversed:
-			seg=0
-			segments=self.Bsegments
-			cutfrom=segments[seg].cutto
-			cutto=segments[seg].cutfrom
-		else:
-			seg=0
-			segments=self.Fsegments
-			if len(self.Bsegments)==0:
-				print self.trace
-				print self.points
-			cutto=segments[seg].cutto
-			cutfrom=segments[seg].cutfrom
+		#if self.isreversed:
+		#	seg=0
+	#		segments=self.Bsegments
+	#		cutfrom=segments[seg].cutto
+	#		cutto=segments[seg].cutfrom
+	#		print "reversed"
+	#	else:
+		seg=0
+		segments=self.Fsegments
+		if len(self.Bsegments)==0:
+			print self.trace
+			print self.points
+		cutto=segments[seg].cutto
+		cutfrom=segments[seg].cutfrom
 		if side=='on':
 			self.start=cutfrom
+	#		print "start"+ str(self.start)
 			self.add_out(self.move(cutfrom))
 		else:
 			if(segments[seg].seg_type=='line'):
@@ -1729,6 +1754,7 @@ class Part(object):
 			#self.add_path(path,self.layer)
 			self.border=copy.deepcopy(path)
 			self.border.parent=self
+			self.is_border=True
 
 	def add_internal_border(self,path):
 		if hasattr(path,'obType') and path.obType=='Path':
@@ -1956,6 +1982,7 @@ class Plane(Part):
 			if path.obType=="Pathgroup":
 				for p in path.get_paths():
 					if not hasattr(part, 'border') or part.contains(p)>-1:
+						print p.render(config)
 						(k,pa)=p.render(config)
 						if self.modeconfig['group'] is False:
 							k=c
@@ -1964,8 +1991,8 @@ class Plane(Part):
 						#	k=config[self.modeconfig['group']]#getattr(p,self.modeconfig['group'])
 						if k not in output.keys():
 							output[k]=''
-						output[k]+=''.join(pa)
-						lastcutter=k
+						output[k] += ''.join(pa)
+						lastcutter = k
 					
 				# this may be a pathgroup - needs flattening - needs config to propagate earlier or upwards- drill a hole of non-infinite depth through several layers??
 				# possibly propagate config by getting from parent, plus feed it a layer config as render arguement
@@ -1973,26 +2000,37 @@ class Plane(Part):
 		out=''
 		if(part.border is not False and part.border is not None):
 			(k,b)=part.border.render(config)
+
 			if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
 				if part.cutter==None:
 					part.cutter=config['cutter']
 				if part.cutter == lastcutter:
+					if self.modeconfig['mode'] == 'scr':
+						output[k] += "LAYER " + str(self.modeconfig[k])+"\n"
 					output[k]+=b
 				else:
+					if self.modeconfig['mode'] == 'scr':
+						output[k] += "LAYER " + str(self.modeconfig['border_layer'])+"\n"
 					output['__border']=b
 			else:
-				output['__border']=b
+				if self.modeconfig['mode'] == 'scr':
+					output['__border'] = "LAYER " + str(self.modeconfig['border_layer'])+"\n"
+				else:
+					output['__border'] = ''
+				output['__border']+=b
 		for key in sorted(output.iterkeys()):
 			if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
 				self.writeGcodeFile(part.name,key,self.modeconfig['prefix']+output[key]+self.modeconfig['postfix'], config)
 			elif self.modeconfig['mode']=='svg':
 				out+="<!-- "+str(part.name)+" - "+str(key)+" -->\n"+output[key]
-		if self.modeconfig['mode']=='svg':	
+			elif self.modeconfig['mode']=='scr':
+				out+='\n\n'+output[key]
+		if self.modeconfig['mode']=='svg' or self.modeconfig['mode']=='scr':	
 		#	f=open(parent.name+"_"+self.name+"_"+part.name)
 			if self.modeconfig['overview']:
 				self.out+='<g>'+out+'</g>'
 			elif part.name is not None:
-				filename=self.name+"_"+part.name+".svg"
+				filename=self.name+"_"+part.name+config['file_suffix']
 				f=open(filename,'w')
 				f.write( self.modeconfig['prefix'] + out + self.modeconfig['postfix'] )
 				f.close()

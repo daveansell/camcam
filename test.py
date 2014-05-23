@@ -28,17 +28,17 @@ Ltop=box.add_layer('top', material='pvc', thickness=top_thickness, z0=0, zoffset
 
 
 top=box.add_path(Part(name='top', layer='top'))
-top.add_path(Rect(V(0,0), cornertype="outcurve", width=width-20, height=height-20, rad=10, side='in', centred=True),'top')
-top.add_path(Polygon(V(0,0), 40, 3, 'outcurve', 10))
+top.add_path(Circle(V(0,0), cornertype="outcurve", rad=50, side='out', centred=True),'top')
+#top.add_path(Polygon(V(0,0), 40, 3, 'outcurve', 10))
 
-bottom_border=Path(closed=True, side='out')
-bottom_border.add_point(V(0,0), radius=50, point_type='outcurve')
-bottom_border.add_point(V(60,1), radius=5, point_type='outcurve')
-bottom_border.add_point(V(60,-1), radius=5, point_type='outcurve')
+#bottom_border=Path(closed=True, side='out')
+#bottom_border.add_point(V(0,0), radius=50, point_type='outcurve')
+#bottom_border.add_point(V(60,1), radius=5, point_type='outcurve')
+#bottom_border.add_point(V(60,-1), radius=5, point_type='outcurve')
 
 
-top.add_path(bottom_border)
+#top.add_path(bottom_border)
 
-b2= copy.deepcopy(bottom_border)
-b2.rotate(V(50,0),180)
-top.add_path(b2,'top')
+#b2= copy.deepcopy(bottom_border)
+#b2.rotate(V(50,0),180)
+#top.add_path(b2,'top')
