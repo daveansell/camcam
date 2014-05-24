@@ -1918,10 +1918,10 @@ class Plane(Part):
 	def render_layer(self,layer):
 		"""Render all the parts in a layer"""
 	
-	def render_all(self,mode):
+	def render_all(self,mode,config):
 		"""Render all parts in the Plane"""
 		for part in self.parts:
-			self.render_part(part, mode)
+			self.render_part(part, mode,config)
 	def list_all(self):
 		for part in self.parts:
 			if hasattr(part, 'name'):
@@ -1930,7 +1930,7 @@ class Plane(Part):
 	def get_layer_config(self,layer):
 		return self.layers[layer].config
 
-	def render_part(self,part, callmode):
+	def render_part(self,part, callmode,pconfig=False):
 		self.callmode = callmode
 		self.modeconfig=milling.mode_config[callmode]
 		self.mode=self.modeconfig['mode']
@@ -1941,6 +1941,8 @@ class Plane(Part):
 		c=0
 		lastcutter=False
 		config=copy.copy(self.modeconfig)
+		if pconfig is not False:
+			config=self.overwrite(config,pconfig)
 		config=self.overwrite(config,self.config)
 		if part.layer in layers and part.layer is not False and part.layer is not None:
 			paths=layers[part.layer]
@@ -2020,7 +2022,7 @@ class Plane(Part):
 				output['__border']+=b
 		for key in sorted(output.iterkeys()):
 			if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
-				self.writeGcodeFile(part.name,key,self.modeconfig['prefix']+output[key]+self.modeconfig['postfix'], config)
+				self.writeGcodeFile(part.name,key,output[key], config)
 			elif self.modeconfig['mode']=='svg':
 				out+="<!-- "+str(part.name)+" - "+str(key)+" -->\n"+output[key]
 			elif self.modeconfig['mode']=='scr':
@@ -2036,6 +2038,7 @@ class Plane(Part):
 				f.close()
 
 	def writeGcodeFile(self,partName, key, output, config):
+		print config
 		filename=str(partName)+"_"+str(self.name)+"_"+str(key)
 		if 'cutter' in config:
 			filename+="_cutter-"+str(config['cutter'])
@@ -2043,9 +2046,26 @@ class Plane(Part):
 			filename+='_'+str(config['material'])
 		if 'thickness' in config:
 			filename+="_thickness-"+str(config['thickness'])
+		if 'repeatx' in config and 'repeaty' in config and 'xspacing' in config and 'yspacing' in config:
+			print "DO repeat^^^^^^"
+			output2=''
+			for y in range(0,int(config['repeaty'])):
+				output2+='\nG0X0Y0\nG10 L20 P1'+'Y%0.4f'%(float(config['yspacing']))+'X%0.4f\n'%(-float(config['repeatx']-1)*float(config['xspacing']))
+				c=0
+				for x in range(0,int(config['repeatx'])):
+					if c==0:
+						c=1
+					else:
+						output2+='\nG0X0Y0\nG10 L20 P1'+'X%0.4f'%(float(config['xspacing']))
+						output2+='G54\n'
+					output2+=output
+				
+		#	output2+='\nG10 L2 P1 X0 Y0\n'
+			filename+='_'+str(config['repeatx'])+'x_'+str(config['repeaty'])+'y'
+			output=output2
 		f=open(self.sanitise_filename(filename+config['file_suffix']),'w')
 	#	print output
-		f.write(output)
+		f.write(config['prefix']+output+config['postfix'])
 		f.close()
 		if 'dosfile' in config and config['dosfile']:
 			print "/usr/bin/unix2dos "+filename+config['file_suffix']
