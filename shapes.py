@@ -253,6 +253,7 @@ The line defines the
 			perp = rotate((end-start).normalize(),90)
 		parallel=(end-start).normalize( )
 		along=parallel*tab_length
+		print "CUTTERRAD "+str(cutterrad)+" "+str(fudge)
 		cra=(end-start).normalize()*(cutterrad+fudge)
 		crp=perp*cutterrad
 		cutin=perp*thickness
@@ -380,28 +381,37 @@ class FingerJointBoxSide(Path):
 			linemode='internal'
 		if type(thickness) is not dict:
 			thickness={'left':thickness, 'top':thickness, 'right':thickness, 'bottom':thickness}
-			
+
+		c={}			
 		cutterrad = milling.tools[cutter]['diameter']/2
+		for k in thickness.keys():
+			print k
+			if k in corners and corners[k]=='on':
+				c[k] = cutterrad
+			else:
+				c[k] = cutterrad+thickness[k]
+
 		if 'left' in sidemodes and sidemodes['left']=='straight':
-			self.add_point(V(0,height))
+			self.add_point(pos+V(-c['left'],height+c['top']))
 		else:
 			if corners['left']=='off' and corners['bottom']=='off':
 				self.add_point(pos+V(-thickness['left']-cutterrad, -thickness['bottom']-cutterrad),'sharp')
 			self.add_points(FingerJoint(start=pos+V(0,0), end=pos+V(0,height), side=s, linemode=linemode, startmode=corners['left'], endmode=corners['left'], tab_length=tab_length, thickness=thickness['left'], cutterrad=cutterrad, fudge=fudge))
 		if 'top' in sidemodes and sidemodes['top']=='straight':
-			self.add_point(V(width,height))
+			self.add_point(pos+V(width+c['right'],height+c['top']))
 		else:
 			if corners['left']=='off' and corners['top']=='off':
 				self.add_point(pos+V(-thickness['left']-cutterrad, height+thickness['top']+cutterrad),'sharp')
 			self.add_points(FingerJoint(start=pos+V(0,height), end=pos+V(width,height), side=s, linemode=linemode,startmode=corners['top'], endmode=corners['top'], tab_length=tab_length, thickness=thickness['top'], cutterrad=cutterrad, fudge=fudge))
 		if 'right' in sidemodes and sidemodes['right']=='straight':
-			self.add_point(pos+V(width,0))
+			self.add_point(pos+V(width+c['right'],-c['bottom']))
 		else:
 			if corners['top']=='off' and corners['right']=='off':
 				self.add_point(pos+V(width+thickness['right']+cutterrad, height+thickness['top']+cutterrad),'sharp')
 			self.add_points(FingerJoint(start=pos+V(width,height), end=pos+V(width,0), side=s, linemode=linemode, startmode=corners['right'], endmode=corners['right'], tab_length=tab_length, thickness=thickness['right'], cutterrad=cutterrad, fudge=fudge))
 		if 'bottom' in sidemodes and sidemodes['bottom']=='straight':
-			self.add_point(pos+V(0,0))
+			
+			self.add_point(pos+V(-c['bottom'],-c['left']))
 		else:
 			if corners['right']=='off' and corners['bottom']=='off':
 				self.add_point(pos+V(width+thickness['right']+cutterrad, -thickness['bottom']-cutterrad),'sharp')
@@ -455,7 +465,7 @@ class Module(Plane):
 				holesY=5
 			
 		edge= RoundedRect(bl=V(0,0), tr=V(width, height), rad=radius, side='out')
-		if not ('no_perspex' in config and  config['no_perspex']):
+		if not ('no_perspex' in config and not config['no_perspex']):
 			self.perspex = self.add_path(Part(name='perspex', border=edge, layer='perspex',colour="red"))
 		self.base = self.add_path(Part(name='base', border=edge, layer='base'))
 #		self.paper = self.add_path(Part(name='paper', border=edge, layer='paper'))
