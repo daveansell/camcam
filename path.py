@@ -66,6 +66,7 @@ class Segment(object):
 	def start(self):
 		return {}
 	def out(self,direction, mode='svg', zfrom=False, zto=False):
+		print "Zfrom="+str(zfrom)+" zto="+str(zto)
 		if mode=='svg':
 			return self.svg(direction)
 		elif mode=='gcode':
@@ -83,6 +84,7 @@ class Segment(object):
 # render the segment in straight lines
 	def simplegcode(self, zfrom, zto, direction):
 		ret=[]
+		print "zfrom="+str(zfrom)+" zto="+str(zto)
 		polygon=self.polygon(1,direction)
 		if zfrom!=zto:
 			step=(zto-zfrom)/len(polygon)
@@ -1037,8 +1039,9 @@ class Path(object):
 				config['direction']='ccw'
 			else:
 				config['direction']=thisdir
+		print "z0="+str(config['z0'])+" z1="+str(config['z1']) 
 		if config['side'] is None or config['side'] is False:
-			config['side']='on' 
+			config['side']='on'
 		if config['z0'] is None or config['z0'] is False:
 			config['z0']=0
 		if (config['z1'] is False or config['z1'] is None) and config['z0'] is not None and config['thickness'] is not None:
@@ -1046,13 +1049,13 @@ class Path(object):
 				config['z1'] = config['z0'] - config['thickness']- config['z_overshoot']
 			else:
 				config['z1'] = config['z0'] - config['thickness']
+		print "qz0="+str(config['z0'])+" z1="+str(config['z1']) 
 		return config
 #  output the path
 	def render(self,pconfig):
 		out=""
 # Do something about offsets manually so as not to rely on linuxcnc
 		config=self.generate_config(pconfig)
-		print "CUTTER"+str(config['cutter'])
 		if config['side']=='in' or config['side']=='out':
 			c =copy.copy(config)
 			c['opacity']=0.5
@@ -1112,8 +1115,6 @@ class Path(object):
 			thepath=fillpath
 		thepath.output_path(c)
 		out += thepath.render_path(thepath,c)
-		print "****OUT"
-		print out
 		return [config['cutter'],out]
 
 	def render_path(self,path,config):
@@ -1211,7 +1212,6 @@ class Path(object):
 					 ret+='WIRE 0 (%0.2f %0.2f) (%0.2f %0.2f)\n' % ( path[(p-1)%len(path)]['X'], path[(p-1)%len(path)]['Y'], point['X'], point['Y'])
 				else:
 					c=1
-		print ret
 		return ret
 
 	# this gets the feed rate we should be using considering that the cutter may be moving in both Z and horizontally. attempts to make it so that vertfeed and sidefeed are not exceeded.
@@ -1307,15 +1307,14 @@ class Path(object):
 			segments=self.Fsegments
 #			if downmode=='ramp'
 #				self.add_out(self.Fsegments[-1].out(self.mode, depths[0]))
-			
-			print self.Fsegments
 			for depth in depths:
 				if downmode=='down':
 					self.cutdown(depth)
 				first=1
 				for segment in segments:
-					print "from:"+str(segment.cutfrom)+" to:"+str(segment.cutto)
-					if first==1 and downmode=='ramp' and mode=='gcode' or mode=='simlegcode':
+					print "first="+str(first)+" downmode="+str(downmode)+ "mode="+str(mode)
+					if first==1 and downmode=='ramp' and (mode=='gcode' or mode=='simplegcode'):
+						print "FIRST"
 						if firstdepth and (mode=='gcode' or mode=='simplegcode'):
 							self.add_out(self.quickdown(depth-step+config['precut_z']))
 							firstdepth=0

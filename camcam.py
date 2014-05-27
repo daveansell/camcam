@@ -1,6 +1,7 @@
 #!/usr/bin/python
 from path import *
 from shapes import *
+from parts import *
 #import importlib
 from optparse import OptionParser
 import sys

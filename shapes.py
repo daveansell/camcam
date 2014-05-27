@@ -437,9 +437,13 @@ class Module(Plane):
 			holesX=config['holesX']
 		else:
 			holesX=False
+		if 'base_thickness' in config:
+			base_thickness=config['base_thickness']
+		else:
+			base_thickness=12
 		#name, material, thickness, z0=0,zoffset=0
 		self.add_layer('perspex',material='perspex',thickness=3,z0=0,zoffset=3)
-		self.add_layer('base',material='plywood',thickness=12,z0=0,zoffset=0, add_back=True)
+		self.add_layer('base',material='plywood', thickness=base_thickness, z0=0,zoffset=0, add_back=True)
 #		self.add_layer('paper',material='paper',thickness=0.05,z0=0,zoffset=0.05)
 		radius=30
 		if size=='A3':
