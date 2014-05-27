@@ -1323,7 +1323,7 @@ class Path(object):
 						self.add_out(segment.out(direction,mode))
 					first=0
 			# if we are in ramp mode, redo the first segment
-			if downmode=='ramp' and mode=='gcode' or mode=='simlegcode':
+			if downmode=='ramp' and mode=='gcode' or mode=='simplegcode':
 				self.add_out(self.Fsegments[0].out(direction,mode))
 			self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 		else:
