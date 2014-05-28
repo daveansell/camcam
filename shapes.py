@@ -426,6 +426,18 @@ class FingerJointBoxSide(Path):
 
 class Module(Plane):
 	def __init__(self, size,  **config):#holesX=False, holesY=False, fromedge=15, fromends=40):
+		"""Create a module
+:param size: A1, A2, A3
+:param fromedge: distance holdowns should be from edge of board
+:param orientation: portrait, landscape
+:param fromends: distance holdowns from ends
+:param holesY: number of holes in Y direction
+:param holesX: number of holes in X direction
+:param base_thicknesss: thickenss of base layer
+:param insert_type:  the type of insert - default screw in, or hammer
+:param no_perspex: if rue don't create perspex layer
+:param no_holdowns: if True no holdowns
+"""
 		self.init('module',V(0,0),V(0,0),config)
 		bolt_config={}
 		if('fromends' in config):
@@ -455,13 +467,17 @@ class Module(Plane):
 		self.add_layer('base',material='plywood', thickness=base_thickness, z0=0,zoffset=0, add_back=True)
 #		self.add_layer('paper',material='paper',thickness=0.05,z0=0,zoffset=0.05)
 		radius=30
+		if 'orientation' in config:
+			orientation=config['orientation']
+		else:
+			orientation='landscape'
 		if size=='A3':
-			width=297
-			height=420
+			width=420
+			height=297
 			if holesX==False:
-				holesX=3
+				holesX=4
 			if holesY==False:
-				holesY=4
+				holesY=3
 		elif size=='A2':
 			width=594
 			height=420
@@ -470,13 +486,16 @@ class Module(Plane):
 			if holesY==False:
 				holesY=3
 		elif size=='A1':
-			width=594
-			height=841
+			width=841
+			height=594
 			if holesX==False:
 				holesX=4
 			if holesY==False:
-				holesY=5
-			
+				holesY=4
+		if orientation!='landscape':
+			width,height = height,width
+			holesX, holesY = holesY, holesX
+
 		edge= RoundedRect(bl=V(0,0), tr=V(width, height), rad=radius, side='out')
 		if not ('no_perspex' in config and not config['no_perspex']):
 			self.perspex = self.add_path(Part(name='perspex', border=edge, layer='perspex',colour="red"))
@@ -489,9 +508,12 @@ class Module(Plane):
 		self.add_path(Hole(V(width-radius,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
 		self.add_path(Hole(V(radius,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
 		if size=='A1':
-			self.add_path(Hole(V(width/2,radius),rad=13/2,side='in'),['base','perspex','paper'])
-	                self.add_path(Hole(V(width/2,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
-
+			if orientation=='landscape':
+				self.add_path(Hole(V(width/2,radius),rad=13/2,side='in'),['base','perspex','paper'])
+		                self.add_path(Hole(V(width/2,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
+			else:
+				self.add_path(Hole(V(radius,height/2),rad=13/2,side='in'),['base','perspex','paper'])
+                                self.add_path(Hole(V(width-radius,height/2),rad=13/2,side='in'),['base','perspex','paper'])
 
 		if not ('no_holdown' in config and  config['no_holdown']):
 			self.add_path(RepeatLine(V(fromends, fromedge), V(width-fromends,fromedge), holesX, Bolt, bolt_config,layers=['base','perspex','paper']))
