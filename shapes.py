@@ -488,6 +488,10 @@ class Module(Plane):
 		self.add_path(Hole(V(width-radius,radius),rad=13/2,side='in'),['base','perspex','paper'])
 		self.add_path(Hole(V(width-radius,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
 		self.add_path(Hole(V(radius,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
+		if size=='A1':
+			self.add_path(Hole(V(width/2,radius),rad=13/2,side='in'),['base','perspex','paper'])
+	                self.add_path(Hole(V(width/2,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
+
 
 		if not ('no_holdown' in config and  config['no_holdown']):
 			self.add_path(RepeatLine(V(fromends, fromedge), V(width-fromends,fromedge), holesX, Bolt, bolt_config,layers=['base','perspex','paper']))

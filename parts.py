@@ -131,11 +131,15 @@ class RoundShaftSupport(Pathgroup):
 
 	
 class Insert(Pathgroup):
-	def __init__(self, pos, insert_type, **config):
+	def __init__(self, pos, insert_size, **config):
 		"""Standard wood insert at pos"""
 		self.init(config)
-		if insert_type in milling.inserts.keys():
-			self.add_path(Hole(pos, rad= milling.inserts[insert_type]['diams'], z1 = milling.inserts[insert_type]['depths'], **config))	
+		if insert_size in milling.inserts:
+			if 'insert_type' in config and config['insert_type'] in milling.inserts[insert_size]:
+				insert=milling.inserts[insert_size][config['insert_type']]
+			else:
+				insert=milling.inserts[insert_size]
+			self.add_path(Hole(pos, rad=insert['diams'], z1 = insert['depths'], **config))	
 
 class LoadCell(Part):
 	def __init__(self, pos, cell_type, modes,**config):

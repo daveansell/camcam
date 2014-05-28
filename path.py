@@ -1707,10 +1707,18 @@ class Part(object):
 		return config
 	# is this a part we can render or just a multilayer pathgroup	
 	def renderable(self):
-		if self.border is False or self.layer is False or self.border is None:
+		if not hasattr(self, 'border') or self.border is False or self.layer is False or self.border is None:
 			return False
 		else:
 			return True
+
+	def getParts(self):
+		ret=[]
+		for part in self.parts:
+			ret.extend(part.getParts())
+		if self.renderable():
+			ret.append(self)
+		return ret
 
 	def get_parts(self):
 		"""Returns a list of all the parts which can be rendered within this Part, not itself. Designed to be run from a Plane"""
@@ -1899,10 +1907,10 @@ class Plane(Part):
 	
 	def render_all(self,mode,config):
 		"""Render all parts in the Plane"""
-		for part in self.parts:
+		for part in self.getParts():
 			self.render_part(part, mode,config)
 	def list_all(self):
-		for part in self.parts:
+		for part in self.getParts():
 			if hasattr(part, 'name'):
 				print str(part.name)
  	
