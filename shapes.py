@@ -221,7 +221,7 @@ class Bolt(Part):
 			for i,diam in enumerate(insert['diams']):
 				self.add_path(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),'base')
 
-			self.add_path(Hole(pos, milling.bolts[thread]['clearance']/2, side='in'),'perspex')
+			self.add_path(Hole(pos, (milling.bolts[thread]['clearance']+1)/2, side='in'),'perspex')
 			if(head=='countersunk'):
 				self.add_path(Countersink(pos, milling.bolts[thread]['clearance'], milling.bolts[thread]['countersunk']['diam']/2, config),'top')
 			else:
