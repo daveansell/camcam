@@ -458,6 +458,10 @@ class Milling:
 		"M4":{
                         "diams":[5,3.05],
                         "depths":[-1,False],
+			'hammer':{
+					"diams":[14.2/2,10/2,5.6/2],
+					"depths":[-1.5,-1.5,False]
+				}
                 },
                 "M5":{
                         "diams":[6.5,3.95],

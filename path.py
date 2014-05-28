@@ -66,7 +66,6 @@ class Segment(object):
 	def start(self):
 		return {}
 	def out(self,direction, mode='svg', zfrom=False, zto=False):
-		print "Zfrom="+str(zfrom)+" zto="+str(zto)
 		if mode=='svg':
 			return self.svg(direction)
 		elif mode=='gcode':
@@ -84,7 +83,6 @@ class Segment(object):
 # render the segment in straight lines
 	def simplegcode(self, zfrom, zto, direction):
 		ret=[]
-		print "zfrom="+str(zfrom)+" zto="+str(zto)
 		polygon=self.polygon(1,direction)
 		if zfrom!=zto:
 			step=(zto-zfrom)/len(polygon)
@@ -329,8 +327,6 @@ class Path(object):
 		self.points = []
 		self.Fsegments = []
 		self.Bsegments = []
-#		print side
-#		print cutter
 		self.transform=False
 		self.otherargs=''
 		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill']
@@ -554,7 +550,8 @@ class Path(object):
 			# draw an arc between two points or radius radius - they should both have the same radius
 			if nextpoint.point_type=='arcend' and lastpoint.point_type=='arcend':
 				centre=self.findArcCentre(lastpoint.pos,nextpoint.pos, thispoint.radius, thispoint.direction)
-				segment_array.append(Arc(frompoint, thispoint.pos, centre,thispoint.direction))
+				print "CENRE="+str(centre)
+				segment_array.append(Arc(frompoint, nextpoint.pos, centre,thispoint.direction))
 			else:
 				print "ERROR arc point without an arcend point on both sides"	
 		elif thispoint.point_type=='quad':
@@ -605,15 +602,15 @@ class Path(object):
 				segment_array.append(Arc(V(thispoint.pos[0]+thispoint.radius, thispoint.pos[1]),V(thispoint.pos[0]-thispoint.radius, thispoint.pos[1]), thispoint.pos,'cw'))
 		return frompoint
 
-	def findArcCentre(frompos, topos, radius, direction):
+	def findArcCentre(self,frompos, topos, radius, direction):
 		l=(topos-frompos)/2
-		if l.length()>radius/2:
+		if l.length()>radius*2:
 			print "ERROR arc radius less than distance to travel"
 		if direction=='cw':
 			a=90
 		else:
 			a=-90
-		return (topos+frompos)/2+rotate(l,a)
+		return (topos+frompos)/2+rotate(l.normalize(),a)*radius
 
 	def otherDir(self,direction):
 		if direction=='cw':
@@ -632,7 +629,6 @@ class Path(object):
 			r=r1-r2
 			temp=self.tangent_point(point2, point1, r, self.otherDir(dir1))
 			rvec=(temp-point1).normalize()
-			#print "rvec"+str(rvec)
 			return [point1+rvec*r1, point2+rvec*r2]
 		elif r1<r2:
 			r=r2-r1
@@ -750,12 +746,6 @@ class Path(object):
 		cross=(thispoint.pos-lastpoint.pos).cross(nextpoint.pos-thispoint.pos)[2]
 		a=(-(thispoint.pos-lastpoint.pos).normalize()+(thispoint.pos-nextpoint.pos).normalize())
 		al=a.length()
-#	if al=0:
-#		print "ERROR from a tn points are the same"
-#		print self.trace
-#		print thispoint.pos, 
-			
-#	ca=math.sqrt(4/al/al -1)
 		angle=math.atan2(a[1], a[0])
 		if cross<0 and side=='left' or cross>0 and side=='right':
 			corner='external'
@@ -1039,7 +1029,6 @@ class Path(object):
 				config['direction']='ccw'
 			else:
 				config['direction']=thisdir
-		print "z0="+str(config['z0'])+" z1="+str(config['z1']) 
 		if config['side'] is None or config['side'] is False:
 			config['side']='on'
 		if config['z0'] is None or config['z0'] is False:
@@ -1049,7 +1038,6 @@ class Path(object):
 				config['z1'] = config['z0'] - config['thickness']- config['z_overshoot']
 			else:
 				config['z1'] = config['z0'] - config['thickness']
-		print "qz0="+str(config['z0'])+" z1="+str(config['z1']) 
 		return config
 #  output the path
 	def render(self,pconfig):
@@ -1312,9 +1300,7 @@ class Path(object):
 					self.cutdown(depth)
 				first=1
 				for segment in segments:
-					print "first="+str(first)+" downmode="+str(downmode)+ "mode="+str(mode)
 					if first==1 and downmode=='ramp' and (mode=='gcode' or mode=='simplegcode'):
-						print "FIRST"
 						if firstdepth and (mode=='gcode' or mode=='simplegcode'):
 							self.add_out(self.quickdown(depth-step+config['precut_z']))
 							firstdepth=0
@@ -1361,7 +1347,6 @@ class Path(object):
 			self.add_feedrates(config)
 		elif self.mode=='svg':
 			self.add_colour(config)	
-#		print self.output
 	def quickdown(self,z):
 		if self.mode=='gcode' or self.mode=='simplegcode':
 			return [{"cmd":"G0", "Z":z}]
@@ -1418,7 +1403,6 @@ class Path(object):
 		cutfrom=segments[seg].cutfrom
 		if side=='on':
 			self.start=cutfrom
-	#		print "start"+ str(self.start)
 			self.add_out(self.move(cutfrom))
 		else:
 			if(segments[seg].seg_type=='line'):
@@ -1446,9 +1430,7 @@ class Path(object):
 
 
 	def runout(self, cutterrad, direction, mode='down', side='on', ):
-	#	print "runout"
 		if self.mode=='gcode':
-	#		print "runout2"
 			return [{'cmd':'G40'}]
 
 class Pathgroup(object):
@@ -1547,7 +1529,6 @@ class Pathgroup(object):
 					gcode.append(path.output)
 				elif path.obType=='Pathgroup':
 					paths = path.output_path(pconfig)
-#					pprint.pprint(groups) 
 					gcode.extend(paths)
 		return gcode
 
@@ -1565,7 +1546,6 @@ class Pathgroup(object):
 		comments=self.get_comments(pconfig['mode'])
 		config=pconfig
 		for path in paths:
-			print path
 			(k,p)=path.render_path(path,config)
 			if config['mode']=='svg':
 				ret[p[0]]+="<g>\n"+p[1]+"</g>\n"
@@ -1983,7 +1963,6 @@ class Plane(Part):
 			if path.obType=="Pathgroup":
 				for p in path.get_paths():
 					if not hasattr(part, 'border') or part.contains(p)>-1:
-						print p.render(config)
 						(k,pa)=p.render(config)
 						if self.modeconfig['group'] is False:
 							k=c
@@ -2037,7 +2016,6 @@ class Plane(Part):
 				f.close()
 
 	def writeGcodeFile(self,partName, key, output, config):
-		print config
 		filename=str(partName)+"_"+str(self.name)+"_"+str(key)
 		if 'cutter' in config:
 			filename+="_cutter-"+str(config['cutter'])
@@ -2046,7 +2024,6 @@ class Plane(Part):
 		if 'thickness' in config:
 			filename+="_thickness-"+str(config['thickness'])
 		if 'repeatx' in config and 'repeaty' in config and 'xspacing' in config and 'yspacing' in config:
-			print "DO repeat^^^^^^"
 			output2=''
 			for y in range(0,int(config['repeaty'])):
 				output2+='\nG0X0Y0\nG10 L20 P1'+'Y%0.4f'%(float(config['yspacing']))+'X%0.4f\n'%(-float(config['repeatx']-1)*float(config['xspacing']))
@@ -2063,11 +2040,9 @@ class Plane(Part):
 			filename+='_'+str(config['repeatx'])+'x_'+str(config['repeaty'])+'y'
 			output=output2
 		f=open(self.sanitise_filename(filename+config['file_suffix']),'w')
-	#	print output
 		f.write(config['prefix']+output+config['postfix'])
 		f.close()
 		if 'dosfile' in config and config['dosfile']:
-			print "/usr/bin/unix2dos "+filename+config['file_suffix']
 			os.system("/usr/bin/unix2dos "+self.sanitise_filename(filename+config['file_suffix']))
 			
 	def sanitise_filename(self,filename):

@@ -213,8 +213,14 @@ class Bolt(Part):
 	def __init__(self,pos,thread='M4',head='button', length=10, **config):
 		self.init(config)
 		if thread in milling.bolts:
-			self.add_path(Hole(pos, milling.inserts[thread]['diams'][0],  side='in' , z1=milling.inserts[thread]['depths'][0]),'base')
-			self.add_path(Hole(pos, milling.inserts[thread]['diams'][1],  side='in' , z1=milling.inserts[thread]['depths'][1]),'base')
+			if 'insert_type' in config and config['insert_type'] in milling.inserts[thread]:
+				insert=milling.inserts[thread][config['insert_type']]
+			else:
+				insert=milling.inserts[thread]
+
+			for i,diam in enumerate(insert['diams']):
+				self.add_path(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),'base')
+
 			self.add_path(Hole(pos, milling.bolts[thread]['clearance']/2, side='in'),'perspex')
 			if(head=='countersunk'):
 				self.add_path(Countersink(pos, milling.bolts[thread]['clearance'], milling.bolts[thread]['countersunk']['diam']/2, config),'top')
@@ -421,6 +427,7 @@ class FingerJointBoxSide(Path):
 class Module(Plane):
 	def __init__(self, size,  **config):#holesX=False, holesY=False, fromedge=15, fromends=40):
 		self.init('module',V(0,0),V(0,0),config)
+		bolt_config={}
 		if('fromends' in config):
 			fromends=config['fromemds']
 		else:
@@ -441,6 +448,8 @@ class Module(Plane):
 			base_thickness=config['base_thickness']
 		else:
 			base_thickness=12
+		if 'insert_type' in config:
+			bolt_config['insert_type']=config['insert_type']
 		#name, material, thickness, z0=0,zoffset=0
 		self.add_layer('perspex',material='perspex',thickness=3,z0=0,zoffset=3)
 		self.add_layer('base',material='plywood', thickness=base_thickness, z0=0,zoffset=0, add_back=True)
@@ -481,9 +490,9 @@ class Module(Plane):
 		self.add_path(Hole(V(radius,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
 
 		if not ('no_holdown' in config and  config['no_holdown']):
-			self.add_path(RepeatLine(V(fromends, fromedge), V(width-fromends,fromedge), holesX, Bolt, {},layers=['base','perspex','paper']))
-			self.add_path(RepeatLine(V(width-fromedge, fromends), V(width-fromedge,height-fromends), holesY, Bolt, {},layers=['base','perspex','paper']))
-			self.add_path(RepeatLine(V(width-fromends, height-fromedge), V(fromends,height-fromedge), holesX, Bolt,{},layers=['base','perspex','paper']))
-			self.add_path(RepeatLine(V(fromedge, height-fromends), V(fromedge,fromends), holesY, Bolt,{},layers=['base','perspex','paper']))
+			self.add_path(RepeatLine(V(fromends, fromedge), V(width-fromends,fromedge), holesX, Bolt, bolt_config,layers=['base','perspex','paper']))
+			self.add_path(RepeatLine(V(width-fromedge, fromends), V(width-fromedge,height-fromends), holesY, Bolt, bolt_config,layers=['base','perspex','paper']))
+			self.add_path(RepeatLine(V(width-fromends, height-fromedge), V(fromends,height-fromedge), holesX, Bolt, bolt_config,layers=['base','perspex','paper']))
+			self.add_path(RepeatLine(V(fromedge, height-fromends), V(fromedge,fromends), holesY, Bolt,bolt_config,layers=['base','perspex','paper']))
 			
 
