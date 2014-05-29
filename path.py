@@ -2034,7 +2034,11 @@ class Plane(Part):
 		if 'repeatx' in config and 'repeaty' in config and 'xspacing' in config and 'yspacing' in config:
 			output2=''
 			for y in range(0,int(config['repeaty'])):
-				output2+='\nG0X0Y0\nG10 L20 P1'+'Y%0.4f'%(float(config['yspacing']))+'X%0.4f\n'%(-float(config['repeatx']-1)*float(config['xspacing']))
+				print config['yspacing']
+				print config['repeatx']
+				print config['xspacing']
+				output2+='\nG0X0Y0\nG10 L20 P1'+'Y%0.4f'%(float(config['yspacing']))
+				output2+='X%0.4f\n'%(-(float(config['repeatx'])-1)*float(config['xspacing']))
 				c=0
 				for x in range(0,int(config['repeatx'])):
 					if c==0:
