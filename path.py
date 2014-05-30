@@ -1992,7 +1992,7 @@ class Plane(Part):
 			if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
 				if part.cutter==None:
 					part.cutter=config['cutter']
-				if part.cutter == lastcutter:
+				if 1==1 or part.cutter == lastcutter:
 					if self.modeconfig['mode'] == 'scr':
 						output[k] += "LAYER " + str(self.modeconfig[k])+"\n"
 					output[k]+=b
@@ -2051,6 +2051,10 @@ class Plane(Part):
 		#	output2+='\nG10 L2 P1 X0 Y0\n'
 			filename+='_'+str(config['repeatx'])+'x_'+str(config['repeaty'])+'y'
 			output=output2
+		# if we are making gcode we we should have tool changes in there
+		if config['mode']=='gcode':
+			toolid=str(milling.tools[config['cutter']]['id'])
+			output = config['settool_prefix']+toolid+"\n"+output+config['settool_postfix']
 		f=open(self.sanitise_filename(filename+config['file_suffix']),'w')
 		f.write(config['prefix']+output+config['postfix'])
 		f.close()
