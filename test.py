@@ -23,12 +23,12 @@ side_border=15
 
 box = camcam.add_plane(Plane('box', cutter='1/8_endmill'))
 
-Ltop=box.add_layer('top', material='pvc', thickness=top_thickness, z0=0, zoffset=0, isback=True)
+Ltop=box.add_layer('top', material='pvc', thickness=top_thickness, z0=0, zoffset=0, isback=False)
 
 
 
 top=box.add_path(Part(name='top', layer='top'))
-top.add_path(Circle(V(0,0), cornertype="outcurve", rad=50, side='out', centred=True),'top')
+top.add_border(RoundedRect(V(0,0),tr=V(120,120),  cornertype="outcurve", rad=50, side='out', centred=False))
 #top.add_path(Polygon(V(0,0), 40, 3, 'outcurve', 10))
 
 #bottom_border=Path(closed=True, side='out')

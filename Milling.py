@@ -6,7 +6,7 @@ class Milling:
                                 'prefix':'M03\nG0Z10',
                                 'postfix':'M05\nM02\n',
                                 'settool_prefix':'T',
-                                'settool_postfix':' M6\nM03',
+                                'settool_postfix':' M6\nS100\nM03',
                                 'mode':'gcode',
                                 'group':'cutter',
                                 'toolchange':'newfile',

@@ -6,7 +6,7 @@ class Rect(Path):
 		self.cut_square(bl, config)
 
 	def cut_square(self, bl, config):
-		if 'centred' in config:
+		if 'centred' in config and config['centred']:
 			if 'width' in config and 'height' in config:
 				pos=bl
 				bl=pos-V(config['width']/2, config['height']/2)

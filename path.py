@@ -442,12 +442,12 @@ class Path(object):
 
 	def make_segments(self, direction,segment_array,config):
 		pointlist = self.transform_pointlist(self.points,config['transformations'])
-		if direction!=self.find_direction():
+		if direction!=self.find_direction(config):
 			pointlist.reverse()
 			# this is in the wrong sense as it will be run second in the reversed sense
-			self.isreversed=0
-		else:
 			self.isreversed=1
+		else:
+			self.isreversed=0
 		for p,point in enumerate(pointlist):
 			thispoint = pointlist[p]
 			if hasattr(thispoint,'obType') and thispoint.obType=='Point':
@@ -550,7 +550,6 @@ class Path(object):
 			# draw an arc between two points or radius radius - they should both have the same radius
 			if nextpoint.point_type=='arcend' and lastpoint.point_type=='arcend':
 				centre=self.findArcCentre(lastpoint.pos,nextpoint.pos, thispoint.radius, thispoint.direction)
-				print "CENRE="+str(centre)
 				segment_array.append(Arc(frompoint, nextpoint.pos, centre,thispoint.direction))
 			else:
 				print "ERROR arc point without an arcend point on both sides"	
@@ -597,9 +596,13 @@ class Path(object):
 				
 			#	frompoint = #rerun tangent points for next pair of points...
 		elif thispoint.point_type=='circle':
+			if self.side=='out':
+				d='cw'
+			else:
+				d='ccw'
 			if do:
-				segment_array.append(Arc(V(thispoint.pos[0]-thispoint.radius, thispoint.pos[1]),V(thispoint.pos[0]+thispoint.radius, thispoint.pos[1]), thispoint.pos,'cw'))
-				segment_array.append(Arc(V(thispoint.pos[0]+thispoint.radius, thispoint.pos[1]),V(thispoint.pos[0]-thispoint.radius, thispoint.pos[1]), thispoint.pos,'cw'))
+				segment_array.append(Arc(V(thispoint.pos[0]-thispoint.radius, thispoint.pos[1]),V(thispoint.pos[0]+thispoint.radius, thispoint.pos[1]), thispoint.pos,d))
+				segment_array.append(Arc(V(thispoint.pos[0]+thispoint.radius, thispoint.pos[1]),V(thispoint.pos[0]-thispoint.radius, thispoint.pos[1]), thispoint.pos,d))
 		return frompoint
 
 	def findArcCentre(self,frompos, topos, radius, direction):
@@ -678,7 +681,7 @@ class Path(object):
 	def offset_path(self,side,distance, config):
 		newpath=copy.deepcopy(self)
 		newpath.points=[]
-		thisdir=self.find_direction()
+		thisdir=self.find_direction(config)
 		pointlist=self.points
 		if len(pointlist)==1:
 			if pointlist[0].point_type=='circle':
@@ -842,21 +845,37 @@ class Path(object):
 #		return rotate(avvec*distance,a)*2+thispos
 
 # find whether the path is setup clockwise or anticlockwise
-	def find_direction(self):
+	def find_direction(self,config):
 		total =V(0,0,0)
 		first = True
+		if 'transformations' in config:
+			t=config['transformations']
+		else:
+			t=[]
+		reverse=0
+		for a in t:
+			if type(a) is dict and 'mirror' in a:
+				reverse+=1
+		if reverse%2==1:
+			reverse=-1
+		else:
+			reverse=1
+		self.mirrored=reverse
 		for p,q in enumerate(self.points):
 			total+=(self.points[p].pos-self.points[(p-1)%len(self.points)].pos).normalize().cross((self.points[(p+1)%len(self.points)].pos-self.points[p].pos).normalize())
-		if(total[2]>0):
+		# if it is a circle
+		if total[2]==0:
+			return 'cw'
+		elif(total[2]*reverse>0):
 			return 'ccw'
 		else:
 			return 'cw'
 	
 	def cut_direction(self,side='on'):
 		if side=='in':
-			return 'ccw'
-		else:
 			return 'cw'
+		else:
+			return 'ccw'
 
 	
 	# converts a shape into a simple polygon
@@ -1019,7 +1038,7 @@ class Path(object):
   #                              config[k]=pconfig[k]
 		self.set_cutter(config)
 		self.set_material(config)
-		thisdir=self.find_direction()
+		thisdir=self.find_direction(config)
 		if 'direction' not in config or config['direction'] is False:
 			if hasattr(self,'direction') and  self.direction!=False:
 				config['direction']=self.direction
@@ -1029,15 +1048,17 @@ class Path(object):
 				config['direction']='ccw'
 			else:
 				config['direction']=thisdir
+#		if self.mirrored==-1:
+#			config['direction']=self.otherDir(config['direction'])
 		if config['side'] is None or config['side'] is False:
 			config['side']='on'
 		if config['z0'] is None or config['z0'] is False:
 			config['z0']=0
 		if (config['z1'] is False or config['z1'] is None) and config['z0'] is not None and config['thickness'] is not None:
 			if 'z_overshoot' in config:
-				config['z1'] = config['z0'] - config['thickness']- config['z_overshoot']
+				config['z1'] = - config['thickness']- config['z_overshoot']
 			else:
-				config['z1'] = config['z0'] - config['thickness']
+				config['z1'] = - config['thickness']
 		return config
 #  output the path
 	def render(self,pconfig):
@@ -1995,6 +2016,8 @@ class Plane(Part):
 				if 1==1 or part.cutter == lastcutter:
 					if self.modeconfig['mode'] == 'scr':
 						output[k] += "LAYER " + str(self.modeconfig[k])+"\n"
+					if not k in output:
+						output[k]=''
 					output[k]+=b
 				else:
 					if self.modeconfig['mode'] == 'scr':
@@ -2034,9 +2057,6 @@ class Plane(Part):
 		if 'repeatx' in config and 'repeaty' in config and 'xspacing' in config and 'yspacing' in config:
 			output2=''
 			for y in range(0,int(config['repeaty'])):
-				print config['yspacing']
-				print config['repeatx']
-				print config['xspacing']
 				output2+='\nG0X0Y0\nG10 L20 P1'+'Y%0.4f'%(float(config['yspacing']))
 				output2+='X%0.4f\n'%(-(float(config['repeatx'])-1)*float(config['xspacing']))
 				c=0
@@ -2054,7 +2074,7 @@ class Plane(Part):
 		# if we are making gcode we we should have tool changes in there
 		if config['mode']=='gcode':
 			toolid=str(milling.tools[config['cutter']]['id'])
-			output = config['settool_prefix']+toolid+"\n"+output+config['settool_postfix']
+			output = "\n"+config['settool_prefix']+toolid+config['settool_postfix']+"\n"+output
 		f=open(self.sanitise_filename(filename+config['file_suffix']),'w')
 		f.write(config['prefix']+output+config['postfix'])
 		f.close()
