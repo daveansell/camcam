@@ -38,6 +38,7 @@ arg_meanings = {'order':'A field to sort paths by',
 		'layer':'The layer the part exists in - it can add things to other layers',
 		'name':'The name of the object - str',
 		'partial_fill':'cut a step into the path',
+		'finishing':'add a roughing pass this far out ',
 		'fill_direction':'direction to fill towards',
 		'precut_z':'the z position the router can move dow quickly to',
 }
@@ -329,7 +330,7 @@ class Path(object):
 		self.Bsegments = []
 		self.transform=False
 		self.otherargs=''
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing']
 		for v in self.varlist:
 			if v in config:
 				setattr(self,v, config[v])
@@ -1014,7 +1015,7 @@ class Path(object):
 		if self.transform!=None:
 			config['transformations'].append(self.transform)
 		#	self.transform=None
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'mode','partial_fill','fill_direction','precut_z']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'mode','partial_fill','finishing','fill_direction','precut_z']
                 for v in self.varlist:
 			if v !='transform' and v !='transformations':
 	                        if hasattr(self,v) and getattr(self,v) is not None:
@@ -1065,6 +1066,7 @@ class Path(object):
 		out=""
 # Do something about offsets manually so as not to rely on linuxcnc
 		config=self.generate_config(pconfig)
+
 		if config['side']=='in' or config['side']=='out':
 			c =copy.copy(config)
 			c['opacity']=0.5
@@ -1085,14 +1087,21 @@ class Path(object):
 	#		thepath.output_path(config)
 	#		out = thepath.render_path(self,config)
 
-		if not config['hide_cuts']  and 'partial_fill' in config and config['partial_fill']>0 :
-			dist=config['partial_fill']-config['cutterrad']
-			if dist==0:
+		if 'finishing' in config and config['finishing']>0:
+			print "FINISHING"
+			if 'partial_fill' not in config or config['partial_fill']==None or config['partial_fill']==False:
+				config['partial_fill']=config['cutterrad']*2+config['finishing']
+				config['fill_direction']=config['side']
+		if not config['hide_cuts']  and 'partial_fill' in config and config['partial_fill']>0:
+			dist=config['partial_fill']-config['cutterrad']*2
+			print "PARTIAL FILL"+str(dist)
+			if dist<=0:
 				numpasses=0
 				step=1
 			else:
 				numpasses = math.ceil(abs(float(dist)/ float(config['cutterrad'])/1.4))
 				step = config['partial_fill']/numpasses
+			print "numpasses="+str(numpasses)
 			if 'fill_direction' in config:
 				ns=config['fill_direction']
 			else:
@@ -1106,15 +1115,20 @@ class Path(object):
 					ns='left'
 				else:
 					ns=c['side']
+# need to find the frompos of first and last point, then add this as a sharp point each time adding a new path
+
+# need to break circles into 2 arcs
+
 			fillpath=copy.deepcopy(thepath)
-			if numpasses>1:
+			if numpasses>0:
 				p=copy.copy(fillpath.points[0])
 				p.point_type='sharp'
 				fillpath.add_points([p])
 				fillpath.points[0].point_type='sharp'
 #			fillpath.points=[]
-			for d in range(1,int(numpasses)):
-				temppath=thepath.offset_path(ns, step*d, c)
+			for d in range(0,int(numpasses)):
+				print"fill pass"+str(d)
+				temppath=thepath.offset_path(ns, step*(d+1), c)
 #				fillpath.add_points([temppath.points[-1]])
 				p=copy.copy(temppath.points[0])
 				p.point_type='sharp'
@@ -1463,7 +1477,7 @@ class Pathgroup(object):
 		self.obType = "Pathgroup"
 		self.paths=[]
 		self.trace = traceback.extract_stack()
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'stepdown', 'forcecolour', 'rendermode','partial_fill','fill_direction','cutter','precut_z']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'stepdown', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in args:
@@ -1492,7 +1506,7 @@ class Pathgroup(object):
 			print "PATHGROUP has no parent HJK"+str(self)
 			pconfig = False
 		config = {}
-		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour','rendermode','partial_fill','fill_direction','cutter','precut_z']
+		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour','rendermode','partial_fill','finishing','fill_direction','cutter','precut_z']
 		if pconfig is False or  pconfig['transformations'] is False or pconfig['transformations'] is None:
 			config['transformations']=[]
 		else:
@@ -1679,7 +1693,7 @@ class Part(object):
 		self.comments = []
 		self.parent=False
 		self.internal_borders=[]
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','fill_direction','precut_z']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in config:
@@ -1889,7 +1903,7 @@ class Plane(Part):
 		self.name=name
 		self.transform=False
 		self.parent=False
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer','partial_fill','fill_direction','precut_z']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z']
 		self.out=''
 		for v in self.varlist:
                         if v in config:
