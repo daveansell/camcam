@@ -426,6 +426,8 @@ class Path(object):
 
 	def add_point(self,pos, point_type='sharp', radius=0, cp1=False, cp2=False, direction=False, transform=False):
 		self.points.append(Point(pos, point_type, radius,cp1, cp2, direction, transform))
+	def prepend_point(self,pos, point_type='sharp', radius=0, cp1=False, cp2=False, direction=False, transform=False):
+		self.points.insert(0,Point(pos, point_type, radius,cp1, cp2, direction, transform))
 	def add_points(self,points, end='end'):
 		for p in points:
 			if type(p) is Point:
@@ -464,6 +466,7 @@ class Path(object):
 						frompoint=self.segment_point(lastpoint, beforelastpoint, thispoint,beforebeforelastpoint,nextpoint, segment_array, False, False, config)
 					else:
 						frompoint=self.segment_point(lastpoint, beforelastpoint, thispoint,beforebeforelastpoint,nextpoint, segment_array, False, False, config)
+					print "FROMPOINT"+str(frompoint)+" closed="+str(self.closed)+" "+str(lastpoint.pos)
 				frompoint=self.segment_point(thispoint, lastpoint, nextpoint,beforelastpoint,afternextpoint, segment_array, frompoint, True, config)
 	def get_point(self, pointlist, pos, closed):
 		if closed:
@@ -512,7 +515,14 @@ class Path(object):
 			frompoint=endcurve
 		elif thispoint.point_type=='clear':
 			# we want to cut so that the edge of the cutter just touches the point requested
-			angle=(thispoint.pos-lastpoint.pos).angle(nextpoint.pos-thispoint.pos)
+			if thispoint.pos==lastpoint.pos:
+				angle=(thispoint.pos-beforelastpoint.pos).angle(nextpoint.pos-thispoint.pos)
+			elif thispoint.pos == nextpoint.pos:
+				angle=(thispoint.pos-lastpoint.pos).angle(afternextpoint.pos-thispoint.pos)
+				
+			else:
+				angle=(thispoint.pos-lastpoint.pos).angle(nextpoint.pos-thispoint.pos)
+				
 			d=config['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1)
                         extrapoint=thispoint.pos-(((lastpoint.pos-thispoint.pos).normalize()+(nextpoint.pos-thispoint.pos).normalize())/2).normalize()*d
 
@@ -774,7 +784,7 @@ class Path(object):
 					t.radius-=distance
 					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
 				else:
-					t.point_type='doubleclear'
+					t.point_type='sharp'
 					t.radius=0
 					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
 		elif thispoint.point_type=='sharp':
@@ -1066,7 +1076,7 @@ class Path(object):
 		out=""
 # Do something about offsets manually so as not to rely on linuxcnc
 		config=self.generate_config(pconfig)
-
+		finalpass=False
 		if config['side']=='in' or config['side']=='out':
 			c =copy.copy(config)
 			c['opacity']=0.5
@@ -1086,22 +1096,20 @@ class Path(object):
 			c=config
 	#		thepath.output_path(config)
 	#		out = thepath.render_path(self,config)
-
 		if 'finishing' in config and config['finishing']>0:
-			print "FINISHING"
 			if 'partial_fill' not in config or config['partial_fill']==None or config['partial_fill']==False:
-				config['partial_fill']=config['cutterrad']*2+config['finishing']
+				config['partial_fill']=config['cutterrad']+config['finishing']
 				config['fill_direction']=config['side']
+				c['z1']=c['z1']+1
+				finalpass=True
 		if not config['hide_cuts']  and 'partial_fill' in config and config['partial_fill']>0:
-			dist=config['partial_fill']-config['cutterrad']*2
-			print "PARTIAL FILL"+str(dist)
+			dist=config['partial_fill']-config['cutterrad']
 			if dist<=0:
 				numpasses=0
 				step=1
 			else:
 				numpasses = math.ceil(abs(float(dist)/ float(config['cutterrad'])/1.4))
 				step = config['partial_fill']/numpasses
-			print "numpasses="+str(numpasses)
 			if 'fill_direction' in config:
 				ns=config['fill_direction']
 			else:
@@ -1121,24 +1129,43 @@ class Path(object):
 
 			fillpath=copy.deepcopy(thepath)
 			if numpasses>0:
-				p=copy.copy(fillpath.points[0])
-				p.point_type='sharp'
-				fillpath.add_points([p])
-				fillpath.points[0].point_type='sharp'
-#			fillpath.points=[]
+#(pointlist, p+1, self.closed)
+#				frompoint=self.segment_point(lastpoint, beforelastpoint, thispoint,beforebeforelastpoint,nextpoint, segment_array, False, False, config)
+				fillpath.output_path(config)
+				frompos=self.get_frompos(fillpath.points, fillpath.Fsegments, -1, c)
+				if frompos!=fillpath.points[-1].pos:
+                                	fillpath.add_point(frompos,'sharp')
+				else:
+					fillpath.points[-1].point_type='sharp'
+	                        fillpath.prepend_point(frompos,'sharp')
+				
 			for d in range(0,int(numpasses)):
-				print"fill pass"+str(d)
 				temppath=thepath.offset_path(ns, step*(d+1), c)
-#				fillpath.add_points([temppath.points[-1]])
-				p=copy.copy(temppath.points[0])
-				p.point_type='sharp'
-				temppath.add_points([p])
+				temppath.output_path(config)
+				frompos=self.get_frompos(temppath.points, temppath.Fsegments, -1, c)
+				if frompos!=temppath.points[-1].pos:
+					print "add points"
+                                	temppath.add_point(frompos,'sharp')
+				else:
+					temppath.points[-1].point_type='sharp'
+	                       	temppath.prepend_point(frompos,'sharp')
 				fillpath.add_points(temppath.points,'start')
-			
+			offpath=thepath
 			thepath=fillpath
 		thepath.output_path(c)
 		out += thepath.render_path(thepath,c)
+		if finalpass:
+			c['z0']=c['z1']
+			c['z1']=config['z1']
+			c['partial_fill']=None
+			offpath.output_path(c)
+			out += offpath.render_path(offpath,c)
 		return [config['cutter'],out]
+
+	def get_frompos(self, points, segments, p, config, closed=None):
+		if closed is None:
+			closed=self.closed
+		return self.segment_point(self.get_point(points,p,self.closed), self.get_point(points,p-1,self.closed), self.get_point(points,p+1,closed),  self.get_point(points,p-2,self.closed), self.get_point(points, p+2,self.closed), self.Fsegments, False, False, config)
 
 	def render_path(self,path,config):
 		ret=""
@@ -1436,6 +1463,14 @@ class Path(object):
 			print self.points
 		cutto=segments[seg].cutto
 		cutfrom=segments[seg].cutfrom
+		print "runin"
+		print self.obType
+		print self.trace
+		print segments[seg].cutto
+		print segments[seg].cutfrom
+		for p in self.points:
+			print str(p.pos)+"  "+p.point_type
+		print len(self.Fsegments)
 		if side=='on':
 			self.start=cutfrom
 			self.add_out(self.move(cutfrom))
