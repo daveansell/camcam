@@ -257,7 +257,7 @@ class Point(object):
 		transformations.extend(ext_transformations)
 #		print "point transform "+str(transformations)
 		if type(transformations) is list:
-			for t in transformations:
+			for t in reversed(transformations):
 				if type(t) is dict:
 					if 'rotate' in t:
 						p.pos=self.rotate(p.pos, t['rotate'])
@@ -466,7 +466,6 @@ class Path(object):
 						frompoint=self.segment_point(lastpoint, beforelastpoint, thispoint,beforebeforelastpoint,nextpoint, segment_array, False, False, config)
 					else:
 						frompoint=self.segment_point(lastpoint, beforelastpoint, thispoint,beforebeforelastpoint,nextpoint, segment_array, False, False, config)
-					print "FROMPOINT"+str(frompoint)+" closed="+str(self.closed)+" "+str(lastpoint.pos)
 				frompoint=self.segment_point(thispoint, lastpoint, nextpoint,beforelastpoint,afternextpoint, segment_array, frompoint, True, config)
 	def get_point(self, pointlist, pos, closed):
 		if closed:
@@ -1098,12 +1097,23 @@ class Path(object):
 	#		out = thepath.render_path(self,config)
 		if 'finishing' in config and config['finishing']>0:
 			if 'partial_fill' not in config or config['partial_fill']==None or config['partial_fill']==False:
-				config['partial_fill']=config['cutterrad']+config['finishing']
-				config['fill_direction']=config['side']
+				config['partial_fill']=config['finishing']
+				if config['side']=='out':
+					config['fill_direction']='out'
+				else:
+					config['fill_direction']='in'
+				print "fill_direction"+config['fill_direction']
+				#if c['side']=='out':
 				c['z1']=c['z1']+1
 				finalpass=True
+				finishing=config['finishing']
+			else:
+				finishing=0
+		else:
+			finishing=0
+	
 		if not config['hide_cuts']  and 'partial_fill' in config and config['partial_fill']>0:
-			dist=config['partial_fill']-config['cutterrad']
+			dist=max(config['partial_fill']-config['cutterrad'], finishing)
 			if dist<=0:
 				numpasses=0
 				step=1
@@ -1128,6 +1138,11 @@ class Path(object):
 # need to break circles into 2 arcs
 
 			fillpath=copy.deepcopy(thepath)
+			if fillpath.find_direction(c)!=config['direction']:
+				reverse=True
+				fillpath.points=fillpath.points[::-1]
+			else:
+				reverse=False
 			if numpasses>0:
 #(pointlist, p+1, self.closed)
 #				frompoint=self.segment_point(lastpoint, beforelastpoint, thispoint,beforebeforelastpoint,nextpoint, segment_array, False, False, config)
@@ -1144,12 +1159,20 @@ class Path(object):
 				temppath.output_path(config)
 				frompos=self.get_frompos(temppath.points, temppath.Fsegments, -1, c)
 				if frompos!=temppath.points[-1].pos:
-					print "add points"
                                 	temppath.add_point(frompos,'sharp')
 				else:
 					temppath.points[-1].point_type='sharp'
 	                       	temppath.prepend_point(frompos,'sharp')
-				fillpath.add_points(temppath.points,'start')
+#				if temppath.find_direction(c)==fillpath.find_direction(c):
+				if reverse:
+					fillpath.add_points(temppath.points,'start')
+				else:
+					fillpath.add_points(temppath.points[::-1],'end')
+#				else:
+#					fillpath.add_points(temppath.points[::-1],'start')
+			if reverse:
+				print "REvERSED"
+				fillpath.points = fillpath.points[::-1]
 			offpath=thepath
 			thepath=fillpath
 		thepath.output_path(c)
@@ -1336,6 +1359,7 @@ class Path(object):
 	def output_path(self, pconfig):#z0=False,z1=False,side='on',direction=False, stepdown=False, downmode='down', transformations=False):
 		""" output a path in whatever the config tells it - pconfig will be inherited from """
 		# we want a new list for each call, to make it properly recusive
+		self.output=[]
 		config=pconfig #self.generate_config(pconfig)
 		self.config=config
 		mode=pconfig['mode']
@@ -1463,14 +1487,6 @@ class Path(object):
 			print self.points
 		cutto=segments[seg].cutto
 		cutfrom=segments[seg].cutfrom
-		print "runin"
-		print self.obType
-		print self.trace
-		print segments[seg].cutto
-		print segments[seg].cutfrom
-		for p in self.points:
-			print str(p.pos)+"  "+p.point_type
-		print len(self.Fsegments)
 		if side=='on':
 			self.start=cutfrom
 			self.add_out(self.move(cutfrom))
@@ -1866,6 +1882,10 @@ class Part(object):
 	def get_layers(self):
 		layers={}
 		for part in self.parts:
+			if hasattr(part,'name'):
+				print str(part.name)+str(type(part))
+			else:
+				print type(part)
 			# find all the contents of layers
 			part.mode=self.mode
 			ls=part.get_layers()

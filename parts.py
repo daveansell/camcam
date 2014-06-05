@@ -156,18 +156,19 @@ class LoadCell(Part):
 			mode=modes[l]	
 			d=dat[cell_type]
 			e=(d['l']-d['s'])/2
+			print "LOAD CELL"+str(mode)+str(pos)
 			if mode=='bottom':
-				self.add_path(Hole(pos+V(0,0), rad=milling.bolts[d['h']]['clearance']), l)
+				self.add_path(Hole(pos+V(0,0), rad=milling.bolts[d['h']]['clearance']/2), l)
 				if 's2' in d:
-					self.add_path(Hole(pos+V((d['s']-d['s2'])/2,0), rad=milling.bolts[d['h']]['clearance']), l)
+					self.add_path(Hole(pos+V((d['s']-d['s2'])/2,0), rad=milling.bolts[d['h']]['clearance'])/2, l)
 			if mode=='bottom_clear':
-				self.add_path(Hole(pos+V(0,0), rad=milling.bolts[d['h']]['clearance']), l)
+				self.add_path(Hole(pos+V(0,0), rad=milling.bolts[d['h']]['clearance']/2), l)
 				self.add_path(ClearRect(pos+V(d['l']/4-e, d['w']/2+1), tr=pos+V(d['l']-e, -d['w']/2-1), z1=d['z']),l)
 				if 's2' in d:
-					self.add_path(Hole(pos+V((d['s']-d['s2'])/2,0), rad=milling.bolts[d['h']]['clearance']), l)
+					self.add_path(Hole(pos+V((d['s']-d['s2'])/2,0), rad=milling.bolts[d['h']]['clearance']/2), l)
 			if mode=='top':
-				self.add_path(Hole(pos+V(d['s'],0), rad=milling.bolts[d['h']]['clearance']), l)
+				self.add_path(Hole(pos+V(d['s'],0), rad=milling.bolts[d['h']]['clearance']/2), l)
 				if 's2' in d:
-					self.add_path(Hole(pos+V(d['s']-(d['s']-d['s2'])/2,0), rad=milling.bolts[d['h']]['clearance']), l)
+					self.add_path(Hole(pos+V(d['s']-(d['s']-d['s2'])/2,0), rad=milling.bolts[d['h']]['clearance']/2), l)
 				
 
