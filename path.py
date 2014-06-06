@@ -1451,10 +1451,11 @@ class Path(object):
 	def move(self,moveto):
 		if type(moveto) is not Vec:
 			print self.trace
-		if self.mode=='gcode' or self.mode=='simplegcode':
-			return [{"cmd":"G0","X":moveto[0],"Y":moveto[1]}]
-		elif self.mode=='svg':
-			return [{"cmd":"M","x":moveto[0],"y":moveto[1]}]
+		else:
+			if self.mode=='gcode' or self.mode=='simplegcode':
+				return [{"cmd":"G0","X":moveto[0],"Y":moveto[1]}]
+			elif self.mode=='svg':
+				return [{"cmd":"M","x":moveto[0],"y":moveto[1]}]
 	def setside(self,side, direction):
 		if self.mode=='gcode':
 			if side=='on':
