@@ -689,6 +689,7 @@ class Path(object):
 		return point+rvec
 
 	def offset_path(self,side,distance, config):
+		print "offset_path"
 		newpath=copy.deepcopy(self)
 		newpath.points=[]
 		thisdir=self.find_direction(config)
@@ -704,12 +705,12 @@ class Path(object):
 				return newpath
 		
 		if side=='in':
-			if thisdir=='cw':
+			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
 				side='right'
 			else:
 				side='left'
 		elif side=='out':
-			if thisdir=='cw':
+			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
 				side='left'
 			else:
 				side='right'
@@ -1098,6 +1099,7 @@ class Path(object):
 		if 'finishing' in config and config['finishing']>0:
 			if 'partial_fill' not in config or config['partial_fill']==None or config['partial_fill']==False:
 				config['partial_fill']=config['finishing']
+				print "CONFIGSIDE"+str(config['side'])
 				if config['side']=='out':
 					config['fill_direction']='out'
 				else:
@@ -1143,6 +1145,7 @@ class Path(object):
 				fillpath.points=fillpath.points[::-1]
 			else:
 				reverse=False
+#				fillpath.points=fillpath.points[::-1]
 			if numpasses>0:
 #(pointlist, p+1, self.closed)
 #				frompoint=self.segment_point(lastpoint, beforelastpoint, thispoint,beforebeforelastpoint,nextpoint, segment_array, False, False, config)
@@ -1156,6 +1159,8 @@ class Path(object):
 				
 			for d in range(0,int(numpasses)):
 				temppath=thepath.offset_path(ns, step*(d+1), c)
+				for p in temppath.points:
+					print p.pos
 				temppath.output_path(config)
 				frompos=self.get_frompos(temppath.points, temppath.Fsegments, -1, c)
 				if frompos!=temppath.points[-1].pos:
@@ -1164,15 +1169,15 @@ class Path(object):
 					temppath.points[-1].point_type='sharp'
 	                       	temppath.prepend_point(frompos,'sharp')
 #				if temppath.find_direction(c)==fillpath.find_direction(c):
+				print "REVERSE"+str(reverse)
 				if reverse:
 					fillpath.add_points(temppath.points,'start')
 				else:
-					fillpath.add_points(temppath.points[::-1],'end')
+					fillpath.add_points(temppath.points[::-1],'start')
 #				else:
 #					fillpath.add_points(temppath.points[::-1],'start')
-			if reverse:
-				print "REvERSED"
-				fillpath.points = fillpath.points[::-1]
+#			if reverse:
+#				fillpath.points = fillpath.points[::-1]
 			offpath=thepath
 			thepath=fillpath
 		thepath.output_path(c)

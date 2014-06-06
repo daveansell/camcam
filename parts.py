@@ -128,7 +128,20 @@ class RoundShaftSupport(Pathgroup):
 			self.add_path(Hole(pos+V(0,-d['B']/2), rad = milling.bolts[d['bolt']]['clearance']/2))
 			self.add_path(ClearRect(pos, centred=True, width=d['L']+0.4, height=d['W']+0.4, partial_fill=(d['L']+0.4)/2, fill_direction='in'))
 	
-
+class LinearBearing(Pathgroup):
+	def __init__(self,pos, bearing_type, mode,  **config):
+		self.init(config)
+		dat={
+			'SMA12':{'d':12, 'h':15, 'D':21, 'W':42, 'H':28,'G':24, 'A':7.4, 'J':30.5, 'E':5.75, 's1':'M5', 's2':4.3, 'K':26, 'L':36}
+		}
+		if bearing_type in dat:
+			d=dat[bearing_type]
+			self.dims=d
+			if mode=='clearance':
+				self.add_path(Hole(pos+V(-d['K']/2, -d['J']/2), milling.bolts[d['s1']]['clearance']/2))
+				self.add_path(Hole(pos+V(d['K']/2, -d['J']/2), milling.bolts[d['s1']]['clearance']/2))
+				self.add_path(Hole(pos+V(-d['K']/2, d['J']/2), milling.bolts[d['s1']]['clearance']/2))
+				self.add_path(Hole(pos+V(d['K']/2, d['J']/2), milling.bolts[d['s1']]['clearance']/2))
 	
 class Insert(Pathgroup):
 	def __init__(self, pos, insert_size, **config):
