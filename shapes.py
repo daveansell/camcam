@@ -419,6 +419,19 @@ class FingerJointBoxSide(Path):
 			self.add_points(FingerJoint(start=pos+V(width,0), end=pos+V(0,0), side=s, linemode=linemode, startmode=corners['bottom'], endmode=corners['bottom'], tab_length=tab_length, thickness=thickness['bottom'], cutterrad=cutterrad, fudge=fudge))
 		self.comment("FingerJointBoxSide")
 
+
+class DoubleFlat(Path):
+	def __init__(self, pos, rad, flat_rad, **config):
+		self.init(config)
+		self.closed=True
+		y=math.sqrt(rad**2 - flat_rad**2)
+		self.add_point(pos+V(flat_rad, y), direction='ccw', point_type='arcend')
+		self.add_point(pos, radius=rad, point_type='arc')
+		self.add_point(pos+V(-flat_rad,y), point_type='arcend')
+		self.add_point(pos+V(-flat_rad,-y), point_type='arcend')
+		self.add_point(pos, radius=rad, direction='ccw', point_type='arc')
+		self.add_point(pos+V(flat_rad, -y), point_type='arcend')
+
 class Module(Plane):
 	def __init__(self, size,  **config):#holesX=False, holesY=False, fromedge=15, fromends=40):
 		"""Create a module

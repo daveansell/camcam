@@ -556,7 +556,7 @@ class Path(object):
 			if(lastpoint.point_type!='arc'):
 				segment_array.append(Line(frompoint,thispoint.pos))
 			frompoint=thispoint.pos
-		elif thispoint.point_type=='arc':
+		elif thispoint.point_type=='arc' and thispoint.radius>0:
 			# draw an arc between two points or radius radius - they should both have the same radius
 			if nextpoint.point_type=='arcend' and lastpoint.point_type=='arcend':
 				centre=self.findArcCentre(lastpoint.pos,nextpoint.pos, thispoint.radius, thispoint.direction)
@@ -613,17 +613,23 @@ class Path(object):
 			if do:
 				segment_array.append(Arc(V(thispoint.pos[0]-thispoint.radius, thispoint.pos[1]),V(thispoint.pos[0]+thispoint.radius, thispoint.pos[1]), thispoint.pos,d))
 				segment_array.append(Arc(V(thispoint.pos[0]+thispoint.radius, thispoint.pos[1]),V(thispoint.pos[0]-thispoint.radius, thispoint.pos[1]), thispoint.pos,d))
+			frompoint = V(thispoint.pos[0]-thispoint.radius, thispoint.pos[1])
 		return frompoint
 
 	def findArcCentre(self,frompos, topos, radius, direction):
 		l=(topos-frompos)/2
+		
 		if l.length()>radius*2:
 			print "ERROR arc radius less than distance to travel"
 		if direction=='cw':
 			a=90
 		else:
 			a=-90
-		return (topos+frompos)/2+rotate(l.normalize(),a)*radius
+		if radius-l.length()<0.0001:
+			return (topos+frompos)/2
+		else:
+			d=math.sqrt(radius**2-l.length()**2)
+			return (topos+frompos)/2+rotate(l.normalize(),a)*d
 
 	def otherDir(self,direction):
 		if direction=='cw':
@@ -689,7 +695,6 @@ class Path(object):
 		return point+rvec
 
 	def offset_path(self,side,distance, config):
-		print "offset_path"
 		newpath=copy.deepcopy(self)
 		newpath.points=[]
 		thisdir=self.find_direction(config)
@@ -755,6 +760,8 @@ class Path(object):
 			if t:
 				newpath.points.append(t)
 		return newpath
+
+
 	def offset_point(self, thispoint, beforelastpoint, lastpoint, nextpoint, afternextpoint, frompos, topos, side,distance, thisdir):
 		t=copy.copy(thispoint)
 		cross=(thispoint.pos-lastpoint.pos).cross(nextpoint.pos-thispoint.pos)[2]
@@ -807,9 +814,10 @@ class Path(object):
 				return False
 			else:
 				t.radius=0.05;
+
 		elif thispoint.point_type=='arcend':
 			# PROBLEM doesn't work if lastpoint was a outcurve...
-			if lastpoint=='arc':
+			if lastpoint.point_type=='arc':
 				c=self.findArcCentre(beforelastpoint.pos, thispoint.pos, lastpoint.radius, lastpoint.direction)
 				rvec=(thispoint.pos-c).normalize()
 				if lastpoint.direction=='cw':
@@ -818,9 +826,9 @@ class Path(object):
 					a=90
 				invec=rotate(rvec,a)
 			else:
-				invec=thispoint.pos-lastpoint.pos
+				invec=(thispoint.pos-lastpoint.pos).normalize()
 
-			if nextpoint=='arc':
+			if nextpoint.point_type=='arc':
 				c=self.findArcCentre(thispoint.pos, afternextpoint.pos, nextpoint.radius, nextpoint.direction)
 				rvec=(thispoint.pos-c).normalize()
 				if nextpoint.direction=='cw':
@@ -829,10 +837,21 @@ class Path(object):
 					a=90
 				outvec=rotate(rvec,a)
 			else:
-				outvec=nextpoint.pos-lastpoint.pos	
-			t.pos = self.offset_move_point(thispoint.pos, thispoint.pos-invec, thispoint.pos+outvec, frompos, topos, side, distance)
-		elif thispoint.point_type=='arc':
-			if side=='left' and thispoint.direction=='cw' or side=='right' and thispoint.direction=='ccw':
+				outvec=(nextpoint.pos-thispoint.pos).normalize()
+			cross=(invec).cross(outvec)[2]
+		        a=-(invec+outvec)
+                	angle=math.atan2(invec[1], invec[0])-math.atan2(outvec[1], outvec[0])
+			if angle<0:
+				sgn=-1
+			else:
+				sgn=1
+                	if cross<0 and side=='left' or cross>0 and side=='right':
+                        	corner='external'
+                	else:
+                        	corner='internal'
+			t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, thispoint.pos-invec, thispoint.pos+outvec, side, distance/math.cos(angle/2)*sgn)
+		elif thispoint.point_type=='arc' and thispoint.radius>0:
+			if (side=='left' and thispoint.direction=='cw' or side=='right' and thispoint.direction=='ccw') != self.mirrored:
 				t.radius+=distance
 			else:
 				if t.radius>distance:
@@ -852,6 +871,8 @@ class Path(object):
 		# Find average direction of two vectors
 		avvec=(vecin-vecout).normalize()
 		# then rotate it 90 degrees towards the requested side
+		if avvec.length()<0.001:
+			return rotate(vecin,a)+thispos
 		return -avvec*distance+thispos
 #		return rotate(avvec*distance,a)*2+thispos
 
@@ -906,6 +927,7 @@ class Path(object):
 			else:
 				return -1
 		elif other.obType=="Path" or other.obType=="Part":
+
 			if other.obType=="Part":
 				otherpolygon = other.border.polygonise()
 			else:
@@ -1099,12 +1121,10 @@ class Path(object):
 		if 'finishing' in config and config['finishing']>0:
 			if 'partial_fill' not in config or config['partial_fill']==None or config['partial_fill']==False:
 				config['partial_fill']=config['finishing']
-				print "CONFIGSIDE"+str(config['side'])
 				if config['side']=='out':
 					config['fill_direction']='out'
 				else:
 					config['fill_direction']='in'
-				print "fill_direction"+config['fill_direction']
 				#if c['side']=='out':
 				c['z1']=c['z1']+1
 				finalpass=True
@@ -1140,6 +1160,14 @@ class Path(object):
 # need to break circles into 2 arcs
 
 			fillpath=copy.deepcopy(thepath)
+			if(numpasses>0 and fillpath.points[0].point_type=='circle'):
+					
+					p=fillpath.points[0]
+					fillpath.points=[]
+					fillpath.add_point(p.pos-V(p.radius,0), point_type='arc',  radius=p.radius, direction='cw')
+					fillpath.add_point(p.pos+V(p.radius,0), point_type='arcend')
+					fillpath.add_point(p.pos, point_type='arc',radius=p.radius, direction='cw')
+					fillpath.add_point(p.pos-V(p.radius,0), point_type='arcend')
 			if fillpath.find_direction(c)!=config['direction']:
 				reverse=True
 				fillpath.points=fillpath.points[::-1]
@@ -1149,6 +1177,7 @@ class Path(object):
 			if numpasses>0:
 #(pointlist, p+1, self.closed)
 #				frompoint=self.segment_point(lastpoint, beforelastpoint, thispoint,beforebeforelastpoint,nextpoint, segment_array, False, False, config)
+			# if it is a circle we need to split it into 2 arcs to be able to fill properly
 				fillpath.output_path(config)
 				frompos=self.get_frompos(fillpath.points, fillpath.Fsegments, -1, c)
 				if frompos!=fillpath.points[-1].pos:
@@ -1159,8 +1188,6 @@ class Path(object):
 				
 			for d in range(0,int(numpasses)):
 				temppath=thepath.offset_path(ns, step*(d+1), c)
-				for p in temppath.points:
-					print p.pos
 				temppath.output_path(config)
 				frompos=self.get_frompos(temppath.points, temppath.Fsegments, -1, c)
 				if frompos!=temppath.points[-1].pos:
@@ -1169,7 +1196,6 @@ class Path(object):
 					temppath.points[-1].point_type='sharp'
 	                       	temppath.prepend_point(frompos,'sharp')
 #				if temppath.find_direction(c)==fillpath.find_direction(c):
-				print "REVERSE"+str(reverse)
 				if reverse:
 					fillpath.add_points(temppath.points,'start')
 				else:
@@ -1781,6 +1807,7 @@ class Part(object):
 			pconfig = self.parent.get_config()
 		else:
 			pconfig = False
+		
 		config = {}
 		if pconfig is None or pconfig is False or pconfig['transformations'] is None:
 			config['transformations']=[]
@@ -1888,10 +1915,7 @@ class Part(object):
 	def get_layers(self):
 		layers={}
 		for part in self.parts:
-			if hasattr(part,'name'):
-				print str(part.name)+str(type(part))
-			else:
-				print type(part)
+			
 			# find all the contents of layers
 			part.mode=self.mode
 			ls=part.get_layers()

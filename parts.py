@@ -7,15 +7,14 @@ class Switch(Part):
 		if 'layer_config' not in config or type(config['layer_config']) is not dict:
 			config['layer_config']={'base':'clearance', 'perspex':'doubleflat'}
 		if 'switch_type' not in config:
-			config['swtich_type'] = 'IWS_small'
-		
+			config['switch_type'] = 'IWS_small'
 		if config['switch_type'] == 'IWS_small':
 			for l in config['layer_config'].keys():
 				task =  config['layer_config'][l]
 				if task=='clearance':
 					self.add_path(Hole(pos, rad=19/2), layers=l)
 				if task=='doubleflat':
-					self.add_path(DoubleFlat(pos,rad=13.6/2, flat_rad=12.9/2))
+					self.add_path(DoubleFlat(pos,13.6/2, 12.9/2))
 				if task=='minimal':
 					self.add_path(Hole(pos, rad=18/2, z1=-2 ), layers=l)
 					self.add_path(Hole(pos, rad=14/2 ), layers=l)
@@ -31,13 +30,15 @@ class Knob(Part):
 		if config['knob_type'] == 'stepper':
 			for l in config['layer_config'].keys():
 				task =  config['layer_config'][l]
+				print "knob"+l
 				if task=='stepper_mount':
-					self.add_path(Stepper(pos, 'NEMA1.4', mode='stepper'),l)
+					print self.add_path(Stepper(pos, 'NEMA1.4', mode='stepper', layer=l))
 				if task=='shaft':
-					self.add_path(Stepper(pos, 'NEMA1.4', mode='justshaft'),l)
+					print self.add_path(Stepper(pos, 'NEMA1.4', mode='justshaft', layer=l))
 
-class Stepper(Pathgroup):
-	def __init__(self,pos, stepper_type, **config):
+class Stepper(Part):
+	def __init__(self,pos, stepper_type,layer, **config):
+		self.init(config)
 		dat={
 			'NEMA0.8':{
 				'bolt_size':'M3',
@@ -82,18 +83,20 @@ class Stepper(Pathgroup):
 				'pilot_depth':2,
 			},
 		}
+		self.add_path(Hole(pos, rad=10))
 		d=dat[stepper_type]
 		if 'mode' in config and config['mode']=='justshaft':
-			self.add_path(Hole(pos, rad=d['shaft_diam']/2+1))
+			self.add_path(Hole(pos, rad=d['shaft_diam']/2+1),layer)
 		else:	
-			self.add_path(Hole(pos+V(d['bolt_sep']/2,d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2))
-			self.add_path(Hole(pos+V(d['bolt_sep']/2,-d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2))
-			self.add_path(Hole(pos+V(-d['bolt_sep']/2,-d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2))
-			self.add_path(Hole(pos+V(-d['bolt_sep']/2,d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2))
+			self.add_path(Hole(pos+V(d['bolt_sep']/2,d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2),layer)
+			self.add_path(Hole(pos+V(d['bolt_sep']/2,-d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2),layer)
+			self.add_path(Hole(pos+V(-d['bolt_sep']/2,-d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2),layer)
+			self.add_path(Hole(pos+V(-d['bolt_sep']/2,d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2),layer)
 		
 			self.add_path(Hole(pos, rad=d['shaft_diam']/2+1))
-			self.add_path(Hole(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5, partial_fill=d['pilot_diam']/2, fill_direction='in'))
-
+			#self.add_path(Hole(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5, partial_fill=d['pilot_diam']/2-1, fill_direction='in'))
+		print pos
+		print self.paths	
 
 
 class RoundShaftSupport(Pathgroup):
@@ -127,7 +130,6 @@ class RoundShaftSupport(Pathgroup):
 			self.add_path(Hole(pos+V(0,d['B']/2), rad = milling.bolts[d['bolt']]['clearance']/2))
 			self.add_path(Hole(pos+V(0,-d['B']/2), rad = milling.bolts[d['bolt']]['clearance']/2))
 			self.add_path(ClearRect(pos, centred=True, width=d['L']+0.4, height=d['W']+0.4, partial_fill=(d['L']+0.4)/2, fill_direction='in'))
-	
 class LinearBearing(Pathgroup):
 	def __init__(self,pos, bearing_type, mode,  **config):
 		self.init(config)
@@ -193,5 +195,10 @@ class LoadCell(Part):
 				self.add_path(Hole(pos+V(d['s'],0), rad=milling.bolts[d['h']]['clearance']/2), l)
 				if 's2' in d:
 					self.add_path(Hole(pos+V(d['s']-(d['s']-d['s2'])/2,0), rad=milling.bolts[d['h']]['clearance']/2), l)
-				
+			if mode=='whole_counterbore':
+				print "WHOLE COUNTERBORE"+str(l)
+				if('whole_counterbore' in config and config['whole_counterbore']):	
+					self.add_path(ClearRect(pos+V(d['l']/2-e,0), width=d['l']+4, height=d['w']+4, z1=config['whole_counterbore'], partial_fill=d['w']/2-1, fill_direction='in', centred=True),l)
+				else:
+					self.add_path(ClearRect(pos+V(d['l']/2-e,0), width=d['l']+4, height=d['w']+4, centred=True),l)
 
