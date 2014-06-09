@@ -106,6 +106,21 @@ class Circle(Path):
 		self.add_point(pos,'circle',rad)
 		self.comment("Circle")
 		self.comment("pos="+str(pos)+" rad="+str(rad))
+
+
+class DoubleFlat(Path):
+	def __init__(self, pos, rad, flat_rad, **config):
+		"""Cut a circle with two flats, centred at :param pos: with radius :param rad: and :param flat_rad: is half the distance between the flats"""
+		self.init(config)
+		self.closed=True
+		y=math.sqrt(rad**2 - flat_rad**2)
+		self.add_point(pos+V(flat_rad, y), direction='ccw', point_type='arcend')
+		self.add_point(pos, radius=rad, point_type='arc')
+		self.add_point(pos+V(-flat_rad,y), point_type='arcend')
+		self.add_point(pos+V(-flat_rad,-y), point_type='arcend')
+		self.add_point(pos, radius=rad, direction='ccw', point_type='arc')
+		self.add_point(pos+V(flat_rad, -y), point_type='arcend')
+
 class Cross(Pathgroup):
 	def __init__(self, pos, rad, **config):
 		self.init(config)
@@ -209,6 +224,18 @@ class FourScrews(Part):
 class Bolt(Part):
 	def __init__(self,pos,thread='M4',head='button', length=10, **config):
 		self.init(config)
+		if 'insert_layer' in config:
+			insert_layer = config['insert_layer']
+		else:
+			insert_layer = 'base'
+		if 'clearance_layers' in config:
+			clearance_layers = config['clearance_layers']
+		else:
+			clearance_layers = 'perspex'
+		if 'head_layer' in config:
+			head_layer = config['head_layer']
+		else:
+			head_layer = 'top'
 		if thread in milling.bolts:
 			if 'insert_type' in config and config['insert_type'] in milling.inserts[thread]:
 				insert=milling.inserts[thread][config['insert_type']]
@@ -216,13 +243,13 @@ class Bolt(Part):
 				insert=milling.inserts[thread]
 
 			for i,diam in enumerate(insert['diams']):
-				self.add_path(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),'base')
+				self.add_path(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),insert_layer)
 
-			self.add_path(Hole(pos, (milling.bolts[thread]['clearance']+1)/2, side='in'),'perspex')
+			self.add_path(Hole(pos, (milling.bolts[thread]['clearance']+1)/2, side='in'),clearance_layers)
 			if(head=='countersunk'):
-				self.add_path(Countersink(pos, milling.bolts[thread]['clearance'], milling.bolts[thread]['countersunk']['diam']/2, config),'top')
+				self.add_path(Countersink(pos, milling.bolts[thread]['clearance'], milling.bolts[thread]['countersunk']['diam']/2, config),head_layer)
 			else:
-				self.add_path(Hole(pos, milling.bolts[thread]['clearance'], side='in'),'top')
+				self.add_path(Hole(pos, milling.bolts[thread]['clearance']/2, side='in'),head_layer)
 			self.add_path(Hole(pos, milling.bolts[thread]['tap'], side='in'),'back')
 
 class FingerJointMid(Pathgroup):
@@ -420,17 +447,6 @@ class FingerJointBoxSide(Path):
 		self.comment("FingerJointBoxSide")
 
 
-class DoubleFlat(Path):
-	def __init__(self, pos, rad, flat_rad, **config):
-		self.init(config)
-		self.closed=True
-		y=math.sqrt(rad**2 - flat_rad**2)
-		self.add_point(pos+V(flat_rad, y), direction='ccw', point_type='arcend')
-		self.add_point(pos, radius=rad, point_type='arc')
-		self.add_point(pos+V(-flat_rad,y), point_type='arcend')
-		self.add_point(pos+V(-flat_rad,-y), point_type='arcend')
-		self.add_point(pos, radius=rad, direction='ccw', point_type='arc')
-		self.add_point(pos+V(flat_rad, -y), point_type='arcend')
 
 class Module(Plane):
 	def __init__(self, size,  **config):#holesX=False, holesY=False, fromedge=15, fromends=40):

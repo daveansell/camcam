@@ -1926,7 +1926,7 @@ class Part(object):
 						layers[l]=[]
 					# if the part should be copied, copy its parts which aren't in its core layer
 					# This means you can add an object in lots of places and mounting holes will be drilled
-					if not hasattr(part,'layer') or part.layer==False or l!=part.layer or milling.mode_config[self.callmode]['overview']:
+					if not hasattr(part,'layer') or part.layer==False or l!=part.layer or hasattr(self, 'callmode') and milling.mode_config[self.callmode]['overview']:
 						for copytrans in part.copies:
 							for p in ls[l]:
 								t=copy.deepcopy(p)

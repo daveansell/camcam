@@ -196,7 +196,6 @@ class LoadCell(Part):
 				if 's2' in d:
 					self.add_path(Hole(pos+V(d['s']-(d['s']-d['s2'])/2,0), rad=milling.bolts[d['h']]['clearance']/2), l)
 			if mode=='whole_counterbore':
-				print "WHOLE COUNTERBORE"+str(l)
 				if('whole_counterbore' in config and config['whole_counterbore']):	
 					self.add_path(ClearRect(pos+V(d['l']/2-e,0), width=d['l']+4, height=d['w']+4, z1=config['whole_counterbore'], partial_fill=d['w']/2-1, fill_direction='in', centred=True),l)
 				else:
