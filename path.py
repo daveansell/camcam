@@ -41,6 +41,7 @@ arg_meanings = {'order':'A field to sort paths by',
 		'finishing':'add a roughing pass this far out ',
 		'fill_direction':'direction to fill towards',
 		'precut_z':'the z position the router can move dow quickly to',
+		'ignore_border':'Do not just accept paths inside border',
 }
 def V(x=False,y=False,z=False):
 	if x==False:
@@ -1776,7 +1777,7 @@ class Part(object):
 		self.comments = []
 		self.parent=False
 		self.internal_borders=[]
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in config:
@@ -2075,7 +2076,7 @@ class Plane(Part):
 			
 		# if the path is within the bounds of the part then render it
 			if path.obType=="Path" or path.obType=="Part":
-				if not hasattr(part, 'border') or part.border is None or part.contains(path)>-1 or hasattr(path,'is_border') and path.is_border:
+				if not hasattr(part, 'border') or part.border is None or part.ignore_border or  part.contains(path)>-1 or hasattr(path,'is_border') and path.is_border:
 					(k,pa)=path.render(config)
 					if self.modeconfig['group'] is False:
 						k=c
@@ -2090,7 +2091,7 @@ class Plane(Part):
 					lastcutter=k
 			if path.obType=="Pathgroup":
 				for p in path.get_paths():
-					if not hasattr(part, 'border') or part.contains(p)>-1:
+					if not hasattr(part, 'border') or part.ignore_border or part.contains(p)>-1:
 						(k,pa)=p.render(config)
 						if self.modeconfig['group'] is False:
 							k=c
