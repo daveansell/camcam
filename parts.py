@@ -167,9 +167,10 @@ class LoadCell(Part):
 			'phidget20kg':{'w':12.7, 'l':55.25, 'h':12.7, 's':40, 'h':'M5', 'z':-2},
 			'phidget50kg':{'w':12.7, 'l':55.25, 'h':12.7, 's':40, 'h':'M5', 'z':-2},
 		}
+		d=dat[cell_type]
+		self.dims=d
 		for l in modes.keys():
 			mode=modes[l]	
-			d=dat[cell_type]
 			e=(d['l']-d['s'])/2
 			print "LOAD CELL"+str(mode)+str(pos)
 			if mode=='bottom':
