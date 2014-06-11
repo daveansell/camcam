@@ -63,7 +63,7 @@ class Polygon(Path):
 		"""Cut a regular polygon with radius to the points :param rad: centred at :param pos:, with :param sides: sides with corners of type :param cornertype:\n"""+self.otherargs
                 self.closed=True
 		step=360/sides
-		for i in range(0,sides):
+		for i in range(0,int(sides)):
 			self.add_point(pos+V(rad,0),cornertype,cornerrad,transform={'rotate':[pos,i*step]})
 		self.comment("Polygon")
 		self.comment("pos="+str(pos)+" rad="+str(rad)+" sides="+str(sides)+" cornertype="+cornertype)
@@ -107,6 +107,14 @@ class Circle(Path):
 		self.comment("Circle")
 		self.comment("pos="+str(pos)+" rad="+str(rad))
 
+class FilledCircle(Pathgroup):
+
+	def __init__(self, pos, rad, **config):
+		self.init(config)
+		sides=int(max(8, rad))
+		
+		self.add_path(Polygon(pos, rad, sides, partial_fill=rad-0.5, fill_direction='in', side='in'))
+		self.add_path(Circle(pos, rad, side='in')) 
 
 class DoubleFlat(Path):
 	def __init__(self, pos, rad, flat_rad, **config):

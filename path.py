@@ -1165,10 +1165,14 @@ class Path(object):
 					
 					p=fillpath.points[0]
 					fillpath.points=[]
+					fillpath.add_point(p.pos-V(p.radius,0), point_type='arcend')
 					fillpath.add_point(p.pos-V(p.radius,0), point_type='arc',  radius=p.radius, direction='cw')
 					fillpath.add_point(p.pos+V(p.radius,0), point_type='arcend')
 					fillpath.add_point(p.pos, point_type='arc',radius=p.radius, direction='cw')
 					fillpath.add_point(p.pos-V(p.radius,0), point_type='arcend')
+			print "QQ"
+			for p in fillpath.points:
+				print p.point_type
 			if fillpath.find_direction(c)!=config['direction']:
 				reverse=True
 				fillpath.points=fillpath.points[::-1]
@@ -1207,6 +1211,9 @@ class Path(object):
 #				fillpath.points = fillpath.points[::-1]
 			offpath=thepath
 			thepath=fillpath
+			print "WW"
+			for p in thepath.points:
+				print p.point_type
 		thepath.output_path(c)
 		out += thepath.render_path(thepath,c)
 		if finalpass:
