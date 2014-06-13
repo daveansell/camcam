@@ -6,6 +6,7 @@ import pprint
 import copy
 import collections
 import traceback
+import re
 
 milling=Milling.Milling()
 
@@ -2161,20 +2162,44 @@ class Plane(Part):
 			filename+='_'+str(config['material'])
 		if 'thickness' in config:
 			filename+="_thickness-"+str(config['thickness'])
+		if 'repeatmode' in config:
+			repeatmode=config['repeatmode']
+		else:
+			repeatmode='regexp'
 		if 'repeatx' in config and 'repeaty' in config and 'xspacing' in config and 'yspacing' in config:
 			output2=''
-			for y in range(0,int(config['repeaty'])):
-				output2+='\nG0X0Y0\nG10 L20 P1'+'Y%0.4f'%(float(config['yspacing']))
-				output2+='X%0.4f\n'%(-(float(config['repeatx'])-1)*float(config['xspacing']))
-				c=0
-				for x in range(0,int(config['repeatx'])):
-					if c==0:
-						c=1
-					else:
-						output2+='\nG0X0Y0\nG10 L20 P1'+'X%0.4f'%(float(config['xspacing']))
-						output2+='G54\n'
-					output2+=output
-				
+			if repeatmode=='gcode':
+				for y in range(0,int(config['repeaty'])):
+					output2+='\nG0X0Y0\nG10 L20 P1'+'Y%0.4f'%(float(config['yspacing']))
+					output2+='X%0.4f\n'%(-(float(config['repeatx'])-1)*float(config['xspacing']))
+					c=0
+					for x in range(0,int(config['repeatx'])):
+						if c==0:
+							c=1
+						else:
+							output2+='\nG0X0Y0\nG10 L20 P1'+'X%0.4f'%(float(config['xspacing']))
+							output2+='G54\n'
+						output2+=output
+			elif repeatmode=='regexp':
+				# one approach is to just grep through for all Xnumber or Ynumbers and add an offset. This works as I and J are relative unless we do something cunning
+				xreg=re.compile('X[\d\.-]+')
+				yreg=re.compile('Y[\d\.-]+')
+				for y in range(0,int(config['repeaty'])):
+					for x in range(0,int(config['repeatx'])):
+						tempoutput=output
+						matches = xreg.findall(tempoutput)
+						for match in matches:
+							if len(match):
+								val=float(match[1::])
+								val+=x*float(config['xspacing'])
+								tempoutput=tempoutput.replace(match,'X'+str(val))
+						matches=yreg.findall( tempoutput)
+                                                for match in matches:
+                                                        if len(match):
+                                                                val=float(match[1::])
+                                                                val+=y*float(config['yspacing'])
+                                                                tempoutput=tempoutput.replace(match,'Y'+str(val))
+						output2+=tempoutput
 		#	output2+='\nG10 L2 P1 X0 Y0\n'
 			filename+='_'+str(config['repeatx'])+'x_'+str(config['repeaty'])+'y'
 			output=output2

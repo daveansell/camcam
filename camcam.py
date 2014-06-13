@@ -53,6 +53,8 @@ parser.add_option("-X", "--xspacing", dest="xspacing",
                   help="spacing in x direction")
 parser.add_option("-Y", "--yspacing", dest="yspacing",
                   help="spacing in x direction")
+parser.add_option("-r", "--repeatmode", dest="repeatmode",
+                  help="Repeat mode - can be origin - move the origin, regexp - replace all the X and Y coordinates")
 (options, args) = parser.parse_args()
 config={}
 
@@ -71,7 +73,8 @@ elif options.yspacing and options.repeaty:
 	config['repeaty']=options.repeaty
 	config['xspacing']=1
 	config['repeatx']=1
-	
+if options.repeatmode:
+	config['repeatmode']=options.repeatmode	
 # load all the requested files	
 for arg in args:
 	execfile(arg)
