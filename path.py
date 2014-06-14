@@ -2121,7 +2121,7 @@ class Plane(Part):
 			if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
 				if part.cutter==None:
 					part.cutter=config['cutter']
-				if 1==1 or part.cutter == lastcutter:
+				if not config['sep_border']: #1==1 or part.cutter == lastcutter:
 					if self.modeconfig['mode'] == 'scr':
 						output[k] += "LAYER " + str(self.modeconfig[k])+"\n"
 					if not k in output:
@@ -2156,6 +2156,9 @@ class Plane(Part):
 
 	def writeGcodeFile(self,partName, key, output, config):
 		filename=str(partName)+"_"+str(self.name)+"_"+str(key)
+		if len(config['command_args']):
+			for k in config['command_args'].keys():
+				filename+="_"+k+"-"+config['command_args'][k]	
 		if 'cutter' in config:
 			filename+="_cutter-"+str(config['cutter'])
 		if 'material' in config:

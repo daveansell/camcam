@@ -45,6 +45,9 @@ parser.add_option("-m", "--mode", dest="mode",
 parser.add_option("-l", "--list",
                   action="store_true", dest="listparts", default=False,
                   help="list all parts")
+parser.add_option("-b", "--sep-border",
+                  action="store_true", dest="sep_border", default=False,
+                  help="Create a separate file for the border")
 parser.add_option("-x", "--xreps", dest="repeatx",
                   help="number of times should be repeated in x direction")
 parser.add_option("-y", "--yreps", dest="repeaty",
@@ -55,9 +58,18 @@ parser.add_option("-Y", "--yspacing", dest="yspacing",
                   help="spacing in x direction")
 parser.add_option("-r", "--repeatmode", dest="repeatmode",
                   help="Repeat mode - can be origin - move the origin, regexp - replace all the X and Y coordinates")
+parser.add_option('-o', '--options', dest='options',
+		  help='options for the code - format var=value;var=value')
 (options, args) = parser.parse_args()
 config={}
 
+camcam.command_args={}
+if options.options:
+	for pair in options.options.split(';'):
+		a=pair.split('=')
+		if len(a)>1:
+			camcam.command_args[a[0]]=a[1]
+config['command_args']=camcam.command_args
 if options.xspacing and options.repeatx and options.yspacing and options.repeaty:
 	config['xspacing']=options.xspacing
 	config['repeatx']=options.repeatx
@@ -75,6 +87,10 @@ elif options.yspacing and options.repeaty:
 	config['repeatx']=1
 if options.repeatmode:
 	config['repeatmode']=options.repeatmode	
+if options.sep_border:
+	config['sep_border']=True
+else:
+	config['sep_border']=False
 # load all the requested files	
 for arg in args:
 	execfile(arg)
