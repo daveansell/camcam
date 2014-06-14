@@ -459,7 +459,7 @@ class Milling:
                         "diams":[5,3.05],
                         "depths":[-1,False],
 			'hammer':{
-					"diams":[14.2/2,10/2,5.6/2],
+					"diams":[14.2/2,10/2,5.7/2],
 					"depths":[-1.5,-1.5,False]
 				}
                 },
