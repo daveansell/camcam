@@ -769,6 +769,10 @@ class Path(object):
 		cross=(thispoint.pos-lastpoint.pos).cross(nextpoint.pos-thispoint.pos)[2]
 		a=(-(thispoint.pos-lastpoint.pos).normalize()+(thispoint.pos-nextpoint.pos).normalize())
 		al=a.length()
+		if distance==4:
+			print (thispoint.pos-lastpoint.pos).angle(thispoint.pos-nextpoint.pos)
+		angle2=((thispoint.pos-lastpoint.pos).angle(thispoint.pos-nextpoint.pos)/2-90)*math.pi/180
+#			print math.cos(((thispoint.pos-lastpoint.pos).angle(thispoint.pos-nextpoint.pos)/2-90)*math.pi/180)
 		angle=math.atan2(a[1], a[0])
 		if cross<0 and side=='left' or cross>0 and side=='right':
 			corner='external'
@@ -787,8 +791,12 @@ class Path(object):
 		elif thispoint.point_type=='incurve':
 			if corner=='external':# and side=='out' or corner=='internal' and side=='in':
 				t.radius+=distance
-				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, -distance/abs(math.cos(angle)))
+				if distance==4:
+					print "EXTERNAL ANGLE="+str(angle/math.pi*180)+" cos="+str(abs(math.cos(angle)))+" dist="+str(distance)
+				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, -distance/abs(math.cos(angle2)))
 			else:
+				if distance==4:
+					print "INTERNAL ANGLE="+str(angle/math.pi*180)+" cos="+str(abs(math.cos(angle)))+" dist="+str(distance)
 				if t.radius>distance:
 					t.radius-=distance
 					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
