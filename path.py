@@ -1108,6 +1108,8 @@ class Path(object):
 		out=""
 # Do something about offsets manually so as not to rely on linuxcnc
 		config=self.generate_config(pconfig)
+		if hasattr(self,'__render__') and callable(self.__render__):
+			self.__render__(config)
 		finalpass=False
 		if config['side']=='in' or config['side']=='out':
 			c =copy.copy(config)
@@ -1667,15 +1669,20 @@ class Pathgroup(object):
 					gcode.extend(paths)
 		return gcode
 
-	def get_paths(self):
+	def get_paths(self,config):
 		paths=[]
+		if hasattr(self,'__render__') and callable(self.__render__):
+                        self.__render__(config)
 		for p in self.paths:
 			if p.obType=='Path':
 				paths.append(p)
 			elif p.obType=='Pathgroup':
-				paths.extend(p.get_paths())
+				paths.extend(p.get_paths(config))
 		return paths
 	def render(self, pconfig):
+		if hasattr(self,'__render__') and callable(self.__render__):
+                        self.__render__(pconfig)
+		print self.paths
 		paths = self.output_path( pconfig)
 		ret={}
 		comments=self.get_comments(pconfig['mode'])
@@ -1959,14 +1966,14 @@ class Part(object):
 				layers[l].append(self.paths[l])
 		return layers
 
-	def get_own_paths(self):
+	def get_own_paths(self,config):
                 paths=[]
 		if hasattr(self, 'layer') and self.layer is not False and self.layer  in self.paths:
 	                for p in self.paths[self.layer].paths:
 				if p.obType=='Path':
 					paths.append(p)
 				elif p.obType=='Pathgroup':
-					paths.extend(p.get_paths())
+					paths.extend(p.get_paths(config))
 		paths.extend(self.internal_borders)
                 return paths
 
@@ -2085,7 +2092,7 @@ class Plane(Part):
 		# if it has been set to layer 'all' it should be in here
 		if 'all' in layers:
 			paths.extend(layers['all'])
-		paths.extend(part.get_own_paths())
+		paths.extend(part.get_own_paths(config))
 		
 		# iterate through all the paths in the part's layer
 		for path in paths:
@@ -2106,7 +2113,7 @@ class Plane(Part):
 					output[k]+=''.join(pa)
 					lastcutter=k
 			if path.obType=="Pathgroup":
-				for p in path.get_paths():
+				for p in path.get_paths(config):
 					if not hasattr(part, 'border') or part.ignore_border or part.contains(p)>-1:
 						(k,pa)=p.render(config)
 						if self.modeconfig['group'] is False:

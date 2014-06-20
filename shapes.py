@@ -115,7 +115,96 @@ class FilledCircle(Pathgroup):
 		
 		self.add_path(Polygon(pos, rad, sides, partial_fill=rad-0.5, fill_direction='in', side='in'))
 		self.add_path(Circle(pos, rad, side='in')) 
+class Chamfer(Pathgroup):
+	def __init__(self, path, chamfer_side, **config):
+		if 'chamfer_depth' not in config:
+			self.chamfer_depth=False
+		else:
+			self.chamfer_depth=config['chamfer_depth']
+		if 'chamfer_angle' not in config:
+                        self.chamfer_angle=None
+                else:
+                        self.chamfer_depth=config['chamfer_angle']
+		if 'chamfer_ref' not in config:
+			self.chamfer_ref='top'
+		elif config['chamfer_ref'] in ['top', 'bottom']:
+			self.chamfer_ref=config['chamfer_ref']
+		else:
+			raise('Chamfer: chamfer_ref should be top or bottom')
+		self.chamfer_side=chamfer_side
+		self.init(config)
+		self.chamfer_path=path
+#		self.add_path(path)
+		
+	def __render__(self,config):
+		print "__RENSER"
+		c=self.chamfer_path.generate_config(config)
+		self.paths=[]
+		if self.chamfer_angle==None:
+			if c['cutter'] and 'angle' in milling.tools[c['cutter']]:
+				self.chamfer_angle= milling.tools[c['cutter']]['angle']
+		if 'cutterrad' in c and c['cutterrad']:
+			cutterrad=c['cutterrad']
+			cutter=c['cutter']
+		elif hasattr(self.chamfer_path,'cutter') and self.chamfer_path.cutter is not None:
+			cutterrad=milling.tools[self.path.cutter]['diameter']/2
+			cutter=self.path.cutter
+		else:
+			cutterrad=milling.tools[c['cutter']]['diameter']/2
+			cutter=c['cutter']
+		if 'z0' not in c or c['z0']==None:
+			z0=0
+		else:
+			z0=c['z0']
+		if 'z1' not in c or c['z1']==None:
+			if 'thickness' in c:
+	                        z1=-c['thickness']-0.5
+			else:
+				print "CHamfer: z1 not definined and no thickness"
+				z1=z0
+                else:
+                        z1=c['z1']
+		if self.chamfer_angle==None:
+			if 'angle' in milling.tools[cutter]:
+				self.chamfer_angle=milling.tools[cutter]['angle']
+			else:
+				self.chamfer_angle=45
+				print "Chamfer angel is not set so assuming 45"
 
+		if self.chamfer_depth==False or self.chamfer_depth==None:
+			zdiff= z1-z0
+		else:
+		 	zdiff=-self.chamfer_depth-z0
+		xdiff= zdiff*math.tan(float(self.chamfer_angle)/180*math.pi)
+		print zdiff
+		print xdiff
+		print float(self.chamfer_angle)/180*math.pi
+		if c['stepdown'] is not None:
+			stepdown=c['stepdown']
+		elif 'material' in c and milling.materials[c['material']]:
+			stepdown = milling.materials[c['material']]['stepdown']
+		if zdiff/stepdown > xdiff/ cutterrad*0.8:
+			steps= math.ceil(abs(zdiff/stepdown))
+		else:
+			steps=math.ceil(abs(xdiff/cutterrad*0.8))
+		print "steps:"+str(steps)
+		zstep=zdiff/steps
+		xstep=xdiff/steps
+		if self.chamfer_ref=='bottom':
+			startpath=self.chamfer_path.offset_path(side=self.chamfer_side, distance=xdiff, config=c)
+		else:
+			startpath=self.chamfer_path
+		for i in range(0, int(steps)):
+			tc=copy.copy(c)
+			tc['z0']=(i-1)*-zstep
+			tc['z1']=-i*zstep
+			tc['partial_fill']=xstep*(steps-i)-0.1
+			tc['fill_direction']=self.chamfer_path.otherDir(self.chamfer_side)
+			temp=startpath.offset_path(side=self.chamfer_side, distance=xstep*(steps-i), config=tc)
+			print temp
+			print callable(self.add_path)
+			self.add_path(temp)
+		print self.paths
 class DoubleFlat(Path):
 	def __init__(self, pos, rad, flat_rad, **config):
 		"""Cut a circle with two flats, centred at :param pos: with radius :param rad: and :param flat_rad: is half the distance between the flats"""
