@@ -85,7 +85,7 @@ if :param cutter: is not explicitly specified it will use the countersink cutter
 					self.add_path(Drill(pos,  z1=countersinkrad))
 				# if the requesed countersink is too big, we will have to chop it into chunks
 				elif countersinkrad-holerad>(cutterconfig['diameter']/2-cutter_config['min_rad'])*0.7:
-					steps = math.ceil((countersinkrad-holerad)/((cutterconfig['diameter']/2-cutter_config['min_rad'])*0.7))
+					steps = math.ceil(float(countersinkrad-holerad)/((cutterconfig['diameter']/2-cutter_config['min_rad'])*0.7))
 					step  = (countersinkrad-holerad)/steps
 					for i in reversed(range(0,steps)):
 						self.add_path(Circle(pos, rad=countersinkrad-(cutterconfig['diameter']/2-cutter_config['min_rad'])*0.7-step*i, z1=-(cutterconfig['diameter']/2-cutter_config['min_rad'])*0.7-step*i,cutter=cutter))
@@ -131,13 +131,17 @@ class Chamfer(Pathgroup):
 			self.chamfer_ref=config['chamfer_ref']
 		else:
 			raise('Chamfer: chamfer_ref should be top or bottom')
+		if 'chamfer_offset' in config:
+                        self.chamfer_offset=config['chamfer_offset']
+                else:
+                        self.chamfer_offset=0
+
 		self.chamfer_side=chamfer_side
 		self.init(config)
 		self.chamfer_path=path
 #		self.add_path(path)
 		
 	def __render__(self,config):
-		print "__RENSER"
 		c=self.chamfer_path.generate_config(config)
 		self.paths=[]
 		if hasattr(self, 'cutter') and self.cutter is not None:
@@ -167,9 +171,6 @@ class Chamfer(Pathgroup):
                 else:
                         z1=c['z1']
 		if self.chamfer_angle==None:
-			print cutter
-			print self.cutter
-			print milling.tools[cutter]
 			if 'angle' in milling.tools[cutter]:
 				self.chamfer_angle=milling.tools[cutter]['angle']
 			else:
@@ -181,20 +182,15 @@ class Chamfer(Pathgroup):
 		else:
 		 	zdiff=-self.chamfer_depth-z0
 		xdiff= zdiff*math.tan(float(self.chamfer_angle)/180*math.pi)
-		print zdiff
-		print xdiff
-		print float(self.chamfer_angle)/180*math.pi
 		if c['stepdown'] is not None:
 			stepdown=c['stepdown']
 		elif 'material' in c and milling.materials[c['material']]:
 			stepdown = milling.materials[c['material']]['stepdown']
-		if zdiff/stepdown > xdiff/ cutterrad*0.8:
-			steps= math.ceil(abs(zdiff/stepdown))
-		else:
-			steps=math.ceil(abs(xdiff/cutterrad*0.8))
-		print "steps:"+str(steps)
+		steps=max( math.ceil(abs(float(zdiff)/stepdown)), math.ceil(abs(float(xdiff)/cutterrad*0.8)) )
 		zstep=zdiff/steps
 		xstep=xdiff/steps
+		xoffset=self.chamfer_offset/zdiff*xdiff
+		print "XOFFSET="+str(xoffset)+" CHAMBER_OFFSET="+str(self.chamfer_offset)+ " xdiff+"+str(xdiff)+" zdiff="+str(zdiff)+" steps="+str(steps)+" stepdown="+str(stepdown)
 		if self.chamfer_ref=='bottom':
 			startpath=self.chamfer_path.offset_path(side=self.chamfer_side, distance=xdiff, config=c)
 		else:
@@ -203,12 +199,13 @@ class Chamfer(Pathgroup):
 			tc=copy.copy(c)
 			tc['z0']=(i-1)*-zstep
 			tc['z1']=-i*zstep
-			tc['partial_fill']=xstep*(steps-i)-0.1
-			tc['fill_direction']=self.chamfer_path.otherDir(self.chamfer_side)
-			print "distx="+str(xstep*(steps-i))+" chamferside="+str(self.chamfer_side)
-			temp=startpath.offset_path(side=self.chamfer_side, distance=abs(xstep*(steps-i)), config=tc)
-			print temp
-			print callable(self.add_path)
+			print "z0="+str( tc['z0']) +"z1="+str(tc['z1'])
+#			tc['partial_fill']=xstep*(steps-i)-0.1
+#			tc['fill_direction']=self.chamfer_path.otherDir(self.chamfer_side)
+			print "distx="+str(abs(xstep*(steps-i))+abs(xoffset))+" chamferside="+str(self.chamfer_side)
+			temp=startpath.offset_path(side=self.chamfer_side, distance=abs(xstep*(steps-i))+abs(xoffset), config=tc)
+#			print temp
+#			print callable(self.add_path)
 			self.add_path(temp)
 		print self.paths
 class DoubleFlat(Path):
@@ -246,8 +243,10 @@ class RepeatLine(Part):
 			layers=False
 		"""Repeat :param number: objects of type :param ob: in a line from :param start: to :param end:"""+self.otherargs
                 step=(end-start)/(number-1)
+		print end
+		print start
                 for i in range(0,number):
-                        self.add_path(ob(start+step*i, **args),layers)
+                        print self.add_path(ob(start+step*i, **args),layers)
 		self.comment("RepeatLine")
 		self.comment("start="+str(start)+" end="+str(end)+" number="+str(number))
 
