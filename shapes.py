@@ -192,18 +192,18 @@ class Chamfer(Pathgroup):
 		xoffset=self.chamfer_offset/zdiff*xdiff
 		print "XOFFSET="+str(xoffset)+" CHAMBER_OFFSET="+str(self.chamfer_offset)+ " xdiff+"+str(xdiff)+" zdiff="+str(zdiff)+" steps="+str(steps)+" stepdown="+str(stepdown)
 		if self.chamfer_ref=='bottom':
-			startpath=self.chamfer_path.offset_path(side=self.chamfer_side, distance=xdiff, config=c)
+			startpath=copy.copy(self.chamfer_path.offset_path(side=self.chamfer_side, distance=xdiff, config=c))
 		else:
-			startpath=self.chamfer_path
-		for i in range(0, int(steps)):
+			startpath=copy.copy(self.chamfer_path)
+		for i in range(1, int(steps+1)):
 			tc=copy.copy(c)
-			tc['z0']=(i-1)*-zstep
-			tc['z1']=-i*zstep
+			startpath.z0=0#(i-1)*-zstep
+			startpath.z1=i*zstep
 			print "z0="+str( tc['z0']) +"z1="+str(tc['z1'])
 #			tc['partial_fill']=xstep*(steps-i)-0.1
 #			tc['fill_direction']=self.chamfer_path.otherDir(self.chamfer_side)
-			print "distx="+str(abs(xstep*(steps-i))+abs(xoffset))+" chamferside="+str(self.chamfer_side)
-			temp=startpath.offset_path(side=self.chamfer_side, distance=abs(xstep*(steps-i))+abs(xoffset), config=tc)
+			print "distx="+str(abs(xstep*(steps-i))+abs(xoffset))+" chamferside="+str(self.chamfer_side)+" z1"+str((steps-i)*zstep)
+			temp=startpath.offset_path(side=self.chamfer_side, distance=abs(xstep*(i))+abs(xoffset), config=tc)
 #			print temp
 #			print callable(self.add_path)
 			self.add_path(temp)
@@ -391,9 +391,9 @@ The line defines the
 		if startmode=='on':
 			# cut a bit extra on first tab if the previous tab was off as well
 			if prevmode=='on':
-				self.add_path(ClearRect(bl=start-parallel*thickness+cra+crp, tr=start+along+cutin-cra-crp))
+				self.add_path(ClearRect(bl=start-parallel*thickness+cra+crp, tr=start+along+cutin-cra-crp, direction='cw'))
 			else:
-				self.add_path(ClearRect(bl=start-parallel+cra+crp, tr=start+along+cutin-cra-crp))
+				self.add_path(ClearRect(bl=start-parallel+cra+crp, tr=start+along+cutin-cra-crp, direction='cw'))
 			m='off'
 		else:
 			m='on'
@@ -401,9 +401,9 @@ The line defines the
 			if m=='on':
 				# cut a bit extra on first tab if the next tab was off as well
 				if i==num_tabs and nextmode=='off':
-					self.add_path(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp+parallel*thickness))
+					self.add_path(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp+parallel*thickness, direction='cw'))
 				else:
-					self.add_path(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp))
+					self.add_path(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp, direction='cw'))
 				
 				m='off'
 			else:
@@ -412,6 +412,7 @@ The line defines the
 
 class FingerJointBoxMidSide(Pathgroup):
 	def __init__(self, pos, width, height, corners, sidemodes, tab_length, thickness, cutter,**config):
+		config['direction']='ccw'
 		self.init(config)
 		if 'centred' in config:
 			pos=pos - V(width, height)/2
@@ -583,6 +584,7 @@ class Module(Plane):
 		else:
 			holesX=False
 		if 'base_thickness' in config:
+			print "BASE THICKENSS"+str(config['base_thickness'])
 			base_thickness=config['base_thickness']
 		else:
 			base_thickness=12
