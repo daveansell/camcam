@@ -140,18 +140,20 @@ class Chamfer(Pathgroup):
 		print "__RENSER"
 		c=self.chamfer_path.generate_config(config)
 		self.paths=[]
+		if hasattr(self, 'cutter') and self.cutter is not None:
+			cutter=self.cutter
+		elif 'cutter' in c and c['cutter'] is not None:
+			cutter=c.cutter
+		else: 
+			print "No cutter"
+			cutter=None
 		if self.chamfer_angle==None:
 			if c['cutter'] and 'angle' in milling.tools[c['cutter']]:
 				self.chamfer_angle= milling.tools[c['cutter']]['angle']
 		if 'cutterrad' in c and c['cutterrad']:
 			cutterrad=c['cutterrad']
-			cutter=c['cutter']
-		elif hasattr(self.chamfer_path,'cutter') and self.chamfer_path.cutter is not None:
-			cutterrad=milling.tools[self.path.cutter]['diameter']/2
-			cutter=self.path.cutter
-		else:
-			cutterrad=milling.tools[c['cutter']]['diameter']/2
-			cutter=c['cutter']
+		elif cutter is not None:
+			cutterrad=milling.tools[cutter]['diameter']/2
 		if 'z0' not in c or c['z0']==None:
 			z0=0
 		else:
@@ -165,6 +167,9 @@ class Chamfer(Pathgroup):
                 else:
                         z1=c['z1']
 		if self.chamfer_angle==None:
+			print cutter
+			print self.cutter
+			print milling.tools[cutter]
 			if 'angle' in milling.tools[cutter]:
 				self.chamfer_angle=milling.tools[cutter]['angle']
 			else:
@@ -200,7 +205,8 @@ class Chamfer(Pathgroup):
 			tc['z1']=-i*zstep
 			tc['partial_fill']=xstep*(steps-i)-0.1
 			tc['fill_direction']=self.chamfer_path.otherDir(self.chamfer_side)
-			temp=startpath.offset_path(side=self.chamfer_side, distance=xstep*(steps-i), config=tc)
+			print "distx="+str(xstep*(steps-i))+" chamferside="+str(self.chamfer_side)
+			temp=startpath.offset_path(side=self.chamfer_side, distance=abs(xstep*(steps-i)), config=tc)
 			print temp
 			print callable(self.add_path)
 			self.add_path(temp)
