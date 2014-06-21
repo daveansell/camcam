@@ -291,7 +291,7 @@ class Hole(Pathgroup):
 						c['z1']=config['z1'][len(config['z1'])]
 						self.add_path(Circle(pos, rad[i],  **c))
 				else:
-					self.add_path(Circle(pos, rad[i], config))
+					self.add_path(Circle(pos, rad[i], **config))
 		else:
 			if 'z1' in config and type(config['z1']) is list:
 				print "z1 should only be a list if rad is also  a list "+str(config['z1'])
