@@ -591,11 +591,11 @@ class Module(Plane):
 		if 'insert_type' in config:
 			bolt_config['insert_type']=config['insert_type']
 		#name, material, thickness, z0=0,zoffset=0
-		self.add_layer('perspex',material='perspex',thickness=3,z0=0,zoffset=3)
-		self.add_layer('base',material='plywood', thickness=base_thickness, z0=0,zoffset=0, add_back=True)
+		self.perspex_layer=self.add_layer('perspex',material='perspex',thickness=3,z0=0,zoffset=3)
+		self.base_layer=self.add_layer('base',material='plywood', thickness=base_thickness, z0=0,zoffset=0, add_back=True)
 #		self.add_layer('paper',material='paper',thickness=0.05,z0=0,zoffset=0.05)
 		radius=30
-		if 'orientation' in config:
+		if 'orientation' in config and config['orientation'] in ['landscape', 'portrait']:
 			orientation=config['orientation']
 		else:
 			orientation='landscape'

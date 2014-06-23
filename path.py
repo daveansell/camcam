@@ -1883,6 +1883,8 @@ class Part(object):
 		else:
 			#self.add_path(path,self.layer)
 			self.border=copy.deepcopy(path)
+			if self.border.side==None:
+				self.border.side='in'
 			self.border.parent=self
 			self.is_border=True
 
@@ -2085,6 +2087,7 @@ class Plane(Part):
 			paths=[]
 		# if we are looking at a back layer and we are in a cutting mode then mirror the image
 		if part.layer in self.layers and self.layers[part.layer].config['isback'] is True and config['mirror_backs'] is True:
+			print "isBack****************"
 			if 'transformations' in config and config['transformations'] is list:
 				config['transformations'].insert(0,{'mirror':[V(0,0),'x']})
 			else:
