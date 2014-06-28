@@ -1035,6 +1035,7 @@ class Path(object):
 		if self.mode=='svg' or mode=='laser':
 			return [stepdown,[0]]
 		if self.mode=='gcode' or self.mode=='simplegcode':
+			print "z0="+str(z0)+" z1="+str(z1)
 			minsteps=math.ceil(float(abs(z0-z1))/stepdown)
 			step=(z1-z0)/minsteps
 			ret=[]
