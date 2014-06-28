@@ -102,19 +102,36 @@ class Circle(Path):
 	def __init__(self, pos, rad, **config):
 		self.init( config)
 		"""Cut a circle centre at :param pos: with radius :param rad:"""+self.otherargs
-		self.closed=True
-		self.add_point(pos,'circle',rad)
-		self.comment("Circle")
-		self.comment("pos="+str(pos)+" rad="+str(rad))
+		if rad==0:
+			print "circle of zero radius"
+			raise
+		else:	
+			self.closed=True
+			self.add_point(pos,'circle',rad)
+			self.comment("Circle")
+			self.comment("pos="+str(pos)+" rad="+str(rad))
 
 class FilledCircle(Pathgroup):
 
 	def __init__(self, pos, rad, **config):
 		self.init(config)
-		sides=int(max(8, rad))
+		self.rad=rad
+		self.pos=pos
+#		sides=int(max(8, rad))
 		
-		self.add_path(Polygon(pos, rad, sides, partial_fill=rad-0.5, fill_direction='in', side='in'))
-		self.add_path(Circle(pos, rad, side='in')) 
+#		self.add_path(Polygon(pos, rad, sides, partial_fill=rad-0.5, fill_direction='in', side='in'))
+		self.circle=self.add_path(Circle(pos, rad, side='in'))
+	def __render__(self,config): 
+		c=self.circle.generate_config(config)
+		print c
+                self.paths=[]
+		r=self.rad-c['cutterrad']
+		steps=math.ceil(r/c['cutterrad']/1.2)
+		step=r/steps
+		for i in range(0,int(steps)):
+			print "QQQQ"+str(self.rad-(steps-i)*step)+"steps="+str(steps)
+			print str(self.rad-(steps-i)*step)+" i="+str(i)+" steps-i="+str(steps-i)+" o="+str((steps-i)*step)
+			self.add_path(Circle(self.pos, self.rad-(steps-i)*step, side='in'))
 class Chamfer(Pathgroup):
 	def __init__(self, path, chamfer_side, **config):
 		if 'chamfer_depth' not in config:
