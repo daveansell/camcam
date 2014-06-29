@@ -56,7 +56,6 @@ class ClearRect(Rect):
 			config['cornertype']='clear'
 		self.points=[]	
 		
-		print "pre-render"
 class Polygon(Path):
 	def __init__(self, pos, rad, sides, cornertype='sharp', cornerrad=False, **config):
 		self.init( config)
@@ -123,14 +122,11 @@ class FilledCircle(Pathgroup):
 		self.circle=self.add_path(Circle(pos, rad, side='in'))
 	def __render__(self,config): 
 		c=self.circle.generate_config(config)
-		print c
                 self.paths=[]
 		r=self.rad-c['cutterrad']
 		steps=math.ceil(r/c['cutterrad']/1.2)
 		step=r/steps
 		for i in range(0,int(steps)):
-			print "QQQQ"+str(self.rad-(steps-i)*step)+"steps="+str(steps)
-			print str(self.rad-(steps-i)*step)+" i="+str(i)+" steps-i="+str(steps-i)+" o="+str((steps-i)*step)
 			self.add_path(Circle(self.pos, self.rad-(steps-i)*step, side='in'))
 class Chamfer(Pathgroup):
 	def __init__(self, path, chamfer_side, **config):
@@ -207,7 +203,6 @@ class Chamfer(Pathgroup):
 		zstep=zdiff/steps
 		xstep=xdiff/steps
 		xoffset=self.chamfer_offset/zdiff*xdiff
-		print "XOFFSET="+str(xoffset)+" CHAMBER_OFFSET="+str(self.chamfer_offset)+ " xdiff+"+str(xdiff)+" zdiff="+str(zdiff)+" steps="+str(steps)+" stepdown="+str(stepdown)
 		if self.chamfer_ref=='bottom':
 			startpath=copy.copy(self.chamfer_path.offset_path(side=self.chamfer_side, distance=xdiff, config=c))
 		else:
@@ -216,15 +211,12 @@ class Chamfer(Pathgroup):
 			tc=copy.copy(c)
 			startpath.z0=0#(i-1)*-zstep
 			startpath.z1=i*zstep
-			print "z0="+str( tc['z0']) +"z1="+str(tc['z1'])
 #			tc['partial_fill']=xstep*(steps-i)-0.1
 #			tc['fill_direction']=self.chamfer_path.otherDir(self.chamfer_side)
-			print "distx="+str(abs(xstep*(steps-i))+abs(xoffset))+" chamferside="+str(self.chamfer_side)+" z1"+str((steps-i)*zstep)
 			temp=startpath.offset_path(side=self.chamfer_side, distance=abs(xstep*(i))+abs(xoffset), config=tc)
 #			print temp
 #			print callable(self.add_path)
 			self.add_path(temp)
-		print self.paths
 class DoubleFlat(Path):
 	def __init__(self, pos, rad, flat_rad, **config):
 		"""Cut a circle with two flats, centred at :param pos: with radius :param rad: and :param flat_rad: is half the distance between the flats"""
@@ -260,10 +252,12 @@ class RepeatLine(Part):
 			layers=False
 		"""Repeat :param number: objects of type :param ob: in a line from :param start: to :param end:"""+self.otherargs
                 step=(end-start)/(number-1)
-		print end
-		print start
                 for i in range(0,number):
-                        print self.add_path(ob(start+step*i, **args),layers)
+                	t=self.add_path(ob(start+step*i, **args),layers).paths
+			if 'pibarn' in t:
+				print t['base']
+				print t['base'].paths
+				print t['base'].paths[0].paths
 		self.comment("RepeatLine")
 		self.comment("start="+str(start)+" end="+str(end)+" number="+str(number))
 
@@ -364,7 +358,7 @@ class Bolt(Part):
 			for i,diam in enumerate(insert['diams']):
 				self.add_path(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),insert_layer)
 
-			self.add_path(Hole(pos, (milling.bolts[thread]['clearance']+1)/2, side='in'),clearance_layers)
+			self.add_path(Hole(pos, (milling.bolts[thread]['clearance']+0.5)/2, side='in'),clearance_layers)
 			if(head=='countersunk'):
 				self.add_path(Countersink(pos, milling.bolts[thread]['clearance'], milling.bolts[thread]['countersunk']['diam']/2, config),head_layer)
 			else:
@@ -610,6 +604,7 @@ class Module(Plane):
 		#name, material, thickness, z0=0,zoffset=0
 		self.perspex_layer=self.add_layer('perspex',material='perspex',thickness=3,z0=0,zoffset=3)
 		self.base_layer=self.add_layer('base',material='plywood', thickness=base_thickness, z0=0,zoffset=0, add_back=True)
+		self.pibarn_layer=self.add_layer('pibarn',material='perspex', thickness=6, z0=0,zoffset=30, add_back=False)
 #		self.add_layer('paper',material='paper',thickness=0.05,z0=0,zoffset=0.05)
 		radius=30
 		if 'orientation' in config and config['orientation'] in ['landscape', 'portrait']:

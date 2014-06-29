@@ -794,12 +794,12 @@ class Path(object):
 		elif thispoint.point_type=='incurve':
 			if corner=='external':# and side=='out' or corner=='internal' and side=='in':
 				t.radius+=distance
-				if distance==4:
-					print "EXTERNAL ANGLE="+str(angle/math.pi*180)+" cos="+str(abs(math.cos(angle)))+" dist="+str(distance)
+#				if distance==4:
+#					print "EXTERNAL ANGLE="+str(angle/math.pi*180)+" cos="+str(abs(math.cos(angle)))+" dist="+str(distance)
 				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, -distance/abs(math.cos(angle2)))
 			else:
-				if distance==4:
-					print "INTERNAL ANGLE="+str(angle/math.pi*180)+" cos="+str(abs(math.cos(angle)))+" dist="+str(distance)
+#				if distance==4:
+#					print "INTERNAL ANGLE="+str(angle/math.pi*180)+" cos="+str(abs(math.cos(angle)))+" dist="+str(distance)
 				if t.radius>distance:
 					t.radius-=distance
 					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
@@ -1038,7 +1038,6 @@ class Path(object):
 		if self.mode=='svg' or mode=='laser':
 			return [stepdown,[0]]
 		if self.mode=='gcode' or self.mode=='simplegcode':
-			print "z0="+str(z0)+" z1="+str(z1)
 			minsteps=math.ceil(float(abs(z0-z1))/stepdown)
 			step=(z1-z0)/minsteps
 			ret=[]
@@ -1185,9 +1184,6 @@ class Path(object):
 					fillpath.add_point(p.pos+V(p.radius,0), point_type='arcend')
 					fillpath.add_point(p.pos, point_type='arc',radius=p.radius, direction='cw')
 					fillpath.add_point(p.pos-V(p.radius,0), point_type='arcend')
-			print "QQ"
-			for p in fillpath.points:
-				print p.point_type
 			if fillpath.find_direction(c)!=config['direction']:
 				reverse=True
 				fillpath.points=fillpath.points[::-1]
@@ -1226,9 +1222,6 @@ class Path(object):
 #				fillpath.points = fillpath.points[::-1]
 			offpath=thepath
 			thepath=fillpath
-			print "WW"
-			for p in thepath.points:
-				print p.point_type
 		thepath.output_path(c)
 		out += thepath.render_path(thepath,c)
 		if finalpass:
@@ -1686,17 +1679,23 @@ class Pathgroup(object):
 	def render(self, pconfig):
 		if hasattr(self,'__render__') and callable(self.__render__):
                         self.__render__(pconfig)
-		print self.paths
 		paths = self.output_path( pconfig)
 		ret={}
 		comments=self.get_comments(pconfig['mode'])
 		config=pconfig
 		for path in paths:
-			(k,p)=path.render_path(path,config)
-			if config['mode']=='svg':
-				ret[p[0]]+="<g>\n"+p[1]+"</g>\n"
-			else:
-				ret[p[0]]+= p[1] #path.render_path(path,config)
+			if path.obType=='Path':
+				(k,p)=path.render(pconfig)
+				if config['mode']=='svg':
+					ret[p[0]]+="<g>\n"+p[1]+"</g>\n"
+				else:
+					ret[p[0]]+= p[1] #path.render_path(path,config)
+			elif path.obType=='Pathgroup':
+				for p in path.render(pconfig):
+					if config['mode']=='svg':
+	                                        ret[p[0]]+="<g>\n"+p[1]+"</g>\n"
+					else:
+						ret[p[0]]+= p[1]
 		return ret
 			
 	def render_path(self,path,config):
@@ -1788,7 +1787,12 @@ class Project(object):
 	def add_plane(plane):
 		self.planes[plane.name]=plane
 		self.planes[plane.name].parent=self
-
+class BOM(object):
+	def __init__(self,name, number=1, part_number=False, description=False):
+		self.name=name
+		self.number=number
+		self.part_number=part_number
+		self.description=description
 class Part(object):
 	"""This a part, if it is given a boudary and a layer it can be independantly rendered, if not it is just a collection of pathgroups, which can exist on specific layers
 	"""
@@ -1818,7 +1822,7 @@ class Part(object):
 			self.add_border(config['border'])
 		if not hasattr(self, 'cutoutside'):
 			self.cutoutside = 'front'
-
+		self.bom=[]
 	def __deepcopy__(self,memo):
 		conf={}
 		for v in self.varlist:
@@ -1826,7 +1830,8 @@ class Part(object):
 		ret=type(self)( **conf)
 		ret.parent=copy.copy(self.parent)
 		return ret
-
+	def add_bom(self,name, number, part_number=False, description=False):
+		self.bom.append(BOM(name, number, part_number, description))
 	def comment(self,comment):
 		self.comments.append(str(comment))
 
@@ -2091,7 +2096,6 @@ class Plane(Part):
 			paths=[]
 		# if we are looking at a back layer and we are in a cutting mode then mirror the image
 		if part.layer in self.layers and self.layers[part.layer].config['isback'] is True and config['mirror_backs'] is True:
-			print "isBack****************"
 			if 'transformations' in config and config['transformations'] is list:
 				config['transformations'].insert(0,{'mirror':[V(0,0),'x']})
 			else:

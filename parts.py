@@ -9,6 +9,11 @@ class Switch(Part):
 		if 'switch_type' not in config:
 			config['switch_type'] = 'IWS_small'
 		if config['switch_type'] == 'IWS_small':
+			self.add_bom('IWS small switch', 1, part_number='59-112', description='Red Round Ip67 Mom Switch Solder Term')
+		if config['switch_type'] == 'IWS_small_LED':
+			self.add_bom('IWS small switch LED', 1, part_number='59-411R', description='Red Round Ip67 Mom Switch Solder Term red LED')
+		
+		if config['switch_type'] == 'IWS_small' or  config['switch_type'] == 'IWS_small_LED':
 			for l in config['layer_config'].keys():
 				task =  config['layer_config'][l]
 				if task=='clearance':
@@ -36,6 +41,47 @@ class Knob(Part):
 				if task=='shaft':
 					print self.add_path(Stepper(pos, 'NEMA1.4', mode='justshaft', layer=l))
 
+class Post(Part):
+	def __init__(self, pos, **config):
+		self.init(config)
+		if 'spacing' in config:
+			spacing=config['spacing']
+		else:
+			spacing=20
+
+		if 'orientation' in config and config['orientation']=='x':
+			s=V(0,spacing/2)
+		else:
+			s=V(spacing/2,0)
+		if 'height' in config:
+			height=config['height']
+		else:
+			height=75
+		self.add_bom('wooden post 2x1"x'+str(height)+'mm',1,description='Wooden post for standing module on a table')
+		self.add_path(Hole(pos+s, rad=5/2),'base')
+		self.add_path(Hole(pos-s, rad=5/2), 'base')
+
+class PiBarn(Part):
+	def __init__(self, pos, **config):
+		if('layer' not in config):
+			config['layer']='pibarn'
+		self.init(config)
+		spacing=25
+		if 'x_units' in config:
+			x_units=config['x_units']
+		else:
+			x_units=4
+		if 'y_units' in config:
+                        y_units=config['y_units']
+                else:
+                        y_units=4
+		bolt_conf={'clearance_layers':['pibarn'], 'length':50}
+		print self.add_path(RepeatLine(pos+V(-x_units/2*spacing, -y_units/2*spacing), pos+V(x_units/2*spacing, -y_units/2*spacing), x_units+1, Bolt, bolt_conf)).paths
+		self.add_path(RepeatLine(pos+V(x_units/2*spacing, (-y_units/2+1)*spacing), pos+V(x_units/2*spacing, (y_units/2-1)*spacing), y_units-1, Bolt, bolt_conf))
+		self.add_path(RepeatLine(pos+V(x_units/2*spacing, y_units/2*spacing), pos+V(-x_units/2*spacing, y_units/2*spacing), x_units+1, Bolt, bolt_conf))
+		self.add_path(RepeatLine(pos+V(-x_units/2*spacing, (y_units/2-1)*spacing), pos+V(-x_units/2*spacing, (-y_units/2+1)*spacing), y_units-1, Bolt, bolt_conf))
+		self.add_border(RoundedRect(pos, centred=True, width=x_units*spacing+15, height=x_units*spacing+15, side='out', rad=8))
+		self.add_bom('standoff',4, description='30mm standoff')
 class Stepper(Part):
 	def __init__(self,pos, stepper_type,layer, **config):
 		self.init(config)
