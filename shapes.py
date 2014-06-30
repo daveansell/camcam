@@ -508,8 +508,10 @@ The line defines the
 
 class FingerJointBoxSide(Path):
 	def __init__(self, pos, width, height, side, corners, sidemodes, tab_length, thickness, cutter,**config):
+	#	config['side']='on'
 		self.init(config)
 		self.closed=True
+		self.side='on'
 		if 'fudge' in config:
 			fudge=config['fudge']
 		else:
