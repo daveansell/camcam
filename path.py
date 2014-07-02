@@ -347,6 +347,7 @@ class Path(object):
 		self.output=[]
 		self.parent=False
 		self.comment("start:"+str(type(self)))
+		self.is_copy=False
 	
 	def __deepcopy__(self,memo):
 		obj_copy = object.__new__(type(self))
@@ -1069,6 +1070,8 @@ class Path(object):
 	                                config[v]=pconfig[v]
 				else:
 					config[v]=None
+		if self.is_copy:
+			print "Q"+str(config['transformations'])
 		return config
 
 	def generate_config(self, pconfig):
@@ -1587,6 +1590,7 @@ class Pathgroup(object):
 		self.output=[]
 		self.parent=False
 		self.comments=[]
+		self.is_copy=False
 
 	def __deepcopy__(self,memo):
 		conf={}
@@ -1596,6 +1600,9 @@ class Pathgroup(object):
 				setattr(ret, v, copy.deepcopy(getattr(self,v),memo))
 #			conf[v]=copy.deepcopy(getattr(self,v),memo)
 #		ret.parent=copy.copy(self.parent)
+		ret.paths=copy.deepcopy(self.paths)
+		for p in ret.paths:
+			p.parent=ret
 		return ret
 
 	def get_config(self):
@@ -1807,6 +1814,7 @@ class Part(object):
 		self.layer = False
 		self.comments = []
 		self.parent=False
+		self.is_copy=False
 		self.internal_borders=[]
 		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border']
 		self.otherargs=''
@@ -1829,12 +1837,15 @@ class Part(object):
 			conf[v]=copy.deepcopy(getattr(self,v),memo)
 		ret=type(self)( **conf)
 		ret.parent=copy.copy(self.parent)
+		for p in ret.paths:
+			p.parent=ret
+		for p in ret.parts:
+			p.parent=ret
 		return ret
 	def add_bom(self,name, number, part_number=False, description=False):
 		self.bom.append(BOM(name, number, part_number, description))
 	def comment(self,comment):
 		self.comments.append(str(comment))
-
 	def get_config(self):
 		if self.parent is not False:
 			pconfig = self.parent.get_config()
@@ -1855,7 +1866,6 @@ class Part(object):
 					config[v]=getattr(self,v)
 				else:
 					config[v]=None
-
 		return config
 	# is this a part we can render or just a multilayer pathgroup	
 	def renderable(self):
@@ -1964,6 +1974,7 @@ class Part(object):
 						for copytrans in part.copies:
 							for p in ls[l]:
 								t=copy.deepcopy(p)
+								t.is_copy=True		
 								t.transform=copytrans
 								layers[l].append(t)
 					#if not hasattr(part,'layer') or part.layer==False or l!=part.layer:# or milling.mode_config[self.mode]['overview']:
