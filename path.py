@@ -2195,7 +2195,7 @@ class Plane(Part):
 		filename=str(partName)+"_"+str(self.name)+"_"+str(key)
 		if len(config['command_args']):
 			for k in config['command_args'].keys():
-				filename+="_"+k+"-"+config['command_args'][k]	
+				filename=k+"_"+filename+"-"+config['command_args'][k]	
 		if 'cutter' in config:
 			filename+="_cutter-"+str(config['cutter'])
 		if 'material' in config:

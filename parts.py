@@ -37,9 +37,9 @@ class Knob(Part):
 				task =  config['layer_config'][l]
 				print "knob"+l
 				if task=='stepper_mount':
-					print self.add_path(Stepper(pos, 'NEMA1.4', mode='stepper', layer=l))
+					print self.add_path(Stepper(pos, 'NEMA1.7', mode='stepper', layer=l))
 				if task=='shaft':
-					print self.add_path(Stepper(pos, 'NEMA1.4', mode='justshaft', layer=l))
+					print self.add_path(Stepper(pos, 'NEMA1.7', mode='justshaft', layer=l))
 
 class Post(Part):
 	def __init__(self, pos, **config):

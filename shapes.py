@@ -126,7 +126,8 @@ class FilledCircle(Pathgroup):
 		r=self.rad-c['cutterrad']
 		steps=math.ceil(r/c['cutterrad']/1.2)
 		step=r/steps
-		for i in range(0,int(steps)):
+		for i in range(0,int(steps)+1):
+			print str(self.rad)+" "+str(self.rad-(steps-i)*step)+" "+str(i)
 			self.add_path(Circle(self.pos, self.rad-(steps-i)*step, side='in'))
 class Chamfer(Pathgroup):
 	def __init__(self, path, chamfer_side, **config):
