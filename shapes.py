@@ -110,6 +110,22 @@ class Circle(Path):
 			self.comment("Circle")
 			self.comment("pos="+str(pos)+" rad="+str(rad))
 
+class RoundSpeakerGrill(Pathgroup):
+	def __init__(self,pos, rad, holerad, spacing, **config):
+		self.init(config)
+		yspacing=spacing*math.cos(math.pi/6)
+		numholesx = int(math.ceil(rad/spacing)+1)
+		numholesy = int(math.ceil(rad/yspacing))
+		for x in range(-numholesx,numholesx):
+			for y in range(-numholesy,numholesy):
+				if y%2:
+					p=V(x*spacing, y*yspacing)
+				else:
+					p=V((x+0.5)*spacing, y*yspacing)
+				if p.length()<rad-holerad:
+					self.add_path(Hole(pos+p, rad=holerad))
+
+
 class FilledCircle(Pathgroup):
 
 	def __init__(self, pos, rad, **config):
