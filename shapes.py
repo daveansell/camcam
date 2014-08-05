@@ -354,6 +354,7 @@ class FourScrews(Part):
 class Bolt(Part):
 	def __init__(self,pos,thread='M4',head='button', length=10, **config):
 		self.init(config)
+		self.add_bom("Machine screw", 1, str(length)+"mm "+str(thread)+" "+str(head),'')
 		if 'insert_layer' in config:
 			insert_layer = config['insert_layer']
 		else:
@@ -371,7 +372,7 @@ class Bolt(Part):
 				insert=milling.inserts[thread][config['insert_type']]
 			else:
 				insert=milling.inserts[thread]
-
+			self.add_bom("Wood insert", 1, str(thread)+"insert",'')
 			for i,diam in enumerate(insert['diams']):
 				self.add_path(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),insert_layer)
 
@@ -596,6 +597,7 @@ class Module(Plane):
 :param no_holdowns: if True no holdowns
 """
 		self.init('module',V(0,0),V(0,0),config)
+		self.bom=[]
 		bolt_config={}
 		if('fromends' in config):
 			fromends=config['fromemds']
@@ -614,14 +616,19 @@ class Module(Plane):
 		else:
 			holesX=False
 		if 'base_thickness' in config:
-			print "BASE THICKENSS"+str(config['base_thickness'])
 			base_thickness=config['base_thickness']
 		else:
 			base_thickness=12
+		if 'perspex_thickness' in config:
+			perspex_thickness=config['perspex_thickness']
+			if perspex_thickness>3:
+				bolt_config['length']=16
+		else:
+			perspex_thickness=12
 		if 'insert_type' in config:
 			bolt_config['insert_type']=config['insert_type']
 		#name, material, thickness, z0=0,zoffset=0
-		self.perspex_layer=self.add_layer('perspex',material='perspex',thickness=3,z0=0,zoffset=3)
+		self.perspex_layer=self.add_layer('perspex',material='perspex',thickness=perspex_thickness,z0=0,zoffset=3)
 		self.base_layer=self.add_layer('base',material='plywood', thickness=base_thickness, z0=0,zoffset=0, add_back=True)
 		self.pibarn_layer=self.add_layer('pibarn',material='perspex', thickness=6, z0=0,zoffset=30, add_back=False)
 #		self.add_layer('paper',material='paper',thickness=0.05,z0=0,zoffset=0.05)

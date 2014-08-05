@@ -202,6 +202,8 @@ class Insert(Pathgroup):
 	def __init__(self, pos, insert_size, **config):
 		"""Standard wood insert at pos"""
 		self.init(config)
+                self.add_bom("Wood insert", 1, str(insert_size)+"insert",'')
+
 		if insert_size in milling.inserts:
 			if 'insert_type' in config and config['insert_type'] in milling.inserts[insert_size]:
 				insert=milling.inserts[insert_size][config['insert_type']]

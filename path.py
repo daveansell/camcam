@@ -43,6 +43,9 @@ arg_meanings = {'order':'A field to sort paths by',
 		'fill_direction':'direction to fill towards',
 		'precut_z':'the z position the router can move dow quickly to',
 		'ignore_border':'Do not just accept paths inside border',
+		'material_shape':'shape the raw material is - flat, rod, tube, square_rod, square_tube',
+		'material_length':'length of raw material needed', 
+		'material_diameter':'diameter of raw material',
 }
 def V(x=False,y=False,z=False):
 	if x==False:
@@ -345,6 +348,9 @@ class Path(object):
 		self.start=False
 		self.extents= {}	
 		self.output=[]
+		self.boundingBox={}
+		self.polygon={}
+		self.changed={}
 		self.parent=False
 		self.comment("start:"+str(type(self)))
 		self.is_copy=False
@@ -432,8 +438,10 @@ class Path(object):
 
 	def add_point(self,pos, point_type='sharp', radius=0, cp1=False, cp2=False, direction=False, transform=False):
 		self.points.append(Point(pos, point_type, radius,cp1, cp2, direction, transform))
+		self.has_changed()
 	def prepend_point(self,pos, point_type='sharp', radius=0, cp1=False, cp2=False, direction=False, transform=False):
 		self.points.insert(0,Point(pos, point_type, radius,cp1, cp2, direction, transform))
+		self.has_changed()
 	def add_points(self,points, end='end'):
 		for p in points:
 			if type(p) is Point:
@@ -443,6 +451,10 @@ class Path(object):
 					self.points.insert(0,p)
 			else:
 				print "add_points - adding a non-point"
+		self.has_changed()
+	def has_changed(self):
+		for c in self.changed.keys():
+			self.changed[c]=True
 	def transform_pointlist(self, pointlist,transformations):
 		pout=[]
 		for p in pointlist:
@@ -928,18 +940,40 @@ class Path(object):
 	def polygonise(self,resolution=5):
 		ret=[]
 		self.Fsegments=[]
-		config=self.generate_config({'cutterrad':0})
-		self.make_segments('cw',self.Fsegments,config)
-		for s in self.Fsegments:
-			ret.extend(s.polygon(resolution))
-		return ret
- 
+		if resolution in self.polygon and (resolution not in self.changed or self.changed[resolution]==False):
+			return self.polygon[resolution]
+		else:
+			config=self.generate_config({'cutterrad':0})
+			self.make_segments('cw',self.Fsegments,config)
+			for s in self.Fsegments:
+				ret.extend(s.polygon(resolution))
+			for p in ret:
+				if 'bl' not in self.boundingBox:
+					self.boundingBox={'bl':[1000000000,1000000000],'tr':[-1000000000,-1000000000]}
+				self.boundingBox['bl'][0]=min(self.boundingBox['bl'][0],p[0])
+				self.boundingBox['bl'][1]=min(self.boundingBox['bl'][1],p[1])
+				self.boundingBox['tr'][0]=max(self.boundingBox['tr'][0],p[0])
+				self.boundingBox['tr'][1]=max(self.boundingBox['tr'][1],p[1])
+			self.polygon[resolution]=ret
+			self.changed[resolution]=False
+			return ret
+
+	def in_bounding_box(self,point):
+		return point[0]>=self.boundingBox['bl'][0] and point[1]>=self.boundingBox['bl'][1] and point[0]<=self.boundingBox['tr'][0] and point[1]<=self.boundingBox['tr'][1]
+	def intersect_bounding_box(self,bbox):
+		if self.in_bounding_box(bbox['tr']) or self.in_bounding_box(bbox['bl']) or self.in_bounding_box([bbox['tr'][0],bbox['bl'][1]]) or self.in_bounding_box([bbox['bl'][0],bbox['tr'][1]]):
+			return True
+		else:
+			return False
+
+
 	def contains(self,other):
 		if other.obType=="Point":
-			if self.contains_point(other, thispolygon):
-				return 1
-			else:
-				return -1
+			if self.in_bounding_box(other):
+				if self.contains_point(other, this.polygon):
+					return 1
+				else:
+					return -1
 		elif other.obType=="Path" or other.obType=="Part":
 
 			if other.obType=="Part":
@@ -947,6 +981,8 @@ class Path(object):
 			else:
 				otherpolygon = other.polygonise()
 			thispolygon = self.polygonise()
+			if not self.intersect_bounding_box(other.boundingBox):
+				return -1
 			for tp,a in enumerate(thispolygon):
 				for op,b in enumerate(otherpolygon):
 					if self.closed_segment_intersect(thispolygon[tp-1%len(thispolygon)], a, otherpolygon[op-1%len(otherpolygon)], b):
@@ -1795,11 +1831,39 @@ class Project(object):
 		self.planes[plane.name]=plane
 		self.planes[plane.name].parent=self
 class BOM(object):
+	def __init__(self,name, number=1):
+		self.name=name
+		self.number=number
+
+class BOM_part(BOM):
 	def __init__(self,name, number=1, part_number=False, description=False):
 		self.name=name
 		self.number=number
 		self.part_number=part_number
 		self.description=description
+	def __str__(self):
+		return str(self.number)+'x '+str(self.name)+' '+str(self.part_number)+" "+str(self.description)
+class BOM_flat(BOM):
+	def __init__(self, name, material, width, height, number, thickness):
+		self.name=name
+		self.material=material
+		self.width=width
+		self.height=height
+		self.number=number
+		self.thickness=thickness
+	def __str__(self):
+		return str(self.number)+'x '+str(self.name)+' in '+str(self.thickness)+"mm "+str(self.material)+" "+str(self.width)+"x"+str(self.height)
+class BOM_rod(BOM):
+	def __init__(self, name, material, xsection,  diameter, length, number=1):
+		self.name=name
+		self.material=material
+		self.diameter=diameter
+		self.length=length
+		self.number=1
+		self.description=description
+		self.xsection=xsection
+		return str(self.number)+'x '+str(self.name)+' in '+str(self.diameter)+"mm diameter "+str(material)+" "+str(xsection)+str(self.material)+" "+str(self.description)
+
 class Part(object):
 	"""This a part, if it is given a boudary and a layer it can be independantly rendered, if not it is just a collection of pathgroups, which can exist on specific layers
 	"""
@@ -1816,7 +1880,7 @@ class Part(object):
 		self.parent=False
 		self.is_copy=False
 		self.internal_borders=[]
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in config:
@@ -1825,6 +1889,7 @@ class Part(object):
 				setattr(self,v,None)
 			self.otherargs+=':param v: '+arg_meanings[v]+"\n"
 		self.output=[]
+		self.number=1
 		self.transform={}
 		if 'border' in config:
 			self.add_border(config['border'])
@@ -1843,7 +1908,23 @@ class Part(object):
 			p.parent=ret
 		return ret
 	def add_bom(self,name, number, part_number=False, description=False):
-		self.bom.append(BOM(name, number, part_number, description))
+		self.bom.append(BOM_part(name, number, part_number, description))
+	def get_bom(self,config={}):
+		ret=[]
+		if hasattr(self, 'layer') and self.layer is not None and self.parent is not None and self.parent is not False and self.parent.obType=='Plane':
+			config=self.parent.get_layer_config(self.layer)
+		config=self.overwrite(config, self.get_config())
+		for part in self.parts:
+			ret.extend(part.get_bom(config))
+		ret.extend(self.bom)
+		if hasattr(self,'material_shape') and (self.material_shape=='rod' or self.material_shape=='square_rod' or self.material_shape=='tube' or self.material_shape=='square_tube'):
+			ret.append(BOM_rod(self.name, config['material'], config['material_shape'],  self.material_diameter, self.material_length, number=1))
+		else:
+			if hasattr(self, 'border') and self.border is not None:
+				self.border.polygonise()
+				bb=self.border.boundingBox
+				ret.append(BOM_flat(self.name, config['material'], bb['tr'][0]-bb['bl'][0], bb['tr'][1]-bb['bl'][1], self.number, config['thickness']))
+		return ret
 	def comment(self,comment):
 		self.comments.append(str(comment))
 	def get_config(self):
@@ -2010,6 +2091,27 @@ class Part(object):
 			return 1
 		return -1
 
+	def overwrite(self,ain,b):
+                a=copy.copy(ain)
+
+		for i in b.keys():
+			if i!='transformations':
+				if i in b and b[i] is not False and b[i] is not None:
+					a[i] = b[i]
+				elif (i not in a or a[i] is False or a[i] is None ) or i not in a:
+					a[i] =None
+		if 'transformations' not in a or type(a['transformations']) is not list:
+			if 'transform' in a:
+				a['transformations']=[a['transform']]
+			else:
+				a['transformations']=[]
+		if 'transformations' in b and type(b['transformations']) is list:
+			a['transformations'].extend(b['transformations'])
+		if 'transform' in b and b['transform'] is not False and b['transform'] is not None:
+		#	if type(b['transform']) is list:			
+			a['transformations'].append(b['transform'])
+		return a
+
 # stores a series of parts which can overlap in layers
 class Plane(Part):
 	def __init__(self,name, **config):
@@ -2036,31 +2138,12 @@ class Plane(Part):
 		self.parent=False
 		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z']
 		self.out=''
+		self.bom=[]
 		for v in self.varlist:
                         if v in config:
 				self.config[v]=config[v]
                         else:
 				self.config[v]=False
-	def overwrite(self,ain,b):
-                a=copy.copy(ain)
-
-		for i in b.keys():
-			if i!='transformations':
-				if i in b and b[i] is not False and b[i] is not None:
-					a[i] = b[i]
-				elif (i not in a or a[i] is False or a[i] is None ) or i not in a:
-					a[i] =None
-		if 'transformations' not in a or type(a['transformations']) is not list:
-			if 'transform' in a:
-				a['transformations']=[a['transform']]
-			else:
-				a['transformations']=[]
-		if 'transformations' in b and type(b['transformations']) is list:
-			a['transformations'].extend(b['transformations'])
-		if 'transform' in b and b['transform'] is not False and b['transform'] is not None:
-		#	if type(b['transform']) is list:			
-			a['transformations'].append(b['transform'])
-		return a
 	# A plane can have several layers
 	def add_layer(self,name, material, thickness, z0=0,zoffset=0, add_back=False, isback=False, colour=False):
 		if add_back:
@@ -2268,7 +2351,7 @@ class Layer(object):
 		# layer should be mirrored when cut
 		self.config['isback']=isback
 		self.config['colour']=colour
-
+		self.bom=[]
 	def get_config(self):
 		return self.config
 

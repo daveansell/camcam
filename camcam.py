@@ -35,6 +35,25 @@ class CamCam:
 	def listparts(self):
 		 for plane in self.planes:
                                 plane.list_all()
+	def get_bom(self):
+		ret=[]
+		for plane in self.planes:
+			ret.extend(plane.get_bom())
+		lookup={}
+		ret2=[]
+		c=0
+		for l in ret:
+			if type(l) is BOM_part:
+				if l.part_number in lookup:
+					ret2[lookup[l.part_number]].number+=l.number
+				else:
+					ret2.append(l)
+					lookup[l.part_number]=c
+			else:
+				ret2.append(l)
+			c+=1	
+		for l in ret2:
+			print l
 camcam = CamCam()
 milling = Milling.Milling()
 parser = OptionParser()
@@ -48,6 +67,9 @@ parser.add_option("-l", "--list",
 parser.add_option("-b", "--sep-border",
                   action="store_true", dest="sep_border", default=False,
                   help="Create a separate file for the border")
+parser.add_option("-B", "--bom",
+                  action="store_true", dest="bom", default=False,
+                  help="Print Bill of Materials")
 parser.add_option("-x", "--xreps", dest="repeatx",
                   help="number of times should be repeated in x direction")
 parser.add_option("-y", "--yreps", dest="repeaty",
@@ -97,6 +119,8 @@ for arg in args:
 
 if options.listparts:
 	camcam.listparts()
+if options.bom:
+	camcam.get_bom()
 else:
 	camcam.render(options.mode,config)
 
