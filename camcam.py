@@ -44,14 +44,15 @@ class CamCam:
 		c=0
 		for l in ret:
 			if type(l) is BOM_part:
-				if l.part_number in lookup:
-					ret2[lookup[l.part_number]].number+=l.number
+				if str(l.part_number)+str(l.length) in lookup:
+					ret2[lookup[str(l.part_number)+str(l.length)]].number+=l.number
 				else:
 					ret2.append(l)
-					lookup[l.part_number]=c
+					lookup[str(l.part_number)+str(l.length)]=c
+					c+=1
 			else:
 				ret2.append(l)
-			c+=1	
+				c+=1
 		for l in ret2:
 			print l
 camcam = CamCam()

@@ -1836,13 +1836,17 @@ class BOM(object):
 		self.number=number
 
 class BOM_part(BOM):
-	def __init__(self,name, number=1, part_number=False, description=False):
+	def __init__(self,name, number=1, part_number=False, description=False, length=False):
 		self.name=name
 		self.number=number
 		self.part_number=part_number
 		self.description=description
+		self.length=length
 	def __str__(self):
-		return str(self.number)+'x '+str(self.name)+' '+str(self.part_number)+" "+str(self.description)
+		if self.length:
+			return str(self.number)+'x '+str(self.length)+"mm of "+str(self.name)+' '+str(self.part_number)+" "+str(self.description)
+		else:
+			return str(self.number)+'x '+str(self.name)+' '+str(self.part_number)+" "+str(self.description)
 class BOM_flat(BOM):
 	def __init__(self, name, material, width, height, number, thickness):
 		self.name=name
@@ -1907,18 +1911,24 @@ class Part(object):
 		for p in ret.parts:
 			p.parent=ret
 		return ret
-	def add_bom(self,name, number, part_number=False, description=False):
-		self.bom.append(BOM_part(name, number, part_number, description))
+	def add_bom(self,name, number, part_number=False, description=False, length=False):
+		self.bom.append(BOM_part(name, number, part_number, description, length))
 	def get_bom(self,config={}):
 		ret=[]
 		if hasattr(self, 'layer') and self.layer is not None and self.parent is not None and self.parent is not False and self.parent.obType=='Plane':
 			config=self.parent.get_layer_config(self.layer)
 		config=self.overwrite(config, self.get_config())
 		for part in self.parts:
-			ret.extend(part.get_bom(config))
-		ret.extend(self.bom)
+			for b in part.get_bom(config):
+				t=copy.copy(b)
+				t.number*=self.number
+				ret.append(t)
+		for c in self.bom:
+			t=copy.copy(c)
+                        t.number*=self.number
+                        ret.append(t)
 		if hasattr(self,'material_shape') and (self.material_shape=='rod' or self.material_shape=='square_rod' or self.material_shape=='tube' or self.material_shape=='square_tube'):
-			ret.append(BOM_rod(self.name, config['material'], config['material_shape'],  self.material_diameter, self.material_length, number=1))
+			ret.append(BOM_rod(self.name, config['material'], config['material_shape'],  self.material_diameter, self.material_length, number=self.number))
 		else:
 			if hasattr(self, 'border') and self.border is not None:
 				self.border.polygonise()
@@ -2139,6 +2149,7 @@ class Plane(Part):
 		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z']
 		self.out=''
 		self.bom=[]
+		self.number=1
 		for v in self.varlist:
                         if v in config:
 				self.config[v]=config[v]
