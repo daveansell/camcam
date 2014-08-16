@@ -4,6 +4,7 @@ from shapes import *
 class Switch(Part):
 	def __init__(self,pos, **config):
 		self.init(config)
+		self.transform['translate']=pos
 		if 'layer_config' not in config or type(config['layer_config']) is not dict:
 			config['layer_config']={'base':'clearance', 'perspex':'doubleflat'}
 		if 'switch_type' not in config:
@@ -17,13 +18,47 @@ class Switch(Part):
 			for l in config['layer_config'].keys():
 				task =  config['layer_config'][l]
 				if task=='clearance':
-					self.add_path(Hole(pos, rad=19/2), layers=l)
+					self.add_path(Hole(V(0,0), rad=19/2), layers=l)
 				if task=='doubleflat':
-					self.add_path(DoubleFlat(pos,13.6/2, 12.9/2))
+					self.add_path(DoubleFlat(V(0,0),13.6/2, 12.9/2))
 				if task=='minimal':
-					self.add_path(Hole(pos, rad=18/2, z1=-2 ), layers=l)
-					self.add_path(Hole(pos, rad=14/2 ), layers=l)
-
+					self.add_path(Hole(V(0,0), rad=18/2, z1=-2 ), layers=l)
+					self.add_path(Hole(V(0,0), rad=14/2 ), layers=l)
+		if config['switch_type']== 'rocker':
+			rocker_data={
+				'PRFDA1-16F-BB0BW':{'cutout_width':22, 'cutout_height':30.2, 'clearance_width':26, 'clearance_height':32.5},
+				'MC37920-001-1101':{'cutout_width':22.5, 'cutout_height':30.1, 'clearance_width':26, 'clearance_height':33},
+			}
+			if 'sub_type' not in config:
+				config['sub_type']='PRFDA1-16F-BB0BW'
+			data=rocker_data[config['sub_type']]
+			self.add_bom('rocker switch',1,part_number=config['sub_type'])
+			for l in config['layer_config'].keys():
+				task =  config['layer_config'][l]
+				if task=='cutout':
+					self.add_path(ClearRect(V(0,0), width=data['cutout_width'], height=data['cutout_height'], centred=True),layers=l)
+				if task=='clearance':
+					self.add_path(ClearRect(V(0,0), width=data['clearance_width'], height=data['clearance_height'], centred=True),layers=l)
+class SevenSegmentDisplay(Part):
+	def __init__(self, pos, **config):
+		self.init(config)
+		self.transform['translate']=pos
+		print self.transform
+		data={
+			'HDSP-C1E3':{'width':24,'height':34, 'depth':10.5, 'pcb_width':50, 'pcb_height':40},
+			'HDSP-C1E3x2':{'width':48,'height':34, 'depth':10.5, 'pcb_width':55, 'pcb_height':54},
+			'HDSP-C1E3':{'width':24,'height':34, 'depth':10.5, 'pcb_width':50, 'pcb_height':40},
+		}
+		if 'part' in config and config['part'] in data and 'layer_config' in config:
+			d=data[config['part']]
+			for l in config['layer_config']:
+				task =  config['layer_config'][l]
+				if task=='cutout':
+					print "SSD"+str(self.transform)
+					self.add_path(ClearRect(V(0,0), width=d['width']+1, height=d['height']+1, centred=True),layers=l)
+				if task=='pcb':
+					self.add_path(ClearRect(V(0,0), width=d['pcb_width']+1, height=d['pcb_height']+1, centred=True),layers=l)
+		
 class Knob(Part):
 	def __init__(self,pos, **config):
 		self.init(config)
@@ -198,8 +233,8 @@ class LinearBearing(Pathgroup):
 				self.add_path(Hole(pos+V(-d['K']/2, d['J']/2), milling.bolts[d['s1']]['clearance']/2))
 				self.add_path(Hole(pos+V(d['K']/2, d['J']/2), milling.bolts[d['s1']]['clearance']/2))
 	
-class Insert(Pathgroup):
-	def __init__(self, pos, insert_size, **config):
+class Insert(Part):
+	def __init__(self, pos, insert_size,layer, **config):
 		"""Standard wood insert at pos"""
 		self.init(config)
                 self.add_bom("Wood insert", 1, str(insert_size)+"insert",'')
@@ -209,7 +244,7 @@ class Insert(Pathgroup):
 				insert=milling.inserts[insert_size][config['insert_type']]
 			else:
 				insert=milling.inserts[insert_size]
-			self.add_path(Hole(pos, rad=insert['diams'], z1 = insert['depths'], **config))	
+			self.add_path(Hole(pos, rad=insert['diams'], z1 = insert['depths'], **config), layer)	
 
 class LoadCell(Part):
 	def __init__(self, pos, cell_type, modes,**config):
@@ -224,10 +259,10 @@ class LoadCell(Part):
 		}
 		d=dat[cell_type]
 		self.dims=d
+		self.add_bom('Load cell', 1, cell_type, '')
 		for l in modes.keys():
 			mode=modes[l]	
 			e=(d['l']-d['s'])/2
-			print "LOAD CELL"+str(mode)+str(pos)
 			if mode=='bottom':
 				self.add_path(Hole(pos+V(0,0), rad=milling.bolts[d['h']]['clearance']/2), l)
 				if 's2' in d:
@@ -257,3 +292,20 @@ class LoadCell(Part):
 				else:
 					self.add_path(ClearRect(pos+V(d['l']/2-e,0), width=d['l']+4, height=d['w']+4, centred=True, side='in'),l)
 
+class DrilledBall(Part):
+	def __init__(self,pos, diameter='12.7', thread='M4', head='flanged', length=16, layer='base',**config):
+		self.init(config)
+		self.add_path(Hole(pos, rad=[milling.bolts[thread]['clearance'], milling.bolts[thread]['clearance']*1.5], z1=[False, -1], centred=True),layer)
+		self.add_bom("Machine screw", 1, str(length)+"mm "+str(thread)+" "+str(head),'')
+		self.add_bom("Tapped Mild Steel ball", 1, str(diameter)+"mm "+str(thread)+" tapped",'')
+
+class ScrewBOM(BOM_part):
+	def __init__(self, thread, head, length, number):
+		self.init()
+		self.name="Machine screw"
+		self.number=number
+		self.part_number=str(length)+"mm "+str(thread)+" "+str(head)
+		self.description=''
+		self.length=length
+		self.head = head
+		self.thread = thread

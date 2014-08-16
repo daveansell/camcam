@@ -1678,7 +1678,8 @@ class Pathgroup(object):
 			for comment in self.comments:
 				ret+="<!-- "+comment+" -->\n"
 		return ret
-
+	def add(self,path):
+		self.add_path(path)
 	def add_path(self,path):
 		try:
 			path.obType
@@ -1834,6 +1835,8 @@ class BOM(object):
 	def __init__(self,name, number=1):
 		self.name=name
 		self.number=number
+	def init(self):
+		self.obType='BOM'
 
 class BOM_part(BOM):
 	def __init__(self,name, number=1, part_number=False, description=False, length=False):
@@ -1842,6 +1845,9 @@ class BOM_part(BOM):
 		self.part_number=part_number
 		self.description=description
 		self.length=length
+		self.init()
+	def init(self):
+		self.obType='BOM'
 	def __str__(self):
 		if self.length:
 			return str(self.number)+'x '+str(self.length)+"mm of "+str(self.name)+' '+str(self.part_number)+" "+str(self.description)
@@ -1855,6 +1861,7 @@ class BOM_flat(BOM):
 		self.height=height
 		self.number=number
 		self.thickness=thickness
+		self.init()
 	def __str__(self):
 		return str(self.number)+'x '+str(self.name)+' in '+str(self.thickness)+"mm "+str(self.material)+" "+str(self.width)+"x"+str(self.height)
 class BOM_rod(BOM):
@@ -1866,6 +1873,7 @@ class BOM_rod(BOM):
 		self.number=1
 		self.description=description
 		self.xsection=xsection
+		self.init()
 		return str(self.number)+'x '+str(self.name)+' in '+str(self.diameter)+"mm diameter "+str(material)+" "+str(xsection)+str(self.material)+" "+str(self.description)
 
 class Part(object):
@@ -1884,7 +1892,8 @@ class Part(object):
 		self.parent=False
 		self.is_copy=False
 		self.internal_borders=[]
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter']
+		self.transform={}
+		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in config:
@@ -1894,7 +1903,8 @@ class Part(object):
 			self.otherargs+=':param v: '+arg_meanings[v]+"\n"
 		self.output=[]
 		self.number=1
-		self.transform={}
+		if 'transform' in config:
+			self.transform=copy.copy(config['transform'])
 		if 'border' in config:
 			self.add_border(config['border'])
 		if not hasattr(self, 'cutoutside'):
@@ -1911,8 +1921,12 @@ class Part(object):
 		for p in ret.parts:
 			p.parent=ret
 		return ret
-	def add_bom(self,name, number, part_number=False, description=False, length=False):
-		self.bom.append(BOM_part(name, number, part_number, description, length))
+	def add_bom(self,name, number=False, part_number=False, description=False, length=False):
+		if type(name) is not str:
+			if hasattr(name,'obType') and name.obType=='BOM':
+				self.bom.append(name)
+		else:
+			self.bom.append(BOM_part(name, number, part_number, description, length))
 	def get_bom(self,config={}):
 		ret=[]
 		if hasattr(self, 'layer') and self.layer is not None and self.parent is not None and self.parent is not False and self.parent.obType=='Plane':
@@ -2012,6 +2026,8 @@ class Part(object):
 #		for t in copy_transformations:
 			# TODO check this is a real transform
 		self.copies.append(copy_transformations)
+	def add(self, path, layers=False):
+		self.add_path( path, layers)
 
 	def add_path(self,path,layers = False):
 		try:

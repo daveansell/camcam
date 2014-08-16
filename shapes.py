@@ -337,19 +337,21 @@ class HoleLine(Pathgroup):
 		self.comment("start="+str(start)+" end="+str(end)+" number="+str(number)+" rad="+str(rad))
 
 class Screw(Part):
-	def __init__(self,pos,layer_conf, **config):
+	def __init__(self,pos, **config):
 		self.init(config)
-		for c in layer_conf.keys():
-			conf = copy.deepcopy(layer_conf[c])
-			self.add_path(Hole(pos, **conf), c)
+		if 'layer_config' in config:
+			layer_conf=config['layer_config']
+			for c in layer_conf.keys():
+				conf = copy.deepcopy(layer_conf[c])
+				self.add_path(Hole(pos, **conf), c)
 class FourScrews(Part):
 	def __init__(self, bl, tr, layer_conf, **config):
 		self.init(config)
 		d=tr-bl
-		self.add_path(Screw(bl, layer_conf, **config))
-		self.add_path(Screw(bl+V(d[0], 0), layer_conf, **config))
-		self.add_path(Screw(bl+V(0, d[1]), layer_conf, **config))
-		self.add_path(Screw(tr, layer_conf, **config))
+		self.add_path(Screw(bl, layer_config=layer_conf, **config))
+		self.add_path(Screw(bl+V(d[0], 0), layer_config=layer_conf, **config))
+		self.add_path(Screw(bl+V(0, d[1]), layer_config=layer_conf, **config))
+		self.add_path(Screw(tr, layer_config=layer_conf, **config))
 
 class Bolt(Part):
 	def __init__(self,pos,thread='M4',head='button', length=10, **config):
@@ -686,5 +688,81 @@ class Module(Plane):
 			self.add_path(RepeatLine(V(width-fromedge, fromends), V(width-fromedge,height-fromends), holesY, Bolt, bolt_config,layers=['base','perspex','paper']))
 			self.add_path(RepeatLine(V(width-fromends, height-fromedge), V(fromends,height-fromedge), holesX, Bolt, bolt_config,layers=['base','perspex','paper']))
 			self.add_path(RepeatLine(V(fromedge, height-fromends), V(fromedge,fromends), holesY, Bolt,bolt_config,layers=['base','perspex','paper']))
-			
 
+class ModuleClearBack(Part):
+	def __init__(self, size, layer, **config):
+		self.init(config)
+		self.add_border(ModuleClearBackPath(size))
+		b=self.border
+		self.layer=layer
+		
+		fromedge=b.side+15
+		fromends=b.corner+25
+		fend=25
+		if size=='A3':
+                                holesX=4
+                                holesY=3
+                elif size=='A2':
+                                holesX=4
+                                holesY=3
+                elif size=='A1':
+                                holesX=4
+                                holesY=4
+		if 'screw_config' in config:
+			screw_config=config['screw_config']
+			self.add_path(RepeatLine(V(fromends, fromedge), V(b.width-fromends,fromedge), holesX, Screw, screw_config))
+			self.add_path(RepeatLine(V(b.width-fromedge, fromends), V(b.width-fromedge,b.height-fromends), holesY, Screw, screw_config))
+			self.add_path(RepeatLine(V(b.width-fromends, b.height-fromedge), V(fromends,b.height-fromedge), holesX, Screw, screw_config))
+			self.add_path(RepeatLine(V(fromedge, b.height-fromends), V(fromedge,fromends), holesY, Screw,screw_config))
+		if 'bolt_config' in config:
+			bolt_config=config['bolt_config']
+			self.add_path(RepeatLine(V(fromends, fromedge), V(b.width-fromends,fromedge), holesX, Bolt, bolt_config))
+			self.add_path(RepeatLine(V(b.width-fromedge, fromends), V(b.width-fromedge,b.height-fromends), holesY, Bolt, bolt_config))
+			self.add_path(RepeatLine(V(b.width-fromends, b.height-fromedge), V(fromends,b.height-fromedge), holesX, Bolt, bolt_config))
+			self.add_path(RepeatLine(V(fromedge, b.height-fromends), V(fromedge,fromends), holesY, Bolt,bolt_config))
+			
+class ModuleClearBackPath(Path):
+	def __init__(self,size,**config):
+			
+		self.init(config)
+		if 'side' not in config:
+			self.side='out'	
+		self.closed=True
+
+		self.side=17
+		self.corner=51+self.side
+		self.mid_height=120/2
+		self.mid_width=39+self.side
+		self.mid_edge=9
+		self.mid_mid=60/2
+		if size=='A3':
+                        self.self.width=420
+                        self.height=297
+                elif size=='A2':
+                        self.width=594
+                        self.height=420
+                elif size=='A1':
+                        self.width=841
+                        self.height=594
+		self.add_point(V(self.side,self.corner))
+		self.add_point(V(self.corner,self.side))
+		self.add_point(V(self.width-self.corner,self.side))
+		self.add_point(V(self.width-self.side,self.corner))
+		if(size=='A1'):
+			self.add_point(V(self.width-self.side,self.height/2-self.mid_height))
+			self.add_point(V(self.width-self.side-self.mid_edge,self.height/2-self.mid_height))
+			self.add_point(V(self.width-mid_self.width,self.height/2-mid_mid))
+			self.add_point(V(self.width-mid_self.width,self.height/2+mid_mid))
+			self.add_point(V(self.width-self.side-self.mid_edge,self.height/2+self.mid_height))
+			self.add_point(V(self.width-self.side,self.height/2+self.mid_height))
+		self.add_point(V(self.width-self.side,self.height-self.corner))
+		self.add_point(V(self.width-self.corner,self.height-self.side))
+		self.add_point(V(self.corner,self.height-self.side))
+		self.add_point(V(self.side,self.height-self.corner))
+		if(size=='A1'):
+			self.add_point(V(self.side,self.height/2+self.mid_height))
+			self.add_point(V(self.side-self.mid_edge,self.height/2+self.mid_height))
+			self.add_point(V(mid_self.width,self.height/2+mid_mid))
+			self.add_point(V(mid_self.width,self.height/2-mid_mid))
+			self.add_point(V(self.side-self.mid_edge,self.height/2-self.mid_height))
+			self.add_point(V(self.side,self.height/2-self.mid_height))
