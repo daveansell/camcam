@@ -349,6 +349,7 @@ class Path(object):
 		self.extents= {}	
 		self.output=[]
 		self.boundingBox={}
+		self.centre=V(0,0)
 		self.polygon={}
 		self.changed={}
 		self.parent=False
@@ -954,6 +955,9 @@ class Path(object):
 				self.boundingBox['bl'][1]=min(self.boundingBox['bl'][1],p[1])
 				self.boundingBox['tr'][0]=max(self.boundingBox['tr'][0],p[0])
 				self.boundingBox['tr'][1]=max(self.boundingBox['tr'][1],p[1])
+			self.boundingBox['tr']=V(self.boundingBox['tr'][0],self.boundingBox['tr'][1])
+			self.boundingBox['bl']=V(self.boundingBox['bl'][0],self.boundingBox['bl'][1])
+			self.centre=(self.boundingBox['bl']+self.boundingBox['tr'])/2
 			self.polygon[resolution]=ret
 			self.changed[resolution]=False
 			return ret
@@ -2293,6 +2297,8 @@ class Plane(Part):
 				out+='\n\n'+output[key]
 		if self.modeconfig['mode']=='svg' or self.modeconfig['mode']=='scr':	
 		#	f=open(parent.name+"_"+self.name+"_"+part.name)
+			if self.modeconfig['label'] and  self.modeconfig['mode'] == 'svg':
+				out+="<text transform='scale(1,-1)' text-anchor='middle' x='"+str(int(part.border.centre[0]))+"' y='"+str(-int(part.border.centre[1]))+"'>"+str(part.name)+"</text>"
 			if self.modeconfig['overview']:
 				self.out+='<g>'+out+'</g>'
 			elif part.name is not None:
