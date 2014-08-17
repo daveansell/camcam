@@ -1878,7 +1878,30 @@ class BOM_rod(BOM):
 		self.description=description
 		self.xsection=xsection
 		self.init()
+	def __str__(self):
 		return str(self.number)+'x '+str(self.name)+' in '+str(self.diameter)+"mm diameter "+str(material)+" "+str(xsection)+str(self.material)+" "+str(self.description)
+
+class BOM_software(BOM):
+	def __init__(self, name, number, folder, language, target, description):
+		self.name=name
+		self.folder=folder
+		self.description=description
+		self.language=language
+		self.target=target
+		self.number=number
+		self.init()
+	def __str__(self):
+		return "Software"+str(name)+" in "+str(folder)+" written in "+str(language)+" on a "+str(target)+" "+str(description)
+
+class BOM_pcb(BOM):
+	def __init__(self, name, number, folder, description):
+		self.name=name
+		self.number=number
+		self.description=description
+		self.folder=folder
+		self.part_number="PCB"+str(name)+"_"+str(folder)
+	def __str__(self):
+		return "PCB "+str(number)+" of "+str(name)+" in "+str(folder)+" "+str(description)
 
 class Part(object):
 	"""This a part, if it is given a boudary and a layer it can be independantly rendered, if not it is just a collection of pathgroups, which can exist on specific layers
