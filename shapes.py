@@ -4,8 +4,16 @@ class Rect(Path):
 	def __init__(self, bl,  **config):
 		self.init( config)
 		self.cut_square(bl, config)
+		"""Cut a rectanngle
+		"""+self.otherargs
 
 	def cut_square(self, bl, config):
+		self.otherargs+="
+		:param bl: bottom left or centre if centred
+		:param tr: top right if not centred
+		:param centred: true if you want the rectangle to be centred
+		:param cornertype: type of corner points sharp, incurve, outcurve
+		:param rad: radius of cornwer curves if you have them"
 		if 'centred' in config and config['centred']:
 			if 'width' in config and 'height' in config:
 				pos=bl
@@ -42,6 +50,8 @@ class RoundedRect(Rect):
 		self.init(config)
 		config['cornertype']='incurve'
 		self.cut_square(bl,config)
+		"""Cut a rectangle with incurve corners
+		"""+self.otherargs
 
 class ClearRect(Rect):
 	def __init__(self, bl,  **config):
@@ -51,6 +61,8 @@ class ClearRect(Rect):
 		else:
 			config['cornertype']='clear'
 		self.cut_square(bl,config)
+		"""Cut a rectangle with sharp or clear corners depending on the side you are cutting
+		"""+self.otherargs
 	def pre_render(config):
 		if 'side' in config and config['side']=='in':
 			config['cornertype']='clear'
@@ -113,6 +125,7 @@ class Circle(Path):
 class RoundSpeakerGrill(Pathgroup):
 	def __init__(self,pos, rad, holerad, spacing, **config):
 		self.init(config)
+		"""Cut a circular grid with radius :param rad: of holes with radius :param holerad: and :param spacing:"""+self.otherargs
 		yspacing=spacing*math.cos(math.pi/6)
 		numholesx = int(math.ceil(rad/spacing)+1)
 		numholesy = int(math.ceil(rad/yspacing))
