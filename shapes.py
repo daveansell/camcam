@@ -8,12 +8,12 @@ class Rect(Path):
 		"""+self.otherargs
 
 	def cut_square(self, bl, config):
-		self.otherargs+="
+		self.otherargs+="""
 		:param bl: bottom left or centre if centred
 		:param tr: top right if not centred
 		:param centred: true if you want the rectangle to be centred
 		:param cornertype: type of corner points sharp, incurve, outcurve
-		:param rad: radius of cornwer curves if you have them"
+		:param rad: radius of cornwer curves if you have them"""
 		if 'centred' in config and config['centred']:
 			if 'width' in config and 'height' in config:
 				pos=bl
