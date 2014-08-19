@@ -134,7 +134,7 @@ class Arc(Segment):
 		
 	def gcode(self,direction=True):
 		if (self.centre-self.cutfrom).length()==0:
-			print "Arc of zero length"
+			raise Warning( "Arc of zero length")
 			return []
 		if(not direction):
 			if self.direction=='cw':
@@ -308,7 +308,7 @@ class Point(object):
 			elif type(t[1]) is Vec:
 				dirvec = t[1]
 			else:
-				print "Reflection direction is not a string or vector"
+				raise ValueError( "Reflection direction "+str(t[1])+" is not a string or vector")
 			out=Vec(pos)
 			out-=t[0]
 			out=out.reflect(dirvec)
@@ -451,7 +451,7 @@ class Path(object):
 				else:
 					self.points.insert(0,p)
 			else:
-				print "add_points - adding a non-point"
+				raise TypeError( "add_points - adding a non-point "+str(type(p)))
 		self.has_changed()
 	def has_changed(self):
 		for c in self.changed.keys():
@@ -568,7 +568,7 @@ class Path(object):
 		elif thispoint.point_type=='arc_centred':
 			if do:
 				if (thispoint.cp-frompoint).length()!=(thispoint.pos-thispoint.cp).length():
-					print "Error - centred arc two radiuses are not the same"
+					raise ValueError("Error - centred arc two radiuses are not the same"+self.trace)
 				segment_array.append(Arc(frompoint, thispoint.pos, thispoint.cp,thispoint.direction))
 			frompoint=thispoint.pos
 		elif thispoint.point_type=='arcend':
@@ -581,7 +581,7 @@ class Path(object):
 				centre=self.findArcCentre(lastpoint.pos,nextpoint.pos, thispoint.radius, thispoint.direction)
 				segment_array.append(Arc(frompoint, nextpoint.pos, centre,thispoint.direction))
 			else:
-				print "ERROR arc point without an arcend point on both sides"	
+				raise ValueError( "ERROR arc point without an arcend point on both sides"+self.trace)
 		elif thispoint.point_type=='quad':
 			print "Quadratic curve\n"
 			if do:
@@ -639,7 +639,7 @@ class Path(object):
 		l=(topos-frompos)/2
 		
 		if l.length()>radius*2:
-			print "ERROR arc radius less than distance to travel"
+			raise ValueError( "ERROR arc radius less than distance to travel so can't find Arc Centre"+self.trace)
 		if direction=='cw':
 			a=90
 		else:
@@ -786,8 +786,6 @@ class Path(object):
 		cross=(thispoint.pos-lastpoint.pos).cross(nextpoint.pos-thispoint.pos)[2]
 		a=(-(thispoint.pos-lastpoint.pos).normalize()+(thispoint.pos-nextpoint.pos).normalize())
 		al=a.length()
-		if distance==4:
-			print (thispoint.pos-lastpoint.pos).angle(thispoint.pos-nextpoint.pos)
 		angle2=((thispoint.pos-lastpoint.pos).angle(thispoint.pos-nextpoint.pos)/2-90)*math.pi/180
 #			print math.cos(((thispoint.pos-lastpoint.pos).angle(thispoint.pos-nextpoint.pos)/2-90)*math.pi/180)
 		angle=math.atan2(a[1], a[0])
@@ -885,7 +883,7 @@ class Path(object):
 					t.radius-=distance
 				else:
 					t.radius=0
-					print "Arc has gone to zero radius - this is broken..."				
+					raise ValueError( "Arc has gone to zero radius - this is broken..."+self.trace)				
 		return t
 
 	def offset_move_point(self,thispos, lastpos, nextpos, frompos, topos, side,distance):
@@ -1110,8 +1108,8 @@ class Path(object):
 	                                config[v]=pconfig[v]
 				else:
 					config[v]=None
-		if self.is_copy:
-			print "Q"+str(config['transformations'])
+#		if self.is_copy:
+#			print "Q"+str(config['transformations'])
 		return config
 
 	def generate_config(self, pconfig):
@@ -1381,9 +1379,9 @@ class Path(object):
 	def get_feedrate(self, dx, dy, dz, config):
 		ds = math.sqrt(dx**2+dy**2)
 		if ds>0 and 'sidefeed' not in config or config['sidefeed']==0:
-			print "ERROR trying to cut sideways with a cutter with no sidefeed"
+			raise ValueError( "ERROR trying to cut sideways with a cutter "+str(self.cutter)+"with no sidefeed")
 		if dz>0 and 'vertfeed' not in config or config['vertfeed']==0:
-			print "ERROR trying to cut down with a cutter with no vertfeed"
+			raise ValueError( "ERROR trying to cut down with a cutter "+str(self.cutter)+" with no vertfeed")
 		dst = abs(ds/config['sidefeed'])
 		dzt = abs(dz/config['vertfeed'])
 		if dst>dzt:
@@ -1540,7 +1538,7 @@ class Path(object):
 
 	def move(self,moveto):
 		if type(moveto) is not Vec:
-			print self.trace
+			raise TypeError("moveto must be a Vec not a "+type(moveto)+" Created:"+self.trace)
 		else:
 			if self.mode=='gcode' or self.mode=='simplegcode':
 				return [{"cmd":"G0","X":moveto[0],"Y":moveto[1]}]
@@ -1649,7 +1647,7 @@ class Pathgroup(object):
 		if self.parent is not False:
 			pconfig = self.parent.get_config()
 		else:
-			print "PATHGROUP has no parent HJK"+str(self)
+			raise Warning( "PATHGROUP has no parent Created:"+str(self.trace))
 			pconfig = False
 		config = {}
 		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour','rendermode','partial_fill','finishing','fill_direction','cutter','precut_z']
@@ -1688,13 +1686,13 @@ class Pathgroup(object):
 		try:
 			path.obType
 		except NameError:
-			print "adding incorrect object to path"
+			raise TypeError("adding incorrect object to pathgroup, the object should have a Path or Pathgroup so should have an obtype, your class may not have run init()")
 		else:
 			if (path.obType=='Path' or path.obType=="Pathgroup"):
 				path.parent=self
 				self.paths.append(path)
 			else:
-				print "Attempting to add a non-path or pathgroup to a pathgroup"
+				raise TypeError("Attempting to add "+str(path.obType)+" to Pathgroup. Should be Path or Pathgroup")
 		return path	
 # return a list of all the path gcode grouped by the ordering parameter
 	def output_path(self, pconfig=False):
@@ -1704,7 +1702,7 @@ class Pathgroup(object):
 			try:
 				path.obType
 			except NameError:
-				print "adding incorrect object to path"
+				raise TypeError("One Path "+str(path)+" in the Pathgroup does not have an obType")
 			else:
 				if  (path.obType=='Path'):
 					path.output_path(pconfig)
@@ -1712,6 +1710,8 @@ class Pathgroup(object):
 				elif path.obType=='Pathgroup':
 					paths = path.output_path(pconfig)
 					gcode.extend(paths)
+				else:
+					raise TypeError("One Path "+str(path)+" in the Pathgroup is not a Path or Pathgroup")
 		return gcode
 
 	def get_paths(self,config):
@@ -2030,12 +2030,14 @@ class Part(object):
 		try:
 			path.obType
 		except NameError:
-			print "Part border should be a path"
+			raise TypeError( "Part border should have and obType and it should be a Path")
 		else:
 			#self.add_path(path,self.layer)
+			if path.obType!="Path":
+				raise TypeError("Part border should be a Path not a"+str(path.obType))
 			self.border=copy.deepcopy(path)
 			if self.border.side==None:
-				self.border.side='in'
+				self.border.side='out'
 			self.border.parent=self
 			self.is_border=True
 
@@ -2043,11 +2045,13 @@ class Part(object):
 		if hasattr(path,'obType') and path.obType=='Path':
 			p=copy.deepcopy(path)
 			p.is_border=True
+			if p.side==None:
+				p.side='in'
 			p.parent=self
 			self.internal_borders.append(p)
 			return path
 		else:
-			print "ERROR and internal border must be a path"
+			raise TypeError("ERROR an internal border must be a Path not "+type(path))
 	def add_copy(self,copy_transformations):
 		# would 
 #		for t in copy_transformations:
@@ -2060,7 +2064,7 @@ class Part(object):
 		try:
 			path.obType
 		except NameError:
-			print "adding incorrect object to path"
+			raise TypeError( "Added object should be a Path, Pathgroup or Part and should have an obType, it may not have had init() run properly")
 		else:
 			if path.obType=='Part':
 				path.parent = self
@@ -2089,9 +2093,10 @@ class Part(object):
 				return p
 
 			else:
-				print "Attempting to add a non-path or pathgroup to a pathgroup"
+				raise TypeError( "Added Object should be a Path, Pathgroup or Part not a "+str(path.obType))
 	# flatten the parts tree
 	def get_layers(self):
+		"""Get all the Path/Pathgroupd in a part grouped by layer. Used when rendering"""
 		layers={}
 		for part in self.parts:
 			
@@ -2136,6 +2141,7 @@ class Part(object):
 
 
 	def contains(self,path):
+		"""Is path contained by this part"""
 		if self.border.contains(path) >-1:
 			if len(self.internal_borders):
 				for ib in self.internal_borders:
@@ -2213,12 +2219,16 @@ class Plane(Part):
 		for part in self.getParts():
 			self.render_part(part, mode,config)
 	def list_all(self):
+		"""List all tha parts in this Plane"""
 		for part in self.getParts():
 			if hasattr(part, 'name'):
 				print str(part.name)
  	
 	def get_layer_config(self,layer):
-		return self.layers[layer].config
+		if layer in self.layers:
+			return self.layers[layer].config
+		else:
+			raise Warning(str(layer)+" is referenced but doesn't exist.")
 
 	def render_part(self,part, callmode,pconfig=False):
 		self.callmode = callmode
