@@ -18,12 +18,12 @@ class Switch(Part):
 			for l in config['layer_config'].keys():
 				task =  config['layer_config'][l]
 				if task=='clearance':
-					self.add_path(Hole(V(0,0), rad=19/2), layers=l)
+					self.add(Hole(V(0,0), rad=19/2), layers=l)
 				if task=='doubleflat':
-					self.add_path(DoubleFlat(V(0,0),13.6/2, 12.9/2))
+					self.add(DoubleFlat(V(0,0),13.6/2, 12.9/2))
 				if task=='minimal':
-					self.add_path(Hole(V(0,0), rad=18/2, z1=-2 ), layers=l)
-					self.add_path(Hole(V(0,0), rad=14/2 ), layers=l)
+					self.add(Hole(V(0,0), rad=18/2, z1=-2 ), layers=l)
+					self.add(Hole(V(0,0), rad=14/2 ), layers=l)
 		if config['switch_type']== 'rocker':
 			rocker_data={
 				'PRFDA1-16F-BB0BW':{'cutout_width':22, 'cutout_height':30.2, 'clearance_width':26, 'clearance_height':32.5},
@@ -36,9 +36,9 @@ class Switch(Part):
 			for l in config['layer_config'].keys():
 				task =  config['layer_config'][l]
 				if task=='cutout':
-					self.add_path(ClearRect(V(0,0), width=data['cutout_width'], height=data['cutout_height'], centred=True),layers=l)
+					self.add(ClearRect(V(0,0), width=data['cutout_width'], height=data['cutout_height'], centred=True),layers=l)
 				if task=='clearance':
-					self.add_path(ClearRect(V(0,0), width=data['clearance_width'], height=data['clearance_height'], centred=True),layers=l)
+					self.add(ClearRect(V(0,0), width=data['clearance_width'], height=data['clearance_height'], centred=True),layers=l)
 class SevenSegmentDisplay(Part):
 	def __init__(self, pos, **config):
 		self.init(config)
@@ -53,9 +53,9 @@ class SevenSegmentDisplay(Part):
 			for l in config['layer_config']:
 				task =  config['layer_config'][l]
 				if task=='cutout':
-					self.add_path(Rect(V(0,0), width=d['width']+1, height=d['height']+1, centred=True),layers=l)
+					self.add(Rect(V(0,0), width=d['width']+1, height=d['height']+1, centred=True),layers=l)
 				if task=='pcb':
-					self.add_path(Rect(V(-d['pcb_xoff'],0), width=d['pcb_width']+1, height=d['pcb_height']+1, centred=True),layers=l)
+					self.add(Rect(V(-d['pcb_xoff'],0), width=d['pcb_width']+1, height=d['pcb_height']+1, centred=True),layers=l)
 		
 class Knob(Part):
 	def __init__(self,pos, **config):
@@ -69,9 +69,9 @@ class Knob(Part):
 			for l in config['layer_config'].keys():
 				task =  config['layer_config'][l]
 				if task=='stepper_mount':
-					print self.add_path(Stepper(pos, 'NEMA1.7', mode='stepper', layer=l))
+					print self.add(Stepper(pos, 'NEMA1.7', mode='stepper', layer=l))
 				if task=='shaft':
-					print self.add_path(Stepper(pos, 'NEMA1.7', mode='justshaft', layer=l))
+					print self.add(Stepper(pos, 'NEMA1.7', mode='justshaft', layer=l))
 
 class Post(Part):
 	def __init__(self, pos, **config):
@@ -90,8 +90,8 @@ class Post(Part):
 		else:
 			height=75
 		self.add_bom('wooden post 2x1"x'+str(height)+'mm',1,description='Wooden post for standing module on a table')
-		self.add_path(Hole(pos+s, rad=5/2),'base')
-		self.add_path(Hole(pos-s, rad=5/2), 'base')
+		self.add(Hole(pos+s, rad=5/2),'base')
+		self.add(Hole(pos-s, rad=5/2), 'base')
 
 class PiBarn(Part):
 	def __init__(self, pos, **config):
@@ -113,10 +113,10 @@ class PiBarn(Part):
 		else:
 			spacing=25
 		bolt_conf={'clearance_layers':['pibarn'], 'length':50}
-		print self.add_path(RepeatLine(pos+V(-x_units/2*spacing, -y_units/2*spacing), pos+V(x_units/2*spacing, -y_units/2*spacing), x_units+1, Bolt, bolt_conf)).paths
-		self.add_path(RepeatLine(pos+V(x_units/2*spacing, (-y_units/2+1)*spacing), pos+V(x_units/2*spacing, (y_units/2-1)*spacing), y_units-1, Bolt, bolt_conf))
-		self.add_path(RepeatLine(pos+V(x_units/2*spacing, y_units/2*spacing), pos+V(-x_units/2*spacing, y_units/2*spacing), x_units+1, Bolt, bolt_conf))
-		self.add_path(RepeatLine(pos+V(-x_units/2*spacing, (y_units/2-1)*spacing), pos+V(-x_units/2*spacing, (-y_units/2+1)*spacing), y_units-1, Bolt, bolt_conf))
+		print self.add(RepeatLine(pos+V(-x_units/2*spacing, -y_units/2*spacing), pos+V(x_units/2*spacing, -y_units/2*spacing), x_units+1, Bolt, bolt_conf)).paths
+		self.add(RepeatLine(pos+V(x_units/2*spacing, (-y_units/2+1)*spacing), pos+V(x_units/2*spacing, (y_units/2-1)*spacing), y_units-1, Bolt, bolt_conf))
+		self.add(RepeatLine(pos+V(x_units/2*spacing, y_units/2*spacing), pos+V(-x_units/2*spacing, y_units/2*spacing), x_units+1, Bolt, bolt_conf))
+		self.add(RepeatLine(pos+V(-x_units/2*spacing, (y_units/2-1)*spacing), pos+V(-x_units/2*spacing, (-y_units/2+1)*spacing), y_units-1, Bolt, bolt_conf))
 		self.add_border(RoundedRect(pos, centred=True, width=x_units*spacing+15, height=x_units*spacing+15, side='out', rad=8))
 		self.add_bom('standoff',4, description='30mm standoff')
 class Stepper(Part):
@@ -166,20 +166,20 @@ class Stepper(Part):
 				'pilot_depth':2,
 			},
 		}
-		self.add_path(Hole(pos, rad=10))
+		self.add(Hole(pos, rad=10))
 		d=dat[stepper_type]
 		if 'mode' in config and config['mode']=='justshaft':
-			self.add_path(Hole(pos, rad=d['shaft_diam']/2+1),layer)
+			self.add(Hole(pos, rad=d['shaft_diam']/2+1),layer)
 		else:	
-			self.add_path(Hole(pos+V(d['bolt_sep']/2,d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2),layer)
-			self.add_path(Hole(pos+V(d['bolt_sep']/2,-d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2),layer)
-			self.add_path(Hole(pos+V(-d['bolt_sep']/2,-d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2),layer)
-			self.add_path(Hole(pos+V(-d['bolt_sep']/2,d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2),layer)
+			self.add(Hole(pos+V(d['bolt_sep']/2,d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2),layer)
+			self.add(Hole(pos+V(d['bolt_sep']/2,-d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2),layer)
+			self.add(Hole(pos+V(-d['bolt_sep']/2,-d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2),layer)
+			self.add(Hole(pos+V(-d['bolt_sep']/2,d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2),layer)
 		
-			self.add_path(Hole(pos, rad=d['shaft_diam']/2+1),layer)
-#			self.add_path(Hole(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5, partial_fill=d['pilot_diam']/2-1, fill_direction='in'),layer)
-#			self.add_path(Hole(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5),layer)
-			self.add_path(FilledCircle(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5),layer)
+			self.add(Hole(pos, rad=d['shaft_diam']/2+1),layer)
+#			self.add(Hole(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5, partial_fill=d['pilot_diam']/2-1, fill_direction='in'),layer)
+#			self.add(Hole(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5),layer)
+			self.add(FilledCircle(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5),layer)
 
 
 class RoundShaftSupport(Pathgroup):
@@ -203,15 +203,15 @@ class RoundShaftSupport(Pathgroup):
 		d=dat[shaft_type]
 		self.dims =d
 		if mode=='clearance':
-			self.add_path(Hole(pos+V(0,d['B']/2), rad = milling.bolts[d['bolt']]['clearance']/2))
-			self.add_path(Hole(pos+V(0,-d['B']/2), rad = milling.bolts[d['bolt']]['clearance']/2))
+			self.add(Hole(pos+V(0,d['B']/2), rad = milling.bolts[d['bolt']]['clearance']/2))
+			self.add(Hole(pos+V(0,-d['B']/2), rad = milling.bolts[d['bolt']]['clearance']/2))
 		if mode=='insert':
-			self.add_path(Hole(pos+V(0,d['B']/2), rad = milling.inserts[d['bolt']]['diams'], z1= milling.inserts[d['bolt']]['depths']))
-			self.add_path(Hole(pos+V(0,-d['B']/2), rad = milling.inserts[d['bolt']]['diams'], z1= milling.inserts[d['bolt']]['depths']))
+			self.add(Hole(pos+V(0,d['B']/2), rad = milling.inserts[d['bolt']]['diams'], z1= milling.inserts[d['bolt']]['depths']))
+			self.add(Hole(pos+V(0,-d['B']/2), rad = milling.inserts[d['bolt']]['diams'], z1= milling.inserts[d['bolt']]['depths']))
 		if mode=='counterbore':
-			self.add_path(Hole(pos+V(0,d['B']/2), rad = milling.bolts[d['bolt']]['clearance']/2))
-			self.add_path(Hole(pos+V(0,-d['B']/2), rad = milling.bolts[d['bolt']]['clearance']/2))
-			self.add_path(ClearRect(pos, centred=True, width=d['L']+0.4, height=d['W']+0.4, partial_fill=(d['L']+0.4)/2, fill_direction='in'))
+			self.add(Hole(pos+V(0,d['B']/2), rad = milling.bolts[d['bolt']]['clearance']/2))
+			self.add(Hole(pos+V(0,-d['B']/2), rad = milling.bolts[d['bolt']]['clearance']/2))
+			self.add(ClearRect(pos, centred=True, width=d['L']+0.4, height=d['W']+0.4, partial_fill=(d['L']+0.4)/2, fill_direction='in'))
 class LinearBearing(Pathgroup):
 	def __init__(self,pos, bearing_type, mode,  **config):
 		self.init(config)
@@ -222,10 +222,10 @@ class LinearBearing(Pathgroup):
 			d=dat[bearing_type]
 			self.dims=d
 			if mode=='clearance':
-				self.add_path(Hole(pos+V(-d['K']/2, -d['J']/2), milling.bolts[d['s1']]['clearance']/2))
-				self.add_path(Hole(pos+V(d['K']/2, -d['J']/2), milling.bolts[d['s1']]['clearance']/2))
-				self.add_path(Hole(pos+V(-d['K']/2, d['J']/2), milling.bolts[d['s1']]['clearance']/2))
-				self.add_path(Hole(pos+V(d['K']/2, d['J']/2), milling.bolts[d['s1']]['clearance']/2))
+				self.add(Hole(pos+V(-d['K']/2, -d['J']/2), milling.bolts[d['s1']]['clearance']/2))
+				self.add(Hole(pos+V(d['K']/2, -d['J']/2), milling.bolts[d['s1']]['clearance']/2))
+				self.add(Hole(pos+V(-d['K']/2, d['J']/2), milling.bolts[d['s1']]['clearance']/2))
+				self.add(Hole(pos+V(d['K']/2, d['J']/2), milling.bolts[d['s1']]['clearance']/2))
 	
 class Insert(Part):
 	def __init__(self, pos, insert_size,layer, **config):
@@ -238,7 +238,7 @@ class Insert(Part):
 				insert=milling.inserts[insert_size][config['insert_type']]
 			else:
 				insert=milling.inserts[insert_size]
-			self.add_path(Hole(pos, rad=insert['diams'], z1 = insert['depths'], **config), layer)	
+			self.add(Hole(pos, rad=insert['diams'], z1 = insert['depths'], **config), layer)	
 
 class LoadCell(Part):
 	def __init__(self, pos, cell_type, modes,**config):
@@ -258,38 +258,38 @@ class LoadCell(Part):
 			mode=modes[l]	
 			e=(d['l']-d['s'])/2
 			if mode=='bottom':
-				self.add_path(Hole(pos+V(0,0), rad=milling.bolts[d['h']]['clearance']/2), l)
+				self.add(Hole(pos+V(0,0), rad=milling.bolts[d['h']]['clearance']/2), l)
 				if 's2' in d:
-					self.add_path(Hole(pos+V((d['s']-d['s2'])/2,0), rad=milling.bolts[d['h']]['clearance']/2, side='in'), l)
+					self.add(Hole(pos+V((d['s']-d['s2'])/2,0), rad=milling.bolts[d['h']]['clearance']/2, side='in'), l)
 			if mode=='bottom_counterbore':
 				if 'counterbore' in config:
 					counterbore = config['counterbore']
-					self.add_path(ClearRect(pos+V(d['l']/4-e+1, d['w']/2), tr=pos+V(-e, -d['w']/2-1), partial_fill=d['w']/2-1, z1=counterbore, side='in'),l)
+					self.add(ClearRect(pos+V(d['l']/4-e+1, d['w']/2), tr=pos+V(-e, -d['w']/2-1), partial_fill=d['w']/2-1, z1=counterbore, side='in'),l)
 				else:
 					counterbore = 0
-				self.add_path(Hole(pos+V(0,0), rad=milling.bolts[d['h']]['clearance']/2), l)
-				self.add_path(ClearRect(pos+V(d['l']/4-e, d['w']/2+2), tr=pos+V(d['l']-e, -d['w']/2-2), side='in'),l)
+				self.add(Hole(pos+V(0,0), rad=milling.bolts[d['h']]['clearance']/2), l)
+				self.add(ClearRect(pos+V(d['l']/4-e, d['w']/2+2), tr=pos+V(d['l']-e, -d['w']/2-2), side='in'),l)
 				if 's2' in d:
-					self.add_path(Hole(pos+V((d['s']-d['s2'])/2,0), rad=milling.bolts[d['h']]['clearance']/2, side='in'), l)
+					self.add(Hole(pos+V((d['s']-d['s2'])/2,0), rad=milling.bolts[d['h']]['clearance']/2, side='in'), l)
 			if mode=='bottom_clear':
-				self.add_path(Hole(pos+V(0,0), rad=milling.bolts[d['h']]['clearance']/2), l)
-				self.add_path(ClearRect(pos+V(d['l']/4-e, d['w']/2+1), tr=pos+V(d['l']-e, -d['w']/2-1), z1=d['z'], side='in'),l)
+				self.add(Hole(pos+V(0,0), rad=milling.bolts[d['h']]['clearance']/2), l)
+				self.add(ClearRect(pos+V(d['l']/4-e, d['w']/2+1), tr=pos+V(d['l']-e, -d['w']/2-1), z1=d['z'], side='in'),l)
 				if 's2' in d:
-					self.add_path(Hole(pos+V((d['s']-d['s2'])/2,0), rad=milling.bolts[d['h']]['clearance']/2), l)
+					self.add(Hole(pos+V((d['s']-d['s2'])/2,0), rad=milling.bolts[d['h']]['clearance']/2), l)
 			if mode=='top':
-				self.add_path(Hole(pos+V(d['s'],0), rad=milling.bolts[d['h']]['clearance']/2), l)
+				self.add(Hole(pos+V(d['s'],0), rad=milling.bolts[d['h']]['clearance']/2), l)
 				if 's2' in d:
-					self.add_path(Hole(pos+V(d['s']-(d['s']-d['s2'])/2,0), rad=milling.bolts[d['h']]['clearance']/2), l)
+					self.add(Hole(pos+V(d['s']-(d['s']-d['s2'])/2,0), rad=milling.bolts[d['h']]['clearance']/2), l)
 			if mode=='whole_counterbore':
 				if('whole_counterbore' in config and config['whole_counterbore']):	
-					self.add_path(ClearRect(pos+V(d['l']/2-e,0), width=d['l']+4, height=d['w']+4, z1=config['whole_counterbore'], partial_fill=d['w']/2-1, fill_direction='in', centred=True, side='in'),l)
+					self.add(ClearRect(pos+V(d['l']/2-e,0), width=d['l']+4, height=d['w']+4, z1=config['whole_counterbore'], partial_fill=d['w']/2-1, fill_direction='in', centred=True, side='in'),l)
 				else:
-					self.add_path(ClearRect(pos+V(d['l']/2-e,0), width=d['l']+4, height=d['w']+4, centred=True, side='in'),l)
+					self.add(ClearRect(pos+V(d['l']/2-e,0), width=d['l']+4, height=d['w']+4, centred=True, side='in'),l)
 
 class DrilledBall(Part):
 	def __init__(self,pos, diameter='12.7', thread='M4', head='flanged', length=16, layer='base',**config):
 		self.init(config)
-		self.add_path(Hole(pos, rad=[milling.bolts[thread]['clearance'], milling.bolts[thread]['clearance']*1.5], z1=[False, -1], centred=True),layer)
+		self.add(Hole(pos, rad=[milling.bolts[thread]['clearance'], milling.bolts[thread]['clearance']*1.5], z1=[False, -1], centred=True),layer)
 		self.add_bom("Machine screw", 1, str(length)+"mm "+str(thread)+" "+str(head),'')
 		self.add_bom("Tapped Mild Steel ball", 1, str(diameter)+"mm "+str(thread)+" tapped",'')
 

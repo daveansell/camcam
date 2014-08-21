@@ -45,24 +45,24 @@ class NOTgate(LogicGate):
 		tri.add_point(V(-l2,-l/2))
 		tri.add_point(V(-l2,l/2))
 		tri.add_point(V(l1,0))
-		self.add_path(tri,layer)
+		self.add(tri,layer)
 
-		self.add_path(Circle(V(l1+r,0),rad=r))
+		self.add(Circle(V(l1+r,0),rad=r))
 
 		outline=Path(closed=True, side='out')
 		outline.add_point(V(-h/2,-w2/2))
 		outline.add_point(V(-h/2,w2/2))
 		outline.add_point(V(h/2,w1/2))
 		outline.add_point(V(h/2,-w1/2))
-		self.add_path(outline, layer)
+		self.add(outline, layer)
 
 	def holes(self,layer,config):
 		l=self.l
 		w1=self.w1
 		w2=self.w2
 		h=self.h
-		self.add_path(Hole(V(-h/2-self.conn_len,0),3.3/2),layer)
-		self.add_path(Hole(V(h/2+self.conn_len,0),3.3/2),layer)
+		self.add(Hole(V(-h/2-self.conn_len,0),3.3/2),layer)
+		self.add(Hole(V(h/2+self.conn_len,0),3.3/2),layer)
 
 
 class ANDgate(LogicGate):
@@ -84,7 +84,7 @@ class ANDgate(LogicGate):
 		symbol.add_point(V(l,l), 'incurve', radius=l-0.1)
 		symbol.add_point(V(l,-l), 'incurve', radius=l-0.1)
 		
-		self.add_path(symbol,layer)
+		self.add(symbol,layer)
 		outline=Path(closed=True, side='out')
 		outline.add_point(V(-h/2,w/2))
 		outline.add_point(V(-h/2,-w/2))
@@ -92,15 +92,15 @@ class ANDgate(LogicGate):
 		outline.add_point(V(h/2,-s))
 		outline.add_point(V(h/2,s))
 		outline.add_point(V(-h/2+s,w/2))
-		self.add_path(outline,layer)
+		self.add(outline,layer)
 	def holes(self,layer,config):
 		l=self.l
 		w=self.w
 		h=self.h
 		s=self.s
-		self.add_path(Hole(V(-h/2+self.conn_wid/2, w/2+self.conn_len),3.3/2),layer)
-		self.add_path(Hole(V(-h/2+self.conn_wid/2, -w/2-self.conn_len),3.3/2),layer)
-		self.add_path(Hole(V(h/2+self.conn_len, 0),3.3/2),layer)
+		self.add(Hole(V(-h/2+self.conn_wid/2, w/2+self.conn_len),3.3/2),layer)
+		self.add(Hole(V(-h/2+self.conn_wid/2, -w/2-self.conn_len),3.3/2),layer)
+		self.add(Hole(V(h/2+self.conn_len, 0),3.3/2),layer)
 	
 
 class ORgate(LogicGate):
@@ -127,7 +127,7 @@ class ORgate(LogicGate):
 		symbol.add_point(V(l,0))
 		symbol.add_point(V(0,-l), 'incurve', radius=l*1.3)
 		
-		self.add_path(symbol,layer)
+		self.add(symbol,layer)
 		outline=Path(closed=True, side='out')
 		outline.add_point(V(-h/2,w/2))
 		outline.add_point(V(-h/2,-w/2))
@@ -135,16 +135,16 @@ class ORgate(LogicGate):
 		outline.add_point(V(h/2,-s))
 		outline.add_point(V(h/2,s))
 		outline.add_point(V(-h/2+s,w/2))
-		self.add_path(outline,layer)
+		self.add(outline,layer)
 
 	def holes(self,layer,config):
 		l=self.l
 		w=self.w
 		h=self.h
 		s=self.s
-		self.add_path(Hole(V(-h/2+self.conn_wid/2, w/2+self.conn_len), rad=3.3/2),layer)
-		self.add_path(Hole(V(-h/2+self.conn_wid/2, -w/2-self.conn_len),3.3/2),layer)
-		self.add_path(Hole(V(h/2+self.conn_len, 0),3.3/2),layer)
+		self.add(Hole(V(-h/2+self.conn_wid/2, w/2+self.conn_len), rad=3.3/2),layer)
+		self.add(Hole(V(-h/2+self.conn_wid/2, -w/2-self.conn_len),3.3/2),layer)
+		self.add(Hole(V(h/2+self.conn_len, 0),3.3/2),layer)
 				
 class XORgate(ORgate):
 	def init2(self):
@@ -164,5 +164,5 @@ class XORgate(ORgate):
 		symbol.add_point(V(-l*1.2,-l))
                 symbol.add_point(V(-0.9*l,0), 'incurve', radius=l*1.7)
                 symbol.add_point(V(-l*1.2,l))
-		self.add_path(symbol,layer)
+		self.add(symbol,layer)
 

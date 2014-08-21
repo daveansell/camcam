@@ -93,15 +93,15 @@ if :param cutter: is not explicitly specified it will use the countersink cutter
 			cutterconfig=milling.tools[self.cutter]
 			if 'min_diameter' in cutterconfig:
 				if holerad<=cutterconfig['min_diameter']/2:
-					self.add_path(Drill(pos,  z1=countersinkrad))
+					self.add(Drill(pos,  z1=countersinkrad))
 				# if the requesed countersink is too big, we will have to chop it into chunks
 				elif countersinkrad-holerad>(cutterconfig['diameter']/2-cutter_config['min_rad'])*0.7:
 					steps = math.ceil(float(countersinkrad-holerad)/((cutterconfig['diameter']/2-cutter_config['min_rad'])*0.7))
 					step  = (countersinkrad-holerad)/steps
 					for i in reversed(range(0,steps)):
-						self.add_path(Circle(pos, rad=countersinkrad-(cutterconfig['diameter']/2-cutter_config['min_rad'])*0.7-step*i, z1=-(cutterconfig['diameter']/2-cutter_config['min_rad'])*0.7-step*i,cutter=cutter))
+						self.add(Circle(pos, rad=countersinkrad-(cutterconfig['diameter']/2-cutter_config['min_rad'])*0.7-step*i, z1=-(cutterconfig['diameter']/2-cutter_config['min_rad'])*0.7-step*i,cutter=cutter))
 				else:
-					self.add_path(Circle(pos, rad=holerad-cutter_config['min_rad'], z1=countersinkrad-holerad+cutter_config['min_rad'])),
+					self.add(Circle(pos, rad=holerad-cutter_config['min_rad'], z1=countersinkrad-holerad+cutter_config['min_rad'])),
 		
 		self.comment("CountersinkHole")
 		self.comment("pos="+str(pos)+" holerad="+str(holerad)+" countersinkrad="+str(countersinkrad))
@@ -136,7 +136,7 @@ class RoundSpeakerGrill(Pathgroup):
 				else:
 					p=V((x+0.5)*spacing, y*yspacing)
 				if p.length()<rad-holerad:
-					self.add_path(Hole(pos+p, rad=holerad))
+					self.add(Hole(pos+p, rad=holerad))
 
 
 class FilledCircle(Pathgroup):
@@ -147,8 +147,8 @@ class FilledCircle(Pathgroup):
 		self.pos=pos
 #		sides=int(max(8, rad))
 		
-#		self.add_path(Polygon(pos, rad, sides, partial_fill=rad-0.5, fill_direction='in', side='in'))
-		self.circle=self.add_path(Circle(pos, rad, side='in'))
+#		self.add(Polygon(pos, rad, sides, partial_fill=rad-0.5, fill_direction='in', side='in'))
+		self.circle=self.add(Circle(pos, rad, side='in'))
 	def __render__(self,config): 
 		c=self.circle.generate_config(config)
                 self.paths=[]
@@ -157,7 +157,7 @@ class FilledCircle(Pathgroup):
 		step=r/steps
 		for i in range(0,int(steps)+1):
 			print str(self.rad)+" "+str(self.rad-(steps-i)*step)+" "+str(i)
-			self.add_path(Circle(self.pos, self.rad-(steps-i)*step, side='in'))
+			self.add(Circle(self.pos, self.rad-(steps-i)*step, side='in'))
 class Chamfer(Pathgroup):
 	def __init__(self, path, chamfer_side, **config):
 		if 'chamfer_depth' not in config:
@@ -182,7 +182,7 @@ class Chamfer(Pathgroup):
 		self.chamfer_side=chamfer_side
 		self.init(config)
 		self.chamfer_path=path
-#		self.add_path(path)
+#		self.add(path)
 		
 	def __render__(self,config):
 		c=self.chamfer_path.generate_config(config)
@@ -245,8 +245,8 @@ class Chamfer(Pathgroup):
 #			tc['fill_direction']=self.chamfer_path.otherDir(self.chamfer_side)
 			temp=startpath.offset_path(side=self.chamfer_side, distance=abs(xstep*(i))+abs(xoffset), config=tc)
 #			print temp
-#			print callable(self.add_path)
-			self.add_path(temp)
+#			print callable(self.add)
+			self.add(temp)
 class DoubleFlat(Path):
 	def __init__(self, pos, rad, flat_rad, **config):
 		"""Cut a circle with two flats, centred at :param pos: with radius :param rad: and :param flat_rad: is half the distance between the flats"""
@@ -264,8 +264,8 @@ class Cross(Pathgroup):
 	def __init__(self, pos, rad, **config):
 		self.init(config)
 		"""Cut a cross with radius :param rad: at :param pos: oriented NS EW"""+self.otherargs
-		a=self.add_path(Path(closed=False,**config))
-		b=self.add_path(Path(closed=False,**config))
+		a=self.add(Path(closed=False,**config))
+		b=self.add(Path(closed=False,**config))
 		a.add_point(V(pos[0]+rad, pos[1]))
 		a.add_point(V(pos[0]-rad, pos[1]))
 		b.add_point(V(pos[0], pos[1]+rad))
@@ -276,21 +276,26 @@ class Cross(Pathgroup):
 class RepeatLine(Part):
 	def __init__(self, start, end, number, ob, args, **config):
                 self.init(config)
+		"""Repeat :param number: objects of type :param ob: in a line from :param start: to :param end:"""+self.otherargs
 		if 'layers' in config:
 			layers=config['layers']
 		else:
 			layers=False
-		"""Repeat :param number: objects of type :param ob: in a line from :param start: to :param end:"""+self.otherargs
-                step=(end-start)/(number-1)
-                for i in range(0,number):
-                	t=self.add_path(ob(start+step*i, **args),layers).paths
-			if 'pibarn' in t:
-				print t['base']
-				print t['base'].paths
-				print t['base'].paths[0].paths
-		self.comment("RepeatLine")
-		self.comment("start="+str(start)+" end="+str(end)+" number="+str(number))
-
+	        step=(end-start)/(number-1)
+		if type(ob)==type:
+	                for i in range(0,number):
+	                	t=self.add(ob(start+step*i, **args),layers).paths
+				if 'pibarn' in t:
+					print t['base']
+					print t['base'].paths
+					print t['base'].paths[0].paths
+			self.comment("RepeatLine")
+			self.comment("start="+str(start)+" end="+str(end)+" number="+str(number))
+		elif hasattr(ob, 'obType') and (ob.obType=='Part' or ob.obType=='Path' or ob.obType=='Pathgroup'):
+			for i in range(0,number):
+				t=copy.deepcopy(ob)	
+				t.transform['translate']=start+step*i
+				self.add(t)
 class RepeatSpacedGrid(Part):
 	def __init__(self, start, dx, dy, numberx, numbery, ob, args,layers, **config):
                 self.init(config)
@@ -310,7 +315,7 @@ class RepeatSpacedGrid(Part):
 			start= start -((dx*(numberx-1))/2+dy*(numbery-1)/2)
                 for i in range(0,numberx):
 			for j in range(0,numbery):
-                        	self.add_path(ob(start+dx*i+dy*j, **args),layers)
+                        	self.add(ob(start+dx*i+dy*j, **args),layers)
 		self.comment("RepeatSpacedGrid")
 		self.comment("start="+str(start)+" dx="+str(dx)+" dy="+str(dy)+" numberx"+str(numberx)+" numbery"+str(numbery))
 
@@ -327,16 +332,16 @@ class Hole(Pathgroup):
 					c=copy.copy(config)
 					if i <= len(config['z1']):
 						c['z1']=config['z1'][i]
-						self.add_path(Circle(pos, rad[i],  **c))
+						self.add(Circle(pos, rad[i],  **c))
 					else:
 						c['z1']=config['z1'][len(config['z1'])]
-						self.add_path(Circle(pos, rad[i],  **c))
+						self.add(Circle(pos, rad[i],  **c))
 				else:
-					self.add_path(Circle(pos, rad[i], **config))
+					self.add(Circle(pos, rad[i], **config))
 		else:
 			if 'z1' in config and type(config['z1']) is list:
 				print "z1 should only be a list if rad is also  a list "+str(config['z1'])
-			self.add_path(Circle(pos, rad, **config))
+			self.add(Circle(pos, rad, **config))
 		self.comment("Hole")
 		self.comment("pos="+str(pos)+" rad="+str(rad))
 
@@ -345,7 +350,7 @@ class HoleLine(Pathgroup):
 		self.init(config)
 		step=(end-start)/(number-1)
 		for i in range(0,number-1):
-			self.add_path(Hole(start+step*i, rad, 'in'))
+			self.add(Hole(start+step*i, rad, 'in'))
 		self.comment("HoleLine")
 		self.comment("start="+str(start)+" end="+str(end)+" number="+str(number)+" rad="+str(rad))
 
@@ -356,15 +361,15 @@ class Screw(Part):
 			layer_conf=config['layer_config']
 			for c in layer_conf.keys():
 				conf = copy.deepcopy(layer_conf[c])
-				self.add_path(Hole(pos, **conf), c)
+				self.add(Hole(pos, **conf), c)
 class FourScrews(Part):
 	def __init__(self, bl, tr, layer_conf, **config):
 		self.init(config)
 		d=tr-bl
-		self.add_path(Screw(bl, layer_config=layer_conf, **config))
-		self.add_path(Screw(bl+V(d[0], 0), layer_config=layer_conf, **config))
-		self.add_path(Screw(bl+V(0, d[1]), layer_config=layer_conf, **config))
-		self.add_path(Screw(tr, layer_config=layer_conf, **config))
+		self.add(Screw(bl, layer_config=layer_conf, **config))
+		self.add(Screw(bl+V(d[0], 0), layer_config=layer_conf, **config))
+		self.add(Screw(bl+V(0, d[1]), layer_config=layer_conf, **config))
+		self.add(Screw(tr, layer_config=layer_conf, **config))
 
 class Bolt(Part):
 	def __init__(self,pos,thread='M4',head='button', length=10, **config):
@@ -389,14 +394,14 @@ class Bolt(Part):
 				insert=milling.inserts[thread]
 			self.add_bom("Wood insert", 1, str(thread)+"insert",'')
 			for i,diam in enumerate(insert['diams']):
-				self.add_path(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),insert_layer)
+				self.add(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),insert_layer)
 
-			self.add_path(Hole(pos, (milling.bolts[thread]['clearance']+0.5)/2, side='in'),clearance_layers)
+			self.add(Hole(pos, (milling.bolts[thread]['clearance']+0.5)/2, side='in'),clearance_layers)
 			if(head=='countersunk'):
-				self.add_path(Countersink(pos, milling.bolts[thread]['clearance'], milling.bolts[thread]['countersunk']['diam']/2, config),head_layer)
+				self.add(Countersink(pos, milling.bolts[thread]['clearance'], milling.bolts[thread]['countersunk']['diam']/2, config),head_layer)
 			else:
-				self.add_path(Hole(pos, milling.bolts[thread]['clearance']/2, side='in'),head_layer)
-			self.add_path(Hole(pos, milling.bolts[thread]['tap'], side='in'),'back')
+				self.add(Hole(pos, milling.bolts[thread]['clearance']/2, side='in'),head_layer)
+			self.add(Hole(pos, milling.bolts[thread]['tap'], side='in'),'back')
 
 class FingerJointMid(Pathgroup):
 	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, prevmode, nextmode, **config):
@@ -435,9 +440,9 @@ The line defines the
 		if startmode=='on':
 			# cut a bit extra on first tab if the previous tab was off as well
 			if prevmode=='on':
-				self.add_path(ClearRect(bl=start-parallel*thickness+cra+crp, tr=start+along+cutin-cra-crp, direction='cw'))
+				self.add(ClearRect(bl=start-parallel*thickness+cra+crp, tr=start+along+cutin-cra-crp, direction='cw'))
 			else:
-				self.add_path(ClearRect(bl=start-parallel+cra+crp, tr=start+along+cutin-cra-crp, direction='cw'))
+				self.add(ClearRect(bl=start-parallel+cra+crp, tr=start+along+cutin-cra-crp, direction='cw'))
 			m='off'
 		else:
 			m='on'
@@ -445,9 +450,9 @@ The line defines the
 			if m=='on':
 				# cut a bit extra on first tab if the next tab was off as well
 				if i==num_tabs and nextmode=='off':
-					self.add_path(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp+parallel*thickness, direction='cw'))
+					self.add(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp+parallel*thickness, direction='cw'))
 				else:
-					self.add_path(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp, direction='cw'))
+					self.add(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp, direction='cw'))
 				
 				m='off'
 			else:
@@ -471,13 +476,13 @@ class FingerJointBoxMidSide(Pathgroup):
 		else:
 			fudge=0
 		if sidemodes['left']:
-			self.add_path(FingerJointMid(start=pos+V(0,0), end=pos+V(0,height), side=s, linemode=linemode, startmode=corners['left'], endmode=corners['left'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['bottom'], nextmode=corners['top'], fudge=fudge))
+			self.add(FingerJointMid(start=pos+V(0,0), end=pos+V(0,height), side=s, linemode=linemode, startmode=corners['left'], endmode=corners['left'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['bottom'], nextmode=corners['top'], fudge=fudge))
 		if sidemodes['top']:
-			self.add_path(FingerJointMid(start=pos+V(0,height), end=pos+V(width,height), side=s, linemode=linemode, startmode=corners['top'], endmode=corners['top'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['left'], nextmode=corners['right'], fudge=fudge))
+			self.add(FingerJointMid(start=pos+V(0,height), end=pos+V(width,height), side=s, linemode=linemode, startmode=corners['top'], endmode=corners['top'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['left'], nextmode=corners['right'], fudge=fudge))
 		if sidemodes['right']:
-			self.add_path(FingerJointMid(start=pos+V(width, height), end=pos+V(width,0), side=s, linemode=linemode, startmode=corners['right'], endmode=corners['right'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['top'], nextmode=corners['bottom'], fudge=fudge))
+			self.add(FingerJointMid(start=pos+V(width, height), end=pos+V(width,0), side=s, linemode=linemode, startmode=corners['right'], endmode=corners['right'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['top'], nextmode=corners['bottom'], fudge=fudge))
 		if sidemodes['bottom']:
-			self.add_path(FingerJointMid(start=pos+V(width,0), end=pos+V(0,0), side=s, linemode=linemode, startmode=corners['bottom'], endmode=corners['bottom'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['right'], nextmode=corners['left'], fudge=fudge))
+			self.add(FingerJointMid(start=pos+V(width,0), end=pos+V(0,0), side=s, linemode=linemode, startmode=corners['bottom'], endmode=corners['bottom'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['right'], nextmode=corners['left'], fudge=fudge))
 		self.comment("FingerJointBoxMidSide")
 
 
@@ -679,28 +684,28 @@ class Module(Plane):
 
 		edge= RoundedRect(bl=V(0,0), tr=V(width, height), rad=radius, side='out')
 		if not ('no_perspex' in config and not config['no_perspex']):
-			self.perspex = self.add_path(Part(name='perspex', border=edge, layer='perspex',colour="red"))
-		self.base = self.add_path(Part(name='base', border=edge, layer='base'))
-#		self.paper = self.add_path(Part(name='paper', border=edge, layer='paper'))
+			self.perspex = self.add(Part(name='perspex', border=edge, layer='perspex',colour="red"))
+		self.base = self.add(Part(name='base', border=edge, layer='base'))
+#		self.paper = self.add(Part(name='paper', border=edge, layer='paper'))
 
 		
-		self.add_path(Hole(V(radius,radius),rad=13/2,side='in'),['base','perspex','paper'])
-		self.add_path(Hole(V(width-radius,radius),rad=13/2,side='in'),['base','perspex','paper'])
-		self.add_path(Hole(V(width-radius,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
-		self.add_path(Hole(V(radius,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
+		self.add(Hole(V(radius,radius),rad=13/2,side='in'),['base','perspex','paper'])
+		self.add(Hole(V(width-radius,radius),rad=13/2,side='in'),['base','perspex','paper'])
+		self.add(Hole(V(width-radius,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
+		self.add(Hole(V(radius,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
 		if size=='A1':
 			if orientation=='landscape':
-				self.add_path(Hole(V(width/2,radius),rad=13/2,side='in'),['base','perspex','paper'])
-		                self.add_path(Hole(V(width/2,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
+				self.add(Hole(V(width/2,radius),rad=13/2,side='in'),['base','perspex','paper'])
+		                self.add(Hole(V(width/2,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
 			else:
-				self.add_path(Hole(V(radius,height/2),rad=13/2,side='in'),['base','perspex','paper'])
-                                self.add_path(Hole(V(width-radius,height/2),rad=13/2,side='in'),['base','perspex','paper'])
+				self.add(Hole(V(radius,height/2),rad=13/2,side='in'),['base','perspex','paper'])
+                                self.add(Hole(V(width-radius,height/2),rad=13/2,side='in'),['base','perspex','paper'])
 
 		if not ('no_holdown' in config and  config['no_holdown']):
-			self.add_path(RepeatLine(V(fromends, fromedge), V(width-fromends,fromedge), holesX, Bolt, bolt_config,layers=['base','perspex','paper']))
-			self.add_path(RepeatLine(V(width-fromedge, fromends), V(width-fromedge,height-fromends), holesY, Bolt, bolt_config,layers=['base','perspex','paper']))
-			self.add_path(RepeatLine(V(width-fromends, height-fromedge), V(fromends,height-fromedge), holesX, Bolt, bolt_config,layers=['base','perspex','paper']))
-			self.add_path(RepeatLine(V(fromedge, height-fromends), V(fromedge,fromends), holesY, Bolt,bolt_config,layers=['base','perspex','paper']))
+			self.add(RepeatLine(V(fromends, fromedge), V(width-fromends,fromedge), holesX, Bolt, bolt_config,layers=['base','perspex','paper']))
+			self.add(RepeatLine(V(width-fromedge, fromends), V(width-fromedge,height-fromends), holesY, Bolt, bolt_config,layers=['base','perspex','paper']))
+			self.add(RepeatLine(V(width-fromends, height-fromedge), V(fromends,height-fromedge), holesX, Bolt, bolt_config,layers=['base','perspex','paper']))
+			self.add(RepeatLine(V(fromedge, height-fromends), V(fromedge,fromends), holesY, Bolt,bolt_config,layers=['base','perspex','paper']))
 
 class ModuleClearBack(Part):
 	def __init__(self, size, layer, **config):
@@ -728,16 +733,16 @@ class ModuleClearBack(Part):
                                 holesY=4
 		if 'screw_config' in config:
 			screw_config=config['screw_config']
-			self.add_path(RepeatLine(V(fromends, fromedge), V(b.width-fromends,fromedge), holesX, Screw, screw_config))
-			self.add_path(RepeatLine(V(b.width-fromedge, fromends), V(b.width-fromedge,b.height-fromends), holesY, Screw, screw_config))
-			self.add_path(RepeatLine(V(b.width-fromends, b.height-fromedge), V(fromends,b.height-fromedge), holesX, Screw, screw_config))
-			self.add_path(RepeatLine(V(fromedge, b.height-fromends), V(fromedge,fromends), holesY, Screw,screw_config))
+			self.add(RepeatLine(V(fromends, fromedge), V(b.width-fromends,fromedge), holesX, Screw, screw_config))
+			self.add(RepeatLine(V(b.width-fromedge, fromends), V(b.width-fromedge,b.height-fromends), holesY, Screw, screw_config))
+			self.add(RepeatLine(V(b.width-fromends, b.height-fromedge), V(fromends,b.height-fromedge), holesX, Screw, screw_config))
+			self.add(RepeatLine(V(fromedge, b.height-fromends), V(fromedge,fromends), holesY, Screw,screw_config))
 		if 'bolt_config' in config:
 			bolt_config=config['bolt_config']
-			self.add_path(RepeatLine(V(fromends, fromedge), V(b.width-fromends,fromedge), holesX, Bolt, bolt_config))
-			self.add_path(RepeatLine(V(b.width-fromedge, fromends), V(b.width-fromedge,b.height-fromends), holesY, Bolt, bolt_config))
-			self.add_path(RepeatLine(V(b.width-fromends, b.height-fromedge), V(fromends,b.height-fromedge), holesX, Bolt, bolt_config))
-			self.add_path(RepeatLine(V(fromedge, b.height-fromends), V(fromedge,fromends), holesY, Bolt,bolt_config))
+			self.add(RepeatLine(V(fromends, fromedge), V(b.width-fromends,fromedge), holesX, Bolt, bolt_config))
+			self.add(RepeatLine(V(b.width-fromedge, fromends), V(b.width-fromedge,b.height-fromends), holesY, Bolt, bolt_config))
+			self.add(RepeatLine(V(b.width-fromends, b.height-fromedge), V(fromends,b.height-fromedge), holesX, Bolt, bolt_config))
+			self.add(RepeatLine(V(fromedge, b.height-fromends), V(fromedge,fromends), holesY, Bolt,bolt_config))
 			
 class ModuleClearBackPath(Path):
 	def __init__(self,size,**config):

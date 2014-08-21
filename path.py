@@ -1686,7 +1686,7 @@ class Pathgroup(object):
 				ret+="<!-- "+comment+" -->\n"
 		return ret
 	def add(self,path):
-		self.add_path(path)
+		return self.add_path(path)
 	def add_path(self,path):
 		try:
 			path.obType
@@ -2063,7 +2063,7 @@ class Part(object):
 			# TODO check this is a real transform
 		self.copies.append(copy_transformations)
 	def add(self, path, layers=False):
-		self.add_path( path, layers)
+		return self.add_path( path, layers)
 
 	def add_path(self,path,layers = False):
 		try:
@@ -2209,6 +2209,10 @@ class Plane(Part):
 				self.config[v]=config[v]
                         else:
 				self.config[v]=False
+	def add_part_layer(self, part, material, thickness, z0=0,zoffset=0, add_back=False, isback=False, colour=False):
+		self.add_layer(part.name, material, thickness, z0, zoffset, add_back, isback, colour)
+		part.layer=part.name
+		self.add(part)
 	# A plane can have several layers
 	def add_layer(self,name, material, thickness, z0=0,zoffset=0, add_back=False, isback=False, colour=False):
 		if add_back:
