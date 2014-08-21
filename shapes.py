@@ -708,9 +708,14 @@ class ModuleClearBack(Part):
 		self.add_border(ModuleClearBackPath(size))
 		b=self.border
 		self.layer=layer
-		
-		fromedge=b.side+15
-		fromends=b.corner+25
+		if 'fromedge' in config:
+			fromedge=b.side+config['fromedge']
+		else:	
+			fromedge=b.side+15
+		if 'fromends' in config:
+			fromends=b.corner+config['fromends']
+		else:
+			fromends=b.corner+25
 		fend=25
 		if size=='A3':
                                 holesX=4

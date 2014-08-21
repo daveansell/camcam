@@ -43,21 +43,19 @@ class SevenSegmentDisplay(Part):
 	def __init__(self, pos, **config):
 		self.init(config)
 		self.transform['translate']=pos
-		print self.transform
 		data={
-			'HDSP-C1E3':{'width':24,'height':34, 'depth':10.5, 'pcb_width':50, 'pcb_height':40},
-			'HDSP-C1E3x2':{'width':48,'height':34, 'depth':10.5, 'pcb_width':55, 'pcb_height':54},
-			'HDSP-C1E3':{'width':24,'height':34, 'depth':10.5, 'pcb_width':50, 'pcb_height':40},
+			'HDSP-C1E3':{'width':24,'height':34, 'depth':10.5, 'pcb_width':55, 'pcb_height':60, 'pcb_xoff':13.5},
+			'HDSP-C1E3x2':{'width':48,'height':34, 'depth':10.5, 'pcb_width':55, 'pcb_height':60,'pcb_xoff':1.5},
+			'HDSP-C2E3':{'width':24,'height':34, 'depth':10.5, 'pcb_width':50, 'pcb_height':40,'pcb_xoff':0},
 		}
 		if 'part' in config and config['part'] in data and 'layer_config' in config:
 			d=data[config['part']]
 			for l in config['layer_config']:
 				task =  config['layer_config'][l]
 				if task=='cutout':
-					print "SSD"+str(self.transform)
-					self.add_path(ClearRect(V(0,0), width=d['width']+1, height=d['height']+1, centred=True),layers=l)
+					self.add_path(Rect(V(0,0), width=d['width']+1, height=d['height']+1, centred=True),layers=l)
 				if task=='pcb':
-					self.add_path(ClearRect(V(0,0), width=d['pcb_width']+1, height=d['pcb_height']+1, centred=True),layers=l)
+					self.add_path(Rect(V(-d['pcb_xoff'],0), width=d['pcb_width']+1, height=d['pcb_height']+1, centred=True),layers=l)
 		
 class Knob(Part):
 	def __init__(self,pos, **config):
@@ -70,7 +68,6 @@ class Knob(Part):
 		if config['knob_type'] == 'stepper':
 			for l in config['layer_config'].keys():
 				task =  config['layer_config'][l]
-				print "knob"+l
 				if task=='stepper_mount':
 					print self.add_path(Stepper(pos, 'NEMA1.7', mode='stepper', layer=l))
 				if task=='shaft':
@@ -183,8 +180,6 @@ class Stepper(Part):
 #			self.add_path(Hole(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5, partial_fill=d['pilot_diam']/2-1, fill_direction='in'),layer)
 #			self.add_path(Hole(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5),layer)
 			self.add_path(FilledCircle(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5),layer)
-		print pos
-		print self.paths	
 
 
 class RoundShaftSupport(Pathgroup):
@@ -206,7 +201,6 @@ class RoundShaftSupport(Pathgroup):
 			'SK30':{'h':42, 'E':42, 'W':84,'L':28, 'F':70, 'G':12, 'P':44, 'B':64, 'S':9, 'bolt':'M10'},
 		}
 		d=dat[shaft_type]
-		print d
 		self.dims =d
 		if mode=='clearance':
 			self.add_path(Hole(pos+V(0,d['B']/2), rad = milling.bolts[d['bolt']]['clearance']/2))

@@ -1460,6 +1460,11 @@ class Path(object):
 		self.make_segments(self.otherDir(direction),self.Bsegments,config)
 # Runin/ ramp
 		step,depths=self.get_depths(config['mode'], config['z0'], config['z1'], config['stepdown'])
+# dodgy fudge to stop things crashing
+		if step == None:
+			step=1
+#			print self.trace
+#			raise Warning("stepdown in output path=0")
 		if len(depths)==0:
 			return False
 # if closed go around and around, if open go back and forth
@@ -1509,9 +1514,9 @@ class Path(object):
 					d= not d
 			if downmode=='ramp':
 				if d:
-					self.add_out(self.Fsegments[0].out(direction,mode))
-				else:
 					self.add_out(self.Bsegments[0].out(direction,mode))
+				else:
+					self.add_out(self.Fsegments[0].out(direction,mode))
 			self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 		# If we are in a gcode mode, go through all the cuts and add feed rates to them
 		if self.mode=='gcode':

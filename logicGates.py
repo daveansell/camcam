@@ -121,11 +121,11 @@ class ORgate(LogicGate):
 
 		symbol=Path(closed=True, side='out')
 		symbol.add_point(V(-l,-l))
-		symbol.add_point(V(-0.7*l,0), 'incurve', radius=l-0.1)
+		symbol.add_point(V(-0.7*l,0), 'incurve', radius=l*1.8-0.1)
 		symbol.add_point(V(-l,l))
-		symbol.add_point(V(0,l), 'incurve', radius=l-0.1)
+		symbol.add_point(V(0,l), 'incurve', radius=l*1.3)
 		symbol.add_point(V(l,0))
-		symbol.add_point(V(0,-l), 'incurve', radius=l-0.1)
+		symbol.add_point(V(0,-l), 'incurve', radius=l*1.3)
 		
 		self.add_path(symbol,layer)
 		outline=Path(closed=True, side='out')
@@ -160,9 +160,9 @@ class XORgate(ORgate):
                 s=self.s
                 self.diagram2(layer,config)
 		
-		symbol=Path(closed=True, side='out')
+		symbol=Path(closed=False, side='on')
 		symbol.add_point(V(-l*1.2,-l))
-                symbol.add_point(V(-0.9*l,0), 'incurve', radius=l-0.1)
+                symbol.add_point(V(-0.9*l,0), 'incurve', radius=l*1.7)
                 symbol.add_point(V(-l*1.2,l))
 		self.add_path(symbol,layer)
 
