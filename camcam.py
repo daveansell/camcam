@@ -11,7 +11,7 @@ class CamCam:
 	def __init__(self):
 		self.planes=[]
 	def add_plane(self,plane):
-		print plane.obType
+	#	print plane.obType
 		if hasattr(plane,'obType') and plane.obType=='Plane':#type(plane) is Plane:
 			self.planes.append(plane)
 			return plane
