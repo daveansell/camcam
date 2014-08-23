@@ -253,12 +253,14 @@ class DoubleFlat(Path):
 		self.init(config)
 		self.closed=True
 		y=math.sqrt(rad**2 - flat_rad**2)
-		self.add_point(pos+V(flat_rad, y), direction='ccw', point_type='arcend')
-		self.add_point(pos, radius=rad, point_type='arc')
-		self.add_point(pos+V(-flat_rad,y), point_type='arcend')
+		self.add_point(pos+V(-flat_rad,0))
 		self.add_point(pos+V(-flat_rad,-y), point_type='arcend')
-		self.add_point(pos, radius=rad, direction='ccw', point_type='arc')
+		self.add_point(pos, radius=rad, direction='cw', point_type='arc')
 		self.add_point(pos+V(flat_rad, -y), point_type='arcend')
+		self.add_point(pos+V(flat_rad, 0), point_type='arcend')
+		self.add_point(pos+V(flat_rad, y),  point_type='arcend')
+		self.add_point(pos, radius=rad, point_type='arc', direction='cw')
+		self.add_point(pos+V(-flat_rad,y), point_type='arcend')
 
 class Cross(Pathgroup):
 	def __init__(self, pos, rad, **config):
@@ -365,11 +367,98 @@ class Screw(Part):
 class FourScrews(Part):
 	def __init__(self, bl, tr, layer_conf, **config):
 		self.init(config)
-		d=tr-bl
-		self.add(Screw(bl, layer_config=layer_conf, **config))
-		self.add(Screw(bl+V(d[0], 0), layer_config=layer_conf, **config))
-		self.add(Screw(bl+V(0, d[1]), layer_config=layer_conf, **config))
-		self.add(Screw(tr, layer_config=layer_conf, **config))
+		self.add(FourObjects(bl, Screw(V(0,0), layer_config=layer_conf, tr=tr)))
+#		d=tr-bl
+#		self.add(Screw(bl, layer_config=layer_conf, **config))
+#		self.add(Screw(bl+V(d[0], 0), layer_config=layer_conf, **config))
+#		self.add(Screw(bl+V(0, d[1]), layer_config=layer_conf, **config))
+#		self.add(Screw(tr, layer_config=layer_conf, **config))
+
+class CopyObject(Part):
+	"""Copy object :param ob: centred on each of the list :param points:"""
+	def __init__(self, ob, points, **config):
+		self.init(config)
+		if type(points) is not list:
+			raise TypeError("points should be a list of vecs")
+		for p in points:
+			t=copy.deepcopy(ob)
+			t.translate(p)
+			if 'layers' in config and config['layers'] is not None:
+				self.add(t, config['layers'])
+			else:
+				self.add(t)
+class FourObjects(Part):
+	"""Copy object :param ob: onto four corners of a rectangle defined form :param bl: and :param tr: or :param bl: :param width: :param height: when :param centrend: is true"""
+	def __init__(self, bl, ob, **config):
+		self.init(config)
+		if 'centred' in config:
+			if 'width' in config and 'height' in config:
+				w=config['width']/2
+				h=config['height']/2
+				points=[bl+V(w,h), bl+V(-w,h), bl+V(-w,-h), bl+V(w, -h)]			
+			else:
+				raise ValueError('If using centred mode you need a width and height defined')
+		else:
+			if 'tr' in config:
+				d=config['tr']-bl
+				points=[bl, bl+V(d[0], 0), bl+d, bl+V(0,d[1])]
+		if ob.obType=='Part':
+			self.add(CopyObject(ob, points))
+		else:
+			self.add(CopyObject(ob, points, layers=config['layers']))
+class LineObjects(Part):
+	"""Copy object :param ob:, :param num: times, between :param a: and :param b:"""
+	def __init__(self, a, b, fromends, num, ob, **config):
+		self.init(config)
+		step=(b-a)/(num-1)
+		points=[]
+		for i in range(0, num-1):
+			points.append(a+step*i)
+		if ob.obType=='Part':
+			self.add(CopyObject(ob, points))
+		else:
+			self.add(CopyObject(ob, points, layers=config['layers']))
+
+class SquareObjects(Part):
+	"""Copy objects around the edge of a square defined with bl&tr or bl, centred, width and height. starting :param fromends: from the ends. numx and numy on sides"""
+	def __init__(self, bl, numx, numy, ob, **config):
+		if 'centred' in config and config['centred']:
+			centre=bl
+			w=config['width']/2
+			h=config['height']/2
+		else:
+			centre=(bl+config['tr'])/2
+			w=(config['tr']-bl)[0]/2
+			h=(config['tr']-bl)[1]/2
+		if 'fromends' in config:
+			fe=config['fromends']
+		else:
+			fe=0
+		if 'layers' in config:
+			l=config['layers']
+		else:
+			l=None
+		# if there is no fromends then don't cut the corner objects twice
+		if fe==0:
+			if numx>3:
+				stepx = 2*w/(numx-1)
+				self.add(LineObjects(centre+V(-w,-h+fe), centre_V(-w,h-fe), numy, ob, layers=l))
+				self.add(LineObjects(centre+V(-w+fe+stepx,h), centre_V(w-fe-stepx,h), numx-2, ob, layers=l)) 		
+				self.add(LineObjects(centre+V(w,h-fe), centre_V(w,-h+fe), numy, ob, layers=l)) 		
+				self.add(LineObjects(centre+V(w-fe-stepx,-h), centre_V(-w+fe+stepx,h), numx-2, ob, layers=l)) 
+			elif numx==3:
+				self.add(LineObjects(centre+V(-w,-h+fe), centre_V(-w,h-fe), numy, ob, layers=l))
+				self.add(CopyObject(ob,[centre+V(0,-h)], layers=l))
+				self.add(LineObjects(centre+V(w,h-fe), centre_V(w,-h+fe), numy, ob, layers=l))
+				self.add(CopyObject(ob,[centre+V(0,h)], layers=l))
+			else:
+				self.add(LineObjects(centre+V(-w,-h+fe), centre_V(-w,h-fe), numy, ob, layers=l))
+				self.add(LineObjects(centre+V(w,h-fe), centre_V(w,-h+fe), numy, ob, layers=l))
+		else:
+			self.add(LineObjects(centre+V(-w,-h+fe), centre_V(-w,h-fe), numy, ob, layers=l)) 		
+			self.add(LineObjects(centre+V(-w+fe,h), centre_V(w-fe,h), numx, ob, layers=l)) 		
+			self.add(LineObjects(centre+V(w,h-fe), centre_V(w,-h+fe), numy, ob, layers=l)) 		
+			self.add(LineObjects(centre+V(w-fe,-h), centre_V(-w+fe,h), numx, ob, layers=l)) 		
 
 class Bolt(Part):
 	def __init__(self,pos,thread='M4',head='button', length=10, **config):

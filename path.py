@@ -148,9 +148,9 @@ class Arc(Segment):
 				return [{"cmd":"G2","X":self.cutto[0],"Y":self.cutto[1], "I":self.centre[0]-self.cutfrom[0], "J":self.centre[1]-self.cutfrom[1]}]
 	def svg(self,direction=True):
 		# Find if the arc is long or not
-		tempcross=(self.centre-self.cutfrom).cross(self.centre-self.cutto)
+		tempcross=(self.centre-self.cutfrom).cross(self.cutto-self.centre)
 		t=tempcross[2]
-		if t>0 and self.direction=='cw' or t<0 and self.direction=='ccw':
+		if (t>0 and self.direction=='cw' or t<0 and self.direction=='ccw')!=direction:
 			longflag="0"
 		else:
 			longflag="1"
@@ -336,7 +336,7 @@ class Path(object):
 		self.points = []
 		self.Fsegments = []
 		self.Bsegments = []
-		self.transform=False
+		self.transform={}
 		self.otherargs=''
 		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing']
 		for v in self.varlist:
@@ -407,7 +407,7 @@ class Path(object):
 		self.transform['mirror']=[pos,dirvec]
 
 	def translate(self,vec):
-		if self.transform==False:
+		if self.transform is False or self.transform is None:
                         self.transform={}
                 self.transform['translate']=vec
 
@@ -1543,7 +1543,7 @@ class Path(object):
 
 	def move(self,moveto):
 		if type(moveto) is not Vec:
-			raise TypeError("moveto must be a Vec not a "+type(moveto)+" Created:"+self.trace)
+			raise TypeError("moveto must be a Vec not a "+str(type(moveto))+" Created:"+str(self.trace))
 		else:
 			if self.mode=='gcode' or self.mode=='simplegcode':
 				return [{"cmd":"G0","X":moveto[0],"Y":moveto[1]}]
@@ -1828,7 +1828,7 @@ class Pathgroup(object):
 		self.transform['rotate']=[pos, angle]
 
 	def translate(self,vec):
-		if self.transform==False:
+		if self.transform is False or self.transform is None:
                         self.transform={}
                 self.transform['translate']=vec
 
