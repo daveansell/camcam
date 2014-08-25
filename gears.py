@@ -181,20 +181,57 @@ class InvoluteGearBorder(Path):
 		else:
 			l=len(px)
 		for i in range(0, l):
-			p = V(px[i]*100, py[i]*100)
+			p = V(px[i], py[i])
 			if p != lastp:
 				self.add_point(p)
 			lastp = p
-	def __init__(self, pos, pressure_angle, number_teeth, pitch, **config):
+	def __init__(self, pos, pressure_angle, number_teeth, **config):
 		self.init(config)
 		self.closed=True
-		x, y = self.gears_make_gear(pressure_angle, number_teeth, pitch)
+		if 'pitch' in config:
+			Pd=math.pi/float(config['pitch'])
+		elif 'rad' in config:
+			Pd=1/2*float(config['rad'])/number_teeth
+		x, y = self.gears_make_gear(pressure_angle, number_teeth, Pd)
 		self.gears_camcam(x,y)
 		self.translate(pos)
+		self.base_diameter=self.gears_base_diameter(pressure_angle, number_teeth, Pd)
+		self.outer_diameter=self.gears_outer_diameter(pressure_angle, number_teeth, Pd)
+		self.root_diameter=self.gears_root_diameter(pressure_angle, number_teeth, Pd)
+
 
 class InvoluteGear(Part):
 	def __init__(self, pos, pressure_angle, number_teeth, pitch, **config):
 		self.init(config)
-		self.add_border(InvoluteGearBorder(V(0,0), pressure_angle, number_teeth, pitch ))
+		c=[]
+		if 'pitch' in config:
+			c['pitch'] = config['pitch']
+		elif 'rad' in config:
+			c['rad'] = config['rad']
+		self.add_border(InvoluteGearBorder(V(0,0), pressure_angle, number_teeth, **c))
 		if 'holerad' in config:
 			self.add(Hole(V(0,0), rad=config['holerad']))
+		self.translate(pos)
+
+class SprocketBorder(Path):
+	def __init__(self, pos, number_teeth, roller_rad, roller_spacing, **config):
+		self.init(config)
+		self.closed=True
+		gap = float(roller_spacing)-2*roller_rad
+		step_angle = 360/float(number_teeth)
+		radius = roller_spacing/2/math.tan(float(step_angle)/2/180*math.pi)
+		radius2 = radius #math.sqrt(radius**2-roller_rad**2)
+#		point_length=math.sqrt(gap*roller_rad+3*gap*gap/4)
+		point_length=math.sqrt((gap+roller_rad)**2-(roller_rad+gap/2)**2)
+		point_length2=math.sqrt((gap+roller_rad)**2-(roller_rad+gap/2*1.7)**2)
+		for i in range(0, number_teeth):
+			theta = step_angle * i
+#			self.add_point(V(-gap/2,radius),'sharp',1,transform={'rotate':[V(0,0),i*step_angle]})
+			self.add_point(V(0,radius2+point_length*0.7),'sharp',1, transform={'rotate':[V(0,0),-theta]})
+			self.add_point(V(-gap/2*0.7,radius2+point_length2),'arcend',1, transform={'rotate':[V(0,0),-theta]})
+			self.add_point(V(0,radius2), 'arc',roller_spacing, direction='cw', transform={'rotate':[V(0,0),-theta]})
+			self.add_point(V(-gap/2,radius2), 'arcend', 0,  transform={'rotate':[V(0,0),-theta]})
+			self.add_point(V(0,radius2), 'arc',roller_rad, direction='ccw', transform={'rotate':[V(0,0),-theta]})
+			self.add_point(V(gap/2,radius2), 'arcend',0, transform={'rotate':[V(0,0),-theta-step_angle]})
+			self.add_point(V(0,radius), 'arc',roller_spacing, direction='cw', transform={'rotate':[V(0,0),-theta]})
+			self.add_point(V(gap/2*0.7,radius2+point_length2),'arcend',1, transform={'rotate':[V(0,0),-theta-step_angle]})

@@ -114,8 +114,7 @@ class Circle(Path):
 		self.init( config)
 		"""Cut a circle centre at :param pos: with radius :param rad:"""+self.otherargs
 		if rad==0:
-			print "circle of zero radius"
-			raise
+			raise ValueError("circle of zero radius")
 		else:	
 			self.closed=True
 			self.add_point(pos,'circle',rad)
