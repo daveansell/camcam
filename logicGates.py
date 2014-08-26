@@ -126,7 +126,7 @@ class ORgate(LogicGate):
 		symbol.add_point(V(0,l), 'incurve', radius=l*1.3)
 		symbol.add_point(V(l,0))
 		symbol.add_point(V(0,-l), 'incurve', radius=l*1.3)
-		
+
 		self.add(symbol,layer)
 		outline=Path(closed=True, side='out')
 		outline.add_point(V(-h/2,w/2))

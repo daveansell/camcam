@@ -20,6 +20,7 @@ class Milling:
 				'comments':True,
 				'z_overshoot':0.5,
 				'label':False,
+				'zero':False,
                         },
                         'eagle':{
                                 'prefix':'GRID MM\nLAYER 21\n',
@@ -38,6 +39,7 @@ class Milling:
 				'comments':False,
 				'dosfile':True,
 				'label':False,
+				'zero':False,
 			},
                         'makespacerouter':{
                                 'prefix':'T1M6\nG17\nG0Z10S11000M3\n',
@@ -55,6 +57,7 @@ class Milling:
 				'dosfile':True,
 				'z_overshoot':0.5,
 				'label':False,
+				'zero':'bottom_left',
                         },
                         'laser':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -69,6 +72,7 @@ class Milling:
 				'hide_cuts':False,
 				'z_overshoot':0,
 				'label':False,
+				'zero':False,
                         },
 			'pcbsvg':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -84,6 +88,7 @@ class Milling:
 				'z_overshoot':0,
 #				'transformations':[{'scale':1/2.54}]
 				'label':False,
+				'zero':False,
 			},
                         'paper':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -98,6 +103,7 @@ class Milling:
 				'hide_cuts':True,
 				'z_overshoot':0.01,
 				'label':False,
+				'zero':False,
                         },
                         'millsvg':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -111,6 +117,7 @@ class Milling:
 				'hide_cuts':False,
 				'z_overshoot':0,
 				'label':False,
+				'zero':False,
                         },
                         'svg':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -123,6 +130,7 @@ class Milling:
 				'hide_cuts':False,
 				'z_overshoot':0,
 				'label':False,
+				'zero':False,
                         },
                         'diagram':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -135,6 +143,7 @@ class Milling:
 				'hide_cuts':True,
 				'z_overshoot':0,
 				'label':True,
+				'zero':False,
                         },
                         'visualise':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -147,6 +156,7 @@ class Milling:
 				'hide_cuts':False,
 				'z_overshoot':0,
 				'label':True,
+				'zero':False,
 				
                         }
 
@@ -325,7 +335,13 @@ class Milling:
                         "sidefeed":300,
                         "stepdown":2,
                         "kress_setting":3,
-               }
+               },
+	       "paper":{
+                        "vertfeed":100,
+                        "sidefeed":300,
+                        "stepdown":2,
+                        "kress_setting":3,
+               },
 	}
 		self.bolts={
 	                'M3':{

@@ -2332,7 +2332,7 @@ class Plane(Part):
 				output['__border']+=b
 		for key in sorted(output.iterkeys()):
 			if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
-				self.writeGcodeFile(part.name,key,output[key], config)
+				self.writeGcodeFile(part.name,key, output[key], part.border.boundingBox, config)
 			elif self.modeconfig['mode']=='svg':
 				out+="<!-- "+str(part.name)+" - "+str(key)+" -->\n"+output[key]
 			elif self.modeconfig['mode']=='scr':
@@ -2349,7 +2349,7 @@ class Plane(Part):
 				f.write( self.modeconfig['prefix'] + out + self.modeconfig['postfix'] )
 				f.close()
 
-	def writeGcodeFile(self,partName, key, output, config):
+	def writeGcodeFile(self,partName, key, output, bbox, config):
 		filename=str(partName)+"_"+str(self.name)+"_"+str(key)
 		if len(config['command_args']):
 			for k in config['command_args'].keys():
@@ -2364,6 +2364,11 @@ class Plane(Part):
 			repeatmode=config['repeatmode']
 		else:
 			repeatmode='regexp'
+		if 'zero' in config and config['zero']=='bottom_left':
+			print bbox
+			offset=-bbox['bl']
+			output = self.offset_gcode( output, offset)
+
 		if 'repeatx' in config and 'repeaty' in config and 'xspacing' in config and 'yspacing' in config:
 			output2=''
 			if repeatmode=='gcode':
@@ -2380,24 +2385,25 @@ class Plane(Part):
 						output2+=output
 			elif repeatmode=='regexp':
 				# one approach is to just grep through for all Xnumber or Ynumbers and add an offset. This works as I and J are relative unless we do something cunning
-				xreg=re.compile('X[\d\.-]+')
-				yreg=re.compile('Y[\d\.-]+')
+#				xreg=re.compile('X[\d\.-]+')
+#				yreg=re.compile('Y[\d\.-]+')
 				for y in range(0,int(config['repeaty'])):
 					for x in range(0,int(config['repeatx'])):
-						tempoutput=output
-						matches = xreg.findall(tempoutput)
-						for match in matches:
-							if len(match):
-								val=float(match[1::])
-								val+=x*float(config['xspacing'])
-								tempoutput=tempoutput.replace(match,'X'+str(val))
-						matches=yreg.findall( tempoutput)
-                                                for match in matches:
-                                                        if len(match):
-                                                                val=float(match[1::])
-                                                                val+=y*float(config['yspacing'])
-                                                                tempoutput=tempoutput.replace(match,'Y'+str(val))
-						output2+=tempoutput
+#						tempoutput=output
+#						matches = xreg.findall(tempoutput)
+#						for match in matches:
+#							if len(match):
+#								val=float(match[1::])
+#								val+=x*float(config['xspacing'])
+#								tempoutput=tempoutput.replace(match,'X'+str(val))
+#						matches=yreg.findall( tempoutput)
+#                                                for match in matches:
+#                                                        if len(match):
+#                                                                val=float(match[1::])
+#                                                                val+=y*float(config['yspacing'])
+#                                                                tempoutput=tempoutput.replace(match,'Y'+str(val))
+#						output2+=tempoutput
+						output2+= self.offset_gcode(output, V(x*float(config['xspacing']), y*float(config['yspacing'])))
 		#	output2+='\nG10 L2 P1 X0 Y0\n'
 			filename+='_'+str(config['repeatx'])+'x_'+str(config['repeaty'])+'y'
 			output=output2
@@ -2410,7 +2416,25 @@ class Plane(Part):
 		f.close()
 		if 'dosfile' in config and config['dosfile']:
 			os.system("/usr/bin/unix2dos "+self.sanitise_filename(filename+config['file_suffix']))
-			
+		
+	def offset_gcode(self, output, offset):
+		xreg=re.compile('X[\d\.-]+')
+		yreg=re.compile('Y[\d\.-]+')
+		tempoutput=output
+		matches = xreg.findall(tempoutput)
+		for match in matches:
+			if len(match):
+				val=float(match[1::])
+				val+=float(offset[0])
+				tempoutput=tempoutput.replace(match,'X'+str(val))
+		matches=yreg.findall( tempoutput)
+                for match in matches:
+                       if len(match):
+                               val=float(match[1::])
+                               val+=float(offset[1])
+                               tempoutput=tempoutput.replace(match,'Y'+str(val))
+		return tempoutput
+	
 	def sanitise_filename(self,filename):
 		return "".join(x for x in filename if x.isalnum() or x in '-._')
 class Layer(object):
