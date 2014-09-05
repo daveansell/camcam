@@ -2365,7 +2365,6 @@ class Plane(Part):
 		else:
 			repeatmode='regexp'
 		if 'zero' in config and config['zero']=='bottom_left':
-			print bbox
 			offset=-bbox['bl']
 			output = self.offset_gcode( output, offset)
 
