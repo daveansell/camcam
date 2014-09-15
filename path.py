@@ -354,7 +354,6 @@ class Path(object):
 		self.changed={}
 		self.parent=False
 		self.comment("start:"+str(type(self)))
-		self.is_copy=False
 	
 	def __deepcopy__(self,memo):
 		obj_copy = object.__new__(type(self))
@@ -806,12 +805,8 @@ class Path(object):
 		elif thispoint.point_type=='incurve':
 			if corner=='external':# and side=='out' or corner=='internal' and side=='in':
 				t.radius+=distance
-#				if distance==4:
-#					print "EXTERNAL ANGLE="+str(angle/math.pi*180)+" cos="+str(abs(math.cos(angle)))+" dist="+str(distance)
 				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, -distance/abs(math.cos(angle2)))
 			else:
-#				if distance==4:
-#					print "INTERNAL ANGLE="+str(angle/math.pi*180)+" cos="+str(abs(math.cos(angle)))+" dist="+str(distance)
 				if t.radius>distance:
 					t.radius-=distance
 					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
@@ -1108,8 +1103,6 @@ class Path(object):
 	                                config[v]=pconfig[v]
 				else:
 					config[v]=None
-#		if self.is_copy:
-#			print "Q"+str(config['transformations'])
 		return config
 
 	def generate_config(self, pconfig):
@@ -1463,8 +1456,6 @@ class Path(object):
 # dodgy fudge to stop things crashing
 		if step == None:
 			step=1
-#			print self.trace
-#			raise Warning("stepdown in output path=0")
 		if len(depths)==0:
 			return False
 # if closed go around and around, if open go back and forth
@@ -1633,7 +1624,6 @@ class Pathgroup(object):
 		self.output=[]
 		self.parent=False
 		self.comments=[]
-		self.is_copy=False
 
 	def __deepcopy__(self,memo):
 		conf={}
@@ -1919,10 +1909,11 @@ class Part(object):
 		self.paths = {}
 		self.parts = []
 		self.copies = []
+		self.copied = False
+		self.isCopy = False
 		self.layer = False
 		self.comments = []
 		self.parent=False
-		self.is_copy=False
 		self.internal_borders=[]
 		self.transform={}
 		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter']
@@ -1948,8 +1939,15 @@ class Part(object):
 			conf[v]=copy.deepcopy(getattr(self,v),memo)
 		ret=type(self)( **conf)
 		ret.parent=copy.copy(self.parent)
-		for p in ret.paths:
-			p.parent=ret
+		# paths and parts need explicitly including 
+		ret.paths=copy.deepcopy(self.paths)
+		ret.parts=copy.deepcopy(self.parts)
+		ret.border=copy.deepcopy(self.border)
+		ret.border.parent=ret
+		# change parent
+		for l in ret.paths:
+			for p in ret.paths[l].paths:
+				p.parent=ret
 		for p in ret.parts:
 			p.parent=ret
 		return ret
@@ -2061,6 +2059,7 @@ class Part(object):
 		# would 
 #		for t in copy_transformations:
 			# TODO check this is a real transform
+		self.number+=1;
 		self.copies.append(copy_transformations)
 	def add(self, path, layers=False):
 		return self.add_path( path, layers)
@@ -2099,37 +2098,73 @@ class Part(object):
 
 			else:
 				raise TypeError( "Added Object should be a Path, Pathgroup or Part not a "+str(path.obType))
+
+
+
+	def make_copies(self):
+		"""Create multiple versions of any parts that should be copied"""
+		if self.copied:
+			return False
+		
+		for part in self.parts:
+			part.make_copies()
+		for copytrans in self.copies:
+			t = copy.deepcopy(self)
+			t.isCopy = True
+			t.transform = copytrans
+			self.parent.add(t)
+
+		self.copied = True
+
 	# flatten the parts tree
 	def get_layers(self):
 		"""Get all the Path/Pathgroupd in a part grouped by layer. Used when rendering"""
 		layers={}
+
+
 		for part in self.parts:
-			
 			# find all the contents of layers
 			part.mode=self.mode
+			part.callmode=self.callmode
 			ls=part.get_layers()
 			if(ls is not False and ls is not None):
 				for l in ls.keys():
-					if l not in layers:
-						layers[l]=[]
+					if not part.isCopy:
+						if l not in layers:
+							layers[l]=[]
+						layers[l].extend(ls[l])
 					# if the part should be copied, copy its parts which aren't in its core layer
 					# This means you can add an object in lots of places and mounting holes will be drilled
-					if not hasattr(part,'layer') or part.layer==False or l!=part.layer or hasattr(self, 'callmode') and milling.mode_config[self.callmode]['overview']:
-						for copytrans in part.copies:
-							for p in ls[l]:
-								t=copy.deepcopy(p)
-								t.is_copy=True		
-								t.transform=copytrans
-								layers[l].append(t)
+					# or we are in an overview mode
+					elif not hasattr(part,'layer') or part.layer==False or l!=part.layer or hasattr(self, 'callmode') and milling.mode_config[self.callmode]['overview']:
+						if l not in layers:
+							layers[l]=[]
+						layers[l].extend(ls[l])
+					else:
+						print part.name	
+#						print "CPIES"+str(part.name)
+#						for copytrans in part.copies:
+#							for p in ls[l]:
+#								print copytrans
+#								t = copy.deepcopy(p)
+#								t.is_copy = True		
+#								t.transform = copytrans
+#								print t
+#								layers[l].append(t)
 					#if not hasattr(part,'layer') or part.layer==False or l!=part.layer:# or milling.mode_config[self.mode]['overview']:
-					layers[l].extend(ls[l])
-
 		for l in self.paths.keys():
-			if not hasattr(self,'layer') or self.layer==False or l != self.layer:
-				self.paths[l].parent=self
-				if l not in layers:
-					layers[l]=[]
-				layers[l].append(self.paths[l])
+#			if not hasattr(self,'layer') or self.layer==False or l != self.layer:
+				if (l==None or l==False) and self.layer!=False and self.layer!=None:
+					l=self.layer
+				if l!=None and l!=False:
+					self.paths[l].parent=self
+					if l not in layers:
+						layers[l]=[]
+					layers[l].append(self.paths[l])
+	#	if hasattr(self, 'callmode') and milling.mode_config[self.callmode]['overview'] and self.layer!=None and self.layer!=False and self.border!=None and self.border!=False and hasattr(self,'layer'):
+	#		if self.layer not in layers:
+	#			layers[self.layer]=[]
+	#		layers[self.layer].append(self.border)
 		return layers
 
 	def get_own_paths(self,config):
@@ -2202,6 +2237,9 @@ class Plane(Part):
 		self.parent=False
 		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z']
 		self.out=''
+		self.isCopy=False
+		self.copied=False
+		self.copies=[]
 		self.bom=[]
 		self.number=1
 		for v in self.varlist:
@@ -2225,6 +2263,7 @@ class Plane(Part):
 	
 	def render_all(self,mode,config):
 		"""Render all parts in the Plane"""
+		self.make_copies()
 		for part in self.getParts():
 			self.render_part(part, mode,config)
 	def list_all(self):
