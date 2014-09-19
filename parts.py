@@ -20,7 +20,8 @@ class Switch(Part):
 				if task=='clearance':
 					self.add(Hole(V(0,0), rad=19/2), layers=l)
 				if task=='doubleflat':
-					self.add(DoubleFlat(V(0,0),13.6/2, 12.9/2))
+					print "doubleflat "+l
+					self.add(DoubleFlat(V(0,0),13.6/2, 12.9/2), layers=l)
 				if task=='minimal':
 					self.add(Hole(V(0,0), rad=18/2, z1=-2 ), layers=l)
 					self.add(Hole(V(0,0), rad=14/2 ), layers=l)
