@@ -1915,6 +1915,7 @@ class Part(object):
 		self.comments = []
 		self.parent=False
 		self.internal_borders=[]
+		self.ignore_border=False
 		self.transform={}
 		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter']
 		self.otherargs=''
@@ -2004,7 +2005,8 @@ class Part(object):
 		return config
 	# is this a part we can render or just a multilayer pathgroup	
 	def renderable(self):
-		if not hasattr(self, 'border') or self.border is False or self.layer is False or self.border is None:
+		if (not hasattr(self, 'border') or self.border is False or self.layer is False or self.border is None) and not (hasattr(self,'ignore_border') and self.ignore_border==True):
+		#if (not hasattr(self, 'border') or self.border is False or self.layer is False or self.border is None) or not (hasattr(self,'ignore_border') and self.ignore_border!=True):
 			return False
 		else:
 			return True
@@ -2242,6 +2244,7 @@ class Plane(Part):
 		self.copies=[]
 		self.bom=[]
 		self.number=1
+		self.ignore_border=False
 		for v in self.varlist:
                         if v in config:
 				self.config[v]=config[v]
@@ -2378,8 +2381,12 @@ class Plane(Part):
 				out+='\n\n'+output[key]
 		if self.modeconfig['mode']=='svg' or self.modeconfig['mode']=='scr':	
 		#	f=open(parent.name+"_"+self.name+"_"+part.name)
+			if part.border != None:
+				centre=part.border.centre
+			else:
+				centre=V(0,0)
 			if self.modeconfig['label'] and  self.modeconfig['mode'] == 'svg':
-				out+="<text transform='scale(1,-1)' text-anchor='middle' x='"+str(int(part.border.centre[0]))+"' y='"+str(-int(part.border.centre[1]))+"'>"+str(part.name)+"</text>"
+				out+="<text transform='scale(1,-1)' text-anchor='middle' x='"+str(int(centre[0]))+"' y='"+str(-int(centre[1]))+"'>"+str(part.name)+"</text>"
 			if self.modeconfig['overview']:
 				self.out+='<g>'+out+'</g>'
 			elif part.name is not None:
