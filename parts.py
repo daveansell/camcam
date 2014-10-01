@@ -304,3 +304,45 @@ class ScrewBOM(BOM_part):
 		self.length=length
 		self.head = head
 		self.thread = thread
+
+class Fan(Pathgroup):
+        def __init__(self, pos, insert_size,layer, **config):
+                """Add a fan of fan_tpe at pos"""
+                self.init(config)
+		self.translate(pos)
+		data={
+			'60mm':{'centrerad':58/2,  'hole_off':50/2, 'holerad':4.5/2},
+			'80mm':{'centrerad':92/2, 'centre_limit':78/2, 'hole_off':71.5/2, 'holerad':4.5/2 },
+			'92mm':{'centrerad':104/2, 'centre_limit':90/2, 'hole_off':82.5/2, 'holerad':4.5/2 },
+			'120mm':{'centrerad':132/2, 'centre_limit':118/2, 'hole_off':105/2, 'holerad':4.5/2 },
+			'140mm':{'centrerad':150/2, 'centre_limit':138/2, 'hole_off':124.5/2, 'holerad':4.5/2 },
+			}
+		if 'fan_type' in config:
+			d=data[config['fan_type']]
+		else:
+			d=data['120mm']
+		if 'centre_limit' in d:
+			o = math.sqrt(d['centrerad']**2 - d['centre_limit']**2)
+			cutout=self.add(Path(side='in', closed=True))
+			cutout.add(V(o,d['centre_limit']), 'arcend')
+			cutout.add(V(0,0), 'arc', radius=d['centrerad'], direction='cw')
+			cutout.add(V(d['centre_limit'],o), 'arcend')
+			
+			cutout.add(V(d['centre_limit'],-o), 'arcend')
+			cutout.add(V(0,0), 'arc', radius=d['centrerad'], direction='cw')
+			cutout.add(V(o,-d['centre_limit']), 'arcend')
+
+			cutout.add(V(-o,-d['centre_limit']), 'arcend')
+			cutout.add(V(0,0), 'arc', radius=d['centrerad'], direction='cw')
+			cutout.add(V(-d['centre_limit'],-o), 'arcend')
+
+			cutout.add(V(-d['centre_limit'],o), 'arcend')
+			cutout.add(V(0,0), 'arc', radius=d['centrerad'], direction='cw')
+			cutout.add(V(-o,d['centre_limit']), 'arcend')
+		else:
+			self.add(Hole(V(0,0), rad=d['centrerad'])
+
+		self.add(Hole(V(d['hole_off'],d['hole_off']), d['holerad']))
+		self.add(Hole(-V(d['hole_off'],d['hole_off']), d['holerad']))
+		self.add(Hole(-V(d['hole_off'],-d['hole_off']), d['holerad']))
+		self.add(Hole(V(d['hole_off'],-d['hole_off']), d['holerad']))
