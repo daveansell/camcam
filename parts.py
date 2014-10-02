@@ -306,7 +306,7 @@ class ScrewBOM(BOM_part):
 		self.thread = thread
 
 class Fan(Pathgroup):
-        def __init__(self, pos, insert_size,layer, **config):
+        def __init__(self, pos,  **config):
                 """Add a fan of fan_tpe at pos"""
                 self.init(config)
 		self.translate(pos)
@@ -324,25 +324,45 @@ class Fan(Pathgroup):
 		if 'centre_limit' in d:
 			o = math.sqrt(d['centrerad']**2 - d['centre_limit']**2)
 			cutout=self.add(Path(side='in', closed=True))
-			cutout.add(V(o,d['centre_limit']), 'arcend')
-			cutout.add(V(0,0), 'arc', radius=d['centrerad'], direction='cw')
-			cutout.add(V(d['centre_limit'],o), 'arcend')
+			cutout.add_point(V(o,d['centre_limit']), 'arcend')
+			cutout.add_point(V(0,0), 'arc', radius=d['centrerad'], direction='ccw')
+			cutout.add_point(V(d['centre_limit'],o), 'arcend')
 			
-			cutout.add(V(d['centre_limit'],-o), 'arcend')
-			cutout.add(V(0,0), 'arc', radius=d['centrerad'], direction='cw')
-			cutout.add(V(o,-d['centre_limit']), 'arcend')
+			cutout.add_point(V(d['centre_limit'],-o), 'arcend')
+			cutout.add_point(V(0,0), 'arc', radius=d['centrerad'], direction='ccw')
+			cutout.add_point(V(o,-d['centre_limit']), 'arcend')
 
-			cutout.add(V(-o,-d['centre_limit']), 'arcend')
-			cutout.add(V(0,0), 'arc', radius=d['centrerad'], direction='cw')
-			cutout.add(V(-d['centre_limit'],-o), 'arcend')
+			cutout.add_point(V(-o,-d['centre_limit']), 'arcend')
+			cutout.add_point(V(0,0), 'arc', radius=d['centrerad'], direction='ccw')
+			cutout.add_point(V(-d['centre_limit'],-o), 'arcend')
 
-			cutout.add(V(-d['centre_limit'],o), 'arcend')
-			cutout.add(V(0,0), 'arc', radius=d['centrerad'], direction='cw')
-			cutout.add(V(-o,d['centre_limit']), 'arcend')
+			cutout.add_point(V(-d['centre_limit'],o), 'arcend')
+			cutout.add_point(V(0,0), 'arc', radius=d['centrerad'], direction='ccw')
+			cutout.add_point(V(-o,d['centre_limit']), 'arcend')
 		else:
-			self.add(Hole(V(0,0), rad=d['centrerad'])
+			self.add(Hole(V(0,0), rad=d['centrerad']))
 
 		self.add(Hole(V(d['hole_off'],d['hole_off']), d['holerad']))
 		self.add(Hole(-V(d['hole_off'],d['hole_off']), d['holerad']))
 		self.add(Hole(-V(d['hole_off'],-d['hole_off']), d['holerad']))
 		self.add(Hole(V(d['hole_off'],-d['hole_off']), d['holerad']))
+
+class StepperDriver(Pathgroup):
+	def __init__(self, pos, **config):
+		self.init(config)
+		self.translate(pos)
+		print pos
+		data={
+			'DM422':{'l':86, 'w':55, 'hs_b':79, 'hoff_b':27.5,'hs_s':79, 'hoff_s':11.75}
+		}
+		if 'type' in config:
+	                        d=data[config['type']]
+		else:
+			d=data['DM422']
+		if 'orientation' in config and config['orientation']=='back':
+			self.add(Hole(V(d['hs_b']/2, 0), rad=4.5/2))
+			self.add(Hole(V(-d['hs_b']/2, 0), rad=4.5/2))
+		else:
+			self.add(Hole(V(d['hs_b']/2, 0), rad=4.5/2))
+                        self.add(Hole(V(-d['hs_b']/2, 0), rad=4.5/2))
+
