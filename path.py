@@ -2312,11 +2312,11 @@ class Plane(Part):
 		# if it has been set to layer 'all' it should be in here
 		if 'all' in layers:
 			paths.extend(layers['all'])
-		paths.extend(part.get_own_paths(config))
-		
+# probably don't need this any more as it is now done in get_layers automatically
+		#paths.extend(part.get_own_paths(config))
+			
 		# iterate through all the paths in the part's layer
 		for path in paths:
-			
 		# if the path is within the bounds of the part then render it
 			if path.obType=="Path" or path.obType=="Part":
 				if not hasattr(part, 'border') or part.border is None or part.ignore_border or  part.contains(path)>-1 or hasattr(path,'is_border') and path.is_border:
