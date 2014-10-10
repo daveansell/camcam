@@ -469,8 +469,15 @@ class Path(object):
 			self.isreversed=1
 		else:
 			self.isreversed=0
-		for p,point in enumerate(pointlist):
-			thispoint = pointlist[p]
+		numpoints=len(pointlist)
+		#if(self.closed):
+	#		numpoints=len(pointlist)
+	#	else:
+	#		numpoints=len(pointlist)*2-2
+#		for p,point in enumerate(pointlist):
+		for p in range(0,numpoints):
+#			thispoint = pointlist[p]
+			thispoint = self.get_point(pointlist, p, self.closed)
 			if hasattr(thispoint,'obType') and thispoint.obType=='Point':
 				nextpoint=self.get_point(pointlist, p+1, self.closed)
 				afternextpoint=self.get_point(pointlist, p+2, self.closed)
@@ -1502,12 +1509,12 @@ class Path(object):
 					else:
 						self.add_out(segment.out(direction,mode))
 					first=0
-					d= not d
+				d= not d
 			if downmode=='ramp':
 				if d:
-					self.add_out(self.Bsegments[0].out(direction,mode))
-				else:
 					self.add_out(self.Fsegments[0].out(direction,mode))
+				else:
+					self.add_out(self.Bsegments[0].out(direction,mode))
 			self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 		# If we are in a gcode mode, go through all the cuts and add feed rates to them
 		if self.mode=='gcode':
@@ -2374,7 +2381,7 @@ class Plane(Part):
 				output['__border']+=b
 		for key in sorted(output.iterkeys()):
 			if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
-				self.writeGcodeFile(part.name,key, output[key], part.border.boundingBox, config)
+				self.writeGcodeFile(part.name,key, output[key], part.border, config)
 			elif self.modeconfig['mode']=='svg':
 				out+="<!-- "+str(part.name)+" - "+str(key)+" -->\n"+output[key]
 			elif self.modeconfig['mode']=='scr':
@@ -2395,7 +2402,7 @@ class Plane(Part):
 				f.write( self.modeconfig['prefix'] + out + self.modeconfig['postfix'] )
 				f.close()
 
-	def writeGcodeFile(self,partName, key, output, bbox, config):
+	def writeGcodeFile(self,partName, key, output, border, config):
 		filename=str(partName)+"_"+str(self.name)+"_"+str(key)
 		if len(config['command_args']):
 			for k in config['command_args'].keys():
@@ -2410,10 +2417,11 @@ class Plane(Part):
 			repeatmode=config['repeatmode']
 		else:
 			repeatmode='regexp'
-		if 'zero' in config and config['zero']=='bottom_left':
-			offset=-bbox['bl']
+		if 'zero' in config and config['zero']=='bottom_left' and border!=None:
+			offset=-border.bbox['bl']
 			output = self.offset_gcode( output, offset)
-
+		else:
+			offset = V(0,0)
 		if 'repeatx' in config and 'repeaty' in config and 'xspacing' in config and 'yspacing' in config:
 			output2=''
 			if repeatmode=='gcode':
