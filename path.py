@@ -220,10 +220,10 @@ class Quad(Segment):
 	def svg(direction = True):
 		if(direction):
                         offset = cp - self.cutfrom
-                        return [{"cmd":"Q", "x":self.cutto[0], "y":self.cutto[1], "i":offset[0], "j":offset[1]}]
+                        return [{"cmd":"Q", "x1":self.cutto[0], "y1":self.cutto[1], "x":offset[0], "y":offset[1]}]
                 else:
                         offset = cp - self.cutto
-                        return [{"cmd":"Q", "x":self.cutfrom[0], "y":self.cutfrom[1], "i":offset[0], "j":offset[1]}]
+                        return [{"cmd":"Q", "x1":self.cutfrom[0], "y1":self.cutfrom[1], "x":offset[0], "y":offset[1]}]
 
 	def polygon(self,resolution=1, direction=1):
 		p0=self.cutfrom
@@ -236,7 +236,52 @@ class Quad(Segment):
 			t=i*step
 			ret.append((1-t)*(1-t)*p0 + 2*(1-t)*t*p1 + t*t*p2 )
 		return ret		
-		
+	
+class Cubic(Segment):
+	def __init__(self, cutfrom, cutto, cp1, cp2):
+		self.seg_type='cubic'
+		self.cutto=cutto
+		self.cutfrom=cutfrom
+		self.cp1=cp1
+		self.cp2=cp2
+
+	def gcode(direction=True):
+		if(direction):
+			offset1 = cp1 - self.cutfrom
+			offset2 = cp2 - self.cutfrom
+			return [{"cmd":"G5", "X":self.cutto[0], "Y":self.cutto[1], "I":offset1[0], "J":offset1[1], "P":offset2[0], "Q":offset2[1]}]
+		else:
+			offset1 = cp2 - self.cutto
+			offset2 = cp1 - self.cutto
+			return [{"cmd":"G5", "X":self.cutfrom[0], "Y":self.cutfrom[1], "I":offset1[0], "J":offset1[1], "P":offset2[0], "Q":offset2[1]}]
+	def svg(direction = True):
+		if(direction):
+                        return [{"cmd":"Q", "x2":self.cutto[0], "y2":self.cutto[1], "x1":cp1[0], "y1":cp1[1], "x":cp2[0], "y":cp2[1]}]
+                else:
+                        return [{"cmd":"Q", "x2":self.cutfrom[0], "y2":self.cutfrom[1], "x1":cp2[0], "y1":cp2[1], "x":cp1[0], "y":cp1[1]}]
+
+	def polygon(self,resolution=1, direction=1):
+		p0=self.cutfrom
+		p1=self.cp1
+		p2=self.cp2
+		p3=self.cutto
+		ret=[]
+		numsteps = ((p3-p2).length()+(p2-p1).length()+(p1-p0).length())/resolution
+		step = 1/numsteps
+		for i in range[1:numsteps-1]:
+			t=i*step
+			ret.append((1-t)*(1-t)*(1-t)*p0 + 3*(1-t)*(1-t)*t*p1 + 3*(1-t)*t*t +  t*t*t*p3 )
+		return ret		
+	
+
+	
+# Ponint types can be:
+# sharp 	- a sharp corner
+# incurve	- arc so that the lines point at the point
+# centred	- arc centred at this point
+# clear		- cut a slot in corner so a sharp corner will fit
+
+	
 # Ponint types can be:
 # sharp 	- a sharp corner
 # incurve	- arc so that the lines point at the point
@@ -1314,6 +1359,10 @@ class Path(object):
 				ret+=" %0.2f"%point['x2']
 			if 'y2' in point:
 				ret+=",%0.2f"%point['y2']
+			if 'x3' in point:
+				ret+=" %0.2f"%point['x3']
+			if 'y3' in point:
+				ret+=",%0.2f"%point['y3']
 			if '_comment' in point :
 				comments+="<!--"+point['_comment']+"-->\n"
 			if '_colour' in point and point['_colour'] is not None:
@@ -1780,6 +1829,10 @@ class Pathgroup(object):
 				ret+=" %0.2f"%point['x2']
 			if 'y2' in point:
 				ret+=",%0.2f"%point['y2']
+			if 'x3' in point:
+				ret+=" %0.2f"%point['x3']
+			if 'y3' in point:
+				ret+=",%0.2f"%point['y3']
 			if '_comment' in point:
 				comments+="<!--"+point['_comment']+"-->\n"
 			if '_colour' in point and point['colour'] is not None:

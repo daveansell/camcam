@@ -73,6 +73,7 @@ class Milling:
 				'z_overshoot':0,
 				'label':False,
 				'zero':False,
+				'file_suffix':'.svg',
                         },
 			'pcbsvg':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -265,7 +266,13 @@ class Milling:
 			"sidecut":1,
 			"angle":17/2,
 			"sidestep":0.5,
-		}
+		},
+                "laser":{
+                        "id":100,
+                        "diameter":0,
+                        "endcut":1,
+                        "sidecut":1,
+                },
 		}
 		self.materials = {
                 "plywood":{

@@ -329,7 +329,7 @@ class Hole(Pathgroup):
 			config['side']='in'
 		if type(rad) is list:
 			for i,r in enumerate(rad):
-				if type(config['z1']) is list:
+				if 'z1' in config.keys() and type(config['z1']) is list:
 					c=copy.copy(config)
 					if i <= len(config['z1']):
 						c['z1']=config['z1'][i]
