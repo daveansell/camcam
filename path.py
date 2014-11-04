@@ -2471,7 +2471,7 @@ class Plane(Part):
 		else:
 			repeatmode='regexp'
 		if 'zero' in config and config['zero']=='bottom_left' and border!=None:
-			offset=-border.bbox['bl']
+			offset=-border.boundingBox['bl']
 			output = self.offset_gcode( output, offset)
 		else:
 			offset = V(0,0)
