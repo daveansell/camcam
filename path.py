@@ -2017,6 +2017,22 @@ class Part(object):
 		for p in ret.parts:
 			p.parent=ret
 		return ret
+
+	def rotate(self,pos, angle):
+		if self.transform==False or self.transform==None:
+			self.transform={}
+		self.transform['rotate']=[pos, angle]
+
+	def mirror(self, pos, dirvec):	
+		if self.transform==False or self.transform==None:
+			self.transform={}
+		self.transform['mirror']=[pos,dirvec]
+
+	def translate(self,vec):
+		if self.transform is False or self.transform is None:
+                        self.transform={}
+                self.transform['translate']=vec
+
 	def add_bom(self,name, number=False, part_number=False, description=False, length=False):
 		if type(name) is not str:
 			if hasattr(name,'obType') and name.obType=='BOM':
@@ -2104,6 +2120,7 @@ class Part(object):
 		else:
 			#self.add_path(path,self.layer)
 			if path.obType!="Path":
+				print path.obType
 				raise TypeError("Part border should be a Path not a"+str(path.obType))
 			self.border=copy.deepcopy(path)
 			if self.border.side==None:

@@ -365,4 +365,24 @@ class StepperDriver(Pathgroup):
 		else:
 			self.add(Hole(V(d['hs_b']/2, 0), rad=4.5/2))
                         self.add(Hole(V(-d['hs_b']/2, 0), rad=4.5/2))
-
+class RoundPlate(Part):
+	def __init__(self, pos, plateType, **config):
+		data={
+		}
+			'stringplate6':{'rad':25, 'centreRad':4/2, 'holes':6, 'holerad':19, 'holeSize':'M4'}
+			'stringplate3':{'rad':25, 'centreRad':4/2, 'holes':3, 'holerad':19, 'holeSize':'M4'}
+		d=data[plateType]
+		self.init(config)
+		self.transform={'translate':pos}
+		if 'layers_config' not in config:
+			layer_config={'base':'base', 'part':'stringplate'}
+		self.add_border(Circle(V(0,0), rad=d['rad'], side='out'))
+		self.layer=layer_config['part']
+		screwConf={layer_config['part']:{'rad':milling.bolts[d['holeSize']]['clearance']/2+0.5}, layer_config['base']:{'rad':milling.bolts[d['holeSize']]['clearance']/2}}
+		if 'holes' in d.keys():
+			for i in range(0, d['holes']):
+				self.add(Bolt(V(d['holerad'],0), 'M4', 'button', 16, clearance_layer=layer_config['part'], insert_layer=layer_config['base'], transform={'rotate':[V(0,0), i*360/d['holes']]}))
+#				self.add(Screw(V(d['holerad'],0), layer_config=screwConf, transform={'rotate':[V(0,0), i*360/d['holes']]}))
+		if 'centreRad' in d:
+			self.add(Hole(V(0,0), rad=d['centreRad']))
+			self.add(Hole(V(0,0), rad=d['centreRad']+2), [layer_config['base']])
