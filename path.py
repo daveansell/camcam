@@ -34,6 +34,7 @@ arg_meanings = {'order':'A field to sort paths by',
 		'linewidth':'svg line width', 
 		'stepdown':'maximum stepdown - defined by cutter and material', 
 		'forcestepdown':'force the stepdown - normally set to large so svgs only go around once', 
+		'forcecutter':'force the cutter - normally for laser cutting around once', 
 		'forcecolour':'mode where colour is forced by depth etc',
 		'border':'A path to act as the border of the part',
 		'layer':'The layer the part exists in - it can add things to other layers',
@@ -456,8 +457,12 @@ class Path(object):
                 self.transform['translate']=vec
 
 	def set_cutter(self, config):
-		if config['cutter'] in milling.tools:
-			tool=milling.tools[config['cutter']]
+		if 'forcecutter' in config and config['forcecutter'] is not None:
+			cutter = config['forcecutter']
+		else:
+			cutter=config['cutter']
+		if cutter in milling.tools:
+			tool=milling.tools[cutter]
 			config['cutterrad']=tool['diameter']/2
 			config['endcut']=tool['endcut']
 			config['sidecut']=tool['sidecut']
@@ -1146,7 +1151,7 @@ class Path(object):
 		if self.transform!=None:
 			config['transformations'].append(self.transform)
 		#	self.transform=None
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'mode','partial_fill','finishing','fill_direction','precut_z']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'forcecutter', 'mode','partial_fill','finishing','fill_direction','precut_z']
                 for v in self.varlist:
 			if v !='transform' and v !='transformations':
 	                        if hasattr(self,v) and getattr(self,v) is not None:
@@ -1669,7 +1674,7 @@ class Pathgroup(object):
 		self.obType = "Pathgroup"
 		self.paths=[]
 		self.trace = traceback.extract_stack()
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'stepdown', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in args:
@@ -1701,7 +1706,7 @@ class Pathgroup(object):
 			raise Warning( "PATHGROUP has no parent Created:"+str(self.trace))
 			pconfig = False
 		config = {}
-		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour','rendermode','partial_fill','finishing','fill_direction','cutter','precut_z']
+		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour','rendermode','partial_fill','finishing','fill_direction','cutter','precut_z']
 		if pconfig is False or  pconfig['transformations'] is False or pconfig['transformations'] is None:
 			config['transformations']=[]
 		else:
@@ -1977,7 +1982,7 @@ class Part(object):
 		self.internal_borders=[]
 		self.ignore_border=False
 		self.transform={}
-		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter']
+		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in config:
@@ -2297,7 +2302,7 @@ class Plane(Part):
 		self.name=name
 		self.transform=False
 		self.parent=False
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','stepdown', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown', 'forcecutter', 'stepdown', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z']
 		self.out=''
 		self.isCopy=False
 		self.copied=False

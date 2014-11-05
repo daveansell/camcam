@@ -265,4 +265,14 @@ class Arc(Point):
 		self.obType='Point'
 	def checkArc(self):
 		if self.pos and radius:
+			if (self.pos-self.last().pos).length()<radius or (self.next().pos-self.pos).length()<radius:
+				print "Arc's radius should be <= distance to the "
+		elif radius and length:
+
+		elif self.pos:
+			self.radius=min((self.next()-self.pos).length(), (self.pos- self.last().pos))
+	def makeSegment(self, config):
+		if self.last().point_type=='sharp' and self.next().point_type=='sharp':
+			
+		
 			

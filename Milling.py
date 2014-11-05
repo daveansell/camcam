@@ -64,6 +64,7 @@ class Milling:
                                 'postfix':'</g>\n</svg>\n',
                                 'mode':'svg',
                                 'forcestepdown':1000,
+				'forcecutter':'laser',
                                 'linewidth':0.5,
                                 'group':False,
                                 'toolchange':'none',
@@ -269,7 +270,7 @@ class Milling:
 		},
                 "laser":{
                         "id":100,
-                        "diameter":0,
+                        "diameter":0.05,
                         "endcut":1,
                         "sidecut":1,
                 },
