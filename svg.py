@@ -4,7 +4,6 @@ import re
 
 class SVGimport(Pathgroup):
 	def __init__(self,pos, filename, paths, **config):
-		print paths	
 		nsmap = {
 		    'sodipodi': 'http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd',
 		    'cc': 'http://web.resource.org/cc/',
@@ -25,25 +24,34 @@ class SVGimport(Pathgroup):
 			outpaths= tree.xpath('.//svg:path',namespaces=nsmap)
 		elif type(paths) is list:
 			for path in paths:
-				print './/n:path[@id="'+path+'"]'
 				outpaths= tree.xpath('.//svg:path[@id="'+path+'"]', namespaces=nsmap)
 		elif type(paths) is dict:
 			for p in paths.keys():
 				outpaths= tree.xpath(".//n:path[@"+path[p]['attrib']+"='"+path[p]['value']+"']", namespaces={'n': "http://www.w3.org/2000/svg"})
 		for p in outpaths:
-			self.parse_d(p.get('d'))
+			self.parse_d(p.get('d'),config)
 # at the moment this just treats everything as a line so add lots of points
-	def parse_d(self,d):
+	def parse_d(self,d,config):
+		outpaths=[]
 		outpath=False
 		items = re.split('[, ]+', d)
 		pos=V(0,0)
+		firstpath=True
 		i=0
 		while i<len(items):
 			if items[i]=='M':
 				i+=1
 				if outpath!=False and len(outpath.points)>1:
-					self.add(outpath)
+					if (startpos-pos).length()<0.04:
+						outpath.closed=True
+						outpath.points.pop()
+					outpaths.append(outpath)
+						
 				outpath = Path()
+				pos=V(float(items[i]), -float(items[i+1]))
+				startpos = pos
+				outpath.add_point(pos)
+				i+=2
 				while i<len(items) and self.is_number(items[i]):
 					pos=V(float(items[i]), -float(items[i+1]))
 					outpath.add_point(pos)
@@ -98,9 +106,16 @@ class SVGimport(Pathgroup):
 					i+=1
 			if items[i]=='m':
 				if outpath!=False and len(outpath.points)>1:
-					self.add(outpath)
+					if (startpos-pos).length()<0.04:
+						outpath.closed=True
+						outpath.points.pop()
+					outpaths.append(outpath)
 				outpath = Path()
 				i+=1
+				pos+=V(float(items[i]), -float(items[i+1]))
+				startpos = pos
+				outpath.add_point(pos)
+				i+=2
 				while i<len(items) and self.is_number(items[i]):
 					pos+=V(float(items[i]), -float(items[i+1]))
 					outpath.add_point(pos)
@@ -160,7 +175,33 @@ class SVGimport(Pathgroup):
 			else:
 				i+=1
 		if outpath!=False and len(outpath.points)>0:
-			self.add(outpath)
+			if (startpos-pos).length()<0.04:
+				outpath.closed=True
+				outpath.points.pop()
+			outpaths.append(outpath)
+		for i in range(0, len(outpaths)):
+			self.add(outpaths[i])
+		if len(outpaths)>1 and 'side' in config.keys() and config['side']!='on':
+			outermost=0
+			for i in range(1, len(outpaths)):
+				if outpaths[outermost].contains(outpaths[i]):
+					outermost=i
+			print outermost
+			outerdir=outpaths[outermost].find_direction(config)
+			for i in range(0, len(outpaths)):
+				if i==outermost or outpaths[i].find_direction(config)==outerdir:
+					outpaths[i].side=config['side']
+				else:
+					if config['side']=='in':
+						outpaths[i].side='out'
+					elif config['side']=='out':
+						outpaths[i].side='in'
+					elif config['side']=='left':
+						outpaths[i].side='right'
+					elif config['side']=='right':
+						outpaths[i].side='left'
+				print outpaths[i].side
+			print outpaths
 	def is_number(self,s):
 	    try:
 	        float(s)

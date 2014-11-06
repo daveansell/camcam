@@ -368,9 +368,9 @@ class StepperDriver(Pathgroup):
 class RoundPlate(Part):
 	def __init__(self, pos, plateType, **config):
 		data={
+			'stringplate6':{'rad':25, 'centreRad':4/2, 'holes':6, 'holerad':19, 'holeSize':'M4'},
+			'stringplate3':{'rad':25, 'centreRad':4/2, 'holes':3, 'holerad':19, 'holeSize':'M4'},
 		}
-			'stringplate6':{'rad':25, 'centreRad':4/2, 'holes':6, 'holerad':19, 'holeSize':'M4'}
-			'stringplate3':{'rad':25, 'centreRad':4/2, 'holes':3, 'holerad':19, 'holeSize':'M4'}
 		d=data[plateType]
 		self.init(config)
 		self.transform={'translate':pos}

@@ -463,7 +463,7 @@ class Path(object):
 			cutter=config['cutter']
 		if cutter in milling.tools:
 			tool=milling.tools[cutter]
-			config['cutterrad']=tool['diameter']/2
+			config['cutterrad']=float(tool['diameter'])/2
 			config['endcut']=tool['endcut']
 			config['sidecut']=tool['sidecut']
 			if tool['sidecut']==0:
@@ -554,7 +554,9 @@ class Path(object):
 	def segment_point(self,thispoint, lastpoint, nextpoint,beforelastpoint, afternextpoint, segment_array, frompoint, do,config):
 #		if frompoint is False:
 #			frompoint=thispoint.pos#
-		if thispoint.pos==lastpoint.pos and thispoint.point_type!='circle':
+		if thispoint == None:
+			return None
+		if type(lastpoint) != None and thispoint.pos==lastpoint.pos and thispoint.point_type!='circle':
 			return frompoint
 		if thispoint.point_type=='sharp':
 			if do:
@@ -596,8 +598,11 @@ class Path(object):
 				
 			else:
 				angle=(thispoint.pos-lastpoint.pos).angle(nextpoint.pos-thispoint.pos)
-				
-			d=config['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1)
+			#fudge to stop it exploding. when coming back on oneself, is something wrong with equation
+			if abs(math.sin((180-angle)/2/180*math.pi))<0.001:
+				d=0#config['cutterrad']
+			else:		
+				d=config['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1)
                         extrapoint=thispoint.pos-(((lastpoint.pos-thispoint.pos).normalize()+(nextpoint.pos-thispoint.pos).normalize())/2).normalize()*d
 
 #			extrapoint=thispoint.pos-((lastpoint.pos+nextpoint.pos)/2-thispoint.pos).normalize()*config['cutterrad']
@@ -807,19 +812,19 @@ class Path(object):
 				nextpoint=(pointlist[p+1:p+2] + [None])[0]
 				if nextpoint is not None:
 					nextpoint=nextpoint.point_transform()
-				lastpoint=(pointlist[p-1:p] + [None])[0],
+				lastpoint=(pointlist[p-1:p] + [None])[0]
 				if lastpoint is not None:
 					lastpoint=lastpoint.point_transform()
-				beforelastpoint=(pointlist[p-2:p-1] + [None])[0],
+				beforelastpoint=(pointlist[p-2:p-1] + [None])[0]
 				if beforelastpoint is not None:
 					beforelastpoint=beforelastpoint.point_transform()
-				beforebeforelastpoint=(pointlist[p-3:p-2] + [None])[0],
+				beforebeforelastpoint=(pointlist[p-3:p-2] + [None])[0]
 				if beforebeforelastpoint is not None:
 					beforebeforelastpoint=beforebeforelastpoint.point_transform()
-				afternextpoint=(pointlist[p+2:p+3] + [None])[0],
+				afternextpoint=(pointlist[p+2:p+3] + [None])[0]
 				if afternextpoint is not None:
 					afternextpoint=afternextpoint.point_transform()
-				afterafternextpoint=(pointlist[p+3:p+4] + [None])[0],
+				afterafternextpoint=(pointlist[p+3:p+4] + [None])[0]
 				if afternextpoint is not None:
 					afternextpoint=afternextpoint.point_transform()
 			t=self.offset_point(
@@ -843,6 +848,15 @@ class Path(object):
 		a=(-(thispoint.pos-lastpoint.pos).normalize()+(thispoint.pos-nextpoint.pos).normalize())
 		al=a.length()
 		angle2=((thispoint.pos-lastpoint.pos).angle(thispoint.pos-nextpoint.pos)/2-90)*math.pi/180
+		b1=(thispoint.pos-lastpoint.pos).normalize()
+		b2=(nextpoint.pos-thispoint.pos).normalize()
+		dot=b1.dot(b2)
+		if dot>=1:
+			angle3=0
+		else:
+			angle3=math.acos(b1.dot(b2))
+		if abs(dot-1)<0.0001:
+			return False
 #			print math.cos(((thispoint.pos-lastpoint.pos).angle(thispoint.pos-nextpoint.pos)/2-90)*math.pi/180)
 		angle=math.atan2(a[1], a[0])
 		if cross<0 and side=='left' or cross>0 and side=='right':
@@ -851,7 +865,7 @@ class Path(object):
 			corner='internal'
 		if thispoint.point_type=='outcurve':
 			if corner=='external':
-				t.radius+=distance
+				t.radius+=distanc/math.pi*180
 			else:
 				if t.radius>distance:
 					t.radius-=distance
@@ -875,10 +889,28 @@ class Path(object):
 			if corner=='external':# and side=='out' or corner=='internal' and side=='in':
 #				t.radius=distance
 #				t.point_type='outcurve'
-				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, -distance/abs(math.cos(angle)))
+#				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, -distance/abs(math.cos(angle/2)))
+				if angle3==0 and dot<0:
+					return False
+				else:
+					if dot<=0:
+						if angle3>math.pi/2:
+							a=(math.pi-angle3)/2
+						else:
+							a=angle3
+						t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, -distance/abs(math.sin(a)))
+					else:
+						t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, -distance/abs(math.cos((math.pi/4-angle3)/2)))
 			else:
-				t.point_type='clear'
-				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
+#				t.point_type='clear'
+				if angle3==0 and dot<0:
+					return False
+				else:
+					if dot<=0:
+						t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.sin((angle3)/2)))
+					else:
+						t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos((math.pi/4-angle3)/2)))
+					#	t.pos=thispoint.pos
 		elif thispoint.point_type=='clear' or thispoint.point_type=='doubleclear':
 				t.point_type='doubleclear'
 				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
@@ -939,6 +971,8 @@ class Path(object):
 		return t
 
 	def offset_move_point(self,thispos, lastpos, nextpos, frompos, topos, side,distance):
+		if distance>10:
+			distance=10
 		if side=='left':
 			a=-90
 		else:
@@ -946,10 +980,11 @@ class Path(object):
 		vecin=(thispos-frompos).normalize()
 		vecout=(topos-thispos).normalize()
 		# Find average direction of two vectors
-		avvec=(vecin-vecout).normalize()
+		avvec=(vecin-vecout)
 		# then rotate it 90 degrees towards the requested side
 		if avvec.length()<0.001:
-			return rotate(vecin,a)+thispos
+			return rotate(vecin,a).normalize()*distance+thispos
+		avvec=avvec.normalize()
 		return -avvec*distance+thispos
 #		return rotate(avvec*distance,a)*2+thispos
 
@@ -1703,7 +1738,7 @@ class Pathgroup(object):
 		if self.parent is not False:
 			pconfig = self.parent.get_config()
 		else:
-			raise Warning( "PATHGROUP has no parent Created:"+str(self.trace))
+			#raise Warning( "PATHGROUP has no parent Created:"+str(self.trace))
 			pconfig = False
 		config = {}
 		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour','rendermode','partial_fill','finishing','fill_direction','cutter','precut_z']
