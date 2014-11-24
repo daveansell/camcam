@@ -135,7 +135,7 @@ class Arc(Segment):
 		
 	def gcode(self,direction=True):
 		if (self.centre-self.cutfrom).length()==0:
-			raise Warning( "Arc of zero length")
+			print Warning( "Arc of zero length")
 			return []
 		if(not direction):
 			if self.direction=='cw':
@@ -757,6 +757,13 @@ class Path(object):
 #	return centre+offset*r
 
 		d=diff.length()
+		print "d="+str(d)+" r="+str(d)
+		if d<=r:
+			print "d="+str(d)+" is less than r="+str(d)
+#			t=d
+#			d=r
+#			r=t
+#			print d<r
 		l=math.sqrt(d*d-r*r)
 		theta= math.acos(r/d)
 
@@ -865,7 +872,7 @@ class Path(object):
 			corner='internal'
 		if thispoint.point_type=='outcurve':
 			if corner=='external':
-				t.radius+=distanc/math.pi*180
+				t.radius+=distance/math.pi*180
 			else:
 				if t.radius>distance:
 					t.radius-=distance
