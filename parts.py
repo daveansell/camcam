@@ -239,6 +239,7 @@ class Insert(Part):
 				insert=milling.inserts[insert_size][config['insert_type']]
 			else:
 				insert=milling.inserts[insert_size]
+			print "LAYER:"+str(layer)
 			self.add(Hole(pos, rad=insert['diams'], z1 = insert['depths'], **config), layer)	
 
 class LoadCell(Part):
