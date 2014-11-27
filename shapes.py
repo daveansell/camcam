@@ -136,7 +136,21 @@ class RoundSpeakerGrill(Pathgroup):
 					p=V((x+0.5)*spacing, y*yspacing)
 				if p.length()<rad-holerad:
 					self.add(Hole(pos+p, rad=holerad))
-
+class RectSpeakerGrill(Pathgroup):
+	def __init__(self,pos, width, height, holerad, spacing, **config):
+		self.init(config)
+                """Cut a rectangular grid with width :param width: and height :param height: of holes with radius :param holerad: and :param spacing:"""+self.otherargs
+		yspacing=spacing*math.cos(math.pi/6)
+                numholesx = int(math.ceil(width/spacing)+1)
+                numholesy = int(math.ceil(height/yspacing))
+		for x in range(-numholesx,numholesx):
+                        for y in range(-numholesy,numholesy):
+                                if y%2:
+                                        p=V(x*spacing, y*yspacing)
+                                else:
+                                        p=V((x+0.5)*spacing, y*yspacing)
+				if abs(p[0])<width/2-holerad and abs(p[1])<height/2-holerad:
+	                                self.add(Hole(pos+p, rad=holerad))
 
 class FilledCircle(Pathgroup):
 

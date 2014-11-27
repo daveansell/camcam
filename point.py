@@ -89,6 +89,39 @@ class Point(object):
 	def last(self):
 		return self.lastpoint
 
+	def angle(self):
+		b1=(thispoint.pos-lastpoint.pos).normalize()
+                b2=(nextpoint.pos-thispoint.pos).normalize()
+		self.dot=b1.dot(b2)
+                if self.dot>=1:
+                        self.angle = 0
+                else:
+                        self.angle = math.acos(b1.dot(b2))
+
+	def corner_side(self):
+		cross=(self.pos-self.last().pos).cross(self.next().pos-self.pos)[2]
+		if cross<0 and side=='left' or cross>0 and side=='right':
+			corner='external'
+		else:
+			corner='internal'
+
+	def offset_move_point(self, frompos, topos, side, distance):
+		if distance>10:
+                        distance=10
+                if side=='left':
+                        a=-90
+                else:
+                        a=90
+                vecin=(self.pos-frompos).normalize()
+                vecout=(topos-self.pos).normalize()
+                # Find average direction of two vectors
+                avvec=(vecin-vecout)
+                # then rotate it 90 degrees towards the requested side
+                if avvec.length()<0.001:
+                        return rotate(vecin,a).normalize()*distance+self.pos
+                avvec=avvec.normalize()
+                return -avvec*distance+self.pos
+
 class PSharp(Point):
 	def __init__(self, pos, radius=0, cp1=False, cp2=False, direction=False, transform=False):
                 self.pos=Vec(pos)
@@ -103,7 +136,31 @@ class PSharp(Point):
 		return self.pos
 	def end(self):
 		return self.pos
+
 	def offset(self, direction, distance, pointlist):
+		self.angle()
+		t = copy.copy(self)
+		if self.corner_side()=='external':# and side=='out' or corner=='internal' and side=='in':
+            		if self.angle==0 and self.dot<0:
+      				return False
+                   	else:
+                          	if self.dot<=0:
+                                   	if self.angle>math.pi/2:
+                                          	a=(math.pi-angle3)/2
+                                     	else:
+                                             	a=self.angle
+                                        t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, -distance/abs(math.sin(a)))
+                             	else:
+                                    	t.pos = self.offset_move_point( self.lastorigin(), self.nextorigin(), side, -distance/abs(math.cos((math.pi/4-angle3)/2)))
+          	else:
+                     	if self.angle==0 and self.dot<0:
+                      		return False
+                   	else:
+                          	if self.dot<=0:
+                                   	t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.sin((self.angle)/2)))
+                             	else:
+                                     	t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.cos((math.pi/4-self.angle)/2)))
+		return t
 
 	def makeSegment(self, config):
 		if self.last() != None and self.last().end()!=self.pos:
@@ -159,6 +216,83 @@ class PIncurve(Point):
 			return [Line(self.last().origin(), self.pos)]
 		else:
 			return []
+
+class PChamfer(Point):
+	def __init__(self, pos, distance=0, direction=False, transform=False):
+		self.pos=Vec(pos)
+                self.point_type='chamfer'
+                self.radius=radius
+                self.direction=direction
+                self.transform=transform
+                self.obType="Point"
+	def origin(self, pointlist=False):
+                return self.pos
+	def end(self):
+		pass
+	def offset(self, direction, distance, pointlist):
+		pass
+	def makeSegment(self, config):
+		pass
+
+class POutcurve(Point):
+	def __init__(self, pos, radius=0, direction=False, transform=False):
+                self.pos=Vec(pos)
+                self.point_type='outcurve'
+                self.radius=radius
+                self.direction=direction
+                self.transform=transform
+                self.obType="Point"
+	def origin(self, pointlist=False):
+		return self.pos
+	def end(self):
+		lastpoint=self.last().origin()
+		nextpoint=self.next().origin()
+		angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
+		dl=self.radius*math.tan((angle/180)/2*math.pi)
+		return self.pos+(nextpoint-self.pos).normalize()*dl
+	def offset(self, direction, distance, pointlist):
+		
+	def makeSegment(self, config):
+		segment_array=[]
+		if self.last().point_type=='outcurve':
+                        lr=lastpoint.radius
+                else:
+                        lr=0
+		if self.last() is not None and self.last().point_type not in ['sharp', 'outcurve']:
+			print "Outcurve must be preceeded by a sharp point or another outcurve"
+			return []
+		if lr!=0:
+			if type(self.last().last()) == None:
+				print "OUtcurve must be preceeded by 2 points if previous point is outcurce"
+                       	if (self.last().pos-self.last().last().pos).cross(self.pos-self.last().pos)[2] <0:
+                       	        d1='cw'
+                       	else:
+                       	        d1='ccw'
+		else:
+			# if lr=0 we don't care about the direction
+			d1='cw'
+                if (self.pos-self.last().pos).cross(self.next().pos-self.pos)[2] <0:
+                        d2='cw'
+                else:
+                        d2='ccw'
+                p1=self.tangent_points( self.last().pos, lr, d1, self.pos, self.radius, d2)
+                segment_array.append( Line(p1[0], p1[1]))
+                d3=''
+                if self.next().point_type=="outcurve":
+                        if (self.next().pos-self.pos).cross(self.next().next().pos-self.next().pos)[2] <0:
+                                d3='cw'
+                        else:
+                                d3='ccw'
+                         p2=self.tangent_points( self.pos, self.radius, d2, self.next().pos, self.next().radius, d3)
+                         segment_array.append( Arc( p1[1],p2[0], self.pos, self.otherDir(d2)))
+                         frompoint=p2
+                 else:
+
+                         p2 = self.tangent_point(self.next().pos, self.pos, self.radius, self.otherDir(d2))
+                         segment_array.append( Arc( p1[1],p2, self.pos, self.otherDir(d2)))
+                         frompoint=p2
+			
+
 class PClear(Point):
 	def __init__(self, pos, transform=False):
                 self.pos=Vec(pos)
