@@ -671,34 +671,41 @@ class FingerJointBoxSide(Path):
 		cutterrad = milling.tools[cutter]['diameter']/2
 		for k in thickness.keys():
 			if k in corners and corners[k]=='on':
-				c[k] = cutterrad
+				if linemode=='external':
+					c[k] = cutterrad
+				else:
+					c[k] = -cutterrad
 			else:
-				c[k] = cutterrad+thickness[k]
+				if linemode=='external':
+					c[k] = cutterrad+thickness[k]
+				else:
+					c[k] = -cutterrad+thickness[k]
 
 		if 'left' in sidemodes and sidemodes['left']=='straight':
 			self.add_point(pos+V(-c['left'],height+c['top']))
 		else:
 			if corners['left']=='off' and corners['bottom']=='off':
-				self.add_point(pos+V(-thickness['left']-cutterrad, -thickness['bottom']-cutterrad),'sharp')
+#				self.add_point(pos+V(-thickness['left']-cutterrad, -thickness['bottom']-cutterrad),'sharp')
+				self.add_point(pos+V(-c['left'], -c['bottom']),'sharp')
 			self.add_points(FingerJoint(start=pos+V(0,0), end=pos+V(0,height), side=s, linemode=linemode, startmode=corners['left'], endmode=corners['left'], tab_length=tab_length, thickness=thickness['left'], cutterrad=cutterrad, fudge=fudge))
 		if 'top' in sidemodes and sidemodes['top']=='straight':
 			self.add_point(pos+V(width+c['right'],height+c['top']))
 		else:
 			if corners['left']=='off' and corners['top']=='off':
-				self.add_point(pos+V(-thickness['left']-cutterrad, height+thickness['top']+cutterrad),'sharp')
+				self.add_point(pos+V(-c['left'], height+c['top']),'sharp')
 			self.add_points(FingerJoint(start=pos+V(0,height), end=pos+V(width,height), side=s, linemode=linemode,startmode=corners['top'], endmode=corners['top'], tab_length=tab_length, thickness=thickness['top'], cutterrad=cutterrad, fudge=fudge))
 		if 'right' in sidemodes and sidemodes['right']=='straight':
 			self.add_point(pos+V(width+c['right'],-c['bottom']))
 		else:
 			if corners['top']=='off' and corners['right']=='off':
-				self.add_point(pos+V(width+thickness['right']+cutterrad, height+thickness['top']+cutterrad),'sharp')
+				self.add_point(pos+V(width+c['right'], height+c['top']),'sharp')
 			self.add_points(FingerJoint(start=pos+V(width,height), end=pos+V(width,0), side=s, linemode=linemode, startmode=corners['right'], endmode=corners['right'], tab_length=tab_length, thickness=thickness['right'], cutterrad=cutterrad, fudge=fudge))
 		if 'bottom' in sidemodes and sidemodes['bottom']=='straight':
 			
 			self.add_point(pos+V(-c['bottom'],-c['left']))
 		else:
 			if corners['right']=='off' and corners['bottom']=='off':
-				self.add_point(pos+V(width+thickness['right']+cutterrad, -thickness['bottom']-cutterrad),'sharp')
+				self.add_point(pos+V(width+c['right'], -c['bottom']),'sharp')
 			self.add_points(FingerJoint(start=pos+V(width,0), end=pos+V(0,0), side=s, linemode=linemode, startmode=corners['bottom'], endmode=corners['bottom'], tab_length=tab_length, thickness=thickness['bottom'], cutterrad=cutterrad, fudge=fudge))
 		self.comment("FingerJointBoxSide")
 
