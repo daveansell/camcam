@@ -588,6 +588,77 @@ class FingerJointBoxMidSide(Pathgroup):
 		self.comment("FingerJointBoxMidSide")
 
 
+class AngledFingerJoint(list):
+	""" like a normal finger joint but with longer toungues to take into account the angle"""
+	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad,  angle, cutside='outside', fudge=0):
+	# If this is being cut from the Outside of the shape, the whole joint needs moving by the same amount as the length of the tabs
+		if side=='left':
+			perp = rotate((end-start).normalize(),-90)
+		else:
+			perp = rotate((end-start).normalize(),90)
+		if cutside=='outside':
+			start+=perp*thickness/math.tan(float(angle)/180*math.pi)
+			end+=perp*thickness/math.tan(float(angle)/180*math.pi)
+		for p in FingerJoint(start, end, side,linemode, startmode, endmode, tab_length, thickness/math.tan(float(angle)/180*math.pi), cutterrad, fudge):
+			self.append(p)
+class AngledFingerJointSlope(Pathgroup):
+	""" This will cut a load of slopes away from an AngledFingerJoint, the both must be called"""
+	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, angle, cutside='outside', fudge=0):
+		self.init({})
+		max_xstep=cutterrad
+		chamfer_width = thickness*math.tan(float(angle)/180*math.pi)
+		print chamfer_width
+		print max_xstep
+		print angle
+		print angle/180*math.pi
+		print math.tan(angle/180*math.pi)
+	
+		steps=int(math.ceil(chamfer_width/max_xstep))
+		print steps
+		xstep=chamfer_width/steps
+		zstep=thickness/steps
+
+		num_tab_pairs= math.floor((end-start).length()/tab_length/2)
+		if startmode==endmode:
+			num_tabs = num_tab_pairs*2+1
+		else:
+			num_tabs = num_tab_pairs*2
+		tab_length = (end-start).length()/num_tabs
+		if side=='left':
+			perp = rotate((end-start).normalize(),-90)
+		else:
+			perp = rotate((end-start).normalize(),90)
+		if cutside=='outside':
+			start+=perp*thickness/math.tan(float(angle)/180*math.pi)
+			end+=perp*thickness/math.tan(float(angle)/180*math.pi)
+		along=tab_length*(end-start).normalize()
+		cra=(end-start).normalize()*(cutterrad+fudge)
+		crp=perp*cutterrad
+		cutin=perp*thickness
+		if linemode=='external':
+			onpointmode='clear'
+			offpointmode='sharp'
+		if linemode=='internal':
+			onpointmode='sharp'
+			offpointmode='clear'
+			cra=-cra
+			crp=-crp
+		if startmode=='on':
+			m='on'
+		elif startmode=='off':
+			m='off'
+		for i in range(1,int(num_tabs)):
+			if m=='on':
+				m='off'
+				for j in range(0, steps):
+					print "xoff="+str((j+1)*xstep)+" zoff="+str(thickness-zstep*j)
+					p=Path(closed=False, side='on', z1=thickness-zstep*j)
+					p.add_point((start+along*(i-1)+crp-cra-perp*(j+1)*xstep), offpointmode)
+					p.add_point((start+along*i+crp+cra-perp*(j+1)*xstep), offpointmode)
+					self.add(p)
+			else:
+				m='on'
+
 
 class FingerJoint(list):
 	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, fudge=0):
