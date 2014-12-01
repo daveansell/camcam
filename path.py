@@ -489,9 +489,11 @@ class Path(object):
 	def add_point(self,pos, point_type='sharp', radius=0, cp1=False, cp2=False, direction=False, transform=False):
 		self.points.append(Point(pos, point_type, radius,cp1, cp2, direction, transform))
 		self.has_changed()
+
 	def prepend_point(self,pos, point_type='sharp', radius=0, cp1=False, cp2=False, direction=False, transform=False):
 		self.points.insert(0,Point(pos, point_type, radius,cp1, cp2, direction, transform))
 		self.has_changed()
+
 	def add_points(self,points, end='end'):
 		for p in points:
 			if type(p) is Point:
@@ -502,6 +504,46 @@ class Path(object):
 			else:
 				raise TypeError( "add_points - adding a non-point "+str(type(p)))
 		self.has_changed()
+
+	def add_points_intersect(self, points):
+		joint=self.intersect_lines(self.points[len(self.points)-2].pos, self.points[len(self.points)-1].pos, points[0].pos, points[1].pos)
+		print "JOINT"+str(joint)
+                del(self.points[len(self.points)-1])
+                self.points.append(Point(joint,'sharp'))
+                for i in range(1, len(points)):
+                        self.points.append(points[i])
+		print self.points
+
+	def close_intersect(self):
+		joint=self.intersect_lines(self.points[len(self.points)-2].pos, self.points[len(self.points)-1].pos, self.points[0].pos, self.points[1].pos)
+		del(self.points[len(self.points)-1])
+		self.points[0].pos=joint
+
+	def intersect_lines(self,a, b, c, d):
+		x= ((a[0]*b[1]-a[1]*b[0])*(c[0]-d[0]) - (a[0]-b[0])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
+		y= ((a[0]*b[1]-a[1]*b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
+		return V(x,y)
+
+#	def intersect_lines(self,a0, a1, b0, b1):
+ #               xdiff = (a0[0] - a1[0], b0[0] - b1[0])
+  #              ydiff = (a0[1] - a1[1], a0[1] - a1[1]) #Typo was here
+#		print "xdiff"+str(xdiff)
+#		print "ydiff"+str(ydiff)
+ #               def det(a, b):
+  #                      return a[0] * b[1] - a[1] * b[0]
+#
+ #               div = det(xdiff, ydiff)
+#		print "div="+str(div)
+ #               if div == 0:
+  #                      raise Exception('lines do not intersect')
+#
+ #               d = (det(a0,a1), det(b0,b1))
+#		print "d="+str(d)
+ #               x = det(d, xdiff) / div
+  #              y = det(d, ydiff) / div
+#		print V(x,y)
+ #               return V(x, y)
+
 	def has_changed(self):
 		for c in self.changed.keys():
 			self.changed[c]=True
