@@ -2087,13 +2087,16 @@ class Part(object):
 		conf={}
 		for v in self.varlist:
 			conf[v]=copy.deepcopy(getattr(self,v),memo)
-		ret=type(self)( **conf)
+#		ret=type(self)( **conf)
+		ret=copy.copy(self)
 		ret.parent=copy.copy(self.parent)
 		# paths and parts need explicitly including 
 		ret.paths=copy.deepcopy(self.paths)
 		ret.parts=copy.deepcopy(self.parts)
 		ret.border=copy.deepcopy(self.border)
-		ret.border.parent=ret
+		ret.transform=copy.deepcopy(self.transform)
+		if ret.border is not None:
+			ret.border.parent=ret
 		# change parent
 		for l in ret.paths:
 			for p in ret.paths[l].paths:

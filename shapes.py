@@ -300,10 +300,6 @@ class RepeatLine(Part):
 		if type(ob)==type:
 	                for i in range(0,number):
 	                	t=self.add(ob(start+step*i, **args),layers).paths
-				if 'pibarn' in t:
-					print t['base']
-					print t['base'].paths
-					print t['base'].paths[0].paths
 			self.comment("RepeatLine")
 			self.comment("start="+str(start)+" end="+str(end)+" number="+str(number))
 		elif hasattr(ob, 'obType') and (ob.obType=='Part' or ob.obType=='Path' or ob.obType=='Pathgroup'):
@@ -396,6 +392,7 @@ class CopyObject(Part):
 		for p in points:
 			t=copy.deepcopy(ob)
 			t.translate(p)
+			print "COPY to "+str(p)
 			if 'layers' in config and config['layers'] is not None:
 				self.add(t, config['layers'])
 			else:
@@ -422,11 +419,16 @@ class FourObjects(Part):
 class LineObjects(Part):
 	"""Copy object :param ob:, :param num: times, between :param a: and :param b:"""
 	def __init__(self, a, b, fromends, num, ob, **config):
+		print "line from:"+str(a)+" to "+str(b)
 		self.init(config)
+		totlength=(b-a).length()
+		length=totlength-2*fromends
 		step=(b-a)/(num-1)
+		step=length/(num-1)*(b-a).normalize()
+		start=a+fromends*(b-a).normalize()
 		points=[]
-		for i in range(0, num-1):
-			points.append(a+step*i)
+		for i in range(0, num):
+			points.append(start+step*i)
 		if ob.obType=='Part':
 			self.add(CopyObject(ob, points))
 		else:
@@ -435,6 +437,7 @@ class LineObjects(Part):
 class SquareObjects(Part):
 	"""Copy objects around the edge of a square defined with bl&tr or bl, centred, width and height. starting :param fromends: from the ends. numx and numy on sides"""
 	def __init__(self, bl, numx, numy, ob, **config):
+		self.init(config)
 		if 'centred' in config and config['centred']:
 			centre=bl
 			w=config['width']/2
@@ -455,23 +458,24 @@ class SquareObjects(Part):
 		if fe==0:
 			if numx>3:
 				stepx = 2*w/(numx-1)
-				self.add(LineObjects(centre+V(-w,-h+fe), centre_V(-w,h-fe), numy, ob, layers=l))
-				self.add(LineObjects(centre+V(-w+fe+stepx,h), centre_V(w-fe-stepx,h), numx-2, ob, layers=l)) 		
-				self.add(LineObjects(centre+V(w,h-fe), centre_V(w,-h+fe), numy, ob, layers=l)) 		
-				self.add(LineObjects(centre+V(w-fe-stepx,-h), centre_V(-w+fe+stepx,h), numx-2, ob, layers=l)) 
+				self.add(LineObjects(centre+V(-w,-h+fe), centre+V(-w,h-fe), 0, numy, ob, layers=l))
+				self.add(LineObjects(centre+V(-w+fe+stepx,h), centre+V(w-fe-stepx,h), 0, numx-2, ob, layers=l)) 		
+				self.add(LineObjects(centre+V(w,h-fe), centre+V(w,-h+fe), 0, numy, ob, layers=l)) 		
+				self.add(LineObjects(centre+V(w-fe-stepx,-h), centre+V(-w+fe+stepx,h), 0, numx-2,  ob, layers=l)) 
 			elif numx==3:
-				self.add(LineObjects(centre+V(-w,-h+fe), centre_V(-w,h-fe), numy, ob, layers=l))
+				self.add(LineObjects(centre+V(-w,-h+fe), centre+V(-w,h-fe),0, numy, ob, layers=l))
 				self.add(CopyObject(ob,[centre+V(0,-h)], layers=l))
-				self.add(LineObjects(centre+V(w,h-fe), centre_V(w,-h+fe), numy, ob, layers=l))
+				self.add(LineObjects(centre+V(w,h-fe), centre+V(w,-h+fe), 0, numy, ob, layers=l))
 				self.add(CopyObject(ob,[centre+V(0,h)], layers=l))
 			else:
-				self.add(LineObjects(centre+V(-w,-h+fe), centre_V(-w,h-fe), numy, ob, layers=l))
-				self.add(LineObjects(centre+V(w,h-fe), centre_V(w,-h+fe), numy, ob, layers=l))
+				self.add(LineObjects(centre+V(-w,-h+fe), centre+V(-w,h-fe), 0, numy, ob, layers=l))
+				self.add(LineObjects(centre+V(w,h-fe), centre+V(w,-h+fe), 0, numy, ob, layers=l))
 		else:
-			self.add(LineObjects(centre+V(-w,-h+fe), centre_V(-w,h-fe), numy, ob, layers=l)) 		
-			self.add(LineObjects(centre+V(-w+fe,h), centre_V(w-fe,h), numx, ob, layers=l)) 		
-			self.add(LineObjects(centre+V(w,h-fe), centre_V(w,-h+fe), numy, ob, layers=l)) 		
-			self.add(LineObjects(centre+V(w-fe,-h), centre_V(-w+fe,h), numx, ob, layers=l)) 		
+			print "fe="+str(fe)+" h="+str(h)+" w="+str(w)
+			self.add(LineObjects(centre+V(-w,-h+fe), centre+V(-w,h-fe), 0, numy, ob, layers=l)) 		
+			self.add(LineObjects(centre+V(-w+fe,h), centre+V(w-fe,h), 0, numx, ob, layers=l)) 		
+			self.add(LineObjects(centre+V(w,h-fe), centre+V(w,-h+fe), 0, numy, ob, layers=l)) 		
+			self.add(LineObjects(centre+V(w-fe,-h), centre+V(-w+fe,-h), 0, numx, ob, layers=l)) 		
 
 class Bolt(Part):
 	def __init__(self,pos,thread='M4',head='button', length=10, **config):
@@ -643,7 +647,7 @@ class AngledFingerJointSlope(Pathgroup):
 			m='on'
 		elif startmode=='off':
 			m='off'
-		for i in range(1,int(num_tabs)):
+		for i in range(1,int(num_tabs+1)):
 			if m=='on':
 				m='off'
 				for j in range(0, steps):
@@ -654,7 +658,7 @@ class AngledFingerJointSlope(Pathgroup):
 					self.add(p)
 			else:
 				m='on'
-
+			print "i2="+str(i)
 
 class FingerJoint(list):
 	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, fudge=0):

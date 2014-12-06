@@ -97,7 +97,9 @@ class Point(object):
                         self.angle = 0
                 else:
                         self.angle = math.acos(b1.dot(b2))
-
+i		a=b2-b1
+		self.angle0=math.atan2(a[1], a[0])
+		self.angle2=(b1.angle(-b2)-90)*math.pi/180
 	def corner_side(self):
 		cross=(self.pos-self.last().pos).cross(self.next().pos-self.pos)[2]
 		if cross<0 and side=='left' or cross>0 and side=='right':
@@ -121,6 +123,9 @@ class Point(object):
                         return rotate(vecin,a).normalize()*distance+self.pos
                 avvec=avvec.normalize()
                 return -avvec*distance+self.pos
+	def lastorigin(self):
+		pass
+	def nextorigin(self):
 
 class PSharp(Point):
 	def __init__(self, pos, radius=0, cp1=False, cp2=False, direction=False, transform=False):
@@ -185,6 +190,20 @@ class PIncurve(Point):
 		dl=self.radius*math.tan((angle/180)/2*math.pi)
 		return self.pos+(nextpoint-self.pos).normalize()*dl
 	def offset(self, direction, distance, pointlist):
+		self.angle()
+		t=copy.copy(self)
+		if self.corner_side()=='external':
+			t.radius+=distance
+                        t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, -distance/abs(math.cos(self.angle2)))
+
+		else:
+			if t.radius>distance:
+                                        t.radius-=distance
+                                        t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), topos, side, distance/abs(math.cos(self.angle0)))
+                                else:
+                                        t.point_type='sharp'
+                                        t.radius=0
+                                        t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.cos(angle0)))
 	def makeSegment(self, config):
 		if self.last() != None and self.next() !=None:
 			lastpoint=self.last().origin()
