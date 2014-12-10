@@ -479,6 +479,7 @@ class SquareObjects(Part):
 
 class Bolt(Part):
 	def __init__(self,pos,thread='M4',head='button', length=10, **config):
+		""" thread - thread type, head - head type, length - bolt length, insert_layer - the layer or layers inserts should be added to , clearance layers - the layers that should have a clearance hole, head_layer - layer for bolt head"""
 		self.init(config)
 		self.add_bom("Machine screw", 1, str(length)+"mm "+str(thread)+" "+str(head),'')
 		if 'insert_layer' in config:
@@ -595,20 +596,49 @@ class FingerJointBoxMidSide(Pathgroup):
 
 class AngledFingerJoint(list):
 	""" like a normal finger joint but with longer toungues to take into account the angle"""
-	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad,  angle, cutside='outside', fudge=0):
+	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad,  angle, lineside='back', fudge=0):
+		"""  AngledFingerJoint
+start - point the funger joint should start
+end - point the finger joint should end
+side - side the fingers should be cut (left/right)
+linemode - is this an external or internal finger joint (internal is in a hole in a box) 
+startmode - should start on or off the line
+endmode - should end on or off the line
+tab_length - a length of tab to aim for - will actually be an integer fraction of the length
+thickness - the thickness of the piece of wood you are slotting into
+cutterrad - radius of the cutter
+angle - angle from vertical that the finger joint is mounted at 
+lineside - the side of the piece you are cutting that the line form start to end runs along (front/back)
+fudge - fudge factor which just affects the sides of the fingers not their length
+"""
+		self.init({})
 	# If this is being cut from the Outside of the shape, the whole joint needs moving by the same amount as the length of the tabs
 		if side=='left':
 			perp = rotate((end-start).normalize(),-90)
 		else:
 			perp = rotate((end-start).normalize(),90)
-		if cutside=='outside':
+		if lineside=='back':
 			start+=perp*thickness/math.tan(float(angle)/180*math.pi)
 			end+=perp*thickness/math.tan(float(angle)/180*math.pi)
 		for p in FingerJoint(start, end, side,linemode, startmode, endmode, tab_length, thickness/math.tan(float(angle)/180*math.pi), cutterrad, fudge):
 			self.append(p)
 class AngledFingerJointSlope(Pathgroup):
 	""" This will cut a load of slopes away from an AngledFingerJoint, the both must be called"""
-	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, angle, cutside='outside', fudge=0):
+	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, angle, lineside='back', fudge=0):
+		"""  AngledFingerJointSlope
+start - point the funger joint should start
+end - point the finger joint should end
+side - side the fingers should be cut (left/right)
+linemode - is this an external or internal finger joint (internal is in a hole in a box) 
+startmode - should start on or off the line
+endmode - should end on or off the line
+tab_length - a length of tab to aim for - will actually be an integer fraction of the length
+thickness - the thickness of the piece of wood you are slotting into
+cutterrad - radius of the cutter
+angle - angle from vertical that the finger joint is mounted at 
+lineside - the side of the piece you are cutting that the line form start to end runs along (front/back)
+fudge - fudge factor which just affects the sides of the fingers not their length
+"""
 		self.init({})
 		max_xstep=cutterrad
 		chamfer_width = thickness*math.tan(float(angle)/180*math.pi)
@@ -628,7 +658,7 @@ class AngledFingerJointSlope(Pathgroup):
 			perp = rotate((end-start).normalize(),-90)
 		else:
 			perp = rotate((end-start).normalize(),90)
-		if cutside=='outside':
+		if lineside=='back':
 			start+=perp*thickness/math.tan(float(angle)/180*math.pi)
 			end+=perp*thickness/math.tan(float(angle)/180*math.pi)
 		along=tab_length*(end-start).normalize()
@@ -638,11 +668,13 @@ class AngledFingerJointSlope(Pathgroup):
 		if linemode=='external':
 			onpointmode='clear'
 			offpointmode='sharp'
+			self.direction = 'ccw'
 		if linemode=='internal':
 			onpointmode='sharp'
 			offpointmode='clear'
 			cra=-cra
 			crp=-crp
+			self.direction = 'cw'
 		if startmode=='on':
 			m='on'
 		elif startmode=='off':
