@@ -597,21 +597,20 @@ class FingerJointBoxMidSide(Pathgroup):
 class AngledFingerJoint(list):
 	""" like a normal finger joint but with longer toungues to take into account the angle"""
 	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad,  angle, lineside='back', fudge=0):
-		"""  AngledFingerJoint
-start - point the funger joint should start
-end - point the finger joint should end
-side - side the fingers should be cut (left/right)
-linemode - is this an external or internal finger joint (internal is in a hole in a box) 
-startmode - should start on or off the line
-endmode - should end on or off the line
-tab_length - a length of tab to aim for - will actually be an integer fraction of the length
-thickness - the thickness of the piece of wood you are slotting into
-cutterrad - radius of the cutter
-angle - angle from vertical that the finger joint is mounted at 
-lineside - the side of the piece you are cutting that the line form start to end runs along (front/back)
-fudge - fudge factor which just affects the sides of the fingers not their length
-"""
-		self.init({})
+#		"""  AngledFingerJoint
+#start - point the funger joint should start
+#end - point the finger joint should end
+#side - side the fingers should be cut (left/right)
+#linemode - is this an external or internal finger joint (internal is in a hole in a box) 
+#startmode - should start on or off the line
+#endmode - should end on or off the line
+#tab_length - a length of tab to aim for - will actually be an integer fraction of the length
+#thickness - the thickness of the piece of wood you are slotting into
+#cutterrad - radius of the cutter
+#angle - angle from vertical that the finger joint is mounted at 
+#lineside - the side of the piece you are cutting that the line form start to end runs along (front/back)
+#fudge - fudge factor which just affects the sides of the fingers not their length"""
+	#	self.init({})
 	# If this is being cut from the Outside of the shape, the whole joint needs moving by the same amount as the length of the tabs
 		if side=='left':
 			perp = rotate((end-start).normalize(),-90)
@@ -624,7 +623,7 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 			self.append(p)
 class AngledFingerJointSlope(Pathgroup):
 	""" This will cut a load of slopes away from an AngledFingerJoint, the both must be called"""
-	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, angle, lineside='back', fudge=0):
+	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, angle, lineside='back', fudge=0, material_thickness=False):
 		"""  AngledFingerJointSlope
 start - point the funger joint should start
 end - point the finger joint should end
@@ -640,6 +639,8 @@ lineside - the side of the piece you are cutting that the line form start to end
 fudge - fudge factor which just affects the sides of the fingers not their length
 """
 		self.init({})
+		if material_thickness is False:
+			material_thickness=thickness
 		max_xstep=cutterrad
 		chamfer_width = thickness*math.tan(float(angle)/180*math.pi)
 
@@ -684,7 +685,7 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 				m='off'
 				for j in range(0, steps):
 					print "xoff="+str((j+1)*xstep)+" zoff="+str(thickness-zstep*j)
-					p=Path(closed=False, side='on', z1=thickness-zstep*j)
+					p=Path(closed=False, side='on', z1=-thickness+zstep*j)
 					p.add_point((start+along*(i-1)+crp-cra-perp*(j+1)*xstep), offpointmode)
 					p.add_point((start+along*i+crp+cra-perp*(j+1)*xstep), offpointmode)
 					self.add(p)
