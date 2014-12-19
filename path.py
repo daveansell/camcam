@@ -507,12 +507,10 @@ class Path(object):
 
 	def add_points_intersect(self, points):
 		joint=self.intersect_lines(self.points[len(self.points)-2].pos, self.points[len(self.points)-1].pos, points[0].pos, points[1].pos)
-		print "JOINT"+str(joint)
                 del(self.points[len(self.points)-1])
                 self.points.append(Point(joint,'sharp'))
                 for i in range(1, len(points)):
                         self.points.append(points[i])
-		print self.points
 
 	def close_intersect(self):
 		joint=self.intersect_lines(self.points[len(self.points)-2].pos, self.points[len(self.points)-1].pos, self.points[0].pos, self.points[1].pos)

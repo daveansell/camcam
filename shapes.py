@@ -643,7 +643,6 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 		self.init({})
 		if material_thickness is False:
 			material_thickness=thickness
-		print "MATERIAL THICKNESS"+str(material_thickness)
 		max_xstep=cutterrad
 		chamfer_width = material_thickness*math.tan(float(angle)/180*math.pi)
 
@@ -687,7 +686,7 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 			if m=='on':
 				m='off'
 				for j in range(0, steps):
-					print "xoff="+str((j+1)*xstep)+" zoff="+str(material_thickness-zstep*j)
+#					print "xoff="+str((j+1)*xstep)+" zoff="+str(material_thickness-zstep*j)
 					p=Path(closed=False, side='on', z1=-material_thickness+zstep*j)
 					if i==1:
 						p.add_point((start+along*(i-1)+crp-cra-perp*(j+1)*xstep), 'sharp')
@@ -698,10 +697,8 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 					else:
 						p.add_point((start+along*i+crp-perp*(j+1)*xstep), 'sharp')
 					self.add(p)
-					print "FINAL z1="+str(-thickness+zstep*j)
 			else:
 				m='on'
-			print "i2="+str(i)
 
 class FingerJoint(list):
 	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, fudge=0):
@@ -717,9 +714,6 @@ The line defines the
 :param thickness: thickness of the material
 :param cutterrad: radius of the cutter you are using
 :param fudge: a fudge factor that increases the gap along the finger joint when negative - it should be 1/4 of the gap you want\n"""
-		print "fingerjoint"
-		print start
-		print end
 		num_tab_pairs= math.floor((end-start).length()/tab_length/2)
 		if startmode==endmode:
 			num_tabs = num_tab_pairs*2+1
@@ -752,7 +746,6 @@ The line defines the
 			m='off'
 		else:
 			print "wrong start mode"+str(startmode)
-		print self[0].pos
 		for i in range(1,int(num_tabs)):
 			if m=='on':
 				self.append(Point(start+along*i-cra+crp,  onpointmode))
