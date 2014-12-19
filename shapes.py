@@ -596,7 +596,7 @@ class FingerJointBoxMidSide(Pathgroup):
 
 class AngledFingerJoint(list):
 	""" like a normal finger joint but with longer toungues to take into account the angle"""
-	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad,  angle, lineside='back', fudge=0):
+	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad,  angle, lineside='back', fudge=0, material_thickness=False):
 #		"""  AngledFingerJoint
 #start - point the funger joint should start
 #end - point the finger joint should end
@@ -612,13 +612,15 @@ class AngledFingerJoint(list):
 #fudge - fudge factor which just affects the sides of the fingers not their length"""
 	#	self.init({})
 	# If this is being cut from the Outside of the shape, the whole joint needs moving by the same amount as the length of the tabs
+		if material_thickness is False:
+			material_thickness=thickness
 		if side=='left':
 			perp = rotate((end-start).normalize(),-90)
 		else:
 			perp = rotate((end-start).normalize(),90)
-		if lineside=='back':
-			start+=perp*thickness/math.tan(float(angle)/180*math.pi)
-			end+=perp*thickness/math.tan(float(angle)/180*math.pi)
+		if lineside=='front':
+			start+=perp*material_thickness/math.tan(float(angle)/180*math.pi)
+			end+=perp*material_thickness/math.tan(float(angle)/180*math.pi)
 		for p in FingerJoint(start, end, side,linemode, startmode, endmode, tab_length, thickness/math.tan(float(angle)/180*math.pi), cutterrad, fudge):
 			self.append(p)
 class AngledFingerJointSlope(Pathgroup):
@@ -641,8 +643,9 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 		self.init({})
 		if material_thickness is False:
 			material_thickness=thickness
+		print "MATERIAL THICKNESS"+str(material_thickness)
 		max_xstep=cutterrad
-		chamfer_width = thickness*math.tan(float(angle)/180*math.pi)
+		chamfer_width = material_thickness*math.tan(float(angle)/180*math.pi)
 
 		
 		steps=int(math.ceil(chamfer_width/max_xstep))
@@ -659,9 +662,9 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 			perp = rotate((end-start).normalize(),-90)
 		else:
 			perp = rotate((end-start).normalize(),90)
-		if lineside=='back':
-			start+=perp*thickness/math.tan(float(angle)/180*math.pi)
-			end+=perp*thickness/math.tan(float(angle)/180*math.pi)
+		if lineside=='front':
+			start+=perp*material_thickness/math.tan(float(angle)/180*math.pi)
+			end+=perp*material_thickness/math.tan(float(angle)/180*math.pi)
 		along=tab_length*(end-start).normalize()
 		cra=(end-start).normalize()*(cutterrad+fudge)
 		crp=perp*cutterrad
@@ -684,11 +687,18 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 			if m=='on':
 				m='off'
 				for j in range(0, steps):
-					print "xoff="+str((j+1)*xstep)+" zoff="+str(thickness-zstep*j)
-					p=Path(closed=False, side='on', z1=-thickness+zstep*j)
-					p.add_point((start+along*(i-1)+crp-cra-perp*(j+1)*xstep), offpointmode)
-					p.add_point((start+along*i+crp+cra-perp*(j+1)*xstep), offpointmode)
+					print "xoff="+str((j+1)*xstep)+" zoff="+str(material_thickness-zstep*j)
+					p=Path(closed=False, side='on', z1=-material_thickness+zstep*j)
+					if i==1:
+						p.add_point((start+along*(i-1)+crp-cra-perp*(j+1)*xstep), 'sharp')
+					else:
+						p.add_point((start+along*(i-1)+crp-perp*(j+1)*xstep), 'sharp')
+					if i==num_tabs:
+						p.add_point((start+along*i+crp+cra-perp*(j+1)*xstep), 'sharp')
+					else:
+						p.add_point((start+along*i+crp-perp*(j+1)*xstep), 'sharp')
 					self.add(p)
+					print "FINAL z1="+str(-thickness+zstep*j)
 			else:
 				m='on'
 			print "i2="+str(i)
