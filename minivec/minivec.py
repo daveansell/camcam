@@ -57,6 +57,22 @@ _DefaultError = 0.0
 _DefaultEpsilon = 1e-8
 
 
+def V(x=False,y=False,z=False):
+        if x==False:
+                x=0
+        if y==False:
+                y=False
+        if z==False:
+                z=False
+        return Vec(x,y,z)
+
+def rotate(pos, a):
+        if type(pos) is Vec:
+                M=Mat(1).rotateAxis(a,V(0,0,-1))
+                pos=pos.transform(M)
+                return pos
+        else:
+                return False
 
 class Vec(object):
     """Immutable vector class for linear algebra.
@@ -437,6 +453,10 @@ class Vec(object):
 
         raise TypeError("Unknown type for Vector contains, %s" % otherType.__name__)
 
+    def intersect_lines(self,a, b, c, d):
+                x= ((a[0]*b[1]-a[1]*b[0])*(c[0]-d[0]) - (a[0]-b[0])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
+                y= ((a[0]*b[1]-a[1]*b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
+                return V(x,y)
 
     def intersects(self, other):
         """Test any part of another object intersects this point.

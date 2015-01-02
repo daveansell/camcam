@@ -7,9 +7,10 @@ import copy
 import collections
 import traceback
 import re
+from point import *
+from segments import *
 
 milling=Milling.Milling()
-
 arg_meanings = {'order':'A field to sort paths by',
 	       'transform':"""Transformations you can apply to the object this is a dict, and can include:
 		:param rotate: - a list with two members
@@ -49,328 +50,23 @@ arg_meanings = {'order':'A field to sort paths by',
 		'material_diameter':'diameter of raw material',
 }
 def V(x=False,y=False,z=False):
-	if x==False:
-		x=0
-	if y==False:
-		y=False
-	if z==False:
-		z=False
-	return Vec(x,y,z)
+        if x==False:
+                x=0
+        if y==False:
+                y=False
+        if z==False:
+                z=False
+        return Vec(x,y,z)
+
 def rotate(pos, a):
-	if type(pos) is Vec:
-		M=Mat(1).rotateAxis(a,V(0,0,-1))
-		pos=pos.transform(M)
-		return pos
-	else:
-		return False
-
-class Segment(object):
-	def __init__(self):
-# segment type can be line, arc, bezier
-		self.seg_type=False
-	def gcode(self,direction=True):
-		return {}
-	def start(self):
-		return {}
-	def out(self,direction, mode='svg', zfrom=False, zto=False):
-		if mode=='svg':
-			return self.svg(direction)
-		elif mode=='gcode':
-			temp=self.gcode(direction)
-			if len(temp)>0 and zfrom!=zto:
-				temp[0]['Z']=zto
-			return temp
-		elif mode=='simplegcode' or mode=='scr':
-			temp=self.simplegcode(zfrom, zto, direction)
-			return temp	
-	def svg(self):
-		return {}
-	def polygon(self):
-		return []
-# render the segment in straight lines
-	def simplegcode(self, zfrom, zto, direction):
-		ret=[]
-		polygon=self.polygon(1,direction)
-		if zfrom!=zto:
-			step=(zto-zfrom)/len(polygon)
-			z=zfrom
-		else:
-			z=0
-			step=0
-		for p in polygon:
-			if step!=0:
-				z+=step
-				ret.append({"cmd":"G1","X":p[0],"Y":p[1],"Z":z})
-			else:
-				ret.append({"cmd":"G1","X":p[0],"Y":p[1]})
-		return ret
-
-class Line(Segment):
-	def __init__(self, cutfrom, cutto):
-		self.seg_type='line'
-		self.cutto=cutto
-		self.cutfrom=cutfrom
-	def gcode(self,direction=True):
-		if(direction):
-			return [{"cmd":"G1","X":self.cutto[0],"Y":self.cutto[1]}]
-		else:
-			return [{"cmd":"G1","X":self.cutfrom[0],"Y":self.cutfrom[1]}]
-	def svg(self,direction=True):
-		if(direction):
-			return [{"cmd":"L","x":self.cutto[0],"y":self.cutto[1]}] 
-		else:
-			return [{"cmd":"L","x":self.cutfrom[0],"y":self.cutfrom[1]}] 
-	def polygon(self, resolution=1, direction=1):
-		return [self.cutto]
-class Arc(Segment):
-	def __init__(self, cutfrom, cutto,centre,direction, mode='abs'):
-		self.seg_type='arc'
-		self.cutto=cutto
-		self.cutfrom=cutfrom
-		self.direction=direction
-		if mode=='abs':
-			self.centre=centre
-		else:
-			self.centre=cutfrom+centre
-		
-	def gcode(self,direction=True):
-		if (self.centre-self.cutfrom).length()==0:
-			print Warning( "Arc of zero length")
-			return []
-		if(not direction):
-			if self.direction=='cw':
-				return [{"cmd":"G2","X":self.cutfrom[0],"Y":self.cutfrom[1], "I":self.centre[0]-self.cutto[0], "J":self.centre[1]-self.cutto[1]}]
-			else:
-				return [{"cmd":"G3","X":self.cutfrom[0],"Y":self.cutfrom[1], "I":self.centre[0]-self.cutto[0], "J":self.centre[1]-self.cutto[1]}]
-		else:
-			if self.direction=='cw':
-				return [{"cmd":"G3","X":self.cutto[0],"Y":self.cutto[1], "I":self.centre[0]-self.cutfrom[0], "J":self.centre[1]-self.cutfrom[1]}]
-			else:
-				return [{"cmd":"G2","X":self.cutto[0],"Y":self.cutto[1], "I":self.centre[0]-self.cutfrom[0], "J":self.centre[1]-self.cutfrom[1]}]
-	def svg(self,direction=True):
-		# Find if the arc is long or not
-		tempcross=(self.centre-self.cutfrom).cross(self.cutto-self.centre)
-		t=tempcross[2]
-		if (t>0 and self.direction=='cw' or t<0 and self.direction=='ccw')!=direction:
-			longflag="0"
-		else:
-			longflag="1"
-		r=(self.centre-self.cutfrom).length()
-		if self.direction=='cw':
-			dirflag=1
-		else:
-			dirflag=0
-		if(direction):
-			return [{"cmd":"A","rx":r,"ry":r,"x":self.cutto[0],"y":self.cutto[1], '_lf':longflag,'_rot':0,'_dir':dirflag}] 
-#			return [{'cmd':'L',"x":self.centre[0],"y":self.centre[1]},{'cmd':'L',"x":self.cutfrom[0],"y":self.cutfrom[1]},{"cmd":"A","rx":r,"ry":r,"x":self.cutto[0],"y":self.cutto[1], '_lf':longflag,'_rot':0,'_dir':dirflag}] 
-		else:
-			return [{"cmd":"A","rx":r,"ry":r,"x":self.cutfrom[0],"y":self.cutfrom[1], '_lf':longflag,'_rot':0,'_dir':dirflag}] 
-#			return [{'cmd':'L',"x":self.centre[0],"y":self.centre[1]},{'cmd':'L',"x":self.cutto[0],"y":self.cutto[1]},{"cmd":"A","rx":r,"ry":r,"x":self.cutfrom[0],"y":self.cutfrom[1], '_lf':longflag,'_rot':0,'_dir':dirflag}] 
-	def polygon(self,resolution=1, direction=1):
-		if direction:
-			cutfrom=self.cutfrom
-			cutto=self.cutto
-		else:
-			cutfrom=self.cutto
-			cutto=self.cutfrom
-		r1 = cutfrom-self.centre
-		r2 = cutto-self.centre
-		dtheta = math.atan(resolution/r1.length())/math.pi*180
-		if dtheta>45:
-			dtheta=45
-		if self.direction=='cw':
-			dtheta=-dtheta
-		if not direction:
-			dtheta=-dtheta
-		r=r1
-		thetasum=0
-		hasrisen=0
-		dot=r.dot(r2)
-		points=[]		
-		while thetasum<360:
-			r=rotate(r,dtheta)
-			newdot=r.dot(r2)		
-			if newdot>dot:
-				hasrisen=1
-			if hasrisen and newdot<dot:
-				points.append(cutto)
-				break
-			points.append(self.centre+r)
-			thetasum+=dtheta
-			dot=newdot
-		if thetasum>360:
-			return [self.cutto]
-		else:
-			return points
-
-		
-			
-class Quad(Segment):
-	def __init__(self, cutfrom, cutto, cp):
-		self.seg_type='quad'
-		self.cutto=cutto
-		self.cutfrom=cutfrom
-		self.cp=cp
-	def gcode(direction=True):
-		if(direction):
-			offset = cp - self.cutfrom
-			return [{"cmd":"G5.1", "X":self.cutto[0], "Y":self.cutto[1], "I":offset[0], "J":offset[1]}]
-		else:
-			offset = cp - self.cutto
-			return [{"cmd":"G5.1", "X":self.cutfrom[0], "Y":self.cutfrom[1], "I":offset[0], "J":offset[1]}]
-	def svg(direction = True):
-		if(direction):
-                        offset = cp - self.cutfrom
-                        return [{"cmd":"Q", "x1":self.cutto[0], "y1":self.cutto[1], "x":offset[0], "y":offset[1]}]
-                else:
-                        offset = cp - self.cutto
-                        return [{"cmd":"Q", "x1":self.cutfrom[0], "y1":self.cutfrom[1], "x":offset[0], "y":offset[1]}]
-
-	def polygon(self,resolution=1, direction=1):
-		p0=self.cutfrom
-		p1=self.cp1
-		p2=self.cutto
-		ret=[]
-		numsteps = ((p2-p1).length()+(p1-p0).length())/resolution
-		step = 1/numsteps
-		for i in range[1:numsteps-1]:
-			t=i*step
-			ret.append((1-t)*(1-t)*p0 + 2*(1-t)*t*p1 + t*t*p2 )
-		return ret		
-	
-class Cubic(Segment):
-	def __init__(self, cutfrom, cutto, cp1, cp2):
-		self.seg_type='cubic'
-		self.cutto=cutto
-		self.cutfrom=cutfrom
-		self.cp1=cp1
-		self.cp2=cp2
-
-	def gcode(direction=True):
-		if(direction):
-			offset1 = cp1 - self.cutfrom
-			offset2 = cp2 - self.cutfrom
-			return [{"cmd":"G5", "X":self.cutto[0], "Y":self.cutto[1], "I":offset1[0], "J":offset1[1], "P":offset2[0], "Q":offset2[1]}]
-		else:
-			offset1 = cp2 - self.cutto
-			offset2 = cp1 - self.cutto
-			return [{"cmd":"G5", "X":self.cutfrom[0], "Y":self.cutfrom[1], "I":offset1[0], "J":offset1[1], "P":offset2[0], "Q":offset2[1]}]
-	def svg(direction = True):
-		if(direction):
-                        return [{"cmd":"Q", "x2":self.cutto[0], "y2":self.cutto[1], "x1":cp1[0], "y1":cp1[1], "x":cp2[0], "y":cp2[1]}]
-                else:
-                        return [{"cmd":"Q", "x2":self.cutfrom[0], "y2":self.cutfrom[1], "x1":cp2[0], "y1":cp2[1], "x":cp1[0], "y":cp1[1]}]
-
-	def polygon(self,resolution=1, direction=1):
-		p0=self.cutfrom
-		p1=self.cp1
-		p2=self.cp2
-		p3=self.cutto
-		ret=[]
-		numsteps = ((p3-p2).length()+(p2-p1).length()+(p1-p0).length())/resolution
-		step = 1/numsteps
-		for i in range[1:numsteps-1]:
-			t=i*step
-			ret.append((1-t)*(1-t)*(1-t)*p0 + 3*(1-t)*(1-t)*t*p1 + 3*(1-t)*t*t +  t*t*t*p3 )
-		return ret		
-	
+        if type(pos) is Vec:
+                M=Mat(1).rotateAxis(a,V(0,0,-1))
+                pos=pos.transform(M)
+                return pos
+        else:
+                return False
 
 	
-# Ponint types can be:
-# sharp 	- a sharp corner
-# incurve	- arc so that the lines point at the point
-# centred	- arc centred at this point
-# clear		- cut a slot in corner so a sharp corner will fit
-
-	
-# Ponint types can be:
-# sharp 	- a sharp corner
-# incurve	- arc so that the lines point at the point
-# centred	- arc centred at this point
-# clear		- cut a slot in corner so a sharp corner will fit
-class Point(object):
-	def __init__(self, pos, point_type, radius=0, cp1=False, cp2=False, direction=False, transform=False):
-		self.pos=Vec(pos)
-		self.point_type=point_type
-		self.radius=radius
-		self.cp1=Vec(cp1)
-		self.cp2=Vec(cp2)
-		self.direction=direction
-		self.transform=transform
-		self.obType="Point"
-	def copy(self):
-		return Point( self.pos, self.point_type, self.radius, self.cp1, self.cp2, self.direction, self.transform)
-	def point_transform(self,ext_transformations=[]):
-		p=self.copy()
-		# If we are applying the transfomations the point shouldn't have them as a transform any more
-		p.transform=False
-		if self.transform!=False:
-			transformations=[self.transform]
-		else:
-			transformations=[]
-		transformations.extend(ext_transformations)
-#		print "point transform "+str(transformations)
-		if type(transformations) is list:
-			for t in reversed(transformations):
-				if type(t) is dict:
-					if 'rotate' in t:
-						p.pos=self.rotate(p.pos, t['rotate'])
-						p.cp1=self.rotate(p.cp1, t['rotate'])
-						p.cp2=self.rotate(p.cp2, t['rotate'])
-					if 'translate' in t:
-						p.pos += t['translate']
-						p.cp1 += t['translate']
-						p.cp2 += t['translate']
-					if 'mirror' in t:
-						p.pos = self.reflect(p.pos, t['mirror'])
-						p.cp1 = self.reflect(p.cp1, t['mirror'])
-						p.cp2 = self.reflect(p.cp2, t['mirror'])
-					if 'scale' in t:
-						p.pos = self.scale(p.pos, t['scale'])
-						p.cp1 = self.scale(p.cp1, t['scale'])
-						p.cp2 = self.scale(p.cp2, t['scale'])
-		return p
-# rotate point about a point 
-	def rotate(self,pos, t):
-		if type(pos) is Vec:
-			pos = pos - t[0]
-			M=Mat(1).rotateAxis(t[1],V(0,0,-1))
-#		pos.rotateAxis(t[0],V(0,0,-1))
-			pos=pos.transform(M)
-			pos = pos + t[0]
-			return pos
-		else:
-			return False
-
-	def reflect(self,pos,t):
-		if t is False or t is None or type(t) is list and (t[0] is False or t[0] is None):
-			return pos
-		if type(pos) is Vec and type(t[0]) is Vec:
-			if type(t[1]) is str:
-				if t[1]=='y':
-					dirvec=V(0,1)
-				if t[1]=='x':
-					dirvec=V(1,0)
-			elif type(t[1]) is Vec:
-				dirvec = t[1]
-			else:
-				raise ValueError( "Reflection direction "+str(t[1])+" is not a string or vector")
-			out=Vec(pos)
-			out-=t[0]
-			out=out.reflect(dirvec)
-			out+=t[0]
-			return out
-		else:
-			return False
-	def scale(self, pos, t):
-		if t is False or t is None or type(t) is list and (t[0] is False or t[0] is None):
-			return pos
-		if type(pos) is Vec and type(t[0]) is Vec:
-			out=Vec(pos)
-			out-=t[0]
-			out*=t[1]
-			out+=t[0]
-
 class Path(object):
 	def __init__(self, closed=False, **config):
 		self.closed = closed
@@ -470,8 +166,6 @@ class Path(object):
 				config['downmode']='down'
 			else:
 				config['downmode']='ramp'
-#		else:
-#			print "cutter %s NOT FOUND" % config['cutter']
 	def set_material(self, config):
 		if config['material'] in milling.materials:
 			mat=milling.materials[config['material']]
@@ -483,20 +177,97 @@ class Path(object):
 				config['spring']=mat['spring']
 			else:
 				config['spring']=0
-#		else:
-#			print "Material %s NOT FOUND" % config['material']
 
 	def add_point(self,pos, point_type='sharp', radius=0, cp1=False, cp2=False, direction=False, transform=False):
-		self.points.append(Point(pos, point_type, radius,cp1, cp2, direction, transform))
+		if hasattr(pos,'obType') and pos.obType=='Point':
+			self.points.append(pos)
+		else:
+			self.points.append(self.make_point(pos, point_type, radius,cp1, cp2, direction, transform))
 		self.has_changed()
+		l = len(self.points)
+		if self.closed:
+			self.points[0].lastpoint = self.points[-1]
+			self.points[-1].nextpoint = self.points[0]
+			self.points[-2%l].nextpoint = self.points[-1]
+			self.points[-1].lastpoint = self.points[-2%l]
+		else:
+			self.points[-1].lastpoint = self.points[-2%l]
+			self.points[-1].nextpoint = self.points[-2%l]
+			self.points[-1].nextpoint = self.points[-2%l]
+			self.points[-2%l].nextpoint = self.points[-1]
+			self.points[-2%l].lastpoint = self.points[-3%l]
+
+	def reset_points(self, pointlist=False):
+		if pointlist==False:
+			pointlist=self.points
+		for p in range(0, len(pointlist)):
+			l = len(self.points)
+			if self.closed==True:
+				pointlist[p].nextpoint = pointlist[(p+1)%l]
+				pointlist[p].lastpoint = pointlist[(p-1)%l]
+			else:
+				if p==0:
+					if l>1:
+						pointlist[p].lastpoint = pointlist[1]
+					else:
+						pointlist[p].lastpoint = pointlist[0]
+				else:
+					pointlist[p].lastpoint = pointlist[p-1]
+				if p==l-1:
+					if l>1:
+						pointlist[p].nextpoint = pointlist[l-1]
+					else:
+						pointlist[p].lastpoint = pointlist[0]
+				else:
+					pointlist[p].lastpoint = pointlist[p+1]
+
+	def make_point(self,pos, point_type='sharp', radius=0, cp1=False, cp2=False, direction=False, transform=False):
+		if point_type=='sharp':
+			return PSharp(pos, transform=transform)
+		elif point_type=='incurve':
+			return PIncurve(pos, radius, direction, transform=transform)
+		elif point_type=='chamfer':
+			return PChamfer( pos, chamfer=cp1, radius=radius,  transform=transform)
+		elif point_type=='outcurve':
+			print "WW"+str(radius)
+			return POutcurve( pos, radius, direction, transform=transform)
+		elif point_type=='clear':
+			return PClear( pos, transform)
+		elif point_type=='doubleclear':
+			return PDoubleClear( pos, transform)
+		elif point_type=='bcontrol':
+			return PBezierControl( pos, transform)
+		elif point_type=='arc':
+			return PArc( pos, radius, direction, length=cp1)
+		elif point_type=='circle':
+			return PCircle(pos, radius)
+		elif point_type=='arcend':
+			return PSharp(pos, transform=transform)
+		elif point_type=='aroundcurve':
+			return PAroundcurve(pos, centre=pos, radius=radius, direction=direction, transform=transform)
 
 	def prepend_point(self,pos, point_type='sharp', radius=0, cp1=False, cp2=False, direction=False, transform=False):
-		self.points.insert(0,Point(pos, point_type, radius,cp1, cp2, direction, transform))
 		self.has_changed()
+		l = len(self.points)
+		if hasattr(pos,'obType') and pos.obType=='Point':
+                        self.points.insert(0,pos)
+                else:
+                        self.points.insert(0,self.make_point(pos, point_type, radius,cp1, cp2, direction, transform))
+                self.has_changed()
+		if self.closed:
+			self.points[0].lastpoint = self.points[-1]
+			self.points[-1].nextpoint = self.points[0]
+			self.points[0].nextpoint = self.points[1%l]
+			self.points[0].lastpoint = self.points[-1]
+		else:
+			self.points[0].lastpoint = self.points[1%l]
+			self.points[0].nextpoint = self.points[1%l]
+			self.points[1%l].lastpoint = self.points[0]
+
 
 	def add_points(self,points, end='end'):
 		for p in points:
-			if type(p) is Point:
+			if hasattr(p,'obType') and p.obType=='Point':
 				if end=='end':
 					self.points.append(p)
 				else:
@@ -504,14 +275,15 @@ class Path(object):
 			else:
 				raise TypeError( "add_points - adding a non-point "+str(type(p)))
 		self.has_changed()
+		self.reset_points()
 
 	def add_points_intersect(self, points):
 		joint=self.intersect_lines(self.points[len(self.points)-2].pos, self.points[len(self.points)-1].pos, points[0].pos, points[1].pos)
                 del(self.points[len(self.points)-1])
-                self.points.append(Point(joint,'sharp'))
+                self.points.append(PSharp(joint))
                 for i in range(1, len(points)):
                         self.points.append(points[i])
-
+		self.reset_points()
 	def close_intersect(self):
 		joint=self.intersect_lines(self.points[len(self.points)-2].pos, self.points[len(self.points)-1].pos, self.points[0].pos, self.points[1].pos)
 		del(self.points[len(self.points)-1])
@@ -522,26 +294,6 @@ class Path(object):
 		y= ((a[0]*b[1]-a[1]*b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
 		return V(x,y)
 
-#	def intersect_lines(self,a0, a1, b0, b1):
- #               xdiff = (a0[0] - a1[0], b0[0] - b1[0])
-  #              ydiff = (a0[1] - a1[1], a0[1] - a1[1]) #Typo was here
-#		print "xdiff"+str(xdiff)
-#		print "ydiff"+str(ydiff)
- #               def det(a, b):
-  #                      return a[0] * b[1] - a[1] * b[0]
-#
- #               div = det(xdiff, ydiff)
-#		print "div="+str(div)
- #               if div == 0:
-  #                      raise Exception('lines do not intersect')
-#
- #               d = (det(a0,a1), det(b0,b1))
-#		print "d="+str(d)
- #               x = det(d, xdiff) / div
-  #              y = det(d, ydiff) / div
-#		print V(x,y)
- #               return V(x, y)
-
 	def has_changed(self):
 		for c in self.changed.keys():
 			self.changed[c]=True
@@ -549,6 +301,7 @@ class Path(object):
 		pout=[]
 		for p in pointlist:
 			pout.append(p.point_transform(transformations))
+		self.reset_points(pout)
 		return pout
 
 	def make_segments(self, direction,segment_array,config):
@@ -560,196 +313,15 @@ class Path(object):
 		else:
 			self.isreversed=0
 		numpoints=len(pointlist)
+		self.reset_points()
 		#if(self.closed):
 	#		numpoints=len(pointlist)
 	#	else:
 	#		numpoints=len(pointlist)*2-2
 #		for p,point in enumerate(pointlist):
 		for p in range(0,numpoints):
+			segment_array.extend(pointlist[p].generateSegment(self.isreversed, config))
 #			thispoint = pointlist[p]
-			thispoint = self.get_point(pointlist, p, self.closed)
-			if hasattr(thispoint,'obType') and thispoint.obType=='Point':
-				nextpoint=self.get_point(pointlist, p+1, self.closed)
-				afternextpoint=self.get_point(pointlist, p+2, self.closed)
-				lastpoint=self.get_point(pointlist, p-1, self.closed)
-				beforelastpoint=self.get_point(pointlist, p-2, self.closed)
-				beforebeforelastpoint=self.get_point(pointlist, p-3, self.closed)
-				
-			
-				if p==0:
-					if self.closed:
-						frompoint=self.segment_point(lastpoint, beforelastpoint, thispoint,beforebeforelastpoint,nextpoint, segment_array, False, False, config)
-					else:
-						frompoint=self.segment_point(lastpoint, beforelastpoint, thispoint,beforebeforelastpoint,nextpoint, segment_array, False, False, config)
-				frompoint=self.segment_point(thispoint, lastpoint, nextpoint,beforelastpoint,afternextpoint, segment_array, frompoint, True, config)
-	def get_point(self, pointlist, pos, closed):
-		if closed:
-			return pointlist[pos%len(pointlist)]
-		else:
-			p=pos%(2*(len(pointlist)-1))
-			if p>=len(pointlist):
-				p=2*(len(pointlist)-1)-p
-			return pointlist[p]
-
-	def segment_point(self,thispoint, lastpoint, nextpoint,beforelastpoint, afternextpoint, segment_array, frompoint, do,config):
-#		if frompoint is False:
-#			frompoint=thispoint.pos#
-		if thispoint == None:
-			return None
-		if type(lastpoint) != None and thispoint.pos==lastpoint.pos and thispoint.point_type!='circle':
-			return frompoint
-		if thispoint.point_type=='sharp':
-			if do:
-				segment_array.append(Line(frompoint,thispoint.pos))
-			frompoint=thispoint.pos
-#		elif nextpoint==False:
-#			print "No next point"
-		elif thispoint.point_type=='incurve':
-			angle=(thispoint.pos-lastpoint.pos).angle(nextpoint.pos-thispoint.pos)
-			dl=thispoint.radius*math.tan((angle/180)/2*math.pi)
-			startcurve=thispoint.pos-(thispoint.pos-lastpoint.pos).normalize()*dl
-			endcurve = thispoint.pos+(nextpoint.pos-thispoint.pos).normalize()*dl
-			# If these are straight there should be no curve or the maths blows up so just behave like a normal point
-			if(((startcurve + endcurve)/2-thispoint.pos).length()==0):
-				if do:
-					segment_array.append(Line(frompoint,thispoint.pos))
-			else:
-				d = math.sqrt(dl*dl+thispoint.radius*thispoint.radius)/((startcurve + endcurve)/2-thispoint.pos).length()
-				centre = thispoint.pos + ((startcurve + endcurve)/2-thispoint.pos)*d
-				if do:
-					segment_array.append(Line(frompoint,startcurve))
-				tempdir=(thispoint.pos-frompoint).cross(nextpoint.pos-thispoint.pos)
-				if tempdir[2]>0:
-					tempd='cw'
-				elif tempdir[2]<0:
-					tempd='ccw'
-				else:
-			#		print "ERROR - straight arc"
-					tempd='cw'	
-				if do:
-					segment_array.append(Arc(startcurve, endcurve, centre,tempd))
-			frompoint=endcurve
-		elif thispoint.point_type=='clear':
-			# we want to cut so that the edge of the cutter just touches the point requested
-			if thispoint.pos==lastpoint.pos:
-				angle=(thispoint.pos-beforelastpoint.pos).angle(nextpoint.pos-thispoint.pos)
-			elif thispoint.pos == nextpoint.pos:
-				angle=(thispoint.pos-lastpoint.pos).angle(afternextpoint.pos-thispoint.pos)
-				
-			else:
-				angle=(thispoint.pos-lastpoint.pos).angle(nextpoint.pos-thispoint.pos)
-			#fudge to stop it exploding. when coming back on oneself, is something wrong with equation
-			if abs(math.sin((180-angle)/2/180*math.pi))<0.001:
-				d=0#config['cutterrad']
-			else:		
-				d=config['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1)
-                        extrapoint=thispoint.pos-(((lastpoint.pos-thispoint.pos).normalize()+(nextpoint.pos-thispoint.pos).normalize())/2).normalize()*d
-
-#			extrapoint=thispoint.pos-((lastpoint.pos+nextpoint.pos)/2-thispoint.pos).normalize()*config['cutterrad']
-			if do:
-				segment_array.append(Line(frompoint,thispoint.pos))
-				segment_array.append(Line(thispoint.pos,extrapoint))	
-				segment_array.append(Line(extrapoint,thispoint.pos))
-			frompoint=thispoint.pos
-		elif thispoint.point_type=='doubleclear':
-			if lastpoint.pos==thispoint.pos or thispoint.pos==nextpoint.pos or lastpoint.pos==nextpoint.pos:
-				d=0
-			else:
-				angle=(thispoint.pos-lastpoint.pos).angle(nextpoint.pos-thispoint.pos)
-				d=config['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1)
-                        o=(((lastpoint.pos-thispoint.pos).normalize()+(nextpoint.pos-thispoint.pos).normalize())/2).normalize()*d
-			extrapoint1=thispoint.pos-o
-			extrapoint2=thispoint.pos+o
-			if do:
-				segment_array.append(Line(frompoint,thispoint.pos))
-				segment_array.append(Line(thispoint.pos,extrapoint1))	
-				segment_array.append(Line(thispoint.pos,extrapoint2))	
-				segment_array.append(Line(extrapoint2,thispoint.pos))
-			frompoint=thispoint.pos
-		elif thispoint.point_type=='arc_centred':
-			if do:
-				if (thispoint.cp-frompoint).length()!=(thispoint.pos-thispoint.cp).length():
-					raise ValueError("Error - centred arc two radiuses are not the same"+self.trace)
-				segment_array.append(Arc(frompoint, thispoint.pos, thispoint.cp,thispoint.direction))
-			frompoint=thispoint.pos
-		elif thispoint.point_type=='arcend':
-			if(lastpoint.point_type!='arc'):
-				segment_array.append(Line(frompoint,thispoint.pos))
-			frompoint=thispoint.pos
-		elif thispoint.point_type=='arc' and thispoint.radius>0:
-			# draw an arc between two points or radius radius - they should both have the same radius
-			if nextpoint.point_type=='arcend' and lastpoint.point_type=='arcend':
-				centre=self.findArcCentre(lastpoint.pos,nextpoint.pos, thispoint.radius, thispoint.direction)
-				segment_array.append(Arc(frompoint, nextpoint.pos, centre,thispoint.direction))
-			else:
-				raise ValueError( "ERROR arc point without an arcend point on both sides"+self.trace)
-		elif thispoint.point_type=='quad':
-			print "Quadratic curve\n"
-			if do:
-				segment_array.append(Quad(frompoint, thispoint.pos, thispoint.cp))
-			frompoint = thispoint.pos		
-		elif thispoint.point_type=='cubic':
-			print "Cubic curve\n"
-		elif thispoint.point_type=='outcurve':
-			if lastpoint.point_type=='outcurve':
-				lr=lastpoint.radius
-			else:
-				lr=0
-			if (lastpoint.pos-beforelastpoint.pos).cross(thispoint.pos-lastpoint.pos)[2] <0:
-				d1='cw'
-			else:
-				d1='ccw'
-			if (thispoint.pos-lastpoint.pos).cross(nextpoint.pos-thispoint.pos)[2] <0:
-				d2='cw'
-			else:
-				d2='ccw'
-			p1=self.tangent_points( lastpoint.pos, lr, d1, thispoint.pos, thispoint.radius, d2)
-			if do:
-				segment_array.append( Line(p1[0], p1[1]))
-			d3=''
-			if nextpoint.point_type=="outcurve":
-				if (nextpoint.pos-thispoint.pos).cross(afternextpoint.pos-nextpoint.pos)[2] <0:
-					d3='cw'
-				else:
-					d3='ccw'
-				
-				p2=self.tangent_points( thispoint.pos, thispoint.radius, d2, nextpoint.pos, nextpoint.radius, d3)
-				if do:
-					segment_array.append( Arc( p1[1],p2[0], thispoint.pos, self.otherDir(d2)))
-				frompoint=p2
-			else:
-				
-				p2 = self.tangent_point(nextpoint.pos, thispoint.pos, thispoint.radius, self.otherDir(d2))
-				if do:
-					segment_array.append( Arc( p1[1],p2, thispoint.pos, self.otherDir(d2)))
-				frompoint=p2
-				
-			#	frompoint = #rerun tangent points for next pair of points...
-		elif thispoint.point_type=='circle':
-			if self.side=='out':
-				d='cw'
-			else:
-				d='ccw'
-			if do:
-				segment_array.append(Arc(V(thispoint.pos[0]-thispoint.radius, thispoint.pos[1]),V(thispoint.pos[0]+thispoint.radius, thispoint.pos[1]), thispoint.pos,d))
-				segment_array.append(Arc(V(thispoint.pos[0]+thispoint.radius, thispoint.pos[1]),V(thispoint.pos[0]-thispoint.radius, thispoint.pos[1]), thispoint.pos,d))
-			frompoint = V(thispoint.pos[0]-thispoint.radius, thispoint.pos[1])
-		return frompoint
-
-	def findArcCentre(self,frompos, topos, radius, direction):
-		l=(topos-frompos)/2
-		
-		if l.length()>radius*2:
-			raise ValueError( "ERROR arc radius less than distance to travel so can't find Arc Centre"+self.trace)
-		if direction=='cw':
-			a=90
-		else:
-			a=-90
-		if radius-l.length()<0.0001:
-			return (topos+frompos)/2
-		else:
-			d=math.sqrt(radius**2-l.length()**2)
-			return (topos+frompos)/2+rotate(l.normalize(),a)*d
 
 	def otherDir(self,direction):
 		if direction=='cw':
@@ -757,78 +329,16 @@ class Path(object):
 		else:
 			return 'cw'
 # Find 2 points joined by a line from r1 from point1 and r2 from point2
-	def tangent_points(self, point1, r1, dir1, point2, r2, dir2):
-		if dir1!=dir2:
-			r=r1+r2
-			temp=self.tangent_point(point1, point2, r, dir2)
-			rvec=(temp-point2).normalize()
-			return [point1-rvec*r1, point2+rvec*r2]
-			
-		if r1>r2:
-			r=r1-r2
-			temp=self.tangent_point(point2, point1, r, self.otherDir(dir1))
-			rvec=(temp-point1).normalize()
-			return [point1+rvec*r1, point2+rvec*r2]
-		elif r1<r2:
-			r=r2-r1
-			temp=self.tangent_point(point1, point2, r, dir1)
-			rvec=(temp-point2).normalize()
-			return [point1+rvec*r1, point2+rvec*r2]
-		else:
-			r=r1
-			if(dir1=='cw'):
-                	        sgn=-90
-			else:
-				sgn=90
-			rvec=rotate((point2-point1).normalize(),sgn)
-			return [point1+rvec*r, point2+rvec*r]
-
-# Find the point that makes a tangent about centre when a line is drawn from point to the new point
-	def tangent_point(self,point,centre,r, dir='cw'):
-		if(dir=='cw'):
-#			sgn=1
-			a=-90
-		else:
-			a=90
-#			sgn=-1
-
-		diff=centre-point
-		offset=rotate(diff.normalize(),a)
-#	return centre+offset*r
-
-		d=diff.length()
-		print "d="+str(d)+" r="+str(d)
-		if d<=r:
-			print "d="+str(d)+" is less than r="+str(d)
-#			t=d
-#			d=r
-#			r=t
-#			print d<r
-		l=math.sqrt(d*d-r*r)
-		theta= math.acos(r/d)
-
-		rx=-r* math.cos(theta) *diff.normalize()
-		ry=r* math.sin(theta) *offset
-		return centre+rx+ry
-				
-
-		theta = math.atan2(r,l)
-#		theta = math.atan2(diff[1],diff[0])
-		phi = math.asin(r/d)
-			
-		rvec = V(l * math.sin(theta+phi*sgn), l * math.cos(theta+phi*sgn), 0)
-		if(diff[0]<0):
-			rvec[0]*=-1
-		return point+rvec
 
 	def offset_path(self,side,distance, config):
 		newpath=copy.deepcopy(self)
 		newpath.points=[]
 		thisdir=self.find_direction(config)
-		pointlist=self.points
+		pointlist=self.transform_pointlist(self.points,{})#config['transformations'])
 		if len(pointlist)==1:
 			if pointlist[0].point_type=='circle':
 				p = copy.copy(pointlist[0])
+				p.transform=None
 				if side=='in':
 					p.radius-=distance
 				elif side=='out':
@@ -847,193 +357,14 @@ class Path(object):
 			else:
 				side='right'
 		for p,point in enumerate(pointlist):
-			thispoint=point.point_transform()
-			if self.closed:
-				nextpoint=pointlist[(p+1)%len(pointlist)].point_transform()
-				lastpoint=pointlist[(p-1)%len(pointlist)].point_transform()
-				beforelastpoint=pointlist[(p-2)%len(pointlist)].point_transform()
-				beforebeforelastpoint=pointlist[(p-3)%len(pointlist)].point_transform()
-				afternextpoint=pointlist[(p+2)%len(pointlist)].point_transform()
-				afterafternextpoint=pointlist[(p+3)%len(pointlist)].point_transform()
-			else:
-				nextpoint=(pointlist[p+1:p+2] + [None])[0]
-				if nextpoint is not None:
-					nextpoint=nextpoint.point_transform()
-				lastpoint=(pointlist[p-1:p] + [None])[0]
-				if lastpoint is not None:
-					lastpoint=lastpoint.point_transform()
-				beforelastpoint=(pointlist[p-2:p-1] + [None])[0]
-				if beforelastpoint is not None:
-					beforelastpoint=beforelastpoint.point_transform()
-				beforebeforelastpoint=(pointlist[p-3:p-2] + [None])[0]
-				if beforebeforelastpoint is not None:
-					beforebeforelastpoint=beforebeforelastpoint.point_transform()
-				afternextpoint=(pointlist[p+2:p+3] + [None])[0]
-				if afternextpoint is not None:
-					afternextpoint=afternextpoint.point_transform()
-				afterafternextpoint=(pointlist[p+3:p+4] + [None])[0]
-				if afternextpoint is not None:
-					afternextpoint=afternextpoint.point_transform()
-			t=self.offset_point(
-				thispoint, 
-				beforelastpoint, 
-				lastpoint, 
-				nextpoint, 
-				afternextpoint, 
-				self.segment_point(lastpoint, beforelastpoint, thispoint,beforebeforelastpoint, nextpoint, [], False, False, config), 
-				self.segment_point(nextpoint, afternextpoint, thispoint,afterafternextpoint, lastpoint, [], False, False, config), 
-				side,distance, 
-				thisdir)
+
+			t=point.offset(side, distance, thisdir)
 			if t:
-				newpath.points.append(t)
+				newpath.points.extend(t)
+		newpath.reset_points()
 		return newpath
 
 
-	def offset_point(self, thispoint, beforelastpoint, lastpoint, nextpoint, afternextpoint, frompos, topos, side,distance, thisdir):
-		t=copy.copy(thispoint)
-		cross=(thispoint.pos-lastpoint.pos).cross(nextpoint.pos-thispoint.pos)[2]
-		a=(-(thispoint.pos-lastpoint.pos).normalize()+(thispoint.pos-nextpoint.pos).normalize())
-		al=a.length()
-		angle2=((thispoint.pos-lastpoint.pos).angle(thispoint.pos-nextpoint.pos)/2-90)*math.pi/180
-		b1=(thispoint.pos-lastpoint.pos).normalize()
-		b2=(nextpoint.pos-thispoint.pos).normalize()
-		dot=b1.dot(b2)
-		if dot>=1:
-			angle3=0
-		else:
-			angle3=math.acos(b1.dot(b2))
-		if abs(dot-1)<0.0001:
-			return False
-#			print math.cos(((thispoint.pos-lastpoint.pos).angle(thispoint.pos-nextpoint.pos)/2-90)*math.pi/180)
-		angle=math.atan2(a[1], a[0])
-		if cross<0 and side=='left' or cross>0 and side=='right':
-			corner='external'
-		else:
-			corner='internal'
-		if thispoint.point_type=='outcurve':
-			if corner=='external':
-				t.radius+=distance/math.pi*180
-			else:
-				if t.radius>distance:
-					t.radius-=distance
-				else:
-					t.point_type='doubleclear'
-					t.radius=0
-					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos,topos, side, (distance-thispoint.radius)/abs(math.cos(angle)))
-		elif thispoint.point_type=='incurve':
-			if corner=='external':# and side=='out' or corner=='internal' and side=='in':
-				t.radius+=distance
-				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, -distance/abs(math.cos(angle2)))
-			else:
-				if t.radius>distance:
-					t.radius-=distance
-					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
-				else:
-					t.point_type='sharp'
-					t.radius=0
-					t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
-		elif thispoint.point_type=='sharp':
-			if corner=='external':# and side=='out' or corner=='internal' and side=='in':
-#				t.radius=distance
-#				t.point_type='outcurve'
-#				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, -distance/abs(math.cos(angle/2)))
-				if angle3==0 and dot<0:
-					return False
-				else:
-					if dot<=0:
-						if angle3>math.pi/2:
-							a=(math.pi-angle3)/2
-						else:
-							a=angle3
-						t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, -distance/abs(math.sin(a)))
-					else:
-						t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, -distance/abs(math.cos((math.pi/4-angle3)/2)))
-			else:
-#				t.point_type='clear'
-				if angle3==0 and dot<0:
-					return False
-				else:
-					if dot<=0:
-						t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.sin((angle3)/2)))
-					else:
-						t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos((math.pi/4-angle3)/2)))
-					#	t.pos=thispoint.pos
-		elif thispoint.point_type=='clear' or thispoint.point_type=='doubleclear':
-				t.point_type='doubleclear'
-				t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, frompos, topos, side, distance/abs(math.cos(angle)))
-		elif thispoint.point_type=='circle':
-			if corner=='external':
-                                t.radius+=distance
-			elif radius>distance:
-				t.radius-=distance
-			elif t.radius==0.05:
-				return False
-			else:
-				t.radius=0.05;
-
-		elif thispoint.point_type=='arcend':
-			# PROBLEM doesn't work if lastpoint was a outcurve...
-			if lastpoint.point_type=='arc':
-				c=self.findArcCentre(beforelastpoint.pos, thispoint.pos, lastpoint.radius, lastpoint.direction)
-				rvec=(thispoint.pos-c).normalize()
-				if lastpoint.direction=='cw':
-					a=-90
-				else:
-					a=90
-				invec=rotate(rvec,a)
-			else:
-				invec=(thispoint.pos-lastpoint.pos).normalize()
-
-			if nextpoint.point_type=='arc':
-				c=self.findArcCentre(thispoint.pos, afternextpoint.pos, nextpoint.radius, nextpoint.direction)
-				rvec=(thispoint.pos-c).normalize()
-				if nextpoint.direction=='cw':
-					a=-90
-				else:
-					a=90
-				outvec=rotate(rvec,a)
-			else:
-				outvec=(nextpoint.pos-thispoint.pos).normalize()
-			cross=(invec).cross(outvec)[2]
-		        a=-(invec+outvec)
-                	angle=math.atan2(invec[1], invec[0])-math.atan2(outvec[1], outvec[0])
-			if angle<0:
-				sgn=-1
-			else:
-				sgn=1
-                	if cross<0 and side=='left' or cross>0 and side=='right':
-                        	corner='external'
-                	else:
-                        	corner='internal'
-			t.pos = self.offset_move_point(thispoint.pos, lastpoint.pos, nextpoint.pos, thispoint.pos-invec, thispoint.pos+outvec, side, distance/math.cos(angle/2)*sgn)
-		elif thispoint.point_type=='arc' and thispoint.radius>0:
-			if (side=='left' and thispoint.direction=='cw' or side=='right' and thispoint.direction=='ccw') != self.mirrored:
-				t.radius+=distance
-			else:
-				if t.radius>distance:
-					t.radius-=distance
-				else:
-					t.radius=0
-					raise ValueError( "Arc has gone to zero radius - this is broken..."+self.trace)				
-		return t
-
-	def offset_move_point(self,thispos, lastpos, nextpos, frompos, topos, side,distance):
-		if distance>10:
-			distance=10
-		if side=='left':
-			a=-90
-		else:
-			a=90
-		vecin=(thispos-frompos).normalize()
-		vecout=(topos-thispos).normalize()
-		# Find average direction of two vectors
-		avvec=(vecin-vecout)
-		# then rotate it 90 degrees towards the requested side
-		if avvec.length()<0.001:
-			return rotate(vecin,a).normalize()*distance+thispos
-		avvec=avvec.normalize()
-		return -avvec*distance+thispos
-#		return rotate(avvec*distance,a)*2+thispos
 
 # find whether the path is setup clockwise or anticlockwise
 	def find_direction(self,config):
@@ -1352,11 +683,13 @@ class Path(object):
 					
 					p=fillpath.points[0]
 					fillpath.points=[]
-					fillpath.add_point(p.pos-V(p.radius,0), point_type='arcend')
-					fillpath.add_point(p.pos-V(p.radius,0), point_type='arc',  radius=p.radius, direction='cw')
-					fillpath.add_point(p.pos+V(p.radius,0), point_type='arcend')
-					fillpath.add_point(p.pos, point_type='arc',radius=p.radius, direction='cw')
-					fillpath.add_point(p.pos-V(p.radius,0), point_type='arcend')
+					fillpath.add_point(p.pos-V(p.radius,0), point_type='sharp')
+					fillpath.add_point(p.pos, point_type='avoidcurve',  radius=p.radius, direction='cw')
+					fillpath.add_point(p.pos+V(0,p.radius), point_type='sharp')
+					fillpath.add_point(p.pos, point_type='avoidcurve',  radius=p.radius, direction='cw')
+					fillpath.add_point(p.pos+V(p.radius,0), point_type='sharp')
+					fillpath.add_point(p.pos, point_type='avoidcurve',radius=p.radius, direction='cw')
+					fillpath.add_point(p.pos-V(p.radius,0), point_type='sharp')
 			if fillpath.find_direction(c)!=config['direction']:
 				reverse=True
 				fillpath.points=fillpath.points[::-1]
@@ -1368,7 +701,8 @@ class Path(object):
 #				frompoint=self.segment_point(lastpoint, beforelastpoint, thispoint,beforebeforelastpoint,nextpoint, segment_array, False, False, config)
 			# if it is a circle we need to split it into 2 arcs to be able to fill properly
 				fillpath.output_path(config)
-				frompos=self.get_frompos(fillpath.points, fillpath.Fsegments, -1, c)
+#				frompos=self.get_frompos(fillpath.points, fillpath.Fsegments, -1, c)
+				frompos = fillpath.points[-1].end()
 				if frompos!=fillpath.points[-1].pos:
                                 	fillpath.add_point(frompos,'sharp')
 				else:
@@ -1378,7 +712,8 @@ class Path(object):
 			for d in range(0,int(numpasses)):
 				temppath=thepath.offset_path(ns, step*(d+1), c)
 				temppath.output_path(config)
-				frompos=self.get_frompos(temppath.points, temppath.Fsegments, -1, c)
+#				frompos=self.get_frompos(temppath.points, temppath.Fsegments, -1, c)
+				frompos = temppath.points[-1].end()
 				if frompos!=temppath.points[-1].pos:
                                 	temppath.add_point(frompos,'sharp')
 				else:
@@ -1706,13 +1041,10 @@ class Path(object):
 	#		segments=self.Bsegments
 	#		cutfrom=segments[seg].cutto
 	#		cutto=segments[seg].cutfrom
-	#		print "reversed"
 	#	else:
 		seg=0
 		segments=self.Fsegments
-		if len(self.Bsegments)==0:
-			print self.trace
-			print self.points
+		#if len(self.Bsegments)==0:
 		cutto=segments[seg].cutto
 		cutfrom=segments[seg].cutfrom
 		if side=='on':
@@ -1725,7 +1057,7 @@ class Path(object):
 			if(segments[seg].seg_type=='arc'):
 				centre=segments[seg].centre
 				# find a normalized tangent to the line from the centre to the start point
-				p=Point(V(0,0),'sharp')
+				p=PSharp(V(0,0))
 				if direction=='cw' : 
 					angle=90
 				else:
@@ -2084,6 +1416,7 @@ class Part(object):
 	def __deepcopy__(self,memo):
 		conf={}
 		for v in self.varlist:
+		#	pass
 			conf[v]=copy.deepcopy(getattr(self,v),memo)
 #		ret=type(self)( **conf)
 		ret=copy.copy(self)
@@ -2272,7 +1605,7 @@ class Part(object):
 
 	def make_copies(self):
 		"""Create multiple versions of any parts that should be copied"""
-		if self.copied:
+		if self.isCopy:
 			return False
 		
 		for part in self.parts:
@@ -2455,7 +1788,7 @@ class Plane(Part):
 		self.modeconfig['callmode']=callmode
 		self.callmode=callmode
 		layers = self.get_layers()
-		output={} # collections.OrderedDict()
+		output= collections.OrderedDict()
 		c=0
 		lastcutter=False
 		config=copy.copy(self.modeconfig)
@@ -2578,6 +1911,8 @@ class Plane(Part):
 		else:
 			repeatmode='regexp'
 		if 'zero' in config and config['zero']=='bottom_left' and border!=None:
+			if not hasattr(border,'boundingBox') or 'bl' not in border.boundingBox.keys():
+				border.polygonise() 
 			offset=-border.boundingBox['bl']
 			output = self.offset_gcode( output, offset)
 		else:

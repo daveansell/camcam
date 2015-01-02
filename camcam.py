@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from minivec import *
 from path import *
 from shapes import *
 from parts import *
@@ -6,6 +7,7 @@ from parts import *
 from optparse import OptionParser
 import sys
 import Milling
+
 
 class CamCam:
 	def __init__(self):

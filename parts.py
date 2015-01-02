@@ -20,8 +20,7 @@ class Switch(Part):
 				if task=='clearance':
 					self.add(Hole(V(0,0), rad=19/2), layers=l)
 				if task=='doubleflat':
-					print "doubleflat "+l
-					self.add(DoubleFlat(V(0,0),13.6/2, 12.9/2), layers=l)
+					self.add(DoubleFlat(V(0,0),13.6/2, 12.9/2, side='in'), layers=l)
 				if task=='minimal':
 					self.add(Hole(V(0,0), rad=18/2, z1=-2 ), layers=l)
 					self.add(Hole(V(0,0), rad=14/2 ), layers=l)
@@ -324,21 +323,21 @@ class Fan(Pathgroup):
 		if 'centre_limit' in d:
 			o = math.sqrt(d['centrerad']**2 - d['centre_limit']**2)
 			cutout=self.add(Path(side='in', closed=True))
-			cutout.add_point(V(o,d['centre_limit']), 'arcend')
-			cutout.add_point(V(0,0), 'arc', radius=d['centrerad'], direction='ccw')
-			cutout.add_point(V(d['centre_limit'],o), 'arcend')
+			cutout.add_point(V(o,d['centre_limit']), 'sharp')
+			cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
+			cutout.add_point(V(d['centre_limit'],o), 'sharp')
 			
-			cutout.add_point(V(d['centre_limit'],-o), 'arcend')
-			cutout.add_point(V(0,0), 'arc', radius=d['centrerad'], direction='ccw')
-			cutout.add_point(V(o,-d['centre_limit']), 'arcend')
+			cutout.add_point(V(d['centre_limit'],-o), 'sharp')
+			cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
+			cutout.add_point(V(o,-d['centre_limit']), 'sharp')
 
-			cutout.add_point(V(-o,-d['centre_limit']), 'arcend')
-			cutout.add_point(V(0,0), 'arc', radius=d['centrerad'], direction='ccw')
-			cutout.add_point(V(-d['centre_limit'],-o), 'arcend')
+			cutout.add_point(V(-o,-d['centre_limit']), 'sharp')
+			cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
+			cutout.add_point(V(-d['centre_limit'],-o), 'sharp')
 
-			cutout.add_point(V(-d['centre_limit'],o), 'arcend')
-			cutout.add_point(V(0,0), 'arc', radius=d['centrerad'], direction='ccw')
-			cutout.add_point(V(-o,d['centre_limit']), 'arcend')
+			cutout.add_point(V(-d['centre_limit'],o), 'sharp')
+			cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
+			cutout.add_point(V(-o,d['centre_limit']), 'sharp')
 		else:
 			self.add(Hole(V(0,0), rad=d['centrerad']))
 
@@ -373,6 +372,7 @@ class RoundPlate(Part):
 		}
 		d=data[plateType]
 		self.init(config)
+		self.name=plateType
 		self.transform={'translate':pos}
 		if 'layers_config' not in config:
 			layer_config={'base':'base', 'part':'stringplate'}

@@ -1,4 +1,6 @@
 from path import *
+from minivec import *
+from segments import *
 # create a rectangular path
 class Rect(Path):
 	def __init__(self, bl,  **config):
@@ -73,9 +75,13 @@ class Polygon(Path):
 		self.init( config)
 		"""Cut a regular polygon with radius to the points :param rad: centred at :param pos:, with :param sides: sides with corners of type :param cornertype:\n"""+self.otherargs
                 self.closed=True
-		step=360/sides
+		step=360.0/sides
+		if 'cornerdir' in config:
+			cornerdir=config['cornerdir']
+		else:
+			cornerdir=False
 		for i in range(0,int(sides)):
-			self.add_point(pos+V(rad,0),cornertype,cornerrad,transform={'rotate':[pos,i*step]})
+			self.add_point(pos+V(rad,0),cornertype,cornerrad,direction=cornerdir, transform={'rotate':[pos,i*step]})
 		self.comment("Polygon")
 		self.comment("pos="+str(pos)+" rad="+str(rad)+" sides="+str(sides)+" cornertype="+cornertype)
 
@@ -169,7 +175,6 @@ class FilledCircle(Pathgroup):
 		steps=math.ceil(r/c['cutterrad']/1.2)
 		step=r/steps
 		for i in range(0,int(steps)+1):
-			print str(self.rad)+" "+str(self.rad-(steps-i)*step)+" "+str(i)
 			self.add(Circle(self.pos, self.rad-(steps-i)*step, side='in'))
 class Chamfer(Pathgroup):
 	def __init__(self, path, chamfer_side, **config):
@@ -267,13 +272,15 @@ class DoubleFlat(Path):
 		self.closed=True
 		y=math.sqrt(rad**2 - flat_rad**2)
 		self.add_point(pos+V(-flat_rad,0))
-		self.add_point(pos+V(-flat_rad,-y), point_type='arcend')
-		self.add_point(pos, radius=rad, direction='cw', point_type='arc')
-		self.add_point(pos+V(flat_rad, -y), point_type='arcend')
-		self.add_point(pos+V(flat_rad, 0), point_type='arcend')
-		self.add_point(pos+V(flat_rad, y),  point_type='arcend')
-		self.add_point(pos, radius=rad, point_type='arc', direction='cw')
-		self.add_point(pos+V(-flat_rad,y), point_type='arcend')
+		self.add_point(pos+V(-flat_rad,-y), point_type='sharp')
+#		self.add_point(pos, radius=rad, direction='cw', point_type='arc')
+		self.add_point(pos, radius=rad, direction='cw', point_type='aroundcurve')
+		self.add_point(pos+V(flat_rad, -y), point_type='sharp')
+		self.add_point(pos+V(flat_rad, 0), point_type='sharp')
+		self.add_point(pos+V(flat_rad, y),  point_type='sharp')
+#		self.add_point(pos, radius=rad, point_type='arc', direction='cw')
+		self.add_point(pos, radius=rad, point_type='aroundcurve', direction='cw')
+		self.add_point(pos+V(-flat_rad,y), point_type='sharp')
 
 class Cross(Pathgroup):
 	def __init__(self, pos, rad, **config):
@@ -729,40 +736,40 @@ The line defines the
 		crp=perp*cutterrad
 		cutin=perp*thickness
 		if linemode=='external':
-			onpointmode='clear'
-			offpointmode='sharp'
+			onpointmode=PClear
+			offpointmode=PSharp
 		if linemode=='internal':
-			onpointmode='sharp'
-			offpointmode='clear'
+			onpointmode=PSharp
+			offpointmode=PClear
 			cra=-cra
 			crp=-crp
 		if startmode=='on':
 #			self.append(Point(start+crp-cra, onpointmode))
-			self.append(Point(start+crp, 'sharp'))#onpointmode))
+			self.append(PSharp(start+crp))#onpointmode))
 			m='on'
 		elif startmode=='off':
 #			self.append(Point(start+cutin+crp-cra, offpointmode))
-			self.append(Point(start+cutin+crp, 'sharp'))#offpointmode))
+			self.append(PSharp(start+cutin+crp))#offpointmode))
 			m='off'
 		else:
 			print "wrong start mode"+str(startmode)
 		for i in range(1,int(num_tabs)):
 			if m=='on':
-				self.append(Point(start+along*i-cra+crp,  onpointmode))
+				self.append(onpointmode(start+along*i-cra+crp))
 			#	if(i!=num_tabs):
-				self.append(Point(start+along*i+crp-cra+cutin, offpointmode))
+				self.append(offpointmode(start+along*i+crp-cra+cutin))
 				m='off'
 			else:
-				self.append(Point(start+along*i+crp+cra+cutin,offpointmode))
-				self.append(Point(start+along*i+crp+cra,onpointmode))
+				self.append(offpointmode(start+along*i+crp+cra+cutin))
+				self.append(onpointmode(start+along*i+crp+cra))
 				m='on'
 		
 		if endmode=='on':
 #			self.append(Point(end+crp+cra, onpointmode))
-			self.append(Point(end+crp, 'sharp'))#onpointmode))
+			self.append(PSharp(end+crp))#onpointmode))
 		elif endmode=='off':
 #			self.append(Point(end+cutin+crp+cra, offpointmode))
-			self.append(Point(end+cutin+crp, 'sharp'))#offpointmode))
+			self.append(PSharp(end+cutin+crp))#offpointmode))
 
 class FingerJointBoxSide(Path):
 	def __init__(self, pos, width, height, side, corners, sidemodes, tab_length, thickness, cutter,**config):
