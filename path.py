@@ -383,6 +383,12 @@ class Path(object):
 		else:
 			reverse=1
 		self.mirrored=reverse
+		if len(self.points)==1 and hasattr(self.points[0],'direction') and self.points[0].direction in ['cw','ccw']:
+			if reverse:
+				return self.otherDir(self.points[0].direction)
+			else:
+				return self.points[0].direction
+			
 		for p,q in enumerate(self.points):
 			total+=(self.points[p].pos-self.points[(p-1)%len(self.points)].pos).normalize().cross((self.points[(p+1)%len(self.points)].pos-self.points[p].pos).normalize())
 		# if it is a circle
@@ -655,12 +661,14 @@ class Path(object):
 	
 		if not config['hide_cuts']  and 'partial_fill' in config and config['partial_fill']>0:
 			dist=max(config['partial_fill']-config['cutterrad'], finishing)
+			print "partial fill"+str(config['partial_fill'])
 			if dist<=0:
 				numpasses=0
 				step=1
 			else:
-				numpasses = math.ceil(abs(float(dist)/ float(config['cutterrad'])/1.4))
+				numpasses = int(math.ceil(abs(float(dist)/ float(config['cutterrad'])/1.4)))
 				step = config['partial_fill']/numpasses
+			print numpasses
 			if 'fill_direction' in config:
 				ns=config['fill_direction']
 			else:
@@ -710,6 +718,7 @@ class Path(object):
 	                        fillpath.prepend_point(frompos,'sharp')
 				
 			for d in range(0,int(numpasses)):
+				print d
 				temppath=thepath.offset_path(ns, step*(d+1), c)
 				temppath.output_path(config)
 #				frompos=self.get_frompos(temppath.points, temppath.Fsegments, -1, c)

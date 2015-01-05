@@ -236,6 +236,7 @@ class PSharp(Point):
 		return self.start
 
 	def offset(self, side, distance, direction):
+		print "o"+str(distance)
 		return self.offsetSharp( side, distance, direction)
 
 	def offsetSharp(self, side, distance, direction):
@@ -265,6 +266,7 @@ class PSharp(Point):
 #			t = copy.copy(self)
 			t = PClear(self.pos, self.transform)
                      	if self.angle==0 and self.dot<0:
+				print "arong angle"
                       		pass
                    	else:
                           	if self.dot<=0:
@@ -276,6 +278,7 @@ class PSharp(Point):
                              	else:
 					a=(math.pi-self.angle)/2
                                      	t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.sin(a)))
+			print distance/abs(math.sin(a))
 		return [t]
 
 	def makeSegment(self, config):

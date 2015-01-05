@@ -177,7 +177,7 @@ class Milling:
                         "endcut":1,
                         "sidecut":1,
                 },
-                "16mm_mill":{
+                "16mm_endmill":{
                         "id":5,
                         "diameter":16,
                         "endcut":1,
