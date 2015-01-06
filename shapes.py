@@ -743,6 +743,9 @@ The line defines the
 			offpointmode=PClear
 			cra=-cra
 			crp=-crp
+		if cutterrad==0:
+			onpointmode=PSharp
+			offpointmode=PSharp
 		if startmode=='on':
 #			self.append(Point(start+crp-cra, onpointmode))
 			self.append(PSharp(start+crp))#onpointmode))
@@ -776,7 +779,6 @@ class FingerJointBoxSide(Path):
 	#	config['side']='on'
 		self.init(config)
 		self.closed=True
-		self.side='on'
 		if 'fudge' in config:
 			fudge=config['fudge']
 		else:
@@ -793,7 +795,12 @@ class FingerJointBoxSide(Path):
 			thickness={'left':thickness, 'top':thickness, 'right':thickness, 'bottom':thickness}
 
 		c={}			
-		cutterrad = milling.tools[cutter]['diameter']/2
+		if 'auto' in config:
+			self.side='out'
+			cutterrad=0
+		else:
+			self.side='on'
+			cutterrad = milling.tools[cutter]['diameter']/2
 		for k in thickness.keys():
 			if k in corners and corners[k]=='on':
 				if linemode=='external':
