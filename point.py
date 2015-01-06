@@ -42,7 +42,8 @@ class Point(object):
 		if not hasattr(self,'reverse'):
 			self.reverse=False	
         def copy(self):
-                return Point( self.pos, self.point_type, self.radius, self.cp1, self.cp2, self.direction, self.transform)
+                t = Point( self.pos, self.point_type, self.radius, self.cp1, self.cp2, self.direction, self.transform)
+		
         def point_transform(self,ext_transformations=[]):
                 p=self.copy()
                 # If we are applying the transfomations the point shouldn't have them as a transform any more
@@ -119,15 +120,30 @@ class Point(object):
 	def next(self):
 		if self.reverse:
 			self.lastpoint.reverse=1
+#			if hasattr(self, 'forcelastpoint') and self.forcelastpoint is not False:
+#
+#				return self.forcelastpoint
 			return self.lastpoint
 		else:
+#			if hasattr(self, 'forcenextpoint') and self.forcenextpoint is not False:
+#				print "forcelastpoint-l "+str(self.forcelastpoint.pos)+str(self.lastpoint.pos)
+#				print "forcenextpoint-l "+str(self.forcenextpoint.pos)+str(self.nextpoint.pos)
+#				return self.forcenextpoint
 			self.nextpoint.reverse=0
 			return self.nextpoint
+
 	def last(self):
 		if self.reverse:
+#			if hasattr(self, 'forcenextpoint') and self.forcenextpoint is not False:
+#				return self.forcenextpoint
 			self.nextpoint.reverse=1
 			return self.nextpoint
 		else:
+#			if hasattr(self, 'forcelastpoint') and self.forcelastpoint is not False:
+#				print "forcenextpoint-l "+str(self.forcenextpoint.pos)+str(self.nextpoint.pos)
+#				print "forcelastpoint-l "+str(self.forcelastpoint.pos)+str(self.lastpoint.pos)
+
+#				return self.forcelastpoint
 			self.lastpoint.reverse=0
 			return self.lastpoint
 
@@ -135,7 +151,7 @@ class Point(object):
 		self.reverse=reverse
 		s = self.makeSegment(config)
 		if type(s) is list:
-			return self.makeSegment(config)
+			return s#self.makeSegment(config)
 		else:
 			print "No segment returned "+str(type(self))
 			return []
@@ -150,21 +166,26 @@ class Point(object):
                         self.angle = math.acos(b1.dot(b2))
 		a=b2-b1
 		self.angle0=math.atan2(a[1], a[0])
-		self.angle2=(b1.angle(-b2)-90)*math.pi/180
+#		self.angle2=(b1.angle(-b2)-90)*math.pi/180
+
 	def corner_side(self, side):
 		cross=(self.pos-self.last().pos).cross(self.next().pos-self.pos)[2]
-		if cross<0 and side=='left' or cross>0 and side=='right':
+		if cross==0:
+			return 'external'
+		if cross<=0 and side=='left' or cross>=0 and side=='right':
 			corner='external'
 		else:
 			corner='internal'
 		return corner
+
 	def offset_move_point(self, frompos, topos, side, distance):
-		if distance>10:
+		if distance>100:
                         distance=10
                 if side=='left':
                         a=-90
                 else:
                         a=90
+		#print "offset_move_point"+str(frompos)+" "+str(self.pos)+" "+str(topos)
                 vecin=(self.pos-frompos).normalize()
                 vecout=(topos-self.pos).normalize()
                 # Find average direction of two vectors
@@ -174,18 +195,28 @@ class Point(object):
                         return rotate(vecin,a).normalize()*distance+self.pos
                 avvec=avvec.normalize()
                 return -avvec*distance+self.pos
-	def lastorigin(self):
-		if hasattr(self.last(), 'control') and self.last().control:
-			return self.last().lastorigin(False)
-		else:
-			return self.last().origin(False)
-	def nextorigin(self):
-		if hasattr(self.next(), 'control') and self.next().control:
-			return self.next().nextorigin()
-		else:
-			return self.next().origin(True)
 
-		return self.next().origin(True)
+	def lastorigin(self):
+#		if hasattr(self, 'forcelastpoint'):
+#			last=self.forcelastpoint
+##		else:
+		last=self.last()
+		if hasattr(last, 'control') and last.control or last.pos==self.pos:
+			return last.lastorigin()
+		else:
+			return last.origin(False)
+
+	def nextorigin(self):
+#		if hasattr(self, 'forcenextpoint'):
+#			print "forcenextpoint-n"+str(self.reverse) + " "+ str(self.pos) + " " +str(self.forcenextpoint.pos)
+#			next=self.forcenextpoint
+#		else:
+		next=self.next()
+		if hasattr(next, 'control') and next.control or next.pos==self.pos:
+			return next.nextorigin()
+		else:
+			return next.origin(True)
+
 	def otherDir(self,direction):
                 if direction=='cw':
                         return 'ccw'
@@ -224,10 +255,13 @@ class PSharp(Point):
 
 	def copy(self):
                 t=PSharp( self.pos, self.radius, self.cp1, self.cp2, self.direction, self.transform)
-		t.lastpoint=self.lastpoint
-		t.nextpoint=self.nextpoint
-                t.reverse=self.reverse
+		t.forcelastpoint = self.lastpoint
+		t.forcenextpoint = self.nextpoint
+		t.lastpoint = self.lastpoint
+		t.nextpoint = self.nextpoint
+                t.reverse = self.reverse
 		return t
+
 	def origin(self, forward=True):
 		return self.pos
 	def end(self):
@@ -236,26 +270,25 @@ class PSharp(Point):
 		return self.start
 
 	def offset(self, side, distance, direction):
-		print "o"+str(distance)
 		return self.offsetSharp( side, distance, direction)
 
-	def offsetSharp(self, side, distance, direction):
+	def offsetSharp(self, side, distance, direction, sharp=True):
 		self.setangle()
 		if self.corner_side(side)=='external':# and side=='out' or corner=='internal' and side=='in':
 			t = copy.copy(self)
 	#		t=POutcurve(self.pos, radius=distance, transform=self.transform)
            		if self.angle==0 and self.dot<0:
       				pass
+			elif self.angle==0:
+				print "No angle so we can skip this one"
+				return []
                    	else:
                           	if self.dot<=0:
                                     	if self.angle>math.pi/2:
                                           	a=(math.pi-self.angle)/2
                                      	else:
                                              	a=self.angle/2
-					print str(self.last().point_type)
-					print str(self.next().point_type)
 					
-					print str(self.lastorigin())+" => "+str(self.pos)+" => "+str(self.nextorigin()) +" a="+str(self.angle)
                                         t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, -distance/abs(math.sin(a)))
                              	else:
 					a=(math.pi-self.angle)/2
@@ -264,7 +297,10 @@ class PSharp(Point):
 
           	else:
 #			t = copy.copy(self)
-			t = PClear(self.pos, self.transform)
+			if sharp==True:
+				t = PClear(self.pos, self.transform)
+			else:
+				t = copy.copy(self)
                      	if self.angle==0 and self.dot<0:
 				print "arong angle"
                       		pass
@@ -278,7 +314,6 @@ class PSharp(Point):
                              	else:
 					a=(math.pi-self.angle)/2
                                      	t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.sin(a)))
-			print distance/abs(math.sin(a))
 		return [t]
 
 	def makeSegment(self, config):
@@ -306,6 +341,8 @@ class PAroundcurve(PSharp):
                 t.reverse=self.reverse
 		t.lastpoint=self.lastpoint
 		t.nextpoint=self.nextpoint
+		t.forcelastpoint = self.lastpoint
+		t.forcenextpoint = self.nextpoint
                 return t
 
 	def offset(self, side, distance, direction):
@@ -388,6 +425,8 @@ class PIncurve(PSharp):
 		t.reverse=self.reverse
 		t.lastpoint=self.lastpoint
 		t.nextpoint=self.nextpoint
+		t.forcelastpoint = self.lastpoint
+		t.forcenextpoint = self.nextpoint
 		return t
 	def origin(self, forward=True):
 		return self.pos
@@ -416,7 +455,7 @@ class PIncurve(PSharp):
                         #t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, -distance/abs(math.cos(self.angle2)))
 
 		else:
-			t=self.offsetSharp( side, distance, direction)
+			t=self.offsetSharp( side, distance, direction, False)
 			if t[0].radius>distance:
                                         t[0].radius-=distance
                          #               t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.cos(self.angle0)))
@@ -508,6 +547,9 @@ class POutcurve(Point):
                 t=POutcurve( self.pos, self.radius, self.direction, self.transform)
 		t.lastpoint=self.lastpoint
 		t.nextpoint=self.nextpoint
+		t.forcelastpoint = self.lastpoint
+		t.forcenextpoint = self.nextpoint
+		t.reverse = self.reverse
 		return t
 	def origin(self, forward=True):
 		return self.pos
@@ -670,6 +712,7 @@ class PClear(PSharp):
                       	angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
 
                 	d=config['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1)
+			
                 	extrapoint=self.pos-(((lastpoint-self.pos).normalize()+(nextpoint-self.pos).normalize())/2).normalize()*d
 
                 return [
@@ -689,6 +732,8 @@ class PDoubleClear(Point):
                 t = PDoubleClear( self.pos, self.transform)
 		t.lastpoint=self.lastpoint
 		t.nextpoint=self.nextpoint
+		t.forcelastpoint = self.lastpoint
+		t.forcenextpoint = self.nextpoint
 		t.reverse=self.reverse
 		return t
 	def makeSegment(self, config):
@@ -770,6 +815,8 @@ class PArc(Point):
                 t = PArc( self.pos, self.radius, self.direction,self.length, self.transform)
 		t.lastpoint=self.lastpoint
 		t.nextpoint=self.nextpoint
+		t.forcelastpoint = self.lastpoint
+		t.forcenextpoint = self.nextpoint
 		t.reverse=self.reverse
 		return t
 

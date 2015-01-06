@@ -10,55 +10,60 @@
 #**************************************************/
 
 # Point class. Utter boilerplate and not interesting.
-class Point {
-  float x,y,d;
-  Point normal = null;
-
-  Point(float x, float y) {
-    moveTo(x,y);
-  }
-
-  Point(Point o) {
-    moveTo(o.x, o.y);
-    normal = normalize();
-  }
+class Point:
+  	def __init__(self, x, y=False):
+		if type(x) is Point:
+			self.moveto(x.x, x.y)
+			self.normal = self.normalise()
+		else:
+			moveTo(x, y)
 
   # scale
-  Point scale(float f) {
-    return new Point(f*x,f*y);
-  }
-
+  	def scale(self, f):
+		assert type(f) is float
+		return Point(f*self.x, f*self.y)
   # normalize
-  Point normalize() {
-    return new Point(x/d,y/d);
-  }
+  	def normalize(self) {
+    		return Point(self.x/self.d,self.y/self.d)
+  
 
   # repositioning
-  void moveTo(float _x, float _y) { x=_x; y=_y; d=sqrt(x*x+y*y); }
-  void moveTo(float _x, float _y, float ratio) { x+=(_x-x)*ratio; y+=(_y-y)*ratio; d=sqrt(x*x+y*y); }
-  void moveBy(float _x, float _y) { moveTo(x+_x, y+_y); }
+  	def moveTo(_x, _y, ratio=1):  
+		if ratio==1:
+			self.x = _x 
+			self.y = _y 
+			self.d = math.sqrt(_x*_x+_y*_y)
+		else:
+			self.x += (_x-self.x)*ratio
+			self.y += (_y-self.y)*ratio
+			self.d = math.sqrt(self.x**2, self.y**2)
+	def moveBy(_x, _y):
+		self.moveTo(self.x+_x, self.y+_y)
 
   # rotate this point w.r.t. another point
-  Point rotateOver(Point o, float angle) {
-    float nx = x-o.x, ny = y-o.y,
-          mx = nx*cos(angle) - ny*sin(angle),
-          my = nx*sin(angle) + ny*cos(angle);
-    moveTo(mx+o.x,my+o.y);
-    return this;
-  }
+  	def rotateOver(o, angle):
+		assert type(o) is Point
+		assert type(angle) is float
+    		nx = self.x-o.x
+		ny = self.y-o.y
+          	mx = nx*cos(angle) - ny*sin(angle)
+          	my = nx*sin(angle) + ny*cos(angle)
+    		self.moveTo(mx+o.x,my+o.y)
+    		return self
+  
 
   # reflect a point through this point
-  Point reflect(Point original) {
-    return new Point(2*x - original.x, 2*y - original.y);
-  }
+  	def reflect(original):
+    		return Point(2*self.x - original.x, 2*self.y - original.y);
+  
 
   # does this point coincide with coordinate mx/my?
-  boolean over(float mx, float my) {
-    return abs(mx-x)<5andabs(my-y)<5;
-  }
+  	def over(mx, my):
+		return abs(mx-self.x)<5 and abs(my-self.y)<5
+  
 
 
-}
+
 
 
 #**************************************************
@@ -71,61 +76,44 @@ class Point {
 # Bezier curve class (of any degree)
 #/
 class BezierCurve:
-	def __init__():
+	def __init__(self, points=False, copyPoints=False):
 		self.LUT_resolution=0
   		self.order=0
-  		Point[] points,              # the control points for this curve
-          		abc = new Point[3],  # the "ABC" points. Only for 2nd and 3rd order curves
-          		span,                # de Casteljau's spanning lines for some t=...
-          		left_split,          # for any span, these are the control points for the subcurve [0,t]
-          		right_split,         # for any span, these are the control points for the subcurve [t,1]
-          		normals;             # the normal vectors for each control point.
+  		self.points = []              # the control points for this curve
+          	self.abc = []  # the "ABC" points. Only for 2nd and 3rd order curves
+          	self.span = False                # de Casteljau's spanning lines for some t=...
+          	self.left_split = False          # for any span, these are the control points for the subcurve [0,t]
+          	self.right_split = False         # for any span, these are the control points for the subcurve [t,1]
+          	self.normals = False             # the normal vectors for each control point.
   		# LUT for the point x/y values and t-at-x/y values
-  		float[] x_values,
-  		        y_values,
-  		        LUT_x,
-  		        LUT_y ,
-        		ratios, # the distance from the start, as ratios, for each control point projected onto the curve
-          		originalInterval = {0,1};
+  		x_values = []
+  		y_values = []
+  		LUT_x = []
+  		LUT_y = []
+        	ratios = [] # the distance from the start, as ratios, for each control point projected onto the curve
+          	originalInterval = [0.0,1.0]
   		# for drawing the curve, we use integer lookups
-  		int[] draw_x = new int[LUT_resolution],
-        		draw_y = new int[LUT_resolution];
-  		float span_t = -1,     # indicates the 't' value for which span/left/right was last computed
-        		curveLength,     # the arc length of this curve, computed on construction
-        		bias = 0;        # are control points are on one side of the baseline? -1/1 means yes (sign indicates left/right), 0 means no.
+  		draw_x = []
+        	draw_y = []
+  		span_t = -1.0     # indicates the 't' value for which span/left/right was last computed
+        	curveLength = 0.0     # the arc length of this curve, computed on construction
+        	bias = 0.0        # are control points are on one side of the baseline? -1/1 means yes (sign indicates left/right), 0 means no.
 
 
   		# lower order Bezier curve, if this curve is an elevation
-  		BezierCurve generator = null;
-
-  # reserved
-  protected BezierCurve() {}
-
-  #*
-# construct a typical curve
-#/
-  BezierCurve(Point[] points) {
-    this(points, true);
-  }
-
-  BezierCurve(Point[] points, boolean copyPoints) {
-    int L = points.length;
-    order = L-1;
-    if(copyPoints) {
-      this.points = new Point[L];
-      for(int p=0; p<L; p++) {
-        this.points[p] = new Point(points[p].x, points[p].y);
-      }
-    } else { this.points = points; }
-    LUT_resolution = 1 + (int) (400 * log(order)/log(4));
-    LUT_x = new float[LUT_resolution];
-    LUT_y = new float[LUT_resolution];
-    draw_x = new int[LUT_resolution];
-    draw_y = new int[LUT_resolution];
-    x_values = new float[L];
-    y_values = new float[L];
-    update();
-  }
+  		generator = None
+		if points != False:
+	    		L = len(self.points)
+	    		self.order = L-1;
+    			if copyPoints:
+      				for p in range(0,L):
+        				self.points[p] = Point(points[p].x, points[p].y)
+      
+    			else:  
+				self.points = points
+    			LUT_resolution = 1 + (int (400 * math.log(order)/math.log(4)))
+    			self.update();
+  
 
   
    # Update all the cachable information
@@ -134,11 +122,11 @@ class BezierCurve:
    # - curve length
    # - control normals
    
-	def update():
+	def update(self):
 		span_t = -1;
     		generator = null;
     		# Split up "point" x- and y- components for quick lookup.
-    		for(int i=0, last=points.length; i<last; i++) {
+    		for(int i=0, last=len(self.points); i<last; i++) {
       		x_values[i] = points[i].x;
       		y_values[i] = points[i].y;
     		}
@@ -219,7 +207,7 @@ class BezierCurve:
   
    # Refine a point projection's [t] value.
    
-  	float refineProjection(p, t, distance, precision):
+  	float refineProjection(self, p, t, distance, precision):
     		if(precision < 0.0001): 
 			return t
     		# refinement
@@ -238,7 +226,7 @@ class BezierCurve:
     		return refineProjection(p, t, distance, precision/2.0)
 
   # how close are these two curves?
-  	def getSimilarity(other):
+  	def getSimilarity(self, other):
 		assert type(other) is BezierCurve
     		diff = 0.0
 		dx = 0.0 
@@ -256,34 +244,34 @@ class BezierCurve:
   #*
 # Get values
 #/
-  	def getXValue(t):
+  	def getXValue(self, t):
 		assert type(t) is float
 		return comp.getValue(t, self.x_values)
  
-	def getYValue(t):
+	def getYValue(self, t):
 		assert type(t) is float
  		return comp.getValue(t, self.y_values)
 
-	def getPoint(t):
+	def getPoint(self, t):
 		assert type(t) is float  
 		return Point(self.getXValue(t), self.getYValue(t)) 
 
   #*
 # Get derivative values
 #/
-	def getDXValue(t):
+	def getDXValue(self, t):
 		assert type(t) is float
 		return comp.getDerivative(1, t, self.x_values)
 
-	def getDYValue(t):
+	def getDYValue(self, t):
 		assert type(t) is float  
  		return comp.getDerivative(1, t, self.y_values)
 
-  	def getDerivativePoint(t):
+  	def getDerivativePoint(self, t):
 		assert type(t) is float  
  		return Point(self.getDXValue(t), self.getDYValue(t))
 
-  	def getSpanLines(t):  
+  	def getSpanLines(self, t):  
 		assert type(t) is float  
     		span = generateSpan(t)
     		prev = len(span)-3 
@@ -296,26 +284,26 @@ class BezierCurve:
   #*
 # Get second derivative values
 #/
-  	def getD2XValue(t):
+  	def getD2XValue(self, t):
 		assert type(t) is float  
  		return comp.getDerivative(2, t, self.x_values)
 
-  	def getD2YValue(t):
+  	def getD2YValue(self, t):
 		assert type(t) is float  
  		return comp.getDerivative(2, t, self.y_values)
 
-	def getSecondDerivativePoint(t):
+	def getSecondDerivativePoint(self, t):
 		assert type(t) is float  
   		return Point(getD2XValue(t), getD2YValue(t))
 
   #*
 # get a point-normal
 #/
-  	def getNormal(t):
+  	def getNormal(self, t):
 		assert type(t) is float  
     		dx = self.getDXValue(t)
           	dy = self.getDYValue(t)
-          	a = -self.PI/2
+          	a = -math.pi/2
           	ca = cos(a)
           	sa = sin(a)
           	nx = dx*ca - dy*sa
@@ -330,7 +318,7 @@ class BezierCurve:
 # as well as the split curves for [t], since this requires
 # the same information.
 #/
-	def generateSpan(t):
+	def generateSpan(self, t):
 		assert type(t) is float  
     		span_t = t
     		left_split = Point[self.order+1]
@@ -338,8 +326,8 @@ class BezierCurve:
     		l = 0
 		r = self.order
     		span = new Point[comp.markers(order+1)]
-  ***  		array_copy(points,0,span,0,points.length)
-    		next = points.length
+  ***  		array_copy(points,0,span,0,len(self.points))
+    		next = len(self.points)
 		for c in range(order, 0):
 	      		left_split[l] = span[next-c-1];
 			l+=1
@@ -366,7 +354,7 @@ class BezierCurve:
   #*
 # compute the bounding box for a curve
 #/
-  	def generateBoundingBox():
+  	def generateBoundingBox(self):
     		inflections = getInflections();
     		mx=999999.0 
 		MX=-999999.0 
@@ -387,112 +375,114 @@ class BezierCurve:
   #*
 # Get the bounding box area
 #/
-  float getArea() {
-    Point[] bbox = generateBoundingBox();
-    float dx = bbox[2].x - bbox[0].x,
-          dy = bbox[2].y - bbox[0].y,
-          A = dx*dy;
-    return A;
-  }
+   	def getArea(self):
+    		bbox = self.generateBoundingBox()
+    		dx = bbox[2].x - bbox[0].x,
+          	dy = bbox[2].y - bbox[0].y,
+          	A = dx*dy
+    		return A
+  
 
   #*
 # Generate a bounding box for the aligned curve
 #/
-  Point[] generateTightBoundingBox() {
-    float ox = points[0].x,
-          oy = points[0].y,
-          angle = atan2(points[order].y - points[0].y, points[order].x - points[0].x) + PI,
-          ca = cos(angle),
-          sa = sin(angle),
-          nx, ny;
-    Point[] bbox = align().generateBoundingBox();
-    for(Point p: bbox) {
-      nx = (p.x * ca - p.y * sa) + ox;
-      ny = (p.x * sa + p.y * ca) + oy;
-      p.x = nx;
-      p.y = ny;
-    }
-    return bbox;
-  }
+  	def generateTightBoundingBox(self):
+    		ox = self.points[0].x
+          	oy = self.points[0].y
+          	angle = atan2(self.points[order].y - self.points[0].y, self.points[order].x - self.points[0].x) + math.pi
+          	ca = cos(angle)
+          	sa = sin(angle)
+       
+    		bbox = self.align().generateBoundingBox()
+		for p in bbox:
+      			nx = (p.x * ca - p.y * sa) + ox
+      			ny = (p.x * sa + p.y * ca) + oy
+      			p.x = nx
+      			p.y = ny
+    
+    		return bbox
+  
 
   #*
 # Is there an overlap between these two curves,
 # based on their bounding boxes?
 #/
-  boolean hasBoundOverlapWith(BezierCurve other) {
-    Point[] bbox = generateBoundingBox(),
-            obbox = other.generateBoundingBox();
-    float dx = abs(bbox[2].x - bbox[0].x)/2,
-           dy = abs(bbox[2].y - bbox[0].y)/2,
-           odx = abs(obbox[2].x - obbox[0].x)/2,
-           ody = abs(obbox[2].y - obbox[0].y)/2,
-           mx = bbox[0].x + dx,
-           my = bbox[0].y + dy,
-           omx = obbox[0].x + odx,
-           omy = obbox[0].y + ody,
-           distx = abs(mx-omx),
-           disty = abs(my-omy),
-           tx = dx + odx,
-           ty = dy + ody;
-    return distx < tx and disty < ty;
-  }
+	def hasBoundOverlapWith(self,  other):
+		assert type(other) is BezierCurve
+    		bbox = self.generateBoundingBox()
+            	obbox = other.generateBoundingBox()
+    		dx = abs(bbox[2].x - bbox[0].x)/2
+           	dy = abs(bbox[2].y - bbox[0].y)/2
+           	odx = abs(obbox[2].x - obbox[0].x)/2
+           	ody = abs(obbox[2].y - obbox[0].y)/2
+           	mx = bbox[0].x + dx
+           	my = bbox[0].y + dy
+           	omx = obbox[0].x + odx
+           	omy = obbox[0].y + ody
+           	distx = abs(mx-omx)
+           	disty = abs(my-omy)
+           	tx = dx + odx
+           	ty = dy + ody
+    		return distx < tx and disty < ty
+  
 
   #*
 # Just the X curvature
 #/
-  BezierCurve justX(float h) {
-    int L = points.length, l = L - 1;
-    Point[] newPoints = new Point[L];
-    for(int i=0; i<L; i++) {
-      newPoints[i] = new Point(i*h/l, points[i].x);
-    }
-    return new BezierCurve(newPoints);
-  }
+	def justX(self, h):
+    		L = len(self.points)
+		l = L - 1
+    		newPoints = []
+		for i in range(0, L):
+      			newPoints[i] = Point(i*h/l, points[i].x)
+    
+    		return BezierCurve(newPoints)
+  
 
   #*
 # Just the Y curvature
 #/
-  BezierCurve justY(float h) {
-    int L = points.length, l = L - 1;
-    Point[] newPoints = new Point[L];
-    for(int i=0; i<L; i++) {
-      newPoints[i] = new Point(i*h/l, points[i].y);
-    }
-    return new BezierCurve(newPoints);
-  }
+	def justY(self, h):
+    		L = len(self.points)
+		l = L - 1
+    		newPoints = []
+		for i in range(0, L):
+      			newPoints[i] = Point(i*h/l, points[i].y)
+    		return BezierCurve(newPoints)
 
   #*
 # Reverse this curve
 #/
-  void reverse() {
-    Point[] newPoints = new Point[points.length];
-    for(int i=0; i<points.length; i++) {
-      newPoints[order-i] = points[i];
-    }
-    points = newPoints;
-    update();
-  }
+   	def reverse(self) {
+    		newPoints = []
+		for i in range(0, len(self.points)):
+      			newPoints[self.order-i] = points[i]
+    
+    		points = newPoints
+    		self.update()
 
   #*
 # Determine whether all control points are on
 # one side of the baseline. If so, this curve
 # is biased, making certain computations easier.
 #/
-  boolean isBiased() { return bias != 0; }
+  	def isBiased(self): 
+		return self.bias != 0
 
   #*
 # return the arc length for this curve.
 #/
-  float getCurveLength() { return curveLength; }
+  	def getCurveLength(self):  
+		return self.curveLength
 
   #*
 # Get the A/B/C points for this curve. These are only
 # meaningful for quadratic and cubic curves.
 #/
-  Point[] getABC(float t) {
-    generateSpan(t);
-    return abc;
-  }
+  	def getABC(self, t):
+		assert type(t) is float
+    		self.generateSpan(t)
+    		return self.abc
 
   #*
 # Get the distance of the curve's midpoint to the
@@ -500,17 +490,17 @@ class BezierCurve:
 # the more linear a simple curve will be. For
 # non-simple curves, this value is relatively useless.
 #/
-  float getScaleAngle() {
-    Point p1 = getNormal(0), p2 = getNormal(1);
-    return abs(atan2(p1.x*p2.y - p2.x*p1.y, p1.x*p2.x + p1.y*p2.y) % 2*PI);
-  }
+  	def getScaleAngle(self):
+    		p1 = self.getNormal(0) 
+		p2 = self.getNormal(1)
+    		return abs(math.atan2(p1.x*p2.y - p2.x*p1.y, p1.x*p2.x + p1.y*p2.y) % 2*math.pi)
+  
 
   #*
 # Get the t-interval, with respects to the ancestral curve.
 #/
-  float[] getInterval() {
-    return originalInterval;
-  }
+  	def getInterval(self):
+    		return self.originalInterval
 
   #*
 # Bound when splitting curves: mark which [t] values on the original curve
@@ -518,122 +508,110 @@ class BezierCurve:
 # the result of multiple splits, the "original" is the ancestral curve
 # that the very first split() was called on.
 #/
-  void setOriginalT(float d1, float d2) {
-    originalInterval[0] = d1;
-    originalInterval[1] = d2;
-  }
-
+  	def setOriginalT(self, d1, d2):
+		assert type(d1) is float
+		assert type(d2) is float
+    		self.originalInterval[0] = d1
+    		self.originalInterval[1] = d2
 
   #*
 # Split in half
 #/
-  BezierCurve[] split() {
-    BezierCurve[] subcurves = split(0.5);
-    float mid = (originalInterval[0] + originalInterval[1])/2;
-    subcurves[0].setOriginalT(originalInterval[0], mid);
-    subcurves[1].setOriginalT(mid, originalInterval[1]);
-    return subcurves;
-  }
+	def split(self, t=False):
+		if t1 is not False and t2 is not False:
+    			if(t1==0):  
+				segment = self.split(t2)[0]
+    			elif(t2==1): 
+				segment = self.split(t1)[1]
+    			else:
+      				subcurves = self.split(t1)
+      				t2 = (t2-t1)/(1-t1)
+      				subcurves = subcurves[1].split(t2)
+      				segment = subcurves[0]
+				return segment
+		elif t is not False:
+    			if (t != span_t):  
+				self.generateSpan(t)
+    				subcurves = [BezierCurve(left_split), BezierCurve(right_split)]
+		else:
+    			subcurves = self.split(0.5)
+    			mid = (self.originalInterval[0] + self.originalInterval[1])/2
+    			subcurves[0].setOriginalT(self.originalInterval[0], mid)
+    			subcurves[1].setOriginalT(mid, self.originalInterval[1])
+    		return subcurves;
 
-  #*
-# Split into two curves at some [t] value
-#/
-  BezierCurve[] split(float t) {
-    if (t != span_t) { generateSpan(t); }
-    BezierCurve[] subcurves = {new BezierCurve(left_split), new BezierCurve(right_split)};
-    return subcurves;
-  }
 
-  #*
-# Get the segment from t1 to t2 as new curve
-#/
-  BezierCurve split(float t1, float t2) {
-    BezierCurve segment;
-    if(t1==0) { segment = split(t2)[0]; }
-    else if(t2==1) { segment = split(t1)[1]; }
-    else {
-      BezierCurve[] subcurves = split(t1);
-      t2 = (t2-t1)/(1-t1);
-      subcurves = subcurves[1].split(t2);
-      segment = subcurves[0];
-    }
-    return segment;
-  }
 
   #*
 # Scale this curve. Note that this is NOT
 # the same as offsetting the curve. We're
 # literally just scaling the coordinates.
 #/
-  BezierCurve scale(float f) {
-    int L = points.length;
-    Point[] scaled = new Point[L];
-    Point p;
-    for (int i=0; i<L; i++) {
-      p = points[i];
-      scaled[i] = new Point(f * p.x, f * p.y);
-    }
-    return new BezierCurve(scaled);
-  }
+  	def scale(self, f):
+    		L = len(self.points)
+    		scaled = []
+		for i in range(0,L):
+      			p = self.points[i]
+      			scaled[i] = Point(f * p.x, f * p.y)
+    
+    		return BezierCurve(scaled);
+  
 
-  #*
-# Align this curve: rotate it so that the first and last coordinates line up,
-# and shift it so that the first coordinate is (0,0), which simplifies the formulae.
-#/
-  BezierCurve align() {
-    return align(points[0], points[order]);
-  }
 
   #*
 # Align this curve to a line defined by two points: rotate it so that the line
 # start is on (0,0), and rotate it so the angle is 0.
 #/
-  BezierCurve align(Point start, Point end) {
-    float angle = atan2(end.y - start.y, end.x - start.x) + PI,
-          ca = cos(-angle),
-          sa = sin(-angle),
-          ox = start.x,
-          oy = start.y;
-    int L = points.length;
-    Point[] aligned = new Point[L];
-    Point p = points[0];
-    for (int i=0; i<L; i++) {
-      p = points[i];
-      p = new Point(ca * (p.x-ox) - sa * (p.y-oy), sa * (p.x-ox) + ca * (p.y-oy));
-      aligned[i] = p;
-    }
-    return new BezierCurve(aligned);
-  }
+  	def align(self, start=False, end=False):
+		if start!=False and end!=False:
+    			angle = math.atan2(end.y - start.y, end.x - start.x) + math.pi
+          		ca = cos(-angle)
+          		sa = sin(-angle)
+          		ox = start.x
+          		oy = start.y
+    			L = len(self.points)
+    			aligned = new Point[L]
+    			p = points[0]
+			for i in range(0,L):
+      				p = points[i]
+      				p = Point(ca * (p.x-ox) - sa * (p.y-oy), sa * (p.x-ox) + ca * (p.y-oy))
+      				aligned[i] = p
+    
+    			return  BezierCurve(aligned)
+		elif start==False and end==False:
+    			return self.align(self.points[0], self.points[self.order])
+  
 
   #*
 # Normalise this curve: scale all coordinate to within a unit rectangle.
 #/
-  BezierCurve normalize() {
-    int L = points.length;
-    Point[] normalised = new Point[L];
-    Point p = points[0];
-    float mx = 999999, my = mx,
-          MX = -999999, MY = MX;
-    for (int i=0; i<L; i++) {
-      p = points[i];
-      if(p.x<mx) { mx = p.x; }
-      if(p.y<my) { my = p.y; }
-      if(p.x>MX) { MX = p.x; }
-      if(p.y>MY) { MY = p.y; }
-      normalised[i] = p;
-    }
-    for (int i=0; i<L; i++) {
-      normalised[i].x = map(normalised[i].x,  mx,MX,  0,1);
-      normalised[i].y = map(normalised[i].y,  my,MY,  0,1);
-    }
-    return new BezierCurve(normalised);
-  }
+	def normalize(self):
+    		L = len(self.points)
+    		normalised = []
+    		p = self.points[0]
+    		mx = 999999.0
+		my = mx
+          	MX = -999999.0 
+		MY = MX
+		for i in range(0, L):
+      			p = points[i]
+			mx = min(p.x, mx)
+			my = min(p.y, my)
+			MX = min(p.x, MX)
+			MY = min(p.y, MY)
+      			normalised[i] = p;
+    		for i in range(0,L):
+      			normalised[i].x = map(normalised[i].x,  mx,MX,  0,1)
+      			normalised[i].y = map(normalised[i].y,  my,MY,  0,1)
+    
+    		return BezierCurve(normalised)
+  
 
   #*
 # Elevate this curve by one order
 #/
   BezierCurve elevate() {
-    int L = points.length;
+    int L = len(self.points);
     Point[] elevatedPoints = new Point[L+1];
     elevatedPoints[0] = new Point(LUT_x[0], LUT_y[0]);
     float np1 = order+1, nx, ny;
@@ -814,7 +792,7 @@ class BezierCurve:
    # polybezier.
    
 	def correctIfNeeded(BezierCurve prev, BezierCurve next):
-    		float p2 = PI/2;
+    		float p2 = math.pi/2;
     		Point n1 = prev.getNormal(1),
          		 n2 = next.getNormal(0),
           		n2p = new Point(n2.x*cos(p2)-n2.y*sin(p2), n2.x*sin(p2)+n2.y*cos(p2));
@@ -823,7 +801,7 @@ class BezierCurve:
     		# If the angle between the two normals can be resolved,
     		# do so. Otherwise --if it's too big-- leave it be. It'll
     		# be in an inside-curve, and thus occluded.
-    		if(diff>PI/20 and diff<PI/2) {
+    		if(diff>math.pi/20 and diff<math.pi/2) {
       			prev.points[order-1].rotateOver(prev.points[order], -sign * diff/2);
       			prev.update();
       			next.points[1].rotateOver(next.points[0], sign * diff/2);
@@ -889,7 +867,7 @@ class BezierCurve:
 
   String toString() {
     String ret = "B"+order+": ";
-    for(int i=0; i<points.length; i++) {
+    for(int i=0; i<len(self.points); i++) {
       ret += points[i].toString();
       if(i<order) ret += ", ";
     }
@@ -950,7 +928,7 @@ class PolyBezierCurve {
     if (len==0) { return; }
     BezierCurve pc = segments.get(len-1);
     Point[] points = pc.points;
-    int plen = points.length;
+    int plen = len(self.points);
     # make the segments share endpoints.
     if (this.integrate and integrate) {
       curve.points[0] = points[plen-1];
@@ -1878,7 +1856,7 @@ class BezierComputer {
     dx1 /= l1; dy1 /= l1;
     dx2 /= l2; dy2 /= l2;
     # rotate a quarter turn
-    float a = PI/2, ca = cos(a), sa = sin(a),
+    float a = math.pi/2, ca = cos(a), sa = sin(a),
           nx1 = dx1*ca - dy1*sa,
           ny1 = dx1*sa + dy1*ca;
     return (nx1*dx2 + ny1*dy2 < 0 ? -1 : 1);
@@ -2056,7 +2034,7 @@ class BooleanComputer {
           dy = e.y - s.y,
           d = dist(s.x,s.y,e.x,e.y);
     dx/=d; dy/=dy;
-    return (new Point(dx, dy)).rotateOver(ORIGIN,PI/2).scale(10*dim);
+    return (new Point(dx, dy)).rotateOver(ORIGIN,math.pi/2).scale(10*dim);
   }
 
   #*

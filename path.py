@@ -661,14 +661,12 @@ class Path(object):
 	
 		if not config['hide_cuts']  and 'partial_fill' in config and config['partial_fill']>0:
 			dist=max(config['partial_fill']-config['cutterrad'], finishing)
-			print "partial fill"+str(config['partial_fill'])
 			if dist<=0:
 				numpasses=0
 				step=1
 			else:
 				numpasses = int(math.ceil(abs(float(dist)/ float(config['cutterrad'])/1.4)))
 				step = config['partial_fill']/numpasses
-			print numpasses
 			if 'fill_direction' in config:
 				ns=config['fill_direction']
 			else:
@@ -687,6 +685,8 @@ class Path(object):
 # need to break circles into 2 arcs
 
 			fillpath=copy.deepcopy(thepath)
+#			fillpath.points[0].forcelastpoint = fillpath.points[len(fillpath.points)-1]
+ #                       fillpath.points[len(fillpath.points)-1].forcenextpoint = fillpath.points[0]
 			if(numpasses>0 and fillpath.points[0].point_type=='circle'):
 					
 					p=fillpath.points[0]
@@ -714,13 +714,20 @@ class Path(object):
 				if frompos!=fillpath.points[-1].pos:
                                 	fillpath.add_point(frompos,'sharp')
 				else:
-					fillpath.points[-1].point_type='sharp'
+					pass
+#					fillpath.points[-1].point_type='sharp'
 	                        fillpath.prepend_point(frompos,'sharp')
-				
+			
+			tpath=thepath
 			for d in range(0,int(numpasses)):
-				print d
-				temppath=thepath.offset_path(ns, step*(d+1), c)
-				temppath.output_path(config)
+		#		temppath.output_path(config)
+				tpath.output_path(config)
+#				temppath=thepath.offset_path(ns, step*(d+1), c)
+				tpath=tpath.offset_path(ns, step, c)
+				temppath=copy.deepcopy(tpath)
+#				temppath.points[0].forcelastpoint = temppath.points[len(temppath.points)-1]
+#/				temppath.points[len(temppath.points)-1].forcenextpoint = temppath.points[0]
+				
 #				frompos=self.get_frompos(temppath.points, temppath.Fsegments, -1, c)
 				frompos = temppath.points[-1].end()
 				if frompos!=temppath.points[-1].pos:
@@ -733,12 +740,14 @@ class Path(object):
 					fillpath.add_points(temppath.points,'start')
 				else:
 					fillpath.add_points(temppath.points[::-1],'start')
+
 #				else:
 #					fillpath.add_points(temppath.points[::-1],'start')
 #			if reverse:
 #				fillpath.points = fillpath.points[::-1]
 			offpath=thepath
 			thepath=fillpath
+
 		thepath.output_path(c)
 		out += thepath.render_path(thepath,c)
 		if finalpass:
