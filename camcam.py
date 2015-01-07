@@ -91,6 +91,8 @@ parser.add_option('-M', '--mirror', dest='mirror',
 		  action='store_true', help='Mirror in x')
 parser.add_option('-Z', '--zbase', dest='zbase',
 		  action='store_true', help='set z=0 to bottom of material')
+parser.add_option('-z', '--zbase', dest='zbase',
+		  action='store_true', help='set z=0 to top of material (default)')
 (options, args) = parser.parse_args()
 config={}
 
