@@ -1001,9 +1001,9 @@ class Path(object):
 				d= not d
 			if downmode=='ramp':
 				if d:
-					self.add_out(self.Fsegments[0].out(direction,mode))
+					self.add_out(self.Fsegments[-1].out(direction,mode))
 				else:
-					self.add_out(self.Bsegments[0].out(direction,mode))
+					self.add_out(self.Bsegments[-1].out(direction,mode))
 			self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 		# If we are in a gcode mode, go through all the cuts and add feed rates to them
 		if self.mode=='gcode':

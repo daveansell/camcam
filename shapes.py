@@ -379,6 +379,8 @@ class Screw(Part):
 			layer_conf=config['layer_config']
 			for c in layer_conf.keys():
 				conf = copy.deepcopy(layer_conf[c])
+				print conf
+				print c
 				self.add(Hole(pos, **conf), c)
 class FourScrews(Part):
 	def __init__(self, bl, tr, layer_conf, **config):
@@ -656,7 +658,7 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 		
 		steps=int(math.ceil(chamfer_width/max_xstep))
 		xstep=chamfer_width/steps
-		zstep=thickness/steps
+		zstep=material_thickness/steps
 
 		num_tab_pairs= math.floor((end-start).length()/tab_length/2)
 		if startmode==endmode:
@@ -696,13 +698,13 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 #					print "xoff="+str((j+1)*xstep)+" zoff="+str(material_thickness-zstep*j)
 					p=Path(closed=False, side='on', z1=-material_thickness+zstep*j)
 					if i==1:
-						p.add_point((start+along*(i-1)+crp-cra-perp*(j+1)*xstep), 'sharp')
+						p.add_point((start+along*(i-1)-cra-perp*(j+1)*xstep), 'sharp')
 					else:
-						p.add_point((start+along*(i-1)+crp-perp*(j+1)*xstep), 'sharp')
+						p.add_point((start+along*(i-1)-perp*(j+1)*xstep), 'sharp')
 					if i==num_tabs:
-						p.add_point((start+along*i+crp+cra-perp*(j+1)*xstep), 'sharp')
+						p.add_point((start+along*i+cra-perp*(j+1)*xstep), 'sharp')
 					else:
-						p.add_point((start+along*i+crp-perp*(j+1)*xstep), 'sharp')
+						p.add_point((start+along*i-perp*(j+1)*xstep), 'sharp')
 					self.add(p)
 			else:
 				m='on'
