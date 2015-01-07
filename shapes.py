@@ -628,7 +628,7 @@ class AngledFingerJoint(list):
 		if lineside=='front':
 			start+=perp*material_thickness/math.tan(float(angle)/180*math.pi)
 			end+=perp*material_thickness/math.tan(float(angle)/180*math.pi)
-		for p in FingerJoint(start, end, side,linemode, startmode, endmode, tab_length, thickness/math.tan(float(angle)/180*math.pi), cutterrad, fudge):
+		for p in FingerJoint(start, end, side,linemode, startmode, endmode, tab_length, thickness*math.tan(float(angle)/180*math.pi), cutterrad, fudge):
 			self.append(p)
 class AngledFingerJointSlope(Pathgroup):
 	""" This will cut a load of slopes away from an AngledFingerJoint, the both must be called"""
