@@ -122,7 +122,7 @@ else:
 	config['sep_border']=False
 config['transformations']=[{}]
 if options.rotate:
-	config['transformations'][0]['rotate'] = [V(0,0), options.rotate]
+	config['transformations'][0]['rotate'] = [V(0,0), float(options.rotate)]
 if options.mirror:
 	config['transformations'][0]['mirror'] = [V(0,0),'x']
 # load all the requested files	
