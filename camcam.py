@@ -85,6 +85,10 @@ parser.add_option("-r", "--repeatmode", dest="repeatmode",
                   help="Repeat mode - can be origin - move the origin, regexp - replace all the X and Y coordinates")
 parser.add_option('-o', '--options', dest='options',
 		  help='options for the code - format var=value;var=value')
+parser.add_option('-R', '--rotate', dest='rotate',
+		  help='Rotate by angle')
+parser.add_option('-M', '--mirror', dest='mirror',
+		  action='store_true', help='Mirror in x')
 (options, args) = parser.parse_args()
 config={}
 
@@ -116,6 +120,11 @@ if options.sep_border:
 	config['sep_border']=True
 else:
 	config['sep_border']=False
+config['transformations']=[{}]
+if options.rotate:
+	config['transformations'][0]['rotate'] = [V(0,0), options.rotate]
+if options.mirror:
+	config['transformations'][0]['mirror'] = [V(0,0),'x']
 # load all the requested files	
 for arg in args:
 	execfile(arg)
