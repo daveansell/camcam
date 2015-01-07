@@ -89,6 +89,8 @@ parser.add_option('-R', '--rotate', dest='rotate',
 		  help='Rotate by angle')
 parser.add_option('-M', '--mirror', dest='mirror',
 		  action='store_true', help='Mirror in x')
+parser.add_option('-Z', '--zbase', dest='zbase',
+		  action='store_true', help='set z=0 to bottom of material')
 (options, args) = parser.parse_args()
 config={}
 
@@ -125,6 +127,9 @@ if options.rotate:
 	config['transformations'][0]['rotate'] = [V(0,0), float(options.rotate)]
 if options.mirror:
 	config['transformations'][0]['mirror'] = [V(0,0),'x']
+
+if options.zbase:
+	config['zbase'] = True
 # load all the requested files	
 for arg in args:
 	execfile(arg)

@@ -1915,6 +1915,7 @@ class Plane(Part):
 
 	def writeGcodeFile(self,partName, key, output, border, config):
 		filename=str(partName)+"_"+str(self.name)+"_"+str(key)
+		output = config['prefix']+output+config['postfix']
 		if len(config['command_args']):
 			for k in config['command_args'].keys():
 				filename=k+"_"+filename+"-"+config['command_args'][k]	
@@ -1935,6 +1936,10 @@ class Plane(Part):
 			output = self.offset_gcode( output, offset)
 		else:
 			offset = V(0,0)
+		if 'zbase' in config and config['zbase']:
+			zoff = config['thickness']
+			print zoff
+			output = self.offset_gcode( output, V(0,0,zoff))
 		if 'repeatx' in config and 'repeaty' in config and 'xspacing' in config and 'yspacing' in config:
 			output2=''
 			if repeatmode=='gcode':
@@ -1978,7 +1983,7 @@ class Plane(Part):
 			toolid=str(milling.tools[config['cutter']]['id'])
 			output = "\n"+config['settool_prefix']+toolid+config['settool_postfix']+"\n"+output
 		f=open(self.sanitise_filename(filename+config['file_suffix']),'w')
-		f.write(config['prefix']+output+config['postfix'])
+		f.write(output)
 		f.close()
 		if 'dosfile' in config and config['dosfile']:
 			os.system("/usr/bin/unix2dos "+self.sanitise_filename(filename+config['file_suffix']))
@@ -1986,6 +1991,7 @@ class Plane(Part):
 	def offset_gcode(self, output, offset):
 		xreg=re.compile('X[\d\.-]+')
 		yreg=re.compile('Y[\d\.-]+')
+		zreg=re.compile('Z[\d\.-]+')
 		tempoutput=output
 		matches = xreg.findall(tempoutput)
 		for match in matches:
@@ -1999,6 +2005,14 @@ class Plane(Part):
                                val=float(match[1::])
                                val+=float(offset[1])
                                tempoutput=tempoutput.replace(match,'Y'+str(val))
+		if(len(offset)>2 and offset[2]!=0):
+			matches=zreg.findall( tempoutput)
+	                for match in matches:
+	                       if len(match):
+	                               val=float(match[1::])
+				       print "zval="+str(val)+" to "+str(val+float(offset[2]))
+	                               val+=float(offset[2])
+	                               tempoutput=tempoutput.replace(match,'Z'+str(val))
 		return tempoutput
 	
 	def sanitise_filename(self,filename):
