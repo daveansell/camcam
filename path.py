@@ -1915,7 +1915,7 @@ class Plane(Part):
 
 	def writeGcodeFile(self,partName, key, output, border, config):
 		filename=str(partName)+"_"+str(self.name)+"_"+str(key)
-		output = config['prefix']+output+config['postfix']
+		output = config['prefix']+"\n"+output+"\n"+config['postfix']
 		if len(config['command_args']):
 			for k in config['command_args'].keys():
 				filename=k+"_"+filename+"-"+config['command_args'][k]	

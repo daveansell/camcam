@@ -18,7 +18,7 @@ class Milling:
 				'hide_cuts':False,
 				'file_suffix':'.ngc',
 				'comments':True,
-				'z_overshoot':0.2,
+				'z_overshoot':0.4,
 				'label':False,
 				'zero':False,
                         },

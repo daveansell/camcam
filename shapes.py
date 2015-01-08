@@ -55,6 +55,26 @@ class RoundedRect(Rect):
 		"""Cut a rectangle with incurve corners
 		"""+self.otherargs
 
+class Lines(Path):
+	def __init__(self, points, **config):
+		assert type(points) is list
+		self.init(config)
+		if 'cornertype' in config:
+			cornertype=config['cornertype']
+		else:
+			cornertype='sharp'
+		if 'closed' in config:
+			self.closed = config['closed']
+		else:
+			self.closed = False
+
+		if 'rad' in config:
+			rad = config['rad']
+		else:
+			rad = 0
+		for p in points:
+			self.add_point(p, cornertype, radius=rad)
+
 class ClearRect(Rect):
 	def __init__(self, bl,  **config):
 		self.init(config)
