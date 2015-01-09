@@ -92,7 +92,7 @@ parser.add_option('-M', '--mirror', dest='mirror',
 parser.add_option('-Z', '--zbase', dest='zbase',
 		  action='store_true', help='set z=0 to bottom of material')
 parser.add_option('-z', '--nozbase', dest='zbase',
-		  action='store_true', help='set z=0 to top of material (default)')
+		  action='store_false', help='set z=0 to top of material (default)')
 (options, args) = parser.parse_args()
 config={}
 
