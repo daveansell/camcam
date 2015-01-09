@@ -1920,7 +1920,6 @@ class Plane(Part):
 
 	def writeGcodeFile(self,partName, key, output, border, config):
 		filename=str(partName)+"_"+str(self.name)+"_"+str(key)
-		output = config['prefix']+"\n"+output+"\n"+config['postfix']
 		if len(config['command_args']):
 			for k in config['command_args'].keys():
 				filename=k+"_"+filename+"-"+config['command_args'][k]	
@@ -1941,10 +1940,6 @@ class Plane(Part):
 			output = self.offset_gcode( output, offset)
 		else:
 			offset = V(0,0)
-		if 'zbase' in config and config['zbase']:
-			zoff = config['thickness']
-			print zoff
-			output = self.offset_gcode( output, V(0,0,zoff))
 		if 'repeatx' in config and 'repeaty' in config and 'xspacing' in config and 'yspacing' in config:
 			output2=''
 			if repeatmode=='gcode':
@@ -1987,6 +1982,11 @@ class Plane(Part):
 		if config['mode']=='gcode':
 			toolid=str(milling.tools[config['cutter']]['id'])
 			output = "\n"+config['settool_prefix']+toolid+config['settool_postfix']+"\n"+output
+		if 'zbase' in config and config['zbase']:
+			zoff = config['thickness']
+			print zoff
+			output = self.offset_gcode( output, V(0,0,zoff))
+		output = config['prefix']+"\n"+output+"\n"+config['postfix']
 		f=open(self.sanitise_filename(filename+config['file_suffix']),'w')
 		f.write(output)
 		f.close()
