@@ -1528,10 +1528,12 @@ class Part(object):
 		else:
 			return True
 
-	def getParts(self):
+	def getParts(self, overview=True):
 		ret=[]
+		if self.isCopy and not overview:
+			return []
 		for part in self.parts:
-			ret.extend(part.getParts())
+			ret.extend(part.getParts(overview))
 		if self.renderable():
 			ret.append(self)
 		return ret
@@ -1623,7 +1625,7 @@ class Part(object):
 
 	def make_copies(self):
 		"""Create multiple versions of any parts that should be copied"""
-		if self.isCopy:
+		if self.isCopy or self.copied:
 			return False
 		
 		for part in self.parts:
@@ -1647,6 +1649,7 @@ class Part(object):
 			part.mode=self.mode
 			part.callmode=self.callmode
 			ls=part.get_layers()
+			p=""
 			if(ls is not False and ls is not None):
 				for l in ls.keys():
 					if not part.isCopy:
@@ -1661,7 +1664,7 @@ class Part(object):
 							layers[l]=[]
 						layers[l].extend(ls[l])
 					else:
-						print part.name	
+						pass
 #						print "CPIES"+str(part.name)
 #						for copytrans in part.copies:
 #							for p in ls[l]:
@@ -1785,7 +1788,9 @@ class Plane(Part):
 	def render_all(self,mode,config):
 		"""Render all parts in the Plane"""
 		self.make_copies()
-		for part in self.getParts():
+
+		for part in self.getParts(milling.mode_config[mode]['overview']):
+
 			self.render_part(part, mode,config)
 	def list_all(self):
 		"""List all tha parts in this Plane"""
@@ -1974,7 +1979,7 @@ class Plane(Part):
 #                                                                val+=y*float(config['yspacing'])
 #                                                                tempoutput=tempoutput.replace(match,'Y'+str(val))
 #						output2+=tempoutput
-						output2+= self.offset_gcode(output, V(x*float(config['xspacing']), y*float(config['yspacing'])))
+						output2+= "(copy x="+str(x*float(config['xspacing']))+" y="+str(y*float(config['yspacing']))+")\n"+self.offset_gcode(output, V(x*float(config['xspacing']), y*float(config['yspacing'])))
 		#	output2+='\nG10 L2 P1 X0 Y0\n'
 			filename+='_'+str(config['repeatx'])+'x_'+str(config['repeaty'])+'y'
 			output=output2
