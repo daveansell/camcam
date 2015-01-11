@@ -120,30 +120,16 @@ class Point(object):
 	def next(self):
 		if self.reverse:
 			self.lastpoint.reverse=1
-#			if hasattr(self, 'forcelastpoint') and self.forcelastpoint is not False:
-#
-#				return self.forcelastpoint
 			return self.lastpoint
 		else:
-#			if hasattr(self, 'forcenextpoint') and self.forcenextpoint is not False:
-#				print "forcelastpoint-l "+str(self.forcelastpoint.pos)+str(self.lastpoint.pos)
-#				print "forcenextpoint-l "+str(self.forcenextpoint.pos)+str(self.nextpoint.pos)
-#				return self.forcenextpoint
 			self.nextpoint.reverse=0
 			return self.nextpoint
 
 	def last(self):
 		if self.reverse:
-#			if hasattr(self, 'forcenextpoint') and self.forcenextpoint is not False:
-#				return self.forcenextpoint
 			self.nextpoint.reverse=1
 			return self.nextpoint
 		else:
-#			if hasattr(self, 'forcelastpoint') and self.forcelastpoint is not False:
-#				print "forcenextpoint-l "+str(self.forcenextpoint.pos)+str(self.nextpoint.pos)
-#				print "forcelastpoint-l "+str(self.forcelastpoint.pos)+str(self.lastpoint.pos)
-
-#				return self.forcelastpoint
 			self.lastpoint.reverse=0
 			return self.lastpoint
 
@@ -172,7 +158,7 @@ class Point(object):
 		cross=(self.pos-self.last().pos).cross(self.next().pos-self.pos)[2]
 		if cross==0:
 			return 'external'
-		if cross<=0 and side=='left' or cross>=0 and side=='right':
+		if cross<=0.0000001 and side=='left' or cross>=-0.00000001 and side=='right':
 			corner='external'
 		else:
 			corner='internal'
@@ -185,11 +171,13 @@ class Point(object):
                         a=-90
                 else:
                         a=90
-		#print "offset_move_point"+str(frompos)+" "+str(self.pos)+" "+str(topos)
                 vecin=(self.pos-frompos).normalize()
                 vecout=(topos-self.pos).normalize()
                 # Find average direction of two vectors
-                avvec=(vecin-vecout)
+		if (vecin-vecout).length()<0.00001:
+			avvec=rotate(vecin,a).normalize()
+		else:
+                	avvec=(vecin-vecout)
                 # then rotate it 90 degrees towards the requested side
                 if avvec.length()<0.001:
                         return rotate(vecin,a).normalize()*distance+self.pos
@@ -207,10 +195,6 @@ class Point(object):
 			return last.origin(False)
 
 	def nextorigin(self):
-#		if hasattr(self, 'forcenextpoint'):
-#			print "forcenextpoint-n"+str(self.reverse) + " "+ str(self.pos) + " " +str(self.forcenextpoint.pos)
-#			next=self.forcenextpoint
-#		else:
 		next=self.next()
 		if hasattr(next, 'control') and next.control or next.pos==self.pos:
 			return next.nextorigin()
@@ -274,16 +258,20 @@ class PSharp(Point):
 
 	def offsetSharp(self, side, distance, direction, sharp=True):
 		self.setangle()
+
 		if self.corner_side(side)=='external':# and side=='out' or corner=='internal' and side=='in':
 			t = copy.copy(self)
 	#		t=POutcurve(self.pos, radius=distance, transform=self.transform)
            		if self.angle==0 and self.dot<0:
       				pass
-			elif self.angle==0:
-				print "No angle so we can skip this one"
-				return []
+			elif self.angle==0 and self.point_type in ['sharp', 'clear', 'doubleclear'] and self.next().point_type in ['sharp', 'clear', 'doubleclear']:
+					print "No angle so we can skip this one"
+					return []
+				
                    	else:
-                          	if self.dot<=0:
+				if self.dot-1<=0.00000001:
+					t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, -distance)
+                          	elif self.dot<=0:
                                     	if self.angle>math.pi/2:
                                           	a=(math.pi-self.angle)/2
                                      	else:
@@ -293,7 +281,6 @@ class PSharp(Point):
                              	else:
 					a=(math.pi-self.angle)/2
                                         t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, -distance/abs(math.sin(a)))
-                                    	#t.pos = self.offset_move_point( self.lastorigin(), self.nextorigin(), side, -distance/abs(math.cos((math.pi/4-self.angle0)/2)))
 
           	else:
 #			t = copy.copy(self)
@@ -347,7 +334,8 @@ class PAroundcurve(PSharp):
 
 	def offset(self, side, distance, direction):
 		self.setDirection()
-		ret=self.offsetSharp( side, distance, direction)
+#		ret=self.offsetSharp( side, distance, direction)
+		ret = [self.copy()]
 		if (self.direction=='cw' and side=='left' or self.direction=='ccw' and side=='right') ==self.reverse:
 			ret[0].radius+=distance
 		else:

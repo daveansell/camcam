@@ -758,6 +758,47 @@ class Path(object):
 			out += offpath.render_path(offpath,c)
 		return [config['cutter'],out]
 
+
+	def fill_path(self, path,  direction='in', distance=0, inner_paths=False, **config):
+		done = False
+		tpath=[path]
+		i=0
+		paths = [[path]]
+		paths.extend(copy.copy(inner_paths))
+		startdir=path.find_direction()
+		segments=[]
+		# we start with a list of paths and then offset them and check wiheter they intersect with themselves or any of the newly made paths
+
+		# if they do intersect then we slice them up into smaller sections and check they still have the same sense as before and drop the onces which didn't
+		
+		while done==False:
+			# iterate t
+			for j in range(len(paths)-1,-1):
+				paths[j].append(tpath.offset_path(ns, step, c))
+				n = len(paths[j])-1
+				paths[j][n].output_path(config)
+				intersections = paths[j][n].self_intersects()
+				if len(intersections)>0:
+				
+					pass
+				else:
+					if self.find_direction()!=startdir:
+						done=True
+
+	def self_intersects(self):
+		return False
+
+	def other_intersects(self, paths, j, n):
+		pass
+# need some way of going back from segments to points for the offsetting
+	def split_path(self, path, intersections):
+		for seg1 in range(0,len(path.Fsegments)):
+			for seg2 in range(seg1+1, len(path.Fsegments)):
+				intersects=seg1.intesects(seg)
+				if intersects != False:
+					for intersect in intersects:
+						pass
+
 	def get_frompos(self, points, segments, p, config, closed=None):
 		if closed is None:
 			closed=self.closed
@@ -1361,7 +1402,7 @@ class BOM_flat(BOM):
 	def __str__(self):
 		return str(self.number)+'x '+str(self.name)+' in '+str(self.thickness)+"mm "+str(self.material)+" "+str(self.width)+"x"+str(self.height)
 class BOM_rod(BOM):
-	def __init__(self, name, material, xsection,  diameter, length, number=1):
+	def __init__(self, name, material, xsection,  diameter, length, number=1, description=False):
 		self.name=name
 		self.material=material
 		self.diameter=diameter
@@ -1371,7 +1412,7 @@ class BOM_rod(BOM):
 		self.xsection=xsection
 		self.init()
 	def __str__(self):
-		return str(self.number)+'x '+str(self.name)+' in '+str(self.diameter)+"mm diameter "+str(material)+" "+str(xsection)+str(self.material)+" "+str(self.description)
+		return str(self.number)+'x '+str(self.name)+' in '+str(self.diameter)+"mm diameter "+str(self.material)+" "+str(self.xsection)+str(self.material)+" "+str(self.description)
 
 class BOM_software(BOM):
 	def __init__(self, name, number, folder, language, target, description):
