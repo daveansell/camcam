@@ -281,6 +281,7 @@ class PSharp(Point):
                              	else:
 					a=(math.pi-self.angle)/2
                                         t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, -distance/abs(math.sin(a)))
+                                    	#t.pos = self.offset_move_point( self.lastorigin(), self.nextorigin(), side, -distance/abs(math.cos((math.pi/4-self.angle0)/2)))
 
           	else:
 #			t = copy.copy(self)
