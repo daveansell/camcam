@@ -55,6 +55,49 @@ class RoundedRect(Rect):
 		"""Cut a rectangle with incurve corners
 		"""+self.otherargs
 
+class Drill(Path):
+	def __init__(self, pos, **config):
+		self.init(config)
+		self.pos=pos
+		if 'peck' in config and config['peck']:
+			self.peck = config['peck']
+		else:
+			self.peck = False
+		if 'rad' in config and config['rad']:
+			if self.cutter is False or self.cutter is None:
+				self.drillrad=config['rad']
+				for m in milling.tools:
+					if milling.tools[m]['diameter']/2==self.drillrad:
+						self.cutter=m
+			else:
+				self.drillrad=milling.tools[m]['diameter']/2
+
+			if self.cutter is False or self.cutter is None:
+				print "drill of "+str(self.drillrad)+"mm not found in tools"
+	def render(self, pconfig):
+		config=self.generate_config(pconfig)
+		if config['mode']=='svg':
+			return ['<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>'%[self.pos[0], self.pos[1], self.drillrad]]
+		elif config['mode']=='gcode':
+			if self.peck:
+				return [config['cutter'], 'G83X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2f\n'%[self.pos[0], self.pos[1], self.z1, self.z0+0.5, self.peck]
+			else:
+				return [config['cutter'], '81X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2f\n'%[self.pos[0], self.pos[1], self.z1, self.z0+0.5]]
+		elif config['mode'=='simplegcode':
+			dist= self.z1-self.z0
+			if self.peck:
+				steps = math.floor(dist/self.peck)
+			else:
+				steps = 1
+			step = dist / steps
+			ret = 'G0X%0.2fY%0.2f\n'%[self.pos[0], self.pos[1]]
+			for i in range(1,steps+1):
+				ret+='G0Z%0.2f\n'% i-1*step+0.5
+				ret+='G1Z%0.2f\n'% i*step
+				ret+='G0Z%0.2f\n'% self.z0+0.5
+			ret += 'G0Z%0.2f\n'%config['precut_z']
+			return [config['cutter'], ret]
+			
 class Lines(Path):
 	def __init__(self, points, **config):
 		assert type(points) is list
