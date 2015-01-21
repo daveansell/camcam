@@ -155,8 +155,8 @@ class Point(object):
 #		self.angle2=(b1.angle(-b2)-90)*math.pi/180
 
 	def corner_side(self, side):
-		cross=(self.pos-self.last().pos).cross(self.next().pos-self.pos)[2]
-		if cross==0:
+		cross=(self.pos-self.lastorigin()).cross(self.nextorigin()-self.pos)[2]
+		if abs(cross)<0.0000001:
 			return 'external'
 		if cross<=0.0000001 and side=='left' or cross>=-0.00000001 and side=='right':
 			corner='external'
@@ -369,10 +369,12 @@ class PAroundcurve(PSharp):
 				astart = self.pos + (lastpoint-self.pos).normalize()*self.radius
 				aend   = self.pos + (nextpoint-self.pos).normalize()*self.radius
 
-			if self.reverse:
+			if  self.reverse:
 				d=self.otherDir(self.direction)
+				print "OTHERDIR"+d
 			else:
 				d=self.direction
+				print "DODIER"+d
 			return [Line(self.last().end(), astart),
 				Arc(astart, aend, self.cp1, d)]
 

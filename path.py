@@ -229,7 +229,6 @@ class Path(object):
 		elif point_type=='chamfer':
 			return PChamfer( pos, chamfer=cp1, radius=radius,  transform=transform)
 		elif point_type=='outcurve':
-			print "WW"+str(radius)
 			return POutcurve( pos, radius, direction, transform=transform)
 		elif point_type=='clear':
 			return PClear( pos, transform)
@@ -393,6 +392,9 @@ class Path(object):
 			total+=(self.points[p].pos-self.points[(p-1)%len(self.points)].pos).normalize().cross((self.points[(p+1)%len(self.points)].pos-self.points[p].pos).normalize())
 		# if it is a circle
 		if total[2]==0:
+			for p in self.points:
+				if hasattr(p,'direction') and p.direction in ['cw','ccw']:
+					return p.direction
 			return 'cw'
 		elif(total[2]*reverse>0):
 			return 'ccw'
@@ -454,6 +456,11 @@ class Path(object):
 			else:
 				otherpolygon = other.polygonise()
 			thispolygon = self.polygonise()
+			if len(otherpolygon)==1:
+				if self.contains_point(otherpolygon[0], thispolygon):
+					return 1
+				else:
+					return 0
 			if not self.intersect_bounding_box(other.boundingBox):
 				return -1
 			for tp,a in enumerate(thispolygon):
@@ -2025,7 +2032,6 @@ class Plane(Part):
 			output = "\n"+config['settool_prefix']+toolid+config['settool_postfix']+"\n"+output
 		if 'zbase' in config and config['zbase']:
 			zoff = config['thickness']
-			print zoff
 			output = self.offset_gcode( output, V(0,0,zoff))
 		output = config['prefix']+"\n"+output+"\n"+config['postfix']
 		f=open(self.sanitise_filename(filename+config['file_suffix']),'w')
@@ -2056,7 +2062,6 @@ class Plane(Part):
 	                for match in matches:
 	                       if len(match):
 	                               val=float(match[1::])
-				       print "zval="+str(val)+" to "+str(val+float(offset[2]))
 	                               val+=float(offset[2])
 	                               tempoutput=tempoutput.replace(match,'Z'+str(val))
 		return tempoutput

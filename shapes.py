@@ -57,6 +57,7 @@ class RoundedRect(Rect):
 
 class Drill(Path):
 	def __init__(self, pos, **config):
+		print "new drill="+str(pos)
 		self.init(config)
 		self.pos=pos
 		if 'peck' in config and config['peck']:
@@ -74,30 +75,43 @@ class Drill(Path):
 
 			if self.cutter is False or self.cutter is None:
 				print "drill of "+str(self.drillrad)+"mm not found in tools"
+		self.closed=True
+		self.add_point(PSharp(self.pos))
 	def render(self, pconfig):
 		config=self.generate_config(pconfig)
+		p=PSharp(self.pos).point_transform(config['transformations'])
+		
+		print "Drill render"+str(config['mode'])
 		if config['mode']=='svg':
-			return ['<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>'%[self.pos[0], self.pos[1], self.drillrad]]
+			print '<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>\n'%(p.pos[0], p.pos[1], self.drillrad)
+			return [config['cutter'], '<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>\n'%(p.pos[0], p.pos[1], self.drillrad)]
 		elif config['mode']=='gcode':
 			if self.peck:
-				return [config['cutter'], 'G83X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2f\n'%[self.pos[0], self.pos[1], self.z1, self.z0+0.5, self.peck]
+				return [config['cutter'], 'G83X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+0.5, self.peck)]
 			else:
-				return [config['cutter'], '81X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2f\n'%[self.pos[0], self.pos[1], self.z1, self.z0+0.5]]
-		elif config['mode'=='simplegcode':
-			dist= self.z1-self.z0
+				return [config['cutter'], '81X%0.2fY%0.2fZ%0.2fR%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+0.5)]
+		elif config['mode']=='simplegcode':
+			dist= config['z1']-config['z0']
 			if self.peck:
 				steps = math.floor(dist/self.peck)
 			else:
 				steps = 1
 			step = dist / steps
-			ret = 'G0X%0.2fY%0.2f\n'%[self.pos[0], self.pos[1]]
+			ret = 'G0X%0.2fY%0.2f\n'%[p.pos[0], p.pos[1]]
 			for i in range(1,steps+1):
 				ret+='G0Z%0.2f\n'% i-1*step+0.5
 				ret+='G1Z%0.2f\n'% i*step
-				ret+='G0Z%0.2f\n'% self.z0+0.5
+				ret+='G0Z%0.2f\n'% config['z0']+0.5
 			ret += 'G0Z%0.2f\n'%config['precut_z']
 			return [config['cutter'], ret]
-			
+		print "NO MODE="+str(config['mode'])
+	def polygonise(self, resolution=0):
+		config=self.generate_config({'cutterrad':0})
+		p=PSharp(self.pos).point_transform(config['transformations'])
+		print p.pos
+		self.boundingBox={'bl':p.pos, 'tr':p.pos}
+		self.centre=p.pos
+		return [self.pos]	
 class Lines(Path):
 	def __init__(self, points, **config):
 		assert type(points) is list
@@ -561,7 +575,7 @@ class Bolt(Part):
 		if 'clearance_layers' in config:
 			clearance_layers = config['clearance_layers']
 		else:
-			clearance_layers = 'perspex'
+			clearance_layers = ['perspex', 'paper']
 		if 'head_layer' in config:
 			head_layer = config['head_layer']
 		else:
@@ -957,7 +971,7 @@ class Module(Plane):
 		self.perspex_layer=self.add_layer('perspex',material='perspex',thickness=perspex_thickness,z0=0,zoffset=3)
 		self.base_layer=self.add_layer('base',material='plywood', thickness=base_thickness, z0=0,zoffset=0, add_back=True)
 		self.pibarn_layer=self.add_layer('pibarn',material='perspex', thickness=6, z0=0,zoffset=30, add_back=False)
-#		self.add_layer('paper',material='paper',thickness=0.05,z0=0,zoffset=0.05)
+		self.add_layer('paper',material='paper',thickness=0.05,z0=0,zoffset=0.05)
 		radius=30
 		if 'orientation' in config and config['orientation'] in ['landscape', 'portrait']:
 			orientation=config['orientation']
@@ -992,7 +1006,7 @@ class Module(Plane):
 		if not ('no_perspex' in config and not config['no_perspex']):
 			self.perspex = self.add(Part(name='perspex', border=edge, layer='perspex',colour="red"))
 		self.base = self.add(Part(name='base', border=edge, layer='base'))
-#		self.paper = self.add(Part(name='paper', border=edge, layer='paper'))
+		self.paper = self.add(Part(name='paper', border=edge, layer='paper'))
 
 		
 		self.add(Hole(V(radius,radius),rad=13/2,side='in'),['base','perspex','paper'])
