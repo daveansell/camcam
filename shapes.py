@@ -87,9 +87,9 @@ class Drill(Path):
 			return [config['cutter'], '<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>\n'%(p.pos[0], p.pos[1], self.drillrad)]
 		elif config['mode']=='gcode':
 			if self.peck:
-				return [config['cutter'], 'G83X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+0.5, self.peck)]
+				return [config['cutter'], 'G83X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.peck, config['vertfeed'])]
 			else:
-				return [config['cutter'], '81X%0.2fY%0.2fZ%0.2fR%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+0.5)]
+				return [config['cutter'], 'G81X%0.2fY%0.2fZ%0.2fR%0.2fF%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3,config['vertfeed'])]
 		elif config['mode']=='simplegcode':
 			dist= config['z1']-config['z0']
 			if self.peck:
@@ -102,7 +102,7 @@ class Drill(Path):
 				ret+='G0Z%0.2f\n'% i-1*step+0.5
 				ret+='G1Z%0.2f\n'% i*step
 				ret+='G0Z%0.2f\n'% config['z0']+0.5
-			ret += 'G0Z%0.2f\n'%config['precut_z']
+			ret += 'G0Z%0.2f\n'%config['clear_height']
 			return [config['cutter'], ret]
 		print "NO MODE="+str(config['mode'])
 	def polygonise(self, resolution=0):
