@@ -310,11 +310,11 @@ class Fan(Pathgroup):
                 self.init(config)
 		self.translate(pos)
 		data={
-			'60mm':{'centrerad':58/2,  'hole_off':50/2, 'holerad':4.5/2},
-			'80mm':{'centrerad':92/2, 'centre_limit':78/2, 'hole_off':71.5/2, 'holerad':4.5/2 },
-			'92mm':{'centrerad':104/2, 'centre_limit':90/2, 'hole_off':82.5/2, 'holerad':4.5/2 },
-			'120mm':{'centrerad':132/2, 'centre_limit':118/2, 'hole_off':105/2, 'holerad':4.5/2 },
-			'140mm':{'centrerad':150/2, 'centre_limit':138/2, 'hole_off':124.5/2, 'holerad':4.5/2 },
+			'60mm':{'centrerad':58/2,  'hole_off':50/2, 'holeRad':4.5/2},
+			'80mm':{'centrerad':92/2, 'centre_limit':78/2, 'hole_off':71.5/2, 'holeRad':4.5/2 },
+			'92mm':{'centrerad':104/2, 'centre_limit':90/2, 'hole_off':82.5/2, 'holeRad':4.5/2 },
+			'120mm':{'centrerad':132/2, 'centre_limit':118/2, 'hole_off':105/2, 'holeRad':4.5/2 },
+			'140mm':{'centrerad':150/2, 'centre_limit':138/2, 'hole_off':124.5/2, 'holeRad':4.5/2 },
 			}
 		if 'fan_type' in config:
 			d=data[config['fan_type']]
@@ -341,10 +341,10 @@ class Fan(Pathgroup):
 		else:
 			self.add(Hole(V(0,0), rad=d['centrerad']))
 
-		self.add(Hole(V(d['hole_off'],d['hole_off']), d['holerad']))
-		self.add(Hole(-V(d['hole_off'],d['hole_off']), d['holerad']))
-		self.add(Hole(-V(d['hole_off'],-d['hole_off']), d['holerad']))
-		self.add(Hole(V(d['hole_off'],-d['hole_off']), d['holerad']))
+		self.add(Hole(V(d['hole_off'],d['hole_off']), d['holeRad']))
+		self.add(Hole(-V(d['hole_off'],d['hole_off']), d['holeRad']))
+		self.add(Hole(-V(d['hole_off'],-d['hole_off']), d['holeRad']))
+		self.add(Hole(V(d['hole_off'],-d['hole_off']), d['holeRad']))
 
 class StepperDriver(Pathgroup):
 	def __init__(self, pos, **config):
@@ -368,11 +368,11 @@ class StepperDriver(Pathgroup):
 
 
 class Plate(Part):
-	def __init__(self, pos, name, rad, centreRad, holes, holerad, holeSize, **config):
+	def __init__(self, pos, name, rad, centreRad, holes, holeRad, holeSize, **config):
 		self.init(config)
-		self.initPlate(pos, name, rad, centreRad, holes, holerad, holeSize, config)
+		self.initPlate(pos, name, rad, centreRad, holes, holeRad, holeSize, config)
 
-	def initPlate(self, pos, name, rad, centreRad, holes, holerad, holeSize, config):
+	def initPlate(self, pos, name, rad, centreRad, holes, holeRad, holeSize, config):
 		self.name=name
 		self.transform={'translate':pos}
 		if 'layer_config' not in config:
@@ -384,8 +384,8 @@ class Plate(Part):
 		screwConf={layer_config['part']:{'rad':milling.bolts[holeSize]['clearance']/2+0.5}, layer_config['base']:{'rad':milling.bolts[holeSize]['clearance']/2}}
 		if holes >0:
 			for i in range(0, holes):
-				self.add(Bolt(V(holerad,0), 'M4', 'button', 16, clearance_layers=layer_config['part'], insert_layer=layer_config['base'], transform={'rotate':[V(0,0), i*360/holes]}))
-#				self.add(Screw(V(d['holerad'],0), layer_config=screwConf, transform={'rotate':[V(0,0), i*360/d['holes']]}))
+				self.add(Bolt(V(holeRad,0), 'M4', 'button', 16, clearance_layers=layer_config['part'], insert_layer=layer_config['base'], transform={'rotate':[V(0,0), i*360/holes]}))
+#				self.add(Screw(V(d['holeRad'],0), layer_config=screwConf, transform={'rotate':[V(0,0), i*360/d['holes']]}))
 		if centreRad >0:
 			self.add(Hole(V(0,0), rad=centreRad))
 			self.add(Hole(V(0,0), rad=centreRad+2), [layer_config['base']])
@@ -394,9 +394,9 @@ class RoundPlate(Plate):
 	def __init__(self, pos, plateType, **config):
 		self.init(config)
 		data={
-			'stringplate6':{'rad':28, 'centreRad':4/2, 'holes':6, 'holerad':19, 'holeSize':'M4'},
-			'stringplate3':{'rad':28, 'centreRad':4/2, 'holes':3, 'holerad':19, 'holeSize':'M4'},
+			'stringplate6':{'rad':28, 'centreRad':4/2, 'holes':6, 'holeRad':19, 'holeSize':'M4'},
+			'stringplate3':{'rad':28, 'centreRad':4/2, 'holes':3, 'holeRad':19, 'holeSize':'M4'},
 		}
 		d=data[plateType]
-		self.initPlate(pos, plateType, d['rad'], d['centreRad'], d['holes'], d['holerad'], d['holeSize'], config)
+		self.initPlate(pos, plateType, d['rad'], d['centreRad'], d['holes'], d['holeRad'], d['holeSize'], config)
 
