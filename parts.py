@@ -370,13 +370,15 @@ class StepperDriver(Pathgroup):
 class Plate(Part):
 	def __init__(self, pos, name, rad, centreRad, holes, holerad, holeSize, **config):
 		self.init(config)
-		self.initPlate(name, rad, centreRad, holes, holerad, holeSize, config)
+		self.initPlate(pos, name, rad, centreRad, holes, holerad, holeSize, config)
 
 	def initPlate(self, pos, name, rad, centreRad, holes, holerad, holeSize, config):
 		self.name=name
 		self.transform={'translate':pos}
-		if 'layers_config' not in config:
+		if 'layer_config' not in config:
 			layer_config={'base':'base', 'part':'stringplate'}
+		else:
+			layer_config=config['layer_config']
 		self.add_border(Circle(V(0,0), rad=rad, side='out'))
 		self.layer=layer_config['part']
 		screwConf={layer_config['part']:{'rad':milling.bolts[holeSize]['clearance']/2+0.5}, layer_config['base']:{'rad':milling.bolts[holeSize]['clearance']/2}}
