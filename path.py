@@ -1165,6 +1165,7 @@ class Pathgroup(object):
 		self.output=[]
 		self.parent=False
 		self.comments=[]
+		self.transform={}
 
 	def __deepcopy__(self,memo):
 		conf={}
