@@ -368,7 +368,7 @@ class StepperDriver(Pathgroup):
 
 
 class Plate(Part):
-	def __init(self, pos, name, rad, centreRad, holes, holerad, holeSize, **config):
+	def __init__(self, pos, name, rad, centreRad, holes, holerad, holeSize, **config):
 		self.init(config)
 		self.initPlate(name, rad, centreRad, holes, holerad, holeSize, config)
 
