@@ -580,6 +580,10 @@ class Bolt(Part):
 			head_layer = config['head_layer']
 		else:
 			head_layer = 'top'
+		if 'thread_layer' in config:
+			thread_layer = config['thread_layer']
+		else:
+			thread_layer = ['back']
 		if thread in milling.bolts:
 			if 'insert_type' in config and config['insert_type'] in milling.inserts[thread]:
 				insert=milling.inserts[thread][config['insert_type']]
@@ -594,7 +598,8 @@ class Bolt(Part):
 				self.add(Countersink(pos, milling.bolts[thread]['clearance'], milling.bolts[thread]['countersunk']['diam']/2, config),head_layer)
 			else:
 				self.add(Hole(pos, milling.bolts[thread]['clearance']/2, side='in'),head_layer)
-			self.add(Hole(pos, milling.bolts[thread]['tap'], side='in'),'back')
+			if thread_layer:
+				self.add(Hole(pos, milling.bolts[thread]['tap'], side='in'),thread_layer)
 
 
 class FingerJointMid(Pathgroup):
