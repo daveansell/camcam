@@ -376,19 +376,29 @@ class Plate(Part):
 		self.name=name
 		self.transform={'translate':pos}
 		if 'layer_config' not in config:
-			layer_config={'base':'base', 'part':'stringplate', 'thread':[]}
+			layer_config={'base':'base', 'part':'stringplate', 'thread':[], 'clearance':['paper','perspex']}
 		else:
 			layer_config=config['layer_config']
 		self.add_border(Circle(V(0,0), rad=rad, side='out'))
 		self.layer=layer_config['part']
-		screwConf={layer_config['part']:{'rad':milling.bolts[holeSize]['clearance']/2+0.5}, layer_config['base']:{'rad':milling.bolts[holeSize]['clearance']/2}}
+		if type(layer_config['clearance']) is list and type(layer_config['part']) is list:
+			clearance=layer_config['part']+layer_config['clearance']
+		elif type(layer_config['clearance']) is list:
+			clearance=copy.copy(layer_config['clearance'])
+			clearance.append(layer_config['part'])
+		else:
+			clearance=[layer_config['clearance'], layer_config['part']]
+		if 'thread' not in layer_config:
+			layer_config['thread']=[]
+#		screwConf={layer_config['part']:{'rad':milling.bolts[holeSize]['clearance']/2+0.5}, layer_config['base']:{'rad':milling.bolts[holeSize]['clearance']/2}}
 		if holes >0:
 			for i in range(0, holes):
-				self.add(Bolt(V(holeRad,0), 'M4', 'button', 16, clearance_layers=layer_config['part'], insert_layer=layer_config['base'], thread_layer=layer_config['thread'], transform={'rotate':[V(0,0), i*360/holes]}))
+				self.add(Bolt(V(holeRad,0), 'M4', 'button', 16, clearance_layers=clearance, insert_layer=layer_config['base'], thread_layer=layer_config['thread'], transform={'rotate':[V(0,0), i*360/holes]}))
 #				self.add(Screw(V(d['holeRad'],0), layer_config=screwConf, transform={'rotate':[V(0,0), i*360/d['holes']]}))
 		if centreRad >0:
 			self.add(Hole(V(0,0), rad=centreRad))
 			self.add(Hole(V(0,0), rad=centreRad+2), [layer_config['base']])
+			self.add(Hole(V(0,0), rad=centreRad+2), clearance)
 
 class RoundPlate(Plate):
 	def __init__(self, pos, plateType, **config):

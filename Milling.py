@@ -179,45 +179,45 @@ class Milling:
                 },
                 "16mm_endmill":{
                         "id":5,
-                        "diameter":16,
+                        "diameter":16.0,
                         "endcut":1,
 
                         "sidecut":1,
                 },
                 "6mm_endmill":{
                         "id":2,
-                        "diameter":6,
+                        "diameter":6.0,
                         "endcut":1,
 
                         "sidecut":1,
                 },
                 "2mm_endmill":{
                         "id":8,
-                        "diameter":2,
+                        "diameter":2.0,
                         "endcut":1,
                         "sidecut":1,
                 },
                 "3mm_endmill":{
                         "id":2,
-                        "diameter":3,
+                        "diameter":3.0,
                         "endcut":1,
                         "sidecut":1,
                 },
                 "4mm_endmill":{
                         "id":9,
-                        "diameter":4,
+                        "diameter":4.0,
                         "endcut":1,
                         "sidecut":1,
                 },
                 "8mm_endmill":{
                         "id":7,
-                        "diameter":8,
+                        "diameter":8.0,
                         "endcut":1,
                         "sidecut":1,
                 },
                 "1mm_endmill":{
                         "id":4,
-                        "diameter":1,
+                        "diameter":1.0,
                         "endcut":1,
                         "sidecut":1,
                         },
@@ -230,15 +230,15 @@ class Milling:
                 },
                 "countersink":{
                         "id":6,
-                        "diameter":13,
+                        "diameter":13.0,
                         "endcut":1,
                         "sidecut":1,
-			"min_diameter":2,
+			"min_diameter":2.0,
 			"angle":45,
                 },
                 "1mm_drill":{
                         "id":12,
-                        "diameter":1,
+                        "diameter":1.0,
                         "endcut":1,
                         "sidecut":0,
                 },
@@ -262,7 +262,7 @@ class Milling:
                 },
                 "ovolo":{
                         "id":16,
-                        "diameter":10,
+                        "diameter":10.0,
                         "endcut":1,
                         "sidecut":1,
                 },
@@ -271,7 +271,7 @@ class Milling:
 			"diameter":6.35,
 			"endcut":0,
 			"sidecut":1,
-			"angle":17/2,
+			"angle":17.0/2,
 			"sidestep":0.5,
 		},
                 "laser":{
@@ -285,8 +285,8 @@ class Milling:
                 "plywood":{
                         "vertfeed":200,
                         "sidefeed":800,
-                        "stepdown":5,
-                        "kress_setting":4,
+                        "stepdown":5.0,
+                        "kress_setting":4.0,
                         "spring":0.3,
 
                 },
@@ -294,7 +294,7 @@ class Milling:
                         "vertfeed":200,
                         "sidefeed":800,
                         "stepdown":3.5,
-                        "kress_setting":4,
+                        "kress_setting":4.0,
                         "spring":0.3,
 
                 },
@@ -303,33 +303,33 @@ class Milling:
                         "vertfeed":120,
                         "sidefeed":600,
                         "stepdown":1.5,
-                        "kress_setting":2,
+                        "kress_setting":2.0,
 
                 },
                 "polycarbonate":{
                         "vertfeed":120,
                         "sidefeed":400,
-                        "stepdown":2,
-                        "kress_setting":2,
+                        "stepdown":2.0,
+                        "kress_setting":2.0,
 
                 },
                 "delrin":{
                         "vertfeed":120,
                         "sidefeed":700,
                         "stepdown":1.5,
-                        "kress_setting":2,
+                        "kress_setting":2.0,
 
                 },
                 "tufnol":{
                         "vertfeed":100,
                         "sidefeed":400,
                         "stepdown":1.5,
-                        "kress_setting":2,
+                        "kress_setting":2.0,
                },
                 "HIPS":{
                         "vertfeed":100,
                         "sidefeed":500,
-                        "stepdown":3,
+                        "stepdown":3.0,
                         "kress_setting":1.5,
                },
                 "aluminium":{
@@ -341,30 +341,30 @@ class Milling:
                 "pvc":{
                         "vertfeed":100,
                         "sidefeed":700,
-                        "stepdown":2,
+                        "stepdown":2.0,
                         "kress_setting":1.5,
                },
                "pcb":{
                         "vertfeed":100,
                         "sidefeed":300,
-                        "stepdown":2,
-                        "kress_setting":3,
+                        "stepdown":2.0,
+                        "kress_setting":3.0,
                },
 	       "paper":{
                         "vertfeed":100,
                         "sidefeed":300,
-                        "stepdown":2,
-                        "kress_setting":3,
+                        "stepdown":2.0,
+                        "kress_setting":3.0,
                },
 	}
 		self.bolts={
 	                'M3':{
-                        'diam':3,
+                        'diam':3.0,
                         'tap':2.5,
-			'clearance':4,
+			'clearance':4.0,
                         'allen':{
                                 'head_d':5.5,
-                                'head_l':3,
+                                'head_l':3.0,
                         },
                         'button':{
                                 'head_d':5.7,
@@ -372,12 +372,12 @@ class Milling:
                         },
                 },
                 'M4':{
-                        'diam':4,
+                        'diam':4.0,
                         'tap':3.3,
-			'clearance':5,
+			'clearance':5.0,
                         'allen':{
-                                'head_d':7,
-                                'head_l':4,
+                                'head_d':7.0,
+                                'head_l':4.0,
                         },
                         'button':{
                                 'head_d':7.6,
@@ -385,12 +385,12 @@ class Milling:
                         },
                 },
                 'M5':{
-                        'diam':5,
+                        'diam':5.0,
                         'tap':4.2,
-			'clearance':6,
+			'clearance':6.0,
                         'allen':{
                                 'head_d':8.5,
-                                'head_l':5,
+                                'head_l':5.0,
                         },
                         'button':{
                                 'head_d':9.5,
@@ -398,12 +398,12 @@ class Milling:
                         },
                 },
                 'M6':{
-                        'diam':6,
-                        'tap':5,
-			'clearance':7,
+                        'diam':6.0,
+                        'tap':5.0,
+			'clearance':7.0,
                         'allen':{
                                 'head_d':10,
-                                'head_l':6,
+                                'head_l':6.0
                         },
                         'button':{
                                 'head_d':10.5,
@@ -411,12 +411,12 @@ class Milling:
                         },
                 },
                 'M8':{
-                        'diam':8,
+                        'diam':8.0,
                         'tap':6.5,
-			'clearance':9,
+			'clearance':9.0,
                         'allen':{
                                 'head_d':13,
-                                'head_l':8,
+                                'head_l':8.0
                         },
                         'button':{
                                 'head_d':14,
@@ -424,12 +424,12 @@ class Milling:
                         },
                 },
                 'M10':{
-                        'diam':10,
+                        'diam':10.0,
                         'tap':8.4,
-			'clearance':11,
+			'clearance':11.0,
                         'hex':{
-                                'head_d':16,
-                                'head_l':10,
+                                'head_d':16.0,
+                                'head_l':10.0,
                         },
                         'button':{
                                 'head_d':17.5,
@@ -437,55 +437,55 @@ class Milling:
                         },
                 },
                 'M12':{
-                        'diam':12,
-                        'tap':10,
-			'clearance':13,
+                        'diam':12.0,
+                        'tap':10.0,
+			'clearance':13.0,
                         'hex':{
-                                'head_d':18,
-                                'head_l':12,
+                                'head_d':18.0,
+                                'head_l':12.0,
                         },
                         'button':{
-                                'head_d':21,
+                                'head_d':21.0,
                                 'head_l':6.6,
                         },
                 },
                 'M14':{
-                        'diam':14,
-                        'tap':12,
-			'clearance':15,
+                        'diam':14.0,
+                        'tap':12.0,
+			'clearance':15.0,
                         'hex':{
-                                'head_d':21,
-                                'head_l':14,
+                                'head_d':21.0,
+                                'head_l':14.0,
                         },
                 },
                 'M16':{
-                        'diam':16,
-                        'tap':13,
-			'clearance':19,
+                        'diam':16.0,
+                        'tap':13.0,
+			'clearance':19.0,
                         'hex':{
-                                'head_d':24,
-                                'head_l':16,
+                                'head_d':24.0,
+                                'head_l':16.0,
                         },
                         'button':{
-                                'head_d':28,
+                                'head_d':28.0,
                                 'head_l':8.8,
                         },
                 },
                 'M20':{
-                        'diam':20,
+                        'diam':20.0,
                         'tap':17.5,
-			'clearance':21,
+			'clearance':21.0,
                         'hex':{
-                                'head_d':30,
-                                'head_l':20,
+                                'head_d':30.0,
+                                'head_l':20.0,
                         },
                 },
                 '1/4BSP':{
-                        'diam':13,
+                        'diam':13.0,
                         'tap':11.6,
                         'hex':{
                                 'head_d':19.3,
-                                'head_sl':6,
+                                'head_sl':6.0
                         },
                         'shoulder':{
                                 'diam':18,
