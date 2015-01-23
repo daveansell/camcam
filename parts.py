@@ -376,7 +376,7 @@ class Plate(Part):
 		self.name=name
 		self.transform={'translate':pos}
 		if 'layer_config' not in config:
-			layer_config={'base':'base', 'part':'stringplate'}
+			layer_config={'base':'base', 'part':'stringplate', 'thread':[]}
 		else:
 			layer_config=config['layer_config']
 		self.add_border(Circle(V(0,0), rad=rad, side='out'))
@@ -384,7 +384,7 @@ class Plate(Part):
 		screwConf={layer_config['part']:{'rad':milling.bolts[holeSize]['clearance']/2+0.5}, layer_config['base']:{'rad':milling.bolts[holeSize]['clearance']/2}}
 		if holes >0:
 			for i in range(0, holes):
-				self.add(Bolt(V(holeRad,0), 'M4', 'button', 16, clearance_layers=layer_config['part'], insert_layer=layer_config['base'], transform={'rotate':[V(0,0), i*360/holes]}))
+				self.add(Bolt(V(holeRad,0), 'M4', 'button', 16, clearance_layers=layer_config['part'], insert_layer=layer_config['base'], thread_layer=layer_config['thread'], transform={'rotate':[V(0,0), i*360/holes]}))
 #				self.add(Screw(V(d['holeRad'],0), layer_config=screwConf, transform={'rotate':[V(0,0), i*360/d['holes']]}))
 		if centreRad >0:
 			self.add(Hole(V(0,0), rad=centreRad))
