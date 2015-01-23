@@ -599,7 +599,7 @@ class Bolt(Part):
 			else:
 				self.add(Hole(pos, milling.bolts[thread]['clearance']/2, side='in'),head_layer)
 			if thread_layer:
-				self.add(Hole(pos, milling.bolts[thread]['tap'], side='in'),thread_layer)
+				self.add(Hole(pos, milling.bolts[thread]['tap']/2, side='in'),thread_layer)
 
 
 class FingerJointMid(Pathgroup):
