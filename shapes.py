@@ -592,7 +592,6 @@ class Bolt(Part):
 			self.add_bom("Wood insert", 1, str(thread)+"insert",'')
 			for i,diam in enumerate(insert['diams']):
 				self.add(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),insert_layer)
-
 			self.add(Hole(pos, (milling.bolts[thread]['clearance'])/2, side='in'),clearance_layers)
 			if(head=='countersunk'):
 				self.add(Countersink(pos, milling.bolts[thread]['clearance'], milling.bolts[thread]['countersunk']['diam']/2, config),head_layer)
@@ -969,7 +968,7 @@ class Module(Plane):
 			if perspex_thickness>3:
 				bolt_config['length']=16
 		else:
-			perspex_thickness=12
+			perspex_thickness=3
 		if 'insert_type' in config:
 			bolt_config['insert_type']=config['insert_type']
 		#name, material, thickness, z0=0,zoffset=0
