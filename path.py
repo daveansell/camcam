@@ -1807,7 +1807,7 @@ class Plane(Part):
 		self.name=name
 		self.transform=False
 		self.parent=False
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown', 'forcecutter', 'stepdown', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown', 'forcecutter', 'stepdown', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z', 'cutter']
 		self.out=''
 		self.isCopy=False
 		self.copied=False
@@ -1831,6 +1831,7 @@ class Plane(Part):
 			self.layers[name] = Layer(name,material, thickness, z0, zoffset, isback=False, back=name+'#back', colour=colour)
 		else:	
 			self.layers[name] = Layer(name,material, thickness, z0, zoffset, isback=isback, colour=colour)
+		return self.layers[name]
 	def render_layer(self,layer):
 		"""Render all the parts in a layer"""
 	
