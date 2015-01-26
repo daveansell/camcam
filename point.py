@@ -337,7 +337,7 @@ class PAroundcurve(PSharp):
 		self.setDirection()
 #		ret=self.offsetSharp( side, distance, direction)
 		ret = [self.copy()]
-		if (self.direction=='cw' and side=='left' or self.direction=='ccw' and side=='right') ==self.reverse:
+		if (self.direction=='cw' and side=='left' or self.direction=='ccw' and side=='right') !=self.reverse:
 			ret[0].radius+=distance
 		else:
 			if ret[0].radius>distance:
@@ -369,12 +369,10 @@ class PAroundcurve(PSharp):
 				astart = self.pos + (lastpoint-self.pos).normalize()*self.radius
 				aend   = self.pos + (nextpoint-self.pos).normalize()*self.radius
 
-			if  self.reverse:
+			if  not self.reverse:
 				d=self.otherDir(self.direction)
-				print "OTHERDIR"+d
 			else:
 				d=self.direction
-				print "DODIER"+d
 			return [Line(self.last().end(), astart),
 				Arc(astart, aend, self.cp1, d)]
 
@@ -831,7 +829,7 @@ class PArc(Point):
 
 	def makeSegment(self, config):
 		self.checkArc()
-		if self.last().point_type!='sharp' or self.next().point_type!='sharp':
+		if self.last().point_type not in ['sharp', 'clear', 'doubleclear'] or self.next().point_type not in ['sharp', 'clear', 'doubleclear']:
 			print "points either side of an Arc should be sharp"
 			return []
 		else:

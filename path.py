@@ -48,6 +48,7 @@ arg_meanings = {'order':'A field to sort paths by',
 		'material_shape':'shape the raw material is - flat, rod, tube, square_rod, square_tube',
 		'material_length':'length of raw material needed', 
 		'material_diameter':'diameter of raw material',
+		'input_direction':'force the direction it thinks you inputted the points in',
 }
 def V(x=False,y=False,z=False):
         if x==False:
@@ -80,7 +81,7 @@ class Path(object):
 		self.Bsegments = []
 		self.transform={}
 		self.otherargs=''
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing', 'input_direction']
 		for v in self.varlist:
 			if v in config:
 				setattr(self,v, config[v])
@@ -94,6 +95,7 @@ class Path(object):
 		self.centre=V(0,0)
 		self.polygon={}
 		self.changed={}
+		self.input_direction=False
 		self.parent=False
 		self.comment("start:"+str(type(self)))
 	
@@ -367,6 +369,8 @@ class Path(object):
 
 # find whether the path is setup clockwise or anticlockwise
 	def find_direction(self,config):
+		if self.input_direction in ['cw','ccw']:
+			return self.input_direction
 		total =V(0,0,0)
 		first = True
 		if 'transformations' in config:
