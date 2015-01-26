@@ -381,7 +381,11 @@ class Plate(Part):
 			layer_config=config['layer_config']
 		self.add_border(Circle(V(0,0), rad=rad, side='out'))
 		self.layer=layer_config['part']
-		if type(layer_config['clearance']) is list and type(layer_config['part']) is list:
+		if not  'clearance' in layer_config:
+			layer_config['clearance']=[]
+		if not 'part' in layer_config:
+			layer_config['part']=[]
+		if 'clearance' in layer_config and type(layer_config['clearance']) is list and 'part' in layer_config and  type(layer_config['part']) is list:
 			clearance=layer_config['part']+layer_config['clearance']
 		elif type(layer_config['clearance']) is list:
 			clearance=copy.copy(layer_config['clearance'])
