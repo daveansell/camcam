@@ -367,32 +367,48 @@ class StepperDriver(Pathgroup):
 
 class RFID_holder(Part):
 	def __init__(self, pos, name, **config):
+		self.init(config)
+                self.translate(pos)
+		self.name=name
+		print "RFID_NAME="+str(self.name)
 		width=70
 		length=106
 		socket_slot_l=40
 		socket_slot_w=11
-		self.init(config)
-                self.transform={'translate':pos}
+		print self.transform
                 if 'layer_config' not in config:
                         layer_config={'base':'base', 'part':'back'}
                 else:
                         layer_config=config['layer_config']
-			
-		cutout=self.add(Path(side='in', closed=True). layer_config['base'])
-		cutout.add_point(V(width/2, height/2))
-		cutout.add_point(V(width/2, -height/2))
-		cutout.add_point(V(-width/2, -height/2))
-		cutout.add_point(V(-width/2, -socket_slot_w/2))
-		cutout.add_point(V(-width/2-socket_slot_l/2, -socket_slot_w/2))
-		cutout.add_point(V(-width/2-socket_slot_l/2, socket_slot_w/2))
-		cutout.add_point(V(-width/2, socket_slot_w/2))
-		cutout.add_point(V(-width/2, height/2))
-		self.border=RoundedRect(V(width/2+5, height/2+12), tr=V(-width/2-socket_slot_l-5, -height/2-12, side='out'))
+		self.layer=layer_config['part']
+		print layer_config	
+		cutout=self.add(Path(side='in', closed=True), layer_config['base'])
+		cutout.add_point(V(length/2, width/2))
+		cutout.add_point(V(length/2, -width/2))
+		cutout.add_point(V(-length/2, -width/2))
+		cutout.add_point(V(-length/2, -socket_slot_w/2))
+		cutout.add_point(V(-length/2-socket_slot_l/2, -socket_slot_w/2))
+		cutout.add_point(V(-length/2-socket_slot_l/2, socket_slot_w/2))
+		cutout.add_point(V(-length/2, socket_slot_w/2))
+		cutout.add_point(V(-length/2, width/2))
+		self.border=Path(side='out', closed=True)
+		self.border.add_point(PIncurve(V(length/2+5, width/2+12), radius=5))
+		self.border.add_point(PIncurve(V(length/2+5, -width/2-12), radius=5))
+		self.border.add_point(PIncurve(V(-length/2-5-socket_slot_l, -width/2-12), radius=5))
+		self.border.add_point(PIncurve(V(-length/2-5-socket_slot_l, -socket_slot_w/2), radius=20))
+		self.border.add_point(PIncurve(V(-length/2-5, -socket_slot_w/2), radius=5))
+		self.border.add_point(PIncurve(V(-length/2-5, socket_slot_w/2), radius=5))
+		self.border.add_point(PIncurve(V(-length/2-5-socket_slot_l, socket_slot_w/2), radius=20))
+		self.border.add_point(PIncurve(V(-length/2-5-socket_slot_l, width/2+12), radius=5))
+		self.border.translate(pos)
+		self.add(RoundedRect(V(-length/2-socket_slot_l/2-7, 0), centred=True, width=14, height=socket_slot_w, z1=-5, partial_fill=socket_slot_w/2), layer_config['base'])
 
-		self.add(Bolt(V(width/2,height/2+6), clearance_layer=layer_config['part']))
-		self.add(Bolt(V(width/2,-height/2-6), clearance_layer=layer_config['part']))
-		self.add(Bolt(V(width/2-socket_slot_l,height/2+6), clearance_layer=layer_config['part']))
-		self.add(Bolt(V(width/2-socket_slot_l,-height/2-6), clearance_layer=layer_config['part']))
+		#RoundedRect(V(length/2+5, width/2+12), tr=V(-length/2-socket_slot_l-5, -width/2-12), side='out', rad=5)
+		
+		self.add(Bolt(V(length/2,width/2+6), clearance_layers=layer_config['part']))
+		self.add(Bolt(V(length/2,-width/2-6), clearance_layers=layer_config['part']))
+		self.add(Bolt(V(-length/2-socket_slot_l,width/2+6), clearance_layers=layer_config['part']))
+		self.add(Bolt(V(-length/2-socket_slot_l,-width/2-6), clearance_layers=layer_config['part']))
 
 class Plate(Part):
 	def __init__(self, pos, name, rad, centreRad, holes, holeRad, holeSize, **config):
