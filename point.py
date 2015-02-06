@@ -165,6 +165,7 @@ class Point(object):
 		return corner
 
 	def offset_move_point(self, frompos, topos, side, distance):
+		print "offset_move_point distance="+str(distance)
 		if distance>100:
                         distance=10
                 if side=='left':
@@ -269,7 +270,8 @@ class PSharp(Point):
 					return []
 				
                    	else:
-				if self.dot-1<=0.00000001:
+				print "DIST="+str(distance)
+				if abs(self.dot-1)<=0.00000001:
 					t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, -distance)
                           	elif self.dot<=0:
                                     	if self.angle>math.pi/2:
@@ -277,9 +279,11 @@ class PSharp(Point):
                                      	else:
                                              	a=self.angle/2
 					
+					print "a="+str(a)+" sin(a)="+str(abs(math.sin(a)))
                                         t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, -distance/abs(math.sin(a)))
                              	else:
 					a=(math.pi-self.angle)/2
+					print "a2="+str(a)+" sin(a)="+str(abs(math.sin(a)))
                                         t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, -distance/abs(math.sin(a)))
                                     	#t.pos = self.offset_move_point( self.lastorigin(), self.nextorigin(), side, -distance/abs(math.cos((math.pi/4-self.angle0)/2)))
 
