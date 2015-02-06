@@ -365,7 +365,34 @@ class StepperDriver(Pathgroup):
 			self.add(Hole(V(d['hs_b']/2, 0), rad=4.5/2))
                         self.add(Hole(V(-d['hs_b']/2, 0), rad=4.5/2))
 
+class RFID_holder(Part):
+	def __init__(self, pos, name, **config):
+		width=70
+		length=106
+		socket_slot_l=40
+		socket_slot_w=11
+		self.init(config)
+                self.transform={'translate':pos}
+                if 'layer_config' not in config:
+                        layer_config={'base':'base', 'part':'back'}
+                else:
+                        layer_config=config['layer_config']
+			
+		cutout=self.add(Path(side='in', closed=True). layer_config['base'])
+		cutout.add_point(V(width/2, height/2))
+		cutout.add_point(V(width/2, -height/2))
+		cutout.add_point(V(-width/2, -height/2))
+		cutout.add_point(V(-width/2, -socket_slot_w/2))
+		cutout.add_point(V(-width/2-socket_slot_l/2, -socket_slot_w/2))
+		cutout.add_point(V(-width/2-socket_slot_l/2, socket_slot_w/2))
+		cutout.add_point(V(-width/2, socket_slot_w/2))
+		cutout.add_point(V(-width/2, height/2))
+		self.border=RoundedRect(V(width/2+5, height/2+12), tr=V(-width/2-socket_slot_l-5, -height/2-12, side='out'))
 
+		self.add(Bolt(V(width/2,height/2+6), clearance_layer=layer_config['part']))
+		self.add(Bolt(V(width/2,-height/2-6), clearance_layer=layer_config['part']))
+		self.add(Bolt(V(width/2-socket_slot_l,height/2+6), clearance_layer=layer_config['part']))
+		self.add(Bolt(V(width/2-socket_slot_l,-height/2-6), clearance_layer=layer_config['part']))
 
 class Plate(Part):
 	def __init__(self, pos, name, rad, centreRad, holes, holeRad, holeSize, **config):
