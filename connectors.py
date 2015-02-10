@@ -46,4 +46,4 @@ class XLR(Pathgroup):
 			self.add(Hole(V(0,0), d['r']))
 			self.add(Hole(d['h'],3.3/2))
 			self.add(Hole(-d['h'],3.3/2))
-		
+		#position, type="male/female"
