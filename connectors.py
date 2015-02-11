@@ -1,6 +1,6 @@
 from path import *
 from shapes import *
-class Dconnector(Pathgroup):
+class Dconnector(Part):
         def __init__(self, pos, **config):
 		self.init(config)
 		self.translate(pos)
@@ -33,7 +33,7 @@ class Dconnector(Pathgroup):
 		self.add(Hole(V(d['D'],0),hole_rad))
 		self.add(Hole(V(-d['D'],0),hole_rad))
 		self.add_bom('D connector -'+str(config['pins'])+' pin',1,'D-'+str(config['pins']))
-class XLR(Pathgroup):
+class XLR(Part):
 	def __init__(self, pos, **config):
 		self.init(config)
 		self.translate(pos)
