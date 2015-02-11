@@ -703,11 +703,11 @@ class Path(object):
 					p=fillpath.points[0]
 					fillpath.points=[]
 					fillpath.add_point(p.pos-V(p.radius,0), point_type='sharp')
-					fillpath.add_point(p.pos, point_type='avoidcurve',  radius=p.radius, direction='cw')
+					fillpath.add_point(p.pos, point_type='aroundcurve',  radius=p.radius, direction='cw')
 					fillpath.add_point(p.pos+V(0,p.radius), point_type='sharp')
-					fillpath.add_point(p.pos, point_type='avoidcurve',  radius=p.radius, direction='cw')
+					fillpath.add_point(p.pos, point_type='aroundcurve',  radius=p.radius, direction='cw')
 					fillpath.add_point(p.pos+V(p.radius,0), point_type='sharp')
-					fillpath.add_point(p.pos, point_type='avoidcurve',radius=p.radius, direction='cw')
+					fillpath.add_point(p.pos, point_type='aroundcurve',radius=p.radius, direction='cw')
 					fillpath.add_point(p.pos-V(p.radius,0), point_type='sharp')
 			if fillpath.find_direction(c)!=config['direction']:
 				reverse=True
@@ -1705,10 +1705,15 @@ class Part(object):
 			p=""
 			if(ls is not False and ls is not None):
 				for l in ls.keys():
+					# if the part had no layer of its own we will inherit it from self	
+					if l is None and hasattr(self, 'layer') and self.layer is not False:
+						tl=self.layer
+					else:
+						tl=l
 					if not part.isCopy:
-						if l not in layers:
-							layers[l]=[]
-						layers[l].extend(ls[l])
+						if tl not in layers:
+							layers[tl]=[]
+						layers[tl].extend(ls[l])
 					# if the part should be copied, copy its parts which aren't in its core layer
 					# This means you can add an object in lots of places and mounting holes will be drilled
 					# or we are in an overview mode
@@ -1730,9 +1735,9 @@ class Part(object):
 					#if not hasattr(part,'layer') or part.layer==False or l!=part.layer:# or milling.mode_config[self.mode]['overview']:
 		for l in self.paths.keys():
 #			if not hasattr(self,'layer') or self.layer==False or l != self.layer:
-				if (l==None or l==False) and self.layer!=False and self.layer!=None:
+				if (l==None or l==False):# and self.layer!=False and self.layer!=None:
 					l=self.layer
-				if l!=None and l!=False:
+				if 1==1:#l!=None and l!=False:
 					self.paths[l].parent=self
 					if l not in layers:
 						layers[l]=[]
