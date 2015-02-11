@@ -32,7 +32,7 @@ class Dconnector(Pathgroup):
 		cutout.add_point(V(-d['B']-ex+dw,top-h),'incurve',r)
 		self.add(Hole(V(d['D'],0),hole_rad))
 		self.add(Hole(V(-d['D'],0),hole_rad))
-
+		self.add_bom('D connector -'+str(config['pins'])+' pin',1,'D-'+str(config['pins']))
 class XLR(Pathgroup):
 	def __init__(self, pos, **config):
 		self.init(config)
@@ -46,5 +46,5 @@ class XLR(Pathgroup):
 			self.add(Hole(V(0,0), d['r']))
 			self.add(Hole(d['h'],3.3/2))
 			self.add(Hole(-d['h'],3.3/2))
-			self.add_bom('XLR-'+str(config['type'),1,'XLR-'+str(config['type'))
+			self.add_bom('XLR-'+str(config['type']),1,'XLR-'+str(config['type']))
 		#position, type="male/female"
