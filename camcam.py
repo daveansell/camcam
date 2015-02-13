@@ -3,6 +3,7 @@ from minivec import *
 from path import *
 from shapes import *
 from parts import *
+from boxes import *
 #import importlib
 from optparse import OptionParser
 import sys
