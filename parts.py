@@ -371,9 +371,10 @@ class RFID_holder(Part):
                 self.translate(pos)
 		self.name=name
 		print "RFID_NAME="+str(self.name)
-		width=70
-		length=106
+		width=71
+		length=107
 		socket_slot_l=40
+		socket_extra=14
 		socket_slot_w=11
 		print self.transform
                 if 'layer_config' not in config:
@@ -387,8 +388,8 @@ class RFID_holder(Part):
 		cutout.add_point(V(length/2, -width/2))
 		cutout.add_point(V(-length/2, -width/2))
 		cutout.add_point(V(-length/2, -socket_slot_w/2))
-		cutout.add_point(V(-length/2-socket_slot_l/2, -socket_slot_w/2))
-		cutout.add_point(V(-length/2-socket_slot_l/2, socket_slot_w/2))
+		cutout.add_point(V(-length/2-socket_slot_l, -socket_slot_w/2))
+		cutout.add_point(V(-length/2-socket_slot_l, socket_slot_w/2))
 		cutout.add_point(V(-length/2, socket_slot_w/2))
 		cutout.add_point(V(-length/2, width/2))
 		self.add_border(Path(side='out', closed=True))
@@ -401,7 +402,7 @@ class RFID_holder(Part):
 		self.border.add_point(PIncurve(V(-length/2-5-socket_slot_l, socket_slot_w/2), radius=20))
 		self.border.add_point(PIncurve(V(-length/2-5-socket_slot_l, width/2+12), radius=5))
 	#	self.border.translate(pos)
-		self.add(RoundedRect(V(-length/2-socket_slot_l/2-7, 0), centred=True, width=14, height=socket_slot_w, z1=-5, partial_fill=socket_slot_w/2), layer_config['base'])
+#		self.add(RoundedRect(V(-length/2-socket_slot_l/2-7, 0), centred=True, width=14, height=socket_slot_w, z1=-6, partial_fill=socket_slot_w/2), layer_config['base'])
 
 		#RoundedRect(V(length/2+5, width/2+12), tr=V(-length/2-socket_slot_l-5, -width/2-12), side='out', rad=5)
 		
