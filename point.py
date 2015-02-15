@@ -189,14 +189,14 @@ class Point(object):
 #			last=self.forcelastpoint
 ##		else:
 		last=self.last()
-		if hasattr(last, 'control') and last.control or last.pos==self.pos:
+		if hasattr(last, 'control') and last.control or last.pos is not False and self.pos is not False and last.pos==self.pos:
 			return last.lastorigin()
 		else:
 			return last.origin(False)
 
 	def nextorigin(self):
 		next=self.next()
-		if hasattr(next, 'control') and next.control or next.pos==self.pos:
+		if hasattr(next, 'control') and next.control or next.pos is not False and self.pos is not False and next.pos==self.pos:
 			return next.nextorigin()
 		else:
 			return next.origin(True)
@@ -798,7 +798,7 @@ class PArc(Point):
 		self.length=length
 		self.transform=transform
 		self.point_type='arc'
-		self.control = True
+		self.control = False#True
 		self.obType='Point'
 	def copy(self):
                 t = PArc( self.pos, self.radius, self.direction,self.length, self.transform)
@@ -811,19 +811,23 @@ class PArc(Point):
 
 	def checkArc(self):
 		if self.pos is not False and self.radius is not False:
-			if (self.pos-self.last().pos).length()-self.radius>00000.1 or (self.next().pos-self.pos).length()-self.radius>0.000001:
+			if (self.pos-self.last().pos).length()-self.radius>000.1 or (self.next().pos-self.pos).length()-self.radius>0.001:
 				print "Arc's radius should be <= distance to the centre"+str(self.next().pos)+"->"+str(self.pos)+"->"+str(self.last().pos)+" radius="+str(self.radius)+" AC-radius="+str((self.pos-self.last().pos).length()-self.radius)+" BC-raiuds="+str((self.next().pos-self.pos).length()-self.radius)
-		elif self.radius is not False and self.length is not False:
-			l=self.next.start - self.last().pos
-			b=sqrt(r**2-l**2/4)
+		elif self.radius is not False and self.length is not False and self.pos is False:
+			
+			l=self.nextorigin() - self.lastorigin()
+			print l
+			print self.radius
+			b=math.sqrt(self.radius**2-l.length()**2/4)
 			
 			if l.length()>2*self.radius:
 				print "Can't make an arc longer than twice its radius"
-			if self.direction=='cw':
+			if self.direction=='cw' and self.reverse or self.direction=='ccw' and not self.reverse:
 				perp=rotate(l.normalize(),-90)
 			else:
 				perp=rotate(l.normalize(),90)
 			self.pos = self.last().pos + l/2 + perp * b
+			print "circle centre="+str(self.pos)+" lastorigin="+str(self.lastorigin())+" nextorigin="+str(self.nextorigin())+" radius="+str(self.radius)
 		elif self.pos is not False:
 			self.radius=min((self.next().pos-self.pos).length(), (self.pos- self.last().pos).length())
 
@@ -835,13 +839,27 @@ class PArc(Point):
 		else:
 			l=self.next().pos - self.last().pos
 			perp=rotate(l.normalize(),-90)
+			print self
 			centre=self.pos.intersect_lines(self.last().pos, self.next().pos, self.pos, self.pos+perp)
 			c=math.sqrt(self.radius**2 - (self.pos-centre).length()**2)
 			a = l.normalize()*c
 			return [ Line(self.last().pos, centre-a), Arc(centre-a, centre+a, self.pos, self.direction), Line(centre+a, self.next().pos)]
-			
-	def origin(self, forward=True):
-		return self.last().origin()
+		
+        def origin(self, forward=True):
+                if forward:
+                        op=self.last().pos
+                else:
+                        op=self.next().pos
+                vecin=(op-self.pos).normalize()
+		print "original position"+str(op)+"  self.pos"+str(self.pos)+"  next pos"+str(self.last().pos)
+		print "direction="+str(self.direction)+" forward="+str(forward) 
+                if (self.direction=='cw' and self.reverse==False or self.direction=='ccw' and self.reverse==True)==forward:
+			print "ORIGIN************************************* vecin"+str(vecin)+" move= "+str(rotate(vecin,90))+" op"+str(op)
+                        return op+rotate(vecin,90)
+                else:
+			print "ORIGIN************************************* vecin"+str(vecin)+" move= "+str(rotate(vecin,-90))+" op"+str(op)
+                        return op+rotate(vecin,-90)
+	
 	def end(self):
 		self.checkArc()
 		l=self.next().pos - self.last().pos
@@ -863,7 +881,7 @@ class PArc(Point):
 		self.checkArc()
 		t=copy.copy(self)
 #		print "side="+str(side)+" direction="+str(self.direction)
-		if side=='left' and self.direction=='ccw' or side=='right' and self.direction=='cw':
+		if side=='left' and self.direction=='cw' or side=='right' and self.direction=='ccw':
 			t.radius+=distance
 		else:
 			if t.radius>=distance:
