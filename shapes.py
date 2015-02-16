@@ -585,13 +585,14 @@ class Bolt(Part):
 		else:
 			thread_layer = ['back']
 		if thread in milling.bolts:
-			if 'insert_type' in config and config['insert_type'] in milling.inserts[thread]:
-				insert=milling.inserts[thread][config['insert_type']]
-			else:
-				insert=milling.inserts[thread]
-			self.add_bom("Wood insert", 1, str(thread)+"insert",'')
-			for i,diam in enumerate(insert['diams']):
-				self.add(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),insert_layer)
+			if insert_layer is not False:
+				if 'insert_type' in config and config['insert_type'] in milling.inserts[thread]:
+					insert=milling.inserts[thread][config['insert_type']]
+				else:
+					insert=milling.inserts[thread]
+				self.add_bom("Wood insert", 1, str(thread)+"insert",'')
+				for i,diam in enumerate(insert['diams']):
+					self.add(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),insert_layer)
 			self.add(Hole(pos, (milling.bolts[thread]['clearance'])/2, side='in'),clearance_layers)
 			if(head=='countersunk'):
 				self.add(Countersink(pos, milling.bolts[thread]['clearance'], milling.bolts[thread]['countersunk']['diam']/2, config),head_layer)
