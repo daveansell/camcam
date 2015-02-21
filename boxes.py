@@ -53,11 +53,13 @@ class RoundedBoxEnd(Part):
 
 class RoundedBox(Part):
 	def __init__(self,pos, layers, name, length, width, centre_height, centre_rad, centre_holerad, side_height, bend_rad=0, thickness=6, tab_length=False,  fudge=0, **config):
+		self.init(config)
+		print "length="+str(length)+" width="+str(width)+" centre_height="+str(centre_height)+" centre_holerad="+str(centre_holerad)+" side_height="+str(side_height)
 		cutter=False
 		self.end=self.add(RoundedBoxEnd(pos, layers['end'], name+'_end', width, centre_height, centre_rad, centre_holerad, side_height, bend_rad,  {'right':'off', 'bottom':'off', 'left':'off'}, thickness, tab_length,  fudge))
 		self.end.number=2
-		self.side=self.add(Part(name=name+'_side', layer=layers['side'], border=FingerJointBoxSide( pos, width, side_height, 'out', {'left':'on', 'bottom':'off', 'right':'on'}, {'top':'straight'}, tab_length, thickness, cutter)))
+		self.side=self.add(Part(name=name+'_side', layer=layers['side'], border=FingerJointBoxSide( pos, length, side_height, 'out', {'left':'on', 'bottom':'off', 'right':'on', 'top':'on'}, {'top':'straight'}, tab_length, thickness, cutter, auto=True)))
 		self.side.number=2
-		self.bottom=self.add(Part(name=name+'_bottom', layer=layers['bottom'], border=FingerJointBoxSide( pos, width, length, 'out', {'left':'on', 'bottom':'off', 'right':'on'}, {}, tab_length, thickness, cutter)))
+		self.bottom=self.add(Part(name=name+'_bottom', layer=layers['bottom'], border=FingerJointBoxSide( pos, width, length, 'out', {'left':'on', 'bottom':'off', 'right':'on','top':'on'}, {}, tab_length, thickness, cutter, auto=True)))
 
 

@@ -277,9 +277,31 @@ class Path(object):
 				raise TypeError( "add_points - adding a non-point "+str(type(p)))
 		self.has_changed()
 		self.reset_points()
-
+	def get_last_vec(self,points=False):
+		if points==False:
+			points=self.points
+		end=points[len(points)-1]
+		start=False
+		for p in range( len(points)-1, -1, -1):
+			if type(points[p].pos) is Vec and type(end.pos) is Vec and points[p].pos !=end.pos:
+				start=points[p]
+				break
+		return [start, end]
+	def get_first_vec(self,points=False):
+                if points==False:
+                        points=self.points
+                start=points[0]
+                end=False
+                for p in range( 1, len(points)):
+                        if type(points[p].pos) is Vec and type(start.pos) is Vec and points[p] !=end:
+                                end=points[p]
+                                break
+                return [start, end]
 	def add_points_intersect(self, points):
-		joint=self.intersect_lines(self.points[len(self.points)-2].pos, self.points[len(self.points)-1].pos, points[0].pos, points[1].pos)
+		thisvec=self.get_last_vec()
+		thatvec=self.get_first_vec(points)
+		joint=self.intersect_lines(thisvec[0].pos,thisvec[1].pos, thatvec[0].pos, thatvec[1].pos)
+#		joint=self.intersect_lines(self.points[len(self.points)-2].pos, self.points[len(self.points)-1].pos, points[0].pos, points[1].pos)
                 del(self.points[len(self.points)-1])
                 self.points.append(PSharp(joint))
                 for i in range(1, len(points)):
@@ -300,6 +322,8 @@ class Path(object):
 			self.changed[c]=True
 	def transform_pointlist(self, pointlist,transformations):
 		pout=[]
+#		print "transforms for +"+str(self)+" "+str(transformations)
+		
 		for p in pointlist:
 			pout.append(p.point_transform(transformations))
 		self.reset_points(pout)
@@ -328,7 +352,7 @@ class Path(object):
 		if direction=='cw':
 			return 'ccw'
 		else:
-			return 'cw'
+			return 'c#w'
 # Find 2 points joined by a line from r1 from point1 and r2 from point2
 
 	def offset_path(self,side,distance, config):
@@ -574,6 +598,8 @@ class Path(object):
 		else:
 			pconfig = False
 		config = {}
+		if 'tranformations' in pconfig:
+			print "p tranformsations="+str(pconfig['transformations'])
 		if pconfig is False or  pconfig['transformations']==False or pconfig['transformations'] is None:
 			config['transformations']=[]
 		else:
@@ -1521,7 +1547,6 @@ class Part(object):
 		if self.transform is False or self.transform is None:
                         self.transform={}
                 self.transform['translate']=vec
-
 	def add_bom(self,name, number=False, part_number=False, description=False, length=False):
 		if type(name) is not str:
 			if hasattr(name,'obType') and name.obType=='BOM':
