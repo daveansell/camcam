@@ -64,4 +64,18 @@ class RoundedBox(Part):
 		self.side.number=2
 		self.bottom=self.add(Part(name=name+'_bottom', layer=layers['bottom'], border=FingerJointBoxSide( V(0,0), width, length, 'out', {'left':'on', 'bottom':'on', 'right':'on','top':'on'}, {}, tab_length, thickness, cutter, auto=True,centred=True)))
 
-
+class Turret(Part):
+	def __init__(self, pos, layers, name, turret_type, thickness, fudge, **config):
+		self.init(config)
+		data={
+			'camera':{'length':60, 'width':51.5, 'centre_height':50, 'centre_rad':51.5/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2},
+			'lamp':{'length':50, 'width':51.5, 'centre_height':35, 'centre_rad':51.5/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2},
+		}
+		assert turret_type in data
+		d=data['turret_type']
+		box=self.add(RoundedBox(pos, layers, name, d['length'], d['width'], d['centre_height'], d['centre_rad'], d['centre_holerad'], d['side_height'], d['bend_rad'], thickness, d['tab_length'], fudge))
+		self.bottom=box.bottom
+		self.end=box.end
+		self.side=box.side
+		self.bottom.add(Hole(V(0,0), rad=d['piviot_hole_rad']))
+			
