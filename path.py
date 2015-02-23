@@ -300,10 +300,12 @@ class Path(object):
 	def add_points_intersect(self, points):
 		thisvec=self.get_last_vec()
 		thatvec=self.get_first_vec(points)
-		joint=self.intersect_lines(thisvec[0].pos,thisvec[1].pos, thatvec[0].pos, thatvec[1].pos)
+		if thisvec[1].pos!=thatvec[0].pos and (thisvec[1].pos-thisvec[0].pos).dot(thatvec[1].pos-thatvec[0].pos) !=1:
+			joint=self.intersect_lines(thisvec[0].pos,thisvec[1].pos, thatvec[0].pos, thatvec[1].pos)
 #		joint=self.intersect_lines(self.points[len(self.points)-2].pos, self.points[len(self.points)-1].pos, points[0].pos, points[1].pos)
-                del(self.points[len(self.points)-1])
-                self.points.append(PSharp(joint))
+	                del(self.points[len(self.points)-1])
+	                self.points.append(PSharp(joint))
+#			del(self.points[len(self.points)-1])
                 for i in range(1, len(points)):
                         self.points.append(points[i])
 		self.reset_points()
@@ -352,10 +354,37 @@ class Path(object):
 		if direction=='cw':
 			return 'ccw'
 		else:
-			return 'c#w'
+			return 'cw'
 # Find 2 points joined by a line from r1 from point1 and r2 from point2
 
+	def delete_point(self,p):
+		if p==0:
+			if self.closed:
+				self.points[p+1].lastpoint = self.points[len(self.points)-1]
+				self.points[len(self.points)-1].nextpoint = self.points[p+1]
+			else:
+				self.points[1].lastpoint = self.points[2]
+ 		elif p==len(self.points)-1:
+			if self.closed:
+				self.points[0].lastpoint = self.points[p-1]
+				self.points[p-1].nextpoint = self.points[0]
+			else:
+				self.points[p-1].nextpoint = self.points[p-2]
+		else:
+			self.points[p-1].nextpoint = self.points[p+1]
+			self.points[p+1].lastpoint = self.points[p-1]
+		self.points.pop(p)
+	def simplify_points(self):
+		if len(self.points)>2:
+			for p,point in enumerate(self.points):
+				if point.point_type in ['sharp', 'clear', 'doubleclear']:# and p!=0 and p!=len(self.points)-1:
+					if point.lastpoint.point_type in ['sharp', 'clear', 'doubleclear'] and (point.pos-point.lastpoint.pos).length()<0.0001:
+						self.delete_point(p)
+					elif point.pos!= point.nextpoint.pos and (point.pos-point.lastpoint.pos).dot(point.nextpoint.pos-point.pos)==1:
+						self.delete_point(p)
+
 	def offset_path(self,side,distance, config):
+		self.simplify_points()
 		newpath=copy.deepcopy(self)
 		newpath.points=[]
 		thisdir=self.find_direction(config)

@@ -541,16 +541,20 @@ class POutcurve(Point):
 		t.reverse = self.reverse
 		return t
 	def origin(self, forward=True):
-		return self.pos
+		seg=self.makeSegment({})
+		if forward:
+			return seg[1].cutfrom
+		else:
+			return seg[1].cutto
 	def end(self):
-		lastpoint=self.last().origin()
-		nextpoint=self.next().origin()
+		lastpoint=self.lastorigin()
+		nextpoint=self.nextorigin()
 		angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
 		dl=self.radius*math.tan((angle/180)/2*math.pi)
 		return self.pos+(nextpoint-self.pos).normalize()*dl
 	def start(self):
-		lastpoint=self.last().origin()
-		nextpoint=self.next().origin()
+		lastpoint=self.lastorigin()
+		nextpoint=self.nextorigin()
 		angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
 		dl=self.radius*math.tan((angle/180)/2*math.pi)
 		return self.pos+(lastpoint-self.pos).normalize()*dl
@@ -641,8 +645,9 @@ class POutcurve(Point):
                         lr=self.last().radius
                 else:
                         lr=0
-		if self.last() is not None and self.last().point_type not in ['sharp', 'outcurve']:
-			print "Outcurve must be preceeded by a sharp point or another outcurve"
+		if self.last() is not None and self.last().point_type not in ['sharp', 'outcurve', 'clear', 'doubleclear']:
+
+			print "Outcurve must be preceeded by a sharp point or another outcurve not a "+str(self.last().point_type)
 			return []
 		if lr!=0:
 			if type(self.last().last()) == None:
@@ -674,7 +679,6 @@ class POutcurve(Point):
                         p2 = self.tangent_point(self.next().pos, self.pos, self.radius, self.otherDir(d2))
                         segment_array.append( Arc( p1[1],p2, self.pos, self.otherDir(d2)))
                         frompoint=p2
-		print self.radius
 		return segment_array	
 		
 class PClear(PSharp):
@@ -851,13 +855,9 @@ class PArc(Point):
                 else:
                         op=self.next().pos
                 vecin=(op-self.pos).normalize()
-		print "original position"+str(op)+"  self.pos"+str(self.pos)+"  next pos"+str(self.last().pos)
-		print "direction="+str(self.direction)+" forward="+str(forward) 
                 if (self.direction=='cw' and self.reverse==False or self.direction=='ccw' and self.reverse==True)==forward:
-			print "ORIGIN************************************* vecin"+str(vecin)+" move= "+str(rotate(vecin,90))+" op"+str(op)
                         return op+rotate(vecin,90)
                 else:
-			print "ORIGIN************************************* vecin"+str(vecin)+" move= "+str(rotate(vecin,-90))+" op"+str(op)
                         return op+rotate(vecin,-90)
 	
 	def end(self):
