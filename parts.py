@@ -446,7 +446,7 @@ class Plate(Part):
 		if centreRad >0:
 			self.add(Hole(V(0,0), rad=centreRad))
 			self.add(Hole(V(0,0), rad=centreRad+2), [layer_config['base']])
-			self.add(Hole(V(0,0), rad=centreRad+2), clearance)
+			self.add(Hole(V(0,0), rad=centreRad+2), layer_config['clearance'])
 
 class RoundPlate(Plate):
 	def __init__(self, pos, plateType, **config):
