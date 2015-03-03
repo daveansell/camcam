@@ -14,7 +14,10 @@ class Switch(Part):
 		if config['switch_type'] == 'IWS_small_LED':
 			self.add_bom('IWS small switch LED', 1, part_number='59-411R', description='Red Round Ip67 Mom Switch Solder Term red LED')
 		
+		print config['layer_config']
 		if config['switch_type'] == 'IWS_small' or  config['switch_type'] == 'IWS_small_LED':
+			if not 'paper' in config['layer_config'].keys():
+					config['layer_config']['paper']='doubleflat'
 			for l in config['layer_config'].keys():
 				task =  config['layer_config'][l]
 				if task=='clearance':
