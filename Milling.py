@@ -42,7 +42,8 @@ class Milling:
 				'zero':False,
 			},
                         'makespacerouter':{
-                                'prefix':'T1M6\nG17\nG0Z10S11000M3\n',
+#                                'prefix':'T1M6\nG17\nG0Z10S11000M3\n',
+				'prefix':'T1M6\nG17\nG0Z30S11000M3\n',
 				'postfix':'M30\n',
                                 'mode':'simplegcode',
                                 'group':'cutter',

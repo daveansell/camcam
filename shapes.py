@@ -38,7 +38,7 @@ class Rect(Path):
 		else:
 			rad = config['rad']
                 self.closed=True
-                if rad==False:
+                if rad is False:
                         rad = self.cutterrad
 		self.comment("Rounded Square")
 		self.comment("bl="+str(bl)+" tr="+str(tr)+" rad="+str(rad))
@@ -445,7 +445,7 @@ class HoleLine(Pathgroup):
 		self.init(config)
 		step=(end-start)/(number-1)
 		for i in range(0,number-1):
-			self.add(Hole(start+step*i, rad, 'in'))
+			self.add(Hole(start+step*i, rad)) #self.add(Hole(start+step*i, rad, 'in'))
 		self.comment("HoleLine")
 		self.comment("start="+str(start)+" end="+str(end)+" number="+str(number)+" rad="+str(rad))
 
