@@ -122,6 +122,29 @@ class PiBarn(Part):
 		self.add(RepeatLine(pos+V(-x_units/2*spacing, (y_units/2-1)*spacing), pos+V(-x_units/2*spacing, (-y_units/2+1)*spacing), y_units-1, Bolt, bolt_conf))
 		self.add_border(RoundedRect(pos, centred=True, width=x_units*spacing+15, height=x_units*spacing+15, side='out', rad=8))
 		self.add_bom('standoff',4, description='30mm standoff')
+
+class Pi(Part):
+	def __init__(self, pos,**config):
+		self.init(config)
+		h=85
+		w=56
+		hw=49
+		hl=58
+		self.translate(pos)
+		if 'layer_config' in config:
+			layer_config = config['layer_config']
+		else:
+			layer_config = {'paper':'paper', 'insert':'base'}
+		self.add(RoundedRect(V(0,0), centred=True, width=w, height=85, rad=3),'paper')
+		hole_bl=V(-w/2+3.5, -h/2+3.5)
+		print "insert_layer="+str(layer_config['insert']) 
+		print hole_bl
+		print pos
+		self.add(Insert(hole_bl,'M3', layer_config['insert']))
+		self.add(Insert(hole_bl+V(hw,0),'M3', layer_config['insert']))
+		self.add(Insert(hole_bl+V(hw, hl),'M3', layer_config['insert']))
+		self.add(Insert(hole_bl+V(0,hl),'M3', layer_config['insert']))
+
 class Stepper(Part):
 	def __init__(self,pos, stepper_type,layer, **config):
 		self.init(config)
