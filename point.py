@@ -217,7 +217,7 @@ class Point(object):
 			s=-1
 		else:
 			s=1
-		if dis<0:
+		if dis<-0.0001:
 			print "Dis is less than 0 dis="+str(dis)+" dr="+str(dr)+" D="+str(D)
 			return False
 		else:
@@ -541,6 +541,7 @@ class POutcurve(Point):
 		return t
 	def origin(self, forward=True):
 		seg=self.makeSegment({})
+		print "arc from="+str(seg[1].cutfrom)+" arc to="+str(seg[1].cutto)+" direction="+str(seg[1].direction)
 		if forward:
 			return seg[1].cutfrom
 		else:
@@ -615,13 +616,16 @@ class POutcurve(Point):
 #       return centre+offset*r
 
                 d=diff.length()
-                if d<=r:
+                if d-r<-0.001:
                         print "d="+str(d)+" is less than r="+str(d)
 #                       t=d
 #                       d=r
 #                       r=t
 #                       print d<r
-                l=math.sqrt(d*d-r*r)
+			l=0
+			return centre
+		else:
+                	l=math.sqrt(d*d-r*r)
                 theta= math.acos(r/d)
 
                 rx=-r* math.cos(theta) *diff.normalize()
@@ -846,18 +850,32 @@ class PArc(Point):
 			centre=self.pos.intersect_lines(self.last().pos, self.next().pos, self.pos, self.pos+perp)
 			c=math.sqrt(self.radius**2 - (self.pos-centre).length()**2)
 			a = l.normalize()*c
-			return [ Line(self.last().pos, centre-a), Arc(centre-a, centre+a, self.pos, self.direction), Line(centre+a, self.next().pos)]
+			if not self.reverse:
+				print "REVERSE ARC"
+				d=self.otherDir(self.direction)
+			else:
+				print "NOT REVERSE AEC"
+				d=self.direction
+			print self.direction+"  "+d
+			return [ Line(self.last().pos, centre-a), Arc(centre-a, centre+a, self.pos, d), Line(centre+a, self.next().pos)]
 		
         def origin(self, forward=True):
                 if forward:
                         op=self.last().pos
                 else:
                         op=self.next().pos
-                vecin=(op-self.pos).normalize()
-                if (self.direction=='cw' and self.reverse==False or self.direction=='ccw' and self.reverse==True)==forward:
-                        return op+rotate(vecin,90)
-                else:
-                        return op+rotate(vecin,-90)
+		if abs(op.length()-self.radius)>-0.001:
+	                vecin=(op-self.pos).normalize()
+	                if (self.direction=='cw' and self.reverse==False or self.direction=='ccw' and self.reverse==True)==forward:
+	                        return op+rotate(vecin,90)
+	                else:
+	                        return op+rotate(vecin,-90)
+		else:
+			print "HHHHHHHH"
+			if forward:
+				return self.next().pos
+			else:
+				return self.last().pos
 	
 	def end(self):
 		self.checkArc()

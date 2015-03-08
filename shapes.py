@@ -40,6 +40,8 @@ class Rect(Path):
                 self.closed=True
                 if rad is False:
                         rad = self.cutterrad
+		if bl[0]-tr[0] ==0 or bl[1]-tr[1] ==0:
+			raise ValueError("Rectangle has no area")
 		self.comment("Rounded Square")
 		self.comment("bl="+str(bl)+" tr="+str(tr)+" rad="+str(rad))
                 self.add_point(bl,ct, radius=rad)
