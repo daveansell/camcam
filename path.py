@@ -1711,6 +1711,8 @@ class Part(object):
 					layers = [self.layer]
 				if type(layers) is not list:
 					layers = [layers]
+				if layers == []:
+					print "add path with no layers to add it to "+str(path)
 				for layer in layers:
 					# if layer is not used yet add a pathgroup and ant config
 					if layer not in self.paths.keys():
