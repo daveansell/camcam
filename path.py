@@ -204,30 +204,23 @@ class Path(object):
 			pointlist=self.points
 		for p in range(0, len(pointlist)):
 			l = len(self.points)
-			print p
 			if self.closed==True:
 				pointlist[p].nextpoint = pointlist[(p+1)%l]
 				pointlist[p].lastpoint = pointlist[(p-1)%l]
 			else:
 				if p==0:
 					if l>1:
-						print "a"
 						pointlist[p].lastpoint = pointlist[1]
 					else:
-						print "b"
 						pointlist[p].lastpoint = pointlist[0]
 				else:
-					print "c"
 					pointlist[p].lastpoint = pointlist[p-1]
 				if p==l-1:
 					if l>1:
-						print "A"
 						pointlist[p].nextpoint = pointlist[l-2]
 					else:
-						print "B"
 						pointlist[p].nextpoint = pointlist[0]
 				else:
-					print "C"
 					pointlist[p].nextpoint = pointlist[p+1]
 
 	def make_point(self,pos, point_type='sharp', radius=0, cp1=False, cp2=False, direction=False, transform=False):
@@ -354,9 +347,6 @@ class Path(object):
 	#		numpoints=len(pointlist)*2-2
 #		for p,point in enumerate(pointlist):
 		
-		for p in range(0,numpoints):
-			print "last="+str(pointlist[p].lastpoint.pos)+" this="+str(pointlist[p].pos)+"next="+str(pointlist[p].nextpoint.pos)
-	#	if self.closed:
 		for p in range(0,numpoints):
 			segment_array.extend(pointlist[p].generateSegment(self.isreversed, config))
 	#	else:
