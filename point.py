@@ -189,6 +189,7 @@ class Point(object):
 #			last=self.forcelastpoint
 ##		else:
 		last=self.last()
+		print last.pos
 		if hasattr(last, 'control') and last.control or last.pos is not False and self.pos is not False and last.pos==self.pos:
 			return last.lastorigin()
 		else:
@@ -196,6 +197,7 @@ class Point(object):
 
 	def nextorigin(self):
 		next=self.next()
+		print next.pos
 		if hasattr(next, 'control') and next.control or next.pos is not False and self.pos is not False and next.pos==self.pos:
 			return next.nextorigin()
 		else:
@@ -456,12 +458,15 @@ class PIncurve(PSharp):
 		if self.last() != None and self.next() !=None:
 			lastpoint=self.lastorigin()
 			nextpoint=self.nextorigin()
+			print "lastorigin"+str(lastpoint)
+			print "nextorigin"+str(nextpoint)
 			angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
                         dl=self.radius*math.tan((angle/180)/2*math.pi)
                         startcurve=self.pos-(self.pos-lastpoint).normalize()*dl
                         endcurve = self.pos+(nextpoint-self.pos).normalize()*dl
                         # If these are straight there should be no curve or the maths blows up so just behave like a normal point
                         if(((startcurve + endcurve)/2-self.pos).length()==0 or angle==0 or angle==180):
+				print "GIBE UP angle="+str(angle)+" startcurve="+str(startcurve)+" endcurve"+str(endcurve)+ "sagf="+str((startcurve + endcurve)/2)+" self.pos"+str(self.pos)
                                 return [Line(self.last().end(),self.pos)]
                         else:
                                 d = math.sqrt(dl*dl+self.radius*self.radius)/((startcurve + endcurve)/2-self.pos).length()

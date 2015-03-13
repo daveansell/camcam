@@ -204,24 +204,31 @@ class Path(object):
 			pointlist=self.points
 		for p in range(0, len(pointlist)):
 			l = len(self.points)
+			print p
 			if self.closed==True:
 				pointlist[p].nextpoint = pointlist[(p+1)%l]
 				pointlist[p].lastpoint = pointlist[(p-1)%l]
 			else:
 				if p==0:
 					if l>1:
+						print "a"
 						pointlist[p].lastpoint = pointlist[1]
 					else:
+						print "b"
 						pointlist[p].lastpoint = pointlist[0]
 				else:
+					print "c"
 					pointlist[p].lastpoint = pointlist[p-1]
 				if p==l-1:
 					if l>1:
-						pointlist[p].nextpoint = pointlist[l-1]
+						print "A"
+						pointlist[p].nextpoint = pointlist[l-2]
 					else:
-						pointlist[p].lastpoint = pointlist[0]
+						print "B"
+						pointlist[p].nextpoint = pointlist[0]
 				else:
-					pointlist[p].lastpoint = pointlist[p+1]
+					print "C"
+					pointlist[p].nextpoint = pointlist[p+1]
 
 	def make_point(self,pos, point_type='sharp', radius=0, cp1=False, cp2=False, direction=False, transform=False):
 		if point_type=='sharp':
@@ -346,8 +353,15 @@ class Path(object):
 	#	else:
 	#		numpoints=len(pointlist)*2-2
 #		for p,point in enumerate(pointlist):
+		
+		for p in range(0,numpoints):
+			print "last="+str(pointlist[p].lastpoint.pos)+" this="+str(pointlist[p].pos)+"next="+str(pointlist[p].nextpoint.pos)
+	#	if self.closed:
 		for p in range(0,numpoints):
 			segment_array.extend(pointlist[p].generateSegment(self.isreversed, config))
+	#	else:
+	#		for p in range(1, numpoints):
+	#			segment_array.extend(pointlist[p].generateSegment(self.isreversed, config))
 #			thispoint = pointlist[p]
 
 	def otherDir(self,direction):
@@ -1099,7 +1113,9 @@ class Path(object):
 				if downmode=='down':
 					self.cutdown(depth)
 				first=1
-				for segment in segments:
+				s=len(segments)
+				for s in range(0,s):
+					segment=segments[s]
 					if first==1 and downmode=='ramp':
 						if firstdepth and (mode=='gcode' or mode=='simplemode'):
 							self.add_out(self.quickdown(depth-step+config['precut_z']))
@@ -1111,9 +1127,9 @@ class Path(object):
 				d= not d
 			if downmode=='ramp':
 				if d:
-					self.add_out(self.Fsegments[-1].out(direction,mode))
+					self.add_out(self.Fsegments[0].out(direction,mode))
 				else:
-					self.add_out(self.Bsegments[-1].out(direction,mode))
+					self.add_out(self.Bsegments[0].out(direction,mode))
 			self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 		# If we are in a gcode mode, go through all the cuts and add feed rates to them
 		if self.mode=='gcode':
@@ -1712,7 +1728,7 @@ class Part(object):
 				if type(layers) is not list:
 					layers = [layers]
 				if layers == []:
-					print "add path with no layers to add it to "+str(path)
+					raise (ValueError( "add path with no layers to add it to "+str(path)))
 				for layer in layers:
 					# if layer is not used yet add a pathgroup and ant config
 					if layer not in self.paths.keys():
