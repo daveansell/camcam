@@ -662,7 +662,7 @@ class POutcurve(Point):
 		else:
 			# if lr=0 we don't care about the direction
 			d1='cw'
-                if (self.pos-self.lastorigin()).cross(self.nextorigin()-self.pos)[2] <0:
+                if (self.pos-self.last().pos).cross(self.next().pos-self.pos)[2] <0:
                         d2='cw'
                 else:
                         d2='ccw'
@@ -670,7 +670,8 @@ class POutcurve(Point):
                 segment_array.append( Line(p1[0], p1[1]))
                 d3=''
                 if self.next().point_type=="outcurve":
-                        if (self.nextorigin()-self.pos).cross(self.next().nextorigin()-self.nextorigin())[2] <0:
+#                        if (self.nextorigin()-self.pos).cross(self.next().nextorigin()-self.nextorigin())[2] <0:
+                        if (self.next().pos-self.pos).cross(self.next().next().pos-self.next().pos)[2] <0:
                                 d3='cw'
                         else:
                                 d3='ccw'

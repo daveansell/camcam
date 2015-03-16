@@ -475,8 +475,11 @@ class Plate(Part):
 #				self.add(Screw(V(d['holeRad'],0), layer_config=screwConf, transform={'rotate':[V(0,0), i*360/d['holes']]}))
 		if centreRad >0:
 			self.add(Hole(V(0,0), rad=centreRad))
-			self.add(Hole(V(0,0), rad=centreRad+2), [layer_config['base']])
-			self.add(Hole(V(0,0), rad=centreRad+2), layer_config['clearance'])
+			if 'base' in layer_config:
+				self.add(Hole(V(0,0), rad=centreRad+2), [layer_config['base']])
+			if 'clearance' in layer_config:
+				print layer_config['clearance']
+				self.add(Hole(V(0,0), rad=centreRad+2), layer_config['clearance'])
 
 class RoundPlate(Plate):
 	def __init__(self, pos, plateType, **config):
