@@ -137,13 +137,17 @@ class Pi(Part):
 			layer_config = {'paper':'paper', 'insert':'base'}
 		self.add(RoundedRect(V(0,0), centred=True, width=w, height=85, rad=3),'paper')
 		hole_bl=V(-w/2+3.5, -h/2+3.5)
-		print "insert_layer="+str(layer_config['insert']) 
-		print hole_bl
-		print pos
-		self.add(Insert(hole_bl,'M3', layer_config['insert']))
-		self.add(Insert(hole_bl+V(hw,0),'M3', layer_config['insert']))
-		self.add(Insert(hole_bl+V(hw, hl),'M3', layer_config['insert']))
-		self.add(Insert(hole_bl+V(0,hl),'M3', layer_config['insert']))
+		if 'insert' in layer_config.keys():
+			self.add(Insert(hole_bl,'M3', layer_config['insert']))
+			self.add(Insert(hole_bl+V(hw,0),'M3', layer_config['insert']))
+			self.add(Insert(hole_bl+V(hw, hl),'M3', layer_config['insert']))
+			self.add(Insert(hole_bl+V(0,hl),'M3', layer_config['insert']))
+		if 'clearance' in layer_config.keys():
+			self.add(Hole(hole_bl,rad=3.3/2), layer_config['clearance'])
+                        self.add(Hole(hole_bl+V(hw,0),rad=3.3/2), layer_config['clearance'])
+                        self.add(Hole(hole_bl+V(hw, hl),rad=3.3/2), layer_config['clearance'])
+                        self.add(Hole(hole_bl+V(0,hl),rad=3.3/2), layer_config['clearance'])
+
 
 class Stepper(Part):
 	def __init__(self,pos, stepper_type,layer, **config):
