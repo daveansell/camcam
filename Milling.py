@@ -497,8 +497,8 @@ class Milling:
 	}
 		self.inserts={
 		"M3":{
-			"diams":4.5/2,
-			"depths":False,
+			"diams":[5,4.5/2],
+			"depths":[-0.1,False],
 		},
 		"M4":{
                         "diams":[5,3.05],

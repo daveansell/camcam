@@ -135,7 +135,7 @@ class Pi(Part):
 			layer_config = config['layer_config']
 		else:
 			layer_config = {'paper':'paper', 'insert':'base'}
-		self.add(RoundedRect(V(0,0), centred=True, width=w, height=85, rad=3),'paper')
+		self.add(RoundedRect(V(0,0), centred=True, width=w, height=h, rad=3),'paper')
 		hole_bl=V(-w/2+3.5, -h/2+3.5)
 		if 'insert' in layer_config.keys():
 			self.add(Insert(hole_bl,'M3', layer_config['insert']))
@@ -147,6 +147,7 @@ class Pi(Part):
                         self.add(Hole(hole_bl+V(hw,0),rad=3.3/2), layer_config['clearance'])
                         self.add(Hole(hole_bl+V(hw, hl),rad=3.3/2), layer_config['clearance'])
                         self.add(Hole(hole_bl+V(0,hl),rad=3.3/2), layer_config['clearance'])
+
 
 
 class Stepper(Part):
