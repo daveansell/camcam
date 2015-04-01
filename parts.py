@@ -351,26 +351,27 @@ class Fan(Pathgroup):
 			d=data[config['fan_type']]
 		else:
 			d=data['120mm']
-		if 'centre_limit' in d:
-			o = math.sqrt(d['centrerad']**2 - d['centre_limit']**2)
-			cutout=self.add(Path(side='in', closed=True))
-			cutout.add_point(V(o,d['centre_limit']), 'sharp')
-			cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
-			cutout.add_point(V(d['centre_limit'],o), 'sharp')
-			
-			cutout.add_point(V(d['centre_limit'],-o), 'sharp')
-			cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
-			cutout.add_point(V(o,-d['centre_limit']), 'sharp')
-
-			cutout.add_point(V(-o,-d['centre_limit']), 'sharp')
-			cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
-			cutout.add_point(V(-d['centre_limit'],-o), 'sharp')
-
-			cutout.add_point(V(-d['centre_limit'],o), 'sharp')
-			cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
-			cutout.add_point(V(-o,d['centre_limit']), 'sharp')
-		else:
-			self.add(Hole(V(0,0), rad=d['centrerad']))
+		if 'no_hole' not in config or not config['no_hole']:
+			if 'centre_limit' in d:
+				o = math.sqrt(d['centrerad']**2 - d['centre_limit']**2)
+				cutout=self.add(Path(side='in', closed=True))
+				cutout.add_point(V(o,d['centre_limit']), 'sharp')
+				cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
+				cutout.add_point(V(d['centre_limit'],o), 'sharp')
+				
+				cutout.add_point(V(d['centre_limit'],-o), 'sharp')
+				cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
+				cutout.add_point(V(o,-d['centre_limit']), 'sharp')
+	
+				cutout.add_point(V(-o,-d['centre_limit']), 'sharp')
+				cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
+				cutout.add_point(V(-d['centre_limit'],-o), 'sharp')
+	
+				cutout.add_point(V(-d['centre_limit'],o), 'sharp')
+				cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
+				cutout.add_point(V(-o,d['centre_limit']), 'sharp')
+			else:
+				self.add(Hole(V(0,0), rad=d['centrerad']))
 
 		self.add(Hole(V(d['hole_off'],d['hole_off']), d['holeRad']))
 		self.add(Hole(-V(d['hole_off'],d['hole_off']), d['holeRad']))
