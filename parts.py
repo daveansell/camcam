@@ -341,11 +341,11 @@ class Fan(Pathgroup):
                 self.init(config)
 		self.translate(pos)
 		data={
-			'60mm':{'centrerad':58/2,  'hole_off':50/2, 'holeRad':4.5/2},
-			'80mm':{'centrerad':92/2, 'centre_limit':78/2, 'hole_off':71.5/2, 'holeRad':4.5/2 },
-			'92mm':{'centrerad':104/2, 'centre_limit':90/2, 'hole_off':82.5/2, 'holeRad':4.5/2 },
-			'120mm':{'centrerad':132/2, 'centre_limit':118/2, 'hole_off':105/2, 'holeRad':4.5/2 },
-			'140mm':{'centrerad':150/2, 'centre_limit':138/2, 'hole_off':124.5/2, 'holeRad':4.5/2 },
+			'60mm':{'centrerad':58/2,  'hole_off':50/2, 'holeRad':4.5/2, 'threadRad':3.3},
+			'80mm':{'centrerad':92/2, 'centre_limit':78/2, 'hole_off':71.5/2, 'holeRad':4.5/2, 'threadRad':3.3 },
+			'92mm':{'centrerad':104/2, 'centre_limit':90/2, 'hole_off':82.5/2, 'holeRad':4.5/2, 'threadRad':3.3 },
+			'120mm':{'centrerad':132/2, 'centre_limit':118/2, 'hole_off':105/2, 'holeRad':4.5/2, 'threadRad':3.3 },
+			'140mm':{'centrerad':150/2, 'centre_limit':138/2, 'hole_off':124.5/2, 'holeRad':4.5/2, 'threadRad':3.3 },
 			}
 		if 'fan_type' in config:
 			d=data[config['fan_type']]
@@ -372,11 +372,16 @@ class Fan(Pathgroup):
 				cutout.add_point(V(-o,d['centre_limit']), 'sharp')
 			else:
 				self.add(Hole(V(0,0), rad=d['centrerad']))
-
-		self.add(Hole(V(d['hole_off'],d['hole_off']), d['holeRad']))
-		self.add(Hole(-V(d['hole_off'],d['hole_off']), d['holeRad']))
-		self.add(Hole(-V(d['hole_off'],-d['hole_off']), d['holeRad']))
-		self.add(Hole(V(d['hole_off'],-d['hole_off']), d['holeRad']))
+		if 'tapped_holes' in config and config['tapped_holes']:
+			self.add(Hole(V(d['hole_off'],d['hole_off']), d['threadRad']))
+			self.add(Hole(-V(d['hole_off'],d['hole_off']), d['threadRad']))
+			self.add(Hole(-V(d['hole_off'],-d['hole_off']), d['threadRad']))
+			self.add(Hole(V(d['hole_off'],-d['hole_off']), d['threadRad']))
+		else:
+			self.add(Hole(V(d['hole_off'],d['hole_off']), d['holeRad']))
+			self.add(Hole(-V(d['hole_off'],d['hole_off']), d['holeRad']))
+			self.add(Hole(-V(d['hole_off'],-d['hole_off']), d['holeRad']))
+			self.add(Hole(V(d['hole_off'],-d['hole_off']), d['holeRad']))
 
 class StepperDriver(Pathgroup):
 	def __init__(self, pos, **config):
