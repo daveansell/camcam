@@ -847,8 +847,10 @@ class PArc(Point):
 		else:
 			l=self.next().pos - self.last().pos
 			perp=rotate(l.normalize(),-90)
-			print self
 			centre=self.pos.intersect_lines(self.last().pos, self.next().pos, self.pos, self.pos+perp)
+			print "pos="+str(self.pos)+" centre="+str(centre)
+			print "radius="+str(self.radius)+" pos - centre = "+str( (self.pos-centre).length())
+			print self.radius**2 - (self.pos-centre).length()**2
 			c=math.sqrt(self.radius**2 - (self.pos-centre).length()**2)
 			a = l.normalize()*c
 			if not self.reverse:
@@ -865,7 +867,9 @@ class PArc(Point):
                         op=self.last().pos
                 else:
                         op=self.next().pos
+
 		if abs(op.length()-self.radius)>-0.001:
+			print "arc at corner WWWWWW"
 	                vecin=(op-self.pos).normalize()
 	                if (self.direction=='cw' and self.reverse==False or self.direction=='ccw' and self.reverse==True)==forward:
 	                        return op+rotate(vecin,90)

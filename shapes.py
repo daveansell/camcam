@@ -380,13 +380,13 @@ class DoubleFlat(Path):
 		self.add_point(pos+V(-flat_rad,-y), point_type='sharp')
 #		self.add_point(pos, radius=rad, direction='cw', point_type='arc')
 #		self.add_point(pos, radius=rad, direction='cw', point_type='aroundcurve')
-		self.add_point(pos, direction='cw', point_type='arc')
+		self.add_point(pos, direction='ccw', radius=rad, point_type='arc')
 		self.add_point(pos+V(flat_rad, -y), point_type='sharp')
 		self.add_point(pos+V(flat_rad, 0), point_type='sharp')
 		self.add_point(pos+V(flat_rad, y),  point_type='sharp')
 #		self.add_point(pos, radius=rad, point_type='arc', direction='cw')
 #		self.add_point(pos, radius=rad, point_type='aroundcurve', direction='cw')
-		self.add_point(pos,  point_type='arc', direction='cw')
+		self.add_point(pos,  point_type='arc', radius=rad, direction='ccw')
 		self.add_point(pos+V(-flat_rad,y), point_type='sharp')
 
 class Cross(Pathgroup):
