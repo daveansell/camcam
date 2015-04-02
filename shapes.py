@@ -349,19 +349,23 @@ class CircleChord(Path):
 	""" Creates part of a circle as if it were filled with water from bottom rad - radius of circle height depth of water. pos is centre of circle"""
 	def __init__(self, pos, rad, height, **config):
 		self.init(config)
-		if height>=rad:
-			raise ValueError("height must be less than rad")
+		if height>=2*rad:
+			raise ValueError("height must be less than diam")
 		self.closed=True
 
 		# horrible fudge!!!
-		if self.side=='in':
-			self.side='out'
-		elif self.side=='out':
-			self.side='in'
+		if height<rad:
+			if self.side=='in':
+				self.side='out'
+			elif self.side=='out':
+				self.side='in'
 		print "side=www"+self.side
 		
 		self.direction='cw'
-		end_x = math.sqrt(rad**2-height**2)
+		if height <=rad:
+			end_x = math.sqrt(rad**2-height**2)
+		else:
+			end_x = math.sqrt(rad**2-(height-rad)**2)
 		h = rad -height
 		self.add_point(V(-end_x, h)+pos)
 		self.add_point(PArc(V(0, 0)+pos, radius=rad, direction='cw'))
