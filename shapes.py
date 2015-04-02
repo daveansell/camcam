@@ -191,7 +191,7 @@ if :param cutter: is not explicitly specified it will use the countersink cutter
 		self.comment("CountersinkHole")
 		self.comment("pos="+str(pos)+" holerad="+str(holerad)+" countersinkrad="+str(countersinkrad))
 				
-				
+		
 
 # create a circular path
 class Circle(Path):
@@ -344,6 +344,32 @@ class Chamfer(Pathgroup):
 #			print temp
 #			print callable(self.add)
 			self.add(temp)
+
+class CircleChord(Path):
+	""" Creates part of a circle as if it were filled with water from bottom rad - radius of circle height depth of water. pos is centre of circle"""
+	def __init__(self, pos, rad, height, **config):
+		self.init(config)
+		if height>=rad:
+			raise ValueError("height must be less than rad")
+		self.closed=True
+
+		# horrible fudge!!!
+		if self.side=='in':
+			self.side='out'
+		elif self.side=='out':
+			self.side='in'
+		print "side=www"+self.side
+		
+		self.direction='cw'
+		end_x = math.sqrt(rad**2-height**2)
+		h = rad -height
+		self.add_point(V(-end_x, h)+pos)
+		self.add_point(PArc(V(0, 0)+pos, radius=rad, direction='cw'))
+		self.add_point(V(end_x, h)+pos)
+		
+			
+
+
 class DoubleFlat(Path):
 	def __init__(self, pos, rad, flat_rad, **config):
 		"""Cut a circle with two flats, centred at :param pos: with radius :param rad: and :param flat_rad: is half the distance between the flats"""
@@ -353,12 +379,14 @@ class DoubleFlat(Path):
 		self.add_point(pos+V(-flat_rad,0))
 		self.add_point(pos+V(-flat_rad,-y), point_type='sharp')
 #		self.add_point(pos, radius=rad, direction='cw', point_type='arc')
-		self.add_point(pos, radius=rad, direction='cw', point_type='aroundcurve')
+#		self.add_point(pos, radius=rad, direction='cw', point_type='aroundcurve')
+		self.add_point(pos, direction='cw', point_type='arc')
 		self.add_point(pos+V(flat_rad, -y), point_type='sharp')
 		self.add_point(pos+V(flat_rad, 0), point_type='sharp')
 		self.add_point(pos+V(flat_rad, y),  point_type='sharp')
 #		self.add_point(pos, radius=rad, point_type='arc', direction='cw')
-		self.add_point(pos, radius=rad, point_type='aroundcurve', direction='cw')
+#		self.add_point(pos, radius=rad, point_type='aroundcurve', direction='cw')
+		self.add_point(pos,  point_type='arc', direction='cw')
 		self.add_point(pos+V(-flat_rad,y), point_type='sharp')
 
 class Cross(Pathgroup):
