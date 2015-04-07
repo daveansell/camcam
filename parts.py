@@ -120,12 +120,12 @@ class PiBarn(Part):
 			self.name = config['name']
 		else:
 			self.name = 'PiBarn'
-		bolt_conf={'clearance_layers':['pibarn'], 'length':50}
+		bolt_conf={'clearance_layers':[config['layer']], 'length':50}
 		print self.add(RepeatLine(pos+V(-x_units/2*spacing, -y_units/2*spacing), pos+V(x_units/2*spacing, -y_units/2*spacing), x_units+1, Bolt, bolt_conf)).paths
 		self.add(RepeatLine(pos+V(x_units/2*spacing, (-y_units/2+1)*spacing), pos+V(x_units/2*spacing, (y_units/2-1)*spacing), y_units-1, Bolt, bolt_conf))
 		self.add(RepeatLine(pos+V(x_units/2*spacing, y_units/2*spacing), pos+V(-x_units/2*spacing, y_units/2*spacing), x_units+1, Bolt, bolt_conf))
 		self.add(RepeatLine(pos+V(-x_units/2*spacing, (y_units/2-1)*spacing), pos+V(-x_units/2*spacing, (-y_units/2+1)*spacing), y_units-1, Bolt, bolt_conf))
-		self.add_border(RoundedRect(pos, centred=True, width=x_units*spacing+15, height=x_units*spacing+15, side='out', rad=8))
+		self.add_border(RoundedRect(pos, centred=True, width=x_units*spacing+15, height=y_units*spacing+15, side='out', rad=8))
 		self.add_bom('standoff',4, description='30mm standoff')
 
 class Pi(Part):
