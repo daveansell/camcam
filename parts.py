@@ -116,6 +116,10 @@ class PiBarn(Part):
 			y_units/=2
 		else:
 			spacing=25
+		if 'name' in config:
+			self.name = config['name']
+		else:
+			self.name = 'PiBarn'
 		bolt_conf={'clearance_layers':['pibarn'], 'length':50}
 		print self.add(RepeatLine(pos+V(-x_units/2*spacing, -y_units/2*spacing), pos+V(x_units/2*spacing, -y_units/2*spacing), x_units+1, Bolt, bolt_conf)).paths
 		self.add(RepeatLine(pos+V(x_units/2*spacing, (-y_units/2+1)*spacing), pos+V(x_units/2*spacing, (y_units/2-1)*spacing), y_units-1, Bolt, bolt_conf))
