@@ -478,7 +478,7 @@ class HoleLine(Pathgroup):
 	def __init__(self, start, end, number, rad, **config):
 		self.init(config)
 		step=(end-start)/(number-1)
-		for i in range(0,number-1):
+		for i in range(0,number):
 			self.add(Hole(start+step*i, rad)) #self.add(Hole(start+step*i, rad, 'in'))
 		self.comment("HoleLine")
 		self.comment("start="+str(start)+" end="+str(end)+" number="+str(number)+" rad="+str(rad))
