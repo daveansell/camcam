@@ -928,7 +928,10 @@ class PCircle(Point):
 	def makeSegment(self, config):
 		r1 = V(self.radius, 0)
 		r2 = V(0, self.radius)
-		return [ Arc(self.pos-r1, self.pos+r2, self.pos, 'ccw'), Arc(self.pos+r2, self.pos+r1, self.pos, 'ccw'), Arc(self.pos+r1, self.pos-r2, self.pos, 'ccw'), Arc(self.pos-r2, self.pos-r1, self.pos, 'ccw') ]
+		if self.reverse:
+			return [ Arc(self.pos-r1, self.pos-r2, self.pos, 'cw'), Arc(self.pos-r2, self.pos+r1, self.pos, 'cw'), Arc(self.pos+r1, self.pos+r2, self.pos, 'cw'), Arc(self.pos+r2, self.pos-r1, self.pos, 'cw') ]
+		else:
+			return [ Arc(self.pos-r1, self.pos+r2, self.pos, 'ccw'), Arc(self.pos+r2, self.pos+r1, self.pos, 'ccw'), Arc(self.pos+r1, self.pos-r2, self.pos, 'ccw'), Arc(self.pos-r2, self.pos-r1, self.pos, 'ccw') ]
 	def offset(self, side, distance, direction):
 		t=copy.copy(self)
 		if side=='left' and self.direction=='cw' or side=='right' and self.direction=='ccw':

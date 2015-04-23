@@ -458,6 +458,7 @@ class Path(object):
 		if total[2]==0:
 			for p in self.points:
 				if hasattr(p,'direction') and p.direction in ['cw','ccw']:
+					print p.direction
 					return p.direction
 			return 'cw'
 		elif(total[2]*reverse>0):

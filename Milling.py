@@ -61,7 +61,7 @@ class Milling:
 				'zero':'bottom_left',
                         },
                         'laser':{
-                                'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
+                                'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n  <sodipodi:namedview      id="base"      pagecolor="#ffffff"      bordercolor="#666666"      borderopacity="1.0"      inkscape:pageopacity="0.0"      inkscape:pageshadow="2"     inkscape:zoom="0.35"     inkscape:cx="375"     inkscape:cy="520"     inkscape:document-units="mm"     inkscape:current-layer="layer1"     showgrid="false"     units="mm"     inkscape:window-width="504"     inkscape:window-height="441"     inkscape:window-x="320"     inkscape:window-y="25"     inkscape:window-maximized="0" />\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
                                 'postfix':'</g>\n</svg>\n',
                                 'mode':'svg',
                                 'forcestepdown':1000,
@@ -504,10 +504,14 @@ class Milling:
                         "diams":[5,3.05],
                         "depths":[-1,False],
 			'hammer':{
-					"diams":[14.2/2,10/2,3.05],
+				"diams":[14.2/2,10/2,3.05],
 #					"diams":[14.2/2,10/2,3,5.7/2],
-					"depths":[-1.5,-1.5,False]
-				}
+				"depths":[-1.5,-1.5,False]
+			},
+			'headless':{
+				"diams":[3.05],
+				"depths":[False],
+			}
                 },
                 "M5":{
                         "diams":[6.5,3.95],
