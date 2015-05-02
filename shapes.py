@@ -237,6 +237,23 @@ class RectSpeakerGrill(Pathgroup):
 				if abs(p[0])<width/2-holerad and abs(p[1])<height/2-holerad:
 	                                self.add(Hole(pos+p, rad=holerad))
 
+class LobedCircle(Path):
+	def __init__(self,pos, rad, lobe_angle, loberad, num_lobes, lobe_length, **config):
+		self.init(config)
+		self.closed=True
+		if 'angle_offset' in config:
+			o = config['angle_offset']
+		else:
+			o = 0
+		step = 360/num_lobes
+		for i in range(0,num_lobes):
+		        self.add_point(PSharp(pos + V(rad,0), transform={'rotate':[pos,o+i*step-lobe_angle]}))
+		        self.add_point(PIncurve(pos + V(rad+lobe_length,0), radius=loberad, transform={'rotate':[pos,o+i*step]}))
+		        self.add_point(PSharp(pos + V(rad,0), transform={'rotate':[pos,o+i*step+lobe_angle]}))
+		        self.add_point(PArc(pos, radius=rad, direction='cw'))
+
+
+
 class FilledCircle(Pathgroup):
 
 	def __init__(self, pos, rad, **config):
