@@ -81,4 +81,104 @@ class Turret(Part):
 		self.end=box.end
 		self.side=box.side
 		self.bottom.add(Hole(V(0,0), rad=d['piviot_hole_rad']))
-			
+
+
+class PlainBox(Part):
+	def __init__(self, pos, name, layers, width, height, depth, thickness, tab_length, **config):
+		self.init(config)
+		sides = ['top', 'bottom', 'left', 'right', 'front', 'back']
+		conns = { 
+			'front':['left', 'top', 'right', 'bottom'],
+			'back':['left', 'top', 'right', 'bottom'],
+			'top':['left', 'front', 'right', 'back'],
+			'bottom':['left', 'front', 'right', 'back'],
+			'left':['front', 'bottom', 'back', 'top'],
+			'right':['front', 'bottom', 'back', 'top'],  
+		}
+		dims = {
+			'front':[width, height],
+			'back':[width, height],
+			'top':[width, depth],
+			'bottom':[width, depth],
+			'left':[ depth, height],
+			'right':[depth, height],
+		}  
+		if 'cornermodes' in config:
+			cornermodes = config['cornermodes']
+		else:
+			cornermodes = {}
+		for s1 in sides:
+			for s2 in conns[s1]:
+				if (s1,s2) in cornermodes:
+					if (s2,s1) not in cornermodes:
+						if(cornermodes[(s1,s2)]=='on'):
+							cornermodes[(s2,s1)]='off'
+						else:
+							cornermodes[(s2,s1)]='on'
+				elif (s2,s1) in cornermodes:
+					if cornermodes[(s2,s1)]=='on':
+						cornermodes[(s1, s2)]='off'
+					else:
+						cornermodes[(s1, s2)]='on'
+				else:
+					cornermodes[(s1,s2)] = 'on' 
+					cornermodes[(s2,s1)] = 'off'
+				
+		print cornermodes
+		if type(thickness) is dict:
+			side_thickness = thickness
+		else:
+			side_thickness = {} 
+			for s in sides:
+				side_thickness[s]=thickness
+		c=V(-width/2, -height/2)
+		offsets = {
+				'front':V(0,0),
+				 'back':V(0,0),
+				'top':V(0, height/2+depth/2+side_thickness['top']+side_thickness['front']+10),
+				'bottom':V(0, -height/2-depth/2- (side_thickness['bottom']+side_thickness['front']+10)),
+				'left':V(-width/2-depth/2-(side_thickness['top']+side_thickness['left']+10),0),
+				'right':V(width/2+depth/2+(side_thickness['top']+side_thickness['left']+10),0),
+		}
+		for s in sides:
+			if side_thickness[s]!=0:
+				temp=['left', 'top', 'right', 'bottom']
+				i=0
+				sm={}
+				corners={}
+				th={}
+				for con in conns[s]:
+					print str((s, con))+" -> "+str(cornermodes[(s, con)])
+					corners[temp[i]]=cornermodes[(s, con)]	
+					if side_thickness[con]==0:
+						sm[temp[i]]='straight'
+					th[temp[i]]=side_thickness[con]
+					i+=1
+				if type(layers) is dict:
+					l= layers[s]
+				else:
+					l=layers
+				print (
+                                                pos+offsets[s], 
+                                                dims[s][0], 
+                                                dims[s][1],  
+                                                'in', 
+                                                corners, 
+                                                sm, 
+                                                tab_length, 
+                                                th , '1/8_endmill'  )
+
+				t= self.add(Part(layer=l, name=name+'_'+s, 
+					border = FingerJointBoxSide(
+						c, 
+						dims[s][0], 
+						dims[s][1],  
+						'in', 
+						corners, 
+						sm, 
+						tab_length, 
+						th ,
+						 '1/8_endmill', auto=True  )))
+				t.translate(offsets[s]+pos)
+				setattr(self, s, t)
+						
