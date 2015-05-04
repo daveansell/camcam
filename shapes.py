@@ -1054,6 +1054,8 @@ class Module(Plane):
 				holesX=4
 			if holesY==False:
 				holesY=4
+		self.width = width
+		self.height = height
 		if orientation!='landscape':
 			width,height = height,width
 			holesX, holesY = holesY, holesX

@@ -84,8 +84,16 @@ You can calibrate these with a rectangle or a named circle of known width and he
 				off = V(float(m.group(1)), float(m.group(2)))
 			else:
 				off=V(0,0)
-			self.append(V( (float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cx'])+off[0]-cal_centrex)*scalex, 
-					-(float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cy'])+off[1]-cal_centrex)*scaley))
+			cal = V(cal_centrex, cal_centrey)
+			pos = V(float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cx']), float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cy']))
+			pos+=off
+			pos -=cal
+
+			pos = V(pos[0]*scalex, -pos[1]*scaley)			
+
+			self.append(pos)
+#V( (float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cx'])+off[0]-cal_centrex)*scalex, 
+#					(float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cy'])+off[1]-cal_centrex)*scaley))
 # at the moment this just treats everything as a line so add lots of points
 	def is_number(self,s):
 	    try:
