@@ -262,7 +262,39 @@ class LinearBearing(Pathgroup):
 				self.add(Hole(pos+V(d['K']/2, -d['J']/2), milling.bolts[d['s1']]['clearance']/2))
 				self.add(Hole(pos+V(-d['K']/2, d['J']/2), milling.bolts[d['s1']]['clearance']/2))
 				self.add(Hole(pos+V(d['K']/2, d['J']/2), milling.bolts[d['s1']]['clearance']/2))
-	
+
+class LinearRail(Part):
+	def __init__(self, start, end, rail_type, **config):
+		self.init(config)
+		if 'transform' in config:
+			del(config['transform'])
+		dat={
+			'LFS-12-10':{'width':36, 'centre_height':16, 'centre_width':24, 'holespacing_x':50, 'holespacing_y':0, 'bolt_type':'M6'},
+			'LFS-12-3':{'width':90, 'centre_height':25, 'centre_width':49, 'holespacing_x':100, 'holespacing_y':75, 'bolt_type':'M6'},
+			'LFS-12-2':{'width':62, 'centre_height':25, 'centre_width':12, 'holespacing_x':100, 'holespacing_y':50, 'bolt_type':'M6'},
+		}
+		if rail_type in dat:
+			d=dat[rail_type]
+			self.d=d
+			print start
+			print end
+			tot_len = (end-start).length()
+			parallel = (end-start).normalize()
+			perp = rotate(parallel, 90)
+			hole_gaps = int(math.floor(tot_len/d['holespacing_x']))
+			if 'offsetx' not in config:
+				offsetx = (tot_len - hole_gaps*d['holespacing_x'])/2
+			else:
+				offsetx = config['offsetx']
+			
+			for i in range(0, hole_gaps+1):
+				if d['holespacing_y'] ==0:
+					self.add(Bolt(start+ parallel *(offsetx+ d['holespacing_x']*i), d['bolt_type'], **config))
+				else:
+					self.add(Bolt(start+parallel*(offsetx+ d['holespacing_x']*i) + perp * d['holespacing_y'] , d['bolt_type'], **config))
+					self.add(Bolt(start+parallel*(offsetx+ d['holespacing_x']*i) - perp * d['holespacing_y'] , d['bolt_type'], **config))
+			self.add(Lines([start+perp*d['width']/2, start-perp*d['width']/2, end-perp*d['width']/2, end+perp*d['width']/2], closed=True), 'paper')
+
 class Insert(Part):
 	def __init__(self, pos, insert_size,layer, **config):
 		"""Standard wood insert at pos"""
@@ -504,3 +536,66 @@ class RoundPlate(Plate):
 		d=data[plateType]
 		self.initPlate(pos, plateType, d['rad'], d['centreRad'], d['holes'], d['holeRad'], d['holeSize'], config)
 
+class Monitor(Part):
+	def __init__(self, pos, monitorType, **config):
+		self.init(config)
+		self.translate(pos)
+
+		if monitorType =='LG23':
+			mountPlateCentre=-V(0,-5)
+			monitorMountHeight=120
+			monitorMountWidth=300
+
+			monitorMountHoleSpacing=75
+			monitorMountBoltDiameter=4
+			perspexPlatewidth=30
+			holeOffset=20
+			offset=V(0,15)
+			monitorWidth = 533
+			monitorHeight = 326
+		elif monitorType =='LG22':
+			mountPlateCentre=-V(0,-5)
+                        monitorMountHeight=120
+                        monitorMountWidth=300
+                        monitorMountHoleSpacing=75
+                        monitorMountBoltDiameter=4
+                        perspexPlatewidth=30
+                        holeOffset=20
+                        offset=V(0,8)
+			monitorWidth = 509
+			monitorHeight = 316
+		else:
+			raise ValueError('Invalid Monitor Type')
+
+
+		dcDcConverterWidth=58 
+		dcDcConverterHeight=26.5 
+		dcDcConverterCentre=V(monitorMountHeight/2+30+dcDcConverterWidth/2,-monitorHeight/2+50)
+
+		#Monitor mount holes - assume square
+		self.add(SquareObjects(mountPlateCentre-offset, 2,2, Rect(V(0,0), centred=True, height=monitorMountBoltDiameter, width=5*monitorMountBoltDiameter, side='in'), centred=True, width=monitorMountHoleSpacing, height=monitorMountHoleSpacing), 'perspex')
+		
+		#Mount plate mounting holes
+#		self.add(SquareObjects(mountPlateCentre-offset, 2,2, Hole(V(0,0), rad=5/2), centred=True, width=monitorMountHeight-holeOffset, height=monitorMountWidth-holeOffset), ['base', 'perspex'])
+		self.add(FourObjects(mountPlateCentre-offset, Hole(V(0,0), rad=4.5/2),  centred=True, width = monitorMountHoleSpacing, height = monitorMountHoleSpacing, layers= ['base', 'perspex']))
+
+		#Perspex spacer to sit under the mount plate
+		self.add(RoundedRect(mountPlateCentre-offset-V(0,((monitorMountWidth/2)-(perspexPlatewidth/2))), centred=True, width=monitorMountHeight, height=perspexPlatewidth, side='out', rad=10), 'perspex')
+		self.add(RoundedRect(mountPlateCentre-offset+V(0,((monitorMountWidth/2)-(perspexPlatewidth/2))), centred=True, width=monitorMountHeight, height=perspexPlatewidth, side='out', rad=10), 'perspex')
+		#Holes to hold module to monitor mount plate
+		self.add(SquareObjects(mountPlateCentre, 2,2, Bolt(V(0,0), 'M4'), centred=True, width=monitorMountWidth-holeOffset, height=monitorMountHeight-holeOffset))
+		self.add(FourObjects(mountPlateCentre-offset, Hole(V(0,0), rad=4.5/2), centred=True, height=monitorMountWidth-holeOffset, width=monitorMountHeight-holeOffset, layers= ['base', 'perspex']))
+
+		
+
+		# Hole through board for cables - also used to make mounting board
+		self.add(RoundedRect(mountPlateCentre-offset, centred=True, width=monitorMountHeight, height=monitorMountWidth, side='out', rad=10), ['base', 'paper', 'perspex'])
+
+
+		# Holes for mounting 12v-19v DC-DC converter
+		self.add(SquareObjects(dcDcConverterCentre, 2 ,2, Bolt(V(0,0), 'M3', clearance_layers=[]), centred=True, width=dcDcConverterWidth, height=dcDcConverterHeight))
+
+# Perspex stand off for power 
+		self.add(SquareObjects(mountPlateCentre, 2,6, Hole(V(0,0), rad=3.5/2), centred=True, width=10, height=50), 'perspex')
+		self.add(SquareObjects(mountPlateCentre, 2,6, Hole(V(0,0), rad=5.5/2), centred=True, width=10, height=50), 'perspex')
+		self.add(Rect(V(0,0), centred=True, width = monitorWidth, height = monitorHeight), 'paper')
