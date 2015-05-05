@@ -84,6 +84,17 @@ class Turret(Part):
 
 
 class PlainBox(Part):
+	"""pos       - position
+	   name      - part base name - the subparts will be called name_back etc
+	   layers    - layers if a string everything will be in one layer if a dict of 'top':'top_layer_name' etc they can be different layers
+	   width     - width in x 
+	   height    - height in y
+	   depth     - depth in z 
+		     - all internal dimensions
+	   thickness - of material
+
+	   cornermodes - dict of ('left', 'top'):'on' (on the 'left part' whree it meets the 'top' part this sets the ends to on the line defining it. the 'top' part where it meets the 'left' part will be set to be the opposite
+"""
 	def __init__(self, pos, name, layers, width, height, depth, thickness, tab_length, **config):
 		self.init(config)
 		sides = ['top', 'bottom', 'left', 'right', 'front', 'back']
@@ -124,7 +135,6 @@ class PlainBox(Part):
 					cornermodes[(s1,s2)] = 'on' 
 					cornermodes[(s2,s1)] = 'off'
 				
-		print cornermodes
 		if type(thickness) is dict:
 			side_thickness = thickness
 		else:
@@ -148,7 +158,6 @@ class PlainBox(Part):
 				corners={}
 				th={}
 				for con in conns[s]:
-					print str((s, con))+" -> "+str(cornermodes[(s, con)])
 					corners[temp[i]]=cornermodes[(s, con)]	
 					if side_thickness[con]==0:
 						sm[temp[i]]='straight'
@@ -158,15 +167,6 @@ class PlainBox(Part):
 					l= layers[s]
 				else:
 					l=layers
-				print (
-                                                pos+offsets[s], 
-                                                dims[s][0], 
-                                                dims[s][1],  
-                                                'in', 
-                                                corners, 
-                                                sm, 
-                                                tab_length, 
-                                                th , '1/8_endmill'  )
 
 				t= self.add(Part(layer=l, name=name+'_'+s, 
 					border = FingerJointBoxSide(
