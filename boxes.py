@@ -201,7 +201,7 @@ class ArbitraryBox(Part):
 	def make_normal(f, points):
 		normal = False
 		for p, point in points:
-			new_normal = points[(p-1)%len(points)]).cross( (points[(p+1)%len(points)]-point))
+			new_normal = (points[(p-1)%len(points)]-point).cross( (points[(p+1)%len(points)]-point))
 			if normal == False:
 				normal = new_normal
 			elif normal != new_normal:
