@@ -181,4 +181,42 @@ class PlainBox(Part):
 						 '1/8_endmill', auto=True  )))
 				t.translate(offsets[s]+pos)
 				setattr(self, s, t)
-						
+					
+class ArbitraryBox(Part):
+	""" 
+		sides - dict of 'side name' : {'points':[3d point, 3d point, 3d point], 'thickness':thickness}
+	"""
+	def __init__(faces, *config):
+		self.init(config)
+		self.faces = faces
+		self.sides={}
+		self.normals = {}
+		self.side_angles={}
+		for f, face in faces:
+			self.make_sides(f,face['points'])
+			self.make_normal(f, face['points'])
+		for s, side in self.sides:
+			self.find_angle(s, side)
+
+	def make_normal(f, points):
+		normal = False
+		for p, point in points:
+			new_normal = points[(p-1)%len(points)]).cross( (points[(p+1)%len(points)]-point))
+			if normal == False:
+				normal = new_normal
+			elif normal != new_normal:
+				raise ValueError( "points in face "+f+" are not in a plane "+str(points) )
+		self.faces[f]['normal']=normal
+			
+	def make_sides(f, points):
+		self.faces[f]['sides'] = []
+		for p, point in points:
+			if (point, points[(p-1)%points.len()]) in self.sides: 
+				self.sides[(point, points[(p-1)%points.len()])].append(f)
+			else:
+				self.sides[(point, points[(p-1)%points.len()])] = [f]
+			if ( points[(p-1)%points.len()], point) in self.sides:
+				self.sides[(point, points[(p-1)%points.len()])].append(f)
+			else:
+				self.sides[(point, points[(p-1)%points.len()])] = [f]
+			self.faces[f]['sides'].append((point, points[(p-1)%points.len()]))

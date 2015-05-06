@@ -765,6 +765,41 @@ class AngledFingerJoint(list):
 			end+=perp*material_thickness/math.tan(float(angle)/180*math.pi)
 		for p in FingerJoint(start, end, side,linemode, startmode, endmode, tab_length, thickness*math.tan(float(angle)/180*math.pi), cutterrad, fudge):
 			self.append(p)
+
+class AngledFingerJointNoSlope(list):
+	""" like a normal finger joint but with longer toungues to take into account the angle and cut back to the start of the slope"""
+	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad,  angle, lineside='back', fudge=0, material_thickness=False):
+#		"""  AngledFingerJoint
+#start - point the funger joint should start
+#end - point the finger joint should end
+#side - side the fingers should be cut (left/right)
+#linemode - is this an external or internal finger joint (internal is in a hole in a box) 
+#startmode - should start on or off the line
+#endmode - should end on or off the line
+#tab_length - a length of tab to aim for - will actually be an integer fraction of the length
+#thickness - the thickness of the piece of wood you are slotting into
+#cutterrad - radius of the cutter
+#angle - angle from vertical that the finger joint is mounted at 
+#lineside - the side of the piece you are cutting that the line form start to end runs along (front/back)
+#fudge - fudge factor which just affects the sides of the fingers not their length"""
+	#	self.init({})
+	# If this is being cut from the Outside of the shape, the whole joint needs moving by the same amount as the length of the tabs
+		if material_thickness is False:
+			material_thickness=thickness
+		if side=='left':
+			perp = rotate((end-start).normalize(),-90)
+		else:
+			perp = rotate((end-start).normalize(),90)
+		chamfer_width = material_thickness*math.tan(float(angle)/180*math.pi)
+		if lineside=='front':
+# DODGY
+			start+=perp*material_thickness/math.tan(float(angle)/180*math.pi) - perp * chamfer_width
+			end+=perp*material_thickness/math.tan(float(angle)/180*math.pi) - perp * chamfer_width
+		for p in FingerJoint(start, end, side,linemode, startmode, endmode, tab_length + chamfer_width, thickness*math.tan(float(angle)/180*math.pi), cutterrad, fudge):
+			self.append(p)
+	
+	
+
 class AngledFingerJointSlope(Pathgroup):
 	""" This will cut a load of slopes away from an AngledFingerJoint, the both must be called"""
 	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, angle, lineside='back', fudge=0, material_thickness=False):
