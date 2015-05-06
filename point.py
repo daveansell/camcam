@@ -52,9 +52,9 @@ class Point(object):
                         transformations=[self.transform]
                 else:
                         transformations=[]
-                transformations.extend(ext_transformations)
+                transformations[:0] = ext_transformations
                 if type(transformations) is list:
-                        for t in transformations:# reversed(transformations):
+                        for t in reversed(transformations):
                                 if type(t) is dict:
                                         if 'rotate' in t:
                                                 p.pos=self.rotate(p.pos, t['rotate'])
