@@ -348,6 +348,12 @@ class Milling:
                         "stepdown":2.0,
                         "kress_setting":1.5,
                },
+                "abs":{
+                        "vertfeed":100,
+                        "sidefeed":700,
+                        "stepdown":2.0,
+                        "kress_setting":1.5,
+               },
                "pcb":{
                         "vertfeed":100,
                         "sidefeed":300,
