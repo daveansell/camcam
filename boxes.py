@@ -284,7 +284,7 @@ class ArbitraryBox(Part):
 		p=0
 		first = True
 		lastpoly = False
-		simplepoints = []
+#		simplepoints = []
 		if self.find_direction(face['ppoints'])=='cw':
 			cutside='left'
 		else:
@@ -296,7 +296,7 @@ class ArbitraryBox(Part):
 			side = self.sides[s]
 			(thisside, otherside) = self.get_side_parts(side, f)
 			otherface = self.faces[otherside[0]]
-			simplepoints.append(PSharp(point))
+#			simplepoints.append(PSharp(point))
               		if len(side)==1:
                 		newpoints = [PSharp(point)]
            		else:
@@ -336,7 +336,7 @@ class ArbitraryBox(Part):
 			p += 1
 		if len(newpoints) >1:
 			path.close_intersect()
-		path.add_points(simplepoints)
+#		path.add_points(simplepoints)
 		if mode=='internal':
 			part.add(path)
 		else:
@@ -474,10 +474,15 @@ class ArbitraryBox(Part):
 		self.faces[f]['normal']=normal
 			
 	def get_sid(self, p1, p2):
-		if p1>p2:
-			return (p1, p2)
+		# if the points are the same to n dp they treat them as the same
+		ndp = 3
+		r1 = V(round(p1[0],ndp), round(p1[1],ndp), round(p1[2],ndp))
+		r2 = V(round(p2[0],ndp), round(p2[1],ndp), round(p2[2],ndp))
+
+		if r1>r2:
+			return (r1, r2)
 		else:
-			return (p2, p1)
+			return (r2, r1)
 	def make_sides(self, f, points):
 		self.faces[f]['sides'] = []
 		p =0
