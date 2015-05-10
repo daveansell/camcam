@@ -262,7 +262,7 @@ class PSharp(Point):
 		if self.corner_side(side)=='external':# and side=='out' or corner=='internal' and side=='in':
 			t = copy.copy(self)
 	#		t=POutcurve(self.pos, radius=distance, transform=self.transform)
-           		if self.angle==0 and self.dot<0:
+           		if self.angle==0 or self.angle==math.pi and self.dot<0:
       				pass
 			elif self.angle==0 and self.point_type in ['sharp', 'clear', 'doubleclear'] and self.next().point_type in ['sharp', 'clear', 'doubleclear']:
 					print "No angle so we can skip this one"

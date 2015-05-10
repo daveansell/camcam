@@ -191,140 +191,359 @@ class ArbitraryBox(Part):
 						'layer': layer part should be in
 						'corners': { side_no: 'on' or 'off' } side_no is defined as point 0->1 is side 0 etc. 
                                                         - if undefined will just be made up.
+						'wood_direction': vector - only defined on one face will set which side of the polyhedron the wood is
+						'good_direction': vector - direction that is going to be finished well
+						'internal' : True/False - is a hole cut into another part should be added to that part
                 'tab_lendth' - defaule tab length
                 'fudge' - fudge for finger joints
 
 		}
 	"""
-	def __init__(faces, tab_length, fudge, *config):
+	def __init__(self, faces, tab_length, fudge, *config):
 		self.init(config)
+		self.tab_length = tab_length
+		self.fudge = fudge
 		self.faces = faces
 		self.sides={}
 		self.normals = {}
 		self.side_angles={}
-		for f, face in faces:
+		wood_direction_face = None
+		good_direction_face = None
+		for f, face in faces.iteritems():
 			self.make_sides(f,face['points'])
 			self.make_normal(f, face['points'])
-			self.check_layer(face)
+#			self.check_layer(face)
 			if 'corners' not in face:
-                                self.faces['corners'] = {}
+                                face['corners'] = {}
+			if 'wood_direction' in face:
+				if wood_direction_face is not None or wood_direction_face !=None:
+					raise ValueError('wood direction defined more than once')
+				wood_direction_face = f
+			if 'good_direction' in face:
+				if good_direction_face is not None or good_direction_face !=None:
+					raise ValueError('good direction defined more than once')
+				good_direction_face = f
 		scount=0
-		for s, side in self.sides:
+		for s, side in self.sides.iteritems():
 			self.find_angle(s, side)
-			self.set_corners(side, f, scount)
 			scount+=1
-		for f, face in faces:
+		self.propagate_direction('good_direction', good_direction_face,0)
+		self.propagate_direction('wood_direction', wood_direction_face,0)
+
+		for f, face in faces.iteritems():
+			self.get_cut_side(f, face)
+			scount = 0
+			for s in face['sides']:
+				self.set_corners(self.sides[s], f, scount)
+				scount+=1
+
 			if 'x' in face:
-				if face['x'].dot(face.normal) !=0:
+				if face['x'].dot(face['normal']) !=0:
 					raise ValueError('face[x] in face '+str(f)+' not in plane')
-			else:  
-				face['x'] = face['sides'][0].normalize()
-			face['y'] = rotate(face['x'], 90)
+			else: 
+#				print str(self.tuple_to_vec(face['sides'][0]
+				face['x'] = (self.tuple_to_vec(face['sides'][0][1])- self.tuple_to_vec(face['sides'][0][0])).normalize()
+			face['y'] = face['x'].cross(face['normal']).normalize()
+			# if we are cutting from the back flip x
+			if face['good_direction'] == -1:
+				 face['x'] = - face['x']
+
+
 			if 'origin' not in face:
 				face['origin'] = face['points'][0]
-			face.ppoints = []
-			for p in face.points:
-				face.ppoints.append(V(p.dot(face['x']), p.dot(face['y'])))
-			border = Path(closed = True, side = 'out') 
+			face['ppoints'] = []
+			for p in face['points']:
+				face['ppoints'].append(V(p.dot(face['x']), p.dot(face['y'])))
+
+		# if we are cutting an internal hole then don't make it the part border
+			if "layer" not in face:
+				raise ValueError( "Face "+f+" does not have a layer") 
+			if 'internal' in face and face['internal']:
+				border = Path(closed=True, side='in')
+
+			# add points here
+
+				p = Part(name = f, layer = face['layer'])
+				self.get_border(p,  f, face, 'internal')
+			else:
+				p = Part(name = f, layer = face['layer'])
+				self.get_border(p,  f, face, 'external')
 			# DECIDE WHICH SISDE WE ARE CUttng FROM
 			# CHECK THE DIRECTION OF THR LOOP
 			
-			setattr(self, 'face_' + f, self.add(Part(name = f, layer = face['layer'], border = border)))
+			setattr(self, 'face_' + f, self.add(p))
 
-	def set_corners(side,f,scount):
+	def tuple_to_vec(self, t):
+		return V(t[0], t[1], t[2])
+
+	def get_border(self, part, f, face, mode):
+	 	if mode == 'internal':
+                        path = Path(closed=True, side='in')
+         	else:
+                        path = Path(closed=True, side='out')
+		p=0
+		first = True
+		lastpoly = False
+		simplepoints = []
+		if self.find_direction(face['ppoints'])=='cw':
+			cutside='left'
+		else:
+			cutside='right'
+         	for point in face['ppoints']:
+			lastpoint = face['ppoints'][(p-1)%len(face['sides'])]
+			scount = (p)%len(face['sides'])
+             		s = face['sides'][scount]
+			side = self.sides[s]
+			(thisside, otherside) = self.get_side_parts(side, f)
+			otherface = self.faces[otherside[0]]
+			simplepoints.append(PSharp(point))
+              		if len(side)==1:
+                		newpoints = [PSharp(point)]
+           		else:
+#               	 	if mode=='internal':
+ #              	            	newpoints = [PSharp(point)]
+					
+  #             	    	else: 
+					angle = thisside[4]
+#					print "angle="+str(angle)
+#					angle = 15
+					if angle!=0:
+						# this is being cut from the side we are cutting:
+						if face['wood_direction'] * face['good_direction']>0:
+							lineside='front'
+						else:
+							lineside = 'back';
+						if mode == 'internal':
+							intfact = -1
+							corner = self.other_side_mode(face['corners'][scount])
+						else:
+							intfact = 1
+							corner = face['corners'][scount]
+						if thisside[3]*face['good_direction']*intfact>0:
+# THIS PUTS THE SLOPE ON THE WRONG PART OF THE JOINT
+# create a new mode in finger joints called int and have it behave properly
+							newpoints = AngledFingerJoint(lastpoint, point, cutside, mode, corner, corner, self.tab_length, otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
+							part.add( AngledFingerJointSlope(lastpoint, point, cutside, mode, corner, corner, self.tab_length, otherface['thickness'], 3.17/2, angle, lineside, self.fudge, material_thickness=face['thickness']))
+						else:
+							newpoints = AngledFingerJointNoSlope(lastpoint, point, cutside, mode, corner, corner, self.tab_length, otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
+					else:
+						newpoints = FingerJoint(lastpoint, point, 'right', 'external', corner, corner, self.tab_length, face['thickness'], 0, self.fudge)
+			if first or len(newpoints)<2:
+				first = False
+				path.add_points(newpoints)
+			else:
+				path.add_points_intersect(newpoints)
+			p += 1
+		if len(newpoints) >1:
+			path.close_intersect()
+		path.add_points(simplepoints)
+		if mode=='internal':
+			part.add(path)
+		else:
+			part.add_border(path)	
+
+	def find_direction(self, points):
+		total = 0
+		for p,q in enumerate(points):
+                        total+=(points[p]-points[(p-1)%len(points)]).normalize().cross((points[(p+1)%len(points)]-points[p]).normalize())
+                # if it is a circle
+		if total[2] ==0:
+			print "side doesn't have a direction"
+                elif(total[2]>0):
+                        return 'ccw'
+                else:
+                        return 'cw'
+
+
+	def get_side_parts(self, side, f):
+		if side[0][0]==f:
+                                thisside= side[0]
+				otherside = side[1]
+                else:
+                                thisside = side[1]
+				otherside = side[0]
+		return (thisside, otherside)
+
+	def get_cut_side(self, f, face):
+		good_direction = face['wood_direction']
+		need_cut_from={}
+		pref_cut_from = False
+		print f
+		for s in face['sides']:
+			side = self.sides[s]
+			if side[0][0]==f:
+				thisside= side[0]
+			else:
+				thisside = side[1]
+			cutside = thisside[3]
+			if cutside * good_direction>0.0001:
+				need_cut_from[self.sign(cutside)]=True
+			elif cutside!=0:
+				pref_cut_from = cutside
+			print cutside * good_direction
+				# this means we should be cutting from this side
+		print need_cut_from	
+		if len(need_cut_from)>1:
+			raise ValueError(str(f) + " cannot be cut without cavities as slopes can only be cut from one side ")
+		elif len(need_cut_from)>0:
+			face['cut_from'] = need_cut_from[need_cut_from.keys()[0]]
+		elif type(pref_cut_from) is not False:
+			face['cut_from'] = pref_cut_from 
+		else:
+			face['cut_from'] = 1
+	
+	def sign(self, val):
+		if val>0: 
+			return 1
+		elif val<0:
+			return -1
+		else:
+			return 0
+	def propagate_direction(self, t, f, recursion):
 		face = self.faces[f]
-		if side[0]==f:
-			(otherf, otherscount) = side[1][0]
-		else:
-			(otherf, otherscount) = side[0][0]
-		otherface = self.faces[otherf]
-		if scount in face['corners']:
-			otherface['corners'][otherscount] = self.other_side_mode(face['corners'][scount])
-		elif otherscount in otherface['corners']:
-			face['corners'][scount] = self.other_side_mode(otherface['corners'][otherscount])
-		else:
-			face['corners'][scount] = 'off'
-			otherface['corners'][otherscount] = 'on'
+		if recursion==0:
+			if face[t].dot(face['normal'])>0:
+				face[t]=1
+			elif face[t].dot(face['normal'])<0:
+				face[t]=-1
+			else:
+				raise ValueError(t+" is perpendicular to the normal")
+		recursion += 1
+		for s in face['sides']:
+			side = self.sides[s]
+			if side[0][0]==f:
+				newf = side[1][0]
+				d = side[0][2]	
+			else:
+				newf = side[0][0]
+				d = side[1][2]
 
+  			newface = self.faces[newf]
+			if t not in newface:
+				self.faces[newf][t] = d * face[t]
+				self.propagate_direction(t, newf, recursion)
+
+	def set_corners(self, side, f, scount):
+		face = self.faces[f]
+		if len(side)==0:
+			raise ValueError( "Side "+str(side)+" has no values")
+		elif len(side) ==1:
+			face['corners'][scount] = 'straight'
+		else:
+			if side[0][0]==f:
+				otherf = side[1][0]
+				otherscount = side[1][1]
+			else:
+				otherf = side[0][0]
+				otherscount = side[0][1]
+
+			otherface = self.faces[otherf]
+			if scount in face['corners']:
+				otherface['corners'][otherscount] = self.other_side_mode(face['corners'][scount])
+			elif otherscount in otherface['corners']:
+				face['corners'][scount] = self.other_side_mode(otherface['corners'][otherscount])
+			else:
+				face['corners'][scount] = 'off'
+				otherface['corners'][otherscount] = 'on'
+			
 	def other_side_mode(self, mode):
 		if mode=='on':
 			return 'off'
 		else:
 			return 'on'
 
-	def make_normal(f, points):
+	def make_normal(self, f, points):
 		normal = False
-		for p, point in points:
+		p = 0
+		print f
+		for point in points:
 			new_normal = (points[(p-1)%len(points)]-point).normalize().cross( (points[(p+1)%len(points)]-point).normalize())
-			if normal == False and normal.length()>0:
+			print new_normal
+			if type(normal) is bool and normal == False:
 				normal = new_normal
 			elif normal != new_normal and normal != - new_normal:
 				raise ValueError( "points in face "+f+" are not in a plane "+str(points) )
+			p += 1
 		if 'origin' in self.faces[f]:
 			o = self.faces[f]['origin']
 			p = points[0]
 			p2 = points[1]
 			new_normal = (p-o).normalize().cross( (p2-o).normalize())
-			if new_normal.length()!=0 and new_normal!=normal and new_normal !=-normal:
-				raise ValueError( "origin of face "+f+" are not in a plane "+str(points) )
+			if new_normal.length()!=0 and not new_normal.almost(normal) and not new_normal.almost(-normal):
+				raise ValueError( "origin of face "+f+" are not in a plane origin="+str(o)+ "  points="+str(points) +" normal="+str(normal) + "new_normal="+str(new_normal) )
 		self.faces[f]['normal']=normal
 			
-	def make_sides(f, points):
+	def get_sid(self, p1, p2):
+		if p1>p2:
+			return (p1, p2)
+		else:
+			return (p2, p1)
+	def make_sides(self, f, points):
 		self.faces[f]['sides'] = []
-		scount =0
-		for p, point in points:
-			sid = (f, scount)
-			if (point, points[(p-1)%points.len()]) in self.sides: 
-				self.sides[(point, points[(p-1)%points.len()])].append(sid)
+		p =0
+		for point in points:
+			sval = [f, p]
+			sid = self.get_sid(point, points[(p-1)%len(points)])
+			
+			if sid in self.sides: 
+				self.sides[sid].append(sval)
 			else:
-				self.sides[(point, points[(p-1)%points.len()])] = [sid]
-			if ( points[(p-1)%points.len()], point) in self.sides:
-				self.sides[(point, points[(p-1)%points.len()])].append(sid)
-			else:
-				self.sides[(point, points[(p-1)%points.len()])] = [sid]
-			self.faces[f]['sides'].append((point, points[(p-1)%points.len()]))
-			scount+=1
+				self.sides[sid] = [sval]
+			self.faces[f]['sides'].append(sid)
+			p+=1
+		if len(self.sides[sid]) > 2:
+			raise ValueError("more than 2 faces with the same side "+str(self.sides[sid1]))
 
-	def find_angle(s,side):
+	def find_angle(self, s,side):
 		if len(side)!=2:
 			print "side with only one face"
 			return False
 		face1 = self.faces[side[0][0]]
 		face2 = self.faces[side[1][0]]
-		
 		# The edge cross the normal gives you a vector that is in the plane and perpendicular to the edge
+		svec1 = (face1['points'][ (side[0][1]-1)%len(face1['points']) ] - face1['points'][side[0][1]]).cross( face1['normal'] ).normalize()
 
-		svec1 = (face1['points'][side[0][1]+1]-face1['points'][side[0][1]]).cross(face1['normal'])
-		svec2 = (face2['points'][side[1][1]+1]-face2['points'][side[1][1]]).cross(face2['normal'])
+		svec2 = (face2['points'][ (side[1][1]-1)%len(face2['points']) ] - face2['points'][side[1][1]]).cross( face2['normal'] ).normalize()
 
 		# base angle is angle between the two svecs
 
 		baseAngle = math.acos(svec1.normalize().dot(svec2.normalize())) / math.pi *180
-		angle = abs(baseAngle -90)
-
-		if baseAngle < 90:
+		print 'baseAngle='+str(baseAngle)
+		if baseAngle < 45:
 			cutsign = -1
-		elif baseAngle > 90:
-			cutsign = 1
-		else:
+			angle = abs(baseAngle)
+		elif baseAngle < 90:
+			cutsign = -1
+			angle = abs(90-baseAngle)
+		elif baseAngle==90:
 			cutsign = 0
+			angle =0
+		elif baseAngle <135:
+			cutsign = 1
+			angle = abs(baseAngle-90)
+		else:
+			cutsign = 1
+                        angle = abs(180-baseAngle)
 		
 		# if this is +ve cut on same side as positive normal otherwse opposite direction to normal
-		avSvec = (svec1 + svec2)
-		cutside1 = avSvec.dot ( face1['normal'] ) * cutsign
-		cutside2 = avSvec.dot ( face2['normal'] ) * cutsign
+		avSvec = (svec1 + svec2).normalize()
+		
 
 		# Is the normal of both faces in the same directions vs inside and outside 
 		# will only break with zero if  if planes are parallel
-		t = face1['normal'].dot(avSvec).face2['normal'] 
+		t = face1['normal'].dot(avSvec) * avSvec.dot(face2['normal'] )
 		if t>0:
 			sideSign = 1
 		elif t<0:
 			sideSign = -1
 		else:
 			raise ValueError( " Two adjoinig faces are parallel")
+		side[0].append(sideSign)
+		side[1].append(sideSign)
+		side[0].append( avSvec.dot ( face1['normal'] ) * cutsign)
+		side[1].append( avSvec.dot ( face2['normal'] ) * cutsign)
 
-#		WHICH SIDE IS THE REFERENCE?			
-# 		Which side of the polygon is the wood?		
 		
-		
+
+		side[0].append( angle )
+		side[1].append( angle )

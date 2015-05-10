@@ -507,8 +507,6 @@ class Screw(Part):
 			layer_conf=config['layer_config']
 			for c in layer_conf.keys():
 				conf = copy.deepcopy(layer_conf[c])
-				print conf
-				print c
 				self.add(Hole(pos, **conf), c)
 class FourScrews(Part):
 	def __init__(self, bl, tr, layer_conf, **config):
@@ -761,9 +759,10 @@ class AngledFingerJoint(list):
 		else:
 			perp = rotate((end-start).normalize(),90)
 		if lineside=='front':
-			start+=perp*material_thickness/math.tan(float(angle)/180*math.pi)
-			end+=perp*material_thickness/math.tan(float(angle)/180*math.pi)
-		for p in FingerJoint(start, end, side,linemode, startmode, endmode, tab_length, thickness*math.tan(float(angle)/180*math.pi), cutterrad, fudge):
+			start+=perp*material_thickness*math.sin(float(angle)/180*math.pi)
+			end+=perp*material_thickness*math.sin(float(angle)/180*math.pi)
+	#	for p in FingerJoint(start, end, side,linemode, startmode, endmode, tab_length, thickness*math.tan(float(angle)/180*math.pi), cutterrad, fudge):
+		for p in FingerJoint(start, end, side,linemode, startmode, endmode, tab_length, thickness/math.cos(float(angle)/180*math.pi), cutterrad, fudge):
 			self.append(p)
 
 class AngledFingerJointNoSlope(list):
@@ -793,9 +792,9 @@ class AngledFingerJointNoSlope(list):
 		chamfer_width = material_thickness*math.tan(float(angle)/180*math.pi)
 		if lineside=='front':
 # DODGY
-			start+=perp*material_thickness/math.tan(float(angle)/180*math.pi) - perp * chamfer_width
-			end+=perp*material_thickness/math.tan(float(angle)/180*math.pi) - perp * chamfer_width
-		for p in FingerJoint(start, end, side,linemode, startmode, endmode, tab_length + chamfer_width, thickness*math.tan(float(angle)/180*math.pi), cutterrad, fudge):
+			start+=perp*material_thickness*math.sin(float(angle)/180*math.pi) - perp * chamfer_width
+			end+=perp*material_thickness*math.sin(float(angle)/180*math.pi) - perp * chamfer_width
+		for p in FingerJoint(start, end, side,linemode, startmode, endmode, tab_length, chamfer_width + thickness/math.cos(float(angle)/180*math.pi), cutterrad, fudge):
 			self.append(p)
 	
 	
@@ -822,7 +821,6 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 			material_thickness=thickness
 		max_xstep=cutterrad
 		chamfer_width = material_thickness*math.tan(float(angle)/180*math.pi)
-
 		
 		steps=int(math.ceil(chamfer_width/max_xstep))
 		xstep=chamfer_width/steps
@@ -839,8 +837,8 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 		else:
 			perp = rotate((end-start).normalize(),90)
 		if lineside=='front':
-			start+=perp*material_thickness/math.tan(float(angle)/180*math.pi)
-			end+=perp*material_thickness/math.tan(float(angle)/180*math.pi)
+			start+=perp*material_thickness*math.sin(float(angle)/180*math.pi)
+			end+=perp*material_thickness*math.sin(float(angle)/180*math.pi)
 		along=tab_length*(end-start).normalize()
 		cra=(end-start).normalize()*(cutterrad+fudge)
 		crp=perp*cutterrad
