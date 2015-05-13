@@ -320,9 +320,9 @@ class Milling:
                 "delrin":{
                         "vertfeed":120,
                         "sidefeed":700,
-                        "stepdown":1.5,
+                        "stepdown":2.0,
                         "kress_setting":2.0,
-
+			"mill_dir":'down',
                 },
                 "tufnol":{
                         "vertfeed":100,

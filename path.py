@@ -175,11 +175,19 @@ class Path(object):
 			config['sidefeed']=mat['sidefeed']
 			config['stepdown']=mat['stepdown']
 			config['kress_setting']=mat['kress_setting']
+			if 'mill_dir' in mat:
+				config['mill_dir']=mat['mill_dir']
+			else:
+				config['mill_dir']='up'
 			if 'spring' in mat:
 				config['spring']=mat['spring']
 			else:
 				config['spring']=0
-
+		else:
+			if config['material'] is not None:
+				raise ValueError("Unknown Material "+str(config['material'])+"\n"+str(self.trace))
+			else:
+				config['mill_dir']='up'
 	def add_point(self,pos, point_type='sharp', radius=0, cp1=False, cp2=False, direction=False, transform=False):
 		if hasattr(pos,'obType') and pos.obType=='Point':
 			self.points.append(pos)
@@ -672,9 +680,9 @@ class Path(object):
 		if 'direction' not in config or config['direction'] is False:
 			if hasattr(self,'direction') and  self.direction!=False:
 				config['direction']=self.direction
-			elif(config['side'] =='in'):
+			elif(config['side'] =='in' and  config['mill_dir']=='up' or config['side'] =='out' and  config['mill_dir']=='down' ):
 				config['direction']='cw'
-			elif(config['side'] =='out'):
+			elif(config['side'] =='out' and  config['mill_dir']=='up' or config['side'] =='in' and  config['mill_dir']=='down'):
 				config['direction']='ccw'
 			else:
 				config['direction']=thisdir
