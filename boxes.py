@@ -14,11 +14,11 @@ class RoundedBoxEnd(Part):
 		self.add_border(Path(closed=True, side='out'))
 		self.centrepos=V(0,0)
 		self.border.add_point(self.centrepos+V(-width/2-thickness, side_height-centre_height+0.01), radius=bend_rad)
-		self.border.add_point(POutcurve(self.centrepos, radius=centre_rad))
+		self.border.add_point(POutcurve(self.centrepos, direction='cw', radius=centre_rad))
 		self.border.add_point(self.centrepos+V(width/2+thickness, side_height-centre_height+0.01), radius=bend_rad)
 		self.border.add_point(self.centrepos+V(width/2+thickness, side_height-centre_height))
 #		self.border.add_point(self.centrepos+V(width/2+thicknes, side_height-centre_height))
-		self.border.add_points_intersect(FingerJoint(self.centrepos+V(width/2, side_height-centre_height),
+		self.border.add_points(FingerJoint(self.centrepos+V(width/2, side_height-centre_height),
 						self.centrepos+V(width/2,-centre_height),
 						'left',	
 						'external',
@@ -59,29 +59,71 @@ class RoundedBox(Part):
 		cutter=False
 		self.translate(pos)
 		self.end=self.add(RoundedBoxEnd(V(0,0), layers['end'], name+'_end', width, centre_height, centre_rad, centre_holerad, side_height, bend_rad,  {'right':'off', 'bottom':'off', 'left':'off'}, thickness, tab_length,  fudge))
-		if 'centre_holerad2' in config:
+		if 'blank_end' in config:
+			self.end2=self.add(RoundedBoxEnd(V(0,0), layers['end2'], name+'_end2', width, centre_height, centre_rad, config['centre_holerad2'], side_height, bend_rad,  {'right':'off', 'bottom':'off', 'left':'off'}, thickness, centre_height+20,  fudge))
+			side_modes = {'top':'straight', 'left':'straight'}
+			bottom_modes = {'bottom':'straight'}
+		elif 'centre_holerad2' in config:
 			self.end2=self.add(RoundedBoxEnd(V(0,0), layers['end2'], name+'_end2', width, centre_height, centre_rad, config['centre_holerad2'], side_height, bend_rad,  {'right':'off', 'bottom':'off', 'left':'off'}, thickness, tab_length,  fudge))
+			side_modes={'top':'straight'}
+			bottom_modes={}
 		else:
 			self.end.number=2
-		self.side=self.add(Part(name=name+'_side', layer=layers['side'], border=FingerJointBoxSide( V(0,0), length, side_height, 'out', {'left':'on', 'bottom':'off', 'right':'on', 'top':'on'}, {'top':'straight'}, tab_length, thickness, cutter, auto=True)))
+			side_modes={'top':'straight'}
+			bottom_modes={}
+		self.side=self.add(Part(name=name+'_side', layer=layers['side'], border=FingerJointBoxSide( V(0,0), length, side_height, 'out', {'left':'on', 'bottom':'off', 'right':'on', 'top':'on'}, side_modes, tab_length, thickness, cutter, auto=True)))
 		self.side.number=2
-		self.bottom=self.add(Part(name=name+'_bottom', layer=layers['bottom'], border=FingerJointBoxSide( V(0,0), width, length, 'out', {'left':'on', 'bottom':'on', 'right':'on','top':'on'}, {}, tab_length, thickness, cutter, auto=True,centred=True)))
+		self.bottom=self.add(Part(name=name+'_bottom', layer=layers['bottom'], border=FingerJointBoxSide( V(0,0), width, length, 'out', {'left':'on', 'bottom':'on', 'right':'on','top':'on'}, bottom_modes, tab_length, thickness, cutter, auto=True,centred=True)))
+
+
 
 class Turret(Part):
-	def __init__(self, pos, layers, name, turret_type, thickness, fudge, **config):
+	def __init__(self, pos, plane, name, turret_type, thickness, fudge, **config):
 		self.init(config)
+		p_layers={'side':'_side', 'end':'end', 'end2':'_end2', 'bottom':'_bottom','end_plate':'_end_plate', 'bearing_ring':'_bearing_ring', 'tube_insert':'_tube_insert', 'tube_insert_in':'_tube_insert_in'}
+		layers = {}
+		
+		for i, l in p_layers.iteritems():
+			plane.add_layer(name+l, material='pvc', thickness=thickness, z0=0)
+			layers[i] = name+l
+		self.translate(pos)
 		data={
-			'camera':{'length':60, 'width':51.5, 'centre_height':50, 'centre_rad':51.5/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2},
-			'lamp':{'length':50, 'width':51.5, 'centre_height':35, 'centre_rad':51.5/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2},
+			'camera':{'length':60, 'edge_width':10, 'centre_height':60, 'centre_rad':51.5/2, 'centre_inner_rad':44/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10.8},
+			'lamp':{'length':50, 'edge_width':10, 'centre_height':35, 'centre_rad':51.5/2, 'centre_inner_rad':44/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2},
 		}
 		assert turret_type in data
-		d=data['turret_type']
-		box=self.add(RoundedBox(pos, layers, name, d['length'], d['width'], d['centre_height'], d['centre_rad'], d['centre_holerad'], d['side_height'], d['bend_rad'], thickness, d['tab_length'], fudge))
+		d=data[turret_type]
+		width = math.sqrt(d['centre_rad']**2-(d['centre_height']-d['side_height'])**2)*2
+		box=self.add(RoundedBox(V(0,0), layers, name, d['length'], width, d['centre_height'], d['centre_rad'], 0, d['side_height'], d['bend_rad'], thickness, d['tab_length'], fudge, blank_end =True, centre_holerad2=0))
 		self.bottom=box.bottom
 		self.end=box.end
+		self.end.add(Rect(V(0,0), centred=True, width=d['square_hole_side'], height=d['square_hole_side'], side='in'))
 		self.side=box.side
 		self.bottom.add(Hole(V(0,0), rad=d['piviot_hole_rad']))
+		self.bearing_ring = self.add(Part(name = name+'_bearing_ring', layer = name+'_bearing_ring', border = Circle(V(0,0), rad=d['centre_inner_rad'], side='out')))
+		for i in range(0,4):
+			t=self.bearing_ring.add(Bolt(V(d['centre_inner_rad']*2/3, 0), 'M4', insert_layer=[], clearance_layers=name+'_end2', thread_layer=name+'_bearing_ring'))
+			t.rotate(V(0,0), i*90)
 
+		end_plate_border = Path(side='out', closed=True)
+		end_plate_border.add_point(V(-width/2, -d['centre_height'] + d['side_height']-4))
+		end_plate_border.add_point(V(-width/2, -d['centre_height']))
+		end_plate_border.add_point(V(width/2, -d['centre_height']))
+		end_plate_border.add_point(V(width/2, -d['centre_height'] + d['side_height']-4))
+		end_plate_border.add_point(PIncurve(V(width/2-d['edge_width'], -d['centre_height'] + d['side_height']-d['edge_width']-4), radius=d['edge_width']))
+		end_plate_border.add_point(PIncurve(V(width/2-d['edge_width'], -d['centre_height']+d['edge_width'] ), radius=d['edge_width']))
+		end_plate_border.add_point(PIncurve(V(-width/2+d['edge_width'], -d['centre_height']+d['edge_width'] ), radius=d['edge_width']))
+		end_plate_border.add_point(PIncurve(V(-width/2+d['edge_width'], -d['centre_height'] + d['side_height']-d['edge_width']-4), radius=d['edge_width']))
+		self.end_plate = self.add(Part(name = name+'_end_plate', layer =  name+'_end_plate', border = end_plate_border)) 
+		self.end_plate.add(Bolt(V(width/2-d['edge_width']/2, -d['centre_height'] + d['side_height']-d['edge_width']-4), 'M4', insert_layer=[], thread_layer=name+'_end_plate', clearance_layers=name+'_end2'))
+		self.end_plate.add(Bolt(V(-width/2+d['edge_width']/2, -d['centre_height'] + d['side_height']-d['edge_width']-4), 'M4', insert_layer=[], thread_layer=name+'_end_plate', clearance_layers=name+'_end2'))
+
+		self.end_plate.add(Bolt(V(width/2-d['edge_width']/2, -d['centre_height'] +d['edge_width']/2), 'M4', insert_layer=[], thread_layer=name+'_end_plate', clearance_layers=name+'_end2'))
+		self.end_plate.add(Bolt(V(-width/2+d['edge_width']/2, -d['centre_height'] +d['edge_width']/2), 'M4', insert_layer=[], thread_layer=name+'_end_plate', clearance_layers=name+'_end2'))
+
+		self.tube_insert = self.add(Part(name = name+'_tube_insert', layer= name+'_tube_insert', border = Circle(V(0,0), rad=d['centre_rad'])))
+		self.tube_insert_in = self.add(Part(name = name+'_tube_insert_in', layer= name+'_tube_insert_in', border = Circle(V(0,0), rad=d['centre_inner_rad'])))
+		self.tube_insert.add(Hole(V(0,0), rad=d['centre_holerad']), [ name+'_tube_insert',  name+'_tube_insert_in'])
 
 class PlainBox(Part):
 	"""pos       - position
@@ -281,10 +323,12 @@ class ArbitraryBox(Part):
                         path = Path(closed=True, side='in')
          	else:
                         path = Path(closed=True, side='out')
+		simplepath = Path(closed=True, side='on')
+
 		p=0
 		first = True
 		lastpoly = False
-#		simplepoints = []
+		simplepoints = []
 		if self.find_direction(face['ppoints'])=='cw':
 			cutside='left'
 		else:
@@ -296,7 +340,7 @@ class ArbitraryBox(Part):
 			side = self.sides[s]
 			(thisside, otherside) = self.get_side_parts(side, f)
 			otherface = self.faces[otherside[0]]
-#			simplepoints.append(PSharp(point))
+			simplepoints.append(PSharp(point))
               		if len(side)==1:
                 		newpoints = [PSharp(point)]
            		else:
@@ -309,16 +353,17 @@ class ArbitraryBox(Part):
 #					angle = 15
 					if angle!=0:
 						# this is being cut from the side we are cutting:
-						if face['wood_direction'] * face['good_direction']>0:
-							lineside='front'
-						else:
-							lineside = 'back';
 						if mode == 'internal':
 							intfact = -1
 							corner = self.other_side_mode(face['corners'][scount])
 						else:
 							intfact = 1
 							corner = face['corners'][scount]
+
+						if face['wood_direction'] * face['good_direction']*intfact>0:
+							lineside='front'
+						else:
+							lineside = 'back';
 						if thisside[3]*face['good_direction']*intfact>0:
 # THIS PUTS THE SLOPE ON THE WRONG PART OF THE JOINT
 # create a new mode in finger joints called int and have it behave properly
@@ -336,7 +381,8 @@ class ArbitraryBox(Part):
 			p += 1
 		if len(newpoints) >1:
 			path.close_intersect()
-#		path.add_points(simplepoints)
+		simplepath.add_points(simplepoints)
+	 	part.add(simplepath)
 		if mode=='internal':
 			part.add(path)
 		else:

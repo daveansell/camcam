@@ -836,27 +836,30 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 			perp = rotate((end-start).normalize(),-90)
 		else:
 			perp = rotate((end-start).normalize(),90)
-		if lineside=='front':
-			start+=perp*material_thickness*math.sin(float(angle)/180*math.pi)
-			end+=perp*material_thickness*math.sin(float(angle)/180*math.pi)
+		if lineside=='front' and linemode=='external':
+			start+=perp* (material_thickness*math.sin(float(angle)/180*math.pi))
+			end+=perp* (material_thickness*math.sin(float(angle)/180*math.pi))
 		along=tab_length*(end-start).normalize()
 		cra=(end-start).normalize()*(cutterrad+fudge)
 		crp=perp*cutterrad
 		cutin=perp*thickness
+		m = startmode
 		if linemode=='external':
 			onpointmode='clear'
 			offpointmode='sharp'
 			self.direction = 'ccw'
-		if linemode=='internal':
+		elif linemode=='internal':
 			onpointmode='sharp'
 			offpointmode='clear'
 			cra=-cra
 			crp=-crp
 			self.direction = 'cw'
-		if startmode=='on':
-			m='on'
-		elif startmode=='off':
-			m='off'
+			if m=='on':
+				m='off'
+			elif m=='off':
+				m='on'
+			start +=  perp * (thickness/math.cos(float(angle)/180*math.pi) + chamfer_width)
+			end += perp * (thickness/math.cos(float(angle)/180*math.pi) + chamfer_width)
 		for i in range(1,int(num_tabs+1)):
 			if m=='on':
 				m='off'
