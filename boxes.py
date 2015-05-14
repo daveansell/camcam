@@ -13,9 +13,10 @@ class RoundedBoxEnd(Part):
 		self.layer=layer
 		self.add_border(Path(closed=True, side='out'))
 		self.centrepos=V(0,0)
-		self.border.add_point(self.centrepos+V(-width/2-thickness, side_height-centre_height+0.01), radius=bend_rad)
+		self.border.add_point(self.centrepos+V(-width/2-thickness, side_height-centre_height))
+#		self.border.add_point(self.centrepos+V(-width/2-thickness, side_height-centre_height+0.01), radius=bend_rad)
 		self.border.add_point(POutcurve(self.centrepos, direction='cw', radius=centre_rad))
-		self.border.add_point(self.centrepos+V(width/2+thickness, side_height-centre_height+0.01), radius=bend_rad)
+#		self.border.add_point(self.centrepos+V(width/2+thickness, side_height-centre_height+0.01), radius=bend_rad)
 		self.border.add_point(self.centrepos+V(width/2+thickness, side_height-centre_height))
 #		self.border.add_point(self.centrepos+V(width/2+thicknes, side_height-centre_height))
 		self.border.add_points(FingerJoint(self.centrepos+V(width/2, side_height-centre_height),
@@ -48,7 +49,8 @@ class RoundedBoxEnd(Part):
 						thickness,
 						0, 
 						fudge))
-		self.border.add_point(self.centrepos+V(-width/2-thickness, side_height-centre_height))
+		for p in self.border.points:
+			print str(p.pos)+" "+str(p.point_type)
 		if centre_holerad>0:
 			self.add(Hole(V(0,0), rad=centre_holerad))
 
@@ -88,8 +90,8 @@ class Turret(Part):
 			layers[i] = name+l
 		self.translate(pos)
 		data={
-			'camera':{'length':60, 'edge_width':10, 'centre_height':60, 'centre_rad':51.5/2, 'centre_inner_rad':44/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10.8},
-			'lamp':{'length':50, 'edge_width':10, 'centre_height':35, 'centre_rad':51.5/2, 'centre_inner_rad':44/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2},
+			'camera':{'length':60, 'edge_width':10, 'centre_height':60, 'centre_rad':56/2, 'centre_inner_rad':44/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10},
+			'lamp':{'length':50, 'edge_width':10, 'centre_height':35, 'centre_rad':56/2, 'centre_inner_rad':44/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10},
 		}
 		assert turret_type in data
 		d=data[turret_type]
