@@ -264,6 +264,12 @@ class Milling:
                         "endcut":1,
                         "sidecut":0,
                 },
+                "1.5mm_drill":{
+                        "id":16,
+                        "diameter":1.5,
+                        "endcut":1,
+                        "sidecut":0,
+                },
                 "ovolo":{
                         "id":16,
                         "diameter":10.0,
