@@ -49,8 +49,6 @@ class RoundedBoxEnd(Part):
 						thickness,
 						0, 
 						fudge))
-		for p in self.border.points:
-			print str(p.pos)+" "+str(p.point_type)
 		if centre_holerad>0:
 			self.add(Hole(V(0,0), rad=centre_holerad))
 
@@ -74,6 +72,8 @@ class RoundedBox(Part):
 			side_modes={'top':'straight'}
 			bottom_modes={}
 		self.side=self.add(Part(name=name+'_side', layer=layers['side'], border=FingerJointBoxSide( V(0,0), length, side_height, 'out', {'left':'on', 'bottom':'off', 'right':'on', 'top':'on'}, side_modes, tab_length, thickness, cutter, auto=True)))
+		for p in self.side.border.points:
+			print str(p.pos)+" "+str(p.point_type)
 		self.side.number=2
 		self.bottom=self.add(Part(name=name+'_bottom', layer=layers['bottom'], border=FingerJointBoxSide( V(0,0), width, length, 'out', {'left':'on', 'bottom':'on', 'right':'on','top':'on'}, bottom_modes, tab_length, thickness, cutter, auto=True,centred=True)))
 

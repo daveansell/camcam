@@ -389,13 +389,10 @@ class Path(object):
 	def simplify_points(self):
 		if len(self.points)>2:
 			for p,point in enumerate(self.points):
-				if point.point_type in ['sharp', 'clear', 'doubleclear'] and point.next() in ['sharp', 'clear', 'doubleclear'] and point.last() in ['sharp', 'clear', 'doubleclear']:# and p!=0 and p!=len(self.points)-1:
-					print point
-					print point.next()
-					print point.last()
+				if point.point_type in ['sharp', 'clear', 'doubleclear'] and point.next().point_type in ['sharp', 'clear', 'doubleclear'] and point.last().point_type in ['sharp', 'clear', 'doubleclear']:# and p!=0 and p!=len(self.points)-1:
 					if point.lastpoint.point_type in ['sharp', 'clear', 'doubleclear'] and (point.pos-point.lastpoint.pos).length()<0.0001:
 						self.delete_point(p)
-					elif point.pos!= point.next().pos and (point.pos-point.last().pos).dot(point.next().pos-point.pos)==1:
+					elif point.pos!= point.next().pos and abs((point.pos-point.last().pos).normalize().dot((point.next().pos-point.pos).normalize())-1)<0.0001:
 						self.delete_point(p)
 
 	def offset_path(self,side,distance, config):

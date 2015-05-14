@@ -1011,7 +1011,7 @@ class FingerJointBoxSide(Path):
 			self.add_point(pos+V(width+c['right'], -c['bottom']),'sharp')
 			self.add_points(FingerJoint(start=pos+V(width,0), end=pos+V(0,0), side=s, linemode=linemode, startmode=corners['bottom'], endmode=corners['bottom'], tab_length=tab_length, thickness=thickness['bottom'], cutterrad=cutterrad, fudge=fudge))
 		self.comment("FingerJointBoxSide")
-
+#		self.simplify_points()
 
 
 class Module(Plane):
