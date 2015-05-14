@@ -90,8 +90,8 @@ class Turret(Part):
 			layers[i] = name+l
 		self.translate(pos)
 		data={
-			'camera':{'length':60, 'edge_width':10, 'centre_height':60, 'centre_rad':56/2, 'centre_inner_rad':44/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10},
-			'lamp':{'length':50, 'edge_width':10, 'centre_height':35, 'centre_rad':56/2, 'centre_inner_rad':44/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10},
+			'camera':{'length':70, 'edge_width':10, 'centre_height':60, 'centre_rad':56/2, 'centre_inner_rad':51.3/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10},
+			'lamp':{'length':50, 'edge_width':10, 'centre_height':35, 'centre_rad':56/2, 'centre_inner_rad':51.3/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10},
 		}
 		assert turret_type in data
 		d=data[turret_type]
@@ -102,7 +102,7 @@ class Turret(Part):
 		self.end.add(Rect(V(0,0), centred=True, width=d['square_hole_side'], height=d['square_hole_side'], side='in'))
 		self.side=box.side
 		self.bottom.add(Hole(V(0,0), rad=d['piviot_hole_rad']))
-		self.bearing_ring = self.add(Part(name = name+'_bearing_ring', layer = name+'_bearing_ring', border = Circle(V(0,0), rad=d['centre_inner_rad'], side='out')))
+		self.bearing_ring = self.add(Part(name = name+'_bearing_ring', layer = name+'_bearing_ring', border = Circle(V(0,0), rad=d['centre_inner_rad']-0.2, side='out')))
 		for i in range(0,4):
 			t=self.bearing_ring.add(Bolt(V(d['centre_inner_rad']*2/3, 0), 'M4', insert_layer=[], clearance_layers=name+'_end2', thread_layer=name+'_bearing_ring'))
 			t.rotate(V(0,0), i*90)
