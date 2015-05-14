@@ -82,6 +82,9 @@ class RoundedBox(Part):
 class Turret(Part):
 	def __init__(self, pos, plane, name, turret_type, thickness, fudge, **config):
 		self.init(config)
+		self.init_turret(pos, plane, name, turret_type, thickness, fudge, config)
+
+	def init_turret(self, pos, plane, name, turret_type, thickness, fudge, config):
 		p_layers={'side':'_side', 'end':'end', 'end2':'_end2', 'bottom':'_bottom','end_plate':'_end_plate', 'bearing_ring':'_bearing_ring', 'tube_insert':'_tube_insert', 'tube_insert_in':'_tube_insert_in'}
 		layers = {}
 		
@@ -127,6 +130,54 @@ class Turret(Part):
 		self.tube_insert_in = self.add(Part(name = name+'_tube_insert_in', layer= name+'_tube_insert_in', border = Circle(V(0,0), rad=d['centre_inner_rad'])))
 		self.tube_insert.add(Hole(V(0,0), rad=d['centre_holerad']), [ name+'_tube_insert',  name+'_tube_insert_in'])
 
+class PiCamTurret(Turret):
+	def __init__(self, pos, plane, name, turret_type, thickness, fudge, **config):
+                self.init(config)
+                self.init_turret(pos, plane, name, turret_type, thickness, fudge, config)
+		plane.add_layer(name+'_camera_holder', material='pvc', thickness=thickness, z0=0)
+		self.camera_holder = self.add(Part(name=name+'_camera_holder', layer= name+'_camera_holder', ignore_border=True))
+		cam_width=25.0
+		cam_height=28.0
+		cam_hole_from_side=2.0
+		cam_hole_from_bottom=9.5
+		cam_ribbon_width = 16.0
+		if 'cam_depth' in config:
+			cam_depth = config['cam_depth']
+		else:
+			cam_depth = 26.0
+
+		rod_rad = 51.5/2
+		cam_yoff = 5.0
+		cable_slot_depth = 40.0
+		cable_slot_height = cam_yoff*2
+		cable_slot_width=cam_ribbon_width+8.0
+		mount_hole_from_edge = (rod_rad-(cam_height+cam_yoff*2)/2)/2
+		print "Mounting holes at radius ="+str(rod_rad - mount_hole_from_edge)
+
+
+		cam_centre= V(0, cam_yoff)
+		self.camera_holder.add(Circle(V(0,0), rad=rod_rad), 'paper')
+		self.camera_holder.add(Rect(cam_centre, centred=True, width = cam_width+2, height=cam_height+1, z1=-cam_depth-1, partial_fill=cam_width/2-1, cutter='6mm_endmill'))
+		self.camera_holder.add(Rect(cam_centre+V(0,-cam_height/2-cable_slot_height/2), centred=True, width= cable_slot_width, height=cable_slot_height, z0=-cam_depth-1, z1=cable_slot_depth, cutter='6mm_endmill', rad=3.1, partial_fill=cable_slot_height/2-1))
+		
+		self.camera_holder.add(Drill(cam_centre+V(cam_width/2-cam_hole_from_side, cam_height/2-cam_hole_from_side), z0= -cam_depth-1, z1=-cam_depth-6, rad=1.5/2))
+		self.camera_holder.add(Drill(cam_centre+V(-cam_width/2+cam_hole_from_side, cam_height/2-cam_hole_from_side), z0= -cam_depth-1, z1=-cam_depth-6, rad=1.5/2))
+		self.camera_holder.add(Drill(cam_centre+V(cam_width/2-cam_hole_from_side, -cam_height/2+cam_hole_from_bottom), z0= -cam_depth-1, z1=-cam_depth-6, rad=1.5/2))
+		self.camera_holder.add(Drill(cam_centre+V(-cam_width/2+cam_hole_from_side, -cam_height/2+cam_hole_from_bottom), z0= -cam_depth-1, z1=-cam_depth-6, rad=1.5/2))
+		for i in range(0,6):
+			t=self.camera_holder.add(Drill(V(0,rod_rad-mount_hole_from_edge), z1=-5, rad=1.5/2))
+			t.rotate(V(0,0), i*60)
+		cone_rad = rod_rad - 2*mount_hole_from_edge
+		cone_inner_rad = cam_width/2
+		cone_depth = cam_depth/2
+		rstep = 4
+		steps = int(math.ceil((cone_rad-cone_inner_rad)/rstep))
+		rstep = (cone_rad-cone_inner_rad)/steps
+		dstep = cone_depth / steps
+		for i in range(0, steps):
+			 self.camera_holder.add(Circle(V(0,0), rad = cone_rad-rstep*i, z1 = -dstep*(i+1), side='in', cutter='6mm_endmill'))
+	
+		
 class PlainBox(Part):
 	"""pos       - position
 	   name      - part base name - the subparts will be called name_back etc

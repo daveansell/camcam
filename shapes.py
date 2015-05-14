@@ -83,9 +83,9 @@ class Drill(Path):
 		config=self.generate_config(pconfig)
 		p=PSharp(self.pos).point_transform(config['transformations'])
 		
-		print "Drill render"+str(config['mode'])
+	#	print "Drill render"+str(config['mode'])
 		if config['mode']=='svg':
-			print '<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>\n'%(p.pos[0], p.pos[1], self.drillrad)
+	#		print '<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>\n'%(p.pos[0], p.pos[1], self.drillrad)
 			return [config['cutter'], '<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>\n'%(p.pos[0], p.pos[1], self.drillrad)]
 		elif config['mode']=='gcode':
 			if self.peck:
@@ -106,14 +106,14 @@ class Drill(Path):
 				ret+='G0Z%0.2f\n'% config['z0']+0.5
 			ret += 'G0Z%0.2f\n'%config['clear_height']
 			return [config['cutter'], ret]
-		print "NO MODE="+str(config['mode'])
+	#	print "NO MODE="+str(config['mode'])
 	def polygonise(self, resolution=0):
 		config=self.generate_config({'cutterrad':0})
 		p=PSharp(self.pos).point_transform(config['transformations'])
-		print p.pos
 		self.boundingBox={'bl':p.pos, 'tr':p.pos}
 		self.centre=p.pos
 		return [self.pos]	
+
 class Lines(Path):
 	def __init__(self, points, **config):
 		assert type(points) is list
