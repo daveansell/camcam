@@ -633,6 +633,10 @@ class Bolt(Part):
 			thread_layer = config['thread_layer']
 		else:
 			thread_layer = ['back']
+		if 'thread_depth' in config:
+			thread_depth = config['thread_depth']
+		else:
+			thread_depth = False
 		if thread in milling.bolts:
 			if insert_layer is not False:
 				if 'insert_type' in config and config['insert_type'] in milling.inserts[thread]:
@@ -648,7 +652,10 @@ class Bolt(Part):
 			else:
 				self.add(Hole(pos, milling.bolts[thread]['clearance']/2, side='in'),head_layer)
 			if thread_layer:
-				self.add(Hole(pos, milling.bolts[thread]['tap']/2, side='in'),thread_layer)
+				if thread_depth:
+					self.add(Hole(pos, milling.bolts[thread]['tap']/2, side='in', z1=-thread_depth),thread_layer)
+				else:
+					self.add(Hole(pos, milling.bolts[thread]['tap']/2, side='in'),thread_layer)
 
 
 class FingerJointMid(Pathgroup):

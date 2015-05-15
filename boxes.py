@@ -86,13 +86,14 @@ class Turret(Part):
 		self.init_turret(pos, plane, name, turret_type, thickness, fudge, config)
 
 	def init_turret(self, pos, plane, name, turret_type, thickness, fudge, config):
-		p_layers={'side':'_side', 'end':'end', 'end2':'_end2', 'bottom':'_bottom','end_plate':'_end_plate', 'bearing_ring':'_bearing_ring', 'tube_insert':'_tube_insert', 'tube_insert_in':'_tube_insert_in', 'base':'_base', 'under_base':'_under_base', 'base_protector':'_base_protector'}
+		p_layers={'side':'_side', 'end':'end', 'end2':'_end2', 'bottom':'_bottom', 'bearing_ring':'_bearing_ring', 'tube_insert':'_tube_insert', 'tube_insert_in':'_tube_insert_in', 'base':'_base', 'under_base':'_under_base', 'base_protector':'_base_protector'}
 		layers = {}
 		
 		for i, l in p_layers.iteritems():
 			plane.add_layer(name+l, material='pvc', thickness=thickness, z0=0)
 			layers[i] = name+l
 		self.translate(pos)
+		plane.add_layer(name+'_end_plate', material='pvc', thickness = 12.3, z0=0)
 		data={
 			'camera':{'length':70, 'edge_width':10, 'centre_height':60, 'centre_rad':56/2, 'centre_inner_rad':51.3/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10},
 			'thermal':{'length':85, 'edge_width':10, 'centre_height':60, 'centre_rad':56/2, 'centre_inner_rad':51.3/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10},
@@ -106,15 +107,19 @@ class Turret(Part):
 		self.bottom=box.bottom
 		self.end=box.end
 		# holes for cable clamps inside base
-		self.bottom.add(Hole(V(0, -d['length']/2+8), rad=3.3/2))
-		self.bottom.add(Hole(V(width/3, -d['length']/2+14), rad=3.3/2))
-		self.bottom.add(Hole(V(-width/5, -d['length']/2+8), rad=3.3/2))
+		self.bottom.add(Hole(V(0, -d['length']/2+20), rad=3.3/2))
+		self.bottom.add(Hole(V(width/3, -d['length']/2+26), rad=3.3/2))
+		self.bottom.add(Hole(V(-width/5, -d['length']/2+20), rad=3.3/2))
 		self.bottom.add(Hole(V(-width/4, -width/4), rad=3.3/2))
 
 
 		# Square for coach bolt
 		self.end.add(Rect(V(0,0), centred=True, width=d['square_hole_side'], height=d['square_hole_side'], side='in'))
 		self.side=box.side
+
+		self.side.add(Hole(V(6, 8), 4.3/2))
+		self.side.add(Hole(V(6, d['side_height']-10), 4.3/2))
+
 		# piviot hole through middle
 		self.bottom.add(Hole(V(0,0), rad=d['piviot_hole_rad']), [name+'_bottom', name+'_base', name+'_under_base'])
 		self.bottom.add(Hole(V(0,0), rad=d['piviot_hole_rad']+1), ['base', 'perspex', 'paper'])
@@ -134,12 +139,13 @@ class Turret(Part):
 		end_plate_border.add_point(PIncurve(V(width/2-d['edge_width'], -d['centre_height']+d['edge_width'] ), radius=d['edge_width']))
 		end_plate_border.add_point(PIncurve(V(-width/2+d['edge_width'], -d['centre_height']+d['edge_width'] ), radius=d['edge_width']))
 		end_plate_border.add_point(PIncurve(V(-width/2+d['edge_width'], -d['centre_height'] + d['side_height']-d['edge_width']-4), radius=d['edge_width']))
-		self.end_plate = self.add(Part(name = name+'_end_plate', layer =  name+'_end_plate', border = end_plate_border)) 
-		self.end_plate.add(Bolt(V(width/2-d['edge_width']/2, -d['centre_height'] + d['side_height']-d['edge_width']-4), 'M4', insert_layer=[], thread_layer=name+'_end_plate', clearance_layers=name+'_end2'))
-		self.end_plate.add(Bolt(V(-width/2+d['edge_width']/2, -d['centre_height'] + d['side_height']-d['edge_width']-4), 'M4', insert_layer=[], thread_layer=name+'_end_plate', clearance_layers=name+'_end2'))
+		self.end_plate = self.add(Part(name = name+'_end_plate', layer =  name+'_end_plate', border = end_plate_border))
+		# Holes to hold end_plate while gluing 
+		self.end_plate.add(Bolt(V(width/2-d['edge_width']/2, -d['centre_height'] + d['side_height']-d['edge_width']-4), 'M4', insert_layer=[], clearance_layers=name+'_end_plate', thread_layer=name+'_end2', thread_depth=4))
+		self.end_plate.add(Bolt(V(-width/2+d['edge_width']/2, -d['centre_height'] + d['side_height']-d['edge_width']-4), 'M4', insert_layer=[], clearance_layers=name+'_end_plate', thread_layer=name+'_end2', thread_depth=4))
 
-		self.end_plate.add(Bolt(V(width/2-d['edge_width']/2, -d['centre_height'] +d['edge_width']/2), 'M4', insert_layer=[], thread_layer=name+'_end_plate', clearance_layers=name+'_end2'))
-		self.end_plate.add(Bolt(V(-width/2+d['edge_width']/2, -d['centre_height'] +d['edge_width']/2), 'M4', insert_layer=[], thread_layer=name+'_end_plate', clearance_layers=name+'_end2'))
+		self.end_plate.add(Bolt(V(width/2-d['edge_width']/2, -d['centre_height'] +d['edge_width']/2), 'M4', insert_layer=[], clearance_layers=name+'_end_plate', thread_layer=name+'_end2', thread_depth=4))
+		self.end_plate.add(Bolt(V(-width/2+d['edge_width']/2, -d['centre_height'] +d['edge_width']/2), 'M4', insert_layer=[], clearance_layers=name+'_end_plate', thread_layer=name+'_end2', thread_depth=4))
 
 		# Tube insert is a double layer circle that glues into closed end of tube
 		self.tube_insert = self.add(Part(name = name+'_tube_insert', layer= name+'_tube_insert', border = Circle(V(0,0), rad=d['centre_rad'])))
