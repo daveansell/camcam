@@ -262,7 +262,10 @@ class PSharp(Point):
 		if self.corner_side(side)=='external':# and side=='out' or corner=='internal' and side=='in':
 			t = copy.copy(self)
 	#		t=POutcurve(self.pos, radius=distance, transform=self.transform)
-           		if self.angle==0 or self.angle==math.pi and self.dot<0:
+           		if (self.angle==0 or self.angle==math.pi and self.dot<0) and self.last().point_type in ['sharp', 'clear', 'doubleclear'] and self.next().point_type in ['sharp', 'clear', 'doubleclear']:
+				print self.next().point_type
+				print self.last().point_type
+				print "NO ANGLE SO PASS"
       				pass
 			elif self.angle==0 and self.point_type in ['sharp', 'clear', 'doubleclear'] and self.next().point_type in ['sharp', 'clear', 'doubleclear']:
 					print "No angle so we can skip this one"
@@ -541,7 +544,8 @@ class POutcurve(Point):
 		return t
 	def origin(self, forward=True):
 		seg=self.makeSegment({})
-		print "arc from="+str(seg[1].cutfrom)+" arc to="+str(seg[1].cutto)+" direction="+str(seg[1].direction)
+		print "Outcurve arc from="+str(seg[1].cutfrom)+" arc to="+str(seg[1].cutto)+" direction="+str(seg[1].direction)
+
 		if forward:
 			return seg[1].cutfrom
 		else:
@@ -560,6 +564,7 @@ class POutcurve(Point):
 		return self.pos+(lastpoint-self.pos).normalize()*dl
 	def offset(self, side, distance, direction):
 		t=copy.copy(self)
+		self.setangle()
 		if self.corner_side(side)=='external':
 			t.radius += distance
 		elif(self.radius>=distance):
