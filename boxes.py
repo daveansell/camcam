@@ -94,10 +94,12 @@ class Turret(Part):
 		self.translate(pos)
 		data={
 			'camera':{'length':70, 'edge_width':10, 'centre_height':60, 'centre_rad':56/2, 'centre_inner_rad':51.3/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10},
+			'thermal':{'length':85, 'edge_width':10, 'centre_height':60, 'centre_rad':56/2, 'centre_inner_rad':51.3/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10},
 			'lamp':{'length':50, 'edge_width':10, 'centre_height':35, 'centre_rad':56/2, 'centre_inner_rad':51.3/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10},
 		}
 		assert turret_type in data
 		d=data[turret_type]
+
 		width = math.sqrt(d['centre_rad']**2-(d['centre_height']-d['side_height'])**2)*2
 		box=self.add(RoundedBox(V(0,0), layers, name, d['length'], width, d['centre_height'], d['centre_rad'], 0, d['side_height'], d['bend_rad'], thickness, d['tab_length'], fudge, blank_end =True, centre_holerad2=0))
 		self.bottom=box.bottom
@@ -131,9 +133,9 @@ class Turret(Part):
 		self.tube_insert.add(Hole(V(0,0), rad=d['centre_holerad']), [ name+'_tube_insert',  name+'_tube_insert_in'])
 
 class PiCamTurret(Turret):
-	def __init__(self, pos, plane, name, turret_type, thickness, fudge, **config):
+	def __init__(self, pos, plane, name, thickness, fudge, **config):
                 self.init(config)
-                self.init_turret(pos, plane, name, turret_type, thickness, fudge, config)
+                self.init_turret(pos, plane, name, 'camera', thickness, fudge, config)
 		plane.add_layer(name+'_camera_holder', material='pvc', thickness=thickness, z0=0)
 		self.camera_holder = self.add(Part(name=name+'_camera_holder', layer= name+'_camera_holder', ignore_border=True))
 		cam_width=25.0
@@ -153,7 +155,8 @@ class PiCamTurret(Turret):
 		cable_slot_width=cam_ribbon_width+8.0
 		mount_hole_from_edge = (rod_rad-(cam_height+cam_yoff*2)/2)/2
 		print "Mounting holes at radius ="+str(rod_rad - mount_hole_from_edge)
-
+		accel_width = 22
+                accel_depth = 17.5
 
 		cam_centre= V(0, cam_yoff)
 		self.camera_holder.add(Circle(V(0,0), rad=rod_rad), 'paper')
@@ -176,7 +179,10 @@ class PiCamTurret(Turret):
 		dstep = cone_depth / steps
 		for i in range(0, steps):
 			 self.camera_holder.add(Circle(V(0,0), rad = cone_rad-rstep*i, z1 = -dstep*(i+1), side='in', cutter='6mm_endmill'))
-	
+		#               accelerometer
+                self.camera_holder.add(RoundedRect(cam_centre, rad=3.1, centred=True, height = accel_width, width=6.5, z0 = -cam_depth, z1=-cam_depth-accel_depth, cutter="6mm_endmill"))
+                self.camera_holder.add(RoundedRect(cam_centre+V(6.5/2,0), tr=V(-6.5/2, -cam_height/2-cable_slot_height/2), z0 = -cam_depth, z1=-cam_depth-6, cutter="6mm_endmill", rad=3.1))
+
 		
 class PlainBox(Part):
 	"""pos       - position
