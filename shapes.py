@@ -1014,6 +1014,29 @@ class FingerJointBoxSide(Path):
 #		self.simplify_points()
 
 
+class RoundedArc(Path):
+	def __init__(self, pos, rad, width, angle,  **config):
+		self.init(config)
+		if 'startangle' in config:
+			startangle = config['startangle']
+		else:
+			startangle = 0
+		
+		self.closed=True
+		a1 = -angle/2+startangle
+		a2 = angle/2+startangle
+		w = width/2
+		print "RoundedArc width="+str(width)+" w="+str(w)
+		self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a1]}))
+		self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
+		self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a2]}))
+		self.add_point(PArc(pos+V(0,rad), radius=w, direction='cw', transform={'rotate':[pos, a2]}))
+		self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a2]}))
+		self.add_point(PArc(pos+V(0,0), radius=rad-w, direction='ccw'))
+		self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a1]}))
+		self.add_point(PArc(pos+V(0,rad), radius=w, direction='cw', transform={'rotate':[pos, a1]}))
+
+
 class Module(Plane):
 	def __init__(self, size,  **config):#holesX=False, holesY=False, fromedge=15, fromends=40):
 		"""Create a module

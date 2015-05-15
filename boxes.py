@@ -1,5 +1,6 @@
 from path import *
 from shapes import *
+from parts import *
 
 class RoundedBoxEnd(Part):
 	def __init__(self,pos, layer, name, width, centre_height, centre_rad, centre_holerad, side_height, bend_rad=0,  sidemodes=False, thickness=6, tab_length=False,  fudge=0, **config):
@@ -85,7 +86,7 @@ class Turret(Part):
 		self.init_turret(pos, plane, name, turret_type, thickness, fudge, config)
 
 	def init_turret(self, pos, plane, name, turret_type, thickness, fudge, config):
-		p_layers={'side':'_side', 'end':'end', 'end2':'_end2', 'bottom':'_bottom','end_plate':'_end_plate', 'bearing_ring':'_bearing_ring', 'tube_insert':'_tube_insert', 'tube_insert_in':'_tube_insert_in'}
+		p_layers={'side':'_side', 'end':'end', 'end2':'_end2', 'bottom':'_bottom','end_plate':'_end_plate', 'bearing_ring':'_bearing_ring', 'tube_insert':'_tube_insert', 'tube_insert_in':'_tube_insert_in', 'base':'_base', 'under_base':'_under_base', 'base_protector':'_base_protector'}
 		layers = {}
 		
 		for i, l in p_layers.iteritems():
@@ -99,19 +100,31 @@ class Turret(Part):
 		}
 		assert turret_type in data
 		d=data[turret_type]
-
+		self.d = d
 		width = math.sqrt(d['centre_rad']**2-(d['centre_height']-d['side_height'])**2)*2
 		box=self.add(RoundedBox(V(0,0), layers, name, d['length'], width, d['centre_height'], d['centre_rad'], 0, d['side_height'], d['bend_rad'], thickness, d['tab_length'], fudge, blank_end =True, centre_holerad2=0))
 		self.bottom=box.bottom
 		self.end=box.end
+		# holes for cable clamps inside base
+		self.bottom.add(Hole(V(0, -d['length']/2+8), rad=3.3/2))
+		self.bottom.add(Hole(V(width/3, -d['length']/2+14), rad=3.3/2))
+		self.bottom.add(Hole(V(-width/5, -d['length']/2+8), rad=3.3/2))
+		self.bottom.add(Hole(V(-width/4, -width/4), rad=3.3/2))
+
+
+		# Square for coach bolt
 		self.end.add(Rect(V(0,0), centred=True, width=d['square_hole_side'], height=d['square_hole_side'], side='in'))
 		self.side=box.side
-		self.bottom.add(Hole(V(0,0), rad=d['piviot_hole_rad']))
+		# piviot hole through middle
+		self.bottom.add(Hole(V(0,0), rad=d['piviot_hole_rad']), [name+'_bottom', name+'_base', name+'_under_base'])
+		self.bottom.add(Hole(V(0,0), rad=d['piviot_hole_rad']+1), ['base', 'perspex', 'paper'])
+
+		# bearing ring sits inside open end of tube
 		self.bearing_ring = self.add(Part(name = name+'_bearing_ring', layer = name+'_bearing_ring', border = Circle(V(0,0), rad=d['centre_inner_rad']-0.2, side='out')))
 		for i in range(0,4):
 			t=self.bearing_ring.add(Bolt(V(d['centre_inner_rad']*2/3, 0), 'M4', insert_layer=[], clearance_layers=name+'_end2', thread_layer=name+'_bearing_ring'))
 			t.rotate(V(0,0), i*90)
-
+		# end plate sits inside the opening end to allow it to be attached
 		end_plate_border = Path(side='out', closed=True)
 		end_plate_border.add_point(V(-width/2, -d['centre_height'] + d['side_height']-4))
 		end_plate_border.add_point(V(-width/2, -d['centre_height']))
@@ -128,9 +141,40 @@ class Turret(Part):
 		self.end_plate.add(Bolt(V(width/2-d['edge_width']/2, -d['centre_height'] +d['edge_width']/2), 'M4', insert_layer=[], thread_layer=name+'_end_plate', clearance_layers=name+'_end2'))
 		self.end_plate.add(Bolt(V(-width/2+d['edge_width']/2, -d['centre_height'] +d['edge_width']/2), 'M4', insert_layer=[], thread_layer=name+'_end_plate', clearance_layers=name+'_end2'))
 
+		# Tube insert is a double layer circle that glues into closed end of tube
 		self.tube_insert = self.add(Part(name = name+'_tube_insert', layer= name+'_tube_insert', border = Circle(V(0,0), rad=d['centre_rad'])))
 		self.tube_insert_in = self.add(Part(name = name+'_tube_insert_in', layer= name+'_tube_insert_in', border = Circle(V(0,0), rad=d['centre_inner_rad'])))
 		self.tube_insert.add(Hole(V(0,0), rad=d['centre_holerad']), [ name+'_tube_insert',  name+'_tube_insert_in'])
+
+		base_protector_rad=40
+		base_rad = math.sqrt((d['length']/2+thickness)**2 + (width/2+thickness)**2)+5
+		# under base is a ring under the board to act as bearing on piviot
+		self.under_base = self.add(Part(name=name+'_under_base', layer = name+'_under_base', border = Circle(V(0,0), rad=base_rad, side='out')))
+		# base sits above board to act as bearing and constrain rotation
+		self.base = self.add(Part(name=name+'_base', layer = name+'_base', border = Circle(V(0,0), rad=base_rad, side='out', cutter='1/8_endmill')))
+		self.base.add(AngleConstraint(V(0,0), width/2-4, 320, 'M4', name+'_base', name+'_bottom'))
+
+		# base protector sits on standoffs and has cable cable-tied to it protecting and holding the cable
+		self.base_protector = self.add(Part(name=name+'_base_protector', layer = name+'_base_protector', border = Circle(V(0,0), rad=base_protector_rad, side='out')))
+		self.base_protector.add(Lines([V(-5, base_protector_rad-12), V(-5, base_protector_rad-8)]))
+		self.base_protector.add(Lines([V(5, base_protector_rad-12), V(5, base_protector_rad-8)]))
+		self.base_protector.add(Lines([V(-5, base_protector_rad-20), V(-5, base_protector_rad-24)]))
+		self.base_protector.add(Lines([V(5, base_protector_rad-20), V(5, base_protector_rad-24)]))
+		for i in range(0,6):
+			t=self.base.add(Bolt(V(0, base_rad-8), 'M4', clearance_layers=['perspex', 'paper', name+'_base']))
+			t.rotate(V(0,0), i*60)
+			t=self.under_base.add(Bolt(V(0, base_rad-8), 'M4', clearance_layers=[ name+'_under_base']))
+			t.rotate(V(0,0), 30+i*60)
+			t=self.base_protector.add(Bolt(V(0, base_protector_rad-7), 'M4', clearance_layers=name+'_base_protector', thread_layer=name+'_under_base', insert_layer=[]))
+			self.add_bom('standoff',1, 'M4 standooff MF 30mm', description='30mm standoff')
+			t.rotate(V(0,0), 30+i*60)
+		self.add_bom('M20 hollow',1,'M20_hollow', description='M20 hollow bolt')
+		self.add_bom('M20 wavy washer',1, 'M20_wavy_washer', description='M20 wavy washer')
+		self.add_bom('M20 washer',3, 'M20_washer', description='M20 washer')
+		self.add_bom('M20 conduit locknut',3,'M20_conduit_locknut', description='M20 condut locknut')
+		self.add_bom('20mm thrust bearing',1, '20mm_thrust_bearing', description='20mm thrust bearing')
+		print "ADD BOM_ROD"
+		self.add_bom(BOM_rod('tube', 'black pvc', 'round tube', d['centre_rad']*2, d['length']-thickness-1, 1, 'Tube to make up-down part of turret should have holes drilled to take camera holder, sometimes camera and cable'))
 
 class PiCamTurret(Turret):
 	def __init__(self, pos, plane, name, thickness, fudge, **config):
@@ -182,8 +226,66 @@ class PiCamTurret(Turret):
 		#               accelerometer
                 self.camera_holder.add(RoundedRect(cam_centre, rad=3.1, centred=True, height = accel_width, width=6.5, z0 = -cam_depth, z1=-cam_depth-accel_depth, cutter="6mm_endmill"))
                 self.camera_holder.add(RoundedRect(cam_centre+V(6.5/2,0), tr=V(-6.5/2, -cam_height/2-cable_slot_height/2), z0 = -cam_depth, z1=-cam_depth-6, cutter="6mm_endmill", rad=3.1))
+		self.add_bom(BOM_rod('rod', 'black pvc', 'round', rod_rad*2, 58, 1, 'rod for camera, should have a bite takenout of the middle of one side of radius the tube, and depth 14mm'))
+	
+class ThermalTurret(Turret):
+        def __init__(self, pos, plane, name, thickness, fudge, **config):
+                self.init(config)
+                self.init_turret(pos, plane, name, 'thermal', thickness, fudge, config)
+                cam_rad=25.0/2
+                cam_height=45.0
+                cam_lens_depth = 20
+                cam_depth=14
+                cam_top_to_connector = 24
+                centre_rad=56/2
+                centre_inner_rad=51.3/2
+                tube_wall = centre_rad-centre_inner_rad
 
-		
+                rod_rad = 51.5/2
+                rod_length = 57
+                window_holder_thickness = 6
+                window_holder_rad = rod_rad - 2
+
+                window_rad=25
+                window_thickness=2
+
+                accel_width = 22
+                accel_depth = 17.5
+
+                minimum_bite_depth = rod_rad - cam_top_to_connector + tube_wall
+                self.comment("Minimum bite depth = "+str(minimum_bite_depth))
+                print "Minimum bite depth = "+str(minimum_bite_depth)
+                camera_centre = V(0, 0)
+
+                hole_y = math.sqrt((rod_rad-2)**2 - cam_rad**2)
+                plane.add_layer(name+'_camera_holder', material='pvc', thickness=thickness, z0=0)
+                plane.add_layer(name+'_window_holder', material='pvc', thickness=window_holder_thickness, z0=0)
+                self.camera_holder = self.add(Part(name=name+'_camera_holder', layer= name+'_camera_holder', ignore_border=True))
+                self.window_holder = self.add(Part(name=name+'_window_holder', layer= name+'_window_holder', border = Circle(V(0,0), rad=window_holder_rad)))
+
+                camera_cutout = Path(closed=True, side='in', partial_fill= cam_rad-4, cutter='6mm_endmill', z1=-rod_length/2, )
+                camera_cutout.add_point(PSharp(V(-cam_rad, -hole_y/2)))
+                camera_cutout.add_point(POutcurve(V(0,0), radius = cam_rad))
+                camera_cutout.add_point(PSharp(V(cam_rad, -hole_y/2)))
+                camera_cutout.add_point(PIncurve(V(cam_rad, -hole_y), radius=3.5))
+                camera_cutout.add_point(PIncurve(V(-cam_rad, -hole_y), radius=3.5))
+                self.camera_holder.add(camera_cutout)
+                self.camera_holder.add(FilledCircle(V(0,0), rad=window_holder_rad + 0.5, z1 = -window_holder_thickness, cutter="6mm_endmill"))
+
+#               accelerometer
+                self.camera_holder.add(RoundedRect(V(0,0), rad=3.1, centred=True, width = accel_width, height=6.5, z0 = -rod_length/2, z1=-rod_length/2-accel_depth, cutter="6mm_endmill"))
+                self.camera_holder.add(RoundedRect(V(6.5/2,0), tr=V(-6.5/2, -hole_y), z0 = -rod_length/2, z1=-rod_length/2-6, cutter="6mm_endmill", rad=3.1))
+
+                for i in range(0,3):
+                        t=self.camera_holder.add(Hole(V(0, window_holder_rad -3), rad=3.3/2, z1=-12))
+                        t.rotate(V(0,0),i*120)
+                        t=self.window_holder.add(Hole(V(0, window_holder_rad -3), rad=4.3/2))
+                        t.rotate(V(0,0), i*120)
+                self.window_holder.add(Hole(V(0,0), rad=window_rad+0.5, z1=-window_thickness))
+                self.window_holder.add(Hole(V(0,0), rad= window_rad-2))
+                self.add_bom(BOM_rod('rod', 'black pvc', 'round', rod_rad*2, 58, 1, 'rod for camera, should have a bite takenout of the middle of one side of radius the tube, and depth '+str(minimum_bite_depth)+'mm'))
+
+	
 class PlainBox(Part):
 	"""pos       - position
 	   name      - part base name - the subparts will be called name_back etc

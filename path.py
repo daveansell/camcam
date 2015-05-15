@@ -1494,7 +1494,7 @@ class BOM_rod(BOM):
 		self.xsection=xsection
 		self.init()
 	def __str__(self):
-		return str(self.number)+'x '+str(self.name)+' in '+str(self.diameter)+"mm diameter "+str(self.material)+" "+str(self.xsection)+str(self.material)+" "+str(self.description)
+		return str(self.number)+'x '+str(self.length)+'mm of '+str(self.name)+' in '+str(self.diameter)+"mm diameter "+str(self.material)+" "+str(self.xsection)+". "+str(self.material)+" "+str(self.description)
 
 class BOM_software(BOM):
 	def __init__(self, name, number, folder, language, target, description):

@@ -599,3 +599,22 @@ class Monitor(Part):
 		self.add(SquareObjects(mountPlateCentre, 2,6, Hole(V(0,0), rad=3.5/2), centred=True, width=10, height=50), 'perspex')
 		self.add(SquareObjects(mountPlateCentre, 2,6, Hole(V(0,0), rad=5.5/2), centred=True, width=10, height=50), 'perspex')
 		self.add(Rect(V(0,0), centred=True, width = monitorWidth, height = monitorHeight), 'paper')
+
+# creates a means of constraining angles by cutting a curved slot around pos in slot_layer, and a hole for an allen bolt in bolt_layer
+class AngleConstraint(Part):
+	def __init__(self, pos, rad, angle, head, slot_layer, bolt_layer, **config):
+		self.init(config)
+		assert head in milling.bolts
+		bolt = milling.bolts[head]
+		if 'start_angle' in config:
+			startangle = config['startangle']
+		else:
+			startangle = 0
+		self.translate(pos)
+		self.add(RoundedArc(V(0,0), rad, 
+			bolt['allen']['head_d']/2+1, 
+			angle, startangle=startangle, 
+			z1=-bolt['allen']['head_l']-0.8, side='in'
+		), slot_layer)
+		self.add(Hole(V(0,rad), rad=bolt['tap']/2), bolt_layer)
+
