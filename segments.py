@@ -20,6 +20,7 @@ def rotate(pos, a):
 
 
 class Segment(object):
+	seg_types = {}
         def __init__(self):
 # segment type can be line, arc, bezier
                 self.seg_type=False
@@ -28,8 +29,8 @@ class Segment(object):
         def start(self):
                 return {} 
         def out(self,direction, mode='svg', zfrom=False, zto=False):
-                if mode=='svg':
-                        return self.svg(direction) 
+		if mode=='svg':
+                        return self.svg(direction)
                 elif mode=='gcode':
                         temp=self.gcode(direction)
                         if len(temp)>0 and zfrom!=zto:
@@ -38,6 +39,18 @@ class Segment(object):
                 elif mode=='simplegcode' or mode=='scr':
                         temp=self.simplegcode(zfrom, zto, direction)
                         return temp
+		else:
+			return self.seg_types[mode](direction)
+#                if mode=='gcode':
+ #                       temp=self.gcode(direction)
+  #                      if len(temp)>0 and zfrom!=zto:
+   #                             temp[0]['Z']=zto
+    #                    return temp
+     #           elif mode=='simplegcode' or mode=='scr':
+      #                  temp=self.simplegcode(zfrom, zto, direction)
+       #                 return temp
+        #        else:
+         #               return self.seg_types[mode](direction) 
         def svg(self):
                 return {}
         def polygon(self):
