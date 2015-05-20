@@ -1058,6 +1058,7 @@ class Module(Plane):
 :param no_perspex: if rue don't create perspex layer
 :param no_holdowns: if True no holdowns
 """
+		print "MODULE "+str(config)
 		self.init('module',V(0,0),V(0,0),config)
 		self.bom=[]
 		bolt_config={}

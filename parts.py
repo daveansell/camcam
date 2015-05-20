@@ -618,3 +618,45 @@ class AngleConstraint(Part):
 		), slot_layer)
 		self.add(Hole(V(0,rad), rad=bolt['tap']/2), bolt_layer)
 
+class AngleBracket(Part):
+	def __init__(self, pos, bracket_type, mode, **config):
+		self.init(config)
+		self.translate(pos)
+		data={
+			'B&Q_100mm_bracket':{'thickness':6, 'width':14, 'inner_length':96, 'outer_length':100, 'hole_from_inside':30, 'hole_spacing':30, 'num_holes':3},
+		}
+		assert bracket_type in data
+		d = data[bracket_type]
+		fe = 0
+		if 'clearance_layers' in config:
+			clearance_layers = config['clearance_layers']
+		else:
+			clearance_layers = []
+		if 'recess_layer' in config:
+			recess_layers = config['recess_layer']
+		else:
+			recess_layers = []
+		if 'insert_layer' in config:
+                        insert_layer = config['insert_layer']
+                else:
+                        insert_layer = []
+		
+		top_thickness = d['outer_length'] - d['inner_length']
+		# centre is top side of centre
+		if mode=='through':
+			self.add(Rect(V(0, -top_thickness/2), centred = True, width = d['width'] + 1, height = d['thickness'] +1, side='in'), clearance_layers) 
+		if mode=='through' or mode=='top':
+			self.add(LineObjects(V(0, -top_thickness - d['hole_from_inside']), V(0, -top_thickness - d['hole_from_inside'] - d['hole_spacing'] * (d['num_holes']-1)), 0, d['num_holes'], Bolt(V(0,0), 'M4', clearance_layers = clearance_layers, insert_layer = insert_layer )))
+		if mode == 'recess_through':
+			if 'through_thickness' in config:
+				fe = config['through_thickness']
+			else:
+				raise ValueError('Angle bracket needs through_thickness to be set in recess_through mode')
+				
+			if 'recess_depth' in config:
+				recess_depth =  -config['recess_depth']
+			else:
+				recess_depth = False
+
+			self.add(LineObjects(V(0, -top_thickness - d['hole_from_inside'])+fe, V(0, -top_thickness - d['hole_from_inside'] - d['hole_spacing'] * (d['num_holes']-1)+fe, 0, d['num_holes'], bolt(V(0,0), 'M4', clearance_layers = clearance_layers, insert_layers=None))))
+			self.add(Rect(V(-d['width']/2-0.5, 0), tr = V(d['width']/2+0.5, -d['outer_length']+fe), partial_fill = d['width']/2-1, z1= recess_depth, side='in'), recess_layers)

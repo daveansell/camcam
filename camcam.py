@@ -8,7 +8,7 @@ from boxes import *
 from optparse import OptionParser
 import sys
 import Milling
-
+import pickle
 
 
 class CamCam:
@@ -36,6 +36,42 @@ class CamCam:
 		else:
 			for plane in self.planes:
 				plane.render_all(mode,config)
+	def render_layout( self, mode, layout_file, config):
+		modeconfig=milling.mode_config[mode]
+		parts={}
+		out = []
+		config['layout'] = True
+		for plane in self.planes:
+			for part in plane.getParts():
+				parts[part.name] = [plane, part]
+		l = open(layout_file, 'r')
+		sheets = pickle.load(l)
+		print sheets
+		for sheet in sheets['sheets']:
+			out = {}
+			for p in sheets['sheets'][sheet]:
+				(plane, part) = parts[p['name']]
+				tconfig = config
+				tconfig['transformations'] = [{'rotate':[ V(p['startcentre'][0],p['startcentre'][1]), p['rotate']], 'translate':V(p['translate'][0], p['translate'][1] ) }]
+				plane.render_part(part, mode, tconfig)
+				if type(plane.lay_out) is dict:
+					for i in plane.lay_out:
+						if i not in out:
+							out[i]=''
+						out[i] += plane.lay_out[i]
+				else:
+					print "plane.lay_out is not a dict"
+			if 'suffix' not in modeconfig:
+				modeconfig['suffix'] = ''
+			for i in out:
+				f=open(self.sanitise_filename(sheet+ i + modeconfig['file_suffix']), 'w')
+				f.write(modeconfig['prefix'] + out[i] + modeconfig['postfix'])
+		
+
+
+	def sanitise_filename(self,filename):
+                return "".join(x for x in filename if x.isalnum() or x in '-._')
+
 	def listparts(self):
 		 for plane in self.planes:
                                 plane.list_all()
@@ -95,6 +131,8 @@ parser.add_option('-Z', '--zbase', dest='zbase',
 		  action='store_true', help='set z=0 to bottom of material')
 parser.add_option('-z', '--nozbase', dest='zbase',
 		  action='store_false', help='set z=0 to top of material (default)')
+parser.add_option("-L", "--layout-file", dest="layout_file",
+                  help="file for layout")
 (options, args) = parser.parse_args()
 config={}
 
@@ -142,6 +180,8 @@ if options.listparts:
 	camcam.listparts()
 if options.bom:
 	camcam.get_bom()
+elif options.layout_file:
+	camcam.render_layout(options.mode, options.layout_file, config)
 else:
 	camcam.render(options.mode,config)
 

@@ -640,8 +640,6 @@ class Path(object):
 		else:
 			pconfig = False
 		config = {}
-		if 'tranformations' in pconfig:
-			print "p tranformsations="+str(pconfig['transformations'])
 		if pconfig is False or  pconfig['transformations']==False or pconfig['transformations'] is None:
 			config['transformations']=[]
 		else:
@@ -1262,7 +1260,7 @@ class Pathgroup(object):
 			pconfig = False
 		config = {}
 		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour','rendermode','partial_fill','finishing','fill_direction','cutter','precut_z']
-		if pconfig is False or  pconfig['transformations'] is False or pconfig['transformations'] is None:
+		if pconfig is False or  'transformations' not in pconfig or pconfig['transformations'] is False or pconfig['transformations'] is None:
 			config['transformations']=[]
 		else:
 			config['transformations']=pconfig['transformations'][:]
@@ -1273,7 +1271,7 @@ class Pathgroup(object):
 			if v !='transform' and v !='transformations':
                 	        if getattr(self,v) is not None:
 					config[v]=getattr(self,v)
-                	        elif pconfig!=False and pconfig[v] is not None:
+                	        elif pconfig!=False and v in pconfig and pconfig[v] is not None:
                 	                config[v]=pconfig[v]
 				else:
 					config[v]=None
@@ -1628,7 +1626,7 @@ class Part(object):
 			pconfig = False
 		
 		config = {}
-		if pconfig is None or pconfig is False or pconfig['transformations'] is None:
+		if pconfig is None or pconfig is False or 'transformations' not in pconfig or  pconfig['transformations'] is None:
 			config['transformations']=[]
 		else:
 			config['transformations']=pconfig['transformations'][:]
@@ -1637,10 +1635,13 @@ class Part(object):
 		#	self.transform=None
                 for v in self.varlist:
 			if v !='transform' and v !='transformations':
-                        	if hasattr(self,v) and getattr(self,v) is not None:
-					config[v]=getattr(self,v)
+                        	if hasattr(self,v) and getattr(self,v) is not None and getattr(self,v) is not False:
+					config[v] = getattr(self,v)
+				elif(v in pconfig and pconfig[v] is not None and pconfig[v] is not False):
+		#			print v +" | "+ str(pconfig[v])
+					config[v] = pconfig[v]
 				else:
-					config[v]=None
+					config[v] = None
 		return config
 	# is this a part we can render or just a multilayer pathgroup	
 	def renderable(self):
@@ -1901,6 +1902,8 @@ class Plane(Part):
 				self.config[v]=config[v]
                         else:
 				self.config[v]=False
+	def get_config(self):
+		return self.config
 	def add_part_layer(self, part, material, thickness, z0=0,zoffset=0, add_back=False, isback=False, colour=False):
 		self.add_layer(part.name, material, thickness, z0, zoffset, add_back, isback, colour)
 		part.layer=part.name
@@ -1935,12 +1938,13 @@ class Plane(Part):
 		else:
 			raise Warning(str(layer)+" is referenced but doesn't exist.")
 
-	def render_part(self,part, callmode,pconfig=False):
+	def render_part(self, part, callmode, pconfig=False):
 		self.callmode = callmode
 		self.modeconfig=milling.mode_config[callmode]
 		self.mode=self.modeconfig['mode']
 		self.modeconfig['callmode']=callmode
 		self.callmode=callmode
+		self.lay_out = {}
 		layers = self.get_layers()
 		output= collections.OrderedDict()
 		c=0
@@ -2041,6 +2045,9 @@ class Plane(Part):
 				centre=V(0,0)
 			if self.modeconfig['label'] and  self.modeconfig['mode'] == 'svg':
 				out+="<text transform='scale(1,-1)' text-anchor='middle' x='"+str(int(centre[0]))+"' y='"+str(-int(centre[1]))+"'>"+str(part.name)+"</text>"
+			if 'layout' in pconfig and pconfig['layout']:
+				self.lay_out['svg'] = '<g>'+out+'</g>'
+				return True
 			if self.modeconfig['overview']:
 				self.out+='<g>'+out+'</g>'
 			elif part.name is not None:
@@ -2109,6 +2116,7 @@ class Plane(Part):
 		#	output2+='\nG10 L2 P1 X0 Y0\n'
 			filename+='_'+str(config['repeatx'])+'x_'+str(config['repeaty'])+'y'
 			output=output2
+
 		# if we are making gcode we we should have tool changes in there
 		if config['mode']=='gcode':
 			toolid=str(milling.tools[config['cutter']]['id'])
@@ -2116,12 +2124,17 @@ class Plane(Part):
 		if 'zbase' in config and config['zbase']:
 			zoff = config['thickness']
 			output = self.offset_gcode( output, V(0,0,zoff))
-		output = config['prefix']+"\n"+output+"\n"+config['postfix']
-		f=open(self.sanitise_filename(filename+config['file_suffix']),'w')
-		f.write(output)
-		f.close()
-		if 'dosfile' in config and config['dosfile']:
-			os.system("/usr/bin/unix2dos "+self.sanitise_filename(filename+config['file_suffix']))
+		if 'layout' in config and config['layout']:
+				if key not in self.lay_out:
+					self.lay_out[key]=''
+				self.lay_out[key]+=output
+		else:
+			output = config['prefix']+"\n"+output+"\n"+config['postfix']
+			f=open(self.sanitise_filename(filename+config['file_suffix']),'w')
+			f.write(output)
+			f.close()
+			if 'dosfile' in config and config['dosfile']:
+				os.system("/usr/bin/unix2dos "+self.sanitise_filename(filename+config['file_suffix']))
 		
 	def offset_gcode(self, output, offset):
 		xreg=re.compile('X[\d\.-]+')
