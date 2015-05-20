@@ -81,7 +81,10 @@ You can calibrate these with a rectangle or a named circle of known width and he
 		for p in outpaths:
 			if 'transform' in p.attrib:
 				m = re.search('translate\(([-\d\.]*),([-\d\.]*)\)', p.attrib['transform'])
-				off = V(float(m.group(1)), float(m.group(2)))
+				if m:
+					off = V(float(m.group(1)), float(m.group(2)))
+				else:
+					off = V(0,0)
 			else:
 				off=V(0,0)
 			cal = V(cal_centrex, cal_centrey)
