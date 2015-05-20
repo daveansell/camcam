@@ -25,16 +25,18 @@ from  kivy.uix.label import *
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from functools import partial
-
+from kivy.properties import NumericProperty
 
 class KvPart(Scatter):
+	deleted = False
 	def draw(self, part):
 		self.part = part
 		self.startcentre = (0,0)
 		if part.border:
 			config= part.border.generate_config({})
 			ccpoints = part.border.polygonise()
-			self.canvas.add(Color(1,0,0,0.05))
+			self.back_colour = Color(1,0,0,0.05)
+			self.canvas.add( self.back_colour)
 			width = part.border.boundingBox['tr'][0]-part.border.boundingBox['bl'][0]
 			height = part.border.boundingBox['tr'][1]-part.border.boundingBox['bl'][1]
 			centrex = part.border.centre[0]
@@ -53,7 +55,8 @@ class KvPart(Scatter):
 			if 'cutterrad' in config:
 				self.canvas.add(Color(1,0,0,0.5))
 				self.canvas.add(kivy.graphics.Line(points=kvpoints, width=config['cutterrad']*2))
-			self.canvas.add(Color(1,1,0))
+			self.linecolour = Color(1,1,0)
+			self.canvas.add(self.linecolour)
 			self.canvas.add(kivy.graphics.Line(points=kvpoints, width=1))
 			self.canvas.add(Color(0,1,0,1))
 			self.canvas.add(Ellipse(pos=(ccpoints[0][0] -centrex+width/2, ccpoints[0][1] -centrey+height/2), size=(3,3)))
@@ -73,6 +76,13 @@ class KvPart(Scatter):
 		self.do_scale = False
 		self.do_translation = True
 
+	def on_bring_to_front(self, touch):
+		print self.parent
+
+		self.camcam.do_touch()
+		self.back_colour.g = 1
+		self.camcam.selected = self
+		print self
 class RenderPart:
 	def __init__(self):
 		self.offset=V(0,0)
@@ -86,6 +96,7 @@ class RenderPart:
 
 class CamCam(App):
 	planes=[]
+	selected = False
 	def add_plane(self,plane):
 	#	print plane.obType
 		if hasattr(plane,'obType') and plane.obType=='Plane':#type(plane) is Plane:
@@ -119,6 +130,9 @@ class CamCam(App):
 			button = Button(text = sheet)
 			button.bind(on_press = partial(self.set_sheet, sheet))
 			layout.add_widget(button)
+		button = Button(text = 'Delete')
+		button.bind(on_press = self.delete)
+		layout.add_widget(button)
 		button = Button(text = 'Save')
 		button.bind(on_press = self.save)
 		layout.add_widget(button)
@@ -128,10 +142,28 @@ class CamCam(App):
 				for i in range(0, part.number):
 					picture = KvPart()#rotation=randint(-30,30))
 					picture.draw(part)
+					picture.camcam=self
 					self.sheet_widgets[sheet].append(picture)
 #				root.add_widget(picture)
     		root.add_widget(layout)
+		
+	def do_touch(self):
+		for s in self.sheet_widgets:
+			for p in self.sheet_widgets[s]:
+				p.back_colour.g = 0
 
+	def delete(self, *largs):
+		print "DELETE"
+		print self.selected
+		if self.selected:
+			if self.selected.back_colour.b ==1:
+				self.selected.back_colour.b = 0
+				self.selected.deleted = 0
+				self.selected.linecolour.a = 1
+			else:
+				self.selected.back_colour.b = 1
+				self.selected.deleted = 1
+				self.selected.linecolour.a = 0.1
 	def save(self, *largs):
 		global args
 		data = {}
@@ -144,14 +176,14 @@ class CamCam(App):
 				rec = {}
 				rec['name']=p.part.name
 				rec['translate'] = (p.pos[0] - p.startpos[0], p.pos[1] - p.startpos[1])
-				print dir(p)
 				
 			#	m= p.get_window_matrix(x = p.center[0], y = p.center[1])
 		#		rec['rotate'] = math.atan2(m[4], m[0])/math.pi*180
 				rec['rotate'] = 0
 				rec['startcentre'] = p.startcentre
 				rec['startpos'] = p.startpos
-				data['sheets'][s].append(rec)
+				if p.deleted ==0:
+					data['sheets'][s].append(rec)
 #				print p.get_window_matrix(0,0)
 		h = open( 'layout_file', 'w') 
 		pickle.dump(data, h)
