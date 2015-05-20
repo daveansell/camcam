@@ -7,8 +7,6 @@ from boxes import *
 from optparse import OptionParser
 import sys
 import Milling
-import pygame
-import planes
 import kivy
 kivy.require('1.0.6')
 import pickle
@@ -54,9 +52,9 @@ class KvPart(Scatter):
 				kvpoints.append(ccpoints[0][1] -centrey+height/2)
 			if 'cutterrad' in config:
 				self.canvas.add(Color(1,0,0,0.5))
-				self.canvas.add(Line(points=kvpoints, width=config['cutterrad']*2))
+				self.canvas.add(kivy.graphics.Line(points=kvpoints, width=config['cutterrad']*2))
 			self.canvas.add(Color(1,1,0))
-			self.canvas.add(Line(points=kvpoints, width=1))
+			self.canvas.add(kivy.graphics.Line(points=kvpoints, width=1))
 			self.canvas.add(Color(0,1,0,1))
 			self.canvas.add(Ellipse(pos=(ccpoints[0][0] -centrex+width/2, ccpoints[0][1] -centrey+height/2), size=(3,3)))
 			self.center = ( centrex , centrey)
@@ -103,7 +101,8 @@ class CamCam(App):
 
         # get any files into images directory
 		print self
-		print root
+		print App
+		print dir(self)
 		sheets = {}
 		self.sheet_widgets = {}
 		buttons = []
@@ -145,8 +144,11 @@ class CamCam(App):
 				rec = {}
 				rec['name']=p.part.name
 				rec['translate'] = (p.pos[0] - p.startpos[0], p.pos[1] - p.startpos[1])
-				m= p.get_window_matrix(x = p.center[0], y = p.center[1])
-				rec['rotate'] = math.atan2(m[4], m[0])/math.pi*180
+				print dir(p)
+				
+			#	m= p.get_window_matrix(x = p.center[0], y = p.center[1])
+		#		rec['rotate'] = math.atan2(m[4], m[0])/math.pi*180
+				rec['rotate'] = 0
 				rec['startcentre'] = p.startcentre
 				rec['startpos'] = p.startpos
 				data['sheets'][s].append(rec)

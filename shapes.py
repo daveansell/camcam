@@ -79,6 +79,7 @@ class Drill(Path):
 				print "drill of "+str(self.drillrad)+"mm not found in tools"
 		self.closed=True
 		self.add_point(PSharp(self.pos))
+
 	def render(self, pconfig):
 		config=self.generate_config(pconfig)
 		p=PSharp(self.pos).point_transform(config['transformations'])
@@ -89,9 +90,9 @@ class Drill(Path):
 			return [config['cutter'], '<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>\n'%(p.pos[0], p.pos[1], self.drillrad)]
 		elif config['mode']=='gcode':
 			if self.peck:
-				return [config['cutter'], 'G83X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.peck, config['vertfeed'])]
+				return [config['cutter'], 'G83X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.peck, config['vertfeed'],config['clear_height'])]
 			else:
-				return [config['cutter'], 'G81X%0.2fY%0.2fZ%0.2fR%0.2fF%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3,config['vertfeed'])]
+				return [config['cutter'], 'G81X%0.2fY%0.2fZ%0.2fR%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3,config['vertfeed'],config['clear_height'])]
 		elif config['mode']=='simplegcode':
 			dist= config['z1']-config['z0']
 			if self.peck:
@@ -107,6 +108,7 @@ class Drill(Path):
 			ret += 'G0Z%0.2f\n'%config['clear_height']
 			return [config['cutter'], ret]
 	#	print "NO MODE="+str(config['mode'])
+
 	def polygonise(self, resolution=0):
 		config=self.generate_config({'cutterrad':0})
 		p=PSharp(self.pos).point_transform(config['transformations'])

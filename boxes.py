@@ -210,15 +210,15 @@ class PiCamTurret(Turret):
 
 		cam_centre= V(0, cam_yoff)
 		self.camera_holder.add(Circle(V(0,0), rad=rod_rad), 'paper')
-		self.camera_holder.add(Rect(cam_centre, centred=True, width = cam_width+2, height=cam_height+1, z1=-cam_depth-1, partial_fill=cam_width/2-1, cutter='6mm_endmill'))
-		self.camera_holder.add(Rect(cam_centre+V(0,-cam_height/2-cable_slot_height/2), centred=True, width= cable_slot_width, height=cable_slot_height, z0=-cam_depth-1, z1=cable_slot_depth, cutter='6mm_endmill', rad=3.1, partial_fill=cable_slot_height/2-1))
+		self.camera_holder.add(Rect(cam_centre, centred=True, width = cam_width+2, height=cam_height+1, z1=-cam_depth-1, partial_fill=cam_width/2-4, cutter='6mm_endmill', side='in'))
+		self.camera_holder.add(Rect(cam_centre+V(0,-cam_height/2-cable_slot_height/2), centred=True, width= cable_slot_width, height=cable_slot_height, z1=-cable_slot_depth, cutter='6mm_endmill', rad=3.1, partial_fill=cable_slot_height/2-7, side='in'))
 		
-		self.camera_holder.add(Drill(cam_centre+V(cam_width/2-cam_hole_from_side, cam_height/2-cam_hole_from_side), z0= -cam_depth-1, z1=-cam_depth-6, rad=1.5/2))
-		self.camera_holder.add(Drill(cam_centre+V(-cam_width/2+cam_hole_from_side, cam_height/2-cam_hole_from_side), z0= -cam_depth-1, z1=-cam_depth-6, rad=1.5/2))
-		self.camera_holder.add(Drill(cam_centre+V(cam_width/2-cam_hole_from_side, -cam_height/2+cam_hole_from_bottom), z0= -cam_depth-1, z1=-cam_depth-6, rad=1.5/2))
-		self.camera_holder.add(Drill(cam_centre+V(-cam_width/2+cam_hole_from_side, -cam_height/2+cam_hole_from_bottom), z0= -cam_depth-1, z1=-cam_depth-6, rad=1.5/2))
+		self.camera_holder.add(Drill(cam_centre+V(cam_width/2-cam_hole_from_side, cam_height/2-cam_hole_from_side), z0= -cam_depth-1, z1=-cam_depth-1, rad=1.5/2))
+		self.camera_holder.add(Drill(cam_centre+V(-cam_width/2+cam_hole_from_side, cam_height/2-cam_hole_from_side), z0= -cam_depth-1, z1=-cam_depth-1, rad=1.5/2))
+		self.camera_holder.add(Drill(cam_centre+V(cam_width/2-cam_hole_from_side, -cam_height/2+cam_hole_from_bottom), z0= -cam_depth-1, z1=-cam_depth-1, rad=1.5/2))
+		self.camera_holder.add(Drill(cam_centre+V(-cam_width/2+cam_hole_from_side, -cam_height/2+cam_hole_from_bottom), z0= -cam_depth-1, z1=-cam_depth-1, rad=1.5/2))
 		for i in range(0,6):
-			t=self.camera_holder.add(Drill(V(0,rod_rad-mount_hole_from_edge), z1=-5, rad=1.5/2))
+			t=self.camera_holder.add(Drill(V(0,rod_rad-mount_hole_from_edge), z1=-1, rad=1.5/2))
 			t.rotate(V(0,0), i*60)
 		cone_rad = rod_rad - 2*mount_hole_from_edge
 		cone_inner_rad = cam_width/2
@@ -230,8 +230,8 @@ class PiCamTurret(Turret):
 		for i in range(0, steps):
 			 self.camera_holder.add(Circle(V(0,0), rad = cone_rad-rstep*i, z1 = -dstep*(i+1), side='in', cutter='6mm_endmill'))
 		#               accelerometer
-                self.camera_holder.add(RoundedRect(cam_centre, rad=3.1, centred=True, height = accel_width, width=6.5, z0 = -cam_depth, z1=-cam_depth-accel_depth, cutter="6mm_endmill"))
-                self.camera_holder.add(RoundedRect(cam_centre+V(6.5/2,0), tr=V(-6.5/2, -cam_height/2-cable_slot_height/2), z0 = -cam_depth, z1=-cam_depth-6, cutter="6mm_endmill", rad=3.1))
+                self.camera_holder.add(RoundedRect(cam_centre, rad=3.1, centred=True, height = accel_width, width=6.5, z0 = -cam_depth, z1=-cam_depth-accel_depth, cutter="6mm_endmill", side='in'))
+                self.camera_holder.add(RoundedRect(cam_centre+V(6.5/2,0), tr=V(-6.5/2, -cam_height/2-cable_slot_height/2), z0 = -cam_depth, z1=-cam_depth-6, cutter="6mm_endmill", rad=3.1, side='in'))
 		self.add_bom(BOM_rod('rod', 'black pvc', 'round', rod_rad*2, 58, 1, 'rod for camera, should have a bite takenout of the middle of one side of radius the tube, and depth 14mm'))
 	
 class ThermalTurret(Turret):
