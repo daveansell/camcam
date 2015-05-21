@@ -463,7 +463,6 @@ class Path(object):
 		if total[2]==0:
 			for p in self.points:
 				if hasattr(p,'direction') and p.direction in ['cw','ccw']:
-					print p.direction
 					return p.direction
 			return 'cw'
 		elif(total[2]*reverse>0):
@@ -1889,7 +1888,7 @@ class Plane(Part):
 		self.name=name
 		self.transform=False
 		self.parent=False
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown', 'forcecutter', 'stepdown', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z', 'cutter']
+		self.varlist = ['order','transform','side', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown', 'forcecutter', 'stepdown', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z', 'cutter']
 		self.out=''
 		self.isCopy=False
 		self.copied=False
@@ -1901,7 +1900,7 @@ class Plane(Part):
                         if v in config:
 				self.config[v]=config[v]
                         else:
-				self.config[v]=False
+				self.config[v]=None
 	def get_config(self):
 		return self.config
 	def add_part_layer(self, part, material, thickness, z0=0,zoffset=0, add_back=False, isback=False, colour=False):

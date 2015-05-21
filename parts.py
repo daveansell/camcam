@@ -649,7 +649,10 @@ class AngleBracket(Part):
 			self.add(LineObjects(V(0, -top_thickness - d['hole_from_inside']), V(0, -top_thickness - d['hole_from_inside'] - d['hole_spacing'] * (d['num_holes']-1)), 0, d['num_holes'], Bolt(V(0,0), 'M4', clearance_layers = clearance_layers, insert_layer = insert_layer )))
 		if mode == 'recess_through':
 			if 'through_thickness' in config:
-				fe = config['through_thickness']
+				if config['through_thickness']=='full':
+					fe = d['thickness']
+				else:
+					fe = config['through_thickness']
 			else:
 				raise ValueError('Angle bracket needs through_thickness to be set in recess_through mode')
 				
