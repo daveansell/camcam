@@ -263,12 +263,8 @@ class PSharp(Point):
 			t = copy.copy(self)
 	#		t=POutcurve(self.pos, radius=distance, transform=self.transform)
            		if (self.angle==0 or self.angle==math.pi and self.dot<0) and self.last().point_type in ['sharp', 'clear', 'doubleclear'] and self.next().point_type in ['sharp', 'clear', 'doubleclear']:
-				print self.next().point_type
-				print self.last().point_type
-				print "NO ANGLE SO PASS"
       				pass
 			elif self.angle==0 and self.point_type in ['sharp', 'clear', 'doubleclear'] and self.next().point_type in ['sharp', 'clear', 'doubleclear']:
-					print "No angle so we can skip this one"
 					return []
 				
                    	else:
@@ -292,7 +288,6 @@ class PSharp(Point):
 			else:
 				t = copy.copy(self)
                      	if self.angle==0 and self.dot<0:
-				print "arong angle"
                       		pass
                    	else:
                           	if self.dot<=0:
@@ -544,7 +539,6 @@ class POutcurve(Point):
 		return t
 	def origin(self, forward=True):
 		seg=self.makeSegment({})
-		print "Outcurve arc from="+str(seg[1].cutfrom)+" arc to="+str(seg[1].cutto)+" direction="+str(seg[1].direction)
 
 		if forward:
 			return seg[1].cutfrom
@@ -622,7 +616,6 @@ class POutcurve(Point):
 
                 d=diff.length()
                 if d-r<-0.001:
-                        print "d="+str(d)+" is less than r="+str(d)
 #                       t=d
 #                       d=r
 #                       r=t
@@ -853,18 +846,12 @@ class PArc(Point):
 			l=self.next().pos - self.last().pos
 			perp=rotate(l.normalize(),-90)
 			centre=self.pos.intersect_lines(self.last().pos, self.next().pos, self.pos, self.pos+perp)
-			print "pos="+str(self.pos)+" centre="+str(centre)
-			print "radius="+str(self.radius)+" pos - centre = "+str( (self.pos-centre).length())
-			print self.radius**2 - (self.pos-centre).length()**2
 			c=math.sqrt(self.radius**2 - (self.pos-centre).length()**2)
 			a = l.normalize()*c
 			if not self.reverse:
-				print "REVERSE ARC"
 				d=self.otherDir(self.direction)
 			else:
-				print "NOT REVERSE AEC"
 				d=self.direction
-			print self.direction+"  "+d
 			return [ Line(self.last().pos, centre-a), Arc(centre-a, centre+a, self.pos, d), Line(centre+a, self.next().pos)]
 		
         def origin(self, forward=True):
@@ -874,14 +861,12 @@ class PArc(Point):
                         op=self.next().pos
 
 		if abs(op.length()-self.radius)>-0.001:
-			print "arc at corner WWWWWW"
 	                vecin=(op-self.pos).normalize()
 	                if (self.direction=='cw' and self.reverse==False or self.direction=='ccw' and self.reverse==True)==forward:
 	                        return op+rotate(vecin,90)
 	                else:
 	                        return op+rotate(vecin,-90)
 		else:
-			print "HHHHHHHH"
 			if forward:
 				return self.next().pos
 			else:

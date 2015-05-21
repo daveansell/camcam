@@ -644,7 +644,9 @@ class AngleBracket(Part):
 		top_thickness = d['outer_length'] - d['inner_length']
 		# centre is top side of centre
 		if mode=='through':
-			self.add(Rect(V(0, -top_thickness/2), centred = True, width = d['width'] + 1, height = d['thickness'] +1, side='in'), clearance_layers) 
+			self.add(Rect(V(0, -top_thickness/2), centred = True, width = d['width'] + 1, height = d['thickness'] +1, side='in'), clearance_layers)
+			# add a recess for the inside of the bend
+			self.add(Rect(V(0, top_thickness/2-4), centred = True, width = d['width'] + 1, height = 4, side='in', z1=-4), clearance_layers) 
 		if mode=='through' or mode=='top':
 			self.add(LineObjects(V(0, -top_thickness - d['hole_from_inside']), V(0, -top_thickness - d['hole_from_inside'] - d['hole_spacing'] * (d['num_holes']-1)), 0, d['num_holes'], Bolt(V(0,0), 'M4', clearance_layers = clearance_layers, insert_layer = insert_layer )))
 		if mode == 'recess_through':
@@ -660,6 +662,6 @@ class AngleBracket(Part):
 				recess_depth =  -config['recess_depth']
 			else:
 				recess_depth = False
-
-			self.add(LineObjects(V(0, -top_thickness - d['hole_from_inside'])+fe, V(0, -top_thickness - d['hole_from_inside'] - d['hole_spacing'] * (d['num_holes']-1)+fe, 0, d['num_holes'], bolt(V(0,0), 'M4', clearance_layers = clearance_layers, insert_layers=None))))
+			print "DO RECESS"
+			self.add(LineObjects(V(0, -top_thickness - d['hole_from_inside']+fe), V(0, -top_thickness - d['hole_from_inside'] - d['hole_spacing'] * (d['num_holes']-1)+fe), 0,  d['num_holes'], Bolt(V(0,0), 'M4', clearance_layers = clearance_layers, insert_layer=[])))
 			self.add(Rect(V(-d['width']/2-0.5, 0), tr = V(d['width']/2+0.5, -d['outer_length']+fe), partial_fill = d['width']/2-1, z1= recess_depth, side='in'), recess_layers)
