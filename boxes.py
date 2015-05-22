@@ -148,7 +148,7 @@ class Turret(Part):
 		self.end_plate.add(Bolt(V(-width/2+d['edge_width']/2, -d['centre_height'] +d['edge_width']/2), 'M4', insert_layer=[], clearance_layers=name+'_end_plate', thread_layer=name+'_end2', thread_depth=4))
 
 		# Tube insert is a double layer circle that glues into closed end of tube
-		self.tube_insert = self.add(Part(name = name+'_tube_insert', layer= name+'_tube_insert', border = Circle(V(0,0), rad=d['centre_rad'])))
+		self.tube_insert = self.add(Part(name = name+'_tube_insert', layer= name+'_tube_insert', border = Circle(V(0,0), rad=d['centre_rad']+0.5)))
 		self.tube_insert_in = self.add(Part(name = name+'_tube_insert_in', layer= name+'_tube_insert_in', border = Circle(V(0,0), rad=d['centre_inner_rad'])))
 		self.tube_insert.add(Hole(V(0,0), rad=d['centre_holerad']), [ name+'_tube_insert',  name+'_tube_insert_in'])
 
@@ -249,10 +249,10 @@ class ThermalTurret(Turret):
 
                 rod_rad = 51.5/2
                 rod_length = 57
-                window_holder_thickness = 6
+                window_holder_thickness = 6.5
                 window_holder_rad = rod_rad - 2
 
-                window_rad=25
+                window_rad=25/2
                 window_thickness=2
 
                 accel_width = 22
@@ -264,7 +264,7 @@ class ThermalTurret(Turret):
                 camera_centre = V(0, 0)
 
                 hole_y = math.sqrt((rod_rad-2)**2 - cam_rad**2)
-                plane.add_layer(name+'_camera_holder', material='pvc', thickness=thickness, z0=0)
+                plane.add_layer(name+'_camera_holder', material='pvc', thickness=50, z0=0)
                 plane.add_layer(name+'_window_holder', material='pvc', thickness=window_holder_thickness, z0=0)
                 self.camera_holder = self.add(Part(name=name+'_camera_holder', layer= name+'_camera_holder', ignore_border=True))
                 self.window_holder = self.add(Part(name=name+'_window_holder', layer= name+'_window_holder', border = Circle(V(0,0), rad=window_holder_rad)))
@@ -288,7 +288,7 @@ class ThermalTurret(Turret):
                         t=self.window_holder.add(Hole(V(0, window_holder_rad -3), rad=4.3/2))
                         t.rotate(V(0,0), i*120)
                 self.window_holder.add(Hole(V(0,0), rad=window_rad+0.5, z1=-window_thickness))
-                self.window_holder.add(Hole(V(0,0), rad= window_rad-2))
+                self.window_holder.add(Hole(V(0,0), rad= window_rad-1))
                 self.add_bom(BOM_rod('rod', 'black pvc', 'round', rod_rad*2, 58, 1, 'rod for camera, should have a bite takenout of the middle of one side of radius the tube, and depth '+str(minimum_bite_depth)+'mm'))
 
 	
