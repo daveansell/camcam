@@ -668,4 +668,200 @@ class AngleBracket(Part):
 				recess_depth = False
 			self.add(LineObjects(V(0, -top_thickness - d['hole_from_inside']+fe), V(0, -top_thickness - d['hole_from_inside'] - d['hole_spacing'] * (d['num_holes']-1)+fe), 0,  d['num_holes'], Bolt(V(0,0), bolt, clearance_layers = clearance_layers, insert_layer=[])))
 			self.add(Rect(V(-d['width']/2-0.5, 0), tr = V(d['width']/2+0.5, -d['outer_length']+fe), partial_fill = d['width']/2-1, z1= recess_depth, side='in'), recess_layers)
-			
+		
+class ScreenHolderFixed(Part):
+        def __init__(self,pos, plane, name, **config):
+                self.init(config)
+                self.translate(pos)
+                l_types = {'top':'_top', 'mid':'_mid', 'bottom':'_bottom', 'clearance_layers':['perspex', 'paper'], 'insert_layer':'base'}
+                if 'layers' in config:
+                        layers = config['layers']
+                else:
+                        layers = {}
+                if 'thickness' in config:
+                        thickness = config['thickness']
+                else:
+                        thickness = 6
+                if 'material' in config:
+                        material = config['materal']
+                else:
+                        material = 'pvc'
+                if 'height' in config:
+                        height = config['height']
+                else:
+                        height = 200
+                if 'width' in config:
+                        width = config['width']
+                else:
+                        width = 200
+                if 'edge' in config:
+                        edge = config['edge']
+                else:
+                        edge = 40
+                if 'bracket' in config:
+                        bracket = config['bracket']
+                else:
+                        bracket = 'B&Q_100mm_bracket'
+                rad = edge
+                inrad = 6
+                edgefrac = 0.8
+                for l, lname in l_types.iteritems():
+                        if type(lname) is list or lname[0] != '_':
+                                if l not in layers:
+                                        layers[l] = lname
+                        elif l not in layers:
+                                plane.add_layer(name = name + lname, material = material, thickness = thickness)
+                                layers[l] = name + lname
+
+                plane.add_layer(name = name + '_window', material = 'perspex', thickness = thickness)
+                back_border = Path(closed = True, side ='out')
+                back_border.add_point(V(-width/2, 0))
+                back_border.add_point(PIncurve(V(-width/2, height), radius=rad))
+                back_border.add_point(PIncurve(V(width/2, height), radius=rad))
+                back_border.add_point(V(width/2, 0))
+                self.back = self.add(Part(name = name + '_bottom', layer = name+'_bottom', border = back_border))
+                self.front = self.add(Part(name = name + '_top', layer = name+'_top', border = back_border))
+                self.mid = self.add(Part(name = name + '_mid', layer = name+'_mid', border = back_border))
+                self.window = self.add(Part(name = name + '_window', layer = name+'_window', border =
+                        RoundedRect(V(-width/2+edge*edgefrac+0.5, edge*edgefrac+0.5), tr = V(width/2-edge*edgefrac-0.5, height-edge*edgefrac-0.5), rad = inrad)
+                ))
+                self.front.add(RoundedRect(V(-width/2+edge, edge), tr = V(width/2-edge, height-edge), rad = inrad), layers = [ layers['top'], layers['bottom']])
+                self.front.add(RoundedRect(V(-width/2+edge*edgefrac, edge*edgefrac), tr = V(width/2-edge*edgefrac, height-edge*edgefrac), rad = inrad), layers = [ layers['mid']])
+                b=self.add(AngleBracket(V(-width/2+edge*edgefrac/2, 0), bracket, 'recess_through', recess_layer = layers['mid'], through_thickness=15, recess_thickness = 'full', clearance_layers=[name+'_top', name+'_bottom'], bolt='M8'))
+                b.rotate(V(0,0), 180)
+                b=self.add(AngleBracket(V(width/2-edge*edgefrac/2, 0), bracket, 'recess_through', recess_layer = layers['mid'], through_thickness=15, recess_thickness = 'full',  clearance_layers=[name+'_top', name+'_bottom'], bolt='M8'))
+                b.rotate(V(0,0), 180)
+                self.add(AngleBracket(V(-width/2+edge*edgefrac/2, 0), bracket, 'through', clearance_layers = layers['clearance_layers'], insert_layer=layers['insert_layer'], bolt='M6'))
+                self.add(AngleBracket(V(width/2-edge*edgefrac/2, 0), bracket, 'through', clearance_layers = layers['clearance_layers'], insert_layer=layers['insert_layer'], bolt='M6'))
+
+                b  = Bolt( V(0,0), clearance_layers = layers['top'], thread_layer = layers['mid'], insert_layer = [] )
+                b2 = Bolt( V(0,0), clearance_layers = layers['bottom'], thread_layer = layers['mid'], insert_layer =[]  )
+
+                self.add( LineObjects( V(-width/2+edge, height - edge/2), V(width/2-edge, height - edge/2), 0, 3, b) )
+                self.add( LineObjects( V(-width/2+edge,  edge/2), V(width/2-edge,  edge/2), 0, 3, b) )
+                self.add( LineObjects( V(-width/2+edge, height - edge/2), V(width/2-edge, height - edge/2), 10, 2, b2) )
+                self.add( LineObjects( V(-width/2+edge,  edge/2), V(width/2-edge,  edge/2), 10, 2, b2) )
+                self.add(Bolt( V(-width/2+edge/2,height-3*edge/2), clearance_layers=layers['top'], thread_layer = layers['mid'], insert_layer = []))
+                self.add(Bolt( V( width/2-edge/2,height-3*edge/2), clearance_layers=layers['top'], thread_layer = layers['mid'], insert_layer = []))
+                self.add(Bolt( V(-width/2+edge/2,height-3*edge/2-10), clearance_layers=layers['top'], thread_layer = layers['mid'], insert_layer = []))
+                self.add(Bolt( V( width/2-edge/2,height-3*edge/2-10), clearance_layers=layers['top'], thread_layer = layers['mid'], insert_layer = []))
+
+class ScreenHolderRemovable(Part):
+        def __init__(self,pos, plane, name, **config):
+                self.init(config)
+                self.translate(pos)
+                l_types = {'top':'_top', 'mid':'_mid', 'bottom':'_bottom', 'clearance_layers':['perspex', 'paper'], 'insert_layer':'base'}
+                if 'layers' in config:
+                        layers = config['layers']
+                else:
+                        layers = {}
+                if 'thickness' in config:
+                        thickness = config['thickness']
+                else:
+                        thickness =6
+                if 'material' in config:
+                        material = config['materal']
+                else:
+                        material = 'pvc'
+                if 'height' in config:
+                        height = config['height']
+                else:
+                        height = 200
+                if 'width' in config:
+                        width = config['width']
+                else:
+                        width = 200
+                if 'edge' in config:
+                        edge = config['edge']
+                else:
+                        edge = 40
+                if 'bracket' in config:
+                        bracket = config['bracket']
+                else:
+                        bracket = 'B&Q_100mm_bracket'
+                rad = edge
+                inrad = 6
+                edgefrac = 0.8
+                for l, lname in l_types.iteritems():
+                        if type(lname) is list or lname[0] != '_':
+                                if l not in layers:
+                                        layers[l] = lname
+                        elif l not in layers:
+                                print "ADD LAYER "+name+lname
+                                plane.add_layer(name = name + lname, material = material, thickness = thickness)
+                                layers[l] = name + lname
+                back_border = Path(closed = True, side ='out')
+                back_border.add_point(V(-width/2, 0))
+                back_border.add_point(PIncurve(V(-width/2, height), radius=rad))
+                back_border.add_point(PIncurve(V(width/2, height), radius=rad))
+                back_border.add_point(V(width/2, 0))
+                self.back = self.add(Part(name = name + '_bottom', layer = name+'_bottom', border = back_border))
+
+
+                front_border = Path(closed = True, side ='out')
+                front_border.add_point(V(-width/2, 0))
+                front_border.add_point(V(-width/2, height-edge-inrad))
+                front_border.add_point(V(-width/2+edge, height-edge-inrad))
+                front_border.add_point(PIncurve(V(-width/2+edge, edge), radius = inrad))
+                front_border.add_point(PIncurve(V( width/2-edge, edge), radius = inrad))
+                front_border.add_point(V( width/2-edge, height-edge-inrad))
+                front_border.add_point(V( width/2, height-edge-inrad))
+                front_border.add_point(V(width/2, 0))
+                self.front = self.add(Part(name = name + '_top', layer = name+'_top', border = front_border))
+
+                front_top_border = Path(closed = True, side ='out')
+                front_top_border.add_point(V(-width/2, height-edge-inrad))
+                front_top_border.add_point(V(-width/2+edge, height-edge-inrad))
+                front_top_border.add_point(PIncurve(V(-width/2+edge, height-edge), radius = inrad))
+                front_top_border.add_point(PIncurve(V(width/2-edge, height-edge), radius = inrad))
+                front_top_border.add_point(V(width/2-edge, height-edge-inrad))
+                front_top_border.add_point(V(width/2, height-edge-inrad))
+                front_top_border.add_point(PIncurve(V(width/2, height), radius = rad))
+                front_top_border.add_point(PIncurve(V(-width/2, height), radius = rad))
+                self.front_top = self.add(Part(name = name + '_top_top', layer = name+'_top', border = front_top_border))
+
+
+                mid_border = Path(closed = True, side ='out')
+                mid_border.add_point(V(-width/2, 0))
+                mid_border.add_point(V(-width/2, height-edge-inrad))
+                mid_border.add_point(V(-width/2+edge*edgefrac, height-edge-inrad))
+                mid_border.add_point(PSharp(V(-width/2+edge*edgefrac, edge*edgefrac), radius = inrad))
+                mid_border.add_point(PSharp(V( width/2-edge*edgefrac, edge*edgefrac), radius = inrad))
+                mid_border.add_point(V( width/2-edge*edgefrac, height-edge-inrad))
+                mid_border.add_point(V( width/2, height-edge-inrad))
+                mid_border.add_point(V(width/2, 0))
+                self.mid = self.add(Part(name = name + '_mid', layer = name+'_mid', border = mid_border))
+
+
+                mid_inner_border = Path(closed = True, side ='out')
+                mid_inner_border.add_point(V(-width/2, height-edge-inrad))
+                mid_inner_border.add_point(V(-width/2+edge*edgefrac+1, height-edge-inrad))
+                mid_inner_border.add_point(PIncurve(V(-width/2+edge*edgefrac+1, edge*edgefrac+1), radius = inrad))
+                mid_inner_border.add_point(PIncurve(V( width/2-edge*edgefrac-1, edge*edgefrac+1), radius = inrad))
+                mid_inner_border.add_point(V(width/2-edge*edgefrac-1, height-edge-inrad))
+                mid_inner_border.add_point(V(width/2, height-edge-inrad))
+                mid_inner_border.add_point(PIncurve(V(width/2, height), radius = rad))
+                mid_inner_border.add_point(PIncurve(V(-width/2, height), radius = rad))
+                self.mid_inner = self.add(Part(name = name + '_mid_inner', layer = name+'_mid', border = mid_inner_border))
+
+                self.front.add(RoundedRect(V(-width/2+edge, edge), tr = V(width/2-edge, height-edge), rad = inrad), layers = [ layers['mid'], layers['bottom']])
+
+                b=self.add(AngleBracket(V(-width/2+edge*edgefrac/2, 0), bracket, 'recess_through', recess_layer = layers['mid'], through_thickness=15, recess_thickness = 'full', clearance_layers=[name+'_top', name+'_bottom'], bolt='M8'))
+                b.rotate(V(0,0), 180)
+                b=self.add(AngleBracket(V(width/2-edge*edgefrac/2, 0), bracket, 'recess_through', recess_layer = layers['mid'], through_thickness=15, recess_thickness = 'full',  clearance_layers=[name+'_top', name+'_bottom'], bolt='M8'))
+                b.rotate(V(0,0), 180)
+                self.add(AngleBracket(V(-width/2+edge*edgefrac/2, 0), bracket, 'through', clearance_layers = layers['clearance_layers'], insert_layer=layers['insert_layer'], bolt='M6'))
+                self.add(AngleBracket(V(width/2-edge*edgefrac/2, 0), bracket, 'through', clearance_layers = layers['clearance_layers'], insert_layer=layers['insert_layer'], bolt='M6'))
+
+                b = Bolt(V(0,0), clearance_layers=layers['top'], thread_layer = layers['mid'], insert_layer = [])
+                b2 = Bolt(V(0,0), clearance_layers=layers['bottom'], thread_layer = layers['mid'], insert_layer = [])
+
+                self.add(LineObjects( V(-width/2+edge, height - edge/2), V(width/2-edge, height - edge/2), 0, 3, b))
+                self.add(LineObjects( V(-width/2+edge,  edge/2), V(width/2-edge,  edge/4), 0, 3, b))
+
+                self.add(LineObjects( V(-width/2+edge,  edge/2), V(width/2-edge,  edge/4), 10, 2, b2))
+                self.add(Bolt( V(-width/2+edge/2,height-3*edge/2), clearance_layers=layers['top'], thread_layer = layers['mid'], insert_layer = []))
+                self.add(Bolt( V( width/2-edge/2,height-3*edge/2), clearance_layers=layers['top'], thread_layer = layers['mid'], insert_layer = []))
+                self.add(Bolt( V(-width/2+edge/2,height-3*edge/2-10), clearance_layers=layers['top'], thread_layer = layers['mid'], insert_layer = []))
+                self.add(Bolt( V( width/2-edge/2,height-3*edge/2-10), clearance_layers=layers['top'], thread_layer = layers['mid'], insert_layer = []))
+	

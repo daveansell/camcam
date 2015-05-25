@@ -1551,6 +1551,37 @@ class Part(object):
 		if not hasattr(self, 'cutoutside'):
 			self.cutoutside = 'front'
 		self.bom=[]
+		if 'layers' in config:
+			self.layers = config['layers']
+		else:
+			self.layers = {}
+		if  hasattr(self, 'layer_config') and  'plane' in config and config['plane'].obType=='Plane':
+			for l, ldat in self.layer_config.iteritems():
+				if l in self.layers:
+					lname = self.layers[l]
+				else:
+					lname = ldat
+				if type(lname) is dict:
+					for k, val in lname.iteritems():
+						ldat[k] = val
+					
+	                        if  (type(lname) is list or type(lname) is str and  lname[0] != '_' or l in self.layers):
+	                                if l not in self.layers:
+						if type(lname) is dict:
+							self.layers[l] = lname['name']
+						else:
+	                                        	self.layers[l] = lname
+				elif l not in self.layers and type(ldat) is dict:
+					assert 'material' in ldat # creating new layer should have material in dict
+					assert 'name' in ldat # creating new layer should have name in dict
+					assert 'thickness' in ldat # creating new layer should have thickness in dict
+					ltemp = ldat
+					ltemp['name'] = config['name'] + ltemp['name']
+					config['plane'].add_layer(**ltemp)
+	                                self.layers[l] = ltemp['name']
+	                        elif l not in self.layers:
+					raise ValueError('Creating new layer "'+str(l)+'". config not sent as dict with name, thickness and material elements so can not create it.')
+
 	def __deepcopy__(self,memo):
 		conf={}
 		for v in self.varlist:
@@ -1904,6 +1935,7 @@ class Plane(Part):
 	def get_config(self):
 		return self.config
 	def add_part_layer(self, part, material, thickness, z0=0,zoffset=0, add_back=False, isback=False, colour=False):
+		print (self, part, material, thickness, z0,zoffset, add_back, isback, colour)
 		self.add_layer(part.name, material, thickness, z0, zoffset, add_back, isback, colour)
 		part.layer=part.name
 		self.add(part)

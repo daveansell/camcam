@@ -103,6 +103,8 @@ class Turret(Part):
 		d=data[turret_type]
 		self.d = d
 		width = math.sqrt(d['centre_rad']**2-(d['centre_height']-d['side_height'])**2)*2
+		base_protector_rad=40
+		base_rad = math.sqrt((d['length']/2+thickness)**2 + (width/2+thickness)**2)+5
 		box=self.add(RoundedBox(V(0,0), layers, name, d['length'], width, d['centre_height'], d['centre_rad'], 0, d['side_height'], d['bend_rad'], thickness, d['tab_length'], fudge, blank_end =True, centre_holerad2=0))
 		self.bottom=box.bottom
 		self.end=box.end
@@ -123,6 +125,12 @@ class Turret(Part):
 		# piviot hole through middle
 		self.bottom.add(Hole(V(0,0), rad=d['piviot_hole_rad']), [name+'_bottom', name+'_base', name+'_under_base'])
 		self.bottom.add(Hole(V(0,0), rad=d['piviot_hole_rad']+1), ['base', 'perspex', 'paper'])
+
+		# magnet slots
+		t=self.bottom.add(Rect(V((base_rad+d['piviot_hole_rad'])/2,0), centred = True, width = base_rad-d['piviot_hole_rad']-10, height = 6, z1 = -6), 'base')
+		t.rotate(V(0,0),15)
+		t=self.bottom.add(Rect(V(-(base_rad+d['piviot_hole_rad'])/2,0), centred = True, width = base_rad-d['piviot_hole_rad']-10, height = 6, z1 = -6), 'base')
+		t.rotate(V(0,0),15)
 
 		# bearing ring sits inside open end of tube
 		self.bearing_ring = self.add(Part(name = name+'_bearing_ring', layer = name+'_bearing_ring', border = Circle(V(0,0), rad=d['centre_inner_rad']-0.2, side='out')))
@@ -152,8 +160,6 @@ class Turret(Part):
 		self.tube_insert_in = self.add(Part(name = name+'_tube_insert_in', layer= name+'_tube_insert_in', border = Circle(V(0,0), rad=d['centre_inner_rad'])))
 		self.tube_insert.add(Hole(V(0,0), rad=d['centre_holerad']), [ name+'_tube_insert',  name+'_tube_insert_in'])
 
-		base_protector_rad=40
-		base_rad = math.sqrt((d['length']/2+thickness)**2 + (width/2+thickness)**2)+5
 		# under base is a ring under the board to act as bearing on piviot
 		self.under_base = self.add(Part(name=name+'_under_base', layer = name+'_under_base', border = Circle(V(0,0), rad=base_rad, side='out')))
 		# base sits above board to act as bearing and constrain rotation
