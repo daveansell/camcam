@@ -91,9 +91,9 @@ You can calibrate these with a rectangle or a named circle of known width and he
 			pos = V(float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cx']), float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cy']))
 			pos+=off
 			pos -=cal
-
+			print off
 			pos = V(pos[0]*scalex, -pos[1]*scaley)			
-
+			print pos
 			self.append(pos)
 #V( (float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cx'])+off[0]-cal_centrex)*scalex, 
 #					(float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cy'])+off[1]-cal_centrex)*scaley))
