@@ -639,6 +639,10 @@ class Bolt(Part):
 			thread_depth = config['thread_depth']
 		else:
 			thread_depth = False
+		if 'underinsert_layer' in config:
+			underinsert_layer = config['underinsert_layer']
+		else:
+			underinsert_layer = ['underbase']
 		if thread in milling.bolts:
 			if insert_layer is not False:
 				if 'insert_type' in config and config['insert_type'] in milling.inserts[thread]:
@@ -648,6 +652,14 @@ class Bolt(Part):
 				self.add_bom("Wood insert", 1, str(thread)+"insert",'')
 				for i,diam in enumerate(insert['diams']):
 					self.add(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),insert_layer)
+			if underinsert_layer is not False:
+				if 'insert_type' in config and config['insert_type'] in milling.inserts[thread]:
+                                        insert=milling.inserts[thread][config['insert_type']]
+                                else:
+                                        insert=milling.inserts[thread]
+				i = insert['depths'].index(False)
+				self.add(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),underinsert_layer)		
+
 			self.add(Hole(pos, (milling.bolts[thread]['clearance'])/2, side='in'),clearance_layers)
 			if(head=='countersunk'):
 				self.add(Countersink(pos, milling.bolts[thread]['clearance'], milling.bolts[thread]['countersunk']['diam']/2, config),head_layer)
@@ -1095,6 +1107,7 @@ class Module(Plane):
 		#name, material, thickness, z0=0,zoffset=0
 		self.perspex_layer=self.add_layer('perspex',material='perspex',thickness=perspex_thickness,z0=0,zoffset=3)
 		self.base_layer=self.add_layer('base',material='plywood', thickness=base_thickness, z0=0,zoffset=0, add_back=True)
+		self.underbase_layer=self.add_layer('underbase',material='plywood', thickness=base_thickness, z0=0,zoffset=-base_thickness, add_back=True)
 		self.pibarn_layer=self.add_layer('pibarn',material='perspex', thickness=6, z0=0,zoffset=30, add_back=False)
 		self.add_layer('paper',material='paper',thickness=0.05,z0=0,zoffset=0.05)
 		radius=30
@@ -1134,31 +1147,34 @@ class Module(Plane):
 			self.perspex = self.add(Part(name='perspex', border=edge, layer='perspex',colour="red"))
 		self.base = self.add(Part(name='base', border=edge, layer='base'))
 		self.paper = self.add(Part(name='paper', border=edge, layer='paper'))
+		if 'twolayer' in config and config['twolayer']:
+                        self.underbase = self.add(Part(name='underbase', border=edge, layer='underbase'))
+
 
 		
 		if size=='A1':
 			if orientation=='landscape':
-				self.add(Hole(V(width/2,radius),rad=13/2,side='in'),['base','perspex','paper'])
-		                self.add(Hole(V(width/2,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
+				self.add(Hole(V(width/2,radius),rad=13/2,side='in'),['base', 'underbase','perspex','paper'])
+		                self.add(Hole(V(width/2,height-radius),rad=13/2,side='in'),['base', 'underbase','perspex','paper'])
 			else:
-				self.add(Hole(V(radius,height/2),rad=13/2,side='in'),['base','perspex','paper'])
-                                self.add(Hole(V(width-radius,height/2),rad=13/2,side='in'),['base','perspex','paper'])
+				self.add(Hole(V(radius,height/2),rad=13/2,side='in'),['base', 'underbase','perspex','paper'])
+                                self.add(Hole(V(width-radius,height/2),rad=13/2,side='in'),['base', 'underbase','perspex','paper'])
 
-		self.add(Hole(V(radius,radius),rad=13/2,side='in'),['base','perspex','paper'])
+		self.add(Hole(V(radius,radius),rad=13/2,side='in'),['base', 'underbase','perspex','paper'])
 		if not ('no_holdown' in config and  config['no_holdown']):
-			self.add(RepeatLine(V(fromends, fromedge), V(width-fromends,fromedge), holesX, Bolt, bolt_config,layers=['base','perspex','paper'])
+			self.add(RepeatLine(V(fromends, fromedge), V(width-fromends,fromedge), holesX, Bolt, bolt_config,layers=['base', 'underbase','perspex','paper'])
 )
-		self.add(Hole(V(width-radius,radius),rad=13/2,side='in'),['base','perspex','paper'])
+		self.add(Hole(V(width-radius,radius),rad=13/2,side='in'),['base', 'underbase','perspex','paper'])
 		if not ('no_holdown' in config and  config['no_holdown']):
-			self.add(RepeatLine(V(width-fromedge, fromends), V(width-fromedge,height-fromends), holesY, Bolt, bolt_config,layers=['base','perspex','paper']))
+			self.add(RepeatLine(V(width-fromedge, fromends), V(width-fromedge,height-fromends), holesY, Bolt, bolt_config,layers=['base', 'underbase','perspex','paper']))
 
-		self.add(Hole(V(width-radius,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
+		self.add(Hole(V(width-radius,height-radius),rad=13/2,side='in'),['base', 'underbase','perspex','paper'])
 		if not ('no_holdown' in config and  config['no_holdown']):
-			self.add(RepeatLine(V(width-fromends, height-fromedge), V(fromends,height-fromedge), holesX, Bolt, bolt_config,layers=['base','perspex','paper']))
-		self.add(Hole(V(radius,height-radius),rad=13/2,side='in'),['base','perspex','paper'])
+			self.add(RepeatLine(V(width-fromends, height-fromedge), V(fromends,height-fromedge), holesX, Bolt, bolt_config,layers=['base', 'underbase','perspex','paper']))
+		self.add(Hole(V(radius,height-radius),rad=13/2,side='in'),['base', 'underbase','perspex','paper'])
 
 		if not ('no_holdown' in config and  config['no_holdown']):
-			self.add(RepeatLine(V(fromedge, height-fromends), V(fromedge,fromends), holesY, Bolt,bolt_config,layers=['base','perspex','paper']))
+			self.add(RepeatLine(V(fromedge, height-fromends), V(fromedge,fromends), holesY, Bolt,bolt_config,layers=['base', 'underbase','perspex','paper']))
 
 
 class ModuleClearBack(Part):

@@ -415,7 +415,7 @@ class Fan(Pathgroup):
 			self.add(Hole(-V(d['hole_off'],d['hole_off']), d['threadRad']))
 			self.add(Hole(-V(d['hole_off'],-d['hole_off']), d['threadRad']))
 			self.add(Hole(V(d['hole_off'],-d['hole_off']), d['threadRad']))
-		elif 'inserts' in config and config['tapped_holes']:
+		elif 'inserts' in config and config['inserts']:
 			insert=milling.inserts['M4']
                         self.add(Hole(V(d['hole_off'],d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config), layer)			
                         self.add(Hole(V(d['hole_off'],-d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config), layer)			
@@ -541,6 +541,32 @@ class RoundPlate(Plate):
 		}
 		d=data[plateType]
 		self.initPlate(pos, plateType, d['rad'], d['centreRad'], d['holes'], d['holeRad'], d['holeSize'], config)
+
+class FlatMonitor(Part):
+        def __init__(self, pos, monitorType, **config):
+                self.init(config)
+		self.translate(pos)
+                if 'layers' in config and 'base' in  config['layers']:
+                        base = config['layers']['base']
+                else:
+                        base = 'base'
+                if 'layers' in config and 'underbase' in  config['layers']:
+                        underbase = config['layers']['underbase']
+                else:
+			pass
+                        #raise ValueError('Need underbase in layers')
+                if 'layers' in config and 'paper' in  config['layers']:
+                        paper = config['layers']['paper']
+                else:
+                        paper = 'paper'
+                data={
+                        'B101UAN02':{'ext_width':230.0, 'ext_height':149.7, 'screen_width':217.0, 'screen_height':135.5}
+                }
+		assert monitorType in data
+		d = data[monitorType]
+		self.d = d
+		self.add(Rect(V(0,0), centred=True, width = d['ext_width'], height = d['ext_height']), base)
+		self.add(Rect(V(0,0), centred=True, width = d['screen_width'], height = d['screen_height']), paper)
 
 class Monitor(Part):
 	def __init__(self, pos, monitorType, **config):
