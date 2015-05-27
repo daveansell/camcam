@@ -416,11 +416,11 @@ class Fan(Pathgroup):
 			self.add(Hole(-V(d['hole_off'],-d['hole_off']), d['threadRad']))
 			self.add(Hole(V(d['hole_off'],-d['hole_off']), d['threadRad']))
 		elif 'inserts' in config and config['inserts']:
+			insert_size='M4'
 			if 'inserts' in config and config['inserts'] in milling.inserts[insert_size]:
                                 insert=milling.inserts[insert_size][config['insert_type']]
                         else:
                                 insert=milling.inserts[insert_size]
-			insert=milling.inserts['M4']
                         self.add(Hole(V(d['hole_off'],d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config))			
                         self.add(Hole(V(d['hole_off'],-d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config))			
                         self.add(Hole(V(-d['hole_off'],-d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config))			
