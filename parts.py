@@ -417,10 +417,10 @@ class Fan(Pathgroup):
 			self.add(Hole(V(d['hole_off'],-d['hole_off']), d['threadRad']))
 		elif 'inserts' in config and config['inserts']:
 			insert=milling.inserts['M4']
-                        self.add(Hole(V(d['hole_off'],d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config), layer)			
-                        self.add(Hole(V(d['hole_off'],-d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config), layer)			
-                        self.add(Hole(V(-d['hole_off'],-d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config), layer)			
-                        self.add(Hole(V(-d['hole_off'],d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config), layer)			
+                        self.add(Hole(V(d['hole_off'],d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config))			
+                        self.add(Hole(V(d['hole_off'],-d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config))			
+                        self.add(Hole(V(-d['hole_off'],-d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config))			
+                        self.add(Hole(V(-d['hole_off'],d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config))			
 		else:
 			self.add(Hole(V(d['hole_off'],d['hole_off']), d['holeRad']))
 			self.add(Hole(-V(d['hole_off'],d['hole_off']), d['holeRad']))
