@@ -389,7 +389,19 @@ class Fan(Pathgroup):
 			d=data[config['fan_type']]
 		else:
 			d=data['120mm']
-		if 'no_hole' not in config or not config['no_hole']:
+		print config
+		if 'grill' in config and config['grill']:
+			print "GRILL"
+			if config['grill'] == True:
+				holerad = 6/2
+			else:
+				holerad = config['grill']
+		
+			spacing = holerad * 2.5
+
+			self.add(RoundSpeakerGrill(V(0,0), d['centrerad'], holerad, spacing))
+
+		elif 'no_hole' not in config or not config['no_hole']:
 			if 'centre_limit' in d:
 				o = math.sqrt(d['centrerad']**2 - d['centre_limit']**2)
 				cutout=self.add(Path(side='in', closed=True))
@@ -424,7 +436,9 @@ class Fan(Pathgroup):
                         self.add(Hole(V(d['hole_off'],d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config))			
                         self.add(Hole(V(d['hole_off'],-d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config))			
                         self.add(Hole(V(-d['hole_off'],-d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config))			
-                        self.add(Hole(V(-d['hole_off'],d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config))			
+                        self.add(Hole(V(-d['hole_off'],d['hole_off']), rad=insert['diams'], z1 = insert['depths'], **config))		
+		elif 'noholes' in config and config['noholes']:
+			pass	
 		else:
 			self.add(Hole(V(d['hole_off'],d['hole_off']), d['holeRad']))
 			self.add(Hole(-V(d['hole_off'],d['hole_off']), d['holeRad']))
