@@ -120,7 +120,7 @@ class PiBarn(Part):
 			self.name = config['name']
 		else:
 			self.name = 'PiBarn'
-		bolt_conf={'clearance_layers':[config['layer']], 'length':50}
+		bolt_conf={'clearance_layers':[config['layer']], 'length':50, 'insert_layer':[]}
 		print self.add(RepeatLine(pos+V(-x_units/2*spacing, -y_units/2*spacing), pos+V(x_units/2*spacing, -y_units/2*spacing), x_units+1, Bolt, bolt_conf)).paths
 		self.add(RepeatLine(pos+V(x_units/2*spacing, (-y_units/2+1)*spacing), pos+V(x_units/2*spacing, (y_units/2-1)*spacing), y_units-1, Bolt, bolt_conf))
 		self.add(RepeatLine(pos+V(x_units/2*spacing, y_units/2*spacing), pos+V(-x_units/2*spacing, y_units/2*spacing), x_units+1, Bolt, bolt_conf))
@@ -139,7 +139,7 @@ class Pi(Part):
 		if 'layer_config' in config:
 			layer_config = config['layer_config']
 		else:
-			layer_config = {'paper':'paper', 'insert':'base'}
+			layer_config = {'paper':'paper', 'clearance':'base'}
 		self.add(RoundedRect(V(0,0), centred=True, width=w, height=h, rad=3),'paper')
 		hole_bl=V(-w/2+3.5, -h/2+3.5)
 		if 'insert' in layer_config.keys():
@@ -578,7 +578,9 @@ class FlatMonitor(Part):
                 else:
                         paper = 'paper'
                 data={
-                        'B101UAN02':{'ext_width':230.0, 'ext_height':149.7, 'screen_width':217.0, 'screen_height':135.5}
+                        'B101UAN02'  :{'ext_width':230.0, 'ext_height':149.7, 'screen_width':217.0,  'screen_height':135.5 },
+                        'B140HAN01.2':{'ext_width':320.4, 'ext_height':205.1, 'screen_width':309.14, 'screen_height':173.89},
+			'B156HAN01.2':{'ext_width':359.5, 'ext_height':223.8, 'screen_width':344.16, 'screen_height':193.59},
                 }
 		assert monitorType in data
 		d = data[monitorType]
@@ -662,7 +664,7 @@ class AngleConstraint(Part):
 			startangle = 0
 		self.translate(pos)
 		self.add(RoundedArc(V(0,0), rad, 
-			bolt['allen']['head_d']/2+1, 
+			bolt['allen']['head_d']+1.5, 
 			angle, startangle=startangle, 
 			z1=-bolt['allen']['head_l']-0.8, side='in'
 		), slot_layer)

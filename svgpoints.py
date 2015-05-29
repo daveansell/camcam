@@ -88,6 +88,8 @@ You can calibrate these with a rectangle or a named circle of known width and he
 			else:
 				off=V(0,0)
 			cal = V(cal_centrex, cal_centrey)
+			print p.tag
+			print p.attrib
 			pos = V(float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cx']), float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cy']))
 			pos+=off
 			pos -=cal
