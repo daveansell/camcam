@@ -127,9 +127,9 @@ class Turret(Part):
 		self.bottom.add(Hole(V(0,0), rad=d['piviot_hole_rad']+1), ['base', 'perspex', 'paper'])
 
 		# magnet slots
-		t=self.bottom.add(Rect(V((base_rad+d['piviot_hole_rad'])/2,0), centred = True, width = base_rad-d['piviot_hole_rad']-10, height = 6, z1 = -6), 'base')
+		t=self.bottom.add(Rect(V((base_rad+d['piviot_hole_rad'])/2,0), centred = True, width = base_rad-d['piviot_hole_rad']-10, height = 6, z1 = -6, side='in'), 'base')
 		t.rotate(V(0,0),15)
-		t=self.bottom.add(Rect(V(-(base_rad+d['piviot_hole_rad'])/2,0), centred = True, width = base_rad-d['piviot_hole_rad']-10, height = 6, z1 = -6), 'base')
+		t=self.bottom.add(Rect(V(-(base_rad+d['piviot_hole_rad'])/2,0), centred = True, width = base_rad-d['piviot_hole_rad']-10, height = 6, z1 = -6, side='in'), 'base')
 		t.rotate(V(0,0),15)
 
 		# bearing ring sits inside open end of tube
