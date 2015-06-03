@@ -99,6 +99,7 @@ class Post(Part):
 
 class PiBarn(Part):
 	def __init__(self, pos, **config):
+		print "*********PIBARN***********"
 		if('layer' not in config):
 			config['layer']='pibarn'
 		self.init(config)
@@ -120,8 +121,9 @@ class PiBarn(Part):
 			self.name = config['name']
 		else:
 			self.name = 'PiBarn'
-		bolt_conf={'clearance_layers':[config['layer']], 'length':50, 'insert_layer':[]}
-		print self.add(RepeatLine(pos+V(-x_units/2*spacing, -y_units/2*spacing), pos+V(x_units/2*spacing, -y_units/2*spacing), x_units+1, Bolt, bolt_conf)).paths
+		bolt_conf={'clearance_layers':[config['layer']], 'length':50, 'insert_layer':[], 'underinsert_layer':'base'}
+
+		self.add(RepeatLine(pos+V(-x_units/2*spacing, -y_units/2*spacing), pos+V(x_units/2*spacing, -y_units/2*spacing), x_units+1, Bolt, bolt_conf)).paths
 		self.add(RepeatLine(pos+V(x_units/2*spacing, (-y_units/2+1)*spacing), pos+V(x_units/2*spacing, (y_units/2-1)*spacing), y_units-1, Bolt, bolt_conf))
 		self.add(RepeatLine(pos+V(x_units/2*spacing, y_units/2*spacing), pos+V(-x_units/2*spacing, y_units/2*spacing), x_units+1, Bolt, bolt_conf))
 		self.add(RepeatLine(pos+V(-x_units/2*spacing, (y_units/2-1)*spacing), pos+V(-x_units/2*spacing, (-y_units/2+1)*spacing), y_units-1, Bolt, bolt_conf))
