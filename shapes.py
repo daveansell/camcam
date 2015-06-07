@@ -1122,6 +1122,7 @@ class Module(Plane):
 				holesX=4
 			if holesY==False:
 				holesY=3
+			self.backgap=0
 		elif size=='A2':
 			width=594
 			height=420
@@ -1129,6 +1130,7 @@ class Module(Plane):
 				holesX=4
 			if holesY==False:
 				holesY=3
+			self.backgap = 40
 		elif size=='A1':
 			width=841
 			height=594
@@ -1136,6 +1138,7 @@ class Module(Plane):
 				holesX=4
 			if holesY==False:
 				holesY=4
+			self.backgap =0
 		self.width = width
 		self.height = height
 		if orientation!='landscape':

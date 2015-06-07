@@ -192,7 +192,34 @@ class PiCamTurret(Turret):
 	def __init__(self, pos, plane, name, thickness, fudge, **config):
                 self.init(config)
                 self.init_turret(pos, plane, name, 'camera', thickness, fudge, config)
+		rod_rad = 51.5/2
+		cam_yoff = 5.0
+		cable_slot_depth = 40.0
+		cable_slot_height = cam_yoff*2
+		cable_slot_width=cam_ribbon_width+8.0
+		mount_hole_from_edge = (rod_rad-(cam_height+cam_yoff*2)/2)/2
+		window_rad = rod_rad-mount_hole_from_edge-3.5
+		view_rad = window_rad -3
+		print "Mounting holes at radius ="+str(rod_rad - mount_hole_from_edge)
+		accel_width = 22
+                accel_depth = 17.5
+		if 'window_thickness' in config:
+			window_thickness = config['window_thckness']
+		else:
+			window_thickness = 3
+		if 'face_thickness' in config:
+			face_thickness = config['face_thckness']
+		else:
+			face_thickness = 8.5
+
 		plane.add_layer(name+'_camera_holder', material='pvc', thickness=thickness, z0=0)
+		plane.add_layer(name+'_camera_face', material='pvc', thickness=face_thickness, z0=0)
+		plane.add_layer(name+'_camera_window', material='perspex', thickness=window_thickness, z0=0)
+		self.camera_face = self.add(Part(name=name+'_camera_face', layer= name+'_camera_face', border = Circle(V(0,0), rad=rod_rad+1)))
+		self.camera_face.add(Hole(V(0,0), rad=view_rad))
+		self.camera_face.add(Hole(V(0,0), rad=window_rad, z1=-window_thickness))
+		self.camera_window = self.add(Part(name=name+'_camera_window', layer= name+'_camera_window', border = Circle(V(0,0), rad=rod_rad+1)))		
+
 		self.camera_holder = self.add(Part(name=name+'_camera_holder', layer= name+'_camera_holder', ignore_border=True))
 		cam_width=25.0
 		cam_height=28.0
@@ -204,15 +231,6 @@ class PiCamTurret(Turret):
 		else:
 			cam_depth = 26.0
 
-		rod_rad = 51.5/2
-		cam_yoff = 5.0
-		cable_slot_depth = 40.0
-		cable_slot_height = cam_yoff*2
-		cable_slot_width=cam_ribbon_width+8.0
-		mount_hole_from_edge = (rod_rad-(cam_height+cam_yoff*2)/2)/2
-		print "Mounting holes at radius ="+str(rod_rad - mount_hole_from_edge)
-		accel_width = 22
-                accel_depth = 17.5
 
 		cam_centre= V(0, cam_yoff)
 		self.camera_holder.add(Circle(V(0,0), rad=rod_rad), 'paper')
@@ -225,6 +243,8 @@ class PiCamTurret(Turret):
 		self.camera_holder.add(Drill(cam_centre+V(-cam_width/2+cam_hole_from_side, -cam_height/2+cam_hole_from_bottom), z0= -cam_depth-1, z1=-cam_depth-1, rad=1.5/2))
 		for i in range(0,6):
 			t=self.camera_holder.add(Drill(V(0,rod_rad-mount_hole_from_edge), z1=-1, rad=1.5/2))
+			t.rotate(V(0,0), i*60)
+			t=self.camera_holder.add(Hole(V(0,rod_rad-mount_hole_from_edge), z1=-1, rad=3.3/2), name+'_camera_face')
 			t.rotate(V(0,0), i*60)
 		cone_rad = rod_rad - 2*mount_hole_from_edge
 		cone_inner_rad = cam_width/2
@@ -264,6 +284,16 @@ class ThermalTurret(Turret):
                 accel_width = 22
                 accel_depth = 17.5
 
+	 	if 'window_thickness' in config:
+                        window_thickness = config['window_thckness']
+                else:
+                        window_thickness = 3
+                if 'face_thickness' in config:
+                        face_thickness = config['face_thckness']
+                else:
+                        face_thickness = 8.5
+
+
                 minimum_bite_depth = rod_rad - cam_top_to_connector + tube_wall
                 self.comment("Minimum bite depth = "+str(minimum_bite_depth))
                 print "Minimum bite depth = "+str(minimum_bite_depth)
@@ -274,6 +304,10 @@ class ThermalTurret(Turret):
                 plane.add_layer(name+'_window_holder', material='pvc', thickness=window_holder_thickness, z0=0)
                 self.camera_holder = self.add(Part(name=name+'_camera_holder', layer= name+'_camera_holder', ignore_border=True))
                 self.window_holder = self.add(Part(name=name+'_window_holder', layer= name+'_window_holder', border = Circle(V(0,0), rad=window_holder_rad)))
+		
+		plane.add_layer(name+'_camera_face', material='pvc', thickness=face_thickness, z0=0)
+                self.camera_face = self.add(Part(name=name+'_camera_face', layer= name+'_camera_face', border = Circle(V(0,0), rad=rod_rad+1)))
+                self.camera_face.add(Hole(V(0,0), rad=window_holder_rad))
 
                 camera_cutout = Path(closed=True, side='in', partial_fill= cam_rad-4, cutter='6mm_endmill', z1=-rod_length/2, )
                 camera_cutout.add_point(PSharp(V(-cam_rad, -hole_y/2)))
@@ -291,7 +325,7 @@ class ThermalTurret(Turret):
                 for i in range(0,3):
                         t=self.camera_holder.add(Hole(V(0, window_holder_rad -3), rad=3.3/2, z1=-12))
                         t.rotate(V(0,0),i*120)
-                        t=self.window_holder.add(Hole(V(0, window_holder_rad -3), rad=4.3/2))
+                        t=self.window_holder.add(Hole(V(0, window_holder_rad -3), rad=4.3/2), [name+'_camera_face', name+'_camera_window_holder'])
                         t.rotate(V(0,0), i*120)
                 self.window_holder.add(Hole(V(0,0), rad=window_rad+0.5, z1=-window_thickness))
                 self.window_holder.add(Hole(V(0,0), rad= window_rad-1))
@@ -349,14 +383,14 @@ class PlainBox(Part):
 				else:
 					cornermodes[(s1,s2)] = 'on' 
 					cornermodes[(s2,s1)] = 'off'
-				
+		print cornermodes	
 		if type(thickness) is dict:
 			side_thickness = thickness
 		else:
 			side_thickness = {} 
 			for s in sides:
 				side_thickness[s]=thickness
-		c=V(-width/2, -height/2)
+		c=V(0,0)#-width/2, -height/2)
 		offsets = {
 				'front':V(0,0),
 				 'back':V(0,0),
@@ -393,9 +427,10 @@ class PlainBox(Part):
 						sm, 
 						tab_length, 
 						th ,
-						 '1/8_endmill', auto=True  )))
-				t.translate(offsets[s]+pos)
+						 '1/8_endmill', auto=True , centred=True )))
+				t.translate(offsets[s])
 				setattr(self, s, t)
+		self.translate(pos)
 					
 class ArbitraryBox(Part):
 	""" 
@@ -434,10 +469,16 @@ class ArbitraryBox(Part):
 				if wood_direction_face is not None or wood_direction_face !=None:
 					raise ValueError('wood direction defined more than once')
 				wood_direction_face = f
+				print "WOOD DIREWCTION" 
 			if 'good_direction' in face:
 				if good_direction_face is not None or good_direction_face !=None:
 					raise ValueError('good direction defined more than once')
 				good_direction_face = f
+		if wood_direction_face is None:
+			raise ValueError("No face with wood_direction set")
+		if good_direction_face is None:
+			raise ValueError("No face with good_direction set")
+
 		scount=0
 		for s, side in self.sides.iteritems():
 			self.find_angle(s, side)
@@ -524,14 +565,14 @@ class ArbitraryBox(Part):
 					angle = thisside[4]
 #					print "angle="+str(angle)
 #					angle = 15
+					if mode == 'internal':
+						intfact = -1
+						corner = self.other_side_mode(face['corners'][scount])
+					else:
+						intfact = 1
+						corner = face['corners'][scount]
 					if angle!=0:
 						# this is being cut from the side we are cutting:
-						if mode == 'internal':
-							intfact = -1
-							corner = self.other_side_mode(face['corners'][scount])
-						else:
-							intfact = 1
-							corner = face['corners'][scount]
 
 						if face['wood_direction'] * face['good_direction']*intfact>0:
 							lineside='front'
@@ -619,6 +660,7 @@ class ArbitraryBox(Part):
 		else:
 			return 0
 	def propagate_direction(self, t, f, recursion):
+		print self.faces
 		face = self.faces[f]
 		if recursion==0:
 			if face[t].dot(face['normal'])>0:
@@ -680,7 +722,8 @@ class ArbitraryBox(Part):
 			print new_normal
 			if type(normal) is bool and normal == False:
 				normal = new_normal
-			elif normal != new_normal and normal != - new_normal:
+			elif (normal.normalize() - new_normal.normalize()).length() > 0.00001: #and normal.normalize() != - new_normal.normalize():
+				print str(normal.normalize()) +" = old normal   new_normal = " + str( new_normal.normalize())+ " diff "+ str((normal.normalize() - new_normal.normalize()).length())
 				raise ValueError( "points in face "+f+" are not in a plane "+str(points) )
 			p += 1
 		if 'origin' in self.faces[f]:
@@ -688,7 +731,8 @@ class ArbitraryBox(Part):
 			p = points[0]
 			p2 = points[1]
 			new_normal = (p-o).normalize().cross( (p2-o).normalize())
-			if new_normal.length()!=0 and not new_normal.almost(normal) and not new_normal.almost(-normal):
+			if new_normal.length()>0.000001 and not new_normal.almost(normal) and not new_normal.almost(-normal):
+				print str(new_normal) + "origin normal "+ str(normal)
 				raise ValueError( "origin of face "+f+" are not in a plane origin="+str(o)+ "  points="+str(points) +" normal="+str(normal) + "new_normal="+str(new_normal) )
 		self.faces[f]['normal']=normal
 			
