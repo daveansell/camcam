@@ -383,7 +383,6 @@ class PlainBox(Part):
 				else:
 					cornermodes[(s1,s2)] = 'on' 
 					cornermodes[(s2,s1)] = 'off'
-		print cornermodes	
 		if type(thickness) is dict:
 			side_thickness = thickness
 		else:
@@ -483,6 +482,9 @@ class ArbitraryBox(Part):
 		for s, side in self.sides.iteritems():
 			self.find_angle(s, side)
 			scount+=1
+		# on internal faces you define the good direction the wrong way
+		if 'internal' in self.faces[good_direction_face] and self.faces[good_direction_face]['internal']:
+			self.faces[good_direction_face]['good_direction'] *= -1
 		self.propagate_direction('good_direction', good_direction_face,0)
 		self.propagate_direction('wood_direction', wood_direction_face,0)
 
@@ -494,8 +496,10 @@ class ArbitraryBox(Part):
 				scount+=1
 
 			if 'x' in face:
-				if face['x'].dot(face['normal']) !=0:
+				if abs(face['x'].dot(face['normal'])) > 0.0000001 :
+					print face['x'].dot(face['normal'])
 					raise ValueError('face[x] in face '+str(f)+' not in plane')
+				face['x'] = face['x'].normalize()
 			else: 
 #				print str(self.tuple_to_vec(face['sides'][0]
 				face['x'] = (self.tuple_to_vec(face['sides'][0][1])- self.tuple_to_vec(face['sides'][0][0])).normalize()
@@ -509,7 +513,8 @@ class ArbitraryBox(Part):
 				face['origin'] = face['points'][0]
 			face['ppoints'] = []
 			for p in face['points']:
-				face['ppoints'].append(V(p.dot(face['x']), p.dot(face['y'])))
+				p2 = p-face['origin']
+				face['ppoints'].append(V(p2.dot(face['x']), p2.dot(face['y'])))
 
 		# if we are cutting an internal hole then don't make it the part border
 			if "layer" not in face:
@@ -547,6 +552,8 @@ class ArbitraryBox(Part):
 			cutside='left'
 		else:
 			cutside='right'
+		print face['ppoints']
+		print f+" CUT SIDE "+cutside
          	for point in face['ppoints']:
 			lastpoint = face['ppoints'][(p-1)%len(face['sides'])]
 			scount = (p)%len(face['sides'])
@@ -574,11 +581,11 @@ class ArbitraryBox(Part):
 					if angle!=0:
 						# this is being cut from the side we are cutting:
 
-						if face['wood_direction'] * face['good_direction']*intfact>0:
+						if face['wood_direction'] * face['good_direction']*intfact<0:
 							lineside='front'
 						else:
 							lineside = 'back';
-						if thisside[3]*face['good_direction']*intfact>0:
+						if thisside[3]*face['good_direction']*intfact<0:
 # THIS PUTS THE SLOPE ON THE WRONG PART OF THE JOINT
 # create a new mode in finger joints called int and have it behave properly
 							newpoints = AngledFingerJoint(lastpoint, point, cutside, mode, corner, corner, self.tab_length, otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
@@ -586,7 +593,7 @@ class ArbitraryBox(Part):
 						else:
 							newpoints = AngledFingerJointNoSlope(lastpoint, point, cutside, mode, corner, corner, self.tab_length, otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
 					else:
-						newpoints = FingerJoint(lastpoint, point, 'right', 'external', corner, corner, self.tab_length, face['thickness'], 0, self.fudge)
+						newpoints = FingerJoint(lastpoint, point, cutside, 'external', corner, corner, self.tab_length, face['thickness'], 0, self.fudge)
 			if first or len(newpoints)<2:
 				first = False
 				path.add_points(newpoints)
@@ -596,7 +603,7 @@ class ArbitraryBox(Part):
 		if len(newpoints) >1:
 			path.close_intersect()
 		simplepath.add_points(simplepoints)
-	 	part.add(simplepath)
+	 #	part.add(simplepath)
 		if mode=='internal':
 			part.add(path)
 		else:
@@ -659,8 +666,10 @@ class ArbitraryBox(Part):
 			return -1
 		else:
 			return 0
+
+# t - type of direction - face key
+# f - face that has it to start with
 	def propagate_direction(self, t, f, recursion):
-		print self.faces
 		face = self.faces[f]
 		if recursion==0:
 			if face[t].dot(face['normal'])>0:
@@ -716,7 +725,6 @@ class ArbitraryBox(Part):
 	def make_normal(self, f, points):
 		normal = False
 		p = 0
-		print f
 		for point in points:
 			new_normal = (points[(p-1)%len(points)]-point).normalize().cross( (points[(p+1)%len(points)]-point).normalize())
 			print new_normal

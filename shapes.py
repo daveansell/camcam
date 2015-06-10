@@ -424,7 +424,34 @@ class Cross(Pathgroup):
 		b.add_point(V(pos[0], pos[1]-rad))
 		self.comment("Cross")
 		self.comment("pos="+str(pos)+" rad="+str(rad))
-		
+	
+class KeyHole(Path):
+        def __init__(self, pos, rad, smallrad, h, **config):
+                self.init(config)
+		self.closed = True
+                kw = smallrad
+                kh = h
+                kr = rad
+                ky = math.sqrt(rad**2 - kw**2)+0.01
+		if 'double' in config and config['double']:
+                	self.add_point(PIncurve(pos+V(kw, kh), radius = kw))
+                	self.add_point(PIncurve(pos+V(-kw, kh), radius = kw))
+               		self.add_point(pos+V(-kw, ky))
+        	        self.add_point(PAroundcurve(pos+V(0, 0), radius = kr, direction='ccw'))
+			self.add_point(pos+V(-kw, -ky))
+			self.add_point(PIncurve(pos+V(-kw, -kh), radius = kw))
+			self.add_point(PIncurve(pos+V(kw, -kh), radius = kw))
+                	self.add_point(pos+V(kw, -ky))
+			self.add_point(PAroundcurve(pos+V(0, 0), radius = kr, direction='ccw'))
+	                self.add_point(pos+V(kw, ky))
+		else:
+	                self.add_point(PIncurve(pos+V(kw, kh), radius = kw))
+	                self.add_point(PIncurve(pos+V(-kw, kh), radius = kw))
+	                self.add_point(pos+V(-kw, ky))
+	                self.add_point(POutcurve(pos+V(0, 0), radius = kr))
+	                self.add_point(pos+V(kw, ky))
+
+	
 class RepeatLine(Part):
 	def __init__(self, start, end, number, ob, args, **config):
                 self.init(config)

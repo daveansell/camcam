@@ -28,6 +28,13 @@ class Switch(Part):
 				if task=='minimal':
 					self.add(Hole(V(0,0), rad=18/2, z1=-2 ), layers=l)
 					self.add(Hole(V(0,0), rad=14/2 ), layers=l)
+				if task=='counterbore':
+					print "COUNTERBORE = "+str(l)
+					self.add(Hole(V(0,0), rad=12/2, z1=-config['counterbore_depth']), layers=l)
+					self.add(Hole(V(0,0), rad=16/2, z1=-config['counterbore_depth']), layers=l)
+					self.add(Hole(V(0,0), rad=19/2, z1=-config['counterbore_depth']), layers=l)
+					self.add(CircleChord(V(0,0), 13.6/2, 12.9, side='in'), layers=l)
+
 		if config['switch_type']== 'rocker':
 			rocker_data={
 				'PRFDA1-16F-BB0BW':{'cutout_width':22, 'cutout_height':30.2, 'clearance_width':26, 'clearance_height':32.5},
@@ -573,6 +580,7 @@ class FlatMonitor(Part):
                 if 'layers' in config and 'underbase' in  config['layers']:
                         underbase = config['layers']['underbase']
                 else:
+			underbase='underbase'
 			pass
                         #raise ValueError('Need underbase in layers')
                 if 'layers' in config and 'paper' in  config['layers']:
@@ -581,13 +589,35 @@ class FlatMonitor(Part):
                         paper = 'paper'
                 data={
                         'B101UAN02'  :{'ext_width':230.0, 'ext_height':149.7, 'screen_width':217.0,  'screen_height':135.5 },
-                        'B140HAN01.2':{'ext_width':320.4, 'ext_height':205.1, 'screen_width':309.14, 'screen_height':173.89},
+                        'B140HAN01.2':{'ext_width':320.4, 'ext_height':188, 'screen_width':309.14, 'screen_height':173.89, 'lug_width':13, 'lug_depth':1, 'lug_height':7, 'toplug_fe':20, 'botlug_fe':35, 'elec_width':223, 'elec_height':12, 'conn_width':30, 'conn_x':115, 'conn_y0':-87, 'conn_y1':-117},
 			'B156HAN01.2':{'ext_width':359.5, 'ext_height':223.8, 'screen_width':344.16, 'screen_height':193.59},
                 }
 		assert monitorType in data
 		d = data[monitorType]
 		self.d = d
-		self.add(Rect(V(0,0), centred=True, width = d['ext_width'], height = d['ext_height']), base)
+		if 'toplug_fe' in d:
+			self.add(Rect(V(d['ext_width']/2- d['toplug_fe'], d['ext_height']/2+d['lug_height']/2), centred=True, width=d['lug_width'], height=d['lug_height'], z1=-d['lug_depth']),base)
+			self.add(Rect(V(-d['ext_width']/2+ d['toplug_fe'], d['ext_height']/2+d['lug_height']/2), centred=True, width=d['lug_width'], height=d['lug_height'], z1=-d['lug_depth']), base)
+		if 'botlug_fe' in d:
+			self.add(Rect(V(d['ext_width']/2- d['botlug_fe'], -d['ext_height']/2 - d['lug_height']/2), centred=True, width=d['lug_width'], height=d['lug_height'], z1=-d['lug_depth']), 'base')
+			self.add(Rect(V(-d['ext_width']/2+ d['botlug_fe'], -d['ext_height']/2 - d['lug_height']/2), centred=True, width=d['lug_width'], height=d['lug_height'], z1=-d['lug_depth']), 'base')
+		cutout=self.add(Path(closed=True, side='in'), base)
+		cutout.add_point(V(d['ext_width']/2, d['ext_height']/2))
+		cutout.add_point(V(-d['ext_width']/2, d['ext_height']/2))
+		cutout.add_point(V(-d['ext_width']/2, -d['ext_height']/2))
+		cutout.add_point(V(-d['elec_width']/2, -d['ext_height']/2))
+		cutout.add_point(V(-d['elec_width']/2, -d['ext_height']/2-d['elec_height']))
+		cutout.add_point(V(-d['ext_width']/2+d['conn_x']-d['conn_width']/2, -d['ext_height']/2-d['elec_height']))
+		cutout.add_point(V(-d['ext_width']/2+d['conn_x']-d['conn_width']/2, d['conn_y1']))
+		cutout.add_point(V(-d['ext_width']/2+d['conn_x']+d['conn_width']/2, d['conn_y1']))
+		cutout.add_point(V(-d['ext_width']/2+d['conn_x']+d['conn_width']/2, -d['ext_height']/2-d['elec_height']))
+		cutout.add_point(V(d['elec_width']/2, -d['ext_height']/2-d['elec_height']))
+		cutout.add_point(V(d['elec_width']/2, -d['ext_height']/2))
+		cutout.add_point(V(d['ext_width']/2, -d['ext_height']/2))
+
+		self.add(Rect(V(-d['ext_width']/2+d['conn_x'], (d['conn_y0']+d['conn_y1'])/2), centred=True, width = d['conn_width'], height = d['conn_y0'] - d['conn_y1']), underbase)
+
+#		self.add(Rect(V(0,0), centred=True, width = d['ext_width'], height = d['ext_height']), base)
 		self.add(Rect(V(0,0), centred=True, width = d['screen_width'], height = d['screen_height']), paper)
 
 class Monitor(Part):
