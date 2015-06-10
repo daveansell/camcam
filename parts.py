@@ -14,7 +14,6 @@ class Switch(Part):
 		if config['switch_type'] == 'IWS_small_LED':
 			self.add_bom('IWS small switch LED', 1, part_number='59-411R', description='Red Round Ip67 Mom Switch Solder Term red LED')
 		
-		print config['layer_config']
 		if config['switch_type'] == 'IWS_small' or  config['switch_type'] == 'IWS_small_LED':
 			if not 'paper' in config['layer_config'].keys():
 					config['layer_config']['paper']='doubleflat'
@@ -29,7 +28,6 @@ class Switch(Part):
 					self.add(Hole(V(0,0), rad=18/2, z1=-2 ), layers=l)
 					self.add(Hole(V(0,0), rad=14/2 ), layers=l)
 				if task=='counterbore':
-					print "COUNTERBORE = "+str(l)
 					self.add(Hole(V(0,0), rad=12/2, z1=-config['counterbore_depth']), layers=l)
 					self.add(Hole(V(0,0), rad=16/2, z1=-config['counterbore_depth']), layers=l)
 					self.add(Hole(V(0,0), rad=19/2, z1=-config['counterbore_depth']), layers=l)
@@ -106,7 +104,6 @@ class Post(Part):
 
 class PiBarn(Part):
 	def __init__(self, pos, **config):
-		print "*********PIBARN***********"
 		if('layer' not in config):
 			config['layer']='pibarn'
 		self.init(config)
@@ -285,8 +282,6 @@ class LinearRail(Part):
 		if rail_type in dat:
 			d=dat[rail_type]
 			self.d=d
-			print start
-			print end
 			tot_len = (end-start).length()
 			parallel = (end-start).normalize()
 			perp = rotate(parallel, 90)
@@ -398,9 +393,7 @@ class Fan(Pathgroup):
 			d=data[config['fan_type']]
 		else:
 			d=data['120mm']
-		print config
 		if 'grill' in config and config['grill']:
-			print "GRILL"
 			if config['grill'] == True:
 				holerad = 6/2
 			else:
@@ -458,7 +451,6 @@ class StepperDriver(Pathgroup):
 	def __init__(self, pos, **config):
 		self.init(config)
 		self.translate(pos)
-		print pos
 		data={
 			'DM422':{'l':86, 'w':55, 'hs_b':79, 'hoff_b':27.5,'hs_s':79, 'hoff_s':11.75}
 		}
@@ -478,19 +470,16 @@ class RFID_holder(Part):
 		self.init(config)
                 self.translate(pos)
 		self.name=name
-		print "RFID_NAME="+str(self.name)
 		width=71
 		length=107
 		socket_slot_l=40
 		socket_extra=14
 		socket_slot_w=11
-		print self.transform
                 if 'layer_config' not in config:
                         layer_config={'base':'base', 'part':'back'}
                 else:
                         layer_config=config['layer_config']
 		self.layer=layer_config['part']
-		print layer_config	
 		cutout=self.add(Path(side='in', closed=True), layer_config['base'])
 		cutout.add_point(V(length/2, width/2))
 		cutout.add_point(V(length/2, -width/2))
@@ -556,7 +545,6 @@ class Plate(Part):
 			if 'base' in layer_config:
 				self.add(Hole(V(0,0), rad=centreRad+2), [layer_config['base']])
 			if 'clearance' in layer_config:
-				print layer_config['clearance']
 				self.add(Hole(V(0,0), rad=centreRad+2), layer_config['clearance'])
 
 class RoundPlate(Plate):
@@ -871,7 +859,6 @@ class ScreenHolderRemovable(Part):
                                 if l not in layers:
                                         layers[l] = lname
                         elif l not in layers:
-                                print "ADD LAYER "+name+lname
                                 plane.add_layer(name = name + lname, material = material, thickness = thickness)
                                 layers[l] = name + lname
                 back_border = Path(closed = True, side ='out')

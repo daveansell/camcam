@@ -59,7 +59,6 @@ class RoundedRect(Rect):
 
 class Drill(Path):
 	def __init__(self, pos, **config):
-		print "new drill="+str(pos)
 		self.init(config)
 		self.pos=pos
 		if 'peck' in config and config['peck']:
@@ -378,7 +377,6 @@ class CircleChord(Path):
 				self.side='out'
 			elif self.side=='out':
 				self.side='in'
-		print "side=www"+self.side
 		
 		self.direction='cw'
 		if height <=rad:
@@ -556,7 +554,6 @@ class CopyObject(Part):
 		for p in points:
 			t=copy.deepcopy(ob)
 			t.translate(p)
-			print "COPY to "+str(p)
 			if 'layers' in config and config['layers'] is not None:
 				self.add(t, config['layers'])
 			else:
@@ -583,7 +580,6 @@ class FourObjects(Part):
 class LineObjects(Part):
 	"""Copy object :param ob:, :param num: times, between :param a: and :param b:"""
 	def __init__(self, a, b, fromends, num, ob, **config):
-		print "line from:"+str(a)+" to "+str(b)
 		self.init(config)
 		totlength=(b-a).length()
 		length=totlength-2*fromends
@@ -635,7 +631,6 @@ class SquareObjects(Part):
 				self.add(LineObjects(centre+V(-w,-h+fe), centre+V(-w,h-fe), 0, numy, ob, layers=l))
 				self.add(LineObjects(centre+V(w,h-fe), centre+V(w,-h+fe), 0, numy, ob, layers=l))
 		else:
-			print "fe="+str(fe)+" h="+str(h)+" w="+str(w)
 			self.add(LineObjects(centre+V(-w,-h+fe), centre+V(-w,h-fe), 0, numy, ob, layers=l)) 		
 			self.add(LineObjects(centre+V(-w+fe,h), centre+V(w-fe,h), 0, numx, ob, layers=l)) 		
 			self.add(LineObjects(centre+V(w,h-fe), centre+V(w,-h+fe), 0, numy, ob, layers=l)) 		
@@ -1074,7 +1069,6 @@ class RoundedArc(Path):
 		a1 = -angle/2+startangle
 		a2 = angle/2+startangle
 		w = width/2
-		print "RoundedArc width="+str(width)+" w="+str(w)
 		self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a1]}))
 		self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
 		self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a2]}))
@@ -1099,7 +1093,6 @@ class Module(Plane):
 :param no_perspex: if rue don't create perspex layer
 :param no_holdowns: if True no holdowns
 """
-		print "MODULE "+str(config)
 		self.init('module',V(0,0),V(0,0),config)
 		self.bom=[]
 		bolt_config={}

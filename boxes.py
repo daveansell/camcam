@@ -56,7 +56,6 @@ class RoundedBoxEnd(Part):
 class RoundedBox(Part):
 	def __init__(self,pos, layers, name, length, width, centre_height, centre_rad, centre_holerad, side_height, bend_rad=0, thickness=6, tab_length=False,  fudge=0, **config):
 		self.init(config)
-		print "length="+str(length)+" width="+str(width)+" centre_height="+str(centre_height)+" centre_holerad="+str(centre_holerad)+" side_height="+str(side_height)
 		cutter=False
 		self.translate(pos)
 		self.end=self.add(RoundedBoxEnd(V(0,0), layers['end'], name+'_end', width, centre_height, centre_rad, centre_holerad, side_height, bend_rad,  {'right':'off', 'bottom':'off', 'left':'off'}, thickness, tab_length,  fudge))
@@ -73,8 +72,6 @@ class RoundedBox(Part):
 			side_modes={'top':'straight'}
 			bottom_modes={}
 		self.side=self.add(Part(name=name+'_side', layer=layers['side'], border=FingerJointBoxSide( V(0,0), length, side_height, 'out', {'left':'on', 'bottom':'off', 'right':'on', 'top':'on'}, side_modes, tab_length, thickness, cutter, auto=True)))
-		for p in self.side.border.points:
-			print str(p.pos)+" "+str(p.point_type)
 		self.side.number=2
 		self.bottom=self.add(Part(name=name+'_bottom', layer=layers['bottom'], border=FingerJointBoxSide( V(0,0), width, length, 'out', {'left':'on', 'bottom':'on', 'right':'on','top':'on'}, bottom_modes, tab_length, thickness, cutter, auto=True,centred=True)))
 
@@ -185,7 +182,6 @@ class Turret(Part):
 		self.add_bom('M20 washer',3, 'M20_washer', description='M20 washer')
 		self.add_bom('M20 conduit locknut',3,'M20_conduit_locknut', description='M20 condut locknut')
 		self.add_bom('20mm thrust bearing',1, '20mm_thrust_bearing', description='20mm thrust bearing')
-		print "ADD BOM_ROD"
 		self.add_bom(BOM_rod('tube', 'black pvc', 'round tube', d['centre_rad']*2, d['length']-thickness-1, 1, 'Tube to make up-down part of turret should have holes drilled to take camera holder, sometimes camera and cable'))
 
 class PiCamTurret(Turret):
@@ -200,7 +196,6 @@ class PiCamTurret(Turret):
 		mount_hole_from_edge = (rod_rad-(cam_height+cam_yoff*2)/2)/2
 		window_rad = rod_rad-mount_hole_from_edge-3.5
 		view_rad = window_rad -3
-		print "Mounting holes at radius ="+str(rod_rad - mount_hole_from_edge)
 		accel_width = 22
                 accel_depth = 17.5
 		if 'window_thickness' in config:
@@ -296,7 +291,6 @@ class ThermalTurret(Turret):
 
                 minimum_bite_depth = rod_rad - cam_top_to_connector + tube_wall
                 self.comment("Minimum bite depth = "+str(minimum_bite_depth))
-                print "Minimum bite depth = "+str(minimum_bite_depth)
                 camera_centre = V(0, 0)
 
                 hole_y = math.sqrt((rod_rad-2)**2 - cam_rad**2)
@@ -468,7 +462,6 @@ class ArbitraryBox(Part):
 				if wood_direction_face is not None or wood_direction_face !=None:
 					raise ValueError('wood direction defined more than once')
 				wood_direction_face = f
-				print "WOOD DIREWCTION" 
 			if 'good_direction' in face:
 				if good_direction_face is not None or good_direction_face !=None:
 					raise ValueError('good direction defined more than once')
@@ -497,7 +490,6 @@ class ArbitraryBox(Part):
 
 			if 'x' in face:
 				if abs(face['x'].dot(face['normal'])) > 0.0000001 :
-					print face['x'].dot(face['normal'])
 					raise ValueError('face[x] in face '+str(f)+' not in plane')
 				face['x'] = face['x'].normalize()
 			else: 
@@ -552,8 +544,6 @@ class ArbitraryBox(Part):
 			cutside='left'
 		else:
 			cutside='right'
-		print face['ppoints']
-		print f+" CUT SIDE "+cutside
          	for point in face['ppoints']:
 			lastpoint = face['ppoints'][(p-1)%len(face['sides'])]
 			scount = (p)%len(face['sides'])
@@ -635,7 +625,6 @@ class ArbitraryBox(Part):
 		good_direction = face['wood_direction']
 		need_cut_from={}
 		pref_cut_from = False
-		print f
 		for s in face['sides']:
 			side = self.sides[s]
 			if side[0][0]==f:
@@ -647,9 +636,7 @@ class ArbitraryBox(Part):
 				need_cut_from[self.sign(cutside)]=True
 			elif cutside!=0:
 				pref_cut_from = cutside
-			print cutside * good_direction
 				# this means we should be cutting from this side
-		print need_cut_from	
 		if len(need_cut_from)>1:
 			raise ValueError(str(f) + " cannot be cut without cavities as slopes can only be cut from one side ")
 		elif len(need_cut_from)>0:
@@ -727,11 +714,9 @@ class ArbitraryBox(Part):
 		p = 0
 		for point in points:
 			new_normal = (points[(p-1)%len(points)]-point).normalize().cross( (points[(p+1)%len(points)]-point).normalize())
-			print new_normal
 			if type(normal) is bool and normal == False:
 				normal = new_normal
 			elif (normal.normalize() - new_normal.normalize()).length() > 0.00001: #and normal.normalize() != - new_normal.normalize():
-				print str(normal.normalize()) +" = old normal   new_normal = " + str( new_normal.normalize())+ " diff "+ str((normal.normalize() - new_normal.normalize()).length())
 				raise ValueError( "points in face "+f+" are not in a plane "+str(points) )
 			p += 1
 		if 'origin' in self.faces[f]:
@@ -740,7 +725,6 @@ class ArbitraryBox(Part):
 			p2 = points[1]
 			new_normal = (p-o).normalize().cross( (p2-o).normalize())
 			if new_normal.length()>0.000001 and not new_normal.almost(normal) and not new_normal.almost(-normal):
-				print str(new_normal) + "origin normal "+ str(normal)
 				raise ValueError( "origin of face "+f+" are not in a plane origin="+str(o)+ "  points="+str(points) +" normal="+str(normal) + "new_normal="+str(new_normal) )
 		self.faces[f]['normal']=normal
 			
@@ -784,7 +768,6 @@ class ArbitraryBox(Part):
 		# base angle is angle between the two svecs
 
 		baseAngle = math.acos(svec1.normalize().dot(svec2.normalize())) / math.pi *180
-		print 'baseAngle='+str(baseAngle)
 		if baseAngle < 45:
 			cutsign = -1
 			angle = abs(baseAngle)
