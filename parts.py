@@ -509,6 +509,17 @@ class RFID_holder(Part):
 		self.add(Bolt(V(-length/2-socket_slot_l,-width/2-6), clearance_layers=layer_config['part']))
 
 class Plate(Part):
+	"""
+		Create a circle with holes around the edge
+		pos - pos
+		name - part name
+		rad - external rad or circle
+		centreRad - rad of hole in centre (can be 0)
+		holes - number of holes
+		holeRad - radius from centre holes should appear
+		holeSize - rad of holes
+		[layer_config] - dict that defaults to {'base':'base', 'part':'stringplate', 'thread':[], 'clearance':['paper','perspex']} defining layer config
+	"""
 	def __init__(self, pos, name, rad, centreRad, holes, holeRad, holeSize, **config):
 		self.init(config)
 		self.initPlate(pos, name, rad, centreRad, holes, holeRad, holeSize, config)
@@ -520,6 +531,7 @@ class Plate(Part):
 			layer_config={'base':'base', 'part':'stringplate', 'thread':[], 'clearance':['paper','perspex']}
 		else:
 			layer_config=config['layer_config']
+
 		self.add_border(Circle(V(0,0), rad=rad, side='out'))
 		self.layer=layer_config['part']
 		if not  'clearance' in layer_config:
@@ -548,6 +560,12 @@ class Plate(Part):
 				self.add(Hole(V(0,0), rad=centreRad+2), layer_config['clearance'])
 
 class RoundPlate(Plate):
+	"""
+		Attempt at standardising some plates
+		pos - pos
+		plateType - one of the types in the array below
+		[layer_config] - dict that defaults to {'base':'base', 'part':'stringplate', 'thread':[], 'clearance':['paper','perspex']} defining layer config
+"""
 	def __init__(self, pos, plateType, **config):
 		self.init(config)
 		data={
@@ -555,7 +573,7 @@ class RoundPlate(Plate):
 			'stringplate3':{'rad':28, 'centreRad':4/2, 'holes':3, 'holeRad':19, 'holeSize':'M4'},
 		}
 		d=data[plateType]
-		self.initPlate(pos, plateType, d['rad'], d['centreRad'], d['holes'], d['holeRad'], d['holeSize'], config)
+		self.initPlate(pos, plateType, d['rad'], d['centreRad'], d['holes'], d['holeRad'], d['holeSize'], **config)
 
 class FlatMonitor(Part):
         def __init__(self, pos, monitorType, **config):
