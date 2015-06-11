@@ -561,7 +561,7 @@ class Plate(Part):
 		if centreRad >0:
 			self.add(Hole(V(0,0), rad=centreRad))
 			if 'base' in layer_config:
-				self.add(Hole(V(0,0), rad=centreRad+2), [layer_config['base']])
+				self.add(Hole(V(0,0), rad=centreRad+2), layer_config['base'])
 			if 'clearance' in layer_config:
 				self.add(Hole(V(0,0), rad=centreRad+2), layer_config['clearance'])
 
