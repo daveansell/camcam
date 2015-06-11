@@ -534,6 +534,8 @@ class Plate(Part):
 
 		self.add_border(Circle(V(0,0), rad=rad, side='out'))
 		self.layer=layer_config['part']
+		if not 'base' in layer_config:
+			layer_config['base']=[]
 		if not  'clearance' in layer_config:
 			layer_config['clearance']=[]
 		if not 'part' in layer_config:
