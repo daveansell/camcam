@@ -723,7 +723,7 @@ class ArbitraryBox(Part):
 			o = self.faces[f]['origin']
 			p = points[0]
 			p2 = points[1]
-			new_normal = (p-o).normalize().cross( (p2-o).normalize())
+			new_normal = (p-o).normalize().cross( (p2-o).normalize()).normalize()
 			if new_normal.length()>0.000001 and not new_normal.almost(normal) and not new_normal.almost(-normal):
 				raise ValueError( "origin of face "+f+" are not in a plane origin="+str(o)+ "  points="+str(points) +" normal="+str(normal) + "new_normal="+str(new_normal) )
 		self.faces[f]['normal']=normal

@@ -547,10 +547,14 @@ class Plate(Part):
 			clearance=[layer_config['clearance'], layer_config['part']]
 		if 'thread' not in layer_config:
 			layer_config['thread']=[]
+		if 'thread_depth' in config:
+			thread_depth = config['thread_depth']
+		else:
+			thread_depth = False
 #		screwConf={layer_config['part']:{'rad':milling.bolts[holeSize]['clearance']/2+0.5}, layer_config['base']:{'rad':milling.bolts[holeSize]['clearance']/2}}
 		if holes >0:
 			for i in range(0, holes):
-				self.add(Bolt(V(holeRad,0), 'M4', 'button', 16, clearance_layers=clearance, insert_layer=layer_config['base'], thread_layer=layer_config['thread'], transform={'rotate':[V(0,0), i*360/holes]}))
+				self.add(Bolt(V(holeRad,0), 'M4', 'button', 16, clearance_layers=clearance, insert_layer=layer_config['base'], thread_layer=layer_config['thread'], thread_depth = thread_depth, transform={'rotate':[V(0,0), i*360/holes]}))
 #				self.add(Screw(V(d['holeRad'],0), layer_config=screwConf, transform={'rotate':[V(0,0), i*360/d['holes']]}))
 		if centreRad >0:
 			self.add(Hole(V(0,0), rad=centreRad))

@@ -431,6 +431,7 @@ class KeyHole(Path):
                 kh = h
                 kr = rad
                 ky = math.sqrt(rad**2 - kw**2)+0.01
+		print pos
 		if 'double' in config and config['double']:
                 	self.add_point(PIncurve(pos+V(kw, kh), radius = kw))
                 	self.add_point(PIncurve(pos+V(-kw, kh), radius = kw))
@@ -573,6 +574,8 @@ class FourObjects(Part):
 			if 'tr' in config:
 				d=config['tr']-bl
 				points=[bl, bl+V(d[0], 0), bl+d, bl+V(0,d[1])]
+		print ob
+		print points
 		if ob.obType=='Part':
 			self.add(CopyObject(ob, points))
 		else:
