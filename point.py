@@ -877,6 +877,7 @@ class PArc(Point):
 		l=self.next().pos - self.last().pos
                 perp=rotate(l.normalize(),-90)
                 centre=self.pos.intersect_lines(self.last().pos, self.next().pos, self.pos, self.pos+perp)
+		print "self.radius = "+str(self.radius) + "  " + str(self.pos) +"  " + str(centre)
                 c=math.sqrt(self.radius**2 - (self.pos-centre).length()**2)
                 a = l.normalize()*c
 		return centre+a

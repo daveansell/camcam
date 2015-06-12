@@ -353,7 +353,7 @@ class Milling:
                         "sidefeed":700,
                         "stepdown":2.0,
                         "kress_setting":1.5,
-			"mill_dir":'down',
+			"mill_dir":'up',
                },
                 "abs":{
                         "vertfeed":100,

@@ -707,11 +707,21 @@ class AngleConstraint(Part):
 		else:
 			startangle = 0
 		self.translate(pos)
-		self.add(RoundedArc(V(0,0), rad, 
-			bolt['allen']['head_d']+1.5, 
-			angle, startangle=startangle, 
-			z1=-bolt['allen']['head_l']-0.8, side='in'
-		), slot_layer)
+		print "**************"+str(bolt['allen']['head_d'])
+		
+		d=(bolt['allen']['head_d']+0.7)
+		e = d-3
+		print "e="+str(e)
+		n = math.floor(float(e)/2.2)
+		step = float(d)/n
+		print "d="+str(d)+" step="+str(step)
+		for i in range(0,int(n)):
+			print d-i*step
+			self.add(RoundedArc(V(0,0), rad, 
+				d-i*step, 
+				angle, startangle=startangle, 
+				z1=-bolt['allen']['head_l']-0.8, side='in'
+			), slot_layer)
 		self.add(Hole(V(0,rad), rad=bolt['tap']/2), bolt_layer)
 
 class AngleBracket(Part):

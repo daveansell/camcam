@@ -1072,6 +1072,7 @@ class RoundedArc(Path):
 		a1 = -angle/2+startangle
 		a2 = angle/2+startangle
 		w = width/2
+		print "WIDTH = "+str(width)
 		self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a1]}))
 		self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
 		self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a2]}))

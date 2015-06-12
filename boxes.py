@@ -161,7 +161,7 @@ class Turret(Part):
 		self.under_base = self.add(Part(name=name+'_under_base', layer = name+'_under_base', border = Circle(V(0,0), rad=base_rad, side='out')))
 		# base sits above board to act as bearing and constrain rotation
 		self.base = self.add(Part(name=name+'_base', layer = name+'_base', border = Circle(V(0,0), rad=base_rad, side='out', cutter='1/8_endmill')))
-		self.base.add(AngleConstraint(V(0,0), width/2-4, 320, 'M4', name+'_base', name+'_bottom'))
+		self.base.add(AngleConstraint(V(0,0), width/2-4, 320, 'M4', name+'_base', name+'_bottom', side='on'))
 
 		# base protector sits on standoffs and has cable cable-tied to it protecting and holding the cable
 		self.base_protector = self.add(Part(name=name+'_base_protector', layer = name+'_base_protector', border = Circle(V(0,0), rad=base_protector_rad, side='out')))
@@ -190,22 +190,27 @@ class PiCamTurret(Turret):
                 self.init_turret(pos, plane, name, 'camera', thickness, fudge, config)
 		rod_rad = 51.5/2
 		cam_yoff = 5.0
+		cam_width=25.0
+		cam_height=28.0
+		cam_hole_from_side=2.0
+		cam_hole_from_bottom=9.5
+		cam_ribbon_width = 16.0
 		cable_slot_depth = 40.0
 		cable_slot_height = cam_yoff*2
 		cable_slot_width=cam_ribbon_width+8.0
 		mount_hole_from_edge = (rod_rad-(cam_height+cam_yoff*2)/2)/2
-		window_rad = rod_rad-mount_hole_from_edge-3.5
-		view_rad = window_rad -3
+		window_rad = rod_rad-mount_hole_from_edge-2
+		view_rad = window_rad -2
 		accel_width = 22
                 accel_depth = 17.5
 		if 'window_thickness' in config:
-			window_thickness = config['window_thckness']
+			window_thickness = config['window_thickness']
 		else:
 			window_thickness = 3
 		if 'face_thickness' in config:
 			face_thickness = config['face_thckness']
 		else:
-			face_thickness = 8.5
+			face_thickness = 6.5
 
 		plane.add_layer(name+'_camera_holder', material='pvc', thickness=thickness, z0=0)
 		plane.add_layer(name+'_camera_face', material='pvc', thickness=face_thickness, z0=0)
@@ -216,11 +221,6 @@ class PiCamTurret(Turret):
 		self.camera_window = self.add(Part(name=name+'_camera_window', layer= name+'_camera_window', border = Circle(V(0,0), rad=rod_rad+1)))		
 
 		self.camera_holder = self.add(Part(name=name+'_camera_holder', layer= name+'_camera_holder', ignore_border=True))
-		cam_width=25.0
-		cam_height=28.0
-		cam_hole_from_side=2.0
-		cam_hole_from_bottom=9.5
-		cam_ribbon_width = 16.0
 		if 'cam_depth' in config:
 			cam_depth = config['cam_depth']
 		else:
@@ -239,7 +239,7 @@ class PiCamTurret(Turret):
 		for i in range(0,6):
 			t=self.camera_holder.add(Drill(V(0,rod_rad-mount_hole_from_edge), z1=-1, rad=1.5/2))
 			t.rotate(V(0,0), i*60)
-			t=self.camera_holder.add(Hole(V(0,rod_rad-mount_hole_from_edge), z1=-1, rad=3.3/2), name+'_camera_face')
+			t=self.camera_holder.add(Hole(V(0,rod_rad-mount_hole_from_edge),  rad=3.3/2), name+'_camera_face')
 			t.rotate(V(0,0), i*60)
 		cone_rad = rod_rad - 2*mount_hole_from_edge
 		cone_inner_rad = cam_width/2
@@ -275,6 +275,7 @@ class ThermalTurret(Turret):
 
                 window_rad=25/2
                 window_thickness=2
+		window_hole_rad = 20/2
 
                 accel_width = 22
                 accel_depth = 17.5
@@ -286,7 +287,7 @@ class ThermalTurret(Turret):
                 if 'face_thickness' in config:
                         face_thickness = config['face_thckness']
                 else:
-                        face_thickness = 8.5
+                        face_thickness = 6.5
 
 
                 minimum_bite_depth = rod_rad - cam_top_to_connector + tube_wall
@@ -301,7 +302,7 @@ class ThermalTurret(Turret):
 		
 		plane.add_layer(name+'_camera_face', material='pvc', thickness=face_thickness, z0=0)
                 self.camera_face = self.add(Part(name=name+'_camera_face', layer= name+'_camera_face', border = Circle(V(0,0), rad=rod_rad+1)))
-                self.camera_face.add(Hole(V(0,0), rad=window_holder_rad))
+                self.camera_face.add(Hole(V(0,0), rad=window_hole_rad))
 
                 camera_cutout = Path(closed=True, side='in', partial_fill= cam_rad-4, cutter='6mm_endmill', z1=-rod_length/2, )
                 camera_cutout.add_point(PSharp(V(-cam_rad, -hole_y/2)))
@@ -316,11 +317,13 @@ class ThermalTurret(Turret):
                 self.camera_holder.add(RoundedRect(V(0,0), rad=3.1, centred=True, width = accel_width, height=6.5, z0 = -rod_length/2, z1=-rod_length/2-accel_depth, cutter="6mm_endmill"))
                 self.camera_holder.add(RoundedRect(V(6.5/2,0), tr=V(-6.5/2, -hole_y), z0 = -rod_length/2, z1=-rod_length/2-6, cutter="6mm_endmill", rad=3.1))
 
-                for i in range(0,3):
+                for i in range(-2,3):
                         t=self.camera_holder.add(Hole(V(0, window_holder_rad -3), rad=3.3/2, z1=-12))
-                        t.rotate(V(0,0),i*120)
-                        t=self.window_holder.add(Hole(V(0, window_holder_rad -3), rad=4.3/2), [name+'_camera_face', name+'_camera_window_holder'])
-                        t.rotate(V(0,0), i*120)
+                        t.rotate(V(0,0),i*60)
+                        t=self.window_holder.add(Hole(V(0, window_holder_rad -3), rad=4.3/2), name+'_camera_face')
+                        t.rotate(V(0,0), i*60)
+                        t=self.window_holder.add(Hole(V(0, window_holder_rad -3), rad=4.3/2),  name+'_camera_window_holder')
+                        t.rotate(V(0,0), i*60)
                 self.window_holder.add(Hole(V(0,0), rad=window_rad+0.5, z1=-window_thickness))
                 self.window_holder.add(Hole(V(0,0), rad= window_rad-1))
                 self.add_bom(BOM_rod('rod', 'black pvc', 'round', rod_rad*2, 58, 1, 'rod for camera, should have a bite takenout of the middle of one side of radius the tube, and depth '+str(minimum_bite_depth)+'mm'))
