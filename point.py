@@ -116,6 +116,7 @@ class Point(object):
                         out-=t[0]
                         out*=t[1]
                         out+=t[0]
+			return out
 
 	def next(self):
 		if self.reverse:

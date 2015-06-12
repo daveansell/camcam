@@ -180,13 +180,13 @@ class SVGimport(Pathgroup):
 				outpath.points.pop()
 			outpaths.append(outpath)
 		for i in range(0, len(outpaths)):
-			self.add(outpaths[i])
+			if len(outpaths[i].points):
+				self.add(outpaths[i])
 		if len(outpaths)>1 and 'side' in config.keys() and config['side']!='on':
 			outermost=0
 			for i in range(1, len(outpaths)):
 				if outpaths[outermost].contains(outpaths[i]):
 					outermost=i
-			print outermost
 			outerdir=outpaths[outermost].find_direction(config)
 			for i in range(0, len(outpaths)):
 				if i==outermost or outpaths[i].find_direction(config)==outerdir:
@@ -200,8 +200,6 @@ class SVGimport(Pathgroup):
 						outpaths[i].side='right'
 					elif config['side']=='right':
 						outpaths[i].side='left'
-				print outpaths[i].side
-			print outpaths
 	def is_number(self,s):
 	    try:
 	        float(s)
