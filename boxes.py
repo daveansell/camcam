@@ -263,7 +263,10 @@ class ThermalTurret(Turret):
                 cam_height=45.0
                 cam_lens_depth = 20
                 cam_depth=14
-                cam_top_to_connector = 24
+                cam_top_to_connector = 2
+		cam_front_z = -8
+		cam_back_z = cam_front_z - cam_lens_depth
+		
                 centre_rad=56/2
                 centre_inner_rad=51.3/2
                 tube_wall = centre_rad-centre_inner_rad
@@ -273,8 +276,7 @@ class ThermalTurret(Turret):
                 window_holder_thickness = 6.5
                 window_holder_rad = rod_rad - 2
 
-                window_rad=25/2
-                window_thickness=2
+                window_rad=28/2
 		window_hole_rad = 20/2
 
                 accel_width = 22
@@ -283,7 +285,7 @@ class ThermalTurret(Turret):
 	 	if 'window_thickness' in config:
                         window_thickness = config['window_thckness']
                 else:
-                        window_thickness = 3
+                        window_thickness = 2
                 if 'face_thickness' in config:
                         face_thickness = config['face_thckness']
                 else:
@@ -304,7 +306,7 @@ class ThermalTurret(Turret):
                 self.camera_face = self.add(Part(name=name+'_camera_face', layer= name+'_camera_face', border = Circle(V(0,0), rad=rod_rad+1)))
                 self.camera_face.add(Hole(V(0,0), rad=window_hole_rad))
 
-                camera_cutout = Path(closed=True, side='in', partial_fill= cam_rad-4, cutter='6mm_endmill', z1=-rod_length/2, )
+                camera_cutout = Path(closed=True, side='in', partial_fill= cam_rad-4, cutter='6mm_endmill', z1=cam_back_z, )
                 camera_cutout.add_point(PSharp(V(-cam_rad, -hole_y/2)))
                 camera_cutout.add_point(POutcurve(V(0,0), radius = cam_rad))
                 camera_cutout.add_point(PSharp(V(cam_rad, -hole_y/2)))
@@ -314,15 +316,15 @@ class ThermalTurret(Turret):
                 self.camera_holder.add(FilledCircle(V(0,0), rad=window_holder_rad + 0.5, z1 = -window_holder_thickness, cutter="6mm_endmill"))
 
 #               accelerometer
-                self.camera_holder.add(RoundedRect(V(0,0), rad=3.1, centred=True, width = accel_width, height=6.5, z0 = -rod_length/2, z1=-rod_length/2-accel_depth, cutter="6mm_endmill"))
-                self.camera_holder.add(RoundedRect(V(6.5/2,0), tr=V(-6.5/2, -hole_y), z0 = -rod_length/2, z1=-rod_length/2-6, cutter="6mm_endmill", rad=3.1))
+                self.camera_holder.add(RoundedRect(V(0,0), rad=3.1, centred=True, width = accel_width, height=6.5, z0 = cam_back_z, z1=cam_back_z-accel_depth, cutter="6mm_endmill", side='in'))
+                self.camera_holder.add(RoundedRect(V(6.5/2,0), tr=V(-6.5/2, -hole_y), z0 = cam_back_z, z1=cam_back_z-6, cutter="6mm_endmill", rad=3.1, side='in'))
 
                 for i in range(-2,3):
                         t=self.camera_holder.add(Hole(V(0, window_holder_rad -3), rad=3.3/2, z1=-12))
                         t.rotate(V(0,0),i*60)
                         t=self.window_holder.add(Hole(V(0, window_holder_rad -3), rad=4.3/2), name+'_camera_face')
                         t.rotate(V(0,0), i*60)
-                        t=self.window_holder.add(Hole(V(0, window_holder_rad -3), rad=4.3/2),  name+'_camera_window_holder')
+                        t=self.window_holder.add(Hole(V(0, window_holder_rad -3), rad=4.3/2),  name+'_window_holder')
                         t.rotate(V(0,0), i*60)
                 self.window_holder.add(Hole(V(0,0), rad=window_rad+0.5, z1=-window_thickness))
                 self.window_holder.add(Hole(V(0,0), rad= window_rad-1))
