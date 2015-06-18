@@ -797,6 +797,7 @@ class AngledFingerJoint(list):
 #lineside - the side of the piece you are cutting that the line form start to end runs along (front/back)
 #fudge - fudge factor which just affects the sides of the fingers not their length"""
 	#	self.init({})
+		chamfer_width = material_thickness*math.tan(float(angle)/180*math.pi)
 	# If this is being cut from the Outside of the shape, the whole joint needs moving by the same amount as the length of the tabs
 		if material_thickness is False:
 			material_thickness=thickness
@@ -805,8 +806,10 @@ class AngledFingerJoint(list):
 		else:
 			perp = rotate((end-start).normalize(),90)
 		if lineside=='front':
-			start+=perp*material_thickness*math.sin(float(angle)/180*math.pi)
-			end+=perp*material_thickness*math.sin(float(angle)/180*math.pi)
+			start+=perp*chamfer_width
+			end+=perp*chamfer_width
+#			start+=perp*material_thickness*math.sin(float(angle)/180*math.pi)
+#			end+=perp*material_thickness*math.sin(float(angle)/180*math.pi)
 	#	for p in FingerJoint(start, end, side,linemode, startmode, endmode, tab_length, thickness*math.tan(float(angle)/180*math.pi), cutterrad, fudge):
 		for p in FingerJoint(start, end, side,linemode, startmode, endmode, tab_length, thickness/math.cos(float(angle)/180*math.pi), cutterrad, fudge):
 			self.append(p)
@@ -838,8 +841,12 @@ class AngledFingerJointNoSlope(list):
 		chamfer_width = material_thickness*math.tan(float(angle)/180*math.pi)
 		if lineside=='front':
 # DODGY
-			start+=perp*material_thickness*math.sin(float(angle)/180*math.pi) - perp * chamfer_width
-			end+=perp*material_thickness*math.sin(float(angle)/180*math.pi) - perp * chamfer_width
+			start += - perp * chamfer_width
+			end   += - perp * chamfer_width
+#		elif lineside =='back':
+#			start += - perp * chamfer_width
+#                        end   += - perp * chamfer_width
+			
 		for p in FingerJoint(start, end, side,linemode, startmode, endmode, tab_length, chamfer_width + thickness/math.cos(float(angle)/180*math.pi), cutterrad, fudge):
 			self.append(p)
 	
@@ -878,13 +885,16 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 		else:
 			num_tabs = num_tab_pairs*2
 		tab_length = (end-start).length()/num_tabs
+		print "FINGER SLOPEL lineside="+lineside+" ANGLE="+str(angle)
 		if side=='left':
 			perp = rotate((end-start).normalize(),-90)
 		else:
 			perp = rotate((end-start).normalize(),90)
 		if lineside=='front' and linemode=='external':
-			start+=perp* (material_thickness*math.sin(float(angle)/180*math.pi))
-			end+=perp* (material_thickness*math.sin(float(angle)/180*math.pi))
+			start += perp * chamfer_width
+			end += perp * chamfer_width
+#			start+=perp* (material_thickness*math.sin(float(angle)/180*math.pi))
+#			end+=perp* (material_thickness*math.sin(float(angle)/180*math.pi))
 		along=tab_length*(end-start).normalize()
 		cra=(end-start).normalize()*(cutterrad+fudge)
 		crp=perp*cutterrad

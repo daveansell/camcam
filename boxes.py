@@ -565,6 +565,7 @@ class ArbitraryBox(Part):
 					
   #             	    	else: 
 					angle = thisside[4]
+					altside = thisside[5]
 #					print "angle="+str(angle)
 #					angle = 15
 					if mode == 'internal':
@@ -576,11 +577,13 @@ class ArbitraryBox(Part):
 					if angle!=0:
 						# this is being cut from the side we are cutting:
 
-						if face['wood_direction'] * face['good_direction']*intfact<0:
+						if face['wood_direction'] * face['good_direction']*intfact>0:
 							lineside='front'
 						else:
 							lineside = 'back';
+
 						if thisside[3]*face['good_direction']*intfact<0:
+							print "SLOPE"
 # THIS PUTS THE SLOPE ON THE WRONG PART OF THE JOINT
 # create a new mode in finger joints called int and have it behave properly
 							newpoints = AngledFingerJoint(lastpoint, point, cutside, mode, corner, corner, self.tab_length, otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
@@ -773,21 +776,28 @@ class ArbitraryBox(Part):
 		# base angle is angle between the two svecs
 
 		baseAngle = math.acos(svec1.normalize().dot(svec2.normalize())) / math.pi *180
+		print "baseBngle="+str(baseAngle)
 		if baseAngle < 45:
 			cutsign = -1
-			angle = abs(baseAngle)
+			altside = -1
+			angle = 90-abs(baseAngle)
 		elif baseAngle < 90:
+			altside = -1
 			cutsign = -1
 			angle = abs(90-baseAngle)
 		elif baseAngle==90:
+			altside = 1
 			cutsign = 0
 			angle =0
 		elif baseAngle <135:
+			altside = 1
 			cutsign = 1
 			angle = abs(baseAngle-90)
 		else:
+			altside = 1
 			cutsign = 1
                         angle = abs(180-baseAngle)
+		print "Angle="+str(angle)
 		
 		# if this is +ve cut on same side as positive normal otherwse opposite direction to normal
 		avSvec = (svec1 + svec2).normalize()
@@ -811,3 +821,5 @@ class ArbitraryBox(Part):
 
 		side[0].append( angle )
 		side[1].append( angle )
+		side[0].append(altside)
+		side[1].append(altside)

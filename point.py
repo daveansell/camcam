@@ -823,8 +823,6 @@ class PArc(Point):
 		elif self.radius is not False and self.length is not False and self.pos is False:
 			
 			l=self.nextorigin() - self.lastorigin()
-			print l
-			print self.radius
 			b=math.sqrt(self.radius**2-l.length()**2/4)
 			
 			if l.length()>2*self.radius:
@@ -834,7 +832,6 @@ class PArc(Point):
 			else:
 				perp=rotate(l.normalize(),90)
 			self.pos = self.last().pos + l/2 + perp * b
-			print "circle centre="+str(self.pos)+" lastorigin="+str(self.lastorigin())+" nextorigin="+str(self.nextorigin())+" radius="+str(self.radius)
 		elif self.pos is not False:
 			self.radius=min((self.next().pos-self.pos).length(), (self.pos- self.last().pos).length())
 
@@ -878,7 +875,6 @@ class PArc(Point):
 		l=self.next().pos - self.last().pos
                 perp=rotate(l.normalize(),-90)
                 centre=self.pos.intersect_lines(self.last().pos, self.next().pos, self.pos, self.pos+perp)
-		print "self.radius = "+str(self.radius) + "  " + str(self.pos) +"  " + str(centre)
                 c=math.sqrt(self.radius**2 - (self.pos-centre).length()**2)
                 a = l.normalize()*c
 		return centre+a
