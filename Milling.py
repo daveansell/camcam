@@ -534,7 +534,7 @@ class Milling:
                         "depths":[-1,False],
                 },
 		"M6":{
-                        "diams":[7,3.05],
+                        "diams":[7,4.25], #Edited db from 6mm dia... these are also radii...
                         "depths":[-1,False],
                 },
 		"M8":{
