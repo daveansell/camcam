@@ -458,7 +458,8 @@ class Path(object):
 				return self.points[0].direction
 			
 		for p,q in enumerate(self.points):
-			total+=(self.points[p].pos-self.points[(p-1)%len(self.points)].pos).normalize().cross((self.points[(p+1)%len(self.points)].pos-self.points[p].pos).normalize())
+			if self.points[p].pos is not None and self.points[(p-1)%len(self.points)].pos is not None and self.points[(p+1)%len(self.points)].pos is not None:
+				total+=(self.points[p].pos-self.points[(p-1)%len(self.points)].pos).normalize().cross((self.points[(p+1)%len(self.points)].pos-self.points[p].pos).normalize())
 		# if it is a circle
 		if total[2]==0:
 			for p in self.points:

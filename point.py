@@ -55,7 +55,7 @@ class Point(object):
                 transformations[:0] = ext_transformations
                 if type(transformations) is list:
                         for t in reversed(transformations):
-                                if type(t) is dict:
+                                if type(t) is dict and p.pos is not None:
                                         if 'rotate' in t:
                                                 p.pos=self.rotate(p.pos, t['rotate'])
                                                 p.cp1=self.rotate(p.cp1, t['rotate'])
@@ -190,14 +190,14 @@ class Point(object):
 #			last=self.forcelastpoint
 ##		else:
 		last=self.last()
-		if hasattr(last, 'control') and last.control or last.pos is not False and self.pos is not False and last.pos==self.pos:
+		if hasattr(last, 'control') and last.control or last.pos is not None and self.pos is not None and last.pos==self.pos:
 			return last.lastorigin()
 		else:
 			return last.origin(False)
 
 	def nextorigin(self):
 		next=self.next()
-		if hasattr(next, 'control') and next.control or next.pos is not False and self.pos is not False and next.pos==self.pos:
+		if hasattr(next, 'control') and next.control or next.pos is not None and self.pos is not None and next.pos==self.pos:
 			return next.nextorigin()
 		else:
 			return next.origin(True)
@@ -817,10 +817,11 @@ class PArc(Point):
 		return t
 
 	def checkArc(self):
-		if self.pos is not False and self.radius is not False:
+		print "PArc radius="+str(self.radius) +" pos="+str(self.pos) + " length="+ str(self.length)
+		if self.pos is not None and self.radius is not False:
 			if (self.pos-self.last().pos).length()-self.radius>000.1 or (self.next().pos-self.pos).length()-self.radius>0.001:
 				print "Arc's radius should be <= distance to the centre"+str(self.next().pos)+"->"+str(self.pos)+"->"+str(self.last().pos)+" radius="+str(self.radius)+" AC-radius="+str((self.pos-self.last().pos).length()-self.radius)+" BC-raiuds="+str((self.next().pos-self.pos).length()-self.radius)
-		elif self.radius is not False and self.length is not False and self.pos is False:
+		elif self.radius is not False and self.length is not False and self.pos is None:
 			
 			l=self.nextorigin() - self.lastorigin()
 			b=math.sqrt(self.radius**2-l.length()**2/4)
@@ -832,9 +833,9 @@ class PArc(Point):
 			else:
 				perp=rotate(l.normalize(),90)
 			self.pos = self.last().pos + l/2 + perp * b
-		elif self.pos is not False:
+			print "ARC GENERATE POS = "+str(self.pos)
+		elif self.pos is not None:
 			self.radius=min((self.next().pos-self.pos).length(), (self.pos- self.last().pos).length())
-
 	def makeSegment(self, config):
 		self.checkArc()
 		if self.last().point_type not in ['sharp', 'clear', 'doubleclear'] or self.next().point_type not in ['sharp', 'clear', 'doubleclear']:

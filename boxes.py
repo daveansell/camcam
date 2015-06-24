@@ -218,7 +218,7 @@ class PiCamTurret(Turret):
 		self.camera_face = self.add(Part(name=name+'_camera_face', layer= name+'_camera_face', border = Circle(V(0,0), rad=rod_rad+1)))
 		self.camera_face.add(Hole(V(0,0), rad=view_rad))
 		self.camera_face.add(Hole(V(0,0), rad=window_rad, z1=-window_thickness))
-		self.camera_window = self.add(Part(name=name+'_camera_window', layer= name+'_camera_window', border = Circle(V(0,0), rad=rod_rad+1)))		
+		self.camera_window = self.add(Part(name=name+'_camera_window', layer= name+'_camera_window', border = Circle(V(0,0), rad=window_rad)))		
 
 		self.camera_holder = self.add(Part(name=name+'_camera_holder', layer= name+'_camera_holder', ignore_border=True))
 		if 'cam_depth' in config:
