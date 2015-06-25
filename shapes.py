@@ -201,7 +201,9 @@ class Circle(Path):
 		"""Cut a circle centre at :param pos: with radius :param rad:"""+self.otherargs
 		if rad==0:
 			raise ValueError("circle of zero radius")
-		else:	
+		else:
+			if rad<3.17/2:
+				self.cutter='2mm_endmill'	
 			self.closed=True
 			self.add_point(pos,'circle',rad)
 			self.comment("Circle")
@@ -644,14 +646,14 @@ class Bolt(Part):
 		""" thread - thread type, head - head type, length - bolt length, insert_layer - the layer or layers inserts should be added to , clearance layers - the layers that should have a clearance hole, head_layer - layer for bolt head"""
 		self.init(config)
 		self.add_bom("Machine screw", 1, str(length)+"mm "+str(thread)+" "+str(head),'')
-		if 'insert_layer' in config:
-			insert_layer = config['insert_layer']
-		else:
-			insert_layer = 'base'
 		if 'clearance_layers' in config:
 			clearance_layers = config['clearance_layers']
 		else:
 			clearance_layers = ['perspex', 'paper']
+		if 'insert_layer' in config:
+			insert_layer = config['insert_layer']
+		else:
+			insert_layer = 'base'
 		if 'head_layer' in config:
 			head_layer = config['head_layer']
 		else:

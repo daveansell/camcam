@@ -580,7 +580,7 @@ class RoundPlate(Plate):
 			'stringplate3':{'rad':28, 'centreRad':4/2, 'holes':3, 'holeRad':19, 'holeSize':'M4'},
 		}
 		d=data[plateType]
-		self.initPlate(pos, plateType, d['rad'], d['centreRad'], d['holes'], d['holeRad'], d['holeSize'], **config)
+		self.initPlate(pos, plateType, d['rad'], d['centreRad'], d['holes'], d['holeRad'], d['holeSize'], config)
 
 class FlatMonitor(Part):
         def __init__(self, pos, monitorType, **config):

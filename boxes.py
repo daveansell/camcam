@@ -83,13 +83,14 @@ class Turret(Part):
 		self.init_turret(pos, plane, name, turret_type, thickness, fudge, config)
 
 	def init_turret(self, pos, plane, name, turret_type, thickness, fudge, config):
-		p_layers={'side':'_side', 'end':'end', 'end2':'_end2', 'bottom':'_bottom', 'bearing_ring':'_bearing_ring', 'tube_insert':'_tube_insert', 'tube_insert_in':'_tube_insert_in', 'base':'_base', 'under_base':'_under_base', 'base_protector':'_base_protector'}
+		p_layers={'side':'_side', 'end':'end', 'end2':'_end2', 'bottom':'_bottom', 'bearing_ring':'_bearing_ring', 'tube_insert':'_tube_insert', 'tube_insert_in':'_tube_insert_in', 'base':'_base',  'base_protector':'_base_protector'}
 		layers = {}
 		
 		for i, l in p_layers.iteritems():
 			plane.add_layer(name+l, material='pvc', thickness=thickness, z0=0)
 			layers[i] = name+l
 		self.translate(pos)
+		plane.add_layer(name+'_under_base', material='pvc', thickness = 10, z0=0)
 		plane.add_layer(name+'_end_plate', material='pvc', thickness = 12.3, z0=0)
 		data={
 			'camera':{'length':85, 'edge_width':10, 'centre_height':60, 'centre_rad':56/2, 'centre_inner_rad':51.3/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10},
@@ -121,7 +122,7 @@ class Turret(Part):
 
 		# piviot hole through middle
 		self.bottom.add(Hole(V(0,0), rad=d['piviot_hole_rad']), [name+'_bottom', name+'_base', name+'_under_base'])
-		self.bottom.add(Hole(V(0,0), rad=d['piviot_hole_rad']+1), ['base', 'perspex', 'paper'])
+		self.bottom.add(Hole(V(0,0), rad=base_protector_rad+2), ['base', 'perspex', 'paper'])
 
 		# magnet slots
 		t=self.bottom.add(Rect(V((base_rad+d['piviot_hole_rad'])/2,0), centred = True, width = base_rad-d['piviot_hole_rad']-10, height = 6, z1 = -6, side='in'), 'base')
@@ -158,7 +159,8 @@ class Turret(Part):
 		self.tube_insert.add(Hole(V(0,0), rad=d['centre_holerad']), [ name+'_tube_insert',  name+'_tube_insert_in'])
 
 		# under base is a ring under the board to act as bearing on piviot
-		self.under_base = self.add(Part(name=name+'_under_base', layer = name+'_under_base', border = Circle(V(0,0), rad=base_rad, side='out')))
+		self.under_base = self.add(Part(name=name+'_under_base', layer = name+'_under_base', border = Circle(V(0,0), rad=base_protector_rad, side='out')))
+		self.under_base.number = 2
 		# base sits above board to act as bearing and constrain rotation
 		self.base = self.add(Part(name=name+'_base', layer = name+'_base', border = Circle(V(0,0), rad=base_rad, side='out', cutter='1/8_endmill')))
 		self.base.add(AngleConstraint(V(0,0), width/2-4, 320, 'M4', name+'_base', name+'_bottom', side='on'))
@@ -172,8 +174,8 @@ class Turret(Part):
 		for i in range(0,6):
 			t=self.base.add(Bolt(V(0, base_rad-8), 'M4', clearance_layers=['perspex', 'paper', name+'_base']))
 			t.rotate(V(0,0), i*60)
-			t=self.under_base.add(Bolt(V(0, base_rad-8), 'M4', clearance_layers=[ name+'_under_base']))
-			t.rotate(V(0,0), 30+i*60)
+			t=self.under_base.add(Bolt(V(0, base_protector_rad-7), 'M4', clearance_layers=[ name+'_under_base'], thread_layer=name+'_base', thread_depth=4, insert_layer=[]))
+			t.rotate(V(0,0), i*60)
 			t=self.base_protector.add(Bolt(V(0, base_protector_rad-7), 'M4', clearance_layers=name+'_base_protector', thread_layer=name+'_under_base', insert_layer=[]))
 			self.add_bom('standoff',1, 'M4 standooff MF 30mm', description='30mm standoff')
 			t.rotate(V(0,0), 30+i*60)
