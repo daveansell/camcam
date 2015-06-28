@@ -57,6 +57,41 @@ class RoundedRect(Rect):
 		"""Cut a rectangle with incurve corners
 		"""+self.otherargs
 
+class CurvedRect(Path):
+        def __init__(self, pos, **config):
+                self.init(config)
+                self.closed=True
+                if 'centred' in config and config['centred']:
+                        if 'width' in config:
+                                width = config['width']
+                        else:
+                                raise ValueError('centred CurveRec with no width')
+                        if 'height' in config:
+                                height = config['height']
+                        else:
+                                raise ValueError('centred CurveRec with no height')
+                else:
+                        if 'tr' in config:
+                                tr=config['tr']
+                        else:
+                                raise ValueError('non-centred CurveRec with no tr')
+                if 'siderad' in config:
+
+                                siderad = config['siderad']
+                elif 'from_centre' in config:
+                        pass
+                else:
+                        raise ValueError('so siderad in curvedRect')
+                self.add_point(pos+V(-width/2, -height/2))
+                self.add_point(PArc(None, radius=siderad, direction='cw', length='short'))
+                self.add_point(pos+V(-width/2, height/2))
+                self.add_point(PArc(None, radius=siderad, direction='cw', length='short'))
+                self.add_point(pos+V(width/2, height/2))
+                self.add_point(PArc(None, radius=siderad, direction='cw', length='short'))
+                self.add_point(pos+V(width/2, -height/2))
+                self.add_point(PArc(None, radius=siderad, direction='cw', length='short'))
+
+
 class Drill(Path):
 	def __init__(self, pos, **config):
 		self.init(config)
@@ -732,6 +767,7 @@ The line defines the
 		along=parallel*tab_length
 		cra=(end-start).normalize()*(cutterrad+fudge)
 		crp=perp*cutterrad
+		print "thickness"+str(thickness)
 		cutin=perp*thickness
 		if startmode=='on':
 			# cut a bit extra on first tab if the previous tab was off as well
@@ -758,6 +794,10 @@ The line defines the
 class FingerJointBoxMidSide(Pathgroup):
 	def __init__(self, pos, width, height, corners, sidemodes, tab_length, thickness, cutter,**config):
 		config['direction']='ccw'
+		print sidemodes
+		print corners
+		print "tab_length="+str(tab_length)
+		print "thickness"+str(thickness)
 		self.init(config)
 		if 'centred' in config:
 			pos=pos - V(width, height)/2
@@ -766,19 +806,23 @@ class FingerJointBoxMidSide(Pathgroup):
 		if sidemodes==True:
 			sidemodes={'left':True, 'top':True, 'right':True, 'bottom':True}
 		linemode='internal'
-		cutterrad = milling.tools[cutter]['diameter']/2
+		cutterrad = 0#milling.tools[cutter]['diameter']/2
 		if 'fudge' in config:
 			fudge=config['fudge']
 		else:
 			fudge=0
+		if type(thickness) is dict:
+			th = thickness
+		else:
+			th = {'left':thickness, 'right':thickness, 'top':thickness, 'bottom':thickness}
 		if sidemodes['left']:
-			self.add(FingerJointMid(start=pos+V(0,0), end=pos+V(0,height), side=s, linemode=linemode, startmode=corners['left'], endmode=corners['left'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['bottom'], nextmode=corners['top'], fudge=fudge))
+			self.add(FingerJointMid(start=pos+V(0,0), end=pos+V(0,height), side=s, linemode=linemode, startmode=corners['left'], endmode=corners['left'], tab_length=tab_length, thickness=th['left'], cutterrad=cutterrad, prevmode=corners['bottom'], nextmode=corners['top'], fudge=fudge))
 		if sidemodes['top']:
-			self.add(FingerJointMid(start=pos+V(0,height), end=pos+V(width,height), side=s, linemode=linemode, startmode=corners['top'], endmode=corners['top'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['left'], nextmode=corners['right'], fudge=fudge))
+			self.add(FingerJointMid(start=pos+V(0,height), end=pos+V(width,height), side=s, linemode=linemode, startmode=corners['top'], endmode=corners['top'], tab_length=tab_length, thickness=th['top'], cutterrad=cutterrad, prevmode=corners['left'], nextmode=corners['right'], fudge=fudge))
 		if sidemodes['right']:
-			self.add(FingerJointMid(start=pos+V(width, height), end=pos+V(width,0), side=s, linemode=linemode, startmode=corners['right'], endmode=corners['right'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['top'], nextmode=corners['bottom'], fudge=fudge))
+			self.add(FingerJointMid(start=pos+V(width, height), end=pos+V(width,0), side=s, linemode=linemode, startmode=corners['right'], endmode=corners['right'], tab_length=tab_length, thickness=th['right'], cutterrad=cutterrad, prevmode=corners['top'], nextmode=corners['bottom'], fudge=fudge))
 		if sidemodes['bottom']:
-			self.add(FingerJointMid(start=pos+V(width,0), end=pos+V(0,0), side=s, linemode=linemode, startmode=corners['bottom'], endmode=corners['bottom'], tab_length=tab_length, thickness=thickness, cutterrad=cutterrad, prevmode=corners['right'], nextmode=corners['left'], fudge=fudge))
+			self.add(FingerJointMid(start=pos+V(width,0), end=pos+V(0,0), side=s, linemode=linemode, startmode=corners['bottom'], endmode=corners['bottom'], tab_length=tab_length, thickness=th['bottom'], cutterrad=cutterrad, prevmode=corners['right'], nextmode=corners['left'], fudge=fudge))
 		self.comment("FingerJointBoxMidSide")
 
 

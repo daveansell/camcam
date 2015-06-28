@@ -328,8 +328,19 @@ class ThermalTurret(Turret):
                         t.rotate(V(0,0), i*60)
                         t=self.window_holder.add(Hole(V(0, window_holder_rad -3), rad=4.3/2),  name+'_window_holder')
                         t.rotate(V(0,0), i*60)
-                self.window_holder.add(Hole(V(0,0), rad=window_rad+0.5, z1=-window_thickness))
-                self.window_holder.add(Hole(V(0,0), rad= window_rad-1))
+# hole in window_holder as small as possible to keep out fingers and stepped to reflect unwanted light
+		angle = 40.0/2
+		startz = 4.0
+		startr = 2.5
+		steps = 6.0
+		stepz = window_holder_thickness/steps
+		stepr = math.tan(angle/180*math.pi)*stepz
+		print "stepr="+str(stepr)
+		print "stepz="+str(stepz)
+		for i in range(0,6):
+			self.window_holder.add(Hole(V(0,0), rad=startr+stepr*i, z1=-window_holder_thickness+stepr*i))
+#                self.window_holder.add(Hole(V(0,0), rad=window_rad+0.5, z1=-window_thickness))
+ #               self.window_holder.add(Hole(V(0,0), rad= window_rad-1))
                 self.add_bom(BOM_rod('rod', 'black pvc', 'round', rod_rad*2, 58, 1, 'rod for camera, should have a bite takenout of the middle of one side of radius the tube, and depth '+str(minimum_bite_depth)+'mm'))
 
 	
@@ -368,6 +379,13 @@ class PlainBox(Part):
 			cornermodes = config['cornermodes']
 		else:
 			cornermodes = {}
+		if 'facemodes' in config:
+			facemodes = config['facemodes']
+		else:
+			facemodes = {}
+		for f in sides:
+			if f not in facemodes:
+				facemodes[f]='normal'
 		for s1 in sides:
 			for s2 in conns[s1]:
 				if (s1,s2) in cornermodes:
@@ -390,6 +408,7 @@ class PlainBox(Part):
 			side_thickness = {} 
 			for s in sides:
 				side_thickness[s]=thickness
+		print side_thickness
 		c=V(0,0)#-width/2, -height/2)
 		offsets = {
 				'front':V(0,0),
@@ -416,19 +435,35 @@ class PlainBox(Part):
 					l= layers[s]
 				else:
 					l=layers
-
-				t= self.add(Part(layer=l, name=name+'_'+s, 
-					border = FingerJointBoxSide(
-						c, 
-						dims[s][0], 
-						dims[s][1],  
-						'in', 
-						corners, 
-						sm, 
-						tab_length, 
-						th ,
-						 '1/8_endmill', auto=True , centred=True )))
-				t.translate(offsets[s])
+				if facemodes[s]=='normal':
+					t= self.add(Part(layer=l, name=name+'_'+s, 
+						border = FingerJointBoxSide(
+							c, 
+							dims[s][0], 
+							dims[s][1],  
+							'in', 
+							corners, 
+							sm, 
+							tab_length, 
+							th ,
+							 '1/8_endmill', auto=True , centred=True )))
+					t.translate(offsets[s])
+				elif facemodes[s]=='mid':
+					print "MID"
+					t = self.add( FingerJointBoxMidSide(
+							c,
+                                        	        dims[s][0],
+                                        	        dims[s][1],
+                                        	        
+                                        	        corners,
+                                        	        True,
+                                        	        tab_length,
+                                        	        th ,
+                                        	        '1/8_endmill', auto=True , centred=True 
+						),
+						l
+					)
+				
 				setattr(self, s, t)
 		self.translate(pos)
 					
