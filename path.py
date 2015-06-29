@@ -173,7 +173,8 @@ class Path(object):
 			mat=milling.materials[config['material']]
 			config['vertfeed']=mat['vertfeed']
 			config['sidefeed']=mat['sidefeed']
-			config['stepdown']=mat['stepdown']
+			if 'stepdown' not in config or type(config['stepdown']) is not int or type(config['stepdown']) is not float:
+				config['stepdown']=mat['stepdown']
 			config['kress_setting']=mat['kress_setting']
 			if 'mill_dir' in mat:
 				config['mill_dir']=mat['mill_dir']

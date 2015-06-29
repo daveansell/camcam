@@ -124,12 +124,6 @@ class Turret(Part):
 		self.bottom.add(Hole(V(0,0), rad=d['piviot_hole_rad']), [name+'_bottom', name+'_base', name+'_under_base'])
 		self.bottom.add(Hole(V(0,0), rad=base_protector_rad+2), ['base', 'perspex', 'paper'])
 
-		# magnet slots
-		t=self.bottom.add(Rect(V((base_rad+d['piviot_hole_rad'])/2,0), centred = True, width = base_rad-d['piviot_hole_rad']-10, height = 6, z1 = -6, side='in'), 'base')
-		t.rotate(V(0,0),15)
-		t=self.bottom.add(Rect(V(-(base_rad+d['piviot_hole_rad'])/2,0), centred = True, width = base_rad-d['piviot_hole_rad']-10, height = 6, z1 = -6, side='in'), 'base')
-		t.rotate(V(0,0),15)
-
 		# bearing ring sits inside open end of tube
 		self.bearing_ring = self.add(Part(name = name+'_bearing_ring', layer = name+'_bearing_ring', border = Circle(V(0,0), rad=d['centre_inner_rad']-0.2, side='out')))
 		for i in range(0,4):
@@ -161,6 +155,13 @@ class Turret(Part):
 		# under base is a ring under the board to act as bearing on piviot
 		self.under_base = self.add(Part(name=name+'_under_base', layer = name+'_under_base', border = Circle(V(0,0), rad=base_protector_rad, side='out')))
 		self.under_base.number = 2
+
+		# magnet slots
+		t=self.under_base.add(Rect(V((base_protector_rad+d['piviot_hole_rad'])/2,0), centred = True, width = base_protector_rad-d['piviot_hole_rad']-10, height = 6, z1 = -6, side='in'), name+'_under_base')
+		t.rotate(V(0,0),15)
+		t=self.under_base.add(Rect(V(-(base_protector_rad+d['piviot_hole_rad'])/2,0), centred = True, width = base_protector_rad-d['piviot_hole_rad']-10, height = 6, z1 = -6, side='in'), name+'_under_base')
+		t.rotate(V(0,0),15)
+
 		# base sits above board to act as bearing and constrain rotation
 		self.base = self.add(Part(name=name+'_base', layer = name+'_base', border = Circle(V(0,0), rad=base_rad, side='out', cutter='1/8_endmill')))
 		self.base.add(AngleConstraint(V(0,0), width/2-4, 320, 'M4', name+'_base', name+'_bottom', side='on'))
@@ -300,7 +301,7 @@ class ThermalTurret(Turret):
 
                 hole_y = math.sqrt((rod_rad-2)**2 - cam_rad**2)
                 plane.add_layer(name+'_camera_holder', material='pvc', thickness=50, z0=0)
-                plane.add_layer(name+'_window_holder', material='pvc', thickness=window_holder_thickness, z0=0)
+                plane.add_layer(name+'_window_holder', material='delrin', thickness=window_holder_thickness, z0=0)
                 self.camera_holder = self.add(Part(name=name+'_camera_holder', layer= name+'_camera_holder', ignore_border=True))
                 self.window_holder = self.add(Part(name=name+'_window_holder', layer= name+'_window_holder', border = Circle(V(0,0), rad=window_holder_rad)))
 		
@@ -338,7 +339,7 @@ class ThermalTurret(Turret):
 		print "stepr="+str(stepr)
 		print "stepz="+str(stepz)
 		for i in range(0,6):
-			self.window_holder.add(Hole(V(0,0), rad=startr+stepr*i, z1=-window_holder_thickness+stepr*i))
+			self.window_holder.add(Hole(V(0,0), rad=startr+stepr*i, z1=-window_holder_thickness+stepz*i))
 #                self.window_holder.add(Hole(V(0,0), rad=window_rad+0.5, z1=-window_thickness))
  #               self.window_holder.add(Hole(V(0,0), rad= window_rad-1))
                 self.add_bom(BOM_rod('rod', 'black pvc', 'round', rod_rad*2, 58, 1, 'rod for camera, should have a bite takenout of the middle of one side of radius the tube, and depth '+str(minimum_bite_depth)+'mm'))
