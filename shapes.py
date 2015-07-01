@@ -1113,7 +1113,8 @@ class FingerJointBoxSide(Path):
 			#if corners['left']=='off' and corners['bottom']=='off':
 #				self.add_point(pos+V(-thickness['left']-cutterrad, -thickness['bottom']-cutterrad),'sharp')
 			if cornertypes[('left','bottom')] == 'sharp':
-				self.add_point(pos+V(-c['left'], -c['bottom']))
+				pass
+#				self.add_point(pos+V(-c['left'], -c['bottom']))
 			else:
 				self.add_point(pos+V(-c['left'], -c['bottom']), cornertypes[('left','bottom')]['type'], cornertypes[('left','bottom')]['rad'])
 			self.add_points(FingerJoint(start=pos+V(0,0), end=pos+V(0,height), side=s, linemode=linemode, startmode=corners['left'], endmode=corners['left'], tab_length=tab_length, thickness=thickness['left'], cutterrad=cutterrad, fudge=fudge)
@@ -1127,10 +1128,11 @@ class FingerJointBoxSide(Path):
 		else:
 		#	if corners['left']=='off' and corners['top']=='off':
 			if cornertypes[('left','top')] == 'sharp':
-				self.add_point(pos+V(-c['left'], height+c['top']),'sharp')
+				pass
+#				self.add_point(pos+V(-c['left'], height+c['top']),'sharp')
 			else:
-				self.add_point(pos+V(-c['left'], height+c['top']), cornertypes[('left','bottom')]['top'], cornertypes[('left','top')]['rad'])
-			self.add_points(FingerJoint(start=pos+V(0,height), end=pos+V(width,height), side=s, linemode=linemode,startmode=corners['top'], endmode=corners['top'], tab_length=tab_length, thickness=thickness['top'], cutterrad=cutterrad, fudge=fudge))
+				self.add_points_intersect(pos+V(-c['left'], height+c['top']), cornertypes[('left','bottom')]['top'], cornertypes[('left','top')]['rad'])
+			self.add_points_intersect(FingerJoint(start=pos+V(0,height), end=pos+V(width,height), side=s, linemode=linemode,startmode=corners['top'], endmode=corners['top'], tab_length=tab_length, thickness=thickness['top'], cutterrad=cutterrad, fudge=fudge))
 
 
 		if 'right' in sidemodes and sidemodes['right']=='straight':
@@ -1140,11 +1142,12 @@ class FingerJointBoxSide(Path):
                                 self.add_point(pos+V(width+c['right'],-c['bottom']), cornertypes[('right','bottom')]['type'], cornertypes[('right','bottom')]['rad'])
 		else:
 			if cornertypes[('right','top')] == 'sharp':
-				self.add_point(pos+V(width+c['right'], height+c['top']),'sharp')
+#			self.add_point(pos+V(width+c['right'], height+c['top']),'sharp')
+				pass
                         else:
                                 self.add_point(pos+V(width+c['right'], height+c['top']), cornertypes[('right','top')]['type'], cornertypes[('left','bottom')]['rad'])
 		#	if corners['top']=='off' and corners['right']=='off':
-			self.add_points(FingerJoint(start=pos+V(width,height), end=pos+V(width,0), side=s, linemode=linemode, startmode=corners['right'], endmode=corners['right'], tab_length=tab_length, thickness=thickness['right'], cutterrad=cutterrad, fudge=fudge))
+			self.add_points_intersect(FingerJoint(start=pos+V(width,height), end=pos+V(width,0), side=s, linemode=linemode, startmode=corners['right'], endmode=corners['right'], tab_length=tab_length, thickness=thickness['right'], cutterrad=cutterrad, fudge=fudge))
 
 
 		if 'bottom' in sidemodes and sidemodes['bottom']=='straight':
@@ -1155,11 +1158,13 @@ class FingerJointBoxSide(Path):
 		else:
 		#	if corners['right']=='off' and corners['bottom']=='off':
 			if cornertypes[('bottom','right')] == 'sharp':
-				self.add_point(pos+V(width+c['right'], -c['bottom']),'sharp')
+				pass
+				#self.add_point(pos+V(width+c['right'], -c['bottom']),'sharp')
                         else:
                                 self.add_point(pos+V(width+c['right'], -c['bottom']), cornertypes[('left','bottom')]['type'], cornertypes[('left','bottom')]['rad'])
 
-			self.add_points(FingerJoint(start=pos+V(width,0), end=pos+V(0,0), side=s, linemode=linemode, startmode=corners['bottom'], endmode=corners['bottom'], tab_length=tab_length, thickness=thickness['bottom'], cutterrad=cutterrad, fudge=fudge))
+			self.add_points_intersect(FingerJoint(start=pos+V(width,0), end=pos+V(0,0), side=s, linemode=linemode, startmode=corners['bottom'], endmode=corners['bottom'], tab_length=tab_length, thickness=thickness['bottom'], cutterrad=cutterrad, fudge=fudge))
+		self.close_intersect()
 		self.comment("FingerJointBoxSide")
 #		self.simplify_points()
 
