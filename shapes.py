@@ -704,7 +704,7 @@ class Bolt(Part):
 		if 'underinsert_layer' in config:
 			underinsert_layer = config['underinsert_layer']
 		else:
-			underinsert_layer = ['underbase']
+			underinsert_layer = False#['underbase']
 		if thread in milling.bolts:
 			if insert_layer is not False:
 				if 'insert_type' in config and config['insert_type'] in milling.inserts[thread]:

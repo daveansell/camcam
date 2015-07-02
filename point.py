@@ -57,7 +57,6 @@ class Point(object):
                         for t in reversed(transformations):
                                 if type(t) is dict and p.pos is not None:
                                         if 'rotate' in t:
-						print "RTOTATE+"+str(t['rotate'])+ " pos="+str(p.pos)
                                                 p.pos=self.rotate(p.pos, t['rotate'])
                                                 p.cp1=self.rotate(p.cp1, t['rotate'])
                                                 p.cp2=self.rotate(p.cp2, t['rotate'])
