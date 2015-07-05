@@ -603,7 +603,7 @@ class FlatMonitor(Part):
 
                 data={
                         'B101UAN02'  :{'ext_width':230.0, 'ext_height':149.7, 'screen_width':217.0,  'screen_height':135.5 },
-                        'B140HAN01.2':{'ext_width':321, 'ext_height':188, 'screen_width':309.14, 'screen_height':173.89, 'lug_width':14, 'lug_depth':1, 'lug_height':7, 'toplug_fe':20.5, 'botlug_fe':35, 'elec_width':223, 'elec_height':12, 'conn_width':30, 'conn_x':115, 'conn_y0':-87, 'conn_y1':-117},
+                        'B140HAN01.2':{'ext_width':321, 'ext_height':188, 'screen_width':309.14, 'screen_height':173.89, 'lug_width':15, 'lug_depth':1, 'lug_height':7, 'toplug_fe':20, 'botlug_fe':36, 'elec_width':223, 'elec_height':12, 'conn_width':30, 'conn_x':115, 'conn_y0':-87, 'conn_y1':-117},
 			'B156HAN01.2':{'ext_width':359.5, 'ext_height':223.8, 'screen_width':344.16, 'screen_height':193.59},
                 }
 		assert monitorType in data
