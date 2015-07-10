@@ -20,7 +20,7 @@ class Switch(Part):
 			for l in config['layer_config'].keys():
 				task =  config['layer_config'][l]
 				if task=='clearance':
-					self.add(Hole(V(0,0), rad=19/2), layers=l)
+					self.add(Hole(V(0,0), rad=21/2), layers=l)
 				if task=='doubleflat':
 					self.add(CircleChord(V(0,0), 13.6/2, 12.9, side='in'), layers=l)
 #					self.add(DoubleFlat(V(0,0),13.6/2, 12.9/2, side='in'), layers=l)
