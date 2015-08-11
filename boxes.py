@@ -71,6 +71,7 @@ class RoundedBox(Part):
 			self.end.number=2
 			side_modes={'top':'straight'}
 			bottom_modes={}
+		print "!WEWER"+str(length)+" "+str(side_height)+" "+str(side_modes)+" "+str(tab_length)+" thick="+str(thickness)
 		self.side=self.add(Part(name=name+'_side', layer=layers['side'], border=FingerJointBoxSide( V(0,0), length, side_height, 'out', {'left':'on', 'bottom':'off', 'right':'on', 'top':'on'}, side_modes, tab_length, thickness, cutter, auto=True)))
 		self.side.number=2
 		self.bottom=self.add(Part(name=name+'_bottom', layer=layers['bottom'], border=FingerJointBoxSide( V(0,0), width, length, 'out', {'left':'on', 'bottom':'on', 'right':'on','top':'on'}, bottom_modes, tab_length, thickness, cutter, auto=True,centred=True)))
@@ -93,7 +94,7 @@ class Turret(Part):
 		plane.add_layer(name+'_under_base', material='pvc', thickness = 10, z0=0)
 		plane.add_layer(name+'_end_plate', material='pvc', thickness = 12.3, z0=0)
 		data={
-			'camera':{'length':85, 'edge_width':10, 'centre_height':60, 'centre_rad':56/2, 'centre_inner_rad':51.3/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10},
+			'camera':{'length':85, 'edge_width':10, 'centre_height':60, 'centre_rad':56/2, 'centre_inner_rad':51.3/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':25/2, 'square_hole_side':10},
 			'thermal':{'length':85, 'edge_width':10, 'centre_height':60, 'centre_rad':56/2, 'centre_inner_rad':51.3/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10},
 			'lamp':{'length':50, 'edge_width':10, 'centre_height':35, 'centre_rad':56/2, 'centre_inner_rad':51.3/2, 'centre_holerad':10.2/2, 'side_height':50, 'bend_rad':5, 'tab_length':10, 'piviot_hole_rad':20/2, 'square_hole_side':10},
 		}
@@ -103,6 +104,7 @@ class Turret(Part):
 		width = math.sqrt(d['centre_rad']**2-(d['centre_height']-d['side_height'])**2)*2
 		base_protector_rad=40
 		base_rad = math.sqrt((d['length']/2+thickness)**2 + (width/2+thickness)**2)+5
+		print "WWW"+str(name)+" length="+str(d['length'])+" width="+str(width)+" centre_heig="+str(d['centre_height'])+" side_ehight"+str(d['side_height'])
 		box=self.add(RoundedBox(V(0,0), layers, name, d['length'], width, d['centre_height'], d['centre_rad'], 0, d['side_height'], d['bend_rad'], thickness, d['tab_length'], fudge, blank_end =True, centre_holerad2=0))
 		self.bottom=box.bottom
 		self.end=box.end
@@ -123,7 +125,7 @@ class Turret(Part):
 		# piviot hole through middle
 		self.bottom.add(Hole(V(0,0), rad=d['piviot_hole_rad']), [name+'_bottom', name+'_base', name+'_under_base'])
 		self.bottom.add(Hole(V(0,0), rad=base_protector_rad+2), ['base', 'perspex', 'paper'])
-
+		self.base_protector_rad=base_protector_rad
 		# bearing ring sits inside open end of tube
 		self.bearing_ring = self.add(Part(name = name+'_bearing_ring', layer = name+'_bearing_ring', border = Circle(V(0,0), rad=d['centre_inner_rad']-0.2, side='out')))
 		for i in range(0,4):
@@ -172,10 +174,12 @@ class Turret(Part):
 		self.base_protector.add(Lines([V(5, base_protector_rad-12), V(5, base_protector_rad-8)]))
 		self.base_protector.add(Lines([V(-5, base_protector_rad-20), V(-5, base_protector_rad-24)]))
 		self.base_protector.add(Lines([V(5, base_protector_rad-20), V(5, base_protector_rad-24)]))
+		self.holdDownHoleRad=base_rad-8
 		for i in range(0,6):
+			print "Hole rad for turret ="+str(base_rad-8)
 			t=self.base.add(Bolt(V(0, base_rad-8), 'M4', clearance_layers=['perspex', 'paper', name+'_base']))
 			t.rotate(V(0,0), i*60)
-			t=self.under_base.add(Bolt(V(0, base_protector_rad-7), 'M4', clearance_layers=[ name+'_under_base'], thread_layer=name+'_base', thread_depth=4, insert_layer=[]))
+			t=self.under_base.add(Bolt(V(0, base_protector_rad-7), 'M4', clearance_layers=[ name+'_under_base'], thread_layer=[], insert_layer=[]))
 			t.rotate(V(0,0), i*60)
 			t=self.base_protector.add(Bolt(V(0, base_protector_rad-7), 'M4', clearance_layers=name+'_base_protector', thread_layer=name+'_under_base', insert_layer=[]))
 			self.add_bom('standoff',1, 'M4 standooff MF 30mm', description='30mm standoff')

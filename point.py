@@ -517,7 +517,8 @@ class PChamfer(Point):
 		invec=self.lastorigin()-self.pos
 		return self.pos+invec.normalize()*self.chamfer
 	def offset(self, side, distance, direction):
-		passself.pos+outvec.normalize()*self.radius
+		pass
+		self.pos+outvec.normalize()*self.radius
 	def makeSegment(self, config):
 		pass
 
