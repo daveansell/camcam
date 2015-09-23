@@ -1298,19 +1298,19 @@ class Module(Plane):
 
 		self.add(Hole(V(radius,radius),rad=13/2,side='in'),['base', 'underbase','perspex','paper'])
 		if not ('no_holdown' in config and  config['no_holdown']):
-			self.add(RepeatLine(V(fromends, fromedge), V(width-fromends,fromedge), holesX, Bolt, bolt_config,layers=['base', 'underbase','perspex','paper'])
+			self.add(RepeatLine(V(fromends, fromedge), V(width-fromends,fromedge), holesX, Bolt, bolt_config,layers=['base', 'underbase','perspex','paper','top'])
 )
 		self.add(Hole(V(width-radius,radius),rad=13/2,side='in'),['base', 'underbase','perspex','paper'])
 		if not ('no_holdown' in config and  config['no_holdown']):
-			self.add(RepeatLine(V(width-fromedge, fromends), V(width-fromedge,height-fromends), holesY, Bolt, bolt_config,layers=['base', 'underbase','perspex','paper']))
+			self.add(RepeatLine(V(width-fromedge, fromends), V(width-fromedge,height-fromends), holesY, Bolt, bolt_config,layers=['base', 'underbase','perspex','paper','top']))
 
 		self.add(Hole(V(width-radius,height-radius),rad=13/2,side='in'),['base', 'underbase','perspex','paper'])
 		if not ('no_holdown' in config and  config['no_holdown']):
-			self.add(RepeatLine(V(width-fromends, height-fromedge), V(fromends,height-fromedge), holesX, Bolt, bolt_config,layers=['base', 'underbase','perspex','paper']))
+			self.add(RepeatLine(V(width-fromends, height-fromedge), V(fromends,height-fromedge), holesX, Bolt, bolt_config,layers=['base', 'underbase','perspex','paper','top']))
 		self.add(Hole(V(radius,height-radius),rad=13/2,side='in'),['base', 'underbase','perspex','paper'])
 
 		if not ('no_holdown' in config and  config['no_holdown']):
-			self.add(RepeatLine(V(fromedge, height-fromends), V(fromedge,fromends), holesY, Bolt,bolt_config,layers=['base', 'underbase','perspex','paper']))
+			self.add(RepeatLine(V(fromedge, height-fromends), V(fromedge,fromends), holesY, Bolt,bolt_config,layers=['base', 'underbase','perspex','paper','top']))
 
 
 class ModuleClearBack(Part):
