@@ -1192,6 +1192,55 @@ class RoundedArc(Path):
 		self.add_point(PArc(pos+V(0,rad), radius=w, direction='cw', transform={'rotate':[pos, a1]}))
 
 
+class Clamp(Path):
+        def __init__(self, pos, inner_rad, outer_rad, **config):
+                self.init(config)
+                self.translate(pos)
+                if 'bolt_length' in config:
+                        bolt_length = config['bolt_length']
+                else:
+                        bolt_length = outer_rad - inner_rad
+
+                if 'bolt_width' in config:
+                        bolt_width = config['bolt_width']
+                else:
+                        bolt_width = bolt_length
+
+                if 'hold_length' in config:
+                        hold_length = config['hold_length']
+                else:
+                        hold_length = inner_rad
+
+                if 'hold_width' in config:
+                        hold_width = config['hold_width']
+                else:
+                        hold_width = (outer_rad - inner_rad)*2
+                gap=4
+
+
+                bolt_out_x = math.sqrt(outer_rad*outer_rad-bolt_length*bolt_length)
+                hold_out_x = -math.sqrt(outer_rad*outer_rad-hold_length*hold_length)
+                self.closed=True
+                self.side='out'
+                self.add_point(V(-inner_rad-hold_width, hold_length))
+                self.add_point(V(hold_out_x, hold_length))
+                self.add_point(PArc(V(0,0), radius=outer_rad, direction='cw'))
+                self.add_point(V(bolt_out_x, bolt_length))
+                self.add_point(V(outer_rad+bolt_width, bolt_length))
+                self.add_point(V(outer_rad+bolt_width, gap/2))
+                self.add_point(V(inner_rad, gap/2))
+                self.add_point(PArc(V(0,0), radius=inner_rad))
+                self.add_point(V(-inner_rad, gap/2))
+                self.add_point(PArc(V(0,0), radius=inner_rad))
+                self.add_point(V(inner_rad, -gap/2))
+                self.add_point(V(outer_rad+bolt_width, -gap/2))
+                self.add_point(V(outer_rad+bolt_width, -bolt_length))
+                self.add_point(V(bolt_out_x, -bolt_length))
+                self.add_point(PArc(V(0,0), radius=outer_rad, direction='cw'))
+                self.add_point(V(hold_out_x, -hold_length))
+                self.add_point(V(-inner_rad-hold_width, -hold_length))
+
+
 class Module(Plane):
 	def __init__(self, size,  **config):#holesX=False, holesY=False, fromedge=15, fromends=40):
 		"""Create a module
