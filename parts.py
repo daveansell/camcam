@@ -103,6 +103,36 @@ class Post(Part):
 		self.add(Hole(pos+s, rad=5/2),'base')
 		self.add(Hole(pos-s, rad=5/2), 'base')
 
+class Barn(Part):
+	def __init__(self, pos, width, height,**config):
+		self.init(config)
+		self.translate(pos)
+		if('rad' in config):
+			rad = config['rad']
+		else:
+			rad = 15
+		if('insert_layer' in config):
+			insert_layer = config['insert_layer']
+		else:
+			insert_layer = 'base'
+		if('depth' in config):
+			depth = config['depth']
+		else:
+			depth = 30
+		if('name' in config):
+			self.name = config['name']
+		if('layer' in config):
+			self.layer = config['layer']
+
+		self.translate(pos)
+		self.add_border(RoundedRect(V(0,0), width=width, height=height, centred=True, rad=rad))
+		self.add(Bolt(V((width/2-rad),(height/2-rad)), insert_layer=insert_layer, clearance_layers=self.layer))
+		self.add(Bolt(V(-(width/2-rad),(height/2-rad)), insert_layer=insert_layer, clearance_layers=self.layer))
+		self.add(Bolt(V(-(width/2-rad),-(height/2-rad)), insert_layer=insert_layer, clearance_layers=self.layer))
+		self.add(Bolt(V((width/2-rad),-(height/2-rad)), insert_layer=insert_layer, clearance_layers=self.layer))
+		self.add_bom('standoff'+str(depth),4, description=str(depth)+'mm standoff')
+		
+
 class PiBarn(Part):
 	def __init__(self, pos, **config):
 		if('layer' not in config):
@@ -126,6 +156,10 @@ class PiBarn(Part):
 			self.name = config['name']
 		else:
 			self.name = 'PiBarn'
+		if('depth' in config):
+			depth = config['depth']
+		else:
+			depth = 30
 		bolt_conf={'clearance_layers':[config['layer']], 'length':50, 'insert_layer':[], 'underinsert_layer':'base'}
 
 		self.add(RepeatLine(pos+V(-x_units/2*spacing, -y_units/2*spacing), pos+V(x_units/2*spacing, -y_units/2*spacing), x_units+1, Bolt, bolt_conf)).paths
@@ -133,7 +167,7 @@ class PiBarn(Part):
 		self.add(RepeatLine(pos+V(x_units/2*spacing, y_units/2*spacing), pos+V(-x_units/2*spacing, y_units/2*spacing), x_units+1, Bolt, bolt_conf))
 		self.add(RepeatLine(pos+V(-x_units/2*spacing, (y_units/2-1)*spacing), pos+V(-x_units/2*spacing, (-y_units/2+1)*spacing), y_units-1, Bolt, bolt_conf))
 		self.add_border(RoundedRect(pos, centred=True, width=x_units*spacing+15, height=y_units*spacing+15, side='out', rad=8))
-		self.add_bom('standoff',4, description='30mm standoff')
+		self.add_bom('standoff'+str(depth),4, description=str(depth)+'mm standoff')
 
 class Pi(Part):
 	def __init__(self, pos,**config):

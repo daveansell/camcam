@@ -321,11 +321,14 @@ class Path(object):
 	def close_intersect(self):
 		joint=self.intersect_lines(self.points[len(self.points)-2].pos, self.points[len(self.points)-1].pos, self.points[0].pos, self.points[1].pos)
 		del(self.points[len(self.points)-1])
+		
 		self.points[0].pos=joint
+		self.reset_points()
+
 
 	def intersect_lines(self,a, b, c, d):
 		# if the things we are trying to intersect are parallel we don't have to do any work
-		if (d-c).dot(b-a) -1 <0.0001:
+		if abs((d-c).dot(b-a) -1) <0.0001:
 			return b
 		x= ((a[0]*b[1]-a[1]*b[0])*(c[0]-d[0]) - (a[0]-b[0])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
 		y= ((a[0]*b[1]-a[1]*b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
