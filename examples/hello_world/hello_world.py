@@ -1,4 +1,3 @@
-from gears import *
 
 # rectangle with 4 holes
 
