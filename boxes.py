@@ -449,7 +449,6 @@ class PlainBox(Part):
 							 '1/8_endmill', auto=True , centred=True )))
 					t.translate(offsets[s])
 				elif facemodes[s]=='mid':
-					print "MID"
 					t = self.add( FingerJointBoxMidSide(
 							c,
                                         	        dims[s][0],
@@ -750,21 +749,17 @@ class ArbitraryBox(Part):
 				otherscount = side[0][1]
 
 			otherface = self.faces[otherf]
-			print f+" "+otherf+" "+str(scount)+" "+str(otherscount)
 			if scount in face['corners'] and otherscount  in otherface['corners']:
 				if face['corners'][scount]==otherface['corners'][otherscount]:
 					raise ValueError( "side "+str(scount)+" in face "+str(f)+" and side "+str(otherscount)+" in face "+str(otherf)+" have same corners setting, but are the same side"+str(face['corners'][scount])+" "+str(otherface['corners'][otherscount])) 
 			elif scount in face['corners']:
-				print"fromthyis"
 				otherface['corners'][otherscount] = self.other_side_mode(face['corners'][scount])
 			elif otherscount in otherface['corners']:
-				print"fromother"
 				face['corners'][scount] = self.other_side_mode(otherface['corners'][otherscount])
 			else:
 				face['corners'][scount] = 'off'
 				otherface['corners'][otherscount] = 'on'
 	def set_tab_length(self, side, f, scount):
-		print f
 		face = self.faces[f]		
 		if len(side)==0:
 			raise ValueError( "Side "+str(side)+" has no values")

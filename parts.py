@@ -752,7 +752,6 @@ class AngleConstraint(Part):
 		else:
 			startangle = 0
 		self.translate(pos)
-		print "**************"+str(bolt['allen']['head_d'])
 		
 		d=(bolt['allen']['head_d']+0.7)
 		e = d-3
