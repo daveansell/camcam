@@ -476,10 +476,11 @@ class ArbitraryBox(Part):
 						'layer': layer part should be in
 						'corners': { side_no: 'on' or 'off' } side_no is defined as point 0->1 is side 0 etc. 
                                                         - if undefined will just be made up.
+						'tab_length': value or dict of values for each side side_no is defined as point 0->1 is side 0 etc.  default is global tab_length below
 						'wood_direction': vector - only defined on one face will set which side of the polyhedron the wood is
 						'good_direction': vector - direction that is going to be finished well
 						'internal' : True/False - is a hole cut into another part should be added to that part
-                'tab_lendth' - defaule tab length
+                'tab_length' - defaule tab length
                 'fudge' - fudge for finger joints
 
 		}
@@ -528,6 +529,7 @@ class ArbitraryBox(Part):
 			scount = 0
 			for s in face['sides']:
 				self.set_corners(self.sides[s], f, scount)
+				self.set_tab_length(self.sides[s], f, scount)
 				scount+=1
 
 			if 'x' in face:
@@ -623,15 +625,14 @@ class ArbitraryBox(Part):
 							lineside = 'back';
 
 						if thisside[3]*face['good_direction']*intfact<0:
-							print "SLOPE"
 # THIS PUTS THE SLOPE ON THE WRONG PART OF THE JOINT
 # create a new mode in finger joints called int and have it behave properly
-							newpoints = AngledFingerJoint(lastpoint, point, cutside, mode, corner, corner, self.tab_length, otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
-							part.add( AngledFingerJointSlope(lastpoint, point, cutside, mode, corner, corner, self.tab_length, otherface['thickness'], 3.17/2, angle, lineside, self.fudge, material_thickness=face['thickness']))
+							newpoints = AngledFingerJoint(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
+							part.add( AngledFingerJointSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 3.17/2, angle, lineside, self.fudge, material_thickness=face['thickness']))
 						else:
-							newpoints = AngledFingerJointNoSlope(lastpoint, point, cutside, mode, corner, corner, self.tab_length, otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
+							newpoints = AngledFingerJointNoSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
 					else:
-						newpoints = FingerJoint(lastpoint, point, cutside, 'external', corner, corner, self.tab_length, face['thickness'], 0, self.fudge)
+						newpoints = FingerJoint(lastpoint, point, cutside, 'external', corner, corner, face['tab_length'][scount], face['thickness'], 0, self.fudge)
 			
 			if first or len(newpoints)<2:
 				first = False
@@ -749,14 +750,49 @@ class ArbitraryBox(Part):
 				otherscount = side[0][1]
 
 			otherface = self.faces[otherf]
-			if scount in face['corners']:
+			print f+" "+otherf+" "+str(scount)+" "+str(otherscount)
+			if scount in face['corners'] and otherscount  in otherface['corners']:
+				if face['corners'][scount]==otherface['corners'][otherscount]:
+					raise ValueError( "side "+str(scount)+" in face "+str(f)+" and side "+str(otherscount)+" in face "+str(otherf)+" have same corners setting, but are the same side"+str(face['corners'][scount])+" "+str(otherface['corners'][otherscount])) 
+			elif scount in face['corners']:
+				print"fromthyis"
 				otherface['corners'][otherscount] = self.other_side_mode(face['corners'][scount])
 			elif otherscount in otherface['corners']:
+				print"fromother"
 				face['corners'][scount] = self.other_side_mode(otherface['corners'][otherscount])
 			else:
 				face['corners'][scount] = 'off'
 				otherface['corners'][otherscount] = 'on'
-			
+	def set_tab_length(self, side, f, scount):
+		print f
+		face = self.faces[f]		
+		if len(side)==0:
+			raise ValueError( "Side "+str(side)+" has no values")
+		elif len(side) ==1:
+			face['tab_length'][scount] = 'straight'
+		else:
+			if side[0][0]==f:
+				otherf = side[1][0]
+				otherscount = side[1][1]
+			else:
+				otherf = side[0][0]
+				otherscount = side[0][1]
+			otherface = self.faces[otherf]
+			if 'tab_length' not in face:
+				face['tab_length']={}
+			if 'tab_length' not in otherface:
+				otherface['tab_length']={}
+			if scount in face['tab_length'] and otherscount in otherface['tab_length']:
+				if face['tab_length'][scount]!=otherface['tab_length'][otherscount]:
+					raise ValueError("side "+str(scount)+" in face "+str(f)+" and side "+str(otherscount)+" in face "+str(otherf)+" have different tab lengths, but are the same side"+str(face['tab_length'][scount])+" "+str(otherface['tab_length'][otherscount]))
+			elif scount in face['tab_length']:
+				otherface['tab_length'][otherscount]=face['tab_length'][scount]
+			elif otherscount in otherface['tab_length']:
+				face['tab_length'][scount]=otherface['tab_length'][otherscount]
+			else:
+				face['tab_length'][scount]=self.tab_length
+				otherface['tab_length'][otherscount]=self.tab_length
+
 	def other_side_mode(self, mode):
 		if mode=='on':
 			return 'off'
