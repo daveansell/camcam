@@ -71,7 +71,6 @@ class RoundedBox(Part):
 			self.end.number=2
 			side_modes={'top':'straight'}
 			bottom_modes={}
-		print "!WEWER"+str(length)+" "+str(side_height)+" "+str(side_modes)+" "+str(tab_length)+" thick="+str(thickness)
 		self.side=self.add(Part(name=name+'_side', layer=layers['side'], border=FingerJointBoxSide( V(0,0), length, side_height, 'out', {'left':'on', 'bottom':'off', 'right':'on', 'top':'on'}, side_modes, tab_length, thickness, cutter, auto=True)))
 		self.side.number=2
 		self.bottom=self.add(Part(name=name+'_bottom', layer=layers['bottom'], border=FingerJointBoxSide( V(0,0), width, length, 'out', {'left':'on', 'bottom':'on', 'right':'on','top':'on'}, bottom_modes, tab_length, thickness, cutter, auto=True,centred=True)))
@@ -104,7 +103,6 @@ class Turret(Part):
 		width = math.sqrt(d['centre_rad']**2-(d['centre_height']-d['side_height'])**2)*2
 		base_protector_rad=40
 		base_rad = math.sqrt((d['length']/2+thickness)**2 + (width/2+thickness)**2)+5
-		print "WWW"+str(name)+" length="+str(d['length'])+" width="+str(width)+" centre_heig="+str(d['centre_height'])+" side_ehight"+str(d['side_height'])
 		box=self.add(RoundedBox(V(0,0), layers, name, d['length'], width, d['centre_height'], d['centre_rad'], 0, d['side_height'], d['bend_rad'], thickness, d['tab_length'], fudge, blank_end =True, centre_holerad2=0))
 		self.bottom=box.bottom
 		self.end=box.end
@@ -340,8 +338,6 @@ class ThermalTurret(Turret):
 		steps = 6.0
 		stepz = window_holder_thickness/steps
 		stepr = math.tan(angle/180*math.pi)*stepz
-		print "stepr="+str(stepr)
-		print "stepz="+str(stepz)
 		for i in range(0,6):
 			self.window_holder.add(Hole(V(0,0), rad=startr+stepr*i, z1=-window_holder_thickness+stepz*i))
 #                self.window_holder.add(Hole(V(0,0), rad=window_rad+0.5, z1=-window_thickness))
@@ -413,7 +409,6 @@ class PlainBox(Part):
 			side_thickness = {} 
 			for s in sides:
 				side_thickness[s]=thickness
-		print side_thickness
 		c=V(0,0)#-width/2, -height/2)
 		offsets = {
 				'front':V(0,0),
@@ -537,7 +532,7 @@ class ArbitraryBox(Part):
 
 			if 'x' in face:
 				if abs(face['x'].dot(face['normal'])) > 0.0000001 :
-					raise ValueError('face[x] in face '+str(f)+' not in plane')
+					raise ValueError('face[x] in face '+str(f)+' not in plane of the rest of the face')
 				face['x'] = face['x'].normalize()
 			else: 
 #				print str(self.tuple_to_vec(face['sides'][0]
@@ -597,10 +592,14 @@ class ArbitraryBox(Part):
              		s = face['sides'][scount]
 			side = self.sides[s]
 			(thisside, otherside) = self.get_side_parts(side, f)
-			otherface = self.faces[otherside[0]]
+			if otherside!=None:
+				otherface = self.faces[otherside[0]]
+			else:	
+				otherface = None
 			simplepoints.append(PSharp(point))
+			# need to add 2 points here so intersect_points works
               		if len(side)==1:
-                		newpoints = [PSharp(point)]
+                		newpoints = [PSharp(lastpoint),PSharp(point)]
            		else:
 #               	 	if mode=='internal':
  #              	            	newpoints = [PSharp(point)]
@@ -608,7 +607,6 @@ class ArbitraryBox(Part):
   #             	    	else: 
 					angle = thisside[4]
 					altside = thisside[5]
-#					print "angle="+str(angle)
 #					angle = 15
 					if mode == 'internal':
 						intfact = -1
@@ -634,6 +632,7 @@ class ArbitraryBox(Part):
 							newpoints = AngledFingerJointNoSlope(lastpoint, point, cutside, mode, corner, corner, self.tab_length, otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
 					else:
 						newpoints = FingerJoint(lastpoint, point, cutside, 'external', corner, corner, self.tab_length, face['thickness'], 0, self.fudge)
+			
 			if first or len(newpoints)<2:
 				first = False
 				path.add_points(newpoints)
@@ -663,6 +662,8 @@ class ArbitraryBox(Part):
 
 
 	def get_side_parts(self, side, f):
+		if len(side)==1:
+			return (side[0], None)
 		if side[0][0]==f:
                                 thisside= side[0]
 				otherside = side[1]
@@ -681,11 +682,13 @@ class ArbitraryBox(Part):
 				thisside= side[0]
 			else:
 				thisside = side[1]
-			cutside = thisside[3]
-			if cutside * good_direction>0.0001:
-				need_cut_from[self.sign(cutside)]=True
-			elif cutside!=0:
-				pref_cut_from = cutside
+			# make sure this side is a joint
+			if len(thisside)>2:
+				cutside = thisside[3]
+				if cutside * good_direction>0.0001:
+					need_cut_from[self.sign(cutside)]=True
+				elif cutside!=0:
+					pref_cut_from = cutside
 				# this means we should be cutting from this side
 		if len(need_cut_from)>1:
 			raise ValueError(str(f) + " cannot be cut without cavities as slopes can only be cut from one side ")
@@ -718,17 +721,18 @@ class ArbitraryBox(Part):
 		recursion += 1
 		for s in face['sides']:
 			side = self.sides[s]
-			if side[0][0]==f:
-				newf = side[1][0]
-				d = side[0][2]	
-			else:
-				newf = side[0][0]
-				d = side[1][2]
+			if(len(side)>1):
+				if side[0][0]==f:
+					newf = side[1][0]
+					d = side[0][2]	
+				else:
+					newf = side[0][0]
+					d = side[1][2]
 
-  			newface = self.faces[newf]
-			if t not in newface:
-				self.faces[newf][t] = d * face[t]
-				self.propagate_direction(t, newf, recursion)
+  				newface = self.faces[newf]
+				if t not in newface:
+					self.faces[newf][t] = d * face[t]
+					self.propagate_direction(t, newf, recursion)
 
 	def set_corners(self, side, f, scount):
 		face = self.faces[f]
@@ -818,7 +822,6 @@ class ArbitraryBox(Part):
 		# base angle is angle between the two svecs
 
 		baseAngle = math.acos(svec1.normalize().dot(svec2.normalize())) / math.pi *180
-		print "baseBngle="+str(baseAngle)
 		if baseAngle < 45:
 			cutsign = -1
 			altside = -1
@@ -839,7 +842,6 @@ class ArbitraryBox(Part):
 			altside = 1
 			cutsign = 1
                         angle = abs(180-baseAngle)
-		print "Angle="+str(angle)
 		
 		# if this is +ve cut on same side as positive normal otherwse opposite direction to normal
 		avSvec = (svec1 + svec2).normalize()
