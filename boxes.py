@@ -498,6 +498,8 @@ class ArbitraryBox(Part):
 			self.make_sides(f,face['points'])
 			self.make_normal(f, face['points'])
 #			self.check_layer(face)
+			if 'tab_length' not in face:
+                                face['tab_length'] = {}
 			if 'corners' not in face:
                                 face['corners'] = {}
 			if 'wood_direction' in face:
