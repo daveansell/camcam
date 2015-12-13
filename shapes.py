@@ -576,7 +576,7 @@ class Screw(Part):
 class FourScrews(Part):
 	def __init__(self, bl, tr, layer_conf, **config):
 		self.init(config)
-		self.add(FourObjects(bl, Screw(V(0,0), layer_config=layer_conf, tr=tr)))
+		self.add(FourObjects(bl,  Screw(V(0,0), layer_config=layer_conf, tr=tr)))
 #		d=tr-bl
 #		self.add(Screw(bl, layer_config=layer_conf, **config))
 #		self.add(Screw(bl+V(d[0], 0), layer_config=layer_conf, **config))
@@ -1278,6 +1278,10 @@ class Module(Plane):
 			base_thickness=config['base_thickness']
 		else:
 			base_thickness=12
+		if 'underbase_thickness' in config:
+			underbase_thickness = config['underbase_thickness']
+		else:
+			underbase_thickness = base_thickness
 		if 'perspex_thickness' in config:
 			perspex_thickness=config['perspex_thickness']
 			if perspex_thickness>3:
