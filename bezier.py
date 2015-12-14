@@ -650,39 +650,48 @@ class BezierCurve:
     		newPoints = []
     		newPoints[0] = points[0]
     # FIXME: this is not very good lowering =)
-    	for i in range(1,order):
-      		x = lerp(points[i-1].x,points[i].x,0.5)
-      y = lerp(points[i-1].y,points[i].y,0.5);
-      newPoints[i] = new Point(x,y);
-    }
-    newPoints[order-1] = points[order];
-    return new BezierCurve(newPoints);
-  }
+    		for i in range(1,order):
+      			x = lerp(points[i-1].x,points[i].x,0.5)
+      			y = lerp(points[i-1].y,points[i].y,0.5)
+      			newPoints[i] = Point(x,y)
+    		newPoints[order-1] = points[order]
+    		return BezierCurve(newPoints)
+  
 
   #*
    # Get all 't' values for which this curve inflects.
 # NOTE: this is an expensive operation!
 #/
-  float[] getInflections() {
-    float[] ret = {};
-    ArrayList<Float> t_values = new ArrayList<Float>();
-    t_values.add(0.0);
-    t_values.add(1.0);
-    float[] roots;
+	def getInflections(self):
+    		ret = []
+    		t_values = []
+   		t_values.append(0.0)
+    		t_values.append(1.0)
+    		roots = []
     # get first derivative roots
-    roots = comp.findAllRoots(1, self.x_values);
-    for(float t: roots) { if(0 < t and t < 1) { t_values.add(t); }}
-    roots = comp.findAllRoots(1, self.y_values);
-    for(float t: roots) { if(0 < t and t < 1) { t_values.add(t); }}
+    		roots = comp.findAllRoots(1, self.x_values)
+    		for  t in roots 
+			if 0 < t and t < 1: 
+				t_values.append(t)
+    		roots = comp.findAllRoots(1, self.y_values)
+    		for t in roots: 
+			if 0 < t and t < 1:  
+				t_values.append(t)
     # get second derivative roots
-    if(order>2) {
-      roots = comp.findAllRoots(2, self.x_values);
-      for(float t: roots) { if(0 < t and t < 1) { t_values.add(t); }}
-      roots = comp.findAllRoots(2, self.y_values);
-      for(float t: roots) { if(0 < t and t < 1) { t_values.add(t); }}
-    }
+    		if order>2:
+      			roots = comp.findAllRoots(2, self.x_values)
+      			for t in roots:
+				if 0 < t and t < 1: 
+					t_values.append(t)
+      			roots = comp.findAllRoots(2, self.y_values)
+      			for  t in roots: 
+				if 0 < t and t < 1:  
+					t_values.append(t)
+    
     # sort roots
-    ret = new float[t_values.size()];
+    		ret = []
+		for i in range(0, len(ret)):
+			ret[i] = t_values.get(i)
     for(int i=0; i<ret.length; i++) { ret[i] = t_values.get(i); }
     ret = sort(ret);
     # remove duplicates
