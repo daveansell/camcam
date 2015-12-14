@@ -194,7 +194,35 @@ class Pi(Part):
                         self.add(Hole(hole_bl+V(hw, hl),rad=3.3/2), layer_config['clearance'])
                         self.add(Hole(hole_bl+V(0,hl),rad=3.3/2), layer_config['clearance'])
 
+class CableTie(Pathgroup):
+	def __init__(self, pos, cable_width, tie_width,**config):
+		self.init(config)
+		self.translate(pos)
+		cw=cable_width+3.3
+		self.add(RoundedRect(V(0,cw/2), centred=True, width=tie_width, height=3.4, rad=3.3/2))
+		self.add(RoundedRect(V(0,-cw/2), centred=True, width=tie_width, height=3.4, rad=3.3/2))
 
+class LedHolder(Pathgroup):
+	def __init__(self, pos, size, holder_type, **config):
+		self.init(config)
+		data={
+			'chrome':{
+				3:6,
+				5:7,
+				10:13,
+			},
+			'snapIn':{
+				3:5,
+				5:6,
+			},
+			'prominent':{
+				3:6,
+				5:7,
+				10:13
+			}
+		}
+		self.add(Hole(pos, rad=data[holder_type][size]/2))
+			
 
 class Stepper(Part):
 	def __init__(self,pos, stepper_type,layer, **config):
