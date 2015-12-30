@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classpath_1_1_b_o_m__pcb" kind="class" language="Python" prot="public">
+    <compoundname>path::BOM_pcb</compoundname>
+    <basecompoundref refid="classpath_1_1_b_o_m" prot="public" virt="non-virtual">path.BOM</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__pcb_1a9dc2e31cb5a736091b3d89618f8050d3" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_pcb::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1518" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1518" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__pcb_1a7e12cc393a94f5172869b8b8b657deb7" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_pcb::number</definition>
+        <argsstring></argsstring>
+        <name>number</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1519" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1519" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__pcb_1a51369d5f6cad39b93664837b0d8192f8" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_pcb::description</definition>
+        <argsstring></argsstring>
+        <name>description</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1520" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1520" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__pcb_1a4dfa5a017bff453b1b6fce0849c381d9" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_pcb::folder</definition>
+        <argsstring></argsstring>
+        <name>folder</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1521" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1521" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__pcb_1a2c2a229a0f49a2c48218a775404c2ce6" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_pcb::part_number</definition>
+        <argsstring></argsstring>
+        <name>part_number</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1522" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1522" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classpath_1_1_b_o_m__pcb_1aa77908a6ec7721ae0de127f6a3915547" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.BOM_pcb.__init__</definition>
+        <argsstring>(self, name, number, folder, description)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_b_o_m__pcb_1a9dc2e31cb5a736091b3d89618f8050d3" kindref="member">name</ref></type>
+          <defname>name</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_b_o_m__pcb_1a7e12cc393a94f5172869b8b8b657deb7" kindref="member">number</ref></type>
+          <defname>number</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_b_o_m__pcb_1a4dfa5a017bff453b1b6fce0849c381d9" kindref="member">folder</ref></type>
+          <defname>folder</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_b_o_m__pcb_1a51369d5f6cad39b93664837b0d8192f8" kindref="member">description</ref></type>
+          <defname>description</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1517" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1517" bodyend="1522"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_b_o_m__pcb_1a799de6adfef020c0eb7a1c54351d9072" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.BOM_pcb.__str__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__str__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1523" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1523" bodyend="1525"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="94">
+        <label>path.BOM_pcb</label>
+        <link refid="classpath_1_1_b_o_m__pcb"/>
+        <childnode refid="95" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="96">
+        <label>object</label>
+      </node>
+      <node id="95">
+        <label>path.BOM</label>
+        <link refid="classpath_1_1_b_o_m"/>
+        <childnode refid="96" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="97">
+        <label>path.BOM_pcb</label>
+        <link refid="classpath_1_1_b_o_m__pcb"/>
+        <childnode refid="98" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="99">
+        <label>object</label>
+      </node>
+      <node id="98">
+        <label>path.BOM</label>
+        <link refid="classpath_1_1_b_o_m"/>
+        <childnode refid="99" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/path.py" line="1516" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1516" bodyend="1526"/>
+    <listofallmembers>
+      <member refid="classpath_1_1_b_o_m__pcb_1aa77908a6ec7721ae0de127f6a3915547" prot="public" virt="non-virtual"><scope>path::BOM_pcb</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_b_o_m_1ac3d7521a63ca62ccb1501290be173138" prot="public" virt="non-virtual" ambiguityscope="path::BOM."><scope>path::BOM_pcb</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_b_o_m__pcb_1a799de6adfef020c0eb7a1c54351d9072" prot="public" virt="non-virtual"><scope>path::BOM_pcb</scope><name>__str__</name></member>
+      <member refid="classpath_1_1_b_o_m__pcb_1a51369d5f6cad39b93664837b0d8192f8" prot="public" virt="non-virtual"><scope>path::BOM_pcb</scope><name>description</name></member>
+      <member refid="classpath_1_1_b_o_m__pcb_1a4dfa5a017bff453b1b6fce0849c381d9" prot="public" virt="non-virtual"><scope>path::BOM_pcb</scope><name>folder</name></member>
+      <member refid="classpath_1_1_b_o_m_1abc415a791d6d61925fbcb7147b9f7d9a" prot="public" virt="non-virtual"><scope>path::BOM_pcb</scope><name>init</name></member>
+      <member refid="classpath_1_1_b_o_m__pcb_1a9dc2e31cb5a736091b3d89618f8050d3" prot="public" virt="non-virtual"><scope>path::BOM_pcb</scope><name>name</name></member>
+      <member refid="classpath_1_1_b_o_m__pcb_1a7e12cc393a94f5172869b8b8b657deb7" prot="public" virt="non-virtual"><scope>path::BOM_pcb</scope><name>number</name></member>
+      <member refid="classpath_1_1_b_o_m_1a5748ce4bbb6dfa779752d97f0bee55d2" prot="public" virt="non-virtual"><scope>path::BOM_pcb</scope><name>obType</name></member>
+      <member refid="classpath_1_1_b_o_m__pcb_1a2c2a229a0f49a2c48218a775404c2ce6" prot="public" virt="non-virtual"><scope>path::BOM_pcb</scope><name>part_number</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

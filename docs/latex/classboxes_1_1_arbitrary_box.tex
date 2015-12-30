@@ -1,0 +1,286 @@
+\hypertarget{classboxes_1_1_arbitrary_box}{}\section{boxes.\+Arbitrary\+Box Class Reference}
+\label{classboxes_1_1_arbitrary_box}\index{boxes.\+Arbitrary\+Box@{boxes.\+Arbitrary\+Box}}
+
+
+Inherits \hyperlink{classpath_1_1_part}{path.\+Part}.
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classboxes_1_1_arbitrary_box_a0bf5dfd8e5bc77184583127a1bd4dc2b}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, \hyperlink{classboxes_1_1_arbitrary_box_ab67b4c269874e7134565eb3338355e3d}{faces}, \hyperlink{classboxes_1_1_arbitrary_box_aa3f4f131456dc23999d99a422041c842}{tab\+\_\+length}, \hyperlink{classboxes_1_1_arbitrary_box_af7c0c8c6ebca710aa27785317764f8d3}{fudge}, config)
+\item 
+def \hyperlink{classboxes_1_1_arbitrary_box_a821fecbe31d7f119b15f6fc4c632dfbb}{tuple\+\_\+to\+\_\+vec} (self, t)
+\item 
+def \hyperlink{classboxes_1_1_arbitrary_box_a5a3b9b3a0883b166ecd1cb69b939b89f}{get\+\_\+border} (self, part, f, face, mode)
+\item 
+def \hyperlink{classboxes_1_1_arbitrary_box_abec459d0466c9f1a56a92cdd707c949b}{find\+\_\+direction} (self, points)
+\item 
+def \hyperlink{classboxes_1_1_arbitrary_box_a68bd120dd123135c346fb87ef61b2aa1}{get\+\_\+side\+\_\+parts} (self, side, f)
+\item 
+def \hyperlink{classboxes_1_1_arbitrary_box_a389b98b978697efa0687f0fa706e791d}{get\+\_\+cut\+\_\+side} (self, f, face)
+\item 
+def \hyperlink{classboxes_1_1_arbitrary_box_a57bd2d3c2e315a7615c7340edb7ebb11}{sign} (self, val)
+\item 
+def \hyperlink{classboxes_1_1_arbitrary_box_a7964ab53bc41a083704f111c9b9c05d2}{propagate\+\_\+direction} (self, t, f, recursion)
+\item 
+def \hyperlink{classboxes_1_1_arbitrary_box_a1cb83b2e5910298b4c4d4d72131044b3}{set\+\_\+corners} (self, side, f, scount)
+\item 
+def \hyperlink{classboxes_1_1_arbitrary_box_a5e7fe3b2283ec34c3bf580e3615b9b4f}{set\+\_\+tab\+\_\+length} (self, side, f, scount)
+\item 
+def \hyperlink{classboxes_1_1_arbitrary_box_af1a76bf23428a71336ab686f48289f3e}{other\+\_\+side\+\_\+mode} (self, mode)
+\item 
+def \hyperlink{classboxes_1_1_arbitrary_box_a1ad0b3dbea620c916110d96ffe3e5215}{make\+\_\+normal} (self, f, points)
+\item 
+def \hyperlink{classboxes_1_1_arbitrary_box_adf41d3530e41e25bc1ccff538614f628}{get\+\_\+sid} (self, p1, p2)
+\item 
+def \hyperlink{classboxes_1_1_arbitrary_box_aa9df9c5a4d54b25df51f3787f4a51e94}{make\+\_\+sides} (self, f, points)
+\item 
+def \hyperlink{classboxes_1_1_arbitrary_box_ab10aa86f8c971fd656e75da2491d7422}{find\+\_\+angle} (self, s, side)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classboxes_1_1_arbitrary_box_aa3f4f131456dc23999d99a422041c842}{tab\+\_\+length}
+\item 
+\hyperlink{classboxes_1_1_arbitrary_box_af7c0c8c6ebca710aa27785317764f8d3}{fudge}
+\item 
+\hyperlink{classboxes_1_1_arbitrary_box_ab67b4c269874e7134565eb3338355e3d}{faces}
+\item 
+\hyperlink{classboxes_1_1_arbitrary_box_a3c4f3f9e42118cbe79d0d8be915bfe4f}{sides}
+\item 
+\hyperlink{classboxes_1_1_arbitrary_box_aa4c61dd48b10ff63eb8f4889d55934f6}{normals}
+\item 
+\hyperlink{classboxes_1_1_arbitrary_box_a26b3d077741f59e0f58fa8b6307d1958}{side\+\_\+angles}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+list \hyperlink{classboxes_1_1_arbitrary_box_a24dede6e660c9936ee28185e18db8429}{angle} = thisside\mbox{[}4\mbox{]}
+\item 
+list \hyperlink{classboxes_1_1_arbitrary_box_acbfdd7c527a5b086353fe2f11b372878}{altside} = thisside\mbox{[}5\mbox{]}
+\item 
+int \hyperlink{classboxes_1_1_arbitrary_box_ae912ddb018d7bd63da77694182248957}{intfact} = -\/1
+\item 
+tuple \hyperlink{classboxes_1_1_arbitrary_box_a90869c57f87100a6f9264f2f51af9a39}{corner} = self.\+other\+\_\+side\+\_\+mode(face\mbox{[}\textquotesingle{}corners\textquotesingle{}\mbox{]}\mbox{[}scount\mbox{]})
+\item 
+list \hyperlink{classboxes_1_1_arbitrary_box_a8dc28779357a95d463917e378be209fa}{corner} = face\mbox{[}\textquotesingle{}corners\textquotesingle{}\mbox{]}
+\item 
+string \hyperlink{classboxes_1_1_arbitrary_box_a1df58541f5d802020fb5f27a57861ca6}{lineside} = \textquotesingle{}front\textquotesingle{}
+\item 
+tuple \hyperlink{classboxes_1_1_arbitrary_box_abedf2ff5c000b46d146b0b11e5872bf7}{newpoints} = \hyperlink{classshapes_1_1_angled_finger_joint}{Angled\+Finger\+Joint}(lastpoint, point, cutside, mode, \hyperlink{classboxes_1_1_arbitrary_box_a90869c57f87100a6f9264f2f51af9a39}{corner}, \hyperlink{classboxes_1_1_arbitrary_box_a90869c57f87100a6f9264f2f51af9a39}{corner}, face\mbox{[}\textquotesingle{}\hyperlink{classboxes_1_1_arbitrary_box_aa3f4f131456dc23999d99a422041c842}{tab\+\_\+length}\textquotesingle{}\mbox{]}\mbox{[}scount\mbox{]}, otherface\mbox{[}\textquotesingle{}thickness\textquotesingle{}\mbox{]}, 0, \hyperlink{classboxes_1_1_arbitrary_box_a24dede6e660c9936ee28185e18db8429}{angle}, \hyperlink{classboxes_1_1_arbitrary_box_a1df58541f5d802020fb5f27a57861ca6}{lineside}, self.\+fudge, material\+\_\+thickness=face\mbox{[}\textquotesingle{}thickness\textquotesingle{}\mbox{]})
+\item 
+\hyperlink{classboxes_1_1_arbitrary_box_ace4c98fbe4b9323796fd991e793bdcd2}{first} = False
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}    faces - dict of 'side name' : {'points':[3d point, 3d point, 3d point], 
+                    'thickness':thickness
+                    'x': 3d vector setting x direction in this face
+                    'origin': 3d point setting origin of face
+                    'layer': layer part should be in
+                    'corners': { side_no: 'on' or 'off' } side_no is defined as point 0->1 is side 0 etc. 
+                                                    - if undefined will just be made up.
+                    'tab_length': value or dict of values for each side side_no is defined as point 0->1 is side 0 etc.  default is global tab_length below
+                    'wood_direction': vector - only defined on one face will set which side of the polyhedron the wood is
+                    'good_direction': vector - direction that is going to be finished well
+                    'internal' : True/False - is a hole cut into another part should be added to that part
+            'tab_length' - defaule tab length
+            'fudge' - fudge for finger joints
+
+    }
+\end{DoxyVerb}
+ 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classboxes_1_1_arbitrary_box_a0bf5dfd8e5bc77184583127a1bd4dc2b}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def boxes.\+Arbitrary\+Box.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{faces, }
+\item[{}]{tab\+\_\+length, }
+\item[{}]{fudge, }
+\item[{}]{config}
+\end{DoxyParamCaption}
+)}\label{classboxes_1_1_arbitrary_box_a0bf5dfd8e5bc77184583127a1bd4dc2b}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classboxes_1_1_arbitrary_box_ab10aa86f8c971fd656e75da2491d7422}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!find\+\_\+angle@{find\+\_\+angle}}
+\index{find\+\_\+angle@{find\+\_\+angle}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{find\+\_\+angle}]{\setlength{\rightskip}{0pt plus 5cm}def boxes.\+Arbitrary\+Box.\+find\+\_\+angle (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{s, }
+\item[{}]{side}
+\end{DoxyParamCaption}
+)}\label{classboxes_1_1_arbitrary_box_ab10aa86f8c971fd656e75da2491d7422}
+\hypertarget{classboxes_1_1_arbitrary_box_abec459d0466c9f1a56a92cdd707c949b}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!find\+\_\+direction@{find\+\_\+direction}}
+\index{find\+\_\+direction@{find\+\_\+direction}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{find\+\_\+direction}]{\setlength{\rightskip}{0pt plus 5cm}def boxes.\+Arbitrary\+Box.\+find\+\_\+direction (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{points}
+\end{DoxyParamCaption}
+)}\label{classboxes_1_1_arbitrary_box_abec459d0466c9f1a56a92cdd707c949b}
+\hypertarget{classboxes_1_1_arbitrary_box_a5a3b9b3a0883b166ecd1cb69b939b89f}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!get\+\_\+border@{get\+\_\+border}}
+\index{get\+\_\+border@{get\+\_\+border}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{get\+\_\+border}]{\setlength{\rightskip}{0pt plus 5cm}def boxes.\+Arbitrary\+Box.\+get\+\_\+border (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{part, }
+\item[{}]{f, }
+\item[{}]{face, }
+\item[{}]{mode}
+\end{DoxyParamCaption}
+)}\label{classboxes_1_1_arbitrary_box_a5a3b9b3a0883b166ecd1cb69b939b89f}
+\hypertarget{classboxes_1_1_arbitrary_box_a389b98b978697efa0687f0fa706e791d}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!get\+\_\+cut\+\_\+side@{get\+\_\+cut\+\_\+side}}
+\index{get\+\_\+cut\+\_\+side@{get\+\_\+cut\+\_\+side}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{get\+\_\+cut\+\_\+side}]{\setlength{\rightskip}{0pt plus 5cm}def boxes.\+Arbitrary\+Box.\+get\+\_\+cut\+\_\+side (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{f, }
+\item[{}]{face}
+\end{DoxyParamCaption}
+)}\label{classboxes_1_1_arbitrary_box_a389b98b978697efa0687f0fa706e791d}
+\hypertarget{classboxes_1_1_arbitrary_box_adf41d3530e41e25bc1ccff538614f628}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!get\+\_\+sid@{get\+\_\+sid}}
+\index{get\+\_\+sid@{get\+\_\+sid}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{get\+\_\+sid}]{\setlength{\rightskip}{0pt plus 5cm}def boxes.\+Arbitrary\+Box.\+get\+\_\+sid (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{p1, }
+\item[{}]{p2}
+\end{DoxyParamCaption}
+)}\label{classboxes_1_1_arbitrary_box_adf41d3530e41e25bc1ccff538614f628}
+\hypertarget{classboxes_1_1_arbitrary_box_a68bd120dd123135c346fb87ef61b2aa1}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!get\+\_\+side\+\_\+parts@{get\+\_\+side\+\_\+parts}}
+\index{get\+\_\+side\+\_\+parts@{get\+\_\+side\+\_\+parts}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{get\+\_\+side\+\_\+parts}]{\setlength{\rightskip}{0pt plus 5cm}def boxes.\+Arbitrary\+Box.\+get\+\_\+side\+\_\+parts (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{side, }
+\item[{}]{f}
+\end{DoxyParamCaption}
+)}\label{classboxes_1_1_arbitrary_box_a68bd120dd123135c346fb87ef61b2aa1}
+\hypertarget{classboxes_1_1_arbitrary_box_a1ad0b3dbea620c916110d96ffe3e5215}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!make\+\_\+normal@{make\+\_\+normal}}
+\index{make\+\_\+normal@{make\+\_\+normal}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{make\+\_\+normal}]{\setlength{\rightskip}{0pt plus 5cm}def boxes.\+Arbitrary\+Box.\+make\+\_\+normal (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{f, }
+\item[{}]{points}
+\end{DoxyParamCaption}
+)}\label{classboxes_1_1_arbitrary_box_a1ad0b3dbea620c916110d96ffe3e5215}
+\hypertarget{classboxes_1_1_arbitrary_box_aa9df9c5a4d54b25df51f3787f4a51e94}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!make\+\_\+sides@{make\+\_\+sides}}
+\index{make\+\_\+sides@{make\+\_\+sides}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{make\+\_\+sides}]{\setlength{\rightskip}{0pt plus 5cm}def boxes.\+Arbitrary\+Box.\+make\+\_\+sides (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{f, }
+\item[{}]{points}
+\end{DoxyParamCaption}
+)}\label{classboxes_1_1_arbitrary_box_aa9df9c5a4d54b25df51f3787f4a51e94}
+\hypertarget{classboxes_1_1_arbitrary_box_af1a76bf23428a71336ab686f48289f3e}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!other\+\_\+side\+\_\+mode@{other\+\_\+side\+\_\+mode}}
+\index{other\+\_\+side\+\_\+mode@{other\+\_\+side\+\_\+mode}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{other\+\_\+side\+\_\+mode}]{\setlength{\rightskip}{0pt plus 5cm}def boxes.\+Arbitrary\+Box.\+other\+\_\+side\+\_\+mode (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{mode}
+\end{DoxyParamCaption}
+)}\label{classboxes_1_1_arbitrary_box_af1a76bf23428a71336ab686f48289f3e}
+\hypertarget{classboxes_1_1_arbitrary_box_a7964ab53bc41a083704f111c9b9c05d2}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!propagate\+\_\+direction@{propagate\+\_\+direction}}
+\index{propagate\+\_\+direction@{propagate\+\_\+direction}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{propagate\+\_\+direction}]{\setlength{\rightskip}{0pt plus 5cm}def boxes.\+Arbitrary\+Box.\+propagate\+\_\+direction (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{t, }
+\item[{}]{f, }
+\item[{}]{recursion}
+\end{DoxyParamCaption}
+)}\label{classboxes_1_1_arbitrary_box_a7964ab53bc41a083704f111c9b9c05d2}
+\hypertarget{classboxes_1_1_arbitrary_box_a1cb83b2e5910298b4c4d4d72131044b3}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!set\+\_\+corners@{set\+\_\+corners}}
+\index{set\+\_\+corners@{set\+\_\+corners}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{set\+\_\+corners}]{\setlength{\rightskip}{0pt plus 5cm}def boxes.\+Arbitrary\+Box.\+set\+\_\+corners (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{side, }
+\item[{}]{f, }
+\item[{}]{scount}
+\end{DoxyParamCaption}
+)}\label{classboxes_1_1_arbitrary_box_a1cb83b2e5910298b4c4d4d72131044b3}
+\hypertarget{classboxes_1_1_arbitrary_box_a5e7fe3b2283ec34c3bf580e3615b9b4f}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!set\+\_\+tab\+\_\+length@{set\+\_\+tab\+\_\+length}}
+\index{set\+\_\+tab\+\_\+length@{set\+\_\+tab\+\_\+length}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{set\+\_\+tab\+\_\+length}]{\setlength{\rightskip}{0pt plus 5cm}def boxes.\+Arbitrary\+Box.\+set\+\_\+tab\+\_\+length (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{side, }
+\item[{}]{f, }
+\item[{}]{scount}
+\end{DoxyParamCaption}
+)}\label{classboxes_1_1_arbitrary_box_a5e7fe3b2283ec34c3bf580e3615b9b4f}
+\hypertarget{classboxes_1_1_arbitrary_box_a57bd2d3c2e315a7615c7340edb7ebb11}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!sign@{sign}}
+\index{sign@{sign}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{sign}]{\setlength{\rightskip}{0pt plus 5cm}def boxes.\+Arbitrary\+Box.\+sign (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{val}
+\end{DoxyParamCaption}
+)}\label{classboxes_1_1_arbitrary_box_a57bd2d3c2e315a7615c7340edb7ebb11}
+\hypertarget{classboxes_1_1_arbitrary_box_a821fecbe31d7f119b15f6fc4c632dfbb}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!tuple\+\_\+to\+\_\+vec@{tuple\+\_\+to\+\_\+vec}}
+\index{tuple\+\_\+to\+\_\+vec@{tuple\+\_\+to\+\_\+vec}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{tuple\+\_\+to\+\_\+vec}]{\setlength{\rightskip}{0pt plus 5cm}def boxes.\+Arbitrary\+Box.\+tuple\+\_\+to\+\_\+vec (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{t}
+\end{DoxyParamCaption}
+)}\label{classboxes_1_1_arbitrary_box_a821fecbe31d7f119b15f6fc4c632dfbb}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classboxes_1_1_arbitrary_box_acbfdd7c527a5b086353fe2f11b372878}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!altside@{altside}}
+\index{altside@{altside}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{altside}]{\setlength{\rightskip}{0pt plus 5cm}list boxes.\+Arbitrary\+Box.\+altside = thisside\mbox{[}5\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_arbitrary_box_acbfdd7c527a5b086353fe2f11b372878}
+\hypertarget{classboxes_1_1_arbitrary_box_a24dede6e660c9936ee28185e18db8429}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!angle@{angle}}
+\index{angle@{angle}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{angle}]{\setlength{\rightskip}{0pt plus 5cm}list boxes.\+Arbitrary\+Box.\+angle = thisside\mbox{[}4\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_arbitrary_box_a24dede6e660c9936ee28185e18db8429}
+\hypertarget{classboxes_1_1_arbitrary_box_a90869c57f87100a6f9264f2f51af9a39}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!corner@{corner}}
+\index{corner@{corner}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{corner}]{\setlength{\rightskip}{0pt plus 5cm}tuple boxes.\+Arbitrary\+Box.\+corner = self.\+other\+\_\+side\+\_\+mode(face\mbox{[}\textquotesingle{}corners\textquotesingle{}\mbox{]}\mbox{[}scount\mbox{]})\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_arbitrary_box_a90869c57f87100a6f9264f2f51af9a39}
+\hypertarget{classboxes_1_1_arbitrary_box_a8dc28779357a95d463917e378be209fa}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!corner@{corner}}
+\index{corner@{corner}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{corner}]{\setlength{\rightskip}{0pt plus 5cm}list boxes.\+Arbitrary\+Box.\+corner = face\mbox{[}\textquotesingle{}corners\textquotesingle{}\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_arbitrary_box_a8dc28779357a95d463917e378be209fa}
+\hypertarget{classboxes_1_1_arbitrary_box_ab67b4c269874e7134565eb3338355e3d}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!faces@{faces}}
+\index{faces@{faces}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{faces}]{\setlength{\rightskip}{0pt plus 5cm}boxes.\+Arbitrary\+Box.\+faces}\label{classboxes_1_1_arbitrary_box_ab67b4c269874e7134565eb3338355e3d}
+\hypertarget{classboxes_1_1_arbitrary_box_ace4c98fbe4b9323796fd991e793bdcd2}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!first@{first}}
+\index{first@{first}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{first}]{\setlength{\rightskip}{0pt plus 5cm}boxes.\+Arbitrary\+Box.\+first = False\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_arbitrary_box_ace4c98fbe4b9323796fd991e793bdcd2}
+\hypertarget{classboxes_1_1_arbitrary_box_af7c0c8c6ebca710aa27785317764f8d3}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!fudge@{fudge}}
+\index{fudge@{fudge}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{fudge}]{\setlength{\rightskip}{0pt plus 5cm}boxes.\+Arbitrary\+Box.\+fudge}\label{classboxes_1_1_arbitrary_box_af7c0c8c6ebca710aa27785317764f8d3}
+\hypertarget{classboxes_1_1_arbitrary_box_ae912ddb018d7bd63da77694182248957}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!intfact@{intfact}}
+\index{intfact@{intfact}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{intfact}]{\setlength{\rightskip}{0pt plus 5cm}int boxes.\+Arbitrary\+Box.\+intfact = -\/1\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_arbitrary_box_ae912ddb018d7bd63da77694182248957}
+\hypertarget{classboxes_1_1_arbitrary_box_a1df58541f5d802020fb5f27a57861ca6}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!lineside@{lineside}}
+\index{lineside@{lineside}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{lineside}]{\setlength{\rightskip}{0pt plus 5cm}string boxes.\+Arbitrary\+Box.\+lineside = \textquotesingle{}front\textquotesingle{}\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_arbitrary_box_a1df58541f5d802020fb5f27a57861ca6}
+\hypertarget{classboxes_1_1_arbitrary_box_abedf2ff5c000b46d146b0b11e5872bf7}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!newpoints@{newpoints}}
+\index{newpoints@{newpoints}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{newpoints}]{\setlength{\rightskip}{0pt plus 5cm}tuple boxes.\+Arbitrary\+Box.\+newpoints = {\bf Angled\+Finger\+Joint}(lastpoint, point, cutside, mode, {\bf corner}, {\bf corner}, face\mbox{[}\textquotesingle{}{\bf tab\+\_\+length}\textquotesingle{}\mbox{]}\mbox{[}scount\mbox{]}, otherface\mbox{[}\textquotesingle{}thickness\textquotesingle{}\mbox{]}, 0, {\bf angle}, {\bf lineside}, self.\+fudge, material\+\_\+thickness=face\mbox{[}\textquotesingle{}thickness\textquotesingle{}\mbox{]})\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_arbitrary_box_abedf2ff5c000b46d146b0b11e5872bf7}
+\hypertarget{classboxes_1_1_arbitrary_box_aa4c61dd48b10ff63eb8f4889d55934f6}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!normals@{normals}}
+\index{normals@{normals}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{normals}]{\setlength{\rightskip}{0pt plus 5cm}boxes.\+Arbitrary\+Box.\+normals}\label{classboxes_1_1_arbitrary_box_aa4c61dd48b10ff63eb8f4889d55934f6}
+\hypertarget{classboxes_1_1_arbitrary_box_a26b3d077741f59e0f58fa8b6307d1958}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!side\+\_\+angles@{side\+\_\+angles}}
+\index{side\+\_\+angles@{side\+\_\+angles}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{side\+\_\+angles}]{\setlength{\rightskip}{0pt plus 5cm}boxes.\+Arbitrary\+Box.\+side\+\_\+angles}\label{classboxes_1_1_arbitrary_box_a26b3d077741f59e0f58fa8b6307d1958}
+\hypertarget{classboxes_1_1_arbitrary_box_a3c4f3f9e42118cbe79d0d8be915bfe4f}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!sides@{sides}}
+\index{sides@{sides}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{sides}]{\setlength{\rightskip}{0pt plus 5cm}boxes.\+Arbitrary\+Box.\+sides}\label{classboxes_1_1_arbitrary_box_a3c4f3f9e42118cbe79d0d8be915bfe4f}
+\hypertarget{classboxes_1_1_arbitrary_box_aa3f4f131456dc23999d99a422041c842}{}\index{boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}!tab\+\_\+length@{tab\+\_\+length}}
+\index{tab\+\_\+length@{tab\+\_\+length}!boxes\+::\+Arbitrary\+Box@{boxes\+::\+Arbitrary\+Box}}
+\subsubsection[{tab\+\_\+length}]{\setlength{\rightskip}{0pt plus 5cm}boxes.\+Arbitrary\+Box.\+tab\+\_\+length}\label{classboxes_1_1_arbitrary_box_aa3f4f131456dc23999d99a422041c842}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{boxes_8py}{boxes.\+py}\end{DoxyCompactItemize}

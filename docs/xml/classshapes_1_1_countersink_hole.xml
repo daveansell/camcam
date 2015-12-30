@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classshapes_1_1_countersink_hole" kind="class" language="Python" prot="public">
+    <compoundname>shapes::CountersinkHole</compoundname>
+    <basecompoundref refid="classpath_1_1_pathgroup" prot="public" virt="non-virtual">path.Pathgroup</basecompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classshapes_1_1_countersink_hole_1a3971b42ef4a7d5cd0e45926734d753cf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def shapes.CountersinkHole.__init__</definition>
+        <argsstring>(pos, holerad, countersinkrad, config)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>pos</type>
+          <defname>pos</defname>
+        </param>
+        <param>
+          <type>holerad</type>
+          <defname>holerad</defname>
+        </param>
+        <param>
+          <type>countersinkrad</type>
+          <defname>countersinkrad</defname>
+        </param>
+        <param>
+          <type>config</type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="204" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="204" bodyend="232"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="167">
+        <label>path.Pathgroup</label>
+        <link refid="classpath_1_1_pathgroup"/>
+        <childnode refid="168" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="168">
+        <label>object</label>
+      </node>
+      <node id="166">
+        <label>shapes.CountersinkHole</label>
+        <link refid="classshapes_1_1_countersink_hole"/>
+        <childnode refid="167" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="170">
+        <label>path.Pathgroup</label>
+        <link refid="classpath_1_1_pathgroup"/>
+        <childnode refid="171" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="171">
+        <label>object</label>
+      </node>
+      <node id="169">
+        <label>shapes.CountersinkHole</label>
+        <link refid="classshapes_1_1_countersink_hole"/>
+        <childnode refid="170" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/shapes.py" line="203" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="203" bodyend="233"/>
+    <listofallmembers>
+      <member refid="classpath_1_1_pathgroup_1af3daf2374a35dcf1a96d1f91a96b332d" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>__deepcopy__</name></member>
+      <member refid="classshapes_1_1_countersink_hole_1a3971b42ef4a7d5cd0e45926734d753cf" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_pathgroup_1a6d8fdfd1f6d3e2ac279f9407eb9ccc47" prot="public" virt="non-virtual" ambiguityscope="path::Pathgroup."><scope>shapes::CountersinkHole</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_pathgroup_1af55da85d788596bc6566091c0e457b5b" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>add</name></member>
+      <member refid="classpath_1_1_pathgroup_1a3ae2d4ec2bec6339076a190879e18bdd" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>add_path</name></member>
+      <member refid="classpath_1_1_pathgroup_1a7c5d24404c5aecfdc2055a11650ccfb6" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>comment</name></member>
+      <member refid="classpath_1_1_pathgroup_1a94e9cadebf94ef1945f8ba095631daa7" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>comments</name></member>
+      <member refid="classpath_1_1_pathgroup_1a5014fca4558ad2f5bbce999e68548610" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>get_comments</name></member>
+      <member refid="classpath_1_1_pathgroup_1ae2d5cd6d4f967daed162e238533bc393" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>get_config</name></member>
+      <member refid="classpath_1_1_pathgroup_1a67aa15f33d3db050e065ce7013ae3a3c" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>get_paths</name></member>
+      <member refid="classpath_1_1_pathgroup_1a9024aa309df58b977d4eb93e7e5e53c8" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>init</name></member>
+      <member refid="classpath_1_1_pathgroup_1a743d42584e2a6744e2fddd9d251016bb" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>obType</name></member>
+      <member refid="classpath_1_1_pathgroup_1a4ac30744a39d5bcc7fe5d792dcd1b7ce" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>otherargs</name></member>
+      <member refid="classpath_1_1_pathgroup_1a0772494387ccef124f62a3a1c547f5e8" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>output</name></member>
+      <member refid="classpath_1_1_pathgroup_1aab3791493c6fcb02fc647f03dea871a6" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>output_path</name></member>
+      <member refid="classpath_1_1_pathgroup_1a6ed90a9f0149226914056bfc3630c7b8" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>parent</name></member>
+      <member refid="classpath_1_1_pathgroup_1aebd1cee80f2cbaf72fc59245399eac6e" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>paths</name></member>
+      <member refid="classpath_1_1_pathgroup_1a446ca452a2ea35faef3e51f1e9e4c428" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>render</name></member>
+      <member refid="classpath_1_1_pathgroup_1af9588530d2d8a8f508254a11d71f7951" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>render_path</name></member>
+      <member refid="classpath_1_1_pathgroup_1ab0393714499705467f3a2edcf8858cd7" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>render_path_gcode</name></member>
+      <member refid="classpath_1_1_pathgroup_1a3637b74e2a08fc6168667ec8d21bee96" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>render_path_svg</name></member>
+      <member refid="classpath_1_1_pathgroup_1a08dd8c8ddcbc0f0fa3d19fc8b548aac3" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>rotate</name></member>
+      <member refid="classpath_1_1_pathgroup_1a4befbf72ed268a57ace2247f44e96d74" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>trace</name></member>
+      <member refid="classpath_1_1_pathgroup_1ab5f832d2785df23e41e7c9121885a002" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>transform</name></member>
+      <member refid="classpath_1_1_pathgroup_1a51342387e37950570ee0f66106d5ee0f" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>translate</name></member>
+      <member refid="classpath_1_1_pathgroup_1a506c871ab4905e489a907c64f936f4e8" prot="public" virt="non-virtual"><scope>shapes::CountersinkHole</scope><name>varlist</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

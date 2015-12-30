@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classminivec_1_1minivec_1_1___error_pop_context" kind="class" language="Python" prot="public">
+    <compoundname>minivec::minivec::_ErrorPopContext</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">object</basecompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1___error_pop_context_1ad99e7d123a86f754381a736d56dcd526" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._ErrorPopContext.__enter__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__enter__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1467" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1467" bodyend="1470"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1___error_pop_context_1a9b12a304f7d5fc93b605c19ff371235b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._ErrorPopContext.__exit__</definition>
+        <argsstring>(self, _t, _v, _tb)</argsstring>
+        <name>__exit__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>_t</type>
+          <defname>_t</defname>
+        </param>
+        <param>
+          <type>_v</type>
+          <defname>_v</defname>
+        </param>
+        <param>
+          <type>_tb</type>
+          <defname>_tb</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1471" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1471" bodyend="1474"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1___error_pop_context_1a382c21dcc5ff8ea56555b5cd1b241e17" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._ErrorPopContext.__repr__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__repr__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1475" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1475" bodyend="1479"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="4">
+        <label>minivec.minivec._ErrorPopContext</label>
+        <link refid="classminivec_1_1minivec_1_1___error_pop_context"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>object</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="6">
+        <label>minivec.minivec._ErrorPopContext</label>
+        <link refid="classminivec_1_1minivec_1_1___error_pop_context"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>object</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/minivec/minivec.py" line="1466" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1466" bodyend="1480"/>
+    <listofallmembers>
+      <member refid="classminivec_1_1minivec_1_1___error_pop_context_1ad99e7d123a86f754381a736d56dcd526" prot="public" virt="non-virtual"><scope>minivec::minivec::_ErrorPopContext</scope><name>__enter__</name></member>
+      <member refid="classminivec_1_1minivec_1_1___error_pop_context_1a9b12a304f7d5fc93b605c19ff371235b" prot="public" virt="non-virtual"><scope>minivec::minivec::_ErrorPopContext</scope><name>__exit__</name></member>
+      <member refid="classminivec_1_1minivec_1_1___error_pop_context_1a382c21dcc5ff8ea56555b5cd1b241e17" prot="public" virt="non-virtual"><scope>minivec::minivec::_ErrorPopContext</scope><name>__repr__</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

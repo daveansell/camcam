@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classsegments_1_1_line" kind="class" language="Python" prot="public">
+    <compoundname>segments::Line</compoundname>
+    <basecompoundref refid="classsegments_1_1_segment" prot="public" virt="non-virtual">segments.Segment</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classsegments_1_1_line_1a74853391d86b0d95c01c67ca216208dc" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>segments.Line::seg_type</definition>
+        <argsstring></argsstring>
+        <name>seg_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="78" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_line_1aad74ac6b6db34eb6c1405584d92fe66e" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>segments.Line::cutto</definition>
+        <argsstring></argsstring>
+        <name>cutto</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="79" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_line_1ab2b16d59351a9749a5061a01e19f96dc" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>segments.Line::cutfrom</definition>
+        <argsstring></argsstring>
+        <name>cutfrom</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="80" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classsegments_1_1_line_1a62e5d7c179e16a06e08b5d80fc3355eb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Line.__init__</definition>
+        <argsstring>(self, cutfrom, cutto)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classsegments_1_1_line_1ab2b16d59351a9749a5061a01e19f96dc" kindref="member">cutfrom</ref></type>
+          <defname>cutfrom</defname>
+        </param>
+        <param>
+          <type><ref refid="classsegments_1_1_line_1aad74ac6b6db34eb6c1405584d92fe66e" kindref="member">cutto</ref></type>
+          <defname>cutto</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="77" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="77" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="function" id="classsegments_1_1_line_1ab11c4c3e05f163d8b8b4866113ca36b0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Line.gcode</definition>
+        <argsstring></argsstring>
+        <name>gcode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="81" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="81" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="classsegments_1_1_line_1a9e4708f2a4b61ff8433d70d638f134a6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Line.svg</definition>
+        <argsstring></argsstring>
+        <name>svg</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="86" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="86" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="classsegments_1_1_line_1ad7bc5ee97b9b70253b6c403f8d0dfff9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Line.polygon</definition>
+        <argsstring></argsstring>
+        <name>polygon</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="91" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="91" bodyend="92"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="643">
+        <label>segments.Line</label>
+        <link refid="classsegments_1_1_line"/>
+        <childnode refid="644" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="645">
+        <label>object</label>
+      </node>
+      <node id="644">
+        <label>segments.Segment</label>
+        <link refid="classsegments_1_1_segment"/>
+        <childnode refid="645" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="646">
+        <label>segments.Line</label>
+        <link refid="classsegments_1_1_line"/>
+        <childnode refid="647" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="648">
+        <label>object</label>
+      </node>
+      <node id="647">
+        <label>segments.Segment</label>
+        <link refid="classsegments_1_1_segment"/>
+        <childnode refid="648" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/segments.py" line="76" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="76" bodyend="93"/>
+    <listofallmembers>
+      <member refid="classsegments_1_1_line_1a62e5d7c179e16a06e08b5d80fc3355eb" prot="public" virt="non-virtual"><scope>segments::Line</scope><name>__init__</name></member>
+      <member refid="classsegments_1_1_segment_1a1361eaaf9eaa73cb73d9201808842108" prot="public" virt="non-virtual" ambiguityscope="segments::Segment."><scope>segments::Line</scope><name>__init__</name></member>
+      <member refid="classsegments_1_1_line_1ab2b16d59351a9749a5061a01e19f96dc" prot="public" virt="non-virtual"><scope>segments::Line</scope><name>cutfrom</name></member>
+      <member refid="classsegments_1_1_line_1aad74ac6b6db34eb6c1405584d92fe66e" prot="public" virt="non-virtual"><scope>segments::Line</scope><name>cutto</name></member>
+      <member refid="classsegments_1_1_line_1ab11c4c3e05f163d8b8b4866113ca36b0" prot="public" virt="non-virtual"><scope>segments::Line</scope><name>gcode</name></member>
+      <member refid="classsegments_1_1_segment_1ad755cb568f5a00ba72459d41721a652e" prot="public" virt="non-virtual"><scope>segments::Line</scope><name>out</name></member>
+      <member refid="classsegments_1_1_line_1ad7bc5ee97b9b70253b6c403f8d0dfff9" prot="public" virt="non-virtual"><scope>segments::Line</scope><name>polygon</name></member>
+      <member refid="classsegments_1_1_segment_1ae8a07de4e87b72e7f915866647c577b8" prot="public" virt="non-virtual" ambiguityscope="segments::Segment."><scope>segments::Line</scope><name>polygon</name></member>
+      <member refid="classsegments_1_1_line_1a74853391d86b0d95c01c67ca216208dc" prot="public" virt="non-virtual"><scope>segments::Line</scope><name>seg_type</name></member>
+      <member refid="classsegments_1_1_segment_1acaccd5af98d8073bdad79805908fefe4" prot="public" virt="non-virtual"><scope>segments::Line</scope><name>seg_types</name></member>
+      <member refid="classsegments_1_1_segment_1a7a8dd4167be305d3adbc27ffa3a41ff1" prot="public" virt="non-virtual"><scope>segments::Line</scope><name>simplegcode</name></member>
+      <member refid="classsegments_1_1_segment_1a8b156fa2dcd4f93f6d781d820b931da4" prot="public" virt="non-virtual"><scope>segments::Line</scope><name>start</name></member>
+      <member refid="classsegments_1_1_line_1a9e4708f2a4b61ff8433d70d638f134a6" prot="public" virt="non-virtual"><scope>segments::Line</scope><name>svg</name></member>
+      <member refid="classsegments_1_1_segment_1a1b1ebb51664cb1aa198e6dd5a37520ba" prot="public" virt="non-virtual" ambiguityscope="segments::Segment."><scope>segments::Line</scope><name>svg</name></member>
+      <member refid="classsegments_1_1_segment_1a4861399cabc87392517f539c38bb79d1" prot="public" virt="non-virtual"><scope>segments::Line</scope><name>temp</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

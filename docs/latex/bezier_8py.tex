@@ -1,0 +1,109 @@
+\hypertarget{bezier_8py}{}\section{bezier.\+py File Reference}
+\label{bezier_8py}\index{bezier.\+py@{bezier.\+py}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classbezier_1_1_point}{bezier.\+Point}
+\item 
+class \hyperlink{classbezier_1_1_bezier_curve}{bezier.\+Bezier\+Curve}
+\item 
+class \hyperlink{classbezier_1_1_null_bezier_curve}{bezier.\+Null\+Bezier\+Curve}
+\item 
+class \hyperlink{classbezier_1_1_curve_pair}{bezier.\+Curve\+Pair}
+\item 
+class \hyperlink{classbezier_1_1_no_ratio_exists_exception}{bezier.\+No\+Ratio\+Exists\+Exception}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacebezier}{bezier}
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespacebezier_a9df8c553fbf62057af742910a55bda90}{bezier.\+closed} = true;
+\item 
+tuple \hyperlink{namespacebezier_ad3e176f900e0e892b1621ab09241ca08}{bezier.\+last\+Start} = segments.\+size()
+\item 
+tuple \hyperlink{namespacebezier_acdfb18e445ac8e833eda8fb411fe7373}{bezier.\+c} = segments.\+get(i)
+\item 
+\hyperlink{namespacebezier_af5dc7bac630ffee9827391cfaac1e06b}{bezier.\+segments} = new\+Segments;
+\item 
+tuple \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{bezier.\+t} = c.\+over(mx, my)
+\item 
+list \hyperlink{namespacebezier_adfc12e63653920e367a9c81631c20a52}{bezier.\+p} = c.\+points\mbox{[}i\mbox{]}
+\item 
+\hyperlink{namespacebezier_a928e2d96e49d7898d0f47903caf0f866}{bezier.\+i} = idx\%point\+Count;
+\item 
+\hyperlink{namespacebezier_a119a2ba91f8e406351b32bb87ab3f461}{bezier.\+dy} = ny-\/p.\+y;
+\item 
+tuple \hyperlink{namespacebezier_a7a011a9ac17e30960f8474441f256e6c}{bezier.\+m} = get\+Point(n, 1)
+\item 
+tuple \hyperlink{namespacebezier_afea563cafd3cc59f5602af082de31682}{bezier.\+current} = segments.\+get(segment)
+\item 
+tuple \hyperlink{namespacebezier_a73a62826780aabf596dcf302d422c619}{bezier.\+reflected} = m.\+reflect(master.\+points\mbox{[}1\mbox{]})
+\item 
+\hyperlink{namespacebezier_a9c15e0bd907e89888a94c1abad682558}{bezier.\+dx} = reflected.\+x-\/m.\+x;
+\item 
+tuple \hyperlink{namespacebezier_a071d613d4d6e142ebebd01d0201eb7e8}{bezier.\+phi1} = atan2(dy, dx)
+\item 
+tuple \hyperlink{namespacebezier_ac56c7cbbcdf67f6322e12351b2187cb1}{bezier.\+phi2} = atan2(dy, dx)
+\item 
+tuple \hyperlink{namespacebezier_ae4beec9a717adf1c578294a19edbca65}{bezier.\+segment} = segments.\+get(i)
+\item 
+tuple \hyperlink{namespacebezier_a58fa425c725113cb9f5504c6c3603dec}{bezier.\+current\+Intersections} = comp.\+find\+Intersections(c, segment)
+\item 
+tuple \hyperlink{namespacebezier_a508894c735abb837df1774cee031b231}{bezier.\+c2} = segments.\+get(pos2)
+\item 
+int \hyperlink{namespacebezier_aabfbe79208c73c8e1d3c9b14c0d2a5b8}{bezier.\+t1} = t1\%1
+\item 
+int \hyperlink{namespacebezier_a73e5c5dcb6bf619524a72f09d6bcd15b}{bezier.\+t2} = t2\%1
+\item 
+int \hyperlink{namespacebezier_a7bc830cadb0e4876722b68296da442d0}{bezier.\+tn} = 2
+\item 
+int \hyperlink{namespacebezier_a8f2a3ea08791f163da137639e5cac244}{bezier.\+mtn} = 2
+\item 
+\hyperlink{namespacebezier_a6af7fcd36e64d55245071a38cffbae33}{bezier.\+n} = tn-\/mtn;
+\item 
+int \hyperlink{namespacebezier_a6d52742576263b89b839a5e3cbc68ef1}{bezier.\+d} = n+1
+\item 
+\hyperlink{namespacebezier_a83cd11a8fa14a0feb1b8bf9beb29f92d}{bezier.\+points} = curve.\+points;
+\item 
+list \hyperlink{namespacebezier_a1842cea8a4b02363c663c007716e5837}{bezier.\+rx} = values\mbox{[}i\mbox{]}
+\item 
+\hyperlink{namespacebezier_a503cbe2696a09601b3361ae9cff46771}{bezier.\+values} = \+\_\+v;
+\item 
+tuple \hyperlink{namespacebezier_a64145e7ef3e125162f1139dd32325fa1}{bezier.\+root} = round(find\+Roots(derivative, t, values)/N\+R\+R\+F\+\_\+\+P\+R\+E\+C\+I\+S\+I\+O\+N)
+\item 
+tuple \hyperlink{namespacebezier_a25e79f92e794bbc94fad7d80d53bd07c}{bezier.\+df} = get\+Derivative(derivative+1, t, values)
+\item 
+list \hyperlink{namespacebezier_aac0d87ae23a8bc4edfe0cc52fef63788}{bezier.\+x2} = pts\mbox{[}1\mbox{]}
+\item 
+list \hyperlink{namespacebezier_a7ca12664d6cb3f7f50eab616886b7b0d}{bezier.\+x3} = pts\mbox{[}2\mbox{]}
+\item 
+list \hyperlink{namespacebezier_a4af26cae8b8f71d0f4ae9db67690ccda}{bezier.\+x4} = pts\mbox{[}3\mbox{]}
+\item 
+tuple \hyperlink{namespacebezier_a5c7571dbff24fb6f29715b41642f9c19}{bezier.\+nx} = (x1$\ast$y2-\/y1$\ast$x2)
+\item 
+tuple \hyperlink{namespacebezier_ac63543ece85dc0cb795314fa0ad3f11c}{bezier.\+ny} = (x1$\ast$y2-\/y1$\ast$x2)
+\item 
+\hyperlink{namespacebezier_a2863af6e4685d9fce5c5669231ec503e}{bezier.\+dy1} = p2.\+y-\/p1.\+y,
+\item 
+\hyperlink{namespacebezier_ac0aa3f491a487ced7f96fa3288ad805b}{bezier.\+dx2} = p4.\+x-\/p3.\+x,
+\item 
+\hyperlink{namespacebezier_af0ca6962c8c3be669e5b74235ab11d9e}{bezier.\+dy2} = p4.\+y-\/p3.\+y;
+\item 
+tuple \hyperlink{namespacebezier_aaf2772c5a20e34fa95649b49addf2e96}{bezier.\+l2} = sqrt(dx2$\ast$dx2 + dy2$\ast$dy2)
+\item 
+\hyperlink{namespacebezier_a78534ab25df67271c40d717cb26aac0b}{bezier.\+nx1} = dx1$\ast$ca-\/dy1$\ast$sa,
+\item 
+\hyperlink{namespacebezier_a57b85f411b9bce81bb7155997ea1808c}{bezier.\+ny1} = dx1$\ast$sa+dy1$\ast$ca;
+\item 
+tuple \hyperlink{namespacebezier_acea3a71abf7405dfb057e2cf0a3f10b3}{bezier.\+pbc} = p.\+split(t1,t2)
+\item 
+tuple \hyperlink{namespacebezier_ab351668ea604cb148440efa1ea7db562}{bezier.\+e} = pbc.\+get\+Last()
+\item 
+tuple \hyperlink{namespacebezier_a01a1f8683e5f9f801018e651c0de1abc}{bezier.\+cross} = p2.\+contains(pbc, get\+Reference(pbc))
+\item 
+int \hyperlink{namespacebezier_ad649969fef81af63abc92b1015251242}{bezier.\+f} = 0
+\end{DoxyCompactItemize}

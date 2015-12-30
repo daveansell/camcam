@@ -1,0 +1,1149 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classpath_1_1_part" kind="class" language="Python" prot="public">
+    <compoundname>path::Part</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">object</basecompoundref>
+    <derivedcompoundref refid="classboxes_1_1_arbitrary_box" prot="public" virt="non-virtual">boxes.ArbitraryBox</derivedcompoundref>
+    <derivedcompoundref refid="classboxes_1_1_plain_box" prot="public" virt="non-virtual">boxes.PlainBox</derivedcompoundref>
+    <derivedcompoundref refid="classboxes_1_1_rounded_box" prot="public" virt="non-virtual">boxes.RoundedBox</derivedcompoundref>
+    <derivedcompoundref refid="classboxes_1_1_rounded_box_end" prot="public" virt="non-virtual">boxes.RoundedBoxEnd</derivedcompoundref>
+    <derivedcompoundref refid="classboxes_1_1_turret" prot="public" virt="non-virtual">boxes.Turret</derivedcompoundref>
+    <derivedcompoundref refid="classconnectors_1_1_dconnector" prot="public" virt="non-virtual">connectors.Dconnector</derivedcompoundref>
+    <derivedcompoundref refid="classconnectors_1_1_x_l_r" prot="public" virt="non-virtual">connectors.XLR</derivedcompoundref>
+    <derivedcompoundref refid="classgears_1_1_involute_gear" prot="public" virt="non-virtual">gears.InvoluteGear</derivedcompoundref>
+    <derivedcompoundref refid="classlogic_gates_1_1_logic_gate" prot="public" virt="non-virtual">logicGates.LogicGate</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_angle_bracket" prot="public" virt="non-virtual">parts.AngleBracket</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_angle_constraint" prot="public" virt="non-virtual">parts.AngleConstraint</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_barn" prot="public" virt="non-virtual">parts.Barn</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_drilled_ball" prot="public" virt="non-virtual">parts.DrilledBall</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_flat_monitor" prot="public" virt="non-virtual">parts.FlatMonitor</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_insert" prot="public" virt="non-virtual">parts.Insert</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_knob" prot="public" virt="non-virtual">parts.Knob</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_linear_rail" prot="public" virt="non-virtual">parts.LinearRail</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_load_cell" prot="public" virt="non-virtual">parts.LoadCell</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_monitor" prot="public" virt="non-virtual">parts.Monitor</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_pi" prot="public" virt="non-virtual">parts.Pi</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_pi_barn" prot="public" virt="non-virtual">parts.PiBarn</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_plate" prot="public" virt="non-virtual">parts.Plate</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_post" prot="public" virt="non-virtual">parts.Post</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_r_f_i_d__holder" prot="public" virt="non-virtual">parts.RFID_holder</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_screen_holder_fixed" prot="public" virt="non-virtual">parts.ScreenHolderFixed</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_screen_holder_removable" prot="public" virt="non-virtual">parts.ScreenHolderRemovable</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_seven_segment_display" prot="public" virt="non-virtual">parts.SevenSegmentDisplay</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_stepper" prot="public" virt="non-virtual">parts.Stepper</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_switch" prot="public" virt="non-virtual">parts.Switch</derivedcompoundref>
+    <derivedcompoundref refid="classpath_1_1_plane" prot="public" virt="non-virtual">path.Plane</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_bolt" prot="public" virt="non-virtual">shapes.Bolt</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_copy_object" prot="public" virt="non-virtual">shapes.CopyObject</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_four_objects" prot="public" virt="non-virtual">shapes.FourObjects</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_four_screws" prot="public" virt="non-virtual">shapes.FourScrews</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_line_objects" prot="public" virt="non-virtual">shapes.LineObjects</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_module_clear_back" prot="public" virt="non-virtual">shapes.ModuleClearBack</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_repeat_line" prot="public" virt="non-virtual">shapes.RepeatLine</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_repeat_spaced_grid" prot="public" virt="non-virtual">shapes.RepeatSpacedGrid</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_screw" prot="public" virt="non-virtual">shapes.Screw</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_square_objects" prot="public" virt="non-virtual">shapes.SquareObjects</derivedcompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classpath_1_1_part_1ac56a35fa54fc9cae4b96917ef5bcdaae" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::obType</definition>
+        <argsstring></argsstring>
+        <name>obType</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1532" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1532" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1aa46bbe5ca2996ee60e388415f398b008" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::trace</definition>
+        <argsstring></argsstring>
+        <name>trace</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1533" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1533" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1af1c81df8b50b76bba5e7be33d8a12938" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::paths</definition>
+        <argsstring></argsstring>
+        <name>paths</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1534" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1534" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1a01ea69c0b818956e26ed146808d6ba74" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::parts</definition>
+        <argsstring></argsstring>
+        <name>parts</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1535" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1535" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1a3d990ca845c23f206bc56224737440fd" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::copies</definition>
+        <argsstring></argsstring>
+        <name>copies</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1536" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1536" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1a620639c9a733ef0f168a7c94ccae9cd8" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::copied</definition>
+        <argsstring></argsstring>
+        <name>copied</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1537" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1537" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1a5d3e9b6b69c5eb6b100dfbf7d7fdf488" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::isCopy</definition>
+        <argsstring></argsstring>
+        <name>isCopy</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1538" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1538" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1aa1d9912dfa1d7e3222df898d2a18786f" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::layer</definition>
+        <argsstring></argsstring>
+        <name>layer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1539" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1539" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1aa94d1de86a82e8b96113c305c1ff63cc" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::comments</definition>
+        <argsstring></argsstring>
+        <name>comments</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1540" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1540" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1aac66c946dd230e64e4c24cecf1d2d4e9" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::parent</definition>
+        <argsstring></argsstring>
+        <name>parent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1541" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1541" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1ab4eb93506a42db0b4d21000dceca0e91" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::internal_borders</definition>
+        <argsstring></argsstring>
+        <name>internal_borders</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1542" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1542" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1a62650bf6a83e3063d90f7e2711784a10" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::ignore_border</definition>
+        <argsstring></argsstring>
+        <name>ignore_border</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1543" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1543" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1a77dd1289501d1f4bce4ff5b4718f7200" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::transform</definition>
+        <argsstring></argsstring>
+        <name>transform</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1544" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1544" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1a56b959045a54830e9c1f99675b12a075" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::varlist</definition>
+        <argsstring></argsstring>
+        <name>varlist</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1545" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1545" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1ae705ca5412f4383b77dd32e9ebdd237f" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::otherargs</definition>
+        <argsstring></argsstring>
+        <name>otherargs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1546" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1546" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1a6ff6c586832ff637508796a8a77dbbac" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::output</definition>
+        <argsstring></argsstring>
+        <name>output</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1553" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1553" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1a5c83f575732c5a3a949c1e7facbf548c" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::number</definition>
+        <argsstring></argsstring>
+        <name>number</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1554" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1554" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1a57d1d3471b332024af5cdc8265b96ef1" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::cutoutside</definition>
+        <argsstring></argsstring>
+        <name>cutoutside</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1560" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1560" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1a889c4d521b52576b5b4e96ce573ea602" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::bom</definition>
+        <argsstring></argsstring>
+        <name>bom</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1561" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1561" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1adcfeed4d6166f35e3ea1eb87926f6a5e" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::layers</definition>
+        <argsstring></argsstring>
+        <name>layers</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1563" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1563" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1a982bb6775f254fd811f03015c7695718" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::material_shape</definition>
+        <argsstring></argsstring>
+        <name>material_shape</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1650" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1650" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1a004c78655a7f215ff512e4b18e48b0fe" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::border</definition>
+        <argsstring></argsstring>
+        <name>border</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1724" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1724" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_part_1abd77fe962ddd912e766b8a2e9220717b" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Part::is_border</definition>
+        <argsstring></argsstring>
+        <name>is_border</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1728" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1728" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classpath_1_1_part_1ad303df059ccf8ea977b9ba099f1f17a9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.__init__</definition>
+        <argsstring>(self, config)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>config</type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1529" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1529" bodyend="1530"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1a78ba05bb5f29eee1830388be6d15af98" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.init</definition>
+        <argsstring>(self, config)</argsstring>
+        <name>init</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>config</type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1531" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1531" bodyend="1592"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1a01c7a739dee22053cee9f0b28348f1a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.__deepcopy__</definition>
+        <argsstring>(self, memo)</argsstring>
+        <name>__deepcopy__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>memo</type>
+          <defname>memo</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1593" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1593" bodyend="1615"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1a70560f4969089436589b608259ee2ca1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.rotate</definition>
+        <argsstring>(self, pos, angle)</argsstring>
+        <name>rotate</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>pos</type>
+          <defname>pos</defname>
+        </param>
+        <param>
+          <type>angle</type>
+          <defname>angle</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1616" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1616" bodyend="1620"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1a3e0f8f43f26a761a02616e2a2bc735e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.mirror</definition>
+        <argsstring>(self, pos, dirvec)</argsstring>
+        <name>mirror</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>pos</type>
+          <defname>pos</defname>
+        </param>
+        <param>
+          <type>dirvec</type>
+          <defname>dirvec</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1621" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1621" bodyend="1625"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1a27d0b520d21955962d578c55227bcff8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.translate</definition>
+        <argsstring>(self, vec)</argsstring>
+        <name>translate</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>vec</type>
+          <defname>vec</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1626" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1626" bodyend="1629"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1abb8f248470b535ae0449e1a47f912506" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.add_bom</definition>
+        <argsstring></argsstring>
+        <name>add_bom</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1630" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1630" bodyend="1635"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1aa3ab823fc2a4baeaa97300d310d3b8eb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.get_bom</definition>
+        <argsstring></argsstring>
+        <name>get_bom</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1636" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1636" bodyend="1657"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1aaa7dce569975af8da512ecba96f67538" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.comment</definition>
+        <argsstring>(self, comment)</argsstring>
+        <name>comment</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>comment</type>
+          <defname>comment</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1658" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1658" bodyend="1659"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1ab6fccbe6e3b1b965e8fbfa0a64e33b91" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.get_config</definition>
+        <argsstring>(self)</argsstring>
+        <name>get_config</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1660" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1660" bodyend="1683"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1ad5f9f5edfa6d110a4de203c109223ede" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.renderable</definition>
+        <argsstring>(self)</argsstring>
+        <name>renderable</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1685" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1685" bodyend="1691"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1a6923ae4219b5cbd4bc87e22c09da14fc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.getParts</definition>
+        <argsstring></argsstring>
+        <name>getParts</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1692" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1692" bodyend="1701"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1a55bbf4c0ea6fbf7f70c4470929ee4b26" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.get_parts</definition>
+        <argsstring>(self)</argsstring>
+        <name>get_parts</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Returns a list of all the parts which can be rendered within this Part, not itself. Designed to be run from a Plane</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1702" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1702" bodyend="1710"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1a4476c8b030ebcf9c7df00e6a7aa9214c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.add_border</definition>
+        <argsstring>(self, path)</argsstring>
+        <name>add_border</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>path</type>
+          <defname>path</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Add a to act as the border of the part, anything outside this will be ignored</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1711" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1711" bodyend="1729"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1af7a16e2949b4fb42f61efa17c29d9b56" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.add_internal_border</definition>
+        <argsstring>(self, path)</argsstring>
+        <name>add_internal_border</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>path</type>
+          <defname>path</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1730" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1730" bodyend="1740"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1a397ea5a1af4d031e7f1fb4ceac654de5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.add_copy</definition>
+        <argsstring>(self, copy_transformations)</argsstring>
+        <name>add_copy</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>copy_transformations</type>
+          <defname>copy_transformations</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1741" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1741" bodyend="1746"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1a45256181f3975227c838363bc31ae602" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.add</definition>
+        <argsstring></argsstring>
+        <name>add</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1747" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1747" bodyend="1749"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1a961da43effa034ade7b25ff09121784c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.add_path</definition>
+        <argsstring></argsstring>
+        <name>add_path</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1750" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1750" bodyend="1789"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1a185c9bbf10bddf3b739441e758850c84" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.make_copies</definition>
+        <argsstring>(self)</argsstring>
+        <name>make_copies</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Create multiple versions of any parts that should be copied</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1790" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1790" bodyend="1804"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1a60a0f2d6c32dc8875b191d432002860f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.get_layers</definition>
+        <argsstring>(self)</argsstring>
+        <name>get_layers</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Get all the Path/Pathgroupd in a part grouped by layer. Used when rendering</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1806" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1806" bodyend="1855"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1a4ce18378dbce97d9a2875e1de9653892" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.get_own_paths</definition>
+        <argsstring>(self, config)</argsstring>
+        <name>get_own_paths</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>config</type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1862" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1862" bodyend="1874"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1a674b3be7cd8c25840d27de74b0d94797" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.contains</definition>
+        <argsstring>(self, path)</argsstring>
+        <name>contains</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>path</type>
+          <defname>path</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Is path contained by this part</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1875" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1875" bodyend="1884"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_part_1af5b40fad5803470c54db7d42b07f8a95" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Part.overwrite</definition>
+        <argsstring>(self, ain, b)</argsstring>
+        <name>overwrite</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>ain</type>
+          <defname>ain</defname>
+        </param>
+        <param>
+          <type>b</type>
+          <defname>b</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1885" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1885" bodyend="1906"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>This a part, if it is given a boudary and a layer it can be independantly rendered, if not it is just a collection of pathgroups, which can exist on specific layers
+</verbatim> </para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="1400">
+        <label>shapes.Bolt</label>
+        <link refid="classshapes_1_1_bolt"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1380">
+        <label>parts.DrilledBall</label>
+        <link refid="classparts_1_1_drilled_ball"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1391">
+        <label>parts.Post</label>
+        <link refid="classparts_1_1_post"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1369">
+        <label>connectors.Dconnector</label>
+        <link refid="classconnectors_1_1_dconnector"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1388">
+        <label>parts.PiBarn</label>
+        <link refid="classparts_1_1_pi_barn"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1365">
+        <label>boxes.RoundedBoxEnd</label>
+        <link refid="classboxes_1_1_rounded_box_end"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1389">
+        <label>parts.Plate</label>
+        <link refid="classparts_1_1_plate"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1399">
+        <label>shapes.Module</label>
+        <link refid="classshapes_1_1_module"/>
+        <childnode refid="1398" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1390">
+        <label>parts.RoundPlate</label>
+        <link refid="classparts_1_1_round_plate"/>
+        <childnode refid="1389" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1367">
+        <label>boxes.PiCamTurret</label>
+        <link refid="classboxes_1_1_pi_cam_turret"/>
+        <childnode refid="1366" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1393">
+        <label>parts.ScreenHolderFixed</label>
+        <link refid="classparts_1_1_screen_holder_fixed"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1401">
+        <label>shapes.CopyObject</label>
+        <link refid="classshapes_1_1_copy_object"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1407">
+        <label>shapes.RepeatSpacedGrid</label>
+        <link refid="classshapes_1_1_repeat_spaced_grid"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1379">
+        <label>parts.Barn</label>
+        <link refid="classparts_1_1_barn"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1363">
+        <label>boxes.PlainBox</label>
+        <link refid="classboxes_1_1_plain_box"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1383">
+        <label>parts.Knob</label>
+        <link refid="classparts_1_1_knob"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1408">
+        <label>shapes.Screw</label>
+        <link refid="classshapes_1_1_screw"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1370">
+        <label>connectors.XLR</label>
+        <link refid="classconnectors_1_1_x_l_r"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1409">
+        <label>shapes.SquareObjects</label>
+        <link refid="classshapes_1_1_square_objects"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1398">
+        <label>path.Plane</label>
+        <link refid="classpath_1_1_plane"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1404">
+        <label>shapes.LineObjects</label>
+        <link refid="classshapes_1_1_line_objects"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1377">
+        <label>parts.AngleBracket</label>
+        <link refid="classparts_1_1_angle_bracket"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1368">
+        <label>boxes.ThermalTurret</label>
+        <link refid="classboxes_1_1_thermal_turret"/>
+        <childnode refid="1366" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1366">
+        <label>boxes.Turret</label>
+        <link refid="classboxes_1_1_turret"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1387">
+        <label>parts.Pi</label>
+        <link refid="classparts_1_1_pi"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1371">
+        <label>gears.InvoluteGear</label>
+        <link refid="classgears_1_1_involute_gear"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1364">
+        <label>boxes.RoundedBox</label>
+        <link refid="classboxes_1_1_rounded_box"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1373">
+        <label>logicGates.ANDgate</label>
+        <link refid="classlogic_gates_1_1_a_n_dgate"/>
+        <childnode refid="1372" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1378">
+        <label>parts.AngleConstraint</label>
+        <link refid="classparts_1_1_angle_constraint"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1402">
+        <label>shapes.FourObjects</label>
+        <link refid="classshapes_1_1_four_objects"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1382">
+        <label>parts.Insert</label>
+        <link refid="classparts_1_1_insert"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1381">
+        <label>parts.FlatMonitor</label>
+        <link refid="classparts_1_1_flat_monitor"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1362">
+        <label>boxes.ArbitraryBox</label>
+        <link refid="classboxes_1_1_arbitrary_box"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1361">
+        <label>object</label>
+      </node>
+      <node id="1360">
+        <label>path.Part</label>
+        <link refid="classpath_1_1_part"/>
+        <childnode refid="1361" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1406">
+        <label>shapes.RepeatLine</label>
+        <link refid="classshapes_1_1_repeat_line"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1384">
+        <label>parts.LinearRail</label>
+        <link refid="classparts_1_1_linear_rail"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1372">
+        <label>logicGates.LogicGate</label>
+        <link refid="classlogic_gates_1_1_logic_gate"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1403">
+        <label>shapes.FourScrews</label>
+        <link refid="classshapes_1_1_four_screws"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1392">
+        <label>parts.RFID_holder</label>
+        <link refid="classparts_1_1_r_f_i_d__holder"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1376">
+        <label>logicGates.XORgate</label>
+        <link refid="classlogic_gates_1_1_x_o_rgate"/>
+        <childnode refid="1375" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1397">
+        <label>parts.Switch</label>
+        <link refid="classparts_1_1_switch"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1395">
+        <label>parts.SevenSegmentDisplay</label>
+        <link refid="classparts_1_1_seven_segment_display"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1405">
+        <label>shapes.ModuleClearBack</label>
+        <link refid="classshapes_1_1_module_clear_back"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1394">
+        <label>parts.ScreenHolderRemovable</label>
+        <link refid="classparts_1_1_screen_holder_removable"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1386">
+        <label>parts.Monitor</label>
+        <link refid="classparts_1_1_monitor"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1375">
+        <label>logicGates.ORgate</label>
+        <link refid="classlogic_gates_1_1_o_rgate"/>
+        <childnode refid="1372" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1396">
+        <label>parts.Stepper</label>
+        <link refid="classparts_1_1_stepper"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1374">
+        <label>logicGates.NOTgate</label>
+        <link refid="classlogic_gates_1_1_n_o_tgate"/>
+        <childnode refid="1372" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1385">
+        <label>parts.LoadCell</label>
+        <link refid="classparts_1_1_load_cell"/>
+        <childnode refid="1360" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1411">
+        <label>object</label>
+      </node>
+      <node id="1410">
+        <label>path.Part</label>
+        <link refid="classpath_1_1_part"/>
+        <childnode refid="1411" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/path.py" line="1526" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1526" bodyend="1907"/>
+    <listofallmembers>
+      <member refid="classpath_1_1_part_1a01c7a739dee22053cee9f0b28348f1a3" prot="public" virt="non-virtual"><scope>path::Part</scope><name>__deepcopy__</name></member>
+      <member refid="classpath_1_1_part_1ad303df059ccf8ea977b9ba099f1f17a9" prot="public" virt="non-virtual"><scope>path::Part</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_part_1a45256181f3975227c838363bc31ae602" prot="public" virt="non-virtual"><scope>path::Part</scope><name>add</name></member>
+      <member refid="classpath_1_1_part_1abb8f248470b535ae0449e1a47f912506" prot="public" virt="non-virtual"><scope>path::Part</scope><name>add_bom</name></member>
+      <member refid="classpath_1_1_part_1a4476c8b030ebcf9c7df00e6a7aa9214c" prot="public" virt="non-virtual"><scope>path::Part</scope><name>add_border</name></member>
+      <member refid="classpath_1_1_part_1a397ea5a1af4d031e7f1fb4ceac654de5" prot="public" virt="non-virtual"><scope>path::Part</scope><name>add_copy</name></member>
+      <member refid="classpath_1_1_part_1af7a16e2949b4fb42f61efa17c29d9b56" prot="public" virt="non-virtual"><scope>path::Part</scope><name>add_internal_border</name></member>
+      <member refid="classpath_1_1_part_1a961da43effa034ade7b25ff09121784c" prot="public" virt="non-virtual"><scope>path::Part</scope><name>add_path</name></member>
+      <member refid="classpath_1_1_part_1a889c4d521b52576b5b4e96ce573ea602" prot="public" virt="non-virtual"><scope>path::Part</scope><name>bom</name></member>
+      <member refid="classpath_1_1_part_1a004c78655a7f215ff512e4b18e48b0fe" prot="public" virt="non-virtual"><scope>path::Part</scope><name>border</name></member>
+      <member refid="classpath_1_1_part_1aaa7dce569975af8da512ecba96f67538" prot="public" virt="non-virtual"><scope>path::Part</scope><name>comment</name></member>
+      <member refid="classpath_1_1_part_1aa94d1de86a82e8b96113c305c1ff63cc" prot="public" virt="non-virtual"><scope>path::Part</scope><name>comments</name></member>
+      <member refid="classpath_1_1_part_1a674b3be7cd8c25840d27de74b0d94797" prot="public" virt="non-virtual"><scope>path::Part</scope><name>contains</name></member>
+      <member refid="classpath_1_1_part_1a620639c9a733ef0f168a7c94ccae9cd8" prot="public" virt="non-virtual"><scope>path::Part</scope><name>copied</name></member>
+      <member refid="classpath_1_1_part_1a3d990ca845c23f206bc56224737440fd" prot="public" virt="non-virtual"><scope>path::Part</scope><name>copies</name></member>
+      <member refid="classpath_1_1_part_1a57d1d3471b332024af5cdc8265b96ef1" prot="public" virt="non-virtual"><scope>path::Part</scope><name>cutoutside</name></member>
+      <member refid="classpath_1_1_part_1aa3ab823fc2a4baeaa97300d310d3b8eb" prot="public" virt="non-virtual"><scope>path::Part</scope><name>get_bom</name></member>
+      <member refid="classpath_1_1_part_1ab6fccbe6e3b1b965e8fbfa0a64e33b91" prot="public" virt="non-virtual"><scope>path::Part</scope><name>get_config</name></member>
+      <member refid="classpath_1_1_part_1a60a0f2d6c32dc8875b191d432002860f" prot="public" virt="non-virtual"><scope>path::Part</scope><name>get_layers</name></member>
+      <member refid="classpath_1_1_part_1a4ce18378dbce97d9a2875e1de9653892" prot="public" virt="non-virtual"><scope>path::Part</scope><name>get_own_paths</name></member>
+      <member refid="classpath_1_1_part_1a55bbf4c0ea6fbf7f70c4470929ee4b26" prot="public" virt="non-virtual"><scope>path::Part</scope><name>get_parts</name></member>
+      <member refid="classpath_1_1_part_1a6923ae4219b5cbd4bc87e22c09da14fc" prot="public" virt="non-virtual"><scope>path::Part</scope><name>getParts</name></member>
+      <member refid="classpath_1_1_part_1a62650bf6a83e3063d90f7e2711784a10" prot="public" virt="non-virtual"><scope>path::Part</scope><name>ignore_border</name></member>
+      <member refid="classpath_1_1_part_1a78ba05bb5f29eee1830388be6d15af98" prot="public" virt="non-virtual"><scope>path::Part</scope><name>init</name></member>
+      <member refid="classpath_1_1_part_1ab4eb93506a42db0b4d21000dceca0e91" prot="public" virt="non-virtual"><scope>path::Part</scope><name>internal_borders</name></member>
+      <member refid="classpath_1_1_part_1abd77fe962ddd912e766b8a2e9220717b" prot="public" virt="non-virtual"><scope>path::Part</scope><name>is_border</name></member>
+      <member refid="classpath_1_1_part_1a5d3e9b6b69c5eb6b100dfbf7d7fdf488" prot="public" virt="non-virtual"><scope>path::Part</scope><name>isCopy</name></member>
+      <member refid="classpath_1_1_part_1aa1d9912dfa1d7e3222df898d2a18786f" prot="public" virt="non-virtual"><scope>path::Part</scope><name>layer</name></member>
+      <member refid="classpath_1_1_part_1adcfeed4d6166f35e3ea1eb87926f6a5e" prot="public" virt="non-virtual"><scope>path::Part</scope><name>layers</name></member>
+      <member refid="classpath_1_1_part_1a185c9bbf10bddf3b739441e758850c84" prot="public" virt="non-virtual"><scope>path::Part</scope><name>make_copies</name></member>
+      <member refid="classpath_1_1_part_1a982bb6775f254fd811f03015c7695718" prot="public" virt="non-virtual"><scope>path::Part</scope><name>material_shape</name></member>
+      <member refid="classpath_1_1_part_1a3e0f8f43f26a761a02616e2a2bc735e1" prot="public" virt="non-virtual"><scope>path::Part</scope><name>mirror</name></member>
+      <member refid="classpath_1_1_part_1a5c83f575732c5a3a949c1e7facbf548c" prot="public" virt="non-virtual"><scope>path::Part</scope><name>number</name></member>
+      <member refid="classpath_1_1_part_1ac56a35fa54fc9cae4b96917ef5bcdaae" prot="public" virt="non-virtual"><scope>path::Part</scope><name>obType</name></member>
+      <member refid="classpath_1_1_part_1ae705ca5412f4383b77dd32e9ebdd237f" prot="public" virt="non-virtual"><scope>path::Part</scope><name>otherargs</name></member>
+      <member refid="classpath_1_1_part_1a6ff6c586832ff637508796a8a77dbbac" prot="public" virt="non-virtual"><scope>path::Part</scope><name>output</name></member>
+      <member refid="classpath_1_1_part_1af5b40fad5803470c54db7d42b07f8a95" prot="public" virt="non-virtual"><scope>path::Part</scope><name>overwrite</name></member>
+      <member refid="classpath_1_1_part_1aac66c946dd230e64e4c24cecf1d2d4e9" prot="public" virt="non-virtual"><scope>path::Part</scope><name>parent</name></member>
+      <member refid="classpath_1_1_part_1a01ea69c0b818956e26ed146808d6ba74" prot="public" virt="non-virtual"><scope>path::Part</scope><name>parts</name></member>
+      <member refid="classpath_1_1_part_1af1c81df8b50b76bba5e7be33d8a12938" prot="public" virt="non-virtual"><scope>path::Part</scope><name>paths</name></member>
+      <member refid="classpath_1_1_part_1ad5f9f5edfa6d110a4de203c109223ede" prot="public" virt="non-virtual"><scope>path::Part</scope><name>renderable</name></member>
+      <member refid="classpath_1_1_part_1a70560f4969089436589b608259ee2ca1" prot="public" virt="non-virtual"><scope>path::Part</scope><name>rotate</name></member>
+      <member refid="classpath_1_1_part_1aa46bbe5ca2996ee60e388415f398b008" prot="public" virt="non-virtual"><scope>path::Part</scope><name>trace</name></member>
+      <member refid="classpath_1_1_part_1a77dd1289501d1f4bce4ff5b4718f7200" prot="public" virt="non-virtual"><scope>path::Part</scope><name>transform</name></member>
+      <member refid="classpath_1_1_part_1a27d0b520d21955962d578c55227bcff8" prot="public" virt="non-virtual"><scope>path::Part</scope><name>translate</name></member>
+      <member refid="classpath_1_1_part_1a56b959045a54830e9c1f99675b12a075" prot="public" virt="non-virtual"><scope>path::Part</scope><name>varlist</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

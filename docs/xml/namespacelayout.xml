@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespacelayout" kind="namespace" language="Python">
+    <compoundname>layout</compoundname>
+    <innerclass refid="classlayout_1_1_cam_cam" prot="public">layout::CamCam</innerclass>
+    <innerclass refid="classlayout_1_1_kv_part" prot="public">layout::KvPart</innerclass>
+    <innerclass refid="classlayout_1_1_render_part" prot="public">layout::RenderPart</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacelayout_1a4efd63b3001435f3c27da5cdd394c4cc" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple layout.camcam</definition>
+        <argsstring></argsstring>
+        <name>camcam</name>
+        <initializer>= <ref refid="classlayout_1_1_cam_cam" kindref="compound">CamCam</ref>()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/layout.py" line="104" column="1" bodyfile="/home/db/camcam/layout.py" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelayout_1a917f5d5f3feb2ac6efb7e20bdae63d72" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple layout.milling</definition>
+        <argsstring></argsstring>
+        <name>milling</name>
+        <initializer>= <ref refid="class_milling_1_1_milling" kindref="compound">Milling.Milling</ref>()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/layout.py" line="105" column="1" bodyfile="/home/db/camcam/layout.py" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelayout_1a465a2855518606877a0a8671d58a1c9a" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple layout.parser</definition>
+        <argsstring></argsstring>
+        <name>parser</name>
+        <initializer>= OptionParser()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/layout.py" line="106" column="1" bodyfile="/home/db/camcam/layout.py" bodystart="106" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelayout_1a47fd03efd473398dfb10a65fc64eafe4" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string layout.modes</definition>
+        <argsstring></argsstring>
+        <name>modes</name>
+        <initializer>= &apos;,&apos;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/layout.py" line="107" column="1" bodyfile="/home/db/camcam/layout.py" bodystart="107" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelayout_1aa8bcd46c44222a15f73de3e096725e5e" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string layout::help</definition>
+        <argsstring></argsstring>
+        <name>help</name>
+        <initializer>= &quot;mode the output should be in. Can be one of &quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/layout.py" line="110" column="1" bodyfile="/home/db/camcam/layout.py" bodystart="110" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelayout_1aa92f20c6edf696c44f7073122603ad4d" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string layout::action</definition>
+        <argsstring></argsstring>
+        <name>action</name>
+        <initializer>= &quot;store_true&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/layout.py" line="112" column="1" bodyfile="/home/db/camcam/layout.py" bodystart="112" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelayout_1addf4c4f1e95013fa5057f1d16a235035" prot="public" static="no" mutable="no">
+        <type>dictionary</type>
+        <definition>dictionary layout.config</definition>
+        <argsstring></argsstring>
+        <name>config</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/layout.py" line="133" column="1" bodyfile="/home/db/camcam/layout.py" bodystart="133" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelayout_1a748292864d9c627e94e6b6cc41304291" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple layout.a</definition>
+        <argsstring></argsstring>
+        <name>a</name>
+        <initializer>= pair.split(&apos;=&apos;)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/layout.py" line="138" column="1" bodyfile="/home/db/camcam/layout.py" bodystart="138" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/layout.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

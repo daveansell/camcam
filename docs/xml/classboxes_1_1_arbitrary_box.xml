@@ -1,0 +1,721 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classboxes_1_1_arbitrary_box" kind="class" language="Python" prot="public">
+    <compoundname>boxes::ArbitraryBox</compoundname>
+    <basecompoundref refid="classpath_1_1_part" prot="public" virt="non-virtual">path.Part</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classboxes_1_1_arbitrary_box_1a24dede6e660c9936ee28185e18db8429" prot="public" static="yes" mutable="no">
+        <type>list</type>
+        <definition>list boxes.ArbitraryBox::angle</definition>
+        <argsstring></argsstring>
+        <name>angle</name>
+        <initializer>= thisside[4]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="611" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="611" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classboxes_1_1_arbitrary_box_1acbfdd7c527a5b086353fe2f11b372878" prot="public" static="yes" mutable="no">
+        <type>list</type>
+        <definition>list boxes.ArbitraryBox::altside</definition>
+        <argsstring></argsstring>
+        <name>altside</name>
+        <initializer>= thisside[5]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="612" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="612" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classboxes_1_1_arbitrary_box_1ae912ddb018d7bd63da77694182248957" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int boxes.ArbitraryBox::intfact</definition>
+        <argsstring></argsstring>
+        <name>intfact</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="615" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="615" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classboxes_1_1_arbitrary_box_1a90869c57f87100a6f9264f2f51af9a39" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple boxes.ArbitraryBox::corner</definition>
+        <argsstring></argsstring>
+        <name>corner</name>
+        <initializer>= self.other_side_mode(face[&apos;corners&apos;][scount])</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="616" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="616" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classboxes_1_1_arbitrary_box_1a8dc28779357a95d463917e378be209fa" prot="public" static="yes" mutable="no">
+        <type>list</type>
+        <definition>list boxes.ArbitraryBox::corner</definition>
+        <argsstring></argsstring>
+        <name>corner</name>
+        <initializer>= face[&apos;corners&apos;]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="619" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="619" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classboxes_1_1_arbitrary_box_1a1df58541f5d802020fb5f27a57861ca6" prot="public" static="yes" mutable="no">
+        <type>string</type>
+        <definition>string boxes.ArbitraryBox::lineside</definition>
+        <argsstring></argsstring>
+        <name>lineside</name>
+        <initializer>= &apos;front&apos;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="624" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="624" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classboxes_1_1_arbitrary_box_1abedf2ff5c000b46d146b0b11e5872bf7" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple boxes.ArbitraryBox::newpoints</definition>
+        <argsstring></argsstring>
+        <name>newpoints</name>
+        <initializer>= <ref refid="classshapes_1_1_angled_finger_joint" kindref="compound">AngledFingerJoint</ref>(lastpoint, point, cutside, mode, <ref refid="classboxes_1_1_arbitrary_box_1a90869c57f87100a6f9264f2f51af9a39" kindref="member">corner</ref>, <ref refid="classboxes_1_1_arbitrary_box_1a90869c57f87100a6f9264f2f51af9a39" kindref="member">corner</ref>, face[&apos;<ref refid="classboxes_1_1_arbitrary_box_1aa3f4f131456dc23999d99a422041c842" kindref="member">tab_length</ref>&apos;][scount], otherface[&apos;thickness&apos;], 0, <ref refid="classboxes_1_1_arbitrary_box_1a24dede6e660c9936ee28185e18db8429" kindref="member">angle</ref>, <ref refid="classboxes_1_1_arbitrary_box_1a1df58541f5d802020fb5f27a57861ca6" kindref="member">lineside</ref>, self.fudge, material_thickness=face[&apos;thickness&apos;])</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="631" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="631" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classboxes_1_1_arbitrary_box_1ace4c98fbe4b9323796fd991e793bdcd2" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>boxes.ArbitraryBox::first</definition>
+        <argsstring></argsstring>
+        <name>first</name>
+        <initializer>= False</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="639" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="639" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classboxes_1_1_arbitrary_box_1aa3f4f131456dc23999d99a422041c842" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>boxes.ArbitraryBox::tab_length</definition>
+        <argsstring></argsstring>
+        <name>tab_length</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="489" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="489" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classboxes_1_1_arbitrary_box_1af7c0c8c6ebca710aa27785317764f8d3" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>boxes.ArbitraryBox::fudge</definition>
+        <argsstring></argsstring>
+        <name>fudge</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="490" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="490" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classboxes_1_1_arbitrary_box_1ab67b4c269874e7134565eb3338355e3d" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>boxes.ArbitraryBox::faces</definition>
+        <argsstring></argsstring>
+        <name>faces</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="491" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="491" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classboxes_1_1_arbitrary_box_1a3c4f3f9e42118cbe79d0d8be915bfe4f" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>boxes.ArbitraryBox::sides</definition>
+        <argsstring></argsstring>
+        <name>sides</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="492" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="492" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classboxes_1_1_arbitrary_box_1aa4c61dd48b10ff63eb8f4889d55934f6" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>boxes.ArbitraryBox::normals</definition>
+        <argsstring></argsstring>
+        <name>normals</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="493" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="493" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classboxes_1_1_arbitrary_box_1a26b3d077741f59e0f58fa8b6307d1958" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>boxes.ArbitraryBox::side_angles</definition>
+        <argsstring></argsstring>
+        <name>side_angles</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="494" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="494" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classboxes_1_1_arbitrary_box_1a0bf5dfd8e5bc77184583127a1bd4dc2b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def boxes.ArbitraryBox.__init__</definition>
+        <argsstring>(self, faces, tab_length, fudge, config)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classboxes_1_1_arbitrary_box_1ab67b4c269874e7134565eb3338355e3d" kindref="member">faces</ref></type>
+          <defname>faces</defname>
+        </param>
+        <param>
+          <type><ref refid="classboxes_1_1_arbitrary_box_1aa3f4f131456dc23999d99a422041c842" kindref="member">tab_length</ref></type>
+          <defname>tab_length</defname>
+        </param>
+        <param>
+          <type><ref refid="classboxes_1_1_arbitrary_box_1af7c0c8c6ebca710aa27785317764f8d3" kindref="member">fudge</ref></type>
+          <defname>fudge</defname>
+        </param>
+        <param>
+          <type>config</type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="487" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="487" bodyend="573"/>
+      </memberdef>
+      <memberdef kind="function" id="classboxes_1_1_arbitrary_box_1a821fecbe31d7f119b15f6fc4c632dfbb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def boxes.ArbitraryBox.tuple_to_vec</definition>
+        <argsstring>(self, t)</argsstring>
+        <name>tuple_to_vec</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>t</type>
+          <defname>t</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="574" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="574" bodyend="576"/>
+      </memberdef>
+      <memberdef kind="function" id="classboxes_1_1_arbitrary_box_1a5a3b9b3a0883b166ecd1cb69b939b89f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def boxes.ArbitraryBox.get_border</definition>
+        <argsstring>(self, part, f, face, mode)</argsstring>
+        <name>get_border</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>part</type>
+          <defname>part</defname>
+        </param>
+        <param>
+          <type>f</type>
+          <defname>f</defname>
+        </param>
+        <param>
+          <type>face</type>
+          <defname>face</defname>
+        </param>
+        <param>
+          <type>mode</type>
+          <defname>mode</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="577" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="577" bodyend="607"/>
+      </memberdef>
+      <memberdef kind="function" id="classboxes_1_1_arbitrary_box_1abec459d0466c9f1a56a92cdd707c949b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def boxes.ArbitraryBox.find_direction</definition>
+        <argsstring>(self, points)</argsstring>
+        <name>find_direction</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>points</type>
+          <defname>points</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="653" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="653" bodyend="665"/>
+      </memberdef>
+      <memberdef kind="function" id="classboxes_1_1_arbitrary_box_1a68bd120dd123135c346fb87ef61b2aa1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def boxes.ArbitraryBox.get_side_parts</definition>
+        <argsstring>(self, side, f)</argsstring>
+        <name>get_side_parts</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>side</type>
+          <defname>side</defname>
+        </param>
+        <param>
+          <type>f</type>
+          <defname>f</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="666" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="666" bodyend="676"/>
+      </memberdef>
+      <memberdef kind="function" id="classboxes_1_1_arbitrary_box_1a389b98b978697efa0687f0fa706e791d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def boxes.ArbitraryBox.get_cut_side</definition>
+        <argsstring>(self, f, face)</argsstring>
+        <name>get_cut_side</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>f</type>
+          <defname>f</defname>
+        </param>
+        <param>
+          <type>face</type>
+          <defname>face</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="677" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="677" bodyend="703"/>
+      </memberdef>
+      <memberdef kind="function" id="classboxes_1_1_arbitrary_box_1a57bd2d3c2e315a7615c7340edb7ebb11" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def boxes.ArbitraryBox.sign</definition>
+        <argsstring>(self, val)</argsstring>
+        <name>sign</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>val</type>
+          <defname>val</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="704" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="704" bodyend="713"/>
+      </memberdef>
+      <memberdef kind="function" id="classboxes_1_1_arbitrary_box_1a7964ab53bc41a083704f111c9b9c05d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def boxes.ArbitraryBox.propagate_direction</definition>
+        <argsstring>(self, t, f, recursion)</argsstring>
+        <name>propagate_direction</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>t</type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type>f</type>
+          <defname>f</defname>
+        </param>
+        <param>
+          <type>recursion</type>
+          <defname>recursion</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="714" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="714" bodyend="738"/>
+      </memberdef>
+      <memberdef kind="function" id="classboxes_1_1_arbitrary_box_1a1cb83b2e5910298b4c4d4d72131044b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def boxes.ArbitraryBox.set_corners</definition>
+        <argsstring>(self, side, f, scount)</argsstring>
+        <name>set_corners</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>side</type>
+          <defname>side</defname>
+        </param>
+        <param>
+          <type>f</type>
+          <defname>f</defname>
+        </param>
+        <param>
+          <type>scount</type>
+          <defname>scount</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="739" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="739" bodyend="763"/>
+      </memberdef>
+      <memberdef kind="function" id="classboxes_1_1_arbitrary_box_1a5e7fe3b2283ec34c3bf580e3615b9b4f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def boxes.ArbitraryBox.set_tab_length</definition>
+        <argsstring>(self, side, f, scount)</argsstring>
+        <name>set_tab_length</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>side</type>
+          <defname>side</defname>
+        </param>
+        <param>
+          <type>f</type>
+          <defname>f</defname>
+        </param>
+        <param>
+          <type>scount</type>
+          <defname>scount</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="764" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="764" bodyend="792"/>
+      </memberdef>
+      <memberdef kind="function" id="classboxes_1_1_arbitrary_box_1af1a76bf23428a71336ab686f48289f3e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def boxes.ArbitraryBox.other_side_mode</definition>
+        <argsstring>(self, mode)</argsstring>
+        <name>other_side_mode</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>mode</type>
+          <defname>mode</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="793" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="793" bodyend="798"/>
+      </memberdef>
+      <memberdef kind="function" id="classboxes_1_1_arbitrary_box_1a1ad0b3dbea620c916110d96ffe3e5215" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def boxes.ArbitraryBox.make_normal</definition>
+        <argsstring>(self, f, points)</argsstring>
+        <name>make_normal</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>f</type>
+          <defname>f</defname>
+        </param>
+        <param>
+          <type>points</type>
+          <defname>points</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="799" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="799" bodyend="817"/>
+      </memberdef>
+      <memberdef kind="function" id="classboxes_1_1_arbitrary_box_1adf41d3530e41e25bc1ccff538614f628" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def boxes.ArbitraryBox.get_sid</definition>
+        <argsstring>(self, p1, p2)</argsstring>
+        <name>get_sid</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>p1</type>
+          <defname>p1</defname>
+        </param>
+        <param>
+          <type>p2</type>
+          <defname>p2</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="818" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="818" bodyend="827"/>
+      </memberdef>
+      <memberdef kind="function" id="classboxes_1_1_arbitrary_box_1aa9df9c5a4d54b25df51f3787f4a51e94" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def boxes.ArbitraryBox.make_sides</definition>
+        <argsstring>(self, f, points)</argsstring>
+        <name>make_sides</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>f</type>
+          <defname>f</defname>
+        </param>
+        <param>
+          <type>points</type>
+          <defname>points</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="828" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="828" bodyend="843"/>
+      </memberdef>
+      <memberdef kind="function" id="classboxes_1_1_arbitrary_box_1ab10aa86f8c971fd656e75da2491d7422" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def boxes.ArbitraryBox.find_angle</definition>
+        <argsstring>(self, s, side)</argsstring>
+        <name>find_angle</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>s</type>
+          <defname>s</defname>
+        </param>
+        <param>
+          <type>side</type>
+          <defname>side</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/boxes.py" line="844" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="844" bodyend="903"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>    faces - dict of &apos;side name&apos; : {&apos;points&apos;:[3d point, 3d point, 3d point], 
+                    &apos;thickness&apos;:thickness
+                    &apos;x&apos;: 3d vector setting x direction in this face
+                    &apos;origin&apos;: 3d point setting origin of face
+                    &apos;layer&apos;: layer part should be in
+                    &apos;corners&apos;: { side_no: &apos;on&apos; or &apos;off&apos; } side_no is defined as point 0-&gt;1 is side 0 etc. 
+                                                    - if undefined will just be made up.
+                    &apos;tab_length&apos;: value or dict of values for each side side_no is defined as point 0-&gt;1 is side 0 etc.  default is global tab_length below
+                    &apos;wood_direction&apos;: vector - only defined on one face will set which side of the polyhedron the wood is
+                    &apos;good_direction&apos;: vector - direction that is going to be finished well
+                    &apos;internal&apos; : True/False - is a hole cut into another part should be added to that part
+            &apos;tab_length&apos; - defaule tab length
+            &apos;fudge&apos; - fudge for finger joints
+
+    }
+</verbatim> </para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="42">
+        <label>boxes.ArbitraryBox</label>
+        <link refid="classboxes_1_1_arbitrary_box"/>
+        <childnode refid="43" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>object</label>
+      </node>
+      <node id="43">
+        <label>path.Part</label>
+        <link refid="classpath_1_1_part"/>
+        <childnode refid="44" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="45">
+        <label>boxes.ArbitraryBox</label>
+        <link refid="classboxes_1_1_arbitrary_box"/>
+        <childnode refid="46" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>object</label>
+      </node>
+      <node id="46">
+        <label>path.Part</label>
+        <link refid="classpath_1_1_part"/>
+        <childnode refid="47" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/boxes.py" line="469" column="1" bodyfile="/home/db/camcam/boxes.py" bodystart="469" bodyend="903"/>
+    <listofallmembers>
+      <member refid="classpath_1_1_part_1a01c7a739dee22053cee9f0b28348f1a3" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>__deepcopy__</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1a0bf5dfd8e5bc77184583127a1bd4dc2b" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_part_1ad303df059ccf8ea977b9ba099f1f17a9" prot="public" virt="non-virtual" ambiguityscope="path::Part."><scope>boxes::ArbitraryBox</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_part_1a45256181f3975227c838363bc31ae602" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>add</name></member>
+      <member refid="classpath_1_1_part_1abb8f248470b535ae0449e1a47f912506" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>add_bom</name></member>
+      <member refid="classpath_1_1_part_1a4476c8b030ebcf9c7df00e6a7aa9214c" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>add_border</name></member>
+      <member refid="classpath_1_1_part_1a397ea5a1af4d031e7f1fb4ceac654de5" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>add_copy</name></member>
+      <member refid="classpath_1_1_part_1af7a16e2949b4fb42f61efa17c29d9b56" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>add_internal_border</name></member>
+      <member refid="classpath_1_1_part_1a961da43effa034ade7b25ff09121784c" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>add_path</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1acbfdd7c527a5b086353fe2f11b372878" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>altside</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1a24dede6e660c9936ee28185e18db8429" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>angle</name></member>
+      <member refid="classpath_1_1_part_1a889c4d521b52576b5b4e96ce573ea602" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>bom</name></member>
+      <member refid="classpath_1_1_part_1a004c78655a7f215ff512e4b18e48b0fe" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>border</name></member>
+      <member refid="classpath_1_1_part_1aaa7dce569975af8da512ecba96f67538" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>comment</name></member>
+      <member refid="classpath_1_1_part_1aa94d1de86a82e8b96113c305c1ff63cc" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>comments</name></member>
+      <member refid="classpath_1_1_part_1a674b3be7cd8c25840d27de74b0d94797" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>contains</name></member>
+      <member refid="classpath_1_1_part_1a620639c9a733ef0f168a7c94ccae9cd8" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>copied</name></member>
+      <member refid="classpath_1_1_part_1a3d990ca845c23f206bc56224737440fd" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>copies</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1a90869c57f87100a6f9264f2f51af9a39" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>corner</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1a8dc28779357a95d463917e378be209fa" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>corner</name></member>
+      <member refid="classpath_1_1_part_1a57d1d3471b332024af5cdc8265b96ef1" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>cutoutside</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1ab67b4c269874e7134565eb3338355e3d" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>faces</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1ab10aa86f8c971fd656e75da2491d7422" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>find_angle</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1abec459d0466c9f1a56a92cdd707c949b" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>find_direction</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1ace4c98fbe4b9323796fd991e793bdcd2" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>first</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1af7c0c8c6ebca710aa27785317764f8d3" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>fudge</name></member>
+      <member refid="classpath_1_1_part_1aa3ab823fc2a4baeaa97300d310d3b8eb" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>get_bom</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1a5a3b9b3a0883b166ecd1cb69b939b89f" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>get_border</name></member>
+      <member refid="classpath_1_1_part_1ab6fccbe6e3b1b965e8fbfa0a64e33b91" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>get_config</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1a389b98b978697efa0687f0fa706e791d" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>get_cut_side</name></member>
+      <member refid="classpath_1_1_part_1a60a0f2d6c32dc8875b191d432002860f" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>get_layers</name></member>
+      <member refid="classpath_1_1_part_1a4ce18378dbce97d9a2875e1de9653892" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>get_own_paths</name></member>
+      <member refid="classpath_1_1_part_1a55bbf4c0ea6fbf7f70c4470929ee4b26" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>get_parts</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1adf41d3530e41e25bc1ccff538614f628" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>get_sid</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1a68bd120dd123135c346fb87ef61b2aa1" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>get_side_parts</name></member>
+      <member refid="classpath_1_1_part_1a6923ae4219b5cbd4bc87e22c09da14fc" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>getParts</name></member>
+      <member refid="classpath_1_1_part_1a62650bf6a83e3063d90f7e2711784a10" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>ignore_border</name></member>
+      <member refid="classpath_1_1_part_1a78ba05bb5f29eee1830388be6d15af98" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>init</name></member>
+      <member refid="classpath_1_1_part_1ab4eb93506a42db0b4d21000dceca0e91" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>internal_borders</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1ae912ddb018d7bd63da77694182248957" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>intfact</name></member>
+      <member refid="classpath_1_1_part_1abd77fe962ddd912e766b8a2e9220717b" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>is_border</name></member>
+      <member refid="classpath_1_1_part_1a5d3e9b6b69c5eb6b100dfbf7d7fdf488" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>isCopy</name></member>
+      <member refid="classpath_1_1_part_1aa1d9912dfa1d7e3222df898d2a18786f" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>layer</name></member>
+      <member refid="classpath_1_1_part_1adcfeed4d6166f35e3ea1eb87926f6a5e" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>layers</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1a1df58541f5d802020fb5f27a57861ca6" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>lineside</name></member>
+      <member refid="classpath_1_1_part_1a185c9bbf10bddf3b739441e758850c84" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>make_copies</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1a1ad0b3dbea620c916110d96ffe3e5215" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>make_normal</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1aa9df9c5a4d54b25df51f3787f4a51e94" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>make_sides</name></member>
+      <member refid="classpath_1_1_part_1a982bb6775f254fd811f03015c7695718" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>material_shape</name></member>
+      <member refid="classpath_1_1_part_1a3e0f8f43f26a761a02616e2a2bc735e1" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>mirror</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1abedf2ff5c000b46d146b0b11e5872bf7" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>newpoints</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1aa4c61dd48b10ff63eb8f4889d55934f6" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>normals</name></member>
+      <member refid="classpath_1_1_part_1a5c83f575732c5a3a949c1e7facbf548c" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>number</name></member>
+      <member refid="classpath_1_1_part_1ac56a35fa54fc9cae4b96917ef5bcdaae" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>obType</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1af1a76bf23428a71336ab686f48289f3e" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>other_side_mode</name></member>
+      <member refid="classpath_1_1_part_1ae705ca5412f4383b77dd32e9ebdd237f" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>otherargs</name></member>
+      <member refid="classpath_1_1_part_1a6ff6c586832ff637508796a8a77dbbac" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>output</name></member>
+      <member refid="classpath_1_1_part_1af5b40fad5803470c54db7d42b07f8a95" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>overwrite</name></member>
+      <member refid="classpath_1_1_part_1aac66c946dd230e64e4c24cecf1d2d4e9" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>parent</name></member>
+      <member refid="classpath_1_1_part_1a01ea69c0b818956e26ed146808d6ba74" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>parts</name></member>
+      <member refid="classpath_1_1_part_1af1c81df8b50b76bba5e7be33d8a12938" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>paths</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1a7964ab53bc41a083704f111c9b9c05d2" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>propagate_direction</name></member>
+      <member refid="classpath_1_1_part_1ad5f9f5edfa6d110a4de203c109223ede" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>renderable</name></member>
+      <member refid="classpath_1_1_part_1a70560f4969089436589b608259ee2ca1" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>rotate</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1a1cb83b2e5910298b4c4d4d72131044b3" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>set_corners</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1a5e7fe3b2283ec34c3bf580e3615b9b4f" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>set_tab_length</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1a26b3d077741f59e0f58fa8b6307d1958" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>side_angles</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1a3c4f3f9e42118cbe79d0d8be915bfe4f" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>sides</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1a57bd2d3c2e315a7615c7340edb7ebb11" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>sign</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1aa3f4f131456dc23999d99a422041c842" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>tab_length</name></member>
+      <member refid="classpath_1_1_part_1aa46bbe5ca2996ee60e388415f398b008" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>trace</name></member>
+      <member refid="classpath_1_1_part_1a77dd1289501d1f4bce4ff5b4718f7200" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>transform</name></member>
+      <member refid="classpath_1_1_part_1a27d0b520d21955962d578c55227bcff8" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>translate</name></member>
+      <member refid="classboxes_1_1_arbitrary_box_1a821fecbe31d7f119b15f6fc4c632dfbb" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>tuple_to_vec</name></member>
+      <member refid="classpath_1_1_part_1a56b959045a54830e9c1f99675b12a075" prot="public" virt="non-virtual"><scope>boxes::ArbitraryBox</scope><name>varlist</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

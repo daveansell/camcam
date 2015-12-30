@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespacepoint" kind="namespace" language="Python">
+    <compoundname>point</compoundname>
+    <innerclass refid="classpoint_1_1_p_arc" prot="public">point::PArc</innerclass>
+    <innerclass refid="classpoint_1_1_p_aroundcurve" prot="public">point::PAroundcurve</innerclass>
+    <innerclass refid="classpoint_1_1_p_bezier_control" prot="public">point::PBezierControl</innerclass>
+    <innerclass refid="classpoint_1_1_p_chamfer" prot="public">point::PChamfer</innerclass>
+    <innerclass refid="classpoint_1_1_p_circle" prot="public">point::PCircle</innerclass>
+    <innerclass refid="classpoint_1_1_p_clear" prot="public">point::PClear</innerclass>
+    <innerclass refid="classpoint_1_1_p_double_clear" prot="public">point::PDoubleClear</innerclass>
+    <innerclass refid="classpoint_1_1_p_incurve" prot="public">point::PIncurve</innerclass>
+    <innerclass refid="classpoint_1_1_point" prot="public">point::Point</innerclass>
+    <innerclass refid="classpoint_1_1_p_outcurve" prot="public">point::POutcurve</innerclass>
+    <innerclass refid="classpoint_1_1_p_sharp" prot="public">point::PSharp</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacepoint_1a4e295d3289aafe0a3abd09e42c25b45c" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple point.last</definition>
+        <argsstring></argsstring>
+        <name>last</name>
+        <initializer>= self.last()</initializer>
+        <briefdescription>
+<para>else: </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="192" column="1" bodyfile="/home/db/camcam/point.py" bodystart="192" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacepoint_1a4b048a13e23e86c6f5d0a5f4c2ff3e15" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.rotate</definition>
+        <argsstring>(pos, a)</argsstring>
+        <name>rotate</name>
+        <param>
+          <type>pos</type>
+          <defname>pos</defname>
+        </param>
+        <param>
+          <type>a</type>
+          <defname>a</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="1" column="1" bodyfile="/home/db/camcam/point.py" bodystart="1" bodyend="8"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacepoint_1acc12f97640322a665d56d0233654a8ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.V</definition>
+        <argsstring></argsstring>
+        <name>V</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="15" column="1" bodyfile="/home/db/camcam/point.py" bodystart="15" bodyend="24"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacepoint_1acd0a0abb4fae2415425eadf1be1501f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.nextorigin</definition>
+        <argsstring>(self)</argsstring>
+        <name>nextorigin</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="198" column="1" bodyfile="/home/db/camcam/point.py" bodystart="198" bodyend="204"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacepoint_1a0b5edbbdc66b95211a7202245613c176" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.otherDir</definition>
+        <argsstring>(self, direction)</argsstring>
+        <name>otherDir</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>direction</type>
+          <defname>direction</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="205" column="1" bodyfile="/home/db/camcam/point.py" bodystart="205" bodyend="209"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacepoint_1aeaf6c17aef5ff8c0239b968250a24f4c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.lineArcIntersect</definition>
+        <argsstring>(self, p1, p2, centre, rad)</argsstring>
+        <name>lineArcIntersect</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>p1</type>
+          <defname>p1</defname>
+        </param>
+        <param>
+          <type>p2</type>
+          <defname>p2</defname>
+        </param>
+        <param>
+          <type>centre</type>
+          <defname>centre</defname>
+        </param>
+        <param>
+          <type>rad</type>
+          <defname>rad</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="210" column="1" bodyfile="/home/db/camcam/point.py" bodystart="210" bodyend="228"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/point.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classminivec_1_1minivec_1_1___epsilon_pop_context" kind="class" language="Python" prot="public">
+    <compoundname>minivec::minivec::_EpsilonPopContext</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">object</basecompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1___epsilon_pop_context_1a6bff77413e5f291e2d59d2332bbed65b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._EpsilonPopContext.__enter__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__enter__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1391" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1391" bodyend="1394"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1___epsilon_pop_context_1a54fbe4b367b664f50a7a4a4136d6e147" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._EpsilonPopContext.__exit__</definition>
+        <argsstring>(self, _t, _v, _tb)</argsstring>
+        <name>__exit__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>_t</type>
+          <defname>_t</defname>
+        </param>
+        <param>
+          <type>_v</type>
+          <defname>_v</defname>
+        </param>
+        <param>
+          <type>_tb</type>
+          <defname>_tb</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1395" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1395" bodyend="1398"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1___epsilon_pop_context_1abfd57f790b9d3f96019040fc256319b6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._EpsilonPopContext.__repr__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__repr__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1399" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1399" bodyend="1403"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="0">
+        <label>minivec.minivec._EpsilonPopContext</label>
+        <link refid="classminivec_1_1minivec_1_1___epsilon_pop_context"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>object</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>minivec.minivec._EpsilonPopContext</label>
+        <link refid="classminivec_1_1minivec_1_1___epsilon_pop_context"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>object</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/minivec/minivec.py" line="1390" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1390" bodyend="1404"/>
+    <listofallmembers>
+      <member refid="classminivec_1_1minivec_1_1___epsilon_pop_context_1a6bff77413e5f291e2d59d2332bbed65b" prot="public" virt="non-virtual"><scope>minivec::minivec::_EpsilonPopContext</scope><name>__enter__</name></member>
+      <member refid="classminivec_1_1minivec_1_1___epsilon_pop_context_1a54fbe4b367b664f50a7a4a4136d6e147" prot="public" virt="non-virtual"><scope>minivec::minivec::_EpsilonPopContext</scope><name>__exit__</name></member>
+      <member refid="classminivec_1_1minivec_1_1___epsilon_pop_context_1abfd57f790b9d3f96019040fc256319b6" prot="public" virt="non-virtual"><scope>minivec::minivec::_EpsilonPopContext</scope><name>__repr__</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

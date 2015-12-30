@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classsegments_1_1_segment" kind="class" language="Python" prot="public">
+    <compoundname>segments::Segment</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">object</basecompoundref>
+    <derivedcompoundref refid="classsegments_1_1_arc" prot="public" virt="non-virtual">segments.Arc</derivedcompoundref>
+    <derivedcompoundref refid="classsegments_1_1_cubic" prot="public" virt="non-virtual">segments.Cubic</derivedcompoundref>
+    <derivedcompoundref refid="classsegments_1_1_line" prot="public" virt="non-virtual">segments.Line</derivedcompoundref>
+    <derivedcompoundref refid="classsegments_1_1_quad" prot="public" virt="non-virtual">segments.Quad</derivedcompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classsegments_1_1_segment_1acaccd5af98d8073bdad79805908fefe4" prot="public" static="yes" mutable="no">
+        <type>dictionary</type>
+        <definition>dictionary segments.Segment::seg_types</definition>
+        <argsstring></argsstring>
+        <name>seg_types</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="23" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_segment_1a4861399cabc87392517f539c38bb79d1" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple segments.Segment::temp</definition>
+        <argsstring></argsstring>
+        <name>temp</name>
+        <initializer>= self.gcode(direction)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="35" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classsegments_1_1_segment_1adcbfe80739fb05b3e68920b7139219e7" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>segments.Segment::seg_type</definition>
+        <argsstring></argsstring>
+        <name>seg_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="26" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classsegments_1_1_segment_1a1361eaaf9eaa73cb73d9201808842108" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Segment.__init__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="24" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="24" bodyend="26"/>
+      </memberdef>
+      <memberdef kind="function" id="classsegments_1_1_segment_1a22b1c733c65857a39bcedbc86654d4a0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Segment.gcode</definition>
+        <argsstring></argsstring>
+        <name>gcode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="27" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="27" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classsegments_1_1_segment_1a8b156fa2dcd4f93f6d781d820b931da4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Segment.start</definition>
+        <argsstring>(self)</argsstring>
+        <name>start</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="29" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="29" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="classsegments_1_1_segment_1ad755cb568f5a00ba72459d41721a652e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Segment.out</definition>
+        <argsstring></argsstring>
+        <name>out</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="31" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="31" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="classsegments_1_1_segment_1a1b1ebb51664cb1aa198e6dd5a37520ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Segment.svg</definition>
+        <argsstring>(self)</argsstring>
+        <name>svg</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="54" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="54" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="classsegments_1_1_segment_1ae8a07de4e87b72e7f915866647c577b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Segment.polygon</definition>
+        <argsstring>(self)</argsstring>
+        <name>polygon</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="56" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="56" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="classsegments_1_1_segment_1a7a8dd4167be305d3adbc27ffa3a41ff1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Segment.simplegcode</definition>
+        <argsstring>(self, zfrom, zto, direction)</argsstring>
+        <name>simplegcode</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>zfrom</type>
+          <defname>zfrom</defname>
+        </param>
+        <param>
+          <type>zto</type>
+          <defname>zto</defname>
+        </param>
+        <param>
+          <type>direction</type>
+          <defname>direction</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="59" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="59" bodyend="75"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1702">
+        <label>segments.Line</label>
+        <link refid="classsegments_1_1_line"/>
+        <childnode refid="1698" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1703">
+        <label>segments.Quad</label>
+        <link refid="classsegments_1_1_quad"/>
+        <childnode refid="1698" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1700">
+        <label>segments.Arc</label>
+        <link refid="classsegments_1_1_arc"/>
+        <childnode refid="1698" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1699">
+        <label>object</label>
+      </node>
+      <node id="1701">
+        <label>segments.Cubic</label>
+        <link refid="classsegments_1_1_cubic"/>
+        <childnode refid="1698" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1698">
+        <label>segments.Segment</label>
+        <link refid="classsegments_1_1_segment"/>
+        <childnode refid="1699" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1705">
+        <label>object</label>
+      </node>
+      <node id="1704">
+        <label>segments.Segment</label>
+        <link refid="classsegments_1_1_segment"/>
+        <childnode refid="1705" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/segments.py" line="22" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="22" bodyend="76"/>
+    <listofallmembers>
+      <member refid="classsegments_1_1_segment_1a1361eaaf9eaa73cb73d9201808842108" prot="public" virt="non-virtual"><scope>segments::Segment</scope><name>__init__</name></member>
+      <member refid="classsegments_1_1_segment_1a22b1c733c65857a39bcedbc86654d4a0" prot="public" virt="non-virtual"><scope>segments::Segment</scope><name>gcode</name></member>
+      <member refid="classsegments_1_1_segment_1ad755cb568f5a00ba72459d41721a652e" prot="public" virt="non-virtual"><scope>segments::Segment</scope><name>out</name></member>
+      <member refid="classsegments_1_1_segment_1ae8a07de4e87b72e7f915866647c577b8" prot="public" virt="non-virtual"><scope>segments::Segment</scope><name>polygon</name></member>
+      <member refid="classsegments_1_1_segment_1adcbfe80739fb05b3e68920b7139219e7" prot="public" virt="non-virtual"><scope>segments::Segment</scope><name>seg_type</name></member>
+      <member refid="classsegments_1_1_segment_1acaccd5af98d8073bdad79805908fefe4" prot="public" virt="non-virtual"><scope>segments::Segment</scope><name>seg_types</name></member>
+      <member refid="classsegments_1_1_segment_1a7a8dd4167be305d3adbc27ffa3a41ff1" prot="public" virt="non-virtual"><scope>segments::Segment</scope><name>simplegcode</name></member>
+      <member refid="classsegments_1_1_segment_1a8b156fa2dcd4f93f6d781d820b931da4" prot="public" virt="non-virtual"><scope>segments::Segment</scope><name>start</name></member>
+      <member refid="classsegments_1_1_segment_1a1b1ebb51664cb1aa198e6dd5a37520ba" prot="public" virt="non-virtual"><scope>segments::Segment</scope><name>svg</name></member>
+      <member refid="classsegments_1_1_segment_1a4861399cabc87392517f539c38bb79d1" prot="public" virt="non-virtual"><scope>segments::Segment</scope><name>temp</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,1212 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classbezier_1_1_null_bezier_curve" kind="class" language="Python" prot="public">
+    <compoundname>bezier::NullBezierCurve</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">extends</basecompoundref>
+    <basecompoundref refid="classbezier_1_1_bezier_curve" prot="public" virt="non-virtual">bezier.BezierCurve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">super</basecompoundref>
+    <basecompoundref refid="classbezier_1_1_bezier_curve" prot="public" virt="non-virtual">bezier.BezierCurve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">getDerivative</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">return</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">this</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">getValue</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">return</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">A</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">generic</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Poly</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Bezier</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">curve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">implementation</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">A</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Poly</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Bezier</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">curve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">class</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">class</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">PolyBezierCurve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">pointCount</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">ArrayList</basecompoundref>
+    <basecompoundref refid="classbezier_1_1_bezier_curve" prot="public" virt="non-virtual">bezier.BezierCurve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">segments</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">length</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">boolean</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">constrained</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">true</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">closed</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">false</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">integrate</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">false</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">lastStart</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Form</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">a</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">new</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">poly</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">bezier</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">PolyBezierCurve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">segments</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">new</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">ArrayList</basecompoundref>
+    <basecompoundref refid="classbezier_1_1_bezier_curve" prot="public" virt="non-virtual">bezier.BezierCurve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">PolyBezierCurve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">boolean</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">this</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">constrained</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Add</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">a</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">segment</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">to</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">this</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">poly</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">bezier</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">void</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">addCurve</basecompoundref>
+    <basecompoundref refid="classbezier_1_1_bezier_curve" prot="public" virt="non-virtual">bezier.BezierCurve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">curve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">addCurve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">curve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">true</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">void</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">addCurve</basecompoundref>
+    <basecompoundref refid="classbezier_1_1_bezier_curve" prot="public" virt="non-virtual">bezier.BezierCurve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">curve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">boolean</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">integrate</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">len</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">size</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">add</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">curve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">if</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">len</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">return</basecompoundref>
+    <basecompoundref refid="classbezier_1_1_bezier_curve" prot="public" virt="non-virtual">bezier.BezierCurve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">pc</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">get</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">len</basecompoundref>
+    <basecompoundref refid="classbezier_1_1_point" prot="public" virt="non-virtual">bezier.Point</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">points</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">points</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">plen</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">len</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">points</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">make</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">the</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">segments</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">share</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">endpoints</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">if</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">integrate</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">and</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">integrate</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">points</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">points</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">plen</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">if</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">constrained</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">points</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">points</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">plen</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">reflect</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">points</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">plen</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">update</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">get</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">order</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">if</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">pointCount</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">pointCount</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">plen</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">administer</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">length</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">length</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">getCurveLength</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">if</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">integrate</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">false</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">integrate</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">true</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Close</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">up</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">this</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">poly</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Bezier</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">curve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">FIXME</basecompoundref>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1206">
+        <label>return</label>
+      </node>
+      <node id="1257">
+        <label>this::integrate</label>
+      </node>
+      <node id="1215">
+        <label>curve</label>
+      </node>
+      <node id="1201">
+        <label>bezier.NullBezierCurve</label>
+        <link refid="classbezier_1_1_null_bezier_curve"/>
+        <childnode refid="1202" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1203" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1204" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1203" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1205" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1206" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1207" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1208" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1209" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1208" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1210" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1206" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1211" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1212" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1213" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1214" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1215" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1216" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1211" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1213" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1214" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1215" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1217" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1217" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1218" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1219" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1220" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1221" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1203" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1222" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1208" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1223" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1224" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1225" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1226" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1227" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1228" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1229" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1228" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1219" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1230" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1231" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1232" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1233" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1234" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1235" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1218" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1222" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1233" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1221" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1203" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1218" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1224" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1236" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1207" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1225" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1236" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1237" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1232" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1238" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1239" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1207" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1234" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1235" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1240" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1241" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1203" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1215" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1241" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1215" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1226" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1240" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1241" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1203" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1215" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1224" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1229" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1219" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1242" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1243" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1244" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1215" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1245" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1242" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1206" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1203" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1246" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1247" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1242" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1248" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1249" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1250" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1219" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1251" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1242" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1252" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1253" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1254" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1222" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1255" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1256" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1245" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1257" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1258" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1229" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1259" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1249" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1251" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1245" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1225" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1249" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1249" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1251" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1260" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1249" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1251" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1261" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1262" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1263" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1245" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1220" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1220" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1251" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1264" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1223" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1223" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1265" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1245" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1229" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1228" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1229" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1226" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1266" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1267" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1207" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1234" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1214" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1215" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1268" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1207">
+        <label>this</label>
+      </node>
+      <node id="1211">
+        <label>A</label>
+      </node>
+      <node id="1209">
+        <label>getValue</label>
+      </node>
+      <node id="1232">
+        <label>a</label>
+      </node>
+      <node id="1224">
+        <label>boolean</label>
+      </node>
+      <node id="1236">
+        <label>c</label>
+      </node>
+      <node id="1242">
+        <label>len</label>
+      </node>
+      <node id="1210">
+        <label>t</label>
+      </node>
+      <node id="1255">
+        <label>share</label>
+      </node>
+      <node id="1228">
+        <label>false</label>
+      </node>
+      <node id="1238">
+        <label>segment</label>
+      </node>
+      <node id="1221">
+        <label>ArrayList</label>
+      </node>
+      <node id="1217">
+        <label>class</label>
+      </node>
+      <node id="1237">
+        <label>Add</label>
+      </node>
+      <node id="1254">
+        <label>the</label>
+      </node>
+      <node id="1231">
+        <label>Form</label>
+      </node>
+      <node id="1266">
+        <label>Close</label>
+      </node>
+      <node id="1248">
+        <label>bezier.Point</label>
+        <link refid="classbezier_1_1_point"/>
+      </node>
+      <node id="1208">
+        <label>float</label>
+      </node>
+      <node id="1203">
+        <label>bezier.BezierCurve</label>
+        <link refid="classbezier_1_1_bezier_curve"/>
+      </node>
+      <node id="1227">
+        <label>closed</label>
+      </node>
+      <node id="1243">
+        <label>segments::size</label>
+      </node>
+      <node id="1214">
+        <label>Bezier</label>
+      </node>
+      <node id="1258">
+        <label>and</label>
+      </node>
+      <node id="1250">
+        <label>pc::points</label>
+      </node>
+      <node id="1263">
+        <label>order</label>
+      </node>
+      <node id="1222">
+        <label>segments</label>
+      </node>
+      <node id="1260">
+        <label>reflect</label>
+      </node>
+      <node id="1252">
+        <label>self::points</label>
+      </node>
+      <node id="1247">
+        <label>segments::get</label>
+      </node>
+      <node id="1219">
+        <label>int</label>
+      </node>
+      <node id="1204">
+        <label>super</label>
+      </node>
+      <node id="1230">
+        <label>lastStart</label>
+      </node>
+      <node id="1216">
+        <label>implementation</label>
+      </node>
+      <node id="1205">
+        <label>getDerivative</label>
+      </node>
+      <node id="1268">
+        <label>FIXME</label>
+      </node>
+      <node id="1235">
+        <label>bezier</label>
+      </node>
+      <node id="1220">
+        <label>pointCount</label>
+      </node>
+      <node id="1225">
+        <label>constrained</label>
+      </node>
+      <node id="1202">
+        <label>extends</label>
+      </node>
+      <node id="1229">
+        <label>integrate</label>
+      </node>
+      <node id="1233">
+        <label>new</label>
+      </node>
+      <node id="1234">
+        <label>poly</label>
+      </node>
+      <node id="1241">
+        <label>addCurve</label>
+      </node>
+      <node id="1256">
+        <label>endpoints</label>
+      </node>
+      <node id="1249">
+        <label>points</label>
+      </node>
+      <node id="1213">
+        <label>Poly</label>
+      </node>
+      <node id="1212">
+        <label>generic</label>
+      </node>
+      <node id="1245">
+        <label>if</label>
+      </node>
+      <node id="1259">
+        <label>curve::points</label>
+      </node>
+      <node id="1251">
+        <label>plen</label>
+      </node>
+      <node id="1226">
+        <label>true</label>
+      </node>
+      <node id="1223">
+        <label>length</label>
+      </node>
+      <node id="1262">
+        <label>get</label>
+      </node>
+      <node id="1218">
+        <label>PolyBezierCurve</label>
+      </node>
+      <node id="1246">
+        <label>pc</label>
+      </node>
+      <node id="1253">
+        <label>make</label>
+      </node>
+      <node id="1265">
+        <label>curve::getCurveLength</label>
+      </node>
+      <node id="1244">
+        <label>segments::add</label>
+      </node>
+      <node id="1240">
+        <label>void</label>
+      </node>
+      <node id="1239">
+        <label>to</label>
+      </node>
+      <node id="1267">
+        <label>up</label>
+      </node>
+      <node id="1261">
+        <label>curve::update</label>
+      </node>
+      <node id="1264">
+        <label>administer</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1274">
+        <label>return</label>
+      </node>
+      <node id="1325">
+        <label>this::integrate</label>
+      </node>
+      <node id="1283">
+        <label>curve</label>
+      </node>
+      <node id="1269">
+        <label>bezier.NullBezierCurve</label>
+        <link refid="classbezier_1_1_null_bezier_curve"/>
+        <childnode refid="1270" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1271" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1272" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1271" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1273" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1274" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1275" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1276" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1277" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1276" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1278" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1274" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1279" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1280" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1281" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1282" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1283" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1284" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1279" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1281" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1282" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1283" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1286" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1287" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1288" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1289" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1271" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1290" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1276" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1291" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1292" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1293" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1294" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1295" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1296" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1297" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1296" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1287" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1298" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1299" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1301" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1302" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1303" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1286" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1290" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1301" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1289" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1271" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1286" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1292" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1304" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1275" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1293" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1304" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1305" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1306" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1307" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1275" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1302" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1303" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1308" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1309" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1271" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1283" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1309" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1283" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1294" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1308" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1309" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1271" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1283" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1292" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1297" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1287" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1310" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1311" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1312" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1283" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1313" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1310" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1274" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1271" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1314" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1315" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1310" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1316" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1318" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1287" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1319" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1310" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1320" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1321" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1322" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1290" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1323" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1324" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1313" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1325" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1326" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1297" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1327" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1319" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1313" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1293" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1319" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1328" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1319" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1329" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1330" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1331" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1313" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1288" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1288" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1319" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1332" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1291" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1291" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1333" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1313" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1297" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1296" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1297" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1294" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1334" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1335" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1275" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1302" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1282" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1283" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1336" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1275">
+        <label>this</label>
+      </node>
+      <node id="1279">
+        <label>A</label>
+      </node>
+      <node id="1277">
+        <label>getValue</label>
+      </node>
+      <node id="1300">
+        <label>a</label>
+      </node>
+      <node id="1292">
+        <label>boolean</label>
+      </node>
+      <node id="1304">
+        <label>c</label>
+      </node>
+      <node id="1310">
+        <label>len</label>
+      </node>
+      <node id="1278">
+        <label>t</label>
+      </node>
+      <node id="1323">
+        <label>share</label>
+      </node>
+      <node id="1296">
+        <label>false</label>
+      </node>
+      <node id="1306">
+        <label>segment</label>
+      </node>
+      <node id="1289">
+        <label>ArrayList</label>
+      </node>
+      <node id="1285">
+        <label>class</label>
+      </node>
+      <node id="1305">
+        <label>Add</label>
+      </node>
+      <node id="1322">
+        <label>the</label>
+      </node>
+      <node id="1299">
+        <label>Form</label>
+      </node>
+      <node id="1334">
+        <label>Close</label>
+      </node>
+      <node id="1316">
+        <label>bezier.Point</label>
+        <link refid="classbezier_1_1_point"/>
+      </node>
+      <node id="1276">
+        <label>float</label>
+      </node>
+      <node id="1271">
+        <label>bezier.BezierCurve</label>
+        <link refid="classbezier_1_1_bezier_curve"/>
+      </node>
+      <node id="1295">
+        <label>closed</label>
+      </node>
+      <node id="1311">
+        <label>segments::size</label>
+      </node>
+      <node id="1282">
+        <label>Bezier</label>
+      </node>
+      <node id="1326">
+        <label>and</label>
+      </node>
+      <node id="1318">
+        <label>pc::points</label>
+      </node>
+      <node id="1331">
+        <label>order</label>
+      </node>
+      <node id="1290">
+        <label>segments</label>
+      </node>
+      <node id="1328">
+        <label>reflect</label>
+      </node>
+      <node id="1320">
+        <label>self::points</label>
+      </node>
+      <node id="1315">
+        <label>segments::get</label>
+      </node>
+      <node id="1287">
+        <label>int</label>
+      </node>
+      <node id="1272">
+        <label>super</label>
+      </node>
+      <node id="1298">
+        <label>lastStart</label>
+      </node>
+      <node id="1284">
+        <label>implementation</label>
+      </node>
+      <node id="1273">
+        <label>getDerivative</label>
+      </node>
+      <node id="1336">
+        <label>FIXME</label>
+      </node>
+      <node id="1303">
+        <label>bezier</label>
+      </node>
+      <node id="1288">
+        <label>pointCount</label>
+      </node>
+      <node id="1293">
+        <label>constrained</label>
+      </node>
+      <node id="1270">
+        <label>extends</label>
+      </node>
+      <node id="1297">
+        <label>integrate</label>
+      </node>
+      <node id="1301">
+        <label>new</label>
+      </node>
+      <node id="1302">
+        <label>poly</label>
+      </node>
+      <node id="1309">
+        <label>addCurve</label>
+      </node>
+      <node id="1324">
+        <label>endpoints</label>
+      </node>
+      <node id="1317">
+        <label>points</label>
+      </node>
+      <node id="1281">
+        <label>Poly</label>
+      </node>
+      <node id="1280">
+        <label>generic</label>
+      </node>
+      <node id="1313">
+        <label>if</label>
+      </node>
+      <node id="1327">
+        <label>curve::points</label>
+      </node>
+      <node id="1319">
+        <label>plen</label>
+      </node>
+      <node id="1294">
+        <label>true</label>
+      </node>
+      <node id="1291">
+        <label>length</label>
+      </node>
+      <node id="1330">
+        <label>get</label>
+      </node>
+      <node id="1286">
+        <label>PolyBezierCurve</label>
+      </node>
+      <node id="1314">
+        <label>pc</label>
+      </node>
+      <node id="1321">
+        <label>make</label>
+      </node>
+      <node id="1333">
+        <label>curve::getCurveLength</label>
+      </node>
+      <node id="1312">
+        <label>segments::add</label>
+      </node>
+      <node id="1308">
+        <label>void</label>
+      </node>
+      <node id="1307">
+        <label>to</label>
+      </node>
+      <node id="1335">
+        <label>up</label>
+      </node>
+      <node id="1329">
+        <label>curve::update</label>
+      </node>
+      <node id="1332">
+        <label>administer</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/bezier.py" line="894" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="967" bodyend="-1"/>
+    <listofallmembers>
+      <member refid="classbezier_1_1_bezier_curve_1a9056d475eb2526c7c5a9c48313520e89" prot="public" virt="non-virtual" ambiguityscope="bezier::BezierCurve."><scope>bezier::NullBezierCurve</scope><name>__init__</name></member>
+      <member refid="classbezier_1_1_point_1a68259b21ff696fd50080620830eb50e4" prot="public" virt="non-virtual" ambiguityscope="bezier::Point."><scope>bezier::NullBezierCurve</scope><name>__init__</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a9cf4bf17eddb3214f5727e9b45a15d62" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>abc</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a52119ad0f3360312b0e32391581f3671" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>align</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a76880ee12be206cb218322e95cfa7658" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>bias</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1ad2535ff3f7797701c3bae55252cff911" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>curveLength</name></member>
+      <member refid="classbezier_1_1_point_1a7646bb0cfbce0ffe70b3a91c8cfbac16" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>d</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a66a3a2b3ee0242789790ceace4b8c507" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>draw_x</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a1859a14a8e80f71956ff806565be4e0d" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>draw_y</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a64ef8bef255edb9e13299006896daa7d" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>elevate</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a2f6e9270634c92225ba306342c8a60d7" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>generateBoundingBox</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a28b0f5a264c1a37b4f38e3b4d9f44980" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>generateSpan</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1acaae994a33a9f9e41acb54f2691f1a86" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>generateTightBoundingBox</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aa3abeeffa97dabf2038f1a8f7d0f1940" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>generator</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a2cd7ddcf33cb2fc656ec6d422ed5c9d0" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getABC</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a56d4007381285ec7fa68041a146acc3a" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getArea</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a3bff9cf6d4ab0944c6634a95e9afa6db" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getCurveLength</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a023612963116656fc516654058647ef0" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getD2XValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a9d170ca72ea731c0824ee1e8d2675893" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getD2YValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a585ad6904fc86f56b6ab076d9e5631aa" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getDerivativePoint</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6c1c43b478d496b72b45ad4c8b7b53cc" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getDXValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1af52a33daa84c05d5ff5dc04b008509b3" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getDYValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a4b0304e414c7bfebd8dbbde6e8ca669e" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getEnd</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1ae23502e8926d52943088db91fd2bc8ba" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getInflections</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6cfb8ee3cded08c7a9d7c47d19b4abaf" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getInterval</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a964b6692250b6c3e82276eab469af6ed" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getNormal</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aaaea17f47298e5886852e33f05cb4f4a" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getPoint</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a9ba3665b11a6798f293c7aefa2f870bb" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getPointProjection</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a600fb93cad2745eaba1b011e5989c4d0" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getScaleAngle</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a1fc50ea3b49003eeb377d817a15e35ce" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getSecondDerivativePoint</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6807911cd4102ba77bb799a72a992b0b" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getSimilarity</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1ac55cd30cbbcd12cf9ea5419ba2784e74" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getSpanLines</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6dfed42b3ef446bef5f2692ede776caa" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getStart</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a0f48a9279d1bcf4dac5296162809af5c" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getXValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aebd772e37e054a8ff0c22154c9d475cb" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>getYValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a67f06fd66567124f37eea60321e3126b" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>hasBoundOverlapWith</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a8f368135ebb837de62ea0b663e3eee70" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>isBiased</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a0d541f51c06e2cce9fb84515188d1fb3" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>justX</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aedc1b7ba039d659a32c37c323aa079b8" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>justY</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a4570d8b0525d6fb56ffbe338aea5b9a5" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>last</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a958ec48826bf0bfd4f29c73641fd7562" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>left_split</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1af3f47c83a98f56b011858f24b7eed302" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>lower</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a631e45794713c37b7b28a1116bf7d414" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>LUT_resolution</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a4577c6349bf8568b0f0a6259c361c42d" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>LUT_x</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a5c47bd22203df84b3c9ef64389134d9d" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>LUT_y</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a0dbf1d48cda1fee475627cbb46af1913" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>makeOffsetArray</name></member>
+      <member refid="classbezier_1_1_point_1aa2ac4c3811bf9f6ada0ad9ae37d0b49c" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>moveBy</name></member>
+      <member refid="classbezier_1_1_point_1a1e926219773aa0684a6329c8aaca6903" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>moveTo</name></member>
+      <member refid="classbezier_1_1_point_1a7aae96210ba0b027585354da7a89ed70" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>normal</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a17976a1d7e6864d98bec238778702d5d" prot="public" virt="non-virtual" ambiguityscope="bezier::BezierCurve."><scope>bezier::NullBezierCurve</scope><name>normalize</name></member>
+      <member refid="classbezier_1_1_point_1affa05deaf327ba3f06ad22549f58aa62" prot="public" virt="non-virtual" ambiguityscope="bezier::Point."><scope>bezier::NullBezierCurve</scope><name>normalize</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a2cf138c2853916d8fdd6ee538decd11b" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>normals</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1acd0c66cf9592d59635d8f0cd90a6a8e6" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>nx</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a4b765fecb383d8a7bcf7400ed69f5c55" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>ny</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1ae3b2bda88c67445d6cf62a86f121d4bd" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>offset</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a0f9a46cd0b0c3060c81c503e97718e87" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>order</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1acea4fdceeab227eb5ad09f52f9b58e40" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>originalInterval</name></member>
+      <member refid="classbezier_1_1_point_1ac46a979a6b714559a066096cb10f23e4" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>over</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1af54790f4736706fda65bcc87e24cef1f" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>ox</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a5cd7c967702aa92f02a0fafbf1ed719d" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>oy</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6c39346893b0610e98d124f94f098b5b" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>points</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aebb06c5028ed907c85c179cef3fd5f47" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>ratios</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a786182209f69177b13f04fdd678eeb56" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>refineProjection</name></member>
+      <member refid="classbezier_1_1_point_1a69e0e3843fed67dc4def6003fc47943f" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>reflect</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1afb7008816c2eb9b266374b543b748b1c" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>ret</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1adfebcda73ce613d7f913ed37541348c6" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>ret</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6a567a984fdaa79b45c34650d5806b1d" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>reverse</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a1537b07a507ce3a670363ca50fcfb8b9" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>right_split</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a782e956673f761f25e256f1c2094d54b" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>roots</name></member>
+      <member refid="classbezier_1_1_point_1ab80043486d5208080b886508bc7d6a45" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>rotateOver</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a575e7ea0b4393c4007b0653488dffb00" prot="public" virt="non-virtual" ambiguityscope="bezier::BezierCurve."><scope>bezier::NullBezierCurve</scope><name>scale</name></member>
+      <member refid="classbezier_1_1_point_1a274eed2d595fbf1e04441634c3f32f18" prot="public" virt="non-virtual" ambiguityscope="bezier::Point."><scope>bezier::NullBezierCurve</scope><name>scale</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a317f7fd239fe45816b1768fa5a73dd84" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>setLower</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a5e38ed6ec16131e7ab51330d66f42297" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>setOriginalT</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aea4d53a18bc2560c93b35a764fe6625c" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>simpleOffset</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1abd2b09d5ae706c4e31f22b0c199134c0" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>span</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a79e5e878938d38339da6d3bebb7bf337" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>span_t</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aa81a80a7a9dff4c45638400d60c2aa00" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>split</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a668f0b24433e3b2c5ef87f69875a10c2" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>t_values</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a76076a6b08f173fd018861a3c53e7711" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>update</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a67d3887b8b38085157320f51305db83e" prot="public" virt="non-virtual" ambiguityscope="bezier::BezierCurve."><scope>bezier::NullBezierCurve</scope><name>x</name></member>
+      <member refid="classbezier_1_1_point_1a1fafe43db62786b6440ed7da2f65c94c" prot="public" virt="non-virtual" ambiguityscope="bezier::Point."><scope>bezier::NullBezierCurve</scope><name>x</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1abae064c2182ba700fb576355e7d15bab" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>x_values</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a4daedd276ea223e485036f3ad346b33c" prot="public" virt="non-virtual" ambiguityscope="bezier::BezierCurve."><scope>bezier::NullBezierCurve</scope><name>y</name></member>
+      <member refid="classbezier_1_1_point_1afef026c2349e08af94ac206129e0b1bf" prot="public" virt="non-virtual" ambiguityscope="bezier::Point."><scope>bezier::NullBezierCurve</scope><name>y</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a8bf9aa7947c5ff98a513b2119c3bebac" prot="public" virt="non-virtual"><scope>bezier::NullBezierCurve</scope><name>y_values</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

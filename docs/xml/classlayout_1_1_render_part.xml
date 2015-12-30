@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classlayout_1_1_render_part" kind="class" language="Python" prot="public">
+    <compoundname>layout::RenderPart</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classlayout_1_1_render_part_1a75e05e413ecaa4a9aeb8d0c5751523c6" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>layout.RenderPart::offset</definition>
+        <argsstring></argsstring>
+        <name>offset</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/layout.py" line="66" column="1" bodyfile="/home/db/camcam/layout.py" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlayout_1_1_render_part_1a7854669838d9409538a941905861168b" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>layout.RenderPart::rotate</definition>
+        <argsstring></argsstring>
+        <name>rotate</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/layout.py" line="67" column="1" bodyfile="/home/db/camcam/layout.py" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlayout_1_1_render_part_1a477b02f95169bd34d027da38f9a45b9a" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>layout.RenderPart::borders</definition>
+        <argsstring></argsstring>
+        <name>borders</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/layout.py" line="68" column="1" bodyfile="/home/db/camcam/layout.py" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classlayout_1_1_render_part_1a6f1175809def8c95002868cdac53f687" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>layout.RenderPart::resolution</definition>
+        <argsstring></argsstring>
+        <name>resolution</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/layout.py" line="69" column="1" bodyfile="/home/db/camcam/layout.py" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classlayout_1_1_render_part_1a5687c60cdcc33e242f4ec48dceca7921" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def layout.RenderPart.__init__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/layout.py" line="65" column="1" bodyfile="/home/db/camcam/layout.py" bodystart="65" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="classlayout_1_1_render_part_1a13d671d839fd290c5ac7a82e8d2f1500" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def layout.RenderPart.set_part</definition>
+        <argsstring>(self, part)</argsstring>
+        <name>set_part</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>part</type>
+          <defname>part</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/layout.py" line="71" column="1" bodyfile="/home/db/camcam/layout.py" bodystart="71" bodyend="74"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/layout.py" line="64" column="1" bodyfile="/home/db/camcam/layout.py" bodystart="64" bodyend="75"/>
+    <listofallmembers>
+      <member refid="classlayout_1_1_render_part_1a5687c60cdcc33e242f4ec48dceca7921" prot="public" virt="non-virtual"><scope>layout::RenderPart</scope><name>__init__</name></member>
+      <member refid="classlayout_1_1_render_part_1a477b02f95169bd34d027da38f9a45b9a" prot="public" virt="non-virtual"><scope>layout::RenderPart</scope><name>borders</name></member>
+      <member refid="classlayout_1_1_render_part_1a75e05e413ecaa4a9aeb8d0c5751523c6" prot="public" virt="non-virtual"><scope>layout::RenderPart</scope><name>offset</name></member>
+      <member refid="classlayout_1_1_render_part_1a6f1175809def8c95002868cdac53f687" prot="public" virt="non-virtual"><scope>layout::RenderPart</scope><name>resolution</name></member>
+      <member refid="classlayout_1_1_render_part_1a7854669838d9409538a941905861168b" prot="public" virt="non-virtual"><scope>layout::RenderPart</scope><name>rotate</name></member>
+      <member refid="classlayout_1_1_render_part_1a13d671d839fd290c5ac7a82e8d2f1500" prot="public" virt="non-virtual"><scope>layout::RenderPart</scope><name>set_part</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

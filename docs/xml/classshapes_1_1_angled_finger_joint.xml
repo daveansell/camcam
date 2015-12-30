@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classshapes_1_1_angled_finger_joint" kind="class" language="Python" prot="public">
+    <compoundname>shapes::AngledFingerJoint</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">list</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classshapes_1_1_angled_finger_joint_1acdec495b67f9651786414eefc0d20b54" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple shapes.AngledFingerJoint::chamfer_width</definition>
+        <argsstring></argsstring>
+        <name>chamfer_width</name>
+        <initializer>= <ref refid="classshapes_1_1_angled_finger_joint_1a3c19348b7cc2e158b580b9701c5d1612" kindref="member">material_thickness</ref>*math.tan(float(angle)/180*math.pi)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="846" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="846" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classshapes_1_1_angled_finger_joint_1a3c19348b7cc2e158b580b9701c5d1612" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>shapes.AngledFingerJoint::material_thickness</definition>
+        <argsstring></argsstring>
+        <name>material_thickness</name>
+        <initializer>= thickness</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="849" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="849" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classshapes_1_1_angled_finger_joint_1aca8911daca5c644771098e059c44ca4e" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple shapes.AngledFingerJoint::perp</definition>
+        <argsstring></argsstring>
+        <name>perp</name>
+        <initializer>= rotate((end-start).normalize(),-90)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="851" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="851" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classshapes_1_1_angled_finger_joint_1a23ba20478302aa6b371ab7a912d8814f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def shapes.AngledFingerJoint.__init__</definition>
+        <argsstring></argsstring>
+        <name>__init__</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="831" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="831" bodyend="844"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>like a normal finger joint but with longer toungues to take into account the angle</verbatim> </para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="29">
+        <label>list</label>
+      </node>
+      <node id="28">
+        <label>shapes.AngledFingerJoint</label>
+        <link refid="classshapes_1_1_angled_finger_joint"/>
+        <childnode refid="29" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="31">
+        <label>list</label>
+      </node>
+      <node id="30">
+        <label>shapes.AngledFingerJoint</label>
+        <link refid="classshapes_1_1_angled_finger_joint"/>
+        <childnode refid="31" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/shapes.py" line="829" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="829" bodyend="863"/>
+    <listofallmembers>
+      <member refid="classshapes_1_1_angled_finger_joint_1a23ba20478302aa6b371ab7a912d8814f" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJoint</scope><name>__init__</name></member>
+      <member refid="classshapes_1_1_angled_finger_joint_1acdec495b67f9651786414eefc0d20b54" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJoint</scope><name>chamfer_width</name></member>
+      <member refid="classshapes_1_1_angled_finger_joint_1a3c19348b7cc2e158b580b9701c5d1612" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJoint</scope><name>material_thickness</name></member>
+      <member refid="classshapes_1_1_angled_finger_joint_1aca8911daca5c644771098e059c44ca4e" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJoint</scope><name>perp</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

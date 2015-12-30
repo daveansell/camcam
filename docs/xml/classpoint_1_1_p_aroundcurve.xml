@@ -1,0 +1,394 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classpoint_1_1_p_aroundcurve" kind="class" language="Python" prot="public">
+    <compoundname>point::PAroundcurve</compoundname>
+    <basecompoundref refid="classpoint_1_1_p_sharp" prot="public" virt="non-virtual">point.PSharp</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classpoint_1_1_p_aroundcurve_1a0f9730c4deffcd70cb9f6af6762f09d8" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple point.PAroundcurve::astart</definition>
+        <argsstring></argsstring>
+        <name>astart</name>
+        <initializer>= self.pos+(<ref refid="classpoint_1_1_point_1ac0517f0911e12c1e030776c42b0ae609" kindref="member">lastpoint</ref>-self.pos)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="367" column="1" bodyfile="/home/db/camcam/point.py" bodystart="367" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_aroundcurve_1aae06cb74d805aa35dbd4e47505168e2b" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple point.PAroundcurve::aend</definition>
+        <argsstring></argsstring>
+        <name>aend</name>
+        <initializer>= self.pos+(<ref refid="classpoint_1_1_point_1a67c83c243db06689a5b8bb77652f83f1" kindref="member">nextpoint</ref>-self.pos)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="368" column="1" bodyfile="/home/db/camcam/point.py" bodystart="368" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_aroundcurve_1af76b1c28fe995c4cdc83bfd822d6480f" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple point.PAroundcurve::d</definition>
+        <argsstring></argsstring>
+        <name>d</name>
+        <initializer>= self.otherDir(self.direction)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="371" column="1" bodyfile="/home/db/camcam/point.py" bodystart="371" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_aroundcurve_1ad271346d88ab501f065b6172f3de629d" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>point.PAroundcurve::d</definition>
+        <argsstring></argsstring>
+        <name>d</name>
+        <initializer>= self.direction</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="373" column="1" bodyfile="/home/db/camcam/point.py" bodystart="373" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classpoint_1_1_p_aroundcurve_1aa991f6099845e2e54363ca607ec0f58e" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PAroundcurve::pos</definition>
+        <argsstring></argsstring>
+        <name>pos</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="314" column="1" bodyfile="/home/db/camcam/point.py" bodystart="314" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_aroundcurve_1ade9f5e6f5419e6aea11c020385a38f6a" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PAroundcurve::point_type</definition>
+        <argsstring></argsstring>
+        <name>point_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="315" column="1" bodyfile="/home/db/camcam/point.py" bodystart="315" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_aroundcurve_1a9b5f99d653825fb5395078f3595c03cc" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PAroundcurve::radius</definition>
+        <argsstring></argsstring>
+        <name>radius</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="316" column="1" bodyfile="/home/db/camcam/point.py" bodystart="316" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_aroundcurve_1a35548cdf3426f241a2f4dca3c4c07cf4" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PAroundcurve::direction</definition>
+        <argsstring></argsstring>
+        <name>direction</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="317" column="1" bodyfile="/home/db/camcam/point.py" bodystart="317" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_aroundcurve_1a1a8bd2e8bba44444912fb13e79f53c1a" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PAroundcurve::transform</definition>
+        <argsstring></argsstring>
+        <name>transform</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="318" column="1" bodyfile="/home/db/camcam/point.py" bodystart="318" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_aroundcurve_1a57f68703c7c964bb2b92dae3002fe7f5" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PAroundcurve::cp1</definition>
+        <argsstring></argsstring>
+        <name>cp1</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="320" column="1" bodyfile="/home/db/camcam/point.py" bodystart="320" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_aroundcurve_1a8eb53f5eb3d2dda9c52f70c658a215b9" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PAroundcurve::obType</definition>
+        <argsstring></argsstring>
+        <name>obType</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="323" column="1" bodyfile="/home/db/camcam/point.py" bodystart="323" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_aroundcurve_1a3241c3671e0fa3d11b165e8ca2801997" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PAroundcurve::reverse</definition>
+        <argsstring></argsstring>
+        <name>reverse</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="396" column="1" bodyfile="/home/db/camcam/point.py" bodystart="396" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classpoint_1_1_p_aroundcurve_1abf8a513ce57f9b1477a64cb68f29a229" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PAroundcurve.__init__</definition>
+        <argsstring></argsstring>
+        <name>__init__</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="312" column="1" bodyfile="/home/db/camcam/point.py" bodystart="312" bodyend="333"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_aroundcurve_1aa62a97561ec9a6a39360db3bc4afb9b5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PAroundcurve.offset</definition>
+        <argsstring>(self, side, distance, direction)</argsstring>
+        <name>offset</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>side</type>
+          <defname>side</defname>
+        </param>
+        <param>
+          <type>distance</type>
+          <defname>distance</defname>
+        </param>
+        <param>
+          <type><ref refid="classpoint_1_1_p_aroundcurve_1a35548cdf3426f241a2f4dca3c4c07cf4" kindref="member">direction</ref></type>
+          <defname>direction</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="334" column="1" bodyfile="/home/db/camcam/point.py" bodystart="334" bodyend="346"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_aroundcurve_1ab3adc6be84047ee66a5cbbf4b6396b94" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PAroundcurve.setDirection</definition>
+        <argsstring>(self)</argsstring>
+        <name>setDirection</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="347" column="1" bodyfile="/home/db/camcam/point.py" bodystart="347" bodyend="355"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_aroundcurve_1a63c9705a5fbdbde72b5bde450324178d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PAroundcurve.makeSegment</definition>
+        <argsstring>(self, config)</argsstring>
+        <name>makeSegment</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>config</type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="356" column="1" bodyfile="/home/db/camcam/point.py" bodystart="356" bodyend="363"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_aroundcurve_1a9f9818c6d18639d55b79af5f1c0a46d6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PAroundcurve.start</definition>
+        <argsstring>(self)</argsstring>
+        <name>start</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="377" column="1" bodyfile="/home/db/camcam/point.py" bodystart="377" bodyend="383"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_aroundcurve_1ad2db9dc27bd5b55354382b2cf9863303" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PAroundcurve.end</definition>
+        <argsstring>(self)</argsstring>
+        <name>end</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="384" column="1" bodyfile="/home/db/camcam/point.py" bodystart="384" bodyend="389"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_aroundcurve_1a73d952075b6e0a82897d597e5a5235e2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PAroundcurve.origin</definition>
+        <argsstring></argsstring>
+        <name>origin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="390" column="1" bodyfile="/home/db/camcam/point.py" bodystart="390" bodyend="400"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1354">
+        <label>point.Point</label>
+        <link refid="classpoint_1_1_point"/>
+        <childnode refid="1355" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1353">
+        <label>point.PSharp</label>
+        <link refid="classpoint_1_1_p_sharp"/>
+        <childnode refid="1354" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1355">
+        <label>object</label>
+      </node>
+      <node id="1352">
+        <label>point.PAroundcurve</label>
+        <link refid="classpoint_1_1_p_aroundcurve"/>
+        <childnode refid="1353" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1358">
+        <label>point.Point</label>
+        <link refid="classpoint_1_1_point"/>
+        <childnode refid="1359" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1357">
+        <label>point.PSharp</label>
+        <link refid="classpoint_1_1_p_sharp"/>
+        <childnode refid="1358" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1359">
+        <label>object</label>
+      </node>
+      <node id="1356">
+        <label>point.PAroundcurve</label>
+        <link refid="classpoint_1_1_p_aroundcurve"/>
+        <childnode refid="1357" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/point.py" line="311" column="1" bodyfile="/home/db/camcam/point.py" bodystart="311" bodyend="401"/>
+    <listofallmembers>
+      <member refid="classpoint_1_1_p_aroundcurve_1abf8a513ce57f9b1477a64cb68f29a229" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>__init__</name></member>
+      <member refid="classpoint_1_1_p_sharp_1af1afffea36431e34b401c9309cc9ecdd" prot="public" virt="non-virtual" ambiguityscope="point::PSharp."><scope>point::PAroundcurve</scope><name>__init__</name></member>
+      <member refid="classpoint_1_1_point_1a4f2882f4c1d41b8ed0dcc040a56df10e" prot="public" virt="non-virtual" ambiguityscope="point::Point."><scope>point::PAroundcurve</scope><name>__init__</name></member>
+      <member refid="classpoint_1_1_p_sharp_1ac1fa66d2deea6b3f0154f9ba70980eb4" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>a</name></member>
+      <member refid="classpoint_1_1_p_sharp_1ab005edba0b9fe808530c844abe8b66f9" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>a</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1aae06cb74d805aa35dbd4e47505168e2b" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>aend</name></member>
+      <member refid="classpoint_1_1_point_1ad3a54a3dde6c2f12289d30edcbc56f9c" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>angle</name></member>
+      <member refid="classpoint_1_1_point_1afca575ab84d131ba560214332b039cdc" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>angle0</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1a0f9730c4deffcd70cb9f6af6762f09d8" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>astart</name></member>
+      <member refid="classpoint_1_1_point_1aff32fe36a2cb7daed2d6b836e0a104c0" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>compile</name></member>
+      <member refid="classpoint_1_1_p_sharp_1afa05c02a7dd62f7a96c30de45a25a357" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>copy</name></member>
+      <member refid="classpoint_1_1_point_1a4a3ad4c500effc3b0a67868957108fb0" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>corner_side</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1a57f68703c7c964bb2b92dae3002fe7f5" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>cp1</name></member>
+      <member refid="classpoint_1_1_p_sharp_1aa8410ba181e860207e23e7f65808dc5a" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>cp2</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1af76b1c28fe995c4cdc83bfd822d6480f" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>d</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1ad271346d88ab501f065b6172f3de629d" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>d</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1a35548cdf3426f241a2f4dca3c4c07cf4" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>direction</name></member>
+      <member refid="classpoint_1_1_point_1aac7b02546ab8cd6e3131bedcce1c2025" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>dot</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1ad2db9dc27bd5b55354382b2cf9863303" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>end</name></member>
+      <member refid="classpoint_1_1_point_1a3beb8e8b3f86d4a72b1e8216b274740a" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>generateSegment</name></member>
+      <member refid="classpoint_1_1_point_1aa4853372115d4266bed361f742de339e" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>init</name></member>
+      <member refid="classpoint_1_1_point_1a85952d3d8caf273ab39cf871157d0c2f" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>last</name></member>
+      <member refid="classpoint_1_1_point_1a27c3c9e7cafb48996d77e65cfe04df05" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>lastorigin</name></member>
+      <member refid="classpoint_1_1_point_1ac0517f0911e12c1e030776c42b0ae609" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>lastpoint</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1a63c9705a5fbdbde72b5bde450324178d" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>makeSegment</name></member>
+      <member refid="classpoint_1_1_point_1a476d116396ab916e084cfa5951e270d6" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>next</name></member>
+      <member refid="classpoint_1_1_point_1a67c83c243db06689a5b8bb77652f83f1" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>nextpoint</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1a8eb53f5eb3d2dda9c52f70c658a215b9" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>obType</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1aa62a97561ec9a6a39360db3bc4afb9b5" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>offset</name></member>
+      <member refid="classpoint_1_1_point_1a77d736f755797d41a2fd87f92b17e015" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>offset_move_point</name></member>
+      <member refid="classpoint_1_1_p_sharp_1a73d75efa18bb8f352a9dbd02efc59c9a" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>offsetSharp</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1a73d952075b6e0a82897d597e5a5235e2" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>origin</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1ade9f5e6f5419e6aea11c020385a38f6a" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>point_type</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1aa991f6099845e2e54363ca607ec0f58e" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>pos</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1a9b5f99d653825fb5395078f3595c03cc" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>radius</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1a3241c3671e0fa3d11b165e8ca2801997" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>reverse</name></member>
+      <member refid="classpoint_1_1_point_1a11f285bd3b03aa083a25ec1861e3fa16" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>setangle</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1ab3adc6be84047ee66a5cbbf4b6396b94" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>setDirection</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1a9f9818c6d18639d55b79af5f1c0a46d6" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>start</name></member>
+      <member refid="classpoint_1_1_p_sharp_1a42fca1df07d32aee57457b554d9cff1c" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>t</name></member>
+      <member refid="classpoint_1_1_p_aroundcurve_1a1a8bd2e8bba44444912fb13e79f53c1a" prot="public" virt="non-virtual"><scope>point::PAroundcurve</scope><name>transform</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

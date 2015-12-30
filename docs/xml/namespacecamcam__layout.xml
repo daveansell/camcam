@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespacecamcam__layout" kind="namespace" language="Python">
+    <compoundname>camcam_layout</compoundname>
+    <innerclass refid="classcamcam__layout_1_1_cam_cam" prot="public">camcam_layout::CamCam</innerclass>
+    <innerclass refid="classcamcam__layout_1_1_kv_part" prot="public">camcam_layout::KvPart</innerclass>
+    <innerclass refid="classcamcam__layout_1_1_render_part" prot="public">camcam_layout::RenderPart</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacecamcam__layout_1ae87c88da350af649972459a28988ebb8" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple camcam_layout.camcam</definition>
+        <argsstring></argsstring>
+        <name>camcam</name>
+        <initializer>= <ref refid="classcamcam__layout_1_1_cam_cam" kindref="compound">CamCam</ref>()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="205" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="205" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecamcam__layout_1aac26a995c03881acd11062893ac5daec" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple camcam_layout.milling</definition>
+        <argsstring></argsstring>
+        <name>milling</name>
+        <initializer>= <ref refid="class_milling_1_1_milling" kindref="compound">Milling.Milling</ref>()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="206" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="206" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecamcam__layout_1a81d184a591905f9b4ed2f6032fcab2ec" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple camcam_layout.parser</definition>
+        <argsstring></argsstring>
+        <name>parser</name>
+        <initializer>= OptionParser()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="207" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="207" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecamcam__layout_1a8dd26061aa3b54fe561f7ed0a9017030" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string camcam_layout.modes</definition>
+        <argsstring></argsstring>
+        <name>modes</name>
+        <initializer>= &apos;,&apos;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="208" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="208" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecamcam__layout_1a0af636005ce49aadd41c5bc3ff4e8bae" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string camcam_layout::help</definition>
+        <argsstring></argsstring>
+        <name>help</name>
+        <initializer>= &quot;mode the output should be in. Can be one of &quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="211" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="211" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecamcam__layout_1a71172dacf7602866e7e96b4252a15441" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string camcam_layout::action</definition>
+        <argsstring></argsstring>
+        <name>action</name>
+        <initializer>= &quot;store_true&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="213" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="213" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecamcam__layout_1a6cec7cab5f48675ec716f94c0a23836e" prot="public" static="no" mutable="no">
+        <type>dictionary</type>
+        <definition>dictionary camcam_layout.config</definition>
+        <argsstring></argsstring>
+        <name>config</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="236" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="236" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecamcam__layout_1a4693b9fdabb3c2c214239fcba102f1ce" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple camcam_layout.a</definition>
+        <argsstring></argsstring>
+        <name>a</name>
+        <initializer>= pair.split(&apos;=&apos;)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="241" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="241" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecamcam__layout_1ac7f3bbb8118ef7b6eea636a1316c0817" prot="public" static="no" mutable="no">
+        <type>dictionary</type>
+        <definition>dictionary camcam_layout.files</definition>
+        <argsstring></argsstring>
+        <name>files</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="247" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="247" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecamcam__layout_1a4d08c4feed053d3ab8a799dd7f3fcec4" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>camcam_layout.lastfile</definition>
+        <argsstring></argsstring>
+        <name>lastfile</name>
+        <initializer>= False</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="248" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="248" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/camcam_layout.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,336 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classcamcam__layout_1_1_cam_cam" kind="class" language="Python" prot="public">
+    <compoundname>camcam_layout::CamCam</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">App</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classcamcam__layout_1_1_cam_cam_1aa75dfb49cf795fe55538fd5fedd085e4" prot="public" static="yes" mutable="no">
+        <type>list</type>
+        <definition>list camcam_layout.CamCam::planes</definition>
+        <argsstring></argsstring>
+        <name>planes</name>
+        <initializer>= []</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="98" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_cam_cam_1a02351504f971107694efd2766372b628" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>camcam_layout.CamCam::selected</definition>
+        <argsstring></argsstring>
+        <name>selected</name>
+        <initializer>= False</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="99" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_cam_cam_1a0706ff671a864b8258ef606b4a53bfbf" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>camcam_layout.CamCam::root</definition>
+        <argsstring></argsstring>
+        <name>root</name>
+        <initializer>= self.root</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="111" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_cam_cam_1a320eacfe25d7621ee065adac1a038b79" prot="public" static="yes" mutable="no">
+        <type>dictionary</type>
+        <definition>dictionary camcam_layout.CamCam::sheets</definition>
+        <argsstring></argsstring>
+        <name>sheets</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="117" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_cam_cam_1a61b884fcd41fdf82ee5558d7e422fc6b" prot="public" static="yes" mutable="no">
+        <type>list</type>
+        <definition>list camcam_layout.CamCam::buttons</definition>
+        <argsstring></argsstring>
+        <name>buttons</name>
+        <initializer>= []</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="119" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="119" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_cam_cam_1ad68196dc02bf35acc187e607b1079882" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple camcam_layout.CamCam::layout</definition>
+        <argsstring></argsstring>
+        <name>layout</name>
+        <initializer>= BoxLayout(size_hint=(1, None), height=50)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="120" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_cam_cam_1a5e3add24ff41a90068b83cc1c73176e0" prot="public" static="yes" mutable="no">
+        <type>list</type>
+        <definition>list camcam_layout.CamCam::layer</definition>
+        <argsstring></argsstring>
+        <name>layer</name>
+        <initializer>= plane.layers[part.layer]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="123" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="123" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_cam_cam_1a5154c29272561706f3f08f058fe4e39d" prot="public" static="yes" mutable="no">
+        <type>list</type>
+        <definition>list camcam_layout.CamCam::sheetid</definition>
+        <argsstring></argsstring>
+        <name>sheetid</name>
+        <initializer>= <ref refid="classcamcam__layout_1_1_cam_cam_1a5e3add24ff41a90068b83cc1c73176e0" kindref="member">layer</ref>[&apos;material&apos;]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="124" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="124" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_cam_cam_1a94449317084eb1abc4707e2bc3c2ae95" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple camcam_layout.CamCam::button</definition>
+        <argsstring></argsstring>
+        <name>button</name>
+        <initializer>= Button(text = sheet)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="130" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="130" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_cam_cam_1ad0bee697a9661370ca2d19b1c0ed6b79" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple camcam_layout.CamCam::picture</definition>
+        <argsstring></argsstring>
+        <name>picture</name>
+        <initializer>= <ref refid="classcamcam__layout_1_1_kv_part" kindref="compound">KvPart</ref>()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="143" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="143" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classcamcam__layout_1_1_cam_cam_1aae15201c08000c6d0a01b947d0e99757" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def camcam_layout.CamCam.add_plane</definition>
+        <argsstring>(self, plane)</argsstring>
+        <name>add_plane</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>plane</type>
+          <defname>plane</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="100" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="100" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="classcamcam__layout_1_1_cam_cam_1a11c2be8d09bb6c1d7142bc79bff2ba0c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def camcam_layout.CamCam.build</definition>
+        <argsstring>(self)</argsstring>
+        <name>build</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="108" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="108" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="classcamcam__layout_1_1_cam_cam_1a699e53b6f63acfe6b457b6b91e1936f3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def camcam_layout.CamCam.do_touch</definition>
+        <argsstring>(self)</argsstring>
+        <name>do_touch</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="150" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="150" bodyend="154"/>
+      </memberdef>
+      <memberdef kind="function" id="classcamcam__layout_1_1_cam_cam_1a55cbd693f0e23a01969822a11cde6d2a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def camcam_layout.CamCam.delete</definition>
+        <argsstring>(self, largs)</argsstring>
+        <name>delete</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>largs</type>
+          <defname>largs</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="155" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="155" bodyend="166"/>
+      </memberdef>
+      <memberdef kind="function" id="classcamcam__layout_1_1_cam_cam_1a4247170d23fc1125ae1fcb918a99c60a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def camcam_layout.CamCam.save</definition>
+        <argsstring>(self, largs)</argsstring>
+        <name>save</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>largs</type>
+          <defname>largs</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="167" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="167" bodyend="190"/>
+      </memberdef>
+      <memberdef kind="function" id="classcamcam__layout_1_1_cam_cam_1a5a21300e0c1b0fa919a4793bbdafc154" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def camcam_layout.CamCam.set_sheet</definition>
+        <argsstring>(self, sheet, largs)</argsstring>
+        <name>set_sheet</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>sheet</type>
+          <defname>sheet</defname>
+        </param>
+        <param>
+          <type>largs</type>
+          <defname>largs</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="191" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="191" bodyend="200"/>
+      </memberdef>
+      <memberdef kind="function" id="classcamcam__layout_1_1_cam_cam_1ac3bdb03463dc584fb1baaae9a6b5e4e3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def camcam_layout.CamCam.on_pause</definition>
+        <argsstring>(self)</argsstring>
+        <name>on_pause</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="201" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="201" bodyend="204"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="118">
+        <label>camcam_layout.CamCam</label>
+        <link refid="classcamcam__layout_1_1_cam_cam"/>
+        <childnode refid="119" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="119">
+        <label>App</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="120">
+        <label>camcam_layout.CamCam</label>
+        <link refid="classcamcam__layout_1_1_cam_cam"/>
+        <childnode refid="121" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="121">
+        <label>App</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/camcam_layout.py" line="97" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="97" bodyend="205"/>
+    <listofallmembers>
+      <member refid="classcamcam__layout_1_1_cam_cam_1aae15201c08000c6d0a01b947d0e99757" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>add_plane</name></member>
+      <member refid="classcamcam__layout_1_1_cam_cam_1a11c2be8d09bb6c1d7142bc79bff2ba0c" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>build</name></member>
+      <member refid="classcamcam__layout_1_1_cam_cam_1a94449317084eb1abc4707e2bc3c2ae95" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>button</name></member>
+      <member refid="classcamcam__layout_1_1_cam_cam_1a61b884fcd41fdf82ee5558d7e422fc6b" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>buttons</name></member>
+      <member refid="classcamcam__layout_1_1_cam_cam_1a55cbd693f0e23a01969822a11cde6d2a" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>delete</name></member>
+      <member refid="classcamcam__layout_1_1_cam_cam_1a699e53b6f63acfe6b457b6b91e1936f3" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>do_touch</name></member>
+      <member refid="classcamcam__layout_1_1_cam_cam_1a5e3add24ff41a90068b83cc1c73176e0" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>layer</name></member>
+      <member refid="classcamcam__layout_1_1_cam_cam_1ad68196dc02bf35acc187e607b1079882" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>layout</name></member>
+      <member refid="classcamcam__layout_1_1_cam_cam_1ac3bdb03463dc584fb1baaae9a6b5e4e3" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>on_pause</name></member>
+      <member refid="classcamcam__layout_1_1_cam_cam_1ad0bee697a9661370ca2d19b1c0ed6b79" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>picture</name></member>
+      <member refid="classcamcam__layout_1_1_cam_cam_1aa75dfb49cf795fe55538fd5fedd085e4" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>planes</name></member>
+      <member refid="classcamcam__layout_1_1_cam_cam_1a0706ff671a864b8258ef606b4a53bfbf" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>root</name></member>
+      <member refid="classcamcam__layout_1_1_cam_cam_1a4247170d23fc1125ae1fcb918a99c60a" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>save</name></member>
+      <member refid="classcamcam__layout_1_1_cam_cam_1a02351504f971107694efd2766372b628" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>selected</name></member>
+      <member refid="classcamcam__layout_1_1_cam_cam_1a5a21300e0c1b0fa919a4793bbdafc154" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>set_sheet</name></member>
+      <member refid="classcamcam__layout_1_1_cam_cam_1a5154c29272561706f3f08f058fe4e39d" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>sheetid</name></member>
+      <member refid="classcamcam__layout_1_1_cam_cam_1a320eacfe25d7621ee065adac1a038b79" prot="public" virt="non-virtual"><scope>camcam_layout::CamCam</scope><name>sheets</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

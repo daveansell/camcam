@@ -1,0 +1,1386 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classbezier_1_1_bezier_curve" kind="class" language="Python" prot="public">
+    <compoundname>bezier::BezierCurve</compoundname>
+    <derivedcompoundref refid="classbezier_1_1_curve_pair" prot="public" virt="non-virtual">bezier.CurvePair</derivedcompoundref>
+    <derivedcompoundref refid="classbezier_1_1_curve_pair" prot="public" virt="non-virtual">bezier.CurvePair</derivedcompoundref>
+    <derivedcompoundref refid="classbezier_1_1_curve_pair" prot="public" virt="non-virtual">bezier.CurvePair</derivedcompoundref>
+    <derivedcompoundref refid="classbezier_1_1_curve_pair" prot="public" virt="non-virtual">bezier.CurvePair</derivedcompoundref>
+    <derivedcompoundref refid="classbezier_1_1_curve_pair" prot="public" virt="non-virtual">bezier.CurvePair</derivedcompoundref>
+    <derivedcompoundref refid="classbezier_1_1_null_bezier_curve" prot="public" virt="non-virtual">bezier.NullBezierCurve</derivedcompoundref>
+    <derivedcompoundref refid="classbezier_1_1_null_bezier_curve" prot="public" virt="non-virtual">bezier.NullBezierCurve</derivedcompoundref>
+    <derivedcompoundref refid="classbezier_1_1_null_bezier_curve" prot="public" virt="non-virtual">bezier.NullBezierCurve</derivedcompoundref>
+    <derivedcompoundref refid="classbezier_1_1_null_bezier_curve" prot="public" virt="non-virtual">bezier.NullBezierCurve</derivedcompoundref>
+    <derivedcompoundref refid="classbezier_1_1_null_bezier_curve" prot="public" virt="non-virtual">bezier.NullBezierCurve</derivedcompoundref>
+    <derivedcompoundref refid="classbezier_1_1_null_bezier_curve" prot="public" virt="non-virtual">bezier.NullBezierCurve</derivedcompoundref>
+    <derivedcompoundref refid="classbezier_1_1_null_bezier_curve" prot="public" virt="non-virtual">bezier.NullBezierCurve</derivedcompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a4570d8b0525d6fb56ffbe338aea5b9a5" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.BezierCurve::last</definition>
+        <argsstring></argsstring>
+        <name>last</name>
+        <initializer>= len(<ref refid="classbezier_1_1_bezier_curve_1abd2b09d5ae706c4e31f22b0c199134c0" kindref="member">span</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="347" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="347" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a67d3887b8b38085157320f51305db83e" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.BezierCurve::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <initializer>= lerp(<ref refid="classbezier_1_1_bezier_curve_1a6c39346893b0610e98d124f94f098b5b" kindref="member">points</ref>[<ref refid="namespacebezier_1a928e2d96e49d7898d0f47903caf0f866" kindref="member">i</ref>-1].x,<ref refid="classbezier_1_1_bezier_curve_1a6c39346893b0610e98d124f94f098b5b" kindref="member">points</ref>[<ref refid="namespacebezier_1a928e2d96e49d7898d0f47903caf0f866" kindref="member">i</ref>].x,0.5)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="654" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="654" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a4daedd276ea223e485036f3ad346b33c" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.BezierCurve::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <initializer>= lerp(<ref refid="classbezier_1_1_bezier_curve_1a6c39346893b0610e98d124f94f098b5b" kindref="member">points</ref>[<ref refid="namespacebezier_1a928e2d96e49d7898d0f47903caf0f866" kindref="member">i</ref>-1].y,<ref refid="classbezier_1_1_bezier_curve_1a6c39346893b0610e98d124f94f098b5b" kindref="member">points</ref>[<ref refid="namespacebezier_1a928e2d96e49d7898d0f47903caf0f866" kindref="member">i</ref>].y,0.5)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="655" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="655" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a782e956673f761f25e256f1c2094d54b" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.BezierCurve::roots</definition>
+        <argsstring></argsstring>
+        <name>roots</name>
+        <initializer>= comp.findAllRoots(1, self.x_values)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="672" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="672" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1afb7008816c2eb9b266374b543b748b1c" prot="public" static="yes" mutable="no">
+        <type>list</type>
+        <definition>list bezier.BezierCurve::ret</definition>
+        <argsstring></argsstring>
+        <name>ret</name>
+        <initializer>= []</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="692" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="692" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1adfebcda73ce613d7f913ed37541348c6" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.BezierCurve::ret</definition>
+        <argsstring></argsstring>
+        <name>ret</name>
+        <initializer>= sort(ret)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="696" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="696" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a668f0b24433e3b2c5ef87f69875a10c2" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.BezierCurve::t_values</definition>
+        <argsstring></argsstring>
+        <name>t_values</name>
+        <initializer>= newArrayList&lt;Float&gt;()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="698" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="698" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1acd0c66cf9592d59635d8f0cd90a6a8e6" prot="public" static="yes" mutable="no">
+        <type>list</type>
+        <definition>list bezier.BezierCurve::nx</definition>
+        <argsstring></argsstring>
+        <name>nx</name>
+        <initializer>= self.draw_x[idx]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="854" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="854" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a4b765fecb383d8a7bcf7400ed69f5c55" prot="public" static="yes" mutable="no">
+        <type>list</type>
+        <definition>list bezier.BezierCurve::ny</definition>
+        <argsstring></argsstring>
+        <name>ny</name>
+        <initializer>= self.draw_y[idx]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="855" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="855" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1af54790f4736706fda65bcc87e24cef1f" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::ox</definition>
+        <argsstring></argsstring>
+        <name>ox</name>
+        <initializer>= <ref refid="classbezier_1_1_bezier_curve_1acd0c66cf9592d59635d8f0cd90a6a8e6" kindref="member">nx</ref>;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="859" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="859" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a5cd7c967702aa92f02a0fafbf1ed719d" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::oy</definition>
+        <argsstring></argsstring>
+        <name>oy</name>
+        <initializer>= <ref refid="classbezier_1_1_bezier_curve_1a4b765fecb383d8a7bcf7400ed69f5c55" kindref="member">ny</ref>;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="860" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="860" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a631e45794713c37b7b28a1116bf7d414" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::LUT_resolution</definition>
+        <argsstring></argsstring>
+        <name>LUT_resolution</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="80" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a0f9a46cd0b0c3060c81c503e97718e87" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::order</definition>
+        <argsstring></argsstring>
+        <name>order</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="81" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="81" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a6c39346893b0610e98d124f94f098b5b" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::points</definition>
+        <argsstring></argsstring>
+        <name>points</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="82" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="82" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a9cf4bf17eddb3214f5727e9b45a15d62" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::abc</definition>
+        <argsstring></argsstring>
+        <name>abc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="83" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1abd2b09d5ae706c4e31f22b0c199134c0" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::span</definition>
+        <argsstring></argsstring>
+        <name>span</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="84" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a958ec48826bf0bfd4f29c73641fd7562" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::left_split</definition>
+        <argsstring></argsstring>
+        <name>left_split</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="85" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a1537b07a507ce3a670363ca50fcfb8b9" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::right_split</definition>
+        <argsstring></argsstring>
+        <name>right_split</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="86" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a2cf138c2853916d8fdd6ee538decd11b" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::normals</definition>
+        <argsstring></argsstring>
+        <name>normals</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="87" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="87" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1abae064c2182ba700fb576355e7d15bab" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::x_values</definition>
+        <argsstring></argsstring>
+        <name>x_values</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="89" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a8bf9aa7947c5ff98a513b2119c3bebac" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::y_values</definition>
+        <argsstring></argsstring>
+        <name>y_values</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="90" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a4577c6349bf8568b0f0a6259c361c42d" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::LUT_x</definition>
+        <argsstring></argsstring>
+        <name>LUT_x</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="91" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a5c47bd22203df84b3c9ef64389134d9d" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::LUT_y</definition>
+        <argsstring></argsstring>
+        <name>LUT_y</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="92" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1aebb06c5028ed907c85c179cef3fd5f47" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::ratios</definition>
+        <argsstring></argsstring>
+        <name>ratios</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="93" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1acea4fdceeab227eb5ad09f52f9b58e40" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::originalInterval</definition>
+        <argsstring></argsstring>
+        <name>originalInterval</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="94" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a66a3a2b3ee0242789790ceace4b8c507" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::draw_x</definition>
+        <argsstring></argsstring>
+        <name>draw_x</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="96" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a1859a14a8e80f71956ff806565be4e0d" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::draw_y</definition>
+        <argsstring></argsstring>
+        <name>draw_y</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="97" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a79e5e878938d38339da6d3bebb7bf337" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::span_t</definition>
+        <argsstring></argsstring>
+        <name>span_t</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="98" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1ad2535ff3f7797701c3bae55252cff911" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::curveLength</definition>
+        <argsstring></argsstring>
+        <name>curveLength</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="99" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1a76880ee12be206cb218322e95cfa7658" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::bias</definition>
+        <argsstring></argsstring>
+        <name>bias</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="100" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_bezier_curve_1aa3abeeffa97dabf2038f1a8f7d0f1940" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.BezierCurve::generator</definition>
+        <argsstring></argsstring>
+        <name>generator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="104" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a9056d475eb2526c7c5a9c48313520e89" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.__init__</definition>
+        <argsstring></argsstring>
+        <name>__init__</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="79" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="79" bodyend="118"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a76076a6b08f173fd018861a3c53e7711" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.update</definition>
+        <argsstring>(self)</argsstring>
+        <name>update</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="125" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="125" bodyend="172"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a6dfed42b3ef446bef5f2692ede776caa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getStart</definition>
+        <argsstring>(self)</argsstring>
+        <name>getStart</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="176" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="176" bodyend="178"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a4b0304e414c7bfebd8dbbde6e8ca669e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getEnd</definition>
+        <argsstring>(self)</argsstring>
+        <name>getEnd</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="182" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="182" bodyend="185"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a9ba3665b11a6798f293c7aefa2f870bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getPointProjection</definition>
+        <argsstring>(self, p)</argsstring>
+        <name>getPointProjection</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1adfc12e63653920e367a9c81631c20a52" kindref="member">p</ref></type>
+          <defname>p</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="189" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="189" bodyend="207"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a786182209f69177b13f04fdd678eeb56" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.refineProjection</definition>
+        <argsstring>(self, p, t, distance, precision)</argsstring>
+        <name>refineProjection</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1adfc12e63653920e367a9c81631c20a52" kindref="member">p</ref></type>
+          <defname>p</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kindref="member">t</ref></type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type>distance</type>
+          <defname>distance</defname>
+        </param>
+        <param>
+          <type>precision</type>
+          <defname>precision</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="210" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="210" bodyend="227"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a6807911cd4102ba77bb799a72a992b0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getSimilarity</definition>
+        <argsstring>(self, other)</argsstring>
+        <name>getSimilarity</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>other</type>
+          <defname>other</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="229" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="229" bodyend="243"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a0f48a9279d1bcf4dac5296162809af5c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getXValue</definition>
+        <argsstring>(self, t)</argsstring>
+        <name>getXValue</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kindref="member">t</ref></type>
+          <defname>t</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="247" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="247" bodyend="250"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1aebd772e37e054a8ff0c22154c9d475cb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getYValue</definition>
+        <argsstring>(self, t)</argsstring>
+        <name>getYValue</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kindref="member">t</ref></type>
+          <defname>t</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="251" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="251" bodyend="254"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1aaaea17f47298e5886852e33f05cb4f4a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getPoint</definition>
+        <argsstring>(self, t)</argsstring>
+        <name>getPoint</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kindref="member">t</ref></type>
+          <defname>t</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="255" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="255" bodyend="258"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a6c1c43b478d496b72b45ad4c8b7b53cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getDXValue</definition>
+        <argsstring>(self, t)</argsstring>
+        <name>getDXValue</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kindref="member">t</ref></type>
+          <defname>t</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="262" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="262" bodyend="265"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1af52a33daa84c05d5ff5dc04b008509b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getDYValue</definition>
+        <argsstring>(self, t)</argsstring>
+        <name>getDYValue</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kindref="member">t</ref></type>
+          <defname>t</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="266" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="266" bodyend="269"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a585ad6904fc86f56b6ab076d9e5631aa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getDerivativePoint</definition>
+        <argsstring>(self, t)</argsstring>
+        <name>getDerivativePoint</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kindref="member">t</ref></type>
+          <defname>t</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="270" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="270" bodyend="273"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1ac55cd30cbbcd12cf9ea5419ba2784e74" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getSpanLines</definition>
+        <argsstring>(self, t)</argsstring>
+        <name>getSpanLines</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kindref="member">t</ref></type>
+          <defname>t</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="274" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="274" bodyend="283"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a023612963116656fc516654058647ef0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getD2XValue</definition>
+        <argsstring>(self, t)</argsstring>
+        <name>getD2XValue</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kindref="member">t</ref></type>
+          <defname>t</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="287" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="287" bodyend="290"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a9d170ca72ea731c0824ee1e8d2675893" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getD2YValue</definition>
+        <argsstring>(self, t)</argsstring>
+        <name>getD2YValue</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kindref="member">t</ref></type>
+          <defname>t</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="291" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="291" bodyend="294"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a1fc50ea3b49003eeb377d817a15e35ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getSecondDerivativePoint</definition>
+        <argsstring>(self, t)</argsstring>
+        <name>getSecondDerivativePoint</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kindref="member">t</ref></type>
+          <defname>t</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="295" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="295" bodyend="298"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a964b6692250b6c3e82276eab469af6ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getNormal</definition>
+        <argsstring>(self, t)</argsstring>
+        <name>getNormal</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kindref="member">t</ref></type>
+          <defname>t</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="302" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="302" bodyend="314"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a28b0f5a264c1a37b4f38e3b4d9f44980" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.generateSpan</definition>
+        <argsstring>(self, t)</argsstring>
+        <name>generateSpan</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kindref="member">t</ref></type>
+          <defname>t</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="321" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="321" bodyend="345"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a2f6e9270634c92225ba306342c8a60d7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.generateBoundingBox</definition>
+        <argsstring>(self)</argsstring>
+        <name>generateBoundingBox</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="357" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="357" bodyend="374"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a56d4007381285ec7fa68041a146acc3a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getArea</definition>
+        <argsstring>(self)</argsstring>
+        <name>getArea</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="378" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="378" bodyend="385"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1acaae994a33a9f9e41acb54f2691f1a86" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.generateTightBoundingBox</definition>
+        <argsstring>(self)</argsstring>
+        <name>generateTightBoundingBox</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="389" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="389" bodyend="405"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a67f06fd66567124f37eea60321e3126b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.hasBoundOverlapWith</definition>
+        <argsstring>(self, other)</argsstring>
+        <name>hasBoundOverlapWith</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>other</type>
+          <defname>other</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="410" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="410" bodyend="428"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a0d541f51c06e2cce9fb84515188d1fb3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.justX</definition>
+        <argsstring>(self, h)</argsstring>
+        <name>justX</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>h</type>
+          <defname>h</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="432" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="432" bodyend="441"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1aedc1b7ba039d659a32c37c323aa079b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.justY</definition>
+        <argsstring>(self, h)</argsstring>
+        <name>justY</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>h</type>
+          <defname>h</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="445" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="445" bodyend="452"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a6a567a984fdaa79b45c34650d5806b1d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.reverse</definition>
+        <argsstring>(self)</argsstring>
+        <name>reverse</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="456" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="456" bodyend="463"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a8f368135ebb837de62ea0b663e3eee70" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.isBiased</definition>
+        <argsstring>(self)</argsstring>
+        <name>isBiased</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="469" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="469" bodyend="471"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a3bff9cf6d4ab0944c6634a95e9afa6db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getCurveLength</definition>
+        <argsstring>(self)</argsstring>
+        <name>getCurveLength</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="475" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="475" bodyend="477"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a2cd7ddcf33cb2fc656ec6d422ed5c9d0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getABC</definition>
+        <argsstring>(self, t)</argsstring>
+        <name>getABC</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kindref="member">t</ref></type>
+          <defname>t</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="482" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="482" bodyend="486"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a600fb93cad2745eaba1b011e5989c4d0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getScaleAngle</definition>
+        <argsstring>(self)</argsstring>
+        <name>getScaleAngle</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="493" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="493" bodyend="498"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a6cfb8ee3cded08c7a9d7c47d19b4abaf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getInterval</definition>
+        <argsstring>(self)</argsstring>
+        <name>getInterval</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="502" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="502" bodyend="504"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a5e38ed6ec16131e7ab51330d66f42297" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.setOriginalT</definition>
+        <argsstring>(self, d1, d2)</argsstring>
+        <name>setOriginalT</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>d1</type>
+          <defname>d1</defname>
+        </param>
+        <param>
+          <type>d2</type>
+          <defname>d2</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="511" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="511" bodyend="516"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1aa81a80a7a9dff4c45638400d60c2aa00" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.split</definition>
+        <argsstring></argsstring>
+        <name>split</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="520" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="520" bodyend="544"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a575e7ea0b4393c4007b0653488dffb00" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.scale</definition>
+        <argsstring>(self, f)</argsstring>
+        <name>scale</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1ad649969fef81af63abc92b1015251242" kindref="member">f</ref></type>
+          <defname>f</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="550" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="550" bodyend="560"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a52119ad0f3360312b0e32391581f3671" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.align</definition>
+        <argsstring></argsstring>
+        <name>align</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="565" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="565" bodyend="584"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a17976a1d7e6864d98bec238778702d5d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.normalize</definition>
+        <argsstring>(self)</argsstring>
+        <name>normalize</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="588" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="588" bodyend="609"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a64ef8bef255edb9e13299006896daa7d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.elevate</definition>
+        <argsstring>(self)</argsstring>
+        <name>elevate</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="613" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="613" bodyend="630"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a317f7fd239fe45816b1768fa5a73dd84" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.setLower</definition>
+        <argsstring>(self, parent)</argsstring>
+        <name>setLower</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>parent</type>
+          <defname>parent</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="636" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="636" bodyend="639"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1af3f47c83a98f56b011858f24b7eed302" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.lower</definition>
+        <argsstring>(self)</argsstring>
+        <name>lower</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="645" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="645" bodyend="651"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1ae23502e8926d52943088db91fd2bc8ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.getInflections</definition>
+        <argsstring>(self)</argsstring>
+        <name>getInflections</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="665" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="665" bodyend="670"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1aea4d53a18bc2560c93b35a764fe6625c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.simpleOffset</definition>
+        <argsstring></argsstring>
+        <name>simpleOffset</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="742" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="742" bodyend="757"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1ae3b2bda88c67445d6cf62a86f121d4bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.offset</definition>
+        <argsstring></argsstring>
+        <name>offset</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="762" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="762" bodyend="781"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_bezier_curve_1a0dbf1d48cda1fee475627cbb46af1913" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.BezierCurve.makeOffsetArray</definition>
+        <argsstring>(segments, BezierCurve, offsetCurve=new BezierCurve[segments.size()];for(int b=0;b&lt; segments.size();b++){offsetCurve[b]=segments.get(b) if(b &gt;0 andnot simplifiedFunctions):#We used estimations for the control-projections, self, correctIfNeeded, offsetCurve, b, offsetCurve, b, return, offsetCurve, def, correctIfNeeded, BezierCurve, prev, BezierCurve, next)</argsstring>
+        <name>makeOffsetArray</name>
+        <param>
+          <type><ref refid="namespacebezier_1af5dc7bac630ffee9827391cfaac1e06b" kindref="member">segments</ref></type>
+          <defname>segments</defname>
+        </param>
+        <param>
+          <type><ref refid="classbezier_1_1_bezier_curve" kindref="compound">BezierCurve</ref></type>
+          <defname>BezierCurve</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="783" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="807" bodyend="826"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="63">
+        <label>bezier.NullBezierCurve</label>
+        <link refid="classbezier_1_1_null_bezier_curve"/>
+        <childnode refid="60" relation="public-inheritance">
+        </childnode>
+        <childnode refid="60" relation="public-inheritance">
+        </childnode>
+        <childnode refid="60" relation="public-inheritance">
+        </childnode>
+        <childnode refid="60" relation="public-inheritance">
+        </childnode>
+        <childnode refid="60" relation="public-inheritance">
+        </childnode>
+        <childnode refid="60" relation="public-inheritance">
+        </childnode>
+        <childnode refid="60" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="61">
+        <label>bezier.CurvePair</label>
+        <link refid="classbezier_1_1_curve_pair"/>
+        <childnode refid="60" relation="public-inheritance">
+        </childnode>
+        <childnode refid="60" relation="public-inheritance">
+        </childnode>
+        <childnode refid="60" relation="public-inheritance">
+        </childnode>
+        <childnode refid="60" relation="public-inheritance">
+        </childnode>
+        <childnode refid="60" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="60">
+        <label>bezier.BezierCurve</label>
+        <link refid="classbezier_1_1_bezier_curve"/>
+      </node>
+      <node id="62">
+        <label>bezier.NoRatioExistsException</label>
+        <link refid="classbezier_1_1_no_ratio_exists_exception"/>
+        <childnode refid="61" relation="public-inheritance">
+        </childnode>
+        <childnode refid="61" relation="public-inheritance">
+        </childnode>
+        <childnode refid="61" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="/home/db/camcam/bezier.py" line="78" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="78" bodyend="894"/>
+    <listofallmembers>
+      <member refid="classbezier_1_1_bezier_curve_1a9056d475eb2526c7c5a9c48313520e89" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>__init__</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a9cf4bf17eddb3214f5727e9b45a15d62" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>abc</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a52119ad0f3360312b0e32391581f3671" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>align</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a76880ee12be206cb218322e95cfa7658" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>bias</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1ad2535ff3f7797701c3bae55252cff911" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>curveLength</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a66a3a2b3ee0242789790ceace4b8c507" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>draw_x</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a1859a14a8e80f71956ff806565be4e0d" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>draw_y</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a64ef8bef255edb9e13299006896daa7d" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>elevate</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a2f6e9270634c92225ba306342c8a60d7" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>generateBoundingBox</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a28b0f5a264c1a37b4f38e3b4d9f44980" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>generateSpan</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1acaae994a33a9f9e41acb54f2691f1a86" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>generateTightBoundingBox</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aa3abeeffa97dabf2038f1a8f7d0f1940" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>generator</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a2cd7ddcf33cb2fc656ec6d422ed5c9d0" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getABC</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a56d4007381285ec7fa68041a146acc3a" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getArea</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a3bff9cf6d4ab0944c6634a95e9afa6db" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getCurveLength</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a023612963116656fc516654058647ef0" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getD2XValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a9d170ca72ea731c0824ee1e8d2675893" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getD2YValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a585ad6904fc86f56b6ab076d9e5631aa" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getDerivativePoint</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6c1c43b478d496b72b45ad4c8b7b53cc" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getDXValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1af52a33daa84c05d5ff5dc04b008509b3" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getDYValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a4b0304e414c7bfebd8dbbde6e8ca669e" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getEnd</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1ae23502e8926d52943088db91fd2bc8ba" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getInflections</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6cfb8ee3cded08c7a9d7c47d19b4abaf" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getInterval</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a964b6692250b6c3e82276eab469af6ed" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getNormal</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aaaea17f47298e5886852e33f05cb4f4a" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getPoint</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a9ba3665b11a6798f293c7aefa2f870bb" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getPointProjection</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a600fb93cad2745eaba1b011e5989c4d0" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getScaleAngle</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a1fc50ea3b49003eeb377d817a15e35ce" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getSecondDerivativePoint</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6807911cd4102ba77bb799a72a992b0b" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getSimilarity</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1ac55cd30cbbcd12cf9ea5419ba2784e74" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getSpanLines</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6dfed42b3ef446bef5f2692ede776caa" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getStart</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a0f48a9279d1bcf4dac5296162809af5c" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getXValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aebd772e37e054a8ff0c22154c9d475cb" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>getYValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a67f06fd66567124f37eea60321e3126b" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>hasBoundOverlapWith</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a8f368135ebb837de62ea0b663e3eee70" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>isBiased</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a0d541f51c06e2cce9fb84515188d1fb3" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>justX</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aedc1b7ba039d659a32c37c323aa079b8" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>justY</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a4570d8b0525d6fb56ffbe338aea5b9a5" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>last</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a958ec48826bf0bfd4f29c73641fd7562" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>left_split</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1af3f47c83a98f56b011858f24b7eed302" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>lower</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a631e45794713c37b7b28a1116bf7d414" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>LUT_resolution</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a4577c6349bf8568b0f0a6259c361c42d" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>LUT_x</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a5c47bd22203df84b3c9ef64389134d9d" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>LUT_y</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a0dbf1d48cda1fee475627cbb46af1913" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>makeOffsetArray</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a17976a1d7e6864d98bec238778702d5d" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>normalize</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a2cf138c2853916d8fdd6ee538decd11b" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>normals</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1acd0c66cf9592d59635d8f0cd90a6a8e6" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>nx</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a4b765fecb383d8a7bcf7400ed69f5c55" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>ny</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1ae3b2bda88c67445d6cf62a86f121d4bd" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>offset</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a0f9a46cd0b0c3060c81c503e97718e87" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>order</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1acea4fdceeab227eb5ad09f52f9b58e40" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>originalInterval</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1af54790f4736706fda65bcc87e24cef1f" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>ox</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a5cd7c967702aa92f02a0fafbf1ed719d" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>oy</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6c39346893b0610e98d124f94f098b5b" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>points</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aebb06c5028ed907c85c179cef3fd5f47" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>ratios</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a786182209f69177b13f04fdd678eeb56" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>refineProjection</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1afb7008816c2eb9b266374b543b748b1c" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>ret</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1adfebcda73ce613d7f913ed37541348c6" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>ret</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6a567a984fdaa79b45c34650d5806b1d" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>reverse</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a1537b07a507ce3a670363ca50fcfb8b9" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>right_split</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a782e956673f761f25e256f1c2094d54b" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>roots</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a575e7ea0b4393c4007b0653488dffb00" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>scale</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a317f7fd239fe45816b1768fa5a73dd84" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>setLower</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a5e38ed6ec16131e7ab51330d66f42297" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>setOriginalT</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aea4d53a18bc2560c93b35a764fe6625c" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>simpleOffset</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1abd2b09d5ae706c4e31f22b0c199134c0" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>span</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a79e5e878938d38339da6d3bebb7bf337" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>span_t</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aa81a80a7a9dff4c45638400d60c2aa00" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>split</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a668f0b24433e3b2c5ef87f69875a10c2" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>t_values</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a76076a6b08f173fd018861a3c53e7711" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>update</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a67d3887b8b38085157320f51305db83e" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>x</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1abae064c2182ba700fb576355e7d15bab" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>x_values</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a4daedd276ea223e485036f3ad346b33c" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>y</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a8bf9aa7947c5ff98a513b2119c3bebac" prot="public" virt="non-virtual"><scope>bezier::BezierCurve</scope><name>y_values</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

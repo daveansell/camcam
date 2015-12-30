@@ -1,0 +1,929 @@
+\hypertarget{classbezier_1_1_bezier_curve}{}\section{bezier.\+Bezier\+Curve Class Reference}
+\label{classbezier_1_1_bezier_curve}\index{bezier.\+Bezier\+Curve@{bezier.\+Bezier\+Curve}}
+
+
+Inheritance diagram for bezier.\+Bezier\+Curve\+:
+% FIG 0
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a9056d475eb2526c7c5a9c48313520e89}{\+\_\+\+\_\+init\+\_\+\+\_\+}
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a76076a6b08f173fd018861a3c53e7711}{update} (self)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a6dfed42b3ef446bef5f2692ede776caa}{get\+Start} (self)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a4b0304e414c7bfebd8dbbde6e8ca669e}{get\+End} (self)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a9ba3665b11a6798f293c7aefa2f870bb}{get\+Point\+Projection} (self, \hyperlink{namespacebezier_adfc12e63653920e367a9c81631c20a52}{p})
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a786182209f69177b13f04fdd678eeb56}{refine\+Projection} (self, \hyperlink{namespacebezier_adfc12e63653920e367a9c81631c20a52}{p}, \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t}, distance, precision)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a6807911cd4102ba77bb799a72a992b0b}{get\+Similarity} (self, other)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a0f48a9279d1bcf4dac5296162809af5c}{get\+X\+Value} (self, \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t})
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_aebd772e37e054a8ff0c22154c9d475cb}{get\+Y\+Value} (self, \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t})
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_aaaea17f47298e5886852e33f05cb4f4a}{get\+Point} (self, \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t})
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a6c1c43b478d496b72b45ad4c8b7b53cc}{get\+D\+X\+Value} (self, \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t})
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_af52a33daa84c05d5ff5dc04b008509b3}{get\+D\+Y\+Value} (self, \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t})
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a585ad6904fc86f56b6ab076d9e5631aa}{get\+Derivative\+Point} (self, \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t})
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_ac55cd30cbbcd12cf9ea5419ba2784e74}{get\+Span\+Lines} (self, \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t})
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a023612963116656fc516654058647ef0}{get\+D2\+X\+Value} (self, \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t})
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a9d170ca72ea731c0824ee1e8d2675893}{get\+D2\+Y\+Value} (self, \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t})
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a1fc50ea3b49003eeb377d817a15e35ce}{get\+Second\+Derivative\+Point} (self, \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t})
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a964b6692250b6c3e82276eab469af6ed}{get\+Normal} (self, \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t})
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a28b0f5a264c1a37b4f38e3b4d9f44980}{generate\+Span} (self, \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t})
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a2f6e9270634c92225ba306342c8a60d7}{generate\+Bounding\+Box} (self)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a56d4007381285ec7fa68041a146acc3a}{get\+Area} (self)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_acaae994a33a9f9e41acb54f2691f1a86}{generate\+Tight\+Bounding\+Box} (self)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a67f06fd66567124f37eea60321e3126b}{has\+Bound\+Overlap\+With} (self, other)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a0d541f51c06e2cce9fb84515188d1fb3}{just\+X} (self, h)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_aedc1b7ba039d659a32c37c323aa079b8}{just\+Y} (self, h)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a6a567a984fdaa79b45c34650d5806b1d}{reverse} (self)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a8f368135ebb837de62ea0b663e3eee70}{is\+Biased} (self)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a3bff9cf6d4ab0944c6634a95e9afa6db}{get\+Curve\+Length} (self)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a2cd7ddcf33cb2fc656ec6d422ed5c9d0}{get\+A\+B\+C} (self, \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t})
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a600fb93cad2745eaba1b011e5989c4d0}{get\+Scale\+Angle} (self)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a6cfb8ee3cded08c7a9d7c47d19b4abaf}{get\+Interval} (self)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a5e38ed6ec16131e7ab51330d66f42297}{set\+Original\+T} (self, d1, d2)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_aa81a80a7a9dff4c45638400d60c2aa00}{split}
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a575e7ea0b4393c4007b0653488dffb00}{scale} (self, \hyperlink{namespacebezier_ad649969fef81af63abc92b1015251242}{f})
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a52119ad0f3360312b0e32391581f3671}{align}
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a17976a1d7e6864d98bec238778702d5d}{normalize} (self)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a64ef8bef255edb9e13299006896daa7d}{elevate} (self)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a317f7fd239fe45816b1768fa5a73dd84}{set\+Lower} (self, parent)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_af3f47c83a98f56b011858f24b7eed302}{lower} (self)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_ae23502e8926d52943088db91fd2bc8ba}{get\+Inflections} (self)
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_aea4d53a18bc2560c93b35a764fe6625c}{simple\+Offset}
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_ae3b2bda88c67445d6cf62a86f121d4bd}{offset}
+\item 
+def \hyperlink{classbezier_1_1_bezier_curve_a0dbf1d48cda1fee475627cbb46af1913}{make\+Offset\+Array} (\hyperlink{namespacebezier_af5dc7bac630ffee9827391cfaac1e06b}{segments}, \hyperlink{classbezier_1_1_bezier_curve}{Bezier\+Curve}, offset\+Curve=new \hyperlink{classbezier_1_1_bezier_curve}{Bezier\+Curve}\mbox{[}segments.\+size()\mbox{]};for(int b=0;b$<$ segments.\+size();b++)\{offset\+Curve\mbox{[}b\mbox{]}=segments.\+get(b) if(b $>$0 andnot simplified\+Functions)\+:\#We used estimations for the control-\/projections, self, correct\+If\+Needed, offset\+Curve, b, offset\+Curve, b, return, offset\+Curve, def, correct\+If\+Needed, \hyperlink{classbezier_1_1_bezier_curve}{Bezier\+Curve}, prev, \hyperlink{classbezier_1_1_bezier_curve}{Bezier\+Curve}, next)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_a631e45794713c37b7b28a1116bf7d414}{L\+U\+T\+\_\+resolution}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_a0f9a46cd0b0c3060c81c503e97718e87}{order}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_a6c39346893b0610e98d124f94f098b5b}{points}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_a9cf4bf17eddb3214f5727e9b45a15d62}{abc}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_abd2b09d5ae706c4e31f22b0c199134c0}{span}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_a958ec48826bf0bfd4f29c73641fd7562}{left\+\_\+split}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_a1537b07a507ce3a670363ca50fcfb8b9}{right\+\_\+split}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_a2cf138c2853916d8fdd6ee538decd11b}{normals}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_abae064c2182ba700fb576355e7d15bab}{x\+\_\+values}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_a8bf9aa7947c5ff98a513b2119c3bebac}{y\+\_\+values}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_a4577c6349bf8568b0f0a6259c361c42d}{L\+U\+T\+\_\+x}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_a5c47bd22203df84b3c9ef64389134d9d}{L\+U\+T\+\_\+y}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_aebb06c5028ed907c85c179cef3fd5f47}{ratios}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_acea4fdceeab227eb5ad09f52f9b58e40}{original\+Interval}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_a66a3a2b3ee0242789790ceace4b8c507}{draw\+\_\+x}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_a1859a14a8e80f71956ff806565be4e0d}{draw\+\_\+y}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_a79e5e878938d38339da6d3bebb7bf337}{span\+\_\+t}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_ad2535ff3f7797701c3bae55252cff911}{curve\+Length}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_a76880ee12be206cb218322e95cfa7658}{bias}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_aa3abeeffa97dabf2038f1a8f7d0f1940}{generator}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+tuple \hyperlink{classbezier_1_1_bezier_curve_a4570d8b0525d6fb56ffbe338aea5b9a5}{last} = len(\hyperlink{classbezier_1_1_bezier_curve_abd2b09d5ae706c4e31f22b0c199134c0}{span})
+\item 
+tuple \hyperlink{classbezier_1_1_bezier_curve_a67d3887b8b38085157320f51305db83e}{x} = lerp(\hyperlink{classbezier_1_1_bezier_curve_a6c39346893b0610e98d124f94f098b5b}{points}\mbox{[}\hyperlink{namespacebezier_a928e2d96e49d7898d0f47903caf0f866}{i}-\/1\mbox{]}.x,\hyperlink{classbezier_1_1_bezier_curve_a6c39346893b0610e98d124f94f098b5b}{points}\mbox{[}\hyperlink{namespacebezier_a928e2d96e49d7898d0f47903caf0f866}{i}\mbox{]}.x,0.\+5)
+\item 
+tuple \hyperlink{classbezier_1_1_bezier_curve_a4daedd276ea223e485036f3ad346b33c}{y} = lerp(\hyperlink{classbezier_1_1_bezier_curve_a6c39346893b0610e98d124f94f098b5b}{points}\mbox{[}\hyperlink{namespacebezier_a928e2d96e49d7898d0f47903caf0f866}{i}-\/1\mbox{]}.y,\hyperlink{classbezier_1_1_bezier_curve_a6c39346893b0610e98d124f94f098b5b}{points}\mbox{[}\hyperlink{namespacebezier_a928e2d96e49d7898d0f47903caf0f866}{i}\mbox{]}.y,0.\+5)
+\item 
+tuple \hyperlink{classbezier_1_1_bezier_curve_a782e956673f761f25e256f1c2094d54b}{roots} = comp.\+find\+All\+Roots(1, self.\+x\+\_\+values)
+\item 
+list \hyperlink{classbezier_1_1_bezier_curve_afb7008816c2eb9b266374b543b748b1c}{ret} = \mbox{[}$\,$\mbox{]}
+\item 
+tuple \hyperlink{classbezier_1_1_bezier_curve_adfebcda73ce613d7f913ed37541348c6}{ret} = sort(ret)
+\item 
+tuple \hyperlink{classbezier_1_1_bezier_curve_a668f0b24433e3b2c5ef87f69875a10c2}{t\+\_\+values} = new\+Array\+List$<$Float$>$()
+\item 
+list \hyperlink{classbezier_1_1_bezier_curve_acd0c66cf9592d59635d8f0cd90a6a8e6}{nx} = self.\+draw\+\_\+x\mbox{[}idx\mbox{]}
+\item 
+list \hyperlink{classbezier_1_1_bezier_curve_a4b765fecb383d8a7bcf7400ed69f5c55}{ny} = self.\+draw\+\_\+y\mbox{[}idx\mbox{]}
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_af54790f4736706fda65bcc87e24cef1f}{ox} = \hyperlink{classbezier_1_1_bezier_curve_acd0c66cf9592d59635d8f0cd90a6a8e6}{nx};
+\item 
+\hyperlink{classbezier_1_1_bezier_curve_a5cd7c967702aa92f02a0fafbf1ed719d}{oy} = \hyperlink{classbezier_1_1_bezier_curve_a4b765fecb383d8a7bcf7400ed69f5c55}{ny};
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 78 of file bezier.\+py.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classbezier_1_1_bezier_curve_a9056d475eb2526c7c5a9c48313520e89}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{points = {\ttfamily False}, }
+\item[{}]{copy\+Points = {\ttfamily False}}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a9056d475eb2526c7c5a9c48313520e89}
+
+
+Definition at line 79 of file bezier.\+py.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classbezier_1_1_bezier_curve_a52119ad0f3360312b0e32391581f3671}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!align@{align}}
+\index{align@{align}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{align}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+align (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{start = {\ttfamily False}, }
+\item[{}]{end = {\ttfamily False}}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a52119ad0f3360312b0e32391581f3671}
+
+
+Definition at line 565 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a64ef8bef255edb9e13299006896daa7d}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!elevate@{elevate}}
+\index{elevate@{elevate}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{elevate}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+elevate (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a64ef8bef255edb9e13299006896daa7d}
+
+
+Definition at line 613 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a2f6e9270634c92225ba306342c8a60d7}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!generate\+Bounding\+Box@{generate\+Bounding\+Box}}
+\index{generate\+Bounding\+Box@{generate\+Bounding\+Box}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{generate\+Bounding\+Box}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+generate\+Bounding\+Box (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a2f6e9270634c92225ba306342c8a60d7}
+
+
+Definition at line 357 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a28b0f5a264c1a37b4f38e3b4d9f44980}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!generate\+Span@{generate\+Span}}
+\index{generate\+Span@{generate\+Span}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{generate\+Span}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+generate\+Span (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{t}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a28b0f5a264c1a37b4f38e3b4d9f44980}
+
+
+Definition at line 321 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_acaae994a33a9f9e41acb54f2691f1a86}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!generate\+Tight\+Bounding\+Box@{generate\+Tight\+Bounding\+Box}}
+\index{generate\+Tight\+Bounding\+Box@{generate\+Tight\+Bounding\+Box}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{generate\+Tight\+Bounding\+Box}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+generate\+Tight\+Bounding\+Box (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_acaae994a33a9f9e41acb54f2691f1a86}
+
+
+Definition at line 389 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a2cd7ddcf33cb2fc656ec6d422ed5c9d0}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+A\+B\+C@{get\+A\+B\+C}}
+\index{get\+A\+B\+C@{get\+A\+B\+C}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+A\+B\+C}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+A\+B\+C (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{t}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a2cd7ddcf33cb2fc656ec6d422ed5c9d0}
+
+
+Definition at line 482 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a56d4007381285ec7fa68041a146acc3a}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+Area@{get\+Area}}
+\index{get\+Area@{get\+Area}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+Area}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+Area (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a56d4007381285ec7fa68041a146acc3a}
+
+
+Definition at line 378 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a3bff9cf6d4ab0944c6634a95e9afa6db}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+Curve\+Length@{get\+Curve\+Length}}
+\index{get\+Curve\+Length@{get\+Curve\+Length}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+Curve\+Length}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+Curve\+Length (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a3bff9cf6d4ab0944c6634a95e9afa6db}
+
+
+Definition at line 475 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a023612963116656fc516654058647ef0}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+D2\+X\+Value@{get\+D2\+X\+Value}}
+\index{get\+D2\+X\+Value@{get\+D2\+X\+Value}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+D2\+X\+Value}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+D2\+X\+Value (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{t}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a023612963116656fc516654058647ef0}
+
+
+Definition at line 287 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a9d170ca72ea731c0824ee1e8d2675893}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+D2\+Y\+Value@{get\+D2\+Y\+Value}}
+\index{get\+D2\+Y\+Value@{get\+D2\+Y\+Value}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+D2\+Y\+Value}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+D2\+Y\+Value (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{t}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a9d170ca72ea731c0824ee1e8d2675893}
+
+
+Definition at line 291 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a585ad6904fc86f56b6ab076d9e5631aa}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+Derivative\+Point@{get\+Derivative\+Point}}
+\index{get\+Derivative\+Point@{get\+Derivative\+Point}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+Derivative\+Point}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+Derivative\+Point (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{t}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a585ad6904fc86f56b6ab076d9e5631aa}
+
+
+Definition at line 270 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a6c1c43b478d496b72b45ad4c8b7b53cc}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+D\+X\+Value@{get\+D\+X\+Value}}
+\index{get\+D\+X\+Value@{get\+D\+X\+Value}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+D\+X\+Value}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+D\+X\+Value (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{t}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a6c1c43b478d496b72b45ad4c8b7b53cc}
+
+
+Definition at line 262 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_af52a33daa84c05d5ff5dc04b008509b3}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+D\+Y\+Value@{get\+D\+Y\+Value}}
+\index{get\+D\+Y\+Value@{get\+D\+Y\+Value}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+D\+Y\+Value}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+D\+Y\+Value (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{t}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_af52a33daa84c05d5ff5dc04b008509b3}
+
+
+Definition at line 266 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a4b0304e414c7bfebd8dbbde6e8ca669e}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+End@{get\+End}}
+\index{get\+End@{get\+End}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+End}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+End (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a4b0304e414c7bfebd8dbbde6e8ca669e}
+
+
+Definition at line 182 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_ae23502e8926d52943088db91fd2bc8ba}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+Inflections@{get\+Inflections}}
+\index{get\+Inflections@{get\+Inflections}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+Inflections}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+Inflections (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_ae23502e8926d52943088db91fd2bc8ba}
+
+
+Definition at line 665 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a6cfb8ee3cded08c7a9d7c47d19b4abaf}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+Interval@{get\+Interval}}
+\index{get\+Interval@{get\+Interval}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+Interval}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+Interval (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a6cfb8ee3cded08c7a9d7c47d19b4abaf}
+
+
+Definition at line 502 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a964b6692250b6c3e82276eab469af6ed}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+Normal@{get\+Normal}}
+\index{get\+Normal@{get\+Normal}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+Normal}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+Normal (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{t}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a964b6692250b6c3e82276eab469af6ed}
+
+
+Definition at line 302 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_aaaea17f47298e5886852e33f05cb4f4a}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+Point@{get\+Point}}
+\index{get\+Point@{get\+Point}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+Point}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+Point (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{t}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_aaaea17f47298e5886852e33f05cb4f4a}
+
+
+Definition at line 255 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a9ba3665b11a6798f293c7aefa2f870bb}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+Point\+Projection@{get\+Point\+Projection}}
+\index{get\+Point\+Projection@{get\+Point\+Projection}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+Point\+Projection}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+Point\+Projection (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{p}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a9ba3665b11a6798f293c7aefa2f870bb}
+
+
+Definition at line 189 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a600fb93cad2745eaba1b011e5989c4d0}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+Scale\+Angle@{get\+Scale\+Angle}}
+\index{get\+Scale\+Angle@{get\+Scale\+Angle}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+Scale\+Angle}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+Scale\+Angle (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a600fb93cad2745eaba1b011e5989c4d0}
+
+
+Definition at line 493 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a1fc50ea3b49003eeb377d817a15e35ce}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+Second\+Derivative\+Point@{get\+Second\+Derivative\+Point}}
+\index{get\+Second\+Derivative\+Point@{get\+Second\+Derivative\+Point}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+Second\+Derivative\+Point}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+Second\+Derivative\+Point (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{t}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a1fc50ea3b49003eeb377d817a15e35ce}
+
+
+Definition at line 295 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a6807911cd4102ba77bb799a72a992b0b}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+Similarity@{get\+Similarity}}
+\index{get\+Similarity@{get\+Similarity}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+Similarity}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+Similarity (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{other}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a6807911cd4102ba77bb799a72a992b0b}
+
+
+Definition at line 229 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_ac55cd30cbbcd12cf9ea5419ba2784e74}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+Span\+Lines@{get\+Span\+Lines}}
+\index{get\+Span\+Lines@{get\+Span\+Lines}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+Span\+Lines}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+Span\+Lines (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{t}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_ac55cd30cbbcd12cf9ea5419ba2784e74}
+
+
+Definition at line 274 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a6dfed42b3ef446bef5f2692ede776caa}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+Start@{get\+Start}}
+\index{get\+Start@{get\+Start}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+Start}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+Start (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a6dfed42b3ef446bef5f2692ede776caa}
+
+
+Definition at line 176 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a0f48a9279d1bcf4dac5296162809af5c}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+X\+Value@{get\+X\+Value}}
+\index{get\+X\+Value@{get\+X\+Value}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+X\+Value}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+X\+Value (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{t}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a0f48a9279d1bcf4dac5296162809af5c}
+
+
+Definition at line 247 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_aebd772e37e054a8ff0c22154c9d475cb}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!get\+Y\+Value@{get\+Y\+Value}}
+\index{get\+Y\+Value@{get\+Y\+Value}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{get\+Y\+Value}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+get\+Y\+Value (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{t}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_aebd772e37e054a8ff0c22154c9d475cb}
+
+
+Definition at line 251 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a67f06fd66567124f37eea60321e3126b}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!has\+Bound\+Overlap\+With@{has\+Bound\+Overlap\+With}}
+\index{has\+Bound\+Overlap\+With@{has\+Bound\+Overlap\+With}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{has\+Bound\+Overlap\+With}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+has\+Bound\+Overlap\+With (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{other}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a67f06fd66567124f37eea60321e3126b}
+
+
+Definition at line 410 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a8f368135ebb837de62ea0b663e3eee70}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!is\+Biased@{is\+Biased}}
+\index{is\+Biased@{is\+Biased}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{is\+Biased}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+is\+Biased (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a8f368135ebb837de62ea0b663e3eee70}
+
+
+Definition at line 469 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a0d541f51c06e2cce9fb84515188d1fb3}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!just\+X@{just\+X}}
+\index{just\+X@{just\+X}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{just\+X}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+just\+X (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{h}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a0d541f51c06e2cce9fb84515188d1fb3}
+
+
+Definition at line 432 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_aedc1b7ba039d659a32c37c323aa079b8}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!just\+Y@{just\+Y}}
+\index{just\+Y@{just\+Y}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{just\+Y}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+just\+Y (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{h}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_aedc1b7ba039d659a32c37c323aa079b8}
+
+
+Definition at line 445 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_af3f47c83a98f56b011858f24b7eed302}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!lower@{lower}}
+\index{lower@{lower}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{lower}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+lower (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_af3f47c83a98f56b011858f24b7eed302}
+
+
+Definition at line 645 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a0dbf1d48cda1fee475627cbb46af1913}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!make\+Offset\+Array@{make\+Offset\+Array}}
+\index{make\+Offset\+Array@{make\+Offset\+Array}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{make\+Offset\+Array}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+make\+Offset\+Array (
+\begin{DoxyParamCaption}
+\item[{}]{segments, }
+\item[{}]{Bezier\+Curve, }
+\item[{}]{offset\+Curve = {\ttfamily new~{\bf Bezier\+Curve}\mbox{[}segments.size()\mbox{]};
+~~~~		for(int~b=0;~b$<$segments.size();~b++)~\{
+~~~~~~			offsetCurve\mbox{[}b\mbox{]}~=~segments.get(b)
+~~~~~~			if(b$>$0~and~~not~simplifiedFunctions)\+:
+~~~~~~~~		\#~We~used~estimations~for~the~control-\/projections}, }
+\item[{}]{self, }
+\item[{}]{correct\+If\+Needed, }
+\item[{}]{offset\+Curve, }
+\item[{}]{b, }
+\item[{}]{offset\+Curve, }
+\item[{}]{b, }
+\item[{}]{return, }
+\item[{}]{offset\+Curve, }
+\item[{}]{def, }
+\item[{}]{correct\+If\+Needed, }
+\item[{}]{Bezier\+Curve, }
+\item[{}]{prev, }
+\item[{}]{Bezier\+Curve, }
+\item[{}]{next}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a0dbf1d48cda1fee475627cbb46af1913}
+
+
+Definition at line 807 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a17976a1d7e6864d98bec238778702d5d}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!normalize@{normalize}}
+\index{normalize@{normalize}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{normalize}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+normalize (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a17976a1d7e6864d98bec238778702d5d}
+
+
+Definition at line 588 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_ae3b2bda88c67445d6cf62a86f121d4bd}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!offset@{offset}}
+\index{offset@{offset}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{offset}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+offset (
+\begin{DoxyParamCaption}
+\item[{}]{distance, }
+\item[{}]{start = {\ttfamily 1}, }
+\item[{}]{end = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_ae3b2bda88c67445d6cf62a86f121d4bd}
+
+
+Definition at line 762 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a786182209f69177b13f04fdd678eeb56}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!refine\+Projection@{refine\+Projection}}
+\index{refine\+Projection@{refine\+Projection}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{refine\+Projection}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+refine\+Projection (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{p, }
+\item[{}]{t, }
+\item[{}]{distance, }
+\item[{}]{precision}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a786182209f69177b13f04fdd678eeb56}
+
+
+Definition at line 210 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a6a567a984fdaa79b45c34650d5806b1d}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!reverse@{reverse}}
+\index{reverse@{reverse}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{reverse}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+reverse (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a6a567a984fdaa79b45c34650d5806b1d}
+
+
+Definition at line 456 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a575e7ea0b4393c4007b0653488dffb00}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!scale@{scale}}
+\index{scale@{scale}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{scale}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+scale (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{f}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a575e7ea0b4393c4007b0653488dffb00}
+
+
+Definition at line 550 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a317f7fd239fe45816b1768fa5a73dd84}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!set\+Lower@{set\+Lower}}
+\index{set\+Lower@{set\+Lower}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{set\+Lower}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+set\+Lower (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{parent}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a317f7fd239fe45816b1768fa5a73dd84}
+
+
+Definition at line 636 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a5e38ed6ec16131e7ab51330d66f42297}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!set\+Original\+T@{set\+Original\+T}}
+\index{set\+Original\+T@{set\+Original\+T}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{set\+Original\+T}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+set\+Original\+T (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{d1, }
+\item[{}]{d2}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a5e38ed6ec16131e7ab51330d66f42297}
+
+
+Definition at line 511 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_aea4d53a18bc2560c93b35a764fe6625c}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!simple\+Offset@{simple\+Offset}}
+\index{simple\+Offset@{simple\+Offset}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{simple\+Offset}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+simple\+Offset (
+\begin{DoxyParamCaption}
+\item[{}]{offset, }
+\item[{}]{start = {\ttfamily 1}, }
+\item[{}]{end = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_aea4d53a18bc2560c93b35a764fe6625c}
+
+
+Definition at line 742 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_aa81a80a7a9dff4c45638400d60c2aa00}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!split@{split}}
+\index{split@{split}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{split}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+split (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{t = {\ttfamily False}}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_aa81a80a7a9dff4c45638400d60c2aa00}
+
+
+Definition at line 520 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a76076a6b08f173fd018861a3c53e7711}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!update@{update}}
+\index{update@{update}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{update}]{\setlength{\rightskip}{0pt plus 5cm}def bezier.\+Bezier\+Curve.\+update (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classbezier_1_1_bezier_curve_a76076a6b08f173fd018861a3c53e7711}
+
+
+Definition at line 125 of file bezier.\+py.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classbezier_1_1_bezier_curve_a9cf4bf17eddb3214f5727e9b45a15d62}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!abc@{abc}}
+\index{abc@{abc}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{abc}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+abc}\label{classbezier_1_1_bezier_curve_a9cf4bf17eddb3214f5727e9b45a15d62}
+
+
+Definition at line 83 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a76880ee12be206cb218322e95cfa7658}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!bias@{bias}}
+\index{bias@{bias}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{bias}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+bias}\label{classbezier_1_1_bezier_curve_a76880ee12be206cb218322e95cfa7658}
+
+
+Definition at line 100 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_ad2535ff3f7797701c3bae55252cff911}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!curve\+Length@{curve\+Length}}
+\index{curve\+Length@{curve\+Length}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{curve\+Length}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+curve\+Length}\label{classbezier_1_1_bezier_curve_ad2535ff3f7797701c3bae55252cff911}
+
+
+Definition at line 99 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a66a3a2b3ee0242789790ceace4b8c507}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!draw\+\_\+x@{draw\+\_\+x}}
+\index{draw\+\_\+x@{draw\+\_\+x}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{draw\+\_\+x}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+draw\+\_\+x}\label{classbezier_1_1_bezier_curve_a66a3a2b3ee0242789790ceace4b8c507}
+
+
+Definition at line 96 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a1859a14a8e80f71956ff806565be4e0d}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!draw\+\_\+y@{draw\+\_\+y}}
+\index{draw\+\_\+y@{draw\+\_\+y}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{draw\+\_\+y}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+draw\+\_\+y}\label{classbezier_1_1_bezier_curve_a1859a14a8e80f71956ff806565be4e0d}
+
+
+Definition at line 97 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_aa3abeeffa97dabf2038f1a8f7d0f1940}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!generator@{generator}}
+\index{generator@{generator}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{generator}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+generator}\label{classbezier_1_1_bezier_curve_aa3abeeffa97dabf2038f1a8f7d0f1940}
+
+
+Definition at line 104 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a4570d8b0525d6fb56ffbe338aea5b9a5}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!last@{last}}
+\index{last@{last}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{last}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+Bezier\+Curve.\+last = len({\bf span})\hspace{0.3cm}{\ttfamily [static]}}\label{classbezier_1_1_bezier_curve_a4570d8b0525d6fb56ffbe338aea5b9a5}
+
+
+Definition at line 347 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a958ec48826bf0bfd4f29c73641fd7562}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!left\+\_\+split@{left\+\_\+split}}
+\index{left\+\_\+split@{left\+\_\+split}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{left\+\_\+split}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+left\+\_\+split}\label{classbezier_1_1_bezier_curve_a958ec48826bf0bfd4f29c73641fd7562}
+
+
+Definition at line 85 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a631e45794713c37b7b28a1116bf7d414}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!L\+U\+T\+\_\+resolution@{L\+U\+T\+\_\+resolution}}
+\index{L\+U\+T\+\_\+resolution@{L\+U\+T\+\_\+resolution}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{L\+U\+T\+\_\+resolution}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+L\+U\+T\+\_\+resolution}\label{classbezier_1_1_bezier_curve_a631e45794713c37b7b28a1116bf7d414}
+
+
+Definition at line 80 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a4577c6349bf8568b0f0a6259c361c42d}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!L\+U\+T\+\_\+x@{L\+U\+T\+\_\+x}}
+\index{L\+U\+T\+\_\+x@{L\+U\+T\+\_\+x}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{L\+U\+T\+\_\+x}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+L\+U\+T\+\_\+x}\label{classbezier_1_1_bezier_curve_a4577c6349bf8568b0f0a6259c361c42d}
+
+
+Definition at line 91 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a5c47bd22203df84b3c9ef64389134d9d}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!L\+U\+T\+\_\+y@{L\+U\+T\+\_\+y}}
+\index{L\+U\+T\+\_\+y@{L\+U\+T\+\_\+y}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{L\+U\+T\+\_\+y}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+L\+U\+T\+\_\+y}\label{classbezier_1_1_bezier_curve_a5c47bd22203df84b3c9ef64389134d9d}
+
+
+Definition at line 92 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a2cf138c2853916d8fdd6ee538decd11b}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!normals@{normals}}
+\index{normals@{normals}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{normals}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+normals}\label{classbezier_1_1_bezier_curve_a2cf138c2853916d8fdd6ee538decd11b}
+
+
+Definition at line 87 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_acd0c66cf9592d59635d8f0cd90a6a8e6}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!nx@{nx}}
+\index{nx@{nx}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{nx}]{\setlength{\rightskip}{0pt plus 5cm}list bezier.\+Bezier\+Curve.\+nx = self.\+draw\+\_\+x\mbox{[}idx\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classbezier_1_1_bezier_curve_acd0c66cf9592d59635d8f0cd90a6a8e6}
+
+
+Definition at line 854 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a4b765fecb383d8a7bcf7400ed69f5c55}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!ny@{ny}}
+\index{ny@{ny}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{ny}]{\setlength{\rightskip}{0pt plus 5cm}list bezier.\+Bezier\+Curve.\+ny = self.\+draw\+\_\+y\mbox{[}idx\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classbezier_1_1_bezier_curve_a4b765fecb383d8a7bcf7400ed69f5c55}
+
+
+Definition at line 855 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a0f9a46cd0b0c3060c81c503e97718e87}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!order@{order}}
+\index{order@{order}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{order}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+order}\label{classbezier_1_1_bezier_curve_a0f9a46cd0b0c3060c81c503e97718e87}
+
+
+Definition at line 81 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_acea4fdceeab227eb5ad09f52f9b58e40}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!original\+Interval@{original\+Interval}}
+\index{original\+Interval@{original\+Interval}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{original\+Interval}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+original\+Interval}\label{classbezier_1_1_bezier_curve_acea4fdceeab227eb5ad09f52f9b58e40}
+
+
+Definition at line 94 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_af54790f4736706fda65bcc87e24cef1f}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!ox@{ox}}
+\index{ox@{ox}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{ox}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+ox = {\bf nx};\hspace{0.3cm}{\ttfamily [static]}}\label{classbezier_1_1_bezier_curve_af54790f4736706fda65bcc87e24cef1f}
+
+
+Definition at line 859 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a5cd7c967702aa92f02a0fafbf1ed719d}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!oy@{oy}}
+\index{oy@{oy}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{oy}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+oy = {\bf ny};\hspace{0.3cm}{\ttfamily [static]}}\label{classbezier_1_1_bezier_curve_a5cd7c967702aa92f02a0fafbf1ed719d}
+
+
+Definition at line 860 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a6c39346893b0610e98d124f94f098b5b}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!points@{points}}
+\index{points@{points}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{points}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+points}\label{classbezier_1_1_bezier_curve_a6c39346893b0610e98d124f94f098b5b}
+
+
+Definition at line 82 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_aebb06c5028ed907c85c179cef3fd5f47}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!ratios@{ratios}}
+\index{ratios@{ratios}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{ratios}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+ratios}\label{classbezier_1_1_bezier_curve_aebb06c5028ed907c85c179cef3fd5f47}
+
+
+Definition at line 93 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_afb7008816c2eb9b266374b543b748b1c}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!ret@{ret}}
+\index{ret@{ret}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{ret}]{\setlength{\rightskip}{0pt plus 5cm}list bezier.\+Bezier\+Curve.\+ret = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classbezier_1_1_bezier_curve_afb7008816c2eb9b266374b543b748b1c}
+
+
+Definition at line 692 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_adfebcda73ce613d7f913ed37541348c6}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!ret@{ret}}
+\index{ret@{ret}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{ret}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+Bezier\+Curve.\+ret = sort(ret)\hspace{0.3cm}{\ttfamily [static]}}\label{classbezier_1_1_bezier_curve_adfebcda73ce613d7f913ed37541348c6}
+
+
+Definition at line 696 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a1537b07a507ce3a670363ca50fcfb8b9}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!right\+\_\+split@{right\+\_\+split}}
+\index{right\+\_\+split@{right\+\_\+split}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{right\+\_\+split}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+right\+\_\+split}\label{classbezier_1_1_bezier_curve_a1537b07a507ce3a670363ca50fcfb8b9}
+
+
+Definition at line 86 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a782e956673f761f25e256f1c2094d54b}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!roots@{roots}}
+\index{roots@{roots}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{roots}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+Bezier\+Curve.\+roots = comp.\+find\+All\+Roots(1, self.\+x\+\_\+values)\hspace{0.3cm}{\ttfamily [static]}}\label{classbezier_1_1_bezier_curve_a782e956673f761f25e256f1c2094d54b}
+
+
+Definition at line 672 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_abd2b09d5ae706c4e31f22b0c199134c0}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!span@{span}}
+\index{span@{span}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{span}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+span}\label{classbezier_1_1_bezier_curve_abd2b09d5ae706c4e31f22b0c199134c0}
+
+
+Definition at line 84 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a79e5e878938d38339da6d3bebb7bf337}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!span\+\_\+t@{span\+\_\+t}}
+\index{span\+\_\+t@{span\+\_\+t}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{span\+\_\+t}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+span\+\_\+t}\label{classbezier_1_1_bezier_curve_a79e5e878938d38339da6d3bebb7bf337}
+
+
+Definition at line 98 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a668f0b24433e3b2c5ef87f69875a10c2}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!t\+\_\+values@{t\+\_\+values}}
+\index{t\+\_\+values@{t\+\_\+values}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{t\+\_\+values}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+Bezier\+Curve.\+t\+\_\+values = new\+Array\+List$<$Float$>$()\hspace{0.3cm}{\ttfamily [static]}}\label{classbezier_1_1_bezier_curve_a668f0b24433e3b2c5ef87f69875a10c2}
+
+
+Definition at line 698 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a67d3887b8b38085157320f51305db83e}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!x@{x}}
+\index{x@{x}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{x}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+Bezier\+Curve.\+x = lerp({\bf points}\mbox{[}{\bf i}-\/1\mbox{]}.x,{\bf points}\mbox{[}{\bf i}\mbox{]}.x,0.\+5)\hspace{0.3cm}{\ttfamily [static]}}\label{classbezier_1_1_bezier_curve_a67d3887b8b38085157320f51305db83e}
+
+
+Definition at line 654 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_abae064c2182ba700fb576355e7d15bab}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!x\+\_\+values@{x\+\_\+values}}
+\index{x\+\_\+values@{x\+\_\+values}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{x\+\_\+values}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+x\+\_\+values}\label{classbezier_1_1_bezier_curve_abae064c2182ba700fb576355e7d15bab}
+
+
+Definition at line 89 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a4daedd276ea223e485036f3ad346b33c}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!y@{y}}
+\index{y@{y}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{y}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+Bezier\+Curve.\+y = lerp({\bf points}\mbox{[}{\bf i}-\/1\mbox{]}.y,{\bf points}\mbox{[}{\bf i}\mbox{]}.y,0.\+5)\hspace{0.3cm}{\ttfamily [static]}}\label{classbezier_1_1_bezier_curve_a4daedd276ea223e485036f3ad346b33c}
+
+
+Definition at line 655 of file bezier.\+py.
+
+\hypertarget{classbezier_1_1_bezier_curve_a8bf9aa7947c5ff98a513b2119c3bebac}{}\index{bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}!y\+\_\+values@{y\+\_\+values}}
+\index{y\+\_\+values@{y\+\_\+values}!bezier\+::\+Bezier\+Curve@{bezier\+::\+Bezier\+Curve}}
+\subsubsection[{y\+\_\+values}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+Bezier\+Curve.\+y\+\_\+values}\label{classbezier_1_1_bezier_curve_a8bf9aa7947c5ff98a513b2119c3bebac}
+
+
+Definition at line 90 of file bezier.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{bezier_8py}{bezier.\+py}\end{DoxyCompactItemize}

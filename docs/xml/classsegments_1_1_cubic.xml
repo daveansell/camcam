@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classsegments_1_1_cubic" kind="class" language="Python" prot="public">
+    <compoundname>segments::Cubic</compoundname>
+    <basecompoundref refid="classsegments_1_1_segment" prot="public" virt="non-virtual">segments.Segment</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classsegments_1_1_cubic_1a3d87e63eecbf9da1becc55fb858a1f3a" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>segments.Cubic::seg_type</definition>
+        <argsstring></argsstring>
+        <name>seg_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="211" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="211" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_cubic_1a2a6bbe67c22dca2202ee9abbee280275" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>segments.Cubic::cutto</definition>
+        <argsstring></argsstring>
+        <name>cutto</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="212" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="212" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_cubic_1aba3e470c7944341886bac2f751d7794a" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>segments.Cubic::cutfrom</definition>
+        <argsstring></argsstring>
+        <name>cutfrom</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="213" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="213" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_cubic_1abba7183f1a5e759358ec3a9e0f4e5b71" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>segments.Cubic::cp1</definition>
+        <argsstring></argsstring>
+        <name>cp1</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="214" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="214" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_cubic_1ae8e4d11a0e2c1dde141ea4b962da4e58" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>segments.Cubic::cp2</definition>
+        <argsstring></argsstring>
+        <name>cp2</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="215" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="215" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classsegments_1_1_cubic_1ad74bc1090ec38e60e2fcc07d1d0964e3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Cubic.__init__</definition>
+        <argsstring>(self, cutfrom, cutto, cp1, cp2)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classsegments_1_1_cubic_1aba3e470c7944341886bac2f751d7794a" kindref="member">cutfrom</ref></type>
+          <defname>cutfrom</defname>
+        </param>
+        <param>
+          <type><ref refid="classsegments_1_1_cubic_1a2a6bbe67c22dca2202ee9abbee280275" kindref="member">cutto</ref></type>
+          <defname>cutto</defname>
+        </param>
+        <param>
+          <type><ref refid="classsegments_1_1_cubic_1abba7183f1a5e759358ec3a9e0f4e5b71" kindref="member">cp1</ref></type>
+          <defname>cp1</defname>
+        </param>
+        <param>
+          <type><ref refid="classsegments_1_1_cubic_1ae8e4d11a0e2c1dde141ea4b962da4e58" kindref="member">cp2</ref></type>
+          <defname>cp2</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="210" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="210" bodyend="216"/>
+      </memberdef>
+      <memberdef kind="function" id="classsegments_1_1_cubic_1a506ce3ee174658e31aaa7017f9a709ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Cubic.gcode</definition>
+        <argsstring></argsstring>
+        <name>gcode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="217" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="217" bodyend="225"/>
+      </memberdef>
+      <memberdef kind="function" id="classsegments_1_1_cubic_1a2ee85018d2135912cfcca040b0a79118" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Cubic.svg</definition>
+        <argsstring></argsstring>
+        <name>svg</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="226" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="226" bodyend="231"/>
+      </memberdef>
+      <memberdef kind="function" id="classsegments_1_1_cubic_1a2986509367f3c24a34bd9b8078ca0dcd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Cubic.polygon</definition>
+        <argsstring></argsstring>
+        <name>polygon</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="232" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="232" bodyend="247"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="180">
+        <label>object</label>
+      </node>
+      <node id="178">
+        <label>segments.Cubic</label>
+        <link refid="classsegments_1_1_cubic"/>
+        <childnode refid="179" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="179">
+        <label>segments.Segment</label>
+        <link refid="classsegments_1_1_segment"/>
+        <childnode refid="180" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="183">
+        <label>object</label>
+      </node>
+      <node id="181">
+        <label>segments.Cubic</label>
+        <link refid="classsegments_1_1_cubic"/>
+        <childnode refid="182" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="182">
+        <label>segments.Segment</label>
+        <link refid="classsegments_1_1_segment"/>
+        <childnode refid="183" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/segments.py" line="209" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="209" bodyend="247"/>
+    <listofallmembers>
+      <member refid="classsegments_1_1_cubic_1ad74bc1090ec38e60e2fcc07d1d0964e3" prot="public" virt="non-virtual"><scope>segments::Cubic</scope><name>__init__</name></member>
+      <member refid="classsegments_1_1_segment_1a1361eaaf9eaa73cb73d9201808842108" prot="public" virt="non-virtual" ambiguityscope="segments::Segment."><scope>segments::Cubic</scope><name>__init__</name></member>
+      <member refid="classsegments_1_1_cubic_1abba7183f1a5e759358ec3a9e0f4e5b71" prot="public" virt="non-virtual"><scope>segments::Cubic</scope><name>cp1</name></member>
+      <member refid="classsegments_1_1_cubic_1ae8e4d11a0e2c1dde141ea4b962da4e58" prot="public" virt="non-virtual"><scope>segments::Cubic</scope><name>cp2</name></member>
+      <member refid="classsegments_1_1_cubic_1aba3e470c7944341886bac2f751d7794a" prot="public" virt="non-virtual"><scope>segments::Cubic</scope><name>cutfrom</name></member>
+      <member refid="classsegments_1_1_cubic_1a2a6bbe67c22dca2202ee9abbee280275" prot="public" virt="non-virtual"><scope>segments::Cubic</scope><name>cutto</name></member>
+      <member refid="classsegments_1_1_cubic_1a506ce3ee174658e31aaa7017f9a709ba" prot="public" virt="non-virtual"><scope>segments::Cubic</scope><name>gcode</name></member>
+      <member refid="classsegments_1_1_segment_1a22b1c733c65857a39bcedbc86654d4a0" prot="public" virt="non-virtual" ambiguityscope="segments::Segment."><scope>segments::Cubic</scope><name>gcode</name></member>
+      <member refid="classsegments_1_1_segment_1ad755cb568f5a00ba72459d41721a652e" prot="public" virt="non-virtual"><scope>segments::Cubic</scope><name>out</name></member>
+      <member refid="classsegments_1_1_cubic_1a2986509367f3c24a34bd9b8078ca0dcd" prot="public" virt="non-virtual"><scope>segments::Cubic</scope><name>polygon</name></member>
+      <member refid="classsegments_1_1_segment_1ae8a07de4e87b72e7f915866647c577b8" prot="public" virt="non-virtual" ambiguityscope="segments::Segment."><scope>segments::Cubic</scope><name>polygon</name></member>
+      <member refid="classsegments_1_1_cubic_1a3d87e63eecbf9da1becc55fb858a1f3a" prot="public" virt="non-virtual"><scope>segments::Cubic</scope><name>seg_type</name></member>
+      <member refid="classsegments_1_1_segment_1acaccd5af98d8073bdad79805908fefe4" prot="public" virt="non-virtual"><scope>segments::Cubic</scope><name>seg_types</name></member>
+      <member refid="classsegments_1_1_segment_1a7a8dd4167be305d3adbc27ffa3a41ff1" prot="public" virt="non-virtual"><scope>segments::Cubic</scope><name>simplegcode</name></member>
+      <member refid="classsegments_1_1_segment_1a8b156fa2dcd4f93f6d781d820b931da4" prot="public" virt="non-virtual"><scope>segments::Cubic</scope><name>start</name></member>
+      <member refid="classsegments_1_1_cubic_1a2ee85018d2135912cfcca040b0a79118" prot="public" virt="non-virtual"><scope>segments::Cubic</scope><name>svg</name></member>
+      <member refid="classsegments_1_1_segment_1a4861399cabc87392517f539c38bb79d1" prot="public" virt="non-virtual"><scope>segments::Cubic</scope><name>temp</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

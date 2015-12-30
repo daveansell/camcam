@@ -1,0 +1,241 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classcamcam__layout_1_1_kv_part" kind="class" language="Python" prot="public">
+    <compoundname>camcam_layout::KvPart</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">Scatter</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classcamcam__layout_1_1_kv_part_1a9579f7d28205b8183edce020a090200a" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>camcam_layout.KvPart::deleted</definition>
+        <argsstring></argsstring>
+        <name>deleted</name>
+        <initializer>= False</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="31" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classcamcam__layout_1_1_kv_part_1a802f4bf14a71700a9019b069ed29916e" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>camcam_layout.KvPart::part</definition>
+        <argsstring></argsstring>
+        <name>part</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="33" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_kv_part_1adbf6e3a41fb3ebaf219b7c948fc68ee7" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>camcam_layout.KvPart::startcentre</definition>
+        <argsstring></argsstring>
+        <name>startcentre</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="34" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_kv_part_1abf1410f1bd0b1d64327cd3d35c923493" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>camcam_layout.KvPart::back_colour</definition>
+        <argsstring></argsstring>
+        <name>back_colour</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="38" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_kv_part_1afeef47f5c689151138611b54edef348a" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>camcam_layout.KvPart::size</definition>
+        <argsstring></argsstring>
+        <name>size</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="47" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_kv_part_1a5d24a5b060975df8723369d28c67eb76" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>camcam_layout.KvPart::linecolour</definition>
+        <argsstring></argsstring>
+        <name>linecolour</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="58" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_kv_part_1ab1629e55d722b727c5e28bd5e8d4df39" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>camcam_layout.KvPart::center</definition>
+        <argsstring></argsstring>
+        <name>center</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="63" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_kv_part_1aa7d453718127aa8315189cbc3675a5f6" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>camcam_layout.KvPart::startpos</definition>
+        <argsstring></argsstring>
+        <name>startpos</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="74" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_kv_part_1a6c922fe0be4d0ceae22690a327c84dff" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>camcam_layout.KvPart::do_rotation</definition>
+        <argsstring></argsstring>
+        <name>do_rotation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="75" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_kv_part_1ae3230d8f5b1be8806b350216f4117e7f" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>camcam_layout.KvPart::do_scale</definition>
+        <argsstring></argsstring>
+        <name>do_scale</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="76" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcamcam__layout_1_1_kv_part_1a1710eb3f3da193538ea500a25f4b948d" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>camcam_layout.KvPart::do_translation</definition>
+        <argsstring></argsstring>
+        <name>do_translation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="77" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classcamcam__layout_1_1_kv_part_1aaf59bb33b7b6219c158491e4a6577fe9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def camcam_layout.KvPart.draw</definition>
+        <argsstring>(self, part)</argsstring>
+        <name>draw</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classcamcam__layout_1_1_kv_part_1a802f4bf14a71700a9019b069ed29916e" kindref="member">part</ref></type>
+          <defname>part</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="32" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="32" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="classcamcam__layout_1_1_kv_part_1a96759e03e1694ba9ed5a6dd0feb3bc63" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def camcam_layout.KvPart.on_bring_to_front</definition>
+        <argsstring>(self, touch)</argsstring>
+        <name>on_bring_to_front</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>touch</type>
+          <defname>touch</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam_layout.py" line="79" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="79" bodyend="85"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="630">
+        <label>Scatter</label>
+      </node>
+      <node id="629">
+        <label>camcam_layout.KvPart</label>
+        <link refid="classcamcam__layout_1_1_kv_part"/>
+        <childnode refid="630" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="632">
+        <label>Scatter</label>
+      </node>
+      <node id="631">
+        <label>camcam_layout.KvPart</label>
+        <link refid="classcamcam__layout_1_1_kv_part"/>
+        <childnode refid="632" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/camcam_layout.py" line="30" column="1" bodyfile="/home/db/camcam/camcam_layout.py" bodystart="30" bodyend="86"/>
+    <listofallmembers>
+      <member refid="classcamcam__layout_1_1_kv_part_1abf1410f1bd0b1d64327cd3d35c923493" prot="public" virt="non-virtual"><scope>camcam_layout::KvPart</scope><name>back_colour</name></member>
+      <member refid="classcamcam__layout_1_1_kv_part_1ab1629e55d722b727c5e28bd5e8d4df39" prot="public" virt="non-virtual"><scope>camcam_layout::KvPart</scope><name>center</name></member>
+      <member refid="classcamcam__layout_1_1_kv_part_1a9579f7d28205b8183edce020a090200a" prot="public" virt="non-virtual"><scope>camcam_layout::KvPart</scope><name>deleted</name></member>
+      <member refid="classcamcam__layout_1_1_kv_part_1a6c922fe0be4d0ceae22690a327c84dff" prot="public" virt="non-virtual"><scope>camcam_layout::KvPart</scope><name>do_rotation</name></member>
+      <member refid="classcamcam__layout_1_1_kv_part_1ae3230d8f5b1be8806b350216f4117e7f" prot="public" virt="non-virtual"><scope>camcam_layout::KvPart</scope><name>do_scale</name></member>
+      <member refid="classcamcam__layout_1_1_kv_part_1a1710eb3f3da193538ea500a25f4b948d" prot="public" virt="non-virtual"><scope>camcam_layout::KvPart</scope><name>do_translation</name></member>
+      <member refid="classcamcam__layout_1_1_kv_part_1aaf59bb33b7b6219c158491e4a6577fe9" prot="public" virt="non-virtual"><scope>camcam_layout::KvPart</scope><name>draw</name></member>
+      <member refid="classcamcam__layout_1_1_kv_part_1a5d24a5b060975df8723369d28c67eb76" prot="public" virt="non-virtual"><scope>camcam_layout::KvPart</scope><name>linecolour</name></member>
+      <member refid="classcamcam__layout_1_1_kv_part_1a96759e03e1694ba9ed5a6dd0feb3bc63" prot="public" virt="non-virtual"><scope>camcam_layout::KvPart</scope><name>on_bring_to_front</name></member>
+      <member refid="classcamcam__layout_1_1_kv_part_1a802f4bf14a71700a9019b069ed29916e" prot="public" virt="non-virtual"><scope>camcam_layout::KvPart</scope><name>part</name></member>
+      <member refid="classcamcam__layout_1_1_kv_part_1afeef47f5c689151138611b54edef348a" prot="public" virt="non-virtual"><scope>camcam_layout::KvPart</scope><name>size</name></member>
+      <member refid="classcamcam__layout_1_1_kv_part_1adbf6e3a41fb3ebaf219b7c948fc68ee7" prot="public" virt="non-virtual"><scope>camcam_layout::KvPart</scope><name>startcentre</name></member>
+      <member refid="classcamcam__layout_1_1_kv_part_1aa7d453718127aa8315189cbc3675a5f6" prot="public" virt="non-virtual"><scope>camcam_layout::KvPart</scope><name>startpos</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

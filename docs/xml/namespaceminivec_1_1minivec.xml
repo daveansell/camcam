@@ -1,0 +1,566 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespaceminivec_1_1minivec" kind="namespace" language="Python">
+    <compoundname>minivec::minivec</compoundname>
+    <innerclass refid="classminivec_1_1minivec_1_1___epsilon_pop_context" prot="public">minivec::minivec::_EpsilonPopContext</innerclass>
+    <innerclass refid="classminivec_1_1minivec_1_1___error_pop_context" prot="public">minivec::minivec::_ErrorPopContext</innerclass>
+    <innerclass refid="classminivec_1_1minivec_1_1_mat" prot="public">minivec::minivec::Mat</innerclass>
+    <innerclass refid="classminivec_1_1minivec_1_1_vec" prot="public">minivec::minivec::Vec</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceminivec_1_1minivec_1a664310998bc3f9f64caefde4176331b3" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string minivec::minivec.__version__</definition>
+        <argsstring></argsstring>
+        <name>__version__</name>
+        <initializer>= &quot;0.4&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="26" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceminivec_1_1minivec_1ab8c40fffebf0c6ede3ef55861cfe4926" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string minivec::minivec.__author__</definition>
+        <argsstring></argsstring>
+        <name>__author__</name>
+        <initializer>= &quot;Peter Shinners &lt;pete@shinners.org&gt;&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="27" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceminivec_1_1minivec_1a02847a23f8377584f9fb1f81c88e4dd0" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string minivec::minivec.__license__</definition>
+        <argsstring></argsstring>
+        <name>__license__</name>
+        <initializer>= &quot;MIT&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="28" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceminivec_1_1minivec_1a42d6bb912b5c046963cac5e9e34bc9be" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string minivec::minivec.__url__</definition>
+        <argsstring></argsstring>
+        <name>__url__</name>
+        <initializer>= &quot;http://code.google.com/p/minivec&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="29" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceminivec_1_1minivec_1aee6940c00f81893fa47f68748cb8baa7" prot="public" static="no" mutable="no">
+        <type>list</type>
+        <definition>list minivec::minivec.__all__</definition>
+        <argsstring></argsstring>
+        <name>__all__</name>
+        <initializer>= [
+    &quot;Vec&quot;, &quot;<ref refid="classminivec_1_1minivec_1_1_mat" kindref="compound">Mat</ref>&quot;, #&quot;Box&quot;,
+    &quot;<ref refid="namespaceminivec_1_1minivec_1abf368b58aaa6bad7fa2c6f4100f5eefe" kindref="member">Nan</ref>&quot;,
+    &quot;<ref refid="namespaceminivec_1_1minivec_1afb2a679445010304189adfadaf5afbb3" kindref="member">Epsilon</ref>&quot;, &quot;<ref refid="namespaceminivec_1_1minivec_1a6f6f9c5c72491f8b2f085444db5a4edb" kindref="member">PushEpsilon</ref>&quot;, &quot;<ref refid="namespaceminivec_1_1minivec_1a5ac8925e7a712892716c2799dbaacc0f" kindref="member">PopEpsilon</ref>&quot;, &quot;<ref refid="namespaceminivec_1_1minivec_1a621b0516abfdd5c4c6fa1a60c52f8539" kindref="member">ResetEpsilon</ref>&quot;,
+    &quot;<ref refid="namespaceminivec_1_1minivec_1aaa1925ce113b6959b2029bedda0dc79f" kindref="member">Error</ref>&quot;, &quot;<ref refid="namespaceminivec_1_1minivec_1a8047c80a5c0d2919929d72f4265fd20b" kindref="member">PushError</ref>&quot;, &quot;<ref refid="namespaceminivec_1_1minivec_1a2b5146c60a68e2eb846a46e96fdaa7cb" kindref="member">PopError</ref>&quot;, &quot;<ref refid="namespaceminivec_1_1minivec_1a32f05f2e9bebe41c8d7b1a810bd6acc2" kindref="member">ResetError</ref>&quot;,
+]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="33" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceminivec_1_1minivec_1a691948dad66644e76fcdfb576b7b01f2" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple minivec::minivec::_ThreadLocal</definition>
+        <argsstring></argsstring>
+        <name>_ThreadLocal</name>
+        <initializer>= threading.local()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="47" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceminivec_1_1minivec_1acbf0347ca8872c1c7a543ef36a0bf52f" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>minivec::minivec.threading</definition>
+        <argsstring></argsstring>
+        <name>threading</name>
+        <initializer>= None</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="49" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceminivec_1_1minivec_1abf368b58aaa6bad7fa2c6f4100f5eefe" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple minivec::minivec.Nan</definition>
+        <argsstring></argsstring>
+        <name>Nan</name>
+        <initializer>= struct.unpack(&quot;f&quot;, &apos;\x00\x00\xc0\x7f&apos;)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="53" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceminivec_1_1minivec_1ae5b62e1c8439d519f00ee982428624e1" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple minivec::minivec._Rad</definition>
+        <argsstring></argsstring>
+        <name>_Rad</name>
+        <initializer>= radians(1.0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="54" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceminivec_1_1minivec_1a5b26c80dbd4b8509096773b210c87c77" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple minivec::minivec._Deg</definition>
+        <argsstring></argsstring>
+        <name>_Deg</name>
+        <initializer>= degrees(1.0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="55" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceminivec_1_1minivec_1abd8832f7f104b13c5d28376147a2fe9a" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float minivec::minivec._DefaultError</definition>
+        <argsstring></argsstring>
+        <name>_DefaultError</name>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="56" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceminivec_1_1minivec_1a1bcde851e3506a674b3fcd4d4087bc09" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int minivec::minivec._DefaultEpsilon</definition>
+        <argsstring></argsstring>
+        <name>_DefaultEpsilon</name>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="57" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1a05c598591e86e4ad044aa85b35bfaf66" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.V</definition>
+        <argsstring></argsstring>
+        <name>V</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="60" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="60" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1a4575b51d4237083edbc93832a2c2754f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.rotate</definition>
+        <argsstring>(pos, a)</argsstring>
+        <name>rotate</name>
+        <param>
+          <type>pos</type>
+          <defname>pos</defname>
+        </param>
+        <param>
+          <type>a</type>
+          <defname>a</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="69" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="69" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1a9ebe9cc95049fe89595cc8e22acf6eea" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._QuatLerp</definition>
+        <argsstring>(q1, q2, t, epsilon)</argsstring>
+        <name>_QuatLerp</name>
+        <param>
+          <type>q1</type>
+          <defname>q1</defname>
+        </param>
+        <param>
+          <type>q2</type>
+          <defname>q2</defname>
+        </param>
+        <param>
+          <type>t</type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type>epsilon</type>
+          <defname>epsilon</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Slerp between two quaternions
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1093" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1093" bodyend="1123"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1a5ff840e11b9a4cbf820ab7ba410e9ab9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._QuatToMat</definition>
+        <argsstring>(q)</argsstring>
+        <name>_QuatToMat</name>
+        <param>
+          <type>q</type>
+          <defname>q</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Convert quat to transform matrix
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1124" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1124" bodyend="1152"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1aa4313c4faad2b70314c1f635d0863e88" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._DecomposeScaling</definition>
+        <argsstring>(self)</argsstring>
+        <name>_DecomposeScaling</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Extract the scaling and shearing components from a transform matrix
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1153" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1153" bodyend="1257"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1a5dfad8f9bbd1255fbf93fa9c4c7146dd" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._DecomposeRotation</definition>
+        <argsstring>(self)</argsstring>
+        <name>_DecomposeRotation</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Find the euler rotations for a transform matrix.
+The rotations will be in XYZ order.
+Assume this already has scale/shear extracted and rows are normalized
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1258" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1258" bodyend="1280"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1a1f232324fb6a7622b65f96d0250eea62" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._DecomposeQuat</definition>
+        <argsstring>(self)</argsstring>
+        <name>_DecomposeQuat</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Find the quaternion rotations for a transform matrix.
+Assume this already has scale/shear extracted and rows are normalized
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1281" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1281" bodyend="1328"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1afb2a679445010304189adfadaf5afbb3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Epsilon</definition>
+        <argsstring>()</argsstring>
+        <name>Epsilon</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Get the current epsilon value used in this minivec context.
+This value will be unique per thread. Many comparisons inside minivec objects will use the
+epsilon as a threshold for comparing floating point values. The default is 10e-8.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1329" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1329" bodyend="1339"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1a621b0516abfdd5c4c6fa1a60c52f8539" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.ResetEpsilon</definition>
+        <argsstring>()</argsstring>
+        <name>ResetEpsilon</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Reset the epsilon value and all pushed values back to the default.
+This value will be unique per thread. Many comparisons inside minivec objects will use the
+epsilon as a threshold for comparing floating point values. The default is 10e-8.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1340" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1340" bodyend="1352"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1a6f6f9c5c72491f8b2f085444db5a4edb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.PushEpsilon</definition>
+        <argsstring>(value)</argsstring>
+        <name>PushEpsilon</name>
+        <param>
+          <type>value</type>
+          <defname>value</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Set the minimum threshold for different floating point values.
+This will create a Python context that can be used by the with operator. If a context
+is not used, it is recommended to pop the epsilon value when no longer needed.
+This value will be unique per thread. Many comparisons inside minivec objects will use the
+epsilon as a threshold for comparing floating point values. The default is 10e-8.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1353" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1353" bodyend="1373"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1a5ac8925e7a712892716c2799dbaacc0f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.PopEpsilon</definition>
+        <argsstring>()</argsstring>
+        <name>PopEpsilon</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Restore the previously set epsilon value.
+This will raise an exception if there are no values to be popped.
+This value will be unique per thread. Many comparisons inside minivec objects will use the
+epsilon as a threshold for comparing floating point values.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1374" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1374" bodyend="1389"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1aaa1925ce113b6959b2029bedda0dc79f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Error</definition>
+        <argsstring>()</argsstring>
+        <name>Error</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Get the current error value used to construct minivec objects.
+This will usually be zero, nan. When error is set to the special NotImplemented object
+minivec will raise exceptions when creating error objects.
+This value will be unique per thread. The default is 0.0.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1404" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1404" bodyend="1415"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1a32f05f2e9bebe41c8d7b1a810bd6acc2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.ResetError</definition>
+        <argsstring>()</argsstring>
+        <name>ResetError</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Reset the error value and all pushed values back to the default.
+This will usually be zero, nan. When error is set to the special NotImplemented object
+minivec will raise exceptions when creating error objects.
+This value will be unique per thread. The default is 0.0.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1416" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1416" bodyend="1429"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1a8047c80a5c0d2919929d72f4265fd20b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.PushError</definition>
+        <argsstring>(value)</argsstring>
+        <name>PushError</name>
+        <param>
+          <type>value</type>
+          <defname>value</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Set the error value used for creating minivec objects with errors.
+This will create a Python context that can be used by the with operator. If a context
+is not used, it is recommended to pop the error value when no longer needed.
+This will usually be zero, nan. When error is set to the special NotImplemented object
+minivec will raise exceptions when creating error objects.
+This value will be unique per thread. The default is 0.0.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1430" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1430" bodyend="1449"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1a2b5146c60a68e2eb846a46e96fdaa7cb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.PopError</definition>
+        <argsstring>()</argsstring>
+        <name>PopError</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Restore the previously set error value.
+This will usually be zero, nan. When error is set to the special NotImplemented object
+minivec will raise exceptions when creating error objects.
+This value will be unique per thread.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1450" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1450" bodyend="1465"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1af66fdcfa1cc1975dc94880c37dc72411" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._Triplet</definition>
+        <argsstring></argsstring>
+        <name>_Triplet</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1480" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1480" bodyend="1498"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1a268f8d7f952689aade60f8a24aaafb08" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._Quadlet</definition>
+        <argsstring>(obj)</argsstring>
+        <name>_Quadlet</name>
+        <param>
+          <type>obj</type>
+          <defname>obj</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1499" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1499" bodyend="1509"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1a0f22d32bf15fbff8b7a8e90c364510f9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._Sixteenlet</definition>
+        <argsstring></argsstring>
+        <name>_Sixteenlet</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1510" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1510" bodyend="1533"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1a93fb3b2583dd807a83d75a588b2dd44f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._FloatOrSequence</definition>
+        <argsstring></argsstring>
+        <name>_FloatOrSequence</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1534" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1534" bodyend="1552"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1a2cb36d54232945c704660bbe96f09584" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._TupleOfFloats</definition>
+        <argsstring></argsstring>
+        <name>_TupleOfFloats</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1553" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1553" bodyend="1565"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceminivec_1_1minivec_1af7c8a839521583de6f4a8ebd9237a016" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec._FindOperationType</definition>
+        <argsstring>(obj, operationName)</argsstring>
+        <name>_FindOperationType</name>
+        <param>
+          <type>obj</type>
+          <defname>obj</defname>
+        </param>
+        <param>
+          <type>operationName</type>
+          <defname>operationName</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1566" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1566" bodyend="1581"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/minivec/minivec.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

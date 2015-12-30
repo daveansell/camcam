@@ -1,0 +1,334 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classshapes_1_1_module" kind="class" language="Python" prot="public">
+    <compoundname>shapes::Module</compoundname>
+    <basecompoundref refid="classpath_1_1_plane" prot="public" virt="non-virtual">path.Plane</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classshapes_1_1_module_1a03f8526270348aa01870341f71585e72" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>shapes.Module::bom</definition>
+        <argsstring></argsstring>
+        <name>bom</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="1259" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="1259" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classshapes_1_1_module_1a402a64427f8ffe5f46611459ea497776" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>shapes.Module::perspex_layer</definition>
+        <argsstring></argsstring>
+        <name>perspex_layer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="1299" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="1299" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classshapes_1_1_module_1ac9aaa9c2e58d198b0f4749d2183297ca" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>shapes.Module::base_layer</definition>
+        <argsstring></argsstring>
+        <name>base_layer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="1300" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="1300" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classshapes_1_1_module_1a83b5d6a540e5ee42db561e0bc8569562" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>shapes.Module::underbase_layer</definition>
+        <argsstring></argsstring>
+        <name>underbase_layer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="1301" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="1301" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classshapes_1_1_module_1aa5f8f21ac48d755e251e1bf33c42c1ec" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>shapes.Module::pibarn_layer</definition>
+        <argsstring></argsstring>
+        <name>pibarn_layer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="1302" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="1302" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classshapes_1_1_module_1ab209624dffecfc33a7410dda997c27f7" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>shapes.Module::backgap</definition>
+        <argsstring></argsstring>
+        <name>backgap</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="1316" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="1316" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classshapes_1_1_module_1a3ed342ba3d585a3efb51ebbf4679720f" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>shapes.Module::width</definition>
+        <argsstring></argsstring>
+        <name>width</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="1334" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="1334" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classshapes_1_1_module_1adf009e86e07064ae6997cb7a8bf8aef8" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>shapes.Module::height</definition>
+        <argsstring></argsstring>
+        <name>height</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="1335" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="1335" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classshapes_1_1_module_1a927cbd0791f0c2df66627a81f5c27faa" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>shapes.Module::perspex</definition>
+        <argsstring></argsstring>
+        <name>perspex</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="1342" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="1342" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classshapes_1_1_module_1a28d52660b6f10ba2e97c47089d3d1afd" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>shapes.Module::base</definition>
+        <argsstring></argsstring>
+        <name>base</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="1343" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="1343" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classshapes_1_1_module_1ae0fbc8d70e8dccf42ad620aec94e2692" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>shapes.Module::paper</definition>
+        <argsstring></argsstring>
+        <name>paper</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="1344" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="1344" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classshapes_1_1_module_1ac05cf9348ab70df94cbe4f1eadb191e1" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>shapes.Module::underbase</definition>
+        <argsstring></argsstring>
+        <name>underbase</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="1346" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="1346" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classshapes_1_1_module_1a04e446e8ef138c8ea18f38df7fc99935" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def shapes.Module.__init__</definition>
+        <argsstring>(self, size, config)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>size</type>
+          <defname>size</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_plane_1a9c3565a0c72c585ffd3d9305d9e59b64" kindref="member">config</ref></type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Create a module
+:param size: A1, A2, A3
+:param fromedge: distance holdowns should be from edge of board
+:param orientation: portrait, landscape
+:param fromends: distance holdowns from ends
+:param holesY: number of holes in Y direction
+:param holesX: number of holes in X direction
+:param base_thicknesss: thickenss of base layer
+:param insert_type:  the type of insert - default screw in, or hammer
+:param no_perspex: if rue don&apos;t create perspex layer
+:param no_holdowns: if True no holdowns
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="1245" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="1245" bodyend="1374"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="701">
+        <label>shapes.Module</label>
+        <link refid="classshapes_1_1_module"/>
+        <childnode refid="702" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="702">
+        <label>path.Plane</label>
+        <link refid="classpath_1_1_plane"/>
+        <childnode refid="703" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="704">
+        <label>object</label>
+      </node>
+      <node id="703">
+        <label>path.Part</label>
+        <link refid="classpath_1_1_part"/>
+        <childnode refid="704" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="705">
+        <label>shapes.Module</label>
+        <link refid="classshapes_1_1_module"/>
+        <childnode refid="706" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="706">
+        <label>path.Plane</label>
+        <link refid="classpath_1_1_plane"/>
+        <childnode refid="707" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="708">
+        <label>object</label>
+      </node>
+      <node id="707">
+        <label>path.Part</label>
+        <link refid="classpath_1_1_part"/>
+        <childnode refid="708" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/shapes.py" line="1244" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="1244" bodyend="1375"/>
+    <listofallmembers>
+      <member refid="classpath_1_1_part_1a01c7a739dee22053cee9f0b28348f1a3" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>__deepcopy__</name></member>
+      <member refid="classshapes_1_1_module_1a04e446e8ef138c8ea18f38df7fc99935" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_part_1ad303df059ccf8ea977b9ba099f1f17a9" prot="public" virt="non-virtual" ambiguityscope="path::Part."><scope>shapes::Module</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_part_1a45256181f3975227c838363bc31ae602" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>add</name></member>
+      <member refid="classpath_1_1_part_1abb8f248470b535ae0449e1a47f912506" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>add_bom</name></member>
+      <member refid="classpath_1_1_part_1a4476c8b030ebcf9c7df00e6a7aa9214c" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>add_border</name></member>
+      <member refid="classpath_1_1_part_1a397ea5a1af4d031e7f1fb4ceac654de5" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>add_copy</name></member>
+      <member refid="classpath_1_1_part_1af7a16e2949b4fb42f61efa17c29d9b56" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>add_internal_border</name></member>
+      <member refid="classpath_1_1_plane_1a1c4c4deb3480dcb9fc421764e63dc253" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>add_layer</name></member>
+      <member refid="classpath_1_1_plane_1ae408776ac58181141026a5f5ca581668" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>add_part_layer</name></member>
+      <member refid="classpath_1_1_part_1a961da43effa034ade7b25ff09121784c" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>add_path</name></member>
+      <member refid="classshapes_1_1_module_1ab209624dffecfc33a7410dda997c27f7" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>backgap</name></member>
+      <member refid="classshapes_1_1_module_1a28d52660b6f10ba2e97c47089d3d1afd" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>base</name></member>
+      <member refid="classshapes_1_1_module_1ac9aaa9c2e58d198b0f4749d2183297ca" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>base_layer</name></member>
+      <member refid="classshapes_1_1_module_1a03f8526270348aa01870341f71585e72" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>bom</name></member>
+      <member refid="classpath_1_1_part_1a004c78655a7f215ff512e4b18e48b0fe" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>border</name></member>
+      <member refid="classpath_1_1_plane_1aa0494eb77e5605add3fd16367d9cc91d" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>callmode</name></member>
+      <member refid="classpath_1_1_part_1aaa7dce569975af8da512ecba96f67538" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>comment</name></member>
+      <member refid="classpath_1_1_part_1aa94d1de86a82e8b96113c305c1ff63cc" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>comments</name></member>
+      <member refid="classpath_1_1_plane_1a9c3565a0c72c585ffd3d9305d9e59b64" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>config</name></member>
+      <member refid="classpath_1_1_part_1a674b3be7cd8c25840d27de74b0d94797" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>contains</name></member>
+      <member refid="classpath_1_1_plane_1a71f825ab207c8a45abb6c6e25551b949" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>copied</name></member>
+      <member refid="classpath_1_1_plane_1a67fb6a225b9da98f1074711105499db9" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>copies</name></member>
+      <member refid="classpath_1_1_part_1a57d1d3471b332024af5cdc8265b96ef1" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>cutoutside</name></member>
+      <member refid="classpath_1_1_part_1aa3ab823fc2a4baeaa97300d310d3b8eb" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>get_bom</name></member>
+      <member refid="classpath_1_1_plane_1addfb772498362a6c1fe70872f8a8eca8" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>get_config</name></member>
+      <member refid="classpath_1_1_plane_1a8d5bd7c7a44335da1c32db64110734d0" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>get_layer_config</name></member>
+      <member refid="classpath_1_1_part_1a60a0f2d6c32dc8875b191d432002860f" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>get_layers</name></member>
+      <member refid="classpath_1_1_part_1a4ce18378dbce97d9a2875e1de9653892" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>get_own_paths</name></member>
+      <member refid="classpath_1_1_part_1a55bbf4c0ea6fbf7f70c4470929ee4b26" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>get_parts</name></member>
+      <member refid="classpath_1_1_part_1a6923ae4219b5cbd4bc87e22c09da14fc" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>getParts</name></member>
+      <member refid="classshapes_1_1_module_1adf009e86e07064ae6997cb7a8bf8aef8" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>height</name></member>
+      <member refid="classpath_1_1_plane_1aeb4647226d990dcc53bd09a27dad388a" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>ignore_border</name></member>
+      <member refid="classpath_1_1_plane_1adf18d22bc49d69c89b576a79fdba4db8" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>init</name></member>
+      <member refid="classpath_1_1_part_1a78ba05bb5f29eee1830388be6d15af98" prot="public" virt="non-virtual" ambiguityscope="path::Part."><scope>shapes::Module</scope><name>init</name></member>
+      <member refid="classpath_1_1_part_1ab4eb93506a42db0b4d21000dceca0e91" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>internal_borders</name></member>
+      <member refid="classpath_1_1_part_1abd77fe962ddd912e766b8a2e9220717b" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>is_border</name></member>
+      <member refid="classpath_1_1_plane_1ab7c505d0f7c91a505f8cc786504f1cc2" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>isCopy</name></member>
+      <member refid="classpath_1_1_plane_1ae77d75fa4cfaf2141bc464e079e64ef8" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>lay_out</name></member>
+      <member refid="classpath_1_1_part_1aa1d9912dfa1d7e3222df898d2a18786f" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>layer</name></member>
+      <member refid="classpath_1_1_plane_1a6f7241b4f23c72b0608ca6b713d5d281" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>layers</name></member>
+      <member refid="classpath_1_1_plane_1a292f4f9b0135fec614b9310213977ccb" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>list_all</name></member>
+      <member refid="classpath_1_1_part_1a185c9bbf10bddf3b739441e758850c84" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>make_copies</name></member>
+      <member refid="classpath_1_1_part_1a982bb6775f254fd811f03015c7695718" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>material_shape</name></member>
+      <member refid="classpath_1_1_part_1a3e0f8f43f26a761a02616e2a2bc735e1" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>mirror</name></member>
+      <member refid="classpath_1_1_plane_1acd9711469d21f4785a72a27794f625cf" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>mode</name></member>
+      <member refid="classpath_1_1_plane_1ac23023bbc6c9f6a3726c40466a0e0e71" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>modeconfig</name></member>
+      <member refid="classpath_1_1_plane_1a83242faa5f70bd6aa867c977d4f4a6c1" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>name</name></member>
+      <member refid="classpath_1_1_plane_1ab3693d278c25eb3183f1e87b4d478ca9" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>number</name></member>
+      <member refid="classpath_1_1_plane_1a52d1301106910689f429002086854c0b" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>obType</name></member>
+      <member refid="classpath_1_1_plane_1a9de8b4b12f301c25e9919ab0cc488df9" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>offset_gcode</name></member>
+      <member refid="classpath_1_1_plane_1a07fffbf7ef837b7f8a0d9e2a69161e1b" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>origin</name></member>
+      <member refid="classpath_1_1_part_1ae705ca5412f4383b77dd32e9ebdd237f" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>otherargs</name></member>
+      <member refid="classpath_1_1_plane_1a70c65dfa7270b5c4cbc1d15c513df3d8" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>out</name></member>
+      <member refid="classpath_1_1_part_1a6ff6c586832ff637508796a8a77dbbac" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>output</name></member>
+      <member refid="classpath_1_1_part_1af5b40fad5803470c54db7d42b07f8a95" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>overwrite</name></member>
+      <member refid="classshapes_1_1_module_1ae0fbc8d70e8dccf42ad620aec94e2692" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>paper</name></member>
+      <member refid="classpath_1_1_plane_1ae45a5caa84aa06a12b132b98a4bf7b5d" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>parent</name></member>
+      <member refid="classpath_1_1_plane_1a57144197eff51c6e23a38a1d28541f8f" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>parts</name></member>
+      <member refid="classpath_1_1_plane_1acf3722b8287fdbdca683bd82ef536201" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>paths</name></member>
+      <member refid="classshapes_1_1_module_1a927cbd0791f0c2df66627a81f5c27faa" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>perspex</name></member>
+      <member refid="classshapes_1_1_module_1a402a64427f8ffe5f46611459ea497776" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>perspex_layer</name></member>
+      <member refid="classshapes_1_1_module_1aa5f8f21ac48d755e251e1bf33c42c1ec" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>pibarn_layer</name></member>
+      <member refid="classpath_1_1_plane_1aa10bd618cd80d3ee1fe348a94b173736" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>plane</name></member>
+      <member refid="classpath_1_1_plane_1a8caaa3344bb41858e2b9fc64d58e0879" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>render_all</name></member>
+      <member refid="classpath_1_1_plane_1a5490de0bcdc4abcbb6d11824bd4dcfe1" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>render_layer</name></member>
+      <member refid="classpath_1_1_plane_1a2405b1700e1eaf4dcf4b992c207bfb2a" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>render_part</name></member>
+      <member refid="classpath_1_1_part_1ad5f9f5edfa6d110a4de203c109223ede" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>renderable</name></member>
+      <member refid="classpath_1_1_part_1a70560f4969089436589b608259ee2ca1" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>rotate</name></member>
+      <member refid="classpath_1_1_plane_1af067e53069dc33b30e194aaa04e28235" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>sanitise_filename</name></member>
+      <member refid="classpath_1_1_part_1aa46bbe5ca2996ee60e388415f398b008" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>trace</name></member>
+      <member refid="classpath_1_1_plane_1a2fa8b34d6558289254bb548239672db0" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>transform</name></member>
+      <member refid="classpath_1_1_part_1a27d0b520d21955962d578c55227bcff8" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>translate</name></member>
+      <member refid="classshapes_1_1_module_1ac05cf9348ab70df94cbe4f1eadb191e1" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>underbase</name></member>
+      <member refid="classshapes_1_1_module_1a83b5d6a540e5ee42db561e0bc8569562" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>underbase_layer</name></member>
+      <member refid="classpath_1_1_plane_1a17bfb0110c1141d362eb715129058fa4" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>varlist</name></member>
+      <member refid="classshapes_1_1_module_1a3ed342ba3d585a3efb51ebbf4679720f" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>width</name></member>
+      <member refid="classpath_1_1_plane_1a1716fc0cf4fb6f62ec5ea76d59b1ea67" prot="public" virt="non-virtual"><scope>shapes::Module</scope><name>writeGcodeFile</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
