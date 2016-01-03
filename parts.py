@@ -689,18 +689,21 @@ class FlatMonitor(Part):
 		cutout.add_point(V(d['ext_width']/2, d['ext_height']/2))
 		cutout.add_point(V(-d['ext_width']/2, d['ext_height']/2))
 		cutout.add_point(V(-d['ext_width']/2, -d['ext_height']/2))
-		cutout.add_point(V(-d['elec_width']/2, -d['ext_height']/2))
-		cutout.add_point(V(-d['elec_width']/2, -d['ext_height']/2-d['elec_height']))
-		cutout.add_point(V(-d['ext_width']/2+d['conn_x']-d['conn_width']/2, -d['ext_height']/2-d['elec_height']))
-		cutout.add_point(V(-d['ext_width']/2+d['conn_x']-d['conn_width']/2, d['conn_y1']))
-		cutout.add_point(V(-d['ext_width']/2+d['conn_x']+d['conn_width']/2, d['conn_y1']))
-		cutout.add_point(V(-d['ext_width']/2+d['conn_x']+d['conn_width']/2, -d['ext_height']/2-d['elec_height']))
-		cutout.add_point(V(d['elec_width']/2, -d['ext_height']/2-d['elec_height']))
-		cutout.add_point(V(d['elec_width']/2, -d['ext_height']/2))
+		if 'elec_width' in d:
+			cutout.add_point(V(-d['elec_width']/2, -d['ext_height']/2))
+			cutout.add_point(V(-d['elec_width']/2, -d['ext_height']/2-d['elec_height']))
+		if 'conn_x' in d:
+			cutout.add_point(V(-d['ext_width']/2+d['conn_x']-d['conn_width']/2, -d['ext_height']/2-d['elec_height']))
+			cutout.add_point(V(-d['ext_width']/2+d['conn_x']-d['conn_width']/2, d['conn_y1']))
+			cutout.add_point(V(-d['ext_width']/2+d['conn_x']+d['conn_width']/2, d['conn_y1']))
+			cutout.add_point(V(-d['ext_width']/2+d['conn_x']+d['conn_width']/2, -d['ext_height']/2-d['elec_height']))
+		if 'elec_width' in d:
+			cutout.add_point(V(d['elec_width']/2, -d['ext_height']/2-d['elec_height']))
+			cutout.add_point(V(d['elec_width']/2, -d['ext_height']/2))
 		cutout.add_point(V(d['ext_width']/2, -d['ext_height']/2))
 
-
-		self.add(Rect(V(-d['ext_width']/2+d['conn_x'], (d['conn_y0']+d['conn_y1'])/2), centred=True, width = d['conn_width'], height = d['conn_y0'] - d['conn_y1']), underbase)
+		if 'conn_y' in d:
+			self.add(Rect(V(-d['ext_width']/2+d['conn_x'], (d['conn_y0']+d['conn_y1'])/2), centred=True, width = d['conn_width'], height = d['conn_y0'] - d['conn_y1']), underbase)
 
 #		self.add(Rect(V(0,0), centred=True, width = d['ext_width'], height = d['ext_height']), base)
 		self.add(Rect(V(0,0), centred=True, width = d['screen_width'], height = d['screen_height']), paper)
