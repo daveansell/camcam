@@ -333,7 +333,7 @@ class PAroundcurve(PSharp):
 
 	def offset(self, side, distance, direction):
 		self.setDirection()
-#		ret=self.offsetSharp( side, distance, direction)
+		t=self.offsetSharp( side, distance, direction)
 		ret = [self.copy()]
 		if (self.direction=='cw' and side=='left' or self.direction=='ccw' and side=='right') !=self.reverse:
 			ret[0].radius+=distance
@@ -342,6 +342,10 @@ class PAroundcurve(PSharp):
 				ret[0].radius-=distance
 			else:
 				ret= [PSharp(ret[0].pos)]
+		if ret[0].radius <=0:
+			ret[0].radius = 0
+			ret[0].point_type='sharp'
+		ret[0].pos = t[0].pos
 		return ret
 
 	def setDirection(self):
@@ -388,6 +392,7 @@ class PAroundcurve(PSharp):
 		else:
 			return self.pos+(nextpoint-self.pos).normalize()*self.radius
 	def origin(self, forward=True):
+		return self.pos
 		if forward:
 			op=self.last().pos
 		else:
