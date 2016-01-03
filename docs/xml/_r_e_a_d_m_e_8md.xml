@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="_r_e_a_d_m_e_8md" kind="file" language="Markdown">
+    <compoundname>README.md</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>camcam</highlight></codeline>
+<codeline><highlight class="normal">A<sp/>python<sp/>based<sp/>CAM<sp/>scripting<sp/>system</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>is<sp/>a<sp/>system<sp/>for<sp/>designing<sp/>2D<sp/>objects<sp/>in<sp/>python<sp/>and<sp/>outputting<sp/>GCode,<sp/>svg<sp/>etc</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">to<sp/>produce<sp/>output<sp/>the<sp/>input<sp/>files<sp/>are<sp/>created<sp/>as<sp/>python<sp/>scripts<sp/>which<sp/>are<sp/>executed<sp/>within<sp/>camcam.py</highlight></codeline>
+<codeline><highlight class="normal">This<sp/>is<sp/>slightly<sp/>odd<sp/>but<sp/>means<sp/>they<sp/>can<sp/>behave<sp/>more<sp/>like<sp/>save<sp/>files,<sp/>than<sp/>source<sp/>files.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Run<sp/>like:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">python<sp/>camcam.py<sp/>-m<sp/>[mode]<sp/>file1.py<sp/>file2.py<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">mode:<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">diagram<sp/>-<sp/>produces<sp/>one<sp/>file<sp/>with<sp/>all<sp/>the<sp/>parts<sp/>drawn<sp/>on<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">visualise<sp/>-<sp/>produces<sp/>an<sp/>svg<sp/>with<sp/>all<sp/>parts,<sp/>and<sp/>the<sp/>cutting<sp/>line<sp/>around<sp/>the<sp/>outside<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">dave-emc<sp/>-<sp/>emc2<sp/>compatible<sp/>gcode<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">makespacerouter<sp/>-<sp/>very<sp/>simple<sp/>gcode<sp/>formatted<sp/>as<sp/>DOS<sp/>file<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">eagle<sp/>-<sp/>a<sp/>file<sp/>you<sp/>can<sp/>import<sp/>into<sp/>eagle<sp/>PCB<sp/>software<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">laser<sp/>-<sp/>individual<sp/>svg<sp/>files<sp/>for<sp/>each<sp/>part<sp/><sp/><sp/></highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">python<sp/>camcam.py<sp/>-B<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">will<sp/>produce<sp/>a<sp/>bill<sp/>of<sp/>materials<sp/><sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">It<sp/>has<sp/>quite<sp/>nice<sp/>features<sp/>for<sp/>dealing<sp/>with<sp/>objects<sp/>made<sp/>of<sp/>multiple<sp/>layers</highlight></codeline>
+<codeline><highlight class="normal">It<sp/>can<sp/>do<sp/>funky<sp/>things<sp/>with<sp/>finger<sp/>joints<sp/>including<sp/>create<sp/>arbitary<sp/>polyhedra<sp/>from<sp/>them<sp/>with<sp/>the<sp/>ArbitraryBox</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">as<sp/>the<sp/>docs<sp/>indicate<sp/>this<sp/>is<sp/>very<sp/>alpha<sp/>atm<sp/><sp/></highlight></codeline>
+    </programlisting>
+    <location file="/home/db/camcam/README.md"/>
+  </compounddef>
+</doxygen>

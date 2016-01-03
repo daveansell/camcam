@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classpath_1_1_b_o_m__rod" kind="class" language="Python" prot="public">
+    <compoundname>path::BOM_rod</compoundname>
+    <basecompoundref refid="classpath_1_1_b_o_m" prot="public" virt="non-virtual">path.BOM</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__rod_1af1cca0cffc8952f73eaa38717dd4cc9a" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_rod::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1493" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1493" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__rod_1a66c6cba2b9e49c6370aeec044a5a427a" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_rod::material</definition>
+        <argsstring></argsstring>
+        <name>material</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1494" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1494" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__rod_1ad198f4a2306a543354efce3a2d978e6e" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_rod::diameter</definition>
+        <argsstring></argsstring>
+        <name>diameter</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1495" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1495" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__rod_1a14a8ad7c48077b0462de5d59d07ee6bb" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_rod::length</definition>
+        <argsstring></argsstring>
+        <name>length</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1496" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1496" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__rod_1a124a767902802b820af251b6c2c29af7" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_rod::number</definition>
+        <argsstring></argsstring>
+        <name>number</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1497" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1497" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__rod_1ae26c0d4eb574f858a95536f62e3e8305" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_rod::description</definition>
+        <argsstring></argsstring>
+        <name>description</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1498" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1498" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__rod_1ae8c232ca908c3b7d6a313c96cb158d48" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_rod::xsection</definition>
+        <argsstring></argsstring>
+        <name>xsection</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1499" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1499" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classpath_1_1_b_o_m__rod_1ae21da7cc9eff8544c9fe85a91000055e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.BOM_rod.__init__</definition>
+        <argsstring></argsstring>
+        <name>__init__</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1492" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1492" bodyend="1500"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_b_o_m__rod_1aebf04020c123e8686f55a29b62d8bb40" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.BOM_rod.__str__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__str__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1501" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1501" bodyend="1503"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="102">
+        <label>object</label>
+      </node>
+      <node id="100">
+        <label>path.BOM_rod</label>
+        <link refid="classpath_1_1_b_o_m__rod"/>
+        <childnode refid="101" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="101">
+        <label>path.BOM</label>
+        <link refid="classpath_1_1_b_o_m"/>
+        <childnode refid="102" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="105">
+        <label>object</label>
+      </node>
+      <node id="103">
+        <label>path.BOM_rod</label>
+        <link refid="classpath_1_1_b_o_m__rod"/>
+        <childnode refid="104" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="104">
+        <label>path.BOM</label>
+        <link refid="classpath_1_1_b_o_m"/>
+        <childnode refid="105" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/path.py" line="1491" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1491" bodyend="1504"/>
+    <listofallmembers>
+      <member refid="classpath_1_1_b_o_m__rod_1ae21da7cc9eff8544c9fe85a91000055e" prot="public" virt="non-virtual"><scope>path::BOM_rod</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_b_o_m_1ac3d7521a63ca62ccb1501290be173138" prot="public" virt="non-virtual" ambiguityscope="path::BOM."><scope>path::BOM_rod</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_b_o_m__rod_1aebf04020c123e8686f55a29b62d8bb40" prot="public" virt="non-virtual"><scope>path::BOM_rod</scope><name>__str__</name></member>
+      <member refid="classpath_1_1_b_o_m__rod_1ae26c0d4eb574f858a95536f62e3e8305" prot="public" virt="non-virtual"><scope>path::BOM_rod</scope><name>description</name></member>
+      <member refid="classpath_1_1_b_o_m__rod_1ad198f4a2306a543354efce3a2d978e6e" prot="public" virt="non-virtual"><scope>path::BOM_rod</scope><name>diameter</name></member>
+      <member refid="classpath_1_1_b_o_m_1abc415a791d6d61925fbcb7147b9f7d9a" prot="public" virt="non-virtual"><scope>path::BOM_rod</scope><name>init</name></member>
+      <member refid="classpath_1_1_b_o_m__rod_1a14a8ad7c48077b0462de5d59d07ee6bb" prot="public" virt="non-virtual"><scope>path::BOM_rod</scope><name>length</name></member>
+      <member refid="classpath_1_1_b_o_m__rod_1a66c6cba2b9e49c6370aeec044a5a427a" prot="public" virt="non-virtual"><scope>path::BOM_rod</scope><name>material</name></member>
+      <member refid="classpath_1_1_b_o_m__rod_1af1cca0cffc8952f73eaa38717dd4cc9a" prot="public" virt="non-virtual"><scope>path::BOM_rod</scope><name>name</name></member>
+      <member refid="classpath_1_1_b_o_m__rod_1a124a767902802b820af251b6c2c29af7" prot="public" virt="non-virtual"><scope>path::BOM_rod</scope><name>number</name></member>
+      <member refid="classpath_1_1_b_o_m_1a5748ce4bbb6dfa779752d97f0bee55d2" prot="public" virt="non-virtual"><scope>path::BOM_rod</scope><name>obType</name></member>
+      <member refid="classpath_1_1_b_o_m__rod_1ae8c232ca908c3b7d6a313c96cb158d48" prot="public" virt="non-virtual"><scope>path::BOM_rod</scope><name>xsection</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,141 @@
+\hypertarget{classcamcam__layout_1_1_cam_cam}{}\section{camcam\+\_\+layout.\+Cam\+Cam Class Reference}
+\label{classcamcam__layout_1_1_cam_cam}\index{camcam\+\_\+layout.\+Cam\+Cam@{camcam\+\_\+layout.\+Cam\+Cam}}
+
+
+Inherits App.
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classcamcam__layout_1_1_cam_cam_aae15201c08000c6d0a01b947d0e99757}{add\+\_\+plane} (self, plane)
+\item 
+def \hyperlink{classcamcam__layout_1_1_cam_cam_a11c2be8d09bb6c1d7142bc79bff2ba0c}{build} (self)
+\item 
+def \hyperlink{classcamcam__layout_1_1_cam_cam_a699e53b6f63acfe6b457b6b91e1936f3}{do\+\_\+touch} (self)
+\item 
+def \hyperlink{classcamcam__layout_1_1_cam_cam_a55cbd693f0e23a01969822a11cde6d2a}{delete} (self, largs)
+\item 
+def \hyperlink{classcamcam__layout_1_1_cam_cam_a4247170d23fc1125ae1fcb918a99c60a}{save} (self, largs)
+\item 
+def \hyperlink{classcamcam__layout_1_1_cam_cam_a5a21300e0c1b0fa919a4793bbdafc154}{set\+\_\+sheet} (self, sheet, largs)
+\item 
+def \hyperlink{classcamcam__layout_1_1_cam_cam_ac3bdb03463dc584fb1baaae9a6b5e4e3}{on\+\_\+pause} (self)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+list \hyperlink{classcamcam__layout_1_1_cam_cam_aa75dfb49cf795fe55538fd5fedd085e4}{planes} = \mbox{[}$\,$\mbox{]}
+\item 
+\hyperlink{classcamcam__layout_1_1_cam_cam_a02351504f971107694efd2766372b628}{selected} = False
+\item 
+\hyperlink{classcamcam__layout_1_1_cam_cam_a0706ff671a864b8258ef606b4a53bfbf}{root} = self.\+root
+\item 
+dictionary \hyperlink{classcamcam__layout_1_1_cam_cam_a320eacfe25d7621ee065adac1a038b79}{sheets} = \{\}
+\item 
+list \hyperlink{classcamcam__layout_1_1_cam_cam_a61b884fcd41fdf82ee5558d7e422fc6b}{buttons} = \mbox{[}$\,$\mbox{]}
+\item 
+tuple \hyperlink{classcamcam__layout_1_1_cam_cam_ad68196dc02bf35acc187e607b1079882}{layout} = Box\+Layout(size\+\_\+hint=(1, None), height=50)
+\item 
+list \hyperlink{classcamcam__layout_1_1_cam_cam_a5e3add24ff41a90068b83cc1c73176e0}{layer} = plane.\+layers\mbox{[}part.\+layer\mbox{]}
+\item 
+list \hyperlink{classcamcam__layout_1_1_cam_cam_a5154c29272561706f3f08f058fe4e39d}{sheetid} = \hyperlink{classcamcam__layout_1_1_cam_cam_a5e3add24ff41a90068b83cc1c73176e0}{layer}\mbox{[}\textquotesingle{}material\textquotesingle{}\mbox{]}
+\item 
+tuple \hyperlink{classcamcam__layout_1_1_cam_cam_a94449317084eb1abc4707e2bc3c2ae95}{button} = Button(text = sheet)
+\item 
+tuple \hyperlink{classcamcam__layout_1_1_cam_cam_ad0bee697a9661370ca2d19b1c0ed6b79}{picture} = \hyperlink{classcamcam__layout_1_1_kv_part}{Kv\+Part}()
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classcamcam__layout_1_1_cam_cam_aae15201c08000c6d0a01b947d0e99757}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!add\+\_\+plane@{add\+\_\+plane}}
+\index{add\+\_\+plane@{add\+\_\+plane}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{add\+\_\+plane}]{\setlength{\rightskip}{0pt plus 5cm}def camcam\+\_\+layout.\+Cam\+Cam.\+add\+\_\+plane (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{plane}
+\end{DoxyParamCaption}
+)}\label{classcamcam__layout_1_1_cam_cam_aae15201c08000c6d0a01b947d0e99757}
+\hypertarget{classcamcam__layout_1_1_cam_cam_a11c2be8d09bb6c1d7142bc79bff2ba0c}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!build@{build}}
+\index{build@{build}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{build}]{\setlength{\rightskip}{0pt plus 5cm}def camcam\+\_\+layout.\+Cam\+Cam.\+build (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classcamcam__layout_1_1_cam_cam_a11c2be8d09bb6c1d7142bc79bff2ba0c}
+\hypertarget{classcamcam__layout_1_1_cam_cam_a55cbd693f0e23a01969822a11cde6d2a}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!delete@{delete}}
+\index{delete@{delete}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{delete}]{\setlength{\rightskip}{0pt plus 5cm}def camcam\+\_\+layout.\+Cam\+Cam.\+delete (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{largs}
+\end{DoxyParamCaption}
+)}\label{classcamcam__layout_1_1_cam_cam_a55cbd693f0e23a01969822a11cde6d2a}
+\hypertarget{classcamcam__layout_1_1_cam_cam_a699e53b6f63acfe6b457b6b91e1936f3}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!do\+\_\+touch@{do\+\_\+touch}}
+\index{do\+\_\+touch@{do\+\_\+touch}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{do\+\_\+touch}]{\setlength{\rightskip}{0pt plus 5cm}def camcam\+\_\+layout.\+Cam\+Cam.\+do\+\_\+touch (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classcamcam__layout_1_1_cam_cam_a699e53b6f63acfe6b457b6b91e1936f3}
+\hypertarget{classcamcam__layout_1_1_cam_cam_ac3bdb03463dc584fb1baaae9a6b5e4e3}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!on\+\_\+pause@{on\+\_\+pause}}
+\index{on\+\_\+pause@{on\+\_\+pause}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{on\+\_\+pause}]{\setlength{\rightskip}{0pt plus 5cm}def camcam\+\_\+layout.\+Cam\+Cam.\+on\+\_\+pause (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classcamcam__layout_1_1_cam_cam_ac3bdb03463dc584fb1baaae9a6b5e4e3}
+\hypertarget{classcamcam__layout_1_1_cam_cam_a4247170d23fc1125ae1fcb918a99c60a}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!save@{save}}
+\index{save@{save}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{save}]{\setlength{\rightskip}{0pt plus 5cm}def camcam\+\_\+layout.\+Cam\+Cam.\+save (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{largs}
+\end{DoxyParamCaption}
+)}\label{classcamcam__layout_1_1_cam_cam_a4247170d23fc1125ae1fcb918a99c60a}
+\hypertarget{classcamcam__layout_1_1_cam_cam_a5a21300e0c1b0fa919a4793bbdafc154}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!set\+\_\+sheet@{set\+\_\+sheet}}
+\index{set\+\_\+sheet@{set\+\_\+sheet}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{set\+\_\+sheet}]{\setlength{\rightskip}{0pt plus 5cm}def camcam\+\_\+layout.\+Cam\+Cam.\+set\+\_\+sheet (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{sheet, }
+\item[{}]{largs}
+\end{DoxyParamCaption}
+)}\label{classcamcam__layout_1_1_cam_cam_a5a21300e0c1b0fa919a4793bbdafc154}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classcamcam__layout_1_1_cam_cam_a94449317084eb1abc4707e2bc3c2ae95}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!button@{button}}
+\index{button@{button}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{button}]{\setlength{\rightskip}{0pt plus 5cm}tuple camcam\+\_\+layout.\+Cam\+Cam.\+button = Button(text = sheet)\hspace{0.3cm}{\ttfamily [static]}}\label{classcamcam__layout_1_1_cam_cam_a94449317084eb1abc4707e2bc3c2ae95}
+\hypertarget{classcamcam__layout_1_1_cam_cam_a61b884fcd41fdf82ee5558d7e422fc6b}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!buttons@{buttons}}
+\index{buttons@{buttons}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{buttons}]{\setlength{\rightskip}{0pt plus 5cm}list camcam\+\_\+layout.\+Cam\+Cam.\+buttons = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classcamcam__layout_1_1_cam_cam_a61b884fcd41fdf82ee5558d7e422fc6b}
+\hypertarget{classcamcam__layout_1_1_cam_cam_a5e3add24ff41a90068b83cc1c73176e0}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!layer@{layer}}
+\index{layer@{layer}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{layer}]{\setlength{\rightskip}{0pt plus 5cm}list camcam\+\_\+layout.\+Cam\+Cam.\+layer = plane.\+layers\mbox{[}part.\+layer\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classcamcam__layout_1_1_cam_cam_a5e3add24ff41a90068b83cc1c73176e0}
+\hypertarget{classcamcam__layout_1_1_cam_cam_ad68196dc02bf35acc187e607b1079882}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!layout@{layout}}
+\index{layout@{layout}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{layout}]{\setlength{\rightskip}{0pt plus 5cm}tuple camcam\+\_\+layout.\+Cam\+Cam.\+layout = Box\+Layout(size\+\_\+hint=(1, None), height=50)\hspace{0.3cm}{\ttfamily [static]}}\label{classcamcam__layout_1_1_cam_cam_ad68196dc02bf35acc187e607b1079882}
+\hypertarget{classcamcam__layout_1_1_cam_cam_ad0bee697a9661370ca2d19b1c0ed6b79}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!picture@{picture}}
+\index{picture@{picture}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{picture}]{\setlength{\rightskip}{0pt plus 5cm}tuple camcam\+\_\+layout.\+Cam\+Cam.\+picture = {\bf Kv\+Part}()\hspace{0.3cm}{\ttfamily [static]}}\label{classcamcam__layout_1_1_cam_cam_ad0bee697a9661370ca2d19b1c0ed6b79}
+\hypertarget{classcamcam__layout_1_1_cam_cam_aa75dfb49cf795fe55538fd5fedd085e4}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!planes@{planes}}
+\index{planes@{planes}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{planes}]{\setlength{\rightskip}{0pt plus 5cm}list camcam\+\_\+layout.\+Cam\+Cam.\+planes = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classcamcam__layout_1_1_cam_cam_aa75dfb49cf795fe55538fd5fedd085e4}
+\hypertarget{classcamcam__layout_1_1_cam_cam_a0706ff671a864b8258ef606b4a53bfbf}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!root@{root}}
+\index{root@{root}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{root}]{\setlength{\rightskip}{0pt plus 5cm}camcam\+\_\+layout.\+Cam\+Cam.\+root = self.\+root\hspace{0.3cm}{\ttfamily [static]}}\label{classcamcam__layout_1_1_cam_cam_a0706ff671a864b8258ef606b4a53bfbf}
+\hypertarget{classcamcam__layout_1_1_cam_cam_a02351504f971107694efd2766372b628}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!selected@{selected}}
+\index{selected@{selected}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{selected}]{\setlength{\rightskip}{0pt plus 5cm}camcam\+\_\+layout.\+Cam\+Cam.\+selected = False\hspace{0.3cm}{\ttfamily [static]}}\label{classcamcam__layout_1_1_cam_cam_a02351504f971107694efd2766372b628}
+\hypertarget{classcamcam__layout_1_1_cam_cam_a5154c29272561706f3f08f058fe4e39d}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!sheetid@{sheetid}}
+\index{sheetid@{sheetid}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{sheetid}]{\setlength{\rightskip}{0pt plus 5cm}list camcam\+\_\+layout.\+Cam\+Cam.\+sheetid = {\bf layer}\mbox{[}\textquotesingle{}material\textquotesingle{}\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classcamcam__layout_1_1_cam_cam_a5154c29272561706f3f08f058fe4e39d}
+\hypertarget{classcamcam__layout_1_1_cam_cam_a320eacfe25d7621ee065adac1a038b79}{}\index{camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}!sheets@{sheets}}
+\index{sheets@{sheets}!camcam\+\_\+layout\+::\+Cam\+Cam@{camcam\+\_\+layout\+::\+Cam\+Cam}}
+\subsubsection[{sheets}]{\setlength{\rightskip}{0pt plus 5cm}dictionary camcam\+\_\+layout.\+Cam\+Cam.\+sheets = \{\}\hspace{0.3cm}{\ttfamily [static]}}\label{classcamcam__layout_1_1_cam_cam_a320eacfe25d7621ee065adac1a038b79}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{camcam__layout_8py}{camcam\+\_\+layout.\+py}\end{DoxyCompactItemize}

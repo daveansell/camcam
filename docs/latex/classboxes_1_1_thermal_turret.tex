@@ -1,0 +1,179 @@
+\hypertarget{classboxes_1_1_thermal_turret}{}\section{boxes.\+Thermal\+Turret Class Reference}
+\label{classboxes_1_1_thermal_turret}\index{boxes.\+Thermal\+Turret@{boxes.\+Thermal\+Turret}}
+
+
+Inherits \hyperlink{classboxes_1_1_turret}{boxes.\+Turret}.
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classboxes_1_1_thermal_turret_a0406fe96dfb6c002179213807f4c04ac}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, pos, plane, name, thickness, fudge, config)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classboxes_1_1_thermal_turret_a7d43a7aee8813859340e72f8f885425d}{cam\+\_\+front\+\_\+z} = -\/8
+\item 
+\hyperlink{classboxes_1_1_thermal_turret_ae661f068d7a528bd63faf91871bdb3fb}{cam\+\_\+back\+\_\+z} = \hyperlink{classboxes_1_1_thermal_turret_a7d43a7aee8813859340e72f8f885425d}{cam\+\_\+front\+\_\+z}-\/cam\+\_\+lens\+\_\+depth
+\item 
+int \hyperlink{classboxes_1_1_thermal_turret_a5c59e160df5140c8c75f60bb38a67e53}{centre\+\_\+rad} = 56
+\item 
+float \hyperlink{classboxes_1_1_thermal_turret_a36b76143cdf4df55cabf319ffac90770}{centre\+\_\+inner\+\_\+rad} = 51.\+3
+\item 
+\hyperlink{classboxes_1_1_thermal_turret_a2e661e57f0edb505bba19f7b4448746b}{tube\+\_\+wall} = \hyperlink{classboxes_1_1_thermal_turret_a5c59e160df5140c8c75f60bb38a67e53}{centre\+\_\+rad}-\/\hyperlink{classboxes_1_1_thermal_turret_a36b76143cdf4df55cabf319ffac90770}{centre\+\_\+inner\+\_\+rad}
+\item 
+float \hyperlink{classboxes_1_1_thermal_turret_a078053e29ed936247e167e380726b3a5}{rod\+\_\+rad} = 51.\+5
+\item 
+int \hyperlink{classboxes_1_1_thermal_turret_ab638dbd5aef255277401150a92f53919}{rod\+\_\+length} = 57
+\item 
+float \hyperlink{classboxes_1_1_thermal_turret_a0dd4d0cb1a67fdf730678ae529907b06}{window\+\_\+holder\+\_\+thickness} = 6.\+5
+\item 
+int \hyperlink{classboxes_1_1_thermal_turret_af32d01022aa50258191fa93abfd79d34}{window\+\_\+holder\+\_\+rad} = \hyperlink{classboxes_1_1_thermal_turret_a078053e29ed936247e167e380726b3a5}{rod\+\_\+rad}-\/2
+\item 
+int \hyperlink{classboxes_1_1_thermal_turret_a95d0367c1f976db346546a5bfa66de19}{window\+\_\+rad} = 28
+\item 
+int \hyperlink{classboxes_1_1_thermal_turret_a7700fadf35f25068cf68c73c2bdbbcc7}{window\+\_\+hole\+\_\+rad} = 20
+\item 
+int \hyperlink{classboxes_1_1_thermal_turret_a7bcdff7fb33674f0789854c382ce877f}{accel\+\_\+width} = 22
+\item 
+float \hyperlink{classboxes_1_1_thermal_turret_a43c3ebccf10ab0d89ffe5c4830b07a4c}{accel\+\_\+depth} = 17.\+5
+\item 
+list \hyperlink{classboxes_1_1_thermal_turret_aec3eeb69c8f1c74fc941ce7bbe79231f}{window\+\_\+thickness} = config\mbox{[}\textquotesingle{}window\+\_\+thckness\textquotesingle{}\mbox{]}
+\item 
+int \hyperlink{classboxes_1_1_thermal_turret_a48e28948ac70c45aa41b3ee3f1260c88}{window\+\_\+thickness} = 2
+\item 
+list \hyperlink{classboxes_1_1_thermal_turret_a3fa55e0be67cd754f7a2ee6ba9114bd7}{face\+\_\+thickness} = config\mbox{[}\textquotesingle{}face\+\_\+thckness\textquotesingle{}\mbox{]}
+\item 
+float \hyperlink{classboxes_1_1_thermal_turret_a60cdde3cc35554e9e663b97222c04323}{face\+\_\+thickness} = 6.\+5
+\item 
+\hyperlink{classboxes_1_1_thermal_turret_ae4006d874c27a729856c09b1e2e0b761}{minimum\+\_\+bite\+\_\+depth} = \hyperlink{classboxes_1_1_thermal_turret_a078053e29ed936247e167e380726b3a5}{rod\+\_\+rad}-\/cam\+\_\+top\+\_\+to\+\_\+connector+\hyperlink{classboxes_1_1_thermal_turret_a2e661e57f0edb505bba19f7b4448746b}{tube\+\_\+wall}
+\item 
+tuple \hyperlink{classboxes_1_1_thermal_turret_a352dbf0c59cb3cadbfca9a36c5b6f3f6}{camera\+\_\+centre} = V(0, 0)
+\item 
+tuple \hyperlink{classboxes_1_1_thermal_turret_a9120663d179eeb2f51fbd6a0533d82be}{hole\+\_\+y} = math.\+sqrt((\hyperlink{classboxes_1_1_thermal_turret_a078053e29ed936247e167e380726b3a5}{rod\+\_\+rad}-\/2)$\ast$$\ast$2 -\/ cam\+\_\+rad$\ast$$\ast$2)
+\item 
+tuple \hyperlink{classboxes_1_1_thermal_turret_a0dc21b9d8ef70d2d7c7f3768b58c883d}{camera\+\_\+cutout} = \hyperlink{classpath_1_1_path}{Path}(closed=True, \hyperlink{classboxes_1_1_turret_a1f5dd6ea8b99161aefb38d331cb093f4}{side}=\textquotesingle{}in\textquotesingle{}, partial\+\_\+fill= cam\+\_\+rad-\/4, cutter=\textquotesingle{}6mm\+\_\+endmill\textquotesingle{}, z1=cam\+\_\+back\+\_\+z, )
+\item 
+tuple \hyperlink{classboxes_1_1_thermal_turret_ab658b9678ea4d2be36c21999d1d40ad9}{t} = self.\+camera\+\_\+holder.\+add(\hyperlink{classshapes_1_1_hole}{Hole}(V(0, \hyperlink{classboxes_1_1_thermal_turret_af32d01022aa50258191fa93abfd79d34}{window\+\_\+holder\+\_\+rad} -\/3), rad=3.\+3/2, z1=-\/12))
+\item 
+float \hyperlink{classboxes_1_1_thermal_turret_a83b3903d6f4c066c1b9eea21acc88ce8}{angle} = 40.\+0
+\item 
+float \hyperlink{classboxes_1_1_thermal_turret_ac73c1f1b0ed041451a3265b27e94a132}{startz} = 4.\+0
+\item 
+float \hyperlink{classboxes_1_1_thermal_turret_a08a1751af40bb992edc18a384fc6fe72}{startr} = 2.\+5
+\item 
+float \hyperlink{classboxes_1_1_thermal_turret_adcda318805d472c85a557b9cf8f4b7e0}{steps} = 6.\+0
+\item 
+\hyperlink{classboxes_1_1_thermal_turret_a46edac8584fe0fbb4b5412b3ace9fe20}{stepz} = \hyperlink{classboxes_1_1_thermal_turret_a0dd4d0cb1a67fdf730678ae529907b06}{window\+\_\+holder\+\_\+thickness}/\hyperlink{classboxes_1_1_thermal_turret_adcda318805d472c85a557b9cf8f4b7e0}{steps}
+\item 
+tuple \hyperlink{classboxes_1_1_thermal_turret_a4e43e3ea402e72692de5043762894613}{stepr} = math.\+tan(\hyperlink{classboxes_1_1_thermal_turret_a83b3903d6f4c066c1b9eea21acc88ce8}{angle}/180$\ast$math.\+pi)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classboxes_1_1_thermal_turret_a0406fe96dfb6c002179213807f4c04ac}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def boxes.\+Thermal\+Turret.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{pos, }
+\item[{}]{plane, }
+\item[{}]{name, }
+\item[{}]{thickness, }
+\item[{}]{fudge, }
+\item[{}]{config}
+\end{DoxyParamCaption}
+)}\label{classboxes_1_1_thermal_turret_a0406fe96dfb6c002179213807f4c04ac}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classboxes_1_1_thermal_turret_a43c3ebccf10ab0d89ffe5c4830b07a4c}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!accel\+\_\+depth@{accel\+\_\+depth}}
+\index{accel\+\_\+depth@{accel\+\_\+depth}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{accel\+\_\+depth}]{\setlength{\rightskip}{0pt plus 5cm}float boxes.\+Thermal\+Turret.\+accel\+\_\+depth = 17.\+5\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a43c3ebccf10ab0d89ffe5c4830b07a4c}
+\hypertarget{classboxes_1_1_thermal_turret_a7bcdff7fb33674f0789854c382ce877f}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!accel\+\_\+width@{accel\+\_\+width}}
+\index{accel\+\_\+width@{accel\+\_\+width}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{accel\+\_\+width}]{\setlength{\rightskip}{0pt plus 5cm}int boxes.\+Thermal\+Turret.\+accel\+\_\+width = 22\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a7bcdff7fb33674f0789854c382ce877f}
+\hypertarget{classboxes_1_1_thermal_turret_a83b3903d6f4c066c1b9eea21acc88ce8}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!angle@{angle}}
+\index{angle@{angle}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{angle}]{\setlength{\rightskip}{0pt plus 5cm}float boxes.\+Thermal\+Turret.\+angle = 40.\+0\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a83b3903d6f4c066c1b9eea21acc88ce8}
+\hypertarget{classboxes_1_1_thermal_turret_ae661f068d7a528bd63faf91871bdb3fb}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!cam\+\_\+back\+\_\+z@{cam\+\_\+back\+\_\+z}}
+\index{cam\+\_\+back\+\_\+z@{cam\+\_\+back\+\_\+z}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{cam\+\_\+back\+\_\+z}]{\setlength{\rightskip}{0pt plus 5cm}boxes.\+Thermal\+Turret.\+cam\+\_\+back\+\_\+z = {\bf cam\+\_\+front\+\_\+z}-\/cam\+\_\+lens\+\_\+depth\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_ae661f068d7a528bd63faf91871bdb3fb}
+\hypertarget{classboxes_1_1_thermal_turret_a7d43a7aee8813859340e72f8f885425d}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!cam\+\_\+front\+\_\+z@{cam\+\_\+front\+\_\+z}}
+\index{cam\+\_\+front\+\_\+z@{cam\+\_\+front\+\_\+z}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{cam\+\_\+front\+\_\+z}]{\setlength{\rightskip}{0pt plus 5cm}int boxes.\+Thermal\+Turret.\+cam\+\_\+front\+\_\+z = -\/8\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a7d43a7aee8813859340e72f8f885425d}
+\hypertarget{classboxes_1_1_thermal_turret_a352dbf0c59cb3cadbfca9a36c5b6f3f6}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!camera\+\_\+centre@{camera\+\_\+centre}}
+\index{camera\+\_\+centre@{camera\+\_\+centre}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{camera\+\_\+centre}]{\setlength{\rightskip}{0pt plus 5cm}tuple boxes.\+Thermal\+Turret.\+camera\+\_\+centre = V(0, 0)\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a352dbf0c59cb3cadbfca9a36c5b6f3f6}
+\hypertarget{classboxes_1_1_thermal_turret_a0dc21b9d8ef70d2d7c7f3768b58c883d}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!camera\+\_\+cutout@{camera\+\_\+cutout}}
+\index{camera\+\_\+cutout@{camera\+\_\+cutout}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{camera\+\_\+cutout}]{\setlength{\rightskip}{0pt plus 5cm}tuple boxes.\+Thermal\+Turret.\+camera\+\_\+cutout = {\bf Path}(closed=True, {\bf side}=\textquotesingle{}in\textquotesingle{}, partial\+\_\+fill= cam\+\_\+rad-\/4, cutter=\textquotesingle{}6mm\+\_\+endmill\textquotesingle{}, z1=cam\+\_\+back\+\_\+z, )\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a0dc21b9d8ef70d2d7c7f3768b58c883d}
+\hypertarget{classboxes_1_1_thermal_turret_a36b76143cdf4df55cabf319ffac90770}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!centre\+\_\+inner\+\_\+rad@{centre\+\_\+inner\+\_\+rad}}
+\index{centre\+\_\+inner\+\_\+rad@{centre\+\_\+inner\+\_\+rad}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{centre\+\_\+inner\+\_\+rad}]{\setlength{\rightskip}{0pt plus 5cm}float boxes.\+Thermal\+Turret.\+centre\+\_\+inner\+\_\+rad = 51.\+3\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a36b76143cdf4df55cabf319ffac90770}
+\hypertarget{classboxes_1_1_thermal_turret_a5c59e160df5140c8c75f60bb38a67e53}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!centre\+\_\+rad@{centre\+\_\+rad}}
+\index{centre\+\_\+rad@{centre\+\_\+rad}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{centre\+\_\+rad}]{\setlength{\rightskip}{0pt plus 5cm}int boxes.\+Thermal\+Turret.\+centre\+\_\+rad = 56\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a5c59e160df5140c8c75f60bb38a67e53}
+\hypertarget{classboxes_1_1_thermal_turret_a3fa55e0be67cd754f7a2ee6ba9114bd7}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!face\+\_\+thickness@{face\+\_\+thickness}}
+\index{face\+\_\+thickness@{face\+\_\+thickness}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{face\+\_\+thickness}]{\setlength{\rightskip}{0pt plus 5cm}list boxes.\+Thermal\+Turret.\+face\+\_\+thickness = config\mbox{[}\textquotesingle{}face\+\_\+thckness\textquotesingle{}\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a3fa55e0be67cd754f7a2ee6ba9114bd7}
+\hypertarget{classboxes_1_1_thermal_turret_a60cdde3cc35554e9e663b97222c04323}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!face\+\_\+thickness@{face\+\_\+thickness}}
+\index{face\+\_\+thickness@{face\+\_\+thickness}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{face\+\_\+thickness}]{\setlength{\rightskip}{0pt plus 5cm}float boxes.\+Thermal\+Turret.\+face\+\_\+thickness = 6.\+5\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a60cdde3cc35554e9e663b97222c04323}
+\hypertarget{classboxes_1_1_thermal_turret_a9120663d179eeb2f51fbd6a0533d82be}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!hole\+\_\+y@{hole\+\_\+y}}
+\index{hole\+\_\+y@{hole\+\_\+y}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{hole\+\_\+y}]{\setlength{\rightskip}{0pt plus 5cm}tuple boxes.\+Thermal\+Turret.\+hole\+\_\+y = math.\+sqrt(({\bf rod\+\_\+rad}-\/2)$\ast$$\ast$2 -\/ cam\+\_\+rad$\ast$$\ast$2)\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a9120663d179eeb2f51fbd6a0533d82be}
+\hypertarget{classboxes_1_1_thermal_turret_ae4006d874c27a729856c09b1e2e0b761}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!minimum\+\_\+bite\+\_\+depth@{minimum\+\_\+bite\+\_\+depth}}
+\index{minimum\+\_\+bite\+\_\+depth@{minimum\+\_\+bite\+\_\+depth}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{minimum\+\_\+bite\+\_\+depth}]{\setlength{\rightskip}{0pt plus 5cm}boxes.\+Thermal\+Turret.\+minimum\+\_\+bite\+\_\+depth = {\bf rod\+\_\+rad}-\/cam\+\_\+top\+\_\+to\+\_\+connector+{\bf tube\+\_\+wall}\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_ae4006d874c27a729856c09b1e2e0b761}
+\hypertarget{classboxes_1_1_thermal_turret_ab638dbd5aef255277401150a92f53919}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!rod\+\_\+length@{rod\+\_\+length}}
+\index{rod\+\_\+length@{rod\+\_\+length}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{rod\+\_\+length}]{\setlength{\rightskip}{0pt plus 5cm}int boxes.\+Thermal\+Turret.\+rod\+\_\+length = 57\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_ab638dbd5aef255277401150a92f53919}
+\hypertarget{classboxes_1_1_thermal_turret_a078053e29ed936247e167e380726b3a5}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!rod\+\_\+rad@{rod\+\_\+rad}}
+\index{rod\+\_\+rad@{rod\+\_\+rad}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{rod\+\_\+rad}]{\setlength{\rightskip}{0pt plus 5cm}float boxes.\+Thermal\+Turret.\+rod\+\_\+rad = 51.\+5\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a078053e29ed936247e167e380726b3a5}
+\hypertarget{classboxes_1_1_thermal_turret_a08a1751af40bb992edc18a384fc6fe72}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!startr@{startr}}
+\index{startr@{startr}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{startr}]{\setlength{\rightskip}{0pt plus 5cm}float boxes.\+Thermal\+Turret.\+startr = 2.\+5\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a08a1751af40bb992edc18a384fc6fe72}
+\hypertarget{classboxes_1_1_thermal_turret_ac73c1f1b0ed041451a3265b27e94a132}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!startz@{startz}}
+\index{startz@{startz}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{startz}]{\setlength{\rightskip}{0pt plus 5cm}float boxes.\+Thermal\+Turret.\+startz = 4.\+0\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_ac73c1f1b0ed041451a3265b27e94a132}
+\hypertarget{classboxes_1_1_thermal_turret_a4e43e3ea402e72692de5043762894613}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!stepr@{stepr}}
+\index{stepr@{stepr}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{stepr}]{\setlength{\rightskip}{0pt plus 5cm}tuple boxes.\+Thermal\+Turret.\+stepr = math.\+tan({\bf angle}/180$\ast$math.\+pi)\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a4e43e3ea402e72692de5043762894613}
+\hypertarget{classboxes_1_1_thermal_turret_adcda318805d472c85a557b9cf8f4b7e0}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!steps@{steps}}
+\index{steps@{steps}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{steps}]{\setlength{\rightskip}{0pt plus 5cm}float boxes.\+Thermal\+Turret.\+steps = 6.\+0\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_adcda318805d472c85a557b9cf8f4b7e0}
+\hypertarget{classboxes_1_1_thermal_turret_a46edac8584fe0fbb4b5412b3ace9fe20}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!stepz@{stepz}}
+\index{stepz@{stepz}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{stepz}]{\setlength{\rightskip}{0pt plus 5cm}boxes.\+Thermal\+Turret.\+stepz = {\bf window\+\_\+holder\+\_\+thickness}/{\bf steps}\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a46edac8584fe0fbb4b5412b3ace9fe20}
+\hypertarget{classboxes_1_1_thermal_turret_ab658b9678ea4d2be36c21999d1d40ad9}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!t@{t}}
+\index{t@{t}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{t}]{\setlength{\rightskip}{0pt plus 5cm}tuple boxes.\+Thermal\+Turret.\+t = self.\+camera\+\_\+holder.\+add({\bf Hole}(V(0, {\bf window\+\_\+holder\+\_\+rad} -\/3), rad=3.\+3/2, z1=-\/12))\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_ab658b9678ea4d2be36c21999d1d40ad9}
+\hypertarget{classboxes_1_1_thermal_turret_a2e661e57f0edb505bba19f7b4448746b}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!tube\+\_\+wall@{tube\+\_\+wall}}
+\index{tube\+\_\+wall@{tube\+\_\+wall}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{tube\+\_\+wall}]{\setlength{\rightskip}{0pt plus 5cm}boxes.\+Thermal\+Turret.\+tube\+\_\+wall = {\bf centre\+\_\+rad}-\/{\bf centre\+\_\+inner\+\_\+rad}\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a2e661e57f0edb505bba19f7b4448746b}
+\hypertarget{classboxes_1_1_thermal_turret_af32d01022aa50258191fa93abfd79d34}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!window\+\_\+holder\+\_\+rad@{window\+\_\+holder\+\_\+rad}}
+\index{window\+\_\+holder\+\_\+rad@{window\+\_\+holder\+\_\+rad}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{window\+\_\+holder\+\_\+rad}]{\setlength{\rightskip}{0pt plus 5cm}int boxes.\+Thermal\+Turret.\+window\+\_\+holder\+\_\+rad = {\bf rod\+\_\+rad}-\/2\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_af32d01022aa50258191fa93abfd79d34}
+\hypertarget{classboxes_1_1_thermal_turret_a0dd4d0cb1a67fdf730678ae529907b06}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!window\+\_\+holder\+\_\+thickness@{window\+\_\+holder\+\_\+thickness}}
+\index{window\+\_\+holder\+\_\+thickness@{window\+\_\+holder\+\_\+thickness}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{window\+\_\+holder\+\_\+thickness}]{\setlength{\rightskip}{0pt plus 5cm}float boxes.\+Thermal\+Turret.\+window\+\_\+holder\+\_\+thickness = 6.\+5\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a0dd4d0cb1a67fdf730678ae529907b06}
+\hypertarget{classboxes_1_1_thermal_turret_a7700fadf35f25068cf68c73c2bdbbcc7}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!window\+\_\+hole\+\_\+rad@{window\+\_\+hole\+\_\+rad}}
+\index{window\+\_\+hole\+\_\+rad@{window\+\_\+hole\+\_\+rad}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{window\+\_\+hole\+\_\+rad}]{\setlength{\rightskip}{0pt plus 5cm}int boxes.\+Thermal\+Turret.\+window\+\_\+hole\+\_\+rad = 20\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a7700fadf35f25068cf68c73c2bdbbcc7}
+\hypertarget{classboxes_1_1_thermal_turret_a95d0367c1f976db346546a5bfa66de19}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!window\+\_\+rad@{window\+\_\+rad}}
+\index{window\+\_\+rad@{window\+\_\+rad}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{window\+\_\+rad}]{\setlength{\rightskip}{0pt plus 5cm}int boxes.\+Thermal\+Turret.\+window\+\_\+rad = 28\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a95d0367c1f976db346546a5bfa66de19}
+\hypertarget{classboxes_1_1_thermal_turret_aec3eeb69c8f1c74fc941ce7bbe79231f}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!window\+\_\+thickness@{window\+\_\+thickness}}
+\index{window\+\_\+thickness@{window\+\_\+thickness}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{window\+\_\+thickness}]{\setlength{\rightskip}{0pt plus 5cm}list boxes.\+Thermal\+Turret.\+window\+\_\+thickness = config\mbox{[}\textquotesingle{}window\+\_\+thckness\textquotesingle{}\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_aec3eeb69c8f1c74fc941ce7bbe79231f}
+\hypertarget{classboxes_1_1_thermal_turret_a48e28948ac70c45aa41b3ee3f1260c88}{}\index{boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}!window\+\_\+thickness@{window\+\_\+thickness}}
+\index{window\+\_\+thickness@{window\+\_\+thickness}!boxes\+::\+Thermal\+Turret@{boxes\+::\+Thermal\+Turret}}
+\subsubsection[{window\+\_\+thickness}]{\setlength{\rightskip}{0pt plus 5cm}int boxes.\+Thermal\+Turret.\+window\+\_\+thickness = 2\hspace{0.3cm}{\ttfamily [static]}}\label{classboxes_1_1_thermal_turret_a48e28948ac70c45aa41b3ee3f1260c88}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{boxes_8py}{boxes.\+py}\end{DoxyCompactItemize}

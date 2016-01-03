@@ -1,0 +1,681 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classpath_1_1_plane" kind="class" language="Python" prot="public">
+    <compoundname>path::Plane</compoundname>
+    <basecompoundref refid="classpath_1_1_part" prot="public" virt="non-virtual">path.Part</basecompoundref>
+    <derivedcompoundref refid="classshapes_1_1_module" prot="public" virt="non-virtual">shapes.Module</derivedcompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classpath_1_1_plane_1a6f7241b4f23c72b0608ca6b713d5d281" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::layers</definition>
+        <argsstring></argsstring>
+        <name>layers</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1920" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1920" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1a07fffbf7ef837b7f8a0d9e2a69161e1b" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::origin</definition>
+        <argsstring></argsstring>
+        <name>origin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1921" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1921" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1aa10bd618cd80d3ee1fe348a94b173736" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::plane</definition>
+        <argsstring></argsstring>
+        <name>plane</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1922" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1922" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1a57144197eff51c6e23a38a1d28541f8f" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::parts</definition>
+        <argsstring></argsstring>
+        <name>parts</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1923" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1923" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1a9c3565a0c72c585ffd3d9305d9e59b64" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::config</definition>
+        <argsstring></argsstring>
+        <name>config</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1924" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1924" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1acf3722b8287fdbdca683bd82ef536201" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::paths</definition>
+        <argsstring></argsstring>
+        <name>paths</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1925" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1925" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1a52d1301106910689f429002086854c0b" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::obType</definition>
+        <argsstring></argsstring>
+        <name>obType</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1926" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1926" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1a83242faa5f70bd6aa867c977d4f4a6c1" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1927" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1927" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1a2fa8b34d6558289254bb548239672db0" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::transform</definition>
+        <argsstring></argsstring>
+        <name>transform</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1928" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1928" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1ae45a5caa84aa06a12b132b98a4bf7b5d" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::parent</definition>
+        <argsstring></argsstring>
+        <name>parent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1929" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1929" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1a17bfb0110c1141d362eb715129058fa4" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::varlist</definition>
+        <argsstring></argsstring>
+        <name>varlist</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1930" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1930" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1a70c65dfa7270b5c4cbc1d15c513df3d8" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::out</definition>
+        <argsstring></argsstring>
+        <name>out</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1931" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1931" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1ab7c505d0f7c91a505f8cc786504f1cc2" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::isCopy</definition>
+        <argsstring></argsstring>
+        <name>isCopy</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1932" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1932" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1a71f825ab207c8a45abb6c6e25551b949" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::copied</definition>
+        <argsstring></argsstring>
+        <name>copied</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1933" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1933" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1a67fb6a225b9da98f1074711105499db9" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::copies</definition>
+        <argsstring></argsstring>
+        <name>copies</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1934" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1934" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1aa499e661977ffef2655b5c844eba30e3" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::bom</definition>
+        <argsstring></argsstring>
+        <name>bom</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1935" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1935" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1ab3693d278c25eb3183f1e87b4d478ca9" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::number</definition>
+        <argsstring></argsstring>
+        <name>number</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1936" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1936" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1aeb4647226d990dcc53bd09a27dad388a" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::ignore_border</definition>
+        <argsstring></argsstring>
+        <name>ignore_border</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1937" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1937" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1aa0494eb77e5605add3fd16367d9cc91d" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::callmode</definition>
+        <argsstring></argsstring>
+        <name>callmode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1981" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1981" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1ac23023bbc6c9f6a3726c40466a0e0e71" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::modeconfig</definition>
+        <argsstring></argsstring>
+        <name>modeconfig</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1982" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1982" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1acd9711469d21f4785a72a27794f625cf" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::mode</definition>
+        <argsstring></argsstring>
+        <name>mode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1983" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1983" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_plane_1ae77d75fa4cfaf2141bc464e079e64ef8" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Plane::lay_out</definition>
+        <argsstring></argsstring>
+        <name>lay_out</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1986" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1986" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classpath_1_1_plane_1a8c7b599791d3c3452ee585a386631e26" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Plane.__init__</definition>
+        <argsstring>(self, name, config)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_plane_1a83242faa5f70bd6aa867c977d4f4a6c1" kindref="member">name</ref></type>
+          <defname>name</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_plane_1a9c3565a0c72c585ffd3d9305d9e59b64" kindref="member">config</ref></type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1908" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1908" bodyend="1918"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_plane_1adf18d22bc49d69c89b576a79fdba4db8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Plane.init</definition>
+        <argsstring>(self, name, origin=V(0, 0, plane=V(0, 0)</argsstring>
+        <name>init</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_plane_1a83242faa5f70bd6aa867c977d4f4a6c1" kindref="member">name</ref></type>
+          <defname>name</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1919" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1919" bodyend="1942"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_plane_1addfb772498362a6c1fe70872f8a8eca8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Plane.get_config</definition>
+        <argsstring>(self)</argsstring>
+        <name>get_config</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1943" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1943" bodyend="1944"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_plane_1ae408776ac58181141026a5f5ca581668" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Plane.add_part_layer</definition>
+        <argsstring></argsstring>
+        <name>add_part_layer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1945" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1945" bodyend="1949"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_plane_1a1c4c4deb3480dcb9fc421764e63dc253" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Plane.add_layer</definition>
+        <argsstring></argsstring>
+        <name>add_layer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1951" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1951" bodyend="1957"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_plane_1a5490de0bcdc4abcbb6d11824bd4dcfe1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Plane.render_layer</definition>
+        <argsstring>(self, layer)</argsstring>
+        <name>render_layer</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_part_1aa1d9912dfa1d7e3222df898d2a18786f" kindref="member">layer</ref></type>
+          <defname>layer</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Render all the parts in a layer</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1958" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1958" bodyend="1960"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_plane_1a8caaa3344bb41858e2b9fc64d58e0879" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Plane.render_all</definition>
+        <argsstring>(self, mode, config)</argsstring>
+        <name>render_all</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_plane_1acd9711469d21f4785a72a27794f625cf" kindref="member">mode</ref></type>
+          <defname>mode</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_plane_1a9c3565a0c72c585ffd3d9305d9e59b64" kindref="member">config</ref></type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Render all parts in the Plane</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1961" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1961" bodyend="1967"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_plane_1a292f4f9b0135fec614b9310213977ccb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Plane.list_all</definition>
+        <argsstring>(self)</argsstring>
+        <name>list_all</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>List all tha parts in this Plane</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1968" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1968" bodyend="1973"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_plane_1a8d5bd7c7a44335da1c32db64110734d0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Plane.get_layer_config</definition>
+        <argsstring>(self, layer)</argsstring>
+        <name>get_layer_config</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_part_1aa1d9912dfa1d7e3222df898d2a18786f" kindref="member">layer</ref></type>
+          <defname>layer</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1974" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1974" bodyend="1979"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_plane_1a2405b1700e1eaf4dcf4b992c207bfb2a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Plane.render_part</definition>
+        <argsstring></argsstring>
+        <name>render_part</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1980" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1980" bodyend="2097"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_plane_1a1716fc0cf4fb6f62ec5ea76d59b1ea67" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Plane.writeGcodeFile</definition>
+        <argsstring>(self, partName, key, output, border, config)</argsstring>
+        <name>writeGcodeFile</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>partName</type>
+          <defname>partName</defname>
+        </param>
+        <param>
+          <type>key</type>
+          <defname>key</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_part_1a6ff6c586832ff637508796a8a77dbbac" kindref="member">output</ref></type>
+          <defname>output</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_part_1a004c78655a7f215ff512e4b18e48b0fe" kindref="member">border</ref></type>
+          <defname>border</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_plane_1a9c3565a0c72c585ffd3d9305d9e59b64" kindref="member">config</ref></type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="2098" column="1" bodyfile="/home/db/camcam/path.py" bodystart="2098" bodyend="2177"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_plane_1a9de8b4b12f301c25e9919ab0cc488df9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Plane.offset_gcode</definition>
+        <argsstring>(self, output, offset)</argsstring>
+        <name>offset_gcode</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_part_1a6ff6c586832ff637508796a8a77dbbac" kindref="member">output</ref></type>
+          <defname>output</defname>
+        </param>
+        <param>
+          <type>offset</type>
+          <defname>offset</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="2178" column="1" bodyfile="/home/db/camcam/path.py" bodystart="2178" bodyend="2203"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_plane_1af067e53069dc33b30e194aaa04e28235" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Plane.sanitise_filename</definition>
+        <argsstring>(self, filename)</argsstring>
+        <name>sanitise_filename</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>filename</type>
+          <defname>filename</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="2204" column="1" bodyfile="/home/db/camcam/path.py" bodystart="2204" bodyend="2205"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1525">
+        <label>shapes.Module</label>
+        <link refid="classshapes_1_1_module"/>
+        <childnode refid="1522" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1522">
+        <label>path.Plane</label>
+        <link refid="classpath_1_1_plane"/>
+        <childnode refid="1523" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1524">
+        <label>object</label>
+      </node>
+      <node id="1523">
+        <label>path.Part</label>
+        <link refid="classpath_1_1_part"/>
+        <childnode refid="1524" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1526">
+        <label>path.Plane</label>
+        <link refid="classpath_1_1_plane"/>
+        <childnode refid="1527" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1528">
+        <label>object</label>
+      </node>
+      <node id="1527">
+        <label>path.Part</label>
+        <link refid="classpath_1_1_part"/>
+        <childnode refid="1528" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/path.py" line="1907" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1907" bodyend="2206"/>
+    <listofallmembers>
+      <member refid="classpath_1_1_part_1a01c7a739dee22053cee9f0b28348f1a3" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>__deepcopy__</name></member>
+      <member refid="classpath_1_1_plane_1a8c7b599791d3c3452ee585a386631e26" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_part_1ad303df059ccf8ea977b9ba099f1f17a9" prot="public" virt="non-virtual" ambiguityscope="path::Part."><scope>path::Plane</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_part_1a45256181f3975227c838363bc31ae602" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>add</name></member>
+      <member refid="classpath_1_1_part_1abb8f248470b535ae0449e1a47f912506" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>add_bom</name></member>
+      <member refid="classpath_1_1_part_1a4476c8b030ebcf9c7df00e6a7aa9214c" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>add_border</name></member>
+      <member refid="classpath_1_1_part_1a397ea5a1af4d031e7f1fb4ceac654de5" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>add_copy</name></member>
+      <member refid="classpath_1_1_part_1af7a16e2949b4fb42f61efa17c29d9b56" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>add_internal_border</name></member>
+      <member refid="classpath_1_1_plane_1a1c4c4deb3480dcb9fc421764e63dc253" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>add_layer</name></member>
+      <member refid="classpath_1_1_plane_1ae408776ac58181141026a5f5ca581668" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>add_part_layer</name></member>
+      <member refid="classpath_1_1_part_1a961da43effa034ade7b25ff09121784c" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>add_path</name></member>
+      <member refid="classpath_1_1_plane_1aa499e661977ffef2655b5c844eba30e3" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>bom</name></member>
+      <member refid="classpath_1_1_part_1a004c78655a7f215ff512e4b18e48b0fe" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>border</name></member>
+      <member refid="classpath_1_1_plane_1aa0494eb77e5605add3fd16367d9cc91d" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>callmode</name></member>
+      <member refid="classpath_1_1_part_1aaa7dce569975af8da512ecba96f67538" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>comment</name></member>
+      <member refid="classpath_1_1_part_1aa94d1de86a82e8b96113c305c1ff63cc" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>comments</name></member>
+      <member refid="classpath_1_1_plane_1a9c3565a0c72c585ffd3d9305d9e59b64" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>config</name></member>
+      <member refid="classpath_1_1_part_1a674b3be7cd8c25840d27de74b0d94797" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>contains</name></member>
+      <member refid="classpath_1_1_plane_1a71f825ab207c8a45abb6c6e25551b949" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>copied</name></member>
+      <member refid="classpath_1_1_plane_1a67fb6a225b9da98f1074711105499db9" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>copies</name></member>
+      <member refid="classpath_1_1_part_1a57d1d3471b332024af5cdc8265b96ef1" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>cutoutside</name></member>
+      <member refid="classpath_1_1_part_1aa3ab823fc2a4baeaa97300d310d3b8eb" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>get_bom</name></member>
+      <member refid="classpath_1_1_plane_1addfb772498362a6c1fe70872f8a8eca8" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>get_config</name></member>
+      <member refid="classpath_1_1_plane_1a8d5bd7c7a44335da1c32db64110734d0" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>get_layer_config</name></member>
+      <member refid="classpath_1_1_part_1a60a0f2d6c32dc8875b191d432002860f" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>get_layers</name></member>
+      <member refid="classpath_1_1_part_1a4ce18378dbce97d9a2875e1de9653892" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>get_own_paths</name></member>
+      <member refid="classpath_1_1_part_1a55bbf4c0ea6fbf7f70c4470929ee4b26" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>get_parts</name></member>
+      <member refid="classpath_1_1_part_1a6923ae4219b5cbd4bc87e22c09da14fc" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>getParts</name></member>
+      <member refid="classpath_1_1_plane_1aeb4647226d990dcc53bd09a27dad388a" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>ignore_border</name></member>
+      <member refid="classpath_1_1_plane_1adf18d22bc49d69c89b576a79fdba4db8" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>init</name></member>
+      <member refid="classpath_1_1_part_1a78ba05bb5f29eee1830388be6d15af98" prot="public" virt="non-virtual" ambiguityscope="path::Part."><scope>path::Plane</scope><name>init</name></member>
+      <member refid="classpath_1_1_part_1ab4eb93506a42db0b4d21000dceca0e91" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>internal_borders</name></member>
+      <member refid="classpath_1_1_part_1abd77fe962ddd912e766b8a2e9220717b" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>is_border</name></member>
+      <member refid="classpath_1_1_plane_1ab7c505d0f7c91a505f8cc786504f1cc2" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>isCopy</name></member>
+      <member refid="classpath_1_1_plane_1ae77d75fa4cfaf2141bc464e079e64ef8" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>lay_out</name></member>
+      <member refid="classpath_1_1_part_1aa1d9912dfa1d7e3222df898d2a18786f" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>layer</name></member>
+      <member refid="classpath_1_1_plane_1a6f7241b4f23c72b0608ca6b713d5d281" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>layers</name></member>
+      <member refid="classpath_1_1_plane_1a292f4f9b0135fec614b9310213977ccb" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>list_all</name></member>
+      <member refid="classpath_1_1_part_1a185c9bbf10bddf3b739441e758850c84" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>make_copies</name></member>
+      <member refid="classpath_1_1_part_1a982bb6775f254fd811f03015c7695718" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>material_shape</name></member>
+      <member refid="classpath_1_1_part_1a3e0f8f43f26a761a02616e2a2bc735e1" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>mirror</name></member>
+      <member refid="classpath_1_1_plane_1acd9711469d21f4785a72a27794f625cf" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>mode</name></member>
+      <member refid="classpath_1_1_plane_1ac23023bbc6c9f6a3726c40466a0e0e71" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>modeconfig</name></member>
+      <member refid="classpath_1_1_plane_1a83242faa5f70bd6aa867c977d4f4a6c1" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>name</name></member>
+      <member refid="classpath_1_1_plane_1ab3693d278c25eb3183f1e87b4d478ca9" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>number</name></member>
+      <member refid="classpath_1_1_plane_1a52d1301106910689f429002086854c0b" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>obType</name></member>
+      <member refid="classpath_1_1_plane_1a9de8b4b12f301c25e9919ab0cc488df9" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>offset_gcode</name></member>
+      <member refid="classpath_1_1_plane_1a07fffbf7ef837b7f8a0d9e2a69161e1b" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>origin</name></member>
+      <member refid="classpath_1_1_part_1ae705ca5412f4383b77dd32e9ebdd237f" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>otherargs</name></member>
+      <member refid="classpath_1_1_plane_1a70c65dfa7270b5c4cbc1d15c513df3d8" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>out</name></member>
+      <member refid="classpath_1_1_part_1a6ff6c586832ff637508796a8a77dbbac" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>output</name></member>
+      <member refid="classpath_1_1_part_1af5b40fad5803470c54db7d42b07f8a95" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>overwrite</name></member>
+      <member refid="classpath_1_1_plane_1ae45a5caa84aa06a12b132b98a4bf7b5d" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>parent</name></member>
+      <member refid="classpath_1_1_plane_1a57144197eff51c6e23a38a1d28541f8f" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>parts</name></member>
+      <member refid="classpath_1_1_plane_1acf3722b8287fdbdca683bd82ef536201" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>paths</name></member>
+      <member refid="classpath_1_1_plane_1aa10bd618cd80d3ee1fe348a94b173736" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>plane</name></member>
+      <member refid="classpath_1_1_plane_1a8caaa3344bb41858e2b9fc64d58e0879" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>render_all</name></member>
+      <member refid="classpath_1_1_plane_1a5490de0bcdc4abcbb6d11824bd4dcfe1" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>render_layer</name></member>
+      <member refid="classpath_1_1_plane_1a2405b1700e1eaf4dcf4b992c207bfb2a" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>render_part</name></member>
+      <member refid="classpath_1_1_part_1ad5f9f5edfa6d110a4de203c109223ede" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>renderable</name></member>
+      <member refid="classpath_1_1_part_1a70560f4969089436589b608259ee2ca1" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>rotate</name></member>
+      <member refid="classpath_1_1_plane_1af067e53069dc33b30e194aaa04e28235" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>sanitise_filename</name></member>
+      <member refid="classpath_1_1_part_1aa46bbe5ca2996ee60e388415f398b008" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>trace</name></member>
+      <member refid="classpath_1_1_plane_1a2fa8b34d6558289254bb548239672db0" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>transform</name></member>
+      <member refid="classpath_1_1_part_1a27d0b520d21955962d578c55227bcff8" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>translate</name></member>
+      <member refid="classpath_1_1_plane_1a17bfb0110c1141d362eb715129058fa4" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>varlist</name></member>
+      <member refid="classpath_1_1_plane_1a1716fc0cf4fb6f62ec5ea76d59b1ea67" prot="public" virt="non-virtual"><scope>path::Plane</scope><name>writeGcodeFile</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

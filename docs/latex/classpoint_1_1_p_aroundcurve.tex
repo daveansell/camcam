@@ -1,0 +1,162 @@
+\hypertarget{classpoint_1_1_p_aroundcurve}{}\section{point.\+P\+Aroundcurve Class Reference}
+\label{classpoint_1_1_p_aroundcurve}\index{point.\+P\+Aroundcurve@{point.\+P\+Aroundcurve}}
+
+
+Inherits \hyperlink{classpoint_1_1_p_sharp}{point.\+P\+Sharp}.
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classpoint_1_1_p_aroundcurve_abf8a513ce57f9b1477a64cb68f29a229}{\+\_\+\+\_\+init\+\_\+\+\_\+}
+\item 
+def \hyperlink{classpoint_1_1_p_aroundcurve_aa62a97561ec9a6a39360db3bc4afb9b5}{offset} (self, side, distance, \hyperlink{classpoint_1_1_p_aroundcurve_a35548cdf3426f241a2f4dca3c4c07cf4}{direction})
+\item 
+def \hyperlink{classpoint_1_1_p_aroundcurve_ab3adc6be84047ee66a5cbbf4b6396b94}{set\+Direction} (self)
+\item 
+def \hyperlink{classpoint_1_1_p_aroundcurve_a63c9705a5fbdbde72b5bde450324178d}{make\+Segment} (self, config)
+\item 
+def \hyperlink{classpoint_1_1_p_aroundcurve_a9f9818c6d18639d55b79af5f1c0a46d6}{start} (self)
+\item 
+def \hyperlink{classpoint_1_1_p_aroundcurve_ad2db9dc27bd5b55354382b2cf9863303}{end} (self)
+\item 
+def \hyperlink{classpoint_1_1_p_aroundcurve_a73d952075b6e0a82897d597e5a5235e2}{origin}
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classpoint_1_1_p_aroundcurve_aa991f6099845e2e54363ca607ec0f58e}{pos}
+\item 
+\hyperlink{classpoint_1_1_p_aroundcurve_ade9f5e6f5419e6aea11c020385a38f6a}{point\+\_\+type}
+\item 
+\hyperlink{classpoint_1_1_p_aroundcurve_a9b5f99d653825fb5395078f3595c03cc}{radius}
+\item 
+\hyperlink{classpoint_1_1_p_aroundcurve_a35548cdf3426f241a2f4dca3c4c07cf4}{direction}
+\item 
+\hyperlink{classpoint_1_1_p_aroundcurve_a1a8bd2e8bba44444912fb13e79f53c1a}{transform}
+\item 
+\hyperlink{classpoint_1_1_p_aroundcurve_a57f68703c7c964bb2b92dae3002fe7f5}{cp1}
+\item 
+\hyperlink{classpoint_1_1_p_aroundcurve_a8eb53f5eb3d2dda9c52f70c658a215b9}{ob\+Type}
+\item 
+\hyperlink{classpoint_1_1_p_aroundcurve_a3241c3671e0fa3d11b165e8ca2801997}{reverse}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+tuple \hyperlink{classpoint_1_1_p_aroundcurve_a0f9730c4deffcd70cb9f6af6762f09d8}{astart} = self.\+pos+(\hyperlink{classpoint_1_1_point_ac0517f0911e12c1e030776c42b0ae609}{lastpoint}-\/self.\+pos)
+\item 
+tuple \hyperlink{classpoint_1_1_p_aroundcurve_aae06cb74d805aa35dbd4e47505168e2b}{aend} = self.\+pos+(\hyperlink{classpoint_1_1_point_a67c83c243db06689a5b8bb77652f83f1}{nextpoint}-\/self.\+pos)
+\item 
+tuple \hyperlink{classpoint_1_1_p_aroundcurve_af76b1c28fe995c4cdc83bfd822d6480f}{d} = self.\+other\+Dir(self.\+direction)
+\item 
+\hyperlink{classpoint_1_1_p_aroundcurve_ad271346d88ab501f065b6172f3de629d}{d} = self.\+direction
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classpoint_1_1_p_aroundcurve_abf8a513ce57f9b1477a64cb68f29a229}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+P\+Aroundcurve.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{pos, }
+\item[{}]{centre = {\ttfamily False}, }
+\item[{}]{radius = {\ttfamily 0}, }
+\item[{}]{direction = {\ttfamily False}, }
+\item[{}]{transform = {\ttfamily False}}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_p_aroundcurve_abf8a513ce57f9b1477a64cb68f29a229}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classpoint_1_1_p_aroundcurve_ad2db9dc27bd5b55354382b2cf9863303}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!end@{end}}
+\index{end@{end}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{end}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+P\+Aroundcurve.\+end (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_p_aroundcurve_ad2db9dc27bd5b55354382b2cf9863303}
+\hypertarget{classpoint_1_1_p_aroundcurve_a63c9705a5fbdbde72b5bde450324178d}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!make\+Segment@{make\+Segment}}
+\index{make\+Segment@{make\+Segment}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{make\+Segment}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+P\+Aroundcurve.\+make\+Segment (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{config}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_p_aroundcurve_a63c9705a5fbdbde72b5bde450324178d}
+\hypertarget{classpoint_1_1_p_aroundcurve_aa62a97561ec9a6a39360db3bc4afb9b5}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!offset@{offset}}
+\index{offset@{offset}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{offset}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+P\+Aroundcurve.\+offset (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{side, }
+\item[{}]{distance, }
+\item[{}]{direction}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_p_aroundcurve_aa62a97561ec9a6a39360db3bc4afb9b5}
+\hypertarget{classpoint_1_1_p_aroundcurve_a73d952075b6e0a82897d597e5a5235e2}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!origin@{origin}}
+\index{origin@{origin}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{origin}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+P\+Aroundcurve.\+origin (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{forward = {\ttfamily True}}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_p_aroundcurve_a73d952075b6e0a82897d597e5a5235e2}
+\hypertarget{classpoint_1_1_p_aroundcurve_ab3adc6be84047ee66a5cbbf4b6396b94}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!set\+Direction@{set\+Direction}}
+\index{set\+Direction@{set\+Direction}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{set\+Direction}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+P\+Aroundcurve.\+set\+Direction (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_p_aroundcurve_ab3adc6be84047ee66a5cbbf4b6396b94}
+\hypertarget{classpoint_1_1_p_aroundcurve_a9f9818c6d18639d55b79af5f1c0a46d6}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!start@{start}}
+\index{start@{start}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{start}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+P\+Aroundcurve.\+start (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_p_aroundcurve_a9f9818c6d18639d55b79af5f1c0a46d6}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classpoint_1_1_p_aroundcurve_aae06cb74d805aa35dbd4e47505168e2b}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!aend@{aend}}
+\index{aend@{aend}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{aend}]{\setlength{\rightskip}{0pt plus 5cm}tuple point.\+P\+Aroundcurve.\+aend = self.\+pos+({\bf nextpoint}-\/self.\+pos)\hspace{0.3cm}{\ttfamily [static]}}\label{classpoint_1_1_p_aroundcurve_aae06cb74d805aa35dbd4e47505168e2b}
+\hypertarget{classpoint_1_1_p_aroundcurve_a0f9730c4deffcd70cb9f6af6762f09d8}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!astart@{astart}}
+\index{astart@{astart}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{astart}]{\setlength{\rightskip}{0pt plus 5cm}tuple point.\+P\+Aroundcurve.\+astart = self.\+pos+({\bf lastpoint}-\/self.\+pos)\hspace{0.3cm}{\ttfamily [static]}}\label{classpoint_1_1_p_aroundcurve_a0f9730c4deffcd70cb9f6af6762f09d8}
+\hypertarget{classpoint_1_1_p_aroundcurve_a57f68703c7c964bb2b92dae3002fe7f5}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!cp1@{cp1}}
+\index{cp1@{cp1}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{cp1}]{\setlength{\rightskip}{0pt plus 5cm}point.\+P\+Aroundcurve.\+cp1}\label{classpoint_1_1_p_aroundcurve_a57f68703c7c964bb2b92dae3002fe7f5}
+\hypertarget{classpoint_1_1_p_aroundcurve_af76b1c28fe995c4cdc83bfd822d6480f}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!d@{d}}
+\index{d@{d}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{d}]{\setlength{\rightskip}{0pt plus 5cm}tuple point.\+P\+Aroundcurve.\+d = self.\+other\+Dir(self.\+direction)\hspace{0.3cm}{\ttfamily [static]}}\label{classpoint_1_1_p_aroundcurve_af76b1c28fe995c4cdc83bfd822d6480f}
+\hypertarget{classpoint_1_1_p_aroundcurve_ad271346d88ab501f065b6172f3de629d}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!d@{d}}
+\index{d@{d}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{d}]{\setlength{\rightskip}{0pt plus 5cm}point.\+P\+Aroundcurve.\+d = self.\+direction\hspace{0.3cm}{\ttfamily [static]}}\label{classpoint_1_1_p_aroundcurve_ad271346d88ab501f065b6172f3de629d}
+\hypertarget{classpoint_1_1_p_aroundcurve_a35548cdf3426f241a2f4dca3c4c07cf4}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!direction@{direction}}
+\index{direction@{direction}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{direction}]{\setlength{\rightskip}{0pt plus 5cm}point.\+P\+Aroundcurve.\+direction}\label{classpoint_1_1_p_aroundcurve_a35548cdf3426f241a2f4dca3c4c07cf4}
+\hypertarget{classpoint_1_1_p_aroundcurve_a8eb53f5eb3d2dda9c52f70c658a215b9}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!ob\+Type@{ob\+Type}}
+\index{ob\+Type@{ob\+Type}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{ob\+Type}]{\setlength{\rightskip}{0pt plus 5cm}point.\+P\+Aroundcurve.\+ob\+Type}\label{classpoint_1_1_p_aroundcurve_a8eb53f5eb3d2dda9c52f70c658a215b9}
+\hypertarget{classpoint_1_1_p_aroundcurve_ade9f5e6f5419e6aea11c020385a38f6a}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!point\+\_\+type@{point\+\_\+type}}
+\index{point\+\_\+type@{point\+\_\+type}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{point\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}point.\+P\+Aroundcurve.\+point\+\_\+type}\label{classpoint_1_1_p_aroundcurve_ade9f5e6f5419e6aea11c020385a38f6a}
+\hypertarget{classpoint_1_1_p_aroundcurve_aa991f6099845e2e54363ca607ec0f58e}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!pos@{pos}}
+\index{pos@{pos}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{pos}]{\setlength{\rightskip}{0pt plus 5cm}point.\+P\+Aroundcurve.\+pos}\label{classpoint_1_1_p_aroundcurve_aa991f6099845e2e54363ca607ec0f58e}
+\hypertarget{classpoint_1_1_p_aroundcurve_a9b5f99d653825fb5395078f3595c03cc}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!radius@{radius}}
+\index{radius@{radius}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{radius}]{\setlength{\rightskip}{0pt plus 5cm}point.\+P\+Aroundcurve.\+radius}\label{classpoint_1_1_p_aroundcurve_a9b5f99d653825fb5395078f3595c03cc}
+\hypertarget{classpoint_1_1_p_aroundcurve_a3241c3671e0fa3d11b165e8ca2801997}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!reverse@{reverse}}
+\index{reverse@{reverse}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{reverse}]{\setlength{\rightskip}{0pt plus 5cm}point.\+P\+Aroundcurve.\+reverse}\label{classpoint_1_1_p_aroundcurve_a3241c3671e0fa3d11b165e8ca2801997}
+\hypertarget{classpoint_1_1_p_aroundcurve_a1a8bd2e8bba44444912fb13e79f53c1a}{}\index{point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}!transform@{transform}}
+\index{transform@{transform}!point\+::\+P\+Aroundcurve@{point\+::\+P\+Aroundcurve}}
+\subsubsection[{transform}]{\setlength{\rightskip}{0pt plus 5cm}point.\+P\+Aroundcurve.\+transform}\label{classpoint_1_1_p_aroundcurve_a1a8bd2e8bba44444912fb13e79f53c1a}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{point_8py}{point.\+py}\end{DoxyCompactItemize}

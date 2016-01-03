@@ -1,0 +1,236 @@
+\hypertarget{namespacebezier}{}\section{bezier Namespace Reference}
+\label{namespacebezier}\index{bezier@{bezier}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classbezier_1_1_bezier_curve}{Bezier\+Curve}
+\item 
+class \hyperlink{classbezier_1_1_curve_pair}{Curve\+Pair}
+\item 
+class \hyperlink{classbezier_1_1_no_ratio_exists_exception}{No\+Ratio\+Exists\+Exception}
+\item 
+class \hyperlink{classbezier_1_1_null_bezier_curve}{Null\+Bezier\+Curve}
+\item 
+class \hyperlink{classbezier_1_1_point}{Point}
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespacebezier_a9df8c553fbf62057af742910a55bda90}{closed} = true;
+\item 
+tuple \hyperlink{namespacebezier_ad3e176f900e0e892b1621ab09241ca08}{last\+Start} = segments.\+size()
+\item 
+tuple \hyperlink{namespacebezier_acdfb18e445ac8e833eda8fb411fe7373}{c} = segments.\+get(\hyperlink{namespacebezier_a928e2d96e49d7898d0f47903caf0f866}{i})
+\item 
+\hyperlink{namespacebezier_af5dc7bac630ffee9827391cfaac1e06b}{segments} = new\+Segments;
+\item 
+tuple \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t} = c.\+over(mx, my)
+\item 
+list \hyperlink{namespacebezier_adfc12e63653920e367a9c81631c20a52}{p} = c.\+points\mbox{[}\hyperlink{namespacebezier_a928e2d96e49d7898d0f47903caf0f866}{i}\mbox{]}
+\item 
+\hyperlink{namespacebezier_a928e2d96e49d7898d0f47903caf0f866}{i} = idx\%point\+Count;
+\item 
+\hyperlink{namespacebezier_a119a2ba91f8e406351b32bb87ab3f461}{dy} = \hyperlink{namespacebezier_ac63543ece85dc0cb795314fa0ad3f11c}{ny}-\/p.\+y;
+\item 
+tuple \hyperlink{namespacebezier_a7a011a9ac17e30960f8474441f256e6c}{m} = get\+Point(\hyperlink{namespacebezier_a6af7fcd36e64d55245071a38cffbae33}{n}, 1)
+\item 
+tuple \hyperlink{namespacebezier_afea563cafd3cc59f5602af082de31682}{current} = segments.\+get(\hyperlink{namespacebezier_ae4beec9a717adf1c578294a19edbca65}{segment})
+\item 
+tuple \hyperlink{namespacebezier_a73a62826780aabf596dcf302d422c619}{reflected} = m.\+reflect(master.\+points\mbox{[}1\mbox{]})
+\item 
+\hyperlink{namespacebezier_a9c15e0bd907e89888a94c1abad682558}{dx} = reflected.\+x-\/m.\+x;
+\item 
+tuple \hyperlink{namespacebezier_a071d613d4d6e142ebebd01d0201eb7e8}{phi1} = atan2(\hyperlink{namespacebezier_a119a2ba91f8e406351b32bb87ab3f461}{dy}, \hyperlink{namespacebezier_a9c15e0bd907e89888a94c1abad682558}{dx})
+\item 
+tuple \hyperlink{namespacebezier_ac56c7cbbcdf67f6322e12351b2187cb1}{phi2} = atan2(\hyperlink{namespacebezier_a119a2ba91f8e406351b32bb87ab3f461}{dy}, \hyperlink{namespacebezier_a9c15e0bd907e89888a94c1abad682558}{dx})
+\item 
+tuple \hyperlink{namespacebezier_ae4beec9a717adf1c578294a19edbca65}{segment} = segments.\+get(\hyperlink{namespacebezier_a928e2d96e49d7898d0f47903caf0f866}{i})
+\item 
+tuple \hyperlink{namespacebezier_a58fa425c725113cb9f5504c6c3603dec}{current\+Intersections} = comp.\+find\+Intersections(\hyperlink{namespacebezier_acdfb18e445ac8e833eda8fb411fe7373}{c}, \hyperlink{namespacebezier_ae4beec9a717adf1c578294a19edbca65}{segment})
+\item 
+tuple \hyperlink{namespacebezier_a508894c735abb837df1774cee031b231}{c2} = segments.\+get(pos2)
+\item 
+int \hyperlink{namespacebezier_aabfbe79208c73c8e1d3c9b14c0d2a5b8}{t1} = t1\%1
+\item 
+int \hyperlink{namespacebezier_a73e5c5dcb6bf619524a72f09d6bcd15b}{t2} = t2\%1
+\item 
+int \hyperlink{namespacebezier_a7bc830cadb0e4876722b68296da442d0}{tn} = 2
+\item 
+int \hyperlink{namespacebezier_a8f2a3ea08791f163da137639e5cac244}{mtn} = 2
+\item 
+\hyperlink{namespacebezier_a6af7fcd36e64d55245071a38cffbae33}{n} = \hyperlink{namespacebezier_a7bc830cadb0e4876722b68296da442d0}{tn}-\/\hyperlink{namespacebezier_a8f2a3ea08791f163da137639e5cac244}{mtn};
+\item 
+int \hyperlink{namespacebezier_a6d52742576263b89b839a5e3cbc68ef1}{d} = \hyperlink{namespacebezier_a6af7fcd36e64d55245071a38cffbae33}{n}+1
+\item 
+\hyperlink{namespacebezier_a83cd11a8fa14a0feb1b8bf9beb29f92d}{points} = curve.\+points;
+\item 
+list \hyperlink{namespacebezier_a1842cea8a4b02363c663c007716e5837}{rx} = \hyperlink{namespacebezier_a503cbe2696a09601b3361ae9cff46771}{values}\mbox{[}\hyperlink{namespacebezier_a928e2d96e49d7898d0f47903caf0f866}{i}\mbox{]}
+\item 
+\hyperlink{namespacebezier_a503cbe2696a09601b3361ae9cff46771}{values} = \+\_\+v;
+\item 
+tuple \hyperlink{namespacebezier_a64145e7ef3e125162f1139dd32325fa1}{root} = round(find\+Roots(derivative, \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t}, \hyperlink{namespacebezier_a503cbe2696a09601b3361ae9cff46771}{values})/N\+R\+R\+F\+\_\+\+P\+R\+E\+C\+I\+S\+I\+O\+N)
+\item 
+tuple \hyperlink{namespacebezier_a25e79f92e794bbc94fad7d80d53bd07c}{df} = get\+Derivative(derivative+1, \hyperlink{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{t}, \hyperlink{namespacebezier_a503cbe2696a09601b3361ae9cff46771}{values})
+\item 
+list \hyperlink{namespacebezier_aac0d87ae23a8bc4edfe0cc52fef63788}{x2} = pts\mbox{[}1\mbox{]}
+\item 
+list \hyperlink{namespacebezier_a7ca12664d6cb3f7f50eab616886b7b0d}{x3} = pts\mbox{[}2\mbox{]}
+\item 
+list \hyperlink{namespacebezier_a4af26cae8b8f71d0f4ae9db67690ccda}{x4} = pts\mbox{[}3\mbox{]}
+\item 
+tuple \hyperlink{namespacebezier_a5c7571dbff24fb6f29715b41642f9c19}{nx} = (x1$\ast$y2-\/y1$\ast$\hyperlink{namespacebezier_aac0d87ae23a8bc4edfe0cc52fef63788}{x2})
+\item 
+tuple \hyperlink{namespacebezier_ac63543ece85dc0cb795314fa0ad3f11c}{ny} = (x1$\ast$y2-\/y1$\ast$\hyperlink{namespacebezier_aac0d87ae23a8bc4edfe0cc52fef63788}{x2})
+\item 
+\hyperlink{namespacebezier_a2863af6e4685d9fce5c5669231ec503e}{dy1} = p2.\+y-\/p1.\+y,
+\item 
+\hyperlink{namespacebezier_ac0aa3f491a487ced7f96fa3288ad805b}{dx2} = p4.\+x-\/p3.\+x,
+\item 
+\hyperlink{namespacebezier_af0ca6962c8c3be669e5b74235ab11d9e}{dy2} = p4.\+y-\/p3.\+y;
+\item 
+tuple \hyperlink{namespacebezier_aaf2772c5a20e34fa95649b49addf2e96}{l2} = sqrt(\hyperlink{namespacebezier_ac0aa3f491a487ced7f96fa3288ad805b}{dx2}$\ast$\hyperlink{namespacebezier_ac0aa3f491a487ced7f96fa3288ad805b}{dx2} + \hyperlink{namespacebezier_af0ca6962c8c3be669e5b74235ab11d9e}{dy2}$\ast$\hyperlink{namespacebezier_af0ca6962c8c3be669e5b74235ab11d9e}{dy2})
+\item 
+\hyperlink{namespacebezier_a78534ab25df67271c40d717cb26aac0b}{nx1} = dx1$\ast$ca-\/\hyperlink{namespacebezier_a2863af6e4685d9fce5c5669231ec503e}{dy1}$\ast$sa,
+\item 
+\hyperlink{namespacebezier_a57b85f411b9bce81bb7155997ea1808c}{ny1} = dx1$\ast$sa+\hyperlink{namespacebezier_a2863af6e4685d9fce5c5669231ec503e}{dy1}$\ast$ca;
+\item 
+tuple \hyperlink{namespacebezier_acea3a71abf7405dfb057e2cf0a3f10b3}{pbc} = p.\+split(\hyperlink{namespacebezier_aabfbe79208c73c8e1d3c9b14c0d2a5b8}{t1},\hyperlink{namespacebezier_a73e5c5dcb6bf619524a72f09d6bcd15b}{t2})
+\item 
+tuple \hyperlink{namespacebezier_ab351668ea604cb148440efa1ea7db562}{e} = pbc.\+get\+Last()
+\item 
+tuple \hyperlink{namespacebezier_a01a1f8683e5f9f801018e651c0de1abc}{cross} = p2.\+contains(\hyperlink{namespacebezier_acea3a71abf7405dfb057e2cf0a3f10b3}{pbc}, get\+Reference(\hyperlink{namespacebezier_acea3a71abf7405dfb057e2cf0a3f10b3}{pbc}))
+\item 
+int \hyperlink{namespacebezier_ad649969fef81af63abc92b1015251242}{f} = 0
+\end{DoxyCompactItemize}
+
+
+\subsection{Variable Documentation}
+\hypertarget{namespacebezier_acdfb18e445ac8e833eda8fb411fe7373}{}\index{bezier@{bezier}!c@{c}}
+\index{c@{c}!bezier@{bezier}}
+\subsubsection[{c}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+c = segments.\+get({\bf i})}\label{namespacebezier_acdfb18e445ac8e833eda8fb411fe7373}
+\hypertarget{namespacebezier_a508894c735abb837df1774cee031b231}{}\index{bezier@{bezier}!c2@{c2}}
+\index{c2@{c2}!bezier@{bezier}}
+\subsubsection[{c2}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+c2 = segments.\+get(pos2)}\label{namespacebezier_a508894c735abb837df1774cee031b231}
+\hypertarget{namespacebezier_a9df8c553fbf62057af742910a55bda90}{}\index{bezier@{bezier}!closed@{closed}}
+\index{closed@{closed}!bezier@{bezier}}
+\subsubsection[{closed}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+closed = true;}\label{namespacebezier_a9df8c553fbf62057af742910a55bda90}
+\hypertarget{namespacebezier_a01a1f8683e5f9f801018e651c0de1abc}{}\index{bezier@{bezier}!cross@{cross}}
+\index{cross@{cross}!bezier@{bezier}}
+\subsubsection[{cross}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+cross = p2.\+contains({\bf pbc}, get\+Reference({\bf pbc}))}\label{namespacebezier_a01a1f8683e5f9f801018e651c0de1abc}
+\hypertarget{namespacebezier_afea563cafd3cc59f5602af082de31682}{}\index{bezier@{bezier}!current@{current}}
+\index{current@{current}!bezier@{bezier}}
+\subsubsection[{current}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+current = segments.\+get({\bf segment})}\label{namespacebezier_afea563cafd3cc59f5602af082de31682}
+\hypertarget{namespacebezier_a58fa425c725113cb9f5504c6c3603dec}{}\index{bezier@{bezier}!current\+Intersections@{current\+Intersections}}
+\index{current\+Intersections@{current\+Intersections}!bezier@{bezier}}
+\subsubsection[{current\+Intersections}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+current\+Intersections = comp.\+find\+Intersections({\bf c}, {\bf segment})}\label{namespacebezier_a58fa425c725113cb9f5504c6c3603dec}
+\hypertarget{namespacebezier_a6d52742576263b89b839a5e3cbc68ef1}{}\index{bezier@{bezier}!d@{d}}
+\index{d@{d}!bezier@{bezier}}
+\subsubsection[{d}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+d = {\bf n}+1}\label{namespacebezier_a6d52742576263b89b839a5e3cbc68ef1}
+\hypertarget{namespacebezier_a25e79f92e794bbc94fad7d80d53bd07c}{}\index{bezier@{bezier}!df@{df}}
+\index{df@{df}!bezier@{bezier}}
+\subsubsection[{df}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+df = get\+Derivative(derivative+1, {\bf t}, {\bf values})}\label{namespacebezier_a25e79f92e794bbc94fad7d80d53bd07c}
+\hypertarget{namespacebezier_a9c15e0bd907e89888a94c1abad682558}{}\index{bezier@{bezier}!dx@{dx}}
+\index{dx@{dx}!bezier@{bezier}}
+\subsubsection[{dx}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+dx = reflected.\+x-\/m.\+x;}\label{namespacebezier_a9c15e0bd907e89888a94c1abad682558}
+\hypertarget{namespacebezier_ac0aa3f491a487ced7f96fa3288ad805b}{}\index{bezier@{bezier}!dx2@{dx2}}
+\index{dx2@{dx2}!bezier@{bezier}}
+\subsubsection[{dx2}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+dx2 = p4.\+x-\/p3.\+x,}\label{namespacebezier_ac0aa3f491a487ced7f96fa3288ad805b}
+\hypertarget{namespacebezier_a119a2ba91f8e406351b32bb87ab3f461}{}\index{bezier@{bezier}!dy@{dy}}
+\index{dy@{dy}!bezier@{bezier}}
+\subsubsection[{dy}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+dy = {\bf ny}-\/p.\+y;}\label{namespacebezier_a119a2ba91f8e406351b32bb87ab3f461}
+\hypertarget{namespacebezier_a2863af6e4685d9fce5c5669231ec503e}{}\index{bezier@{bezier}!dy1@{dy1}}
+\index{dy1@{dy1}!bezier@{bezier}}
+\subsubsection[{dy1}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+dy1 = p2.\+y-\/p1.\+y,}\label{namespacebezier_a2863af6e4685d9fce5c5669231ec503e}
+\hypertarget{namespacebezier_af0ca6962c8c3be669e5b74235ab11d9e}{}\index{bezier@{bezier}!dy2@{dy2}}
+\index{dy2@{dy2}!bezier@{bezier}}
+\subsubsection[{dy2}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+dy2 = p4.\+y-\/p3.\+y;}\label{namespacebezier_af0ca6962c8c3be669e5b74235ab11d9e}
+\hypertarget{namespacebezier_ab351668ea604cb148440efa1ea7db562}{}\index{bezier@{bezier}!e@{e}}
+\index{e@{e}!bezier@{bezier}}
+\subsubsection[{e}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+e = pbc.\+get\+Last()}\label{namespacebezier_ab351668ea604cb148440efa1ea7db562}
+\hypertarget{namespacebezier_ad649969fef81af63abc92b1015251242}{}\index{bezier@{bezier}!f@{f}}
+\index{f@{f}!bezier@{bezier}}
+\subsubsection[{f}]{\setlength{\rightskip}{0pt plus 5cm}int bezier.\+f = 0}\label{namespacebezier_ad649969fef81af63abc92b1015251242}
+\hypertarget{namespacebezier_a928e2d96e49d7898d0f47903caf0f866}{}\index{bezier@{bezier}!i@{i}}
+\index{i@{i}!bezier@{bezier}}
+\subsubsection[{i}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+i = idx\%point\+Count;}\label{namespacebezier_a928e2d96e49d7898d0f47903caf0f866}
+\hypertarget{namespacebezier_aaf2772c5a20e34fa95649b49addf2e96}{}\index{bezier@{bezier}!l2@{l2}}
+\index{l2@{l2}!bezier@{bezier}}
+\subsubsection[{l2}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+l2 = sqrt({\bf dx2}$\ast${\bf dx2} + {\bf dy2}$\ast${\bf dy2})}\label{namespacebezier_aaf2772c5a20e34fa95649b49addf2e96}
+\hypertarget{namespacebezier_ad3e176f900e0e892b1621ab09241ca08}{}\index{bezier@{bezier}!last\+Start@{last\+Start}}
+\index{last\+Start@{last\+Start}!bezier@{bezier}}
+\subsubsection[{last\+Start}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+last\+Start = segments.\+size()}\label{namespacebezier_ad3e176f900e0e892b1621ab09241ca08}
+\hypertarget{namespacebezier_a7a011a9ac17e30960f8474441f256e6c}{}\index{bezier@{bezier}!m@{m}}
+\index{m@{m}!bezier@{bezier}}
+\subsubsection[{m}]{\setlength{\rightskip}{0pt plus 5cm}list bezier.\+m = get\+Point({\bf n}, 1)}\label{namespacebezier_a7a011a9ac17e30960f8474441f256e6c}
+\hypertarget{namespacebezier_a8f2a3ea08791f163da137639e5cac244}{}\index{bezier@{bezier}!mtn@{mtn}}
+\index{mtn@{mtn}!bezier@{bezier}}
+\subsubsection[{mtn}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+mtn = 2}\label{namespacebezier_a8f2a3ea08791f163da137639e5cac244}
+\hypertarget{namespacebezier_a6af7fcd36e64d55245071a38cffbae33}{}\index{bezier@{bezier}!n@{n}}
+\index{n@{n}!bezier@{bezier}}
+\subsubsection[{n}]{\setlength{\rightskip}{0pt plus 5cm}int bezier.\+n = {\bf tn}-\/{\bf mtn};}\label{namespacebezier_a6af7fcd36e64d55245071a38cffbae33}
+\hypertarget{namespacebezier_a5c7571dbff24fb6f29715b41642f9c19}{}\index{bezier@{bezier}!nx@{nx}}
+\index{nx@{nx}!bezier@{bezier}}
+\subsubsection[{nx}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+nx = (x1$\ast$y2-\/y1$\ast${\bf x2})}\label{namespacebezier_a5c7571dbff24fb6f29715b41642f9c19}
+\hypertarget{namespacebezier_a78534ab25df67271c40d717cb26aac0b}{}\index{bezier@{bezier}!nx1@{nx1}}
+\index{nx1@{nx1}!bezier@{bezier}}
+\subsubsection[{nx1}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+nx1 = dx1$\ast$ca-\/{\bf dy1}$\ast$sa,}\label{namespacebezier_a78534ab25df67271c40d717cb26aac0b}
+\hypertarget{namespacebezier_ac63543ece85dc0cb795314fa0ad3f11c}{}\index{bezier@{bezier}!ny@{ny}}
+\index{ny@{ny}!bezier@{bezier}}
+\subsubsection[{ny}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+ny = (x1$\ast$y2-\/y1$\ast${\bf x2})}\label{namespacebezier_ac63543ece85dc0cb795314fa0ad3f11c}
+\hypertarget{namespacebezier_a57b85f411b9bce81bb7155997ea1808c}{}\index{bezier@{bezier}!ny1@{ny1}}
+\index{ny1@{ny1}!bezier@{bezier}}
+\subsubsection[{ny1}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+ny1 = dx1$\ast$sa+{\bf dy1}$\ast$ca;}\label{namespacebezier_a57b85f411b9bce81bb7155997ea1808c}
+\hypertarget{namespacebezier_adfc12e63653920e367a9c81631c20a52}{}\index{bezier@{bezier}!p@{p}}
+\index{p@{p}!bezier@{bezier}}
+\subsubsection[{p}]{\setlength{\rightskip}{0pt plus 5cm}list bezier.\+p = c.\+points\mbox{[}{\bf i}\mbox{]}}\label{namespacebezier_adfc12e63653920e367a9c81631c20a52}
+\hypertarget{namespacebezier_acea3a71abf7405dfb057e2cf0a3f10b3}{}\index{bezier@{bezier}!pbc@{pbc}}
+\index{pbc@{pbc}!bezier@{bezier}}
+\subsubsection[{pbc}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+pbc = p.\+split({\bf t1},{\bf t2})}\label{namespacebezier_acea3a71abf7405dfb057e2cf0a3f10b3}
+\hypertarget{namespacebezier_a071d613d4d6e142ebebd01d0201eb7e8}{}\index{bezier@{bezier}!phi1@{phi1}}
+\index{phi1@{phi1}!bezier@{bezier}}
+\subsubsection[{phi1}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+phi1 = atan2({\bf dy}, {\bf dx})}\label{namespacebezier_a071d613d4d6e142ebebd01d0201eb7e8}
+\hypertarget{namespacebezier_ac56c7cbbcdf67f6322e12351b2187cb1}{}\index{bezier@{bezier}!phi2@{phi2}}
+\index{phi2@{phi2}!bezier@{bezier}}
+\subsubsection[{phi2}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+phi2 = atan2({\bf dy}, {\bf dx})}\label{namespacebezier_ac56c7cbbcdf67f6322e12351b2187cb1}
+\hypertarget{namespacebezier_a83cd11a8fa14a0feb1b8bf9beb29f92d}{}\index{bezier@{bezier}!points@{points}}
+\index{points@{points}!bezier@{bezier}}
+\subsubsection[{points}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+points = curve.\+points;}\label{namespacebezier_a83cd11a8fa14a0feb1b8bf9beb29f92d}
+\hypertarget{namespacebezier_a73a62826780aabf596dcf302d422c619}{}\index{bezier@{bezier}!reflected@{reflected}}
+\index{reflected@{reflected}!bezier@{bezier}}
+\subsubsection[{reflected}]{\setlength{\rightskip}{0pt plus 5cm}list bezier.\+reflected = m.\+reflect(master.\+points\mbox{[}1\mbox{]})}\label{namespacebezier_a73a62826780aabf596dcf302d422c619}
+\hypertarget{namespacebezier_a64145e7ef3e125162f1139dd32325fa1}{}\index{bezier@{bezier}!root@{root}}
+\index{root@{root}!bezier@{bezier}}
+\subsubsection[{root}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+root = round(find\+Roots(derivative, {\bf t}, {\bf values})/N\+R\+R\+F\+\_\+\+P\+R\+E\+C\+I\+S\+I\+O\+N)}\label{namespacebezier_a64145e7ef3e125162f1139dd32325fa1}
+\hypertarget{namespacebezier_a1842cea8a4b02363c663c007716e5837}{}\index{bezier@{bezier}!rx@{rx}}
+\index{rx@{rx}!bezier@{bezier}}
+\subsubsection[{rx}]{\setlength{\rightskip}{0pt plus 5cm}list bezier.\+rx = {\bf values}\mbox{[}{\bf i}\mbox{]}}\label{namespacebezier_a1842cea8a4b02363c663c007716e5837}
+\hypertarget{namespacebezier_ae4beec9a717adf1c578294a19edbca65}{}\index{bezier@{bezier}!segment@{segment}}
+\index{segment@{segment}!bezier@{bezier}}
+\subsubsection[{segment}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+segment = segments.\+get({\bf i})}\label{namespacebezier_ae4beec9a717adf1c578294a19edbca65}
+\hypertarget{namespacebezier_af5dc7bac630ffee9827391cfaac1e06b}{}\index{bezier@{bezier}!segments@{segments}}
+\index{segments@{segments}!bezier@{bezier}}
+\subsubsection[{segments}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+segments = new\+Segments;}\label{namespacebezier_af5dc7bac630ffee9827391cfaac1e06b}
+\hypertarget{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}{}\index{bezier@{bezier}!t@{t}}
+\index{t@{t}!bezier@{bezier}}
+\subsubsection[{t}]{\setlength{\rightskip}{0pt plus 5cm}int bezier.\+t = c.\+over(mx, my)}\label{namespacebezier_a21309dd6a23cee0f4b3888de7b66b7ff}
+\hypertarget{namespacebezier_aabfbe79208c73c8e1d3c9b14c0d2a5b8}{}\index{bezier@{bezier}!t1@{t1}}
+\index{t1@{t1}!bezier@{bezier}}
+\subsubsection[{t1}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+t1 = t1\%1}\label{namespacebezier_aabfbe79208c73c8e1d3c9b14c0d2a5b8}
+\hypertarget{namespacebezier_a73e5c5dcb6bf619524a72f09d6bcd15b}{}\index{bezier@{bezier}!t2@{t2}}
+\index{t2@{t2}!bezier@{bezier}}
+\subsubsection[{t2}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+t2 = t2\%1}\label{namespacebezier_a73e5c5dcb6bf619524a72f09d6bcd15b}
+\hypertarget{namespacebezier_a7bc830cadb0e4876722b68296da442d0}{}\index{bezier@{bezier}!tn@{tn}}
+\index{tn@{tn}!bezier@{bezier}}
+\subsubsection[{tn}]{\setlength{\rightskip}{0pt plus 5cm}tuple bezier.\+tn = 2}\label{namespacebezier_a7bc830cadb0e4876722b68296da442d0}
+\hypertarget{namespacebezier_a503cbe2696a09601b3361ae9cff46771}{}\index{bezier@{bezier}!values@{values}}
+\index{values@{values}!bezier@{bezier}}
+\subsubsection[{values}]{\setlength{\rightskip}{0pt plus 5cm}bezier.\+values = \+\_\+v;}\label{namespacebezier_a503cbe2696a09601b3361ae9cff46771}
+\hypertarget{namespacebezier_aac0d87ae23a8bc4edfe0cc52fef63788}{}\index{bezier@{bezier}!x2@{x2}}
+\index{x2@{x2}!bezier@{bezier}}
+\subsubsection[{x2}]{\setlength{\rightskip}{0pt plus 5cm}list bezier.\+x2 = pts\mbox{[}1\mbox{]}}\label{namespacebezier_aac0d87ae23a8bc4edfe0cc52fef63788}
+\hypertarget{namespacebezier_a7ca12664d6cb3f7f50eab616886b7b0d}{}\index{bezier@{bezier}!x3@{x3}}
+\index{x3@{x3}!bezier@{bezier}}
+\subsubsection[{x3}]{\setlength{\rightskip}{0pt plus 5cm}list bezier.\+x3 = pts\mbox{[}2\mbox{]}}\label{namespacebezier_a7ca12664d6cb3f7f50eab616886b7b0d}
+\hypertarget{namespacebezier_a4af26cae8b8f71d0f4ae9db67690ccda}{}\index{bezier@{bezier}!x4@{x4}}
+\index{x4@{x4}!bezier@{bezier}}
+\subsubsection[{x4}]{\setlength{\rightskip}{0pt plus 5cm}list bezier.\+x4 = pts\mbox{[}3\mbox{]}}\label{namespacebezier_a4af26cae8b8f71d0f4ae9db67690ccda}

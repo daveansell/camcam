@@ -1,0 +1,201 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classparts_1_1_screw_b_o_m" kind="class" language="Python" prot="public">
+    <compoundname>parts::ScrewBOM</compoundname>
+    <basecompoundref refid="classpath_1_1_b_o_m__part" prot="public" virt="non-virtual">path.BOM_part</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classparts_1_1_screw_b_o_m_1a6fdeb65838dbe1de849e62a88a9461a5" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>parts.ScrewBOM::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/parts.py" line="434" column="1" bodyfile="/home/db/camcam/parts.py" bodystart="434" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classparts_1_1_screw_b_o_m_1a28bae5532d3be075028dc5a687ac6fe5" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>parts.ScrewBOM::number</definition>
+        <argsstring></argsstring>
+        <name>number</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/parts.py" line="435" column="1" bodyfile="/home/db/camcam/parts.py" bodystart="435" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classparts_1_1_screw_b_o_m_1a2de725e42c9c4c5303e30128778ba565" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>parts.ScrewBOM::part_number</definition>
+        <argsstring></argsstring>
+        <name>part_number</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/parts.py" line="436" column="1" bodyfile="/home/db/camcam/parts.py" bodystart="436" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classparts_1_1_screw_b_o_m_1ae47b602b120b6a426dad48fc4b7ac6ab" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>parts.ScrewBOM::description</definition>
+        <argsstring></argsstring>
+        <name>description</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/parts.py" line="437" column="1" bodyfile="/home/db/camcam/parts.py" bodystart="437" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classparts_1_1_screw_b_o_m_1a495faf4fe06182e68eade0fa667cbc1e" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>parts.ScrewBOM::length</definition>
+        <argsstring></argsstring>
+        <name>length</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/parts.py" line="438" column="1" bodyfile="/home/db/camcam/parts.py" bodystart="438" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classparts_1_1_screw_b_o_m_1ae145cf54d25864023b5975c20a91cc95" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>parts.ScrewBOM::head</definition>
+        <argsstring></argsstring>
+        <name>head</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/parts.py" line="439" column="1" bodyfile="/home/db/camcam/parts.py" bodystart="439" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classparts_1_1_screw_b_o_m_1a7f6d2d536640d638b0391a6b9a1002c7" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>parts.ScrewBOM::thread</definition>
+        <argsstring></argsstring>
+        <name>thread</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/parts.py" line="440" column="1" bodyfile="/home/db/camcam/parts.py" bodystart="440" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classparts_1_1_screw_b_o_m_1a2a1afdbf3e5b87a15c94c7bfed7d4693" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def parts.ScrewBOM.__init__</definition>
+        <argsstring>(self, thread, head, length, number)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classparts_1_1_screw_b_o_m_1a7f6d2d536640d638b0391a6b9a1002c7" kindref="member">thread</ref></type>
+          <defname>thread</defname>
+        </param>
+        <param>
+          <type><ref refid="classparts_1_1_screw_b_o_m_1ae145cf54d25864023b5975c20a91cc95" kindref="member">head</ref></type>
+          <defname>head</defname>
+        </param>
+        <param>
+          <type><ref refid="classparts_1_1_screw_b_o_m_1a495faf4fe06182e68eade0fa667cbc1e" kindref="member">length</ref></type>
+          <defname>length</defname>
+        </param>
+        <param>
+          <type><ref refid="classparts_1_1_screw_b_o_m_1a28bae5532d3be075028dc5a687ac6fe5" kindref="member">number</ref></type>
+          <defname>number</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/parts.py" line="432" column="1" bodyfile="/home/db/camcam/parts.py" bodystart="432" bodyend="441"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1693">
+        <label>object</label>
+      </node>
+      <node id="1690">
+        <label>parts.ScrewBOM</label>
+        <link refid="classparts_1_1_screw_b_o_m"/>
+        <childnode refid="1691" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1691">
+        <label>path.BOM_part</label>
+        <link refid="classpath_1_1_b_o_m__part"/>
+        <childnode refid="1692" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1692">
+        <label>path.BOM</label>
+        <link refid="classpath_1_1_b_o_m"/>
+        <childnode refid="1693" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1697">
+        <label>object</label>
+      </node>
+      <node id="1694">
+        <label>parts.ScrewBOM</label>
+        <link refid="classparts_1_1_screw_b_o_m"/>
+        <childnode refid="1695" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1695">
+        <label>path.BOM_part</label>
+        <link refid="classpath_1_1_b_o_m__part"/>
+        <childnode refid="1696" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1696">
+        <label>path.BOM</label>
+        <link refid="classpath_1_1_b_o_m"/>
+        <childnode refid="1697" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/parts.py" line="431" column="1" bodyfile="/home/db/camcam/parts.py" bodystart="431" bodyend="442"/>
+    <listofallmembers>
+      <member refid="classparts_1_1_screw_b_o_m_1a2a1afdbf3e5b87a15c94c7bfed7d4693" prot="public" virt="non-virtual"><scope>parts::ScrewBOM</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_b_o_m__part_1aab817071644f243f19d9401daea278bf" prot="public" virt="non-virtual" ambiguityscope="path::BOM_part."><scope>parts::ScrewBOM</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_b_o_m_1ac3d7521a63ca62ccb1501290be173138" prot="public" virt="non-virtual" ambiguityscope="path::BOM."><scope>parts::ScrewBOM</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_b_o_m__part_1ae748371b208706bee9ddb0412a305ac3" prot="public" virt="non-virtual"><scope>parts::ScrewBOM</scope><name>__str__</name></member>
+      <member refid="classparts_1_1_screw_b_o_m_1ae47b602b120b6a426dad48fc4b7ac6ab" prot="public" virt="non-virtual"><scope>parts::ScrewBOM</scope><name>description</name></member>
+      <member refid="classparts_1_1_screw_b_o_m_1ae145cf54d25864023b5975c20a91cc95" prot="public" virt="non-virtual"><scope>parts::ScrewBOM</scope><name>head</name></member>
+      <member refid="classpath_1_1_b_o_m__part_1ad2528e7bad2f5188ea570949adda3c47" prot="public" virt="non-virtual"><scope>parts::ScrewBOM</scope><name>init</name></member>
+      <member refid="classparts_1_1_screw_b_o_m_1a495faf4fe06182e68eade0fa667cbc1e" prot="public" virt="non-virtual"><scope>parts::ScrewBOM</scope><name>length</name></member>
+      <member refid="classparts_1_1_screw_b_o_m_1a6fdeb65838dbe1de849e62a88a9461a5" prot="public" virt="non-virtual"><scope>parts::ScrewBOM</scope><name>name</name></member>
+      <member refid="classparts_1_1_screw_b_o_m_1a28bae5532d3be075028dc5a687ac6fe5" prot="public" virt="non-virtual"><scope>parts::ScrewBOM</scope><name>number</name></member>
+      <member refid="classpath_1_1_b_o_m__part_1a31d55f12a538e30fb1dc24ea12fe4307" prot="public" virt="non-virtual"><scope>parts::ScrewBOM</scope><name>obType</name></member>
+      <member refid="classparts_1_1_screw_b_o_m_1a2de725e42c9c4c5303e30128778ba565" prot="public" virt="non-virtual"><scope>parts::ScrewBOM</scope><name>part_number</name></member>
+      <member refid="classparts_1_1_screw_b_o_m_1a7f6d2d536640d638b0391a6b9a1002c7" prot="public" virt="non-virtual"><scope>parts::ScrewBOM</scope><name>thread</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

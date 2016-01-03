@@ -1,0 +1,179 @@
+\hypertarget{classpoint_1_1_point}{}\section{point.\+Point Class Reference}
+\label{classpoint_1_1_point}\index{point.\+Point@{point.\+Point}}
+
+
+Inherits object.
+
+
+
+Inherited by \hyperlink{classpoint_1_1_p_arc}{point.\+P\+Arc}, \hyperlink{classpoint_1_1_p_bezier_control}{point.\+P\+Bezier\+Control}, \hyperlink{classpoint_1_1_p_chamfer}{point.\+P\+Chamfer}, \hyperlink{classpoint_1_1_p_circle}{point.\+P\+Circle}, \hyperlink{classpoint_1_1_p_double_clear}{point.\+P\+Double\+Clear}, \hyperlink{classpoint_1_1_p_outcurve}{point.\+P\+Outcurve}, and \hyperlink{classpoint_1_1_p_sharp}{point.\+P\+Sharp}.
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classpoint_1_1_point_a4f2882f4c1d41b8ed0dcc040a56df10e}{\+\_\+\+\_\+init\+\_\+\+\_\+}
+\item 
+def \hyperlink{classpoint_1_1_point_aa4853372115d4266bed361f742de339e}{init} (self)
+\item 
+def \hyperlink{classpoint_1_1_point_aff32fe36a2cb7daed2d6b836e0a104c0}{compile} (self)
+\item 
+def \hyperlink{classpoint_1_1_point_a476d116396ab916e084cfa5951e270d6}{next} (self)
+\item 
+def \hyperlink{classpoint_1_1_point_a85952d3d8caf273ab39cf871157d0c2f}{last} (self)
+\item 
+def \hyperlink{classpoint_1_1_point_a3beb8e8b3f86d4a72b1e8216b274740a}{generate\+Segment} (self, \hyperlink{classpoint_1_1_point_a999ffad9951028b7456cea0afb407e48}{reverse}, config)
+\item 
+def \hyperlink{classpoint_1_1_point_a11f285bd3b03aa083a25ec1861e3fa16}{setangle} (self)
+\item 
+def \hyperlink{classpoint_1_1_point_a4a3ad4c500effc3b0a67868957108fb0}{corner\+\_\+side} (self, side)
+\item 
+def \hyperlink{classpoint_1_1_point_a77d736f755797d41a2fd87f92b17e015}{offset\+\_\+move\+\_\+point} (self, frompos, topos, side, distance)
+\item 
+def \hyperlink{classpoint_1_1_point_a27c3c9e7cafb48996d77e65cfe04df05}{lastorigin} (self)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classpoint_1_1_point_a67c83c243db06689a5b8bb77652f83f1}{nextpoint}
+\item 
+\hyperlink{classpoint_1_1_point_ac0517f0911e12c1e030776c42b0ae609}{lastpoint}
+\item 
+\hyperlink{classpoint_1_1_point_a41b431a9eb8ae508259e307d9c918a51}{cp1}
+\item 
+\hyperlink{classpoint_1_1_point_aef9edf3d753bb009bb0544718c790746}{cp2}
+\item 
+\hyperlink{classpoint_1_1_point_a7bb007c1c033b4b1410aa8a0443e8098}{radius}
+\item 
+\hyperlink{classpoint_1_1_point_a999ffad9951028b7456cea0afb407e48}{reverse}
+\item 
+\hyperlink{classpoint_1_1_point_aac7b02546ab8cd6e3131bedcce1c2025}{dot}
+\item 
+\hyperlink{classpoint_1_1_point_ad3a54a3dde6c2f12289d30edcbc56f9c}{angle}
+\item 
+\hyperlink{classpoint_1_1_point_afca575ab84d131ba560214332b039cdc}{angle0}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classpoint_1_1_point_a4f2882f4c1d41b8ed0dcc040a56df10e}{}\index{point\+::\+Point@{point\+::\+Point}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+Point.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{pos, }
+\item[{}]{point\+\_\+type, }
+\item[{}]{radius = {\ttfamily 0}, }
+\item[{}]{cp1 = {\ttfamily False}, }
+\item[{}]{cp2 = {\ttfamily False}, }
+\item[{}]{direction = {\ttfamily False}, }
+\item[{}]{transform = {\ttfamily False}}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_point_a4f2882f4c1d41b8ed0dcc040a56df10e}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classpoint_1_1_point_aff32fe36a2cb7daed2d6b836e0a104c0}{}\index{point\+::\+Point@{point\+::\+Point}!compile@{compile}}
+\index{compile@{compile}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{compile}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+Point.\+compile (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_point_aff32fe36a2cb7daed2d6b836e0a104c0}
+\hypertarget{classpoint_1_1_point_a4a3ad4c500effc3b0a67868957108fb0}{}\index{point\+::\+Point@{point\+::\+Point}!corner\+\_\+side@{corner\+\_\+side}}
+\index{corner\+\_\+side@{corner\+\_\+side}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{corner\+\_\+side}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+Point.\+corner\+\_\+side (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{side}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_point_a4a3ad4c500effc3b0a67868957108fb0}
+\hypertarget{classpoint_1_1_point_a3beb8e8b3f86d4a72b1e8216b274740a}{}\index{point\+::\+Point@{point\+::\+Point}!generate\+Segment@{generate\+Segment}}
+\index{generate\+Segment@{generate\+Segment}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{generate\+Segment}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+Point.\+generate\+Segment (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{reverse, }
+\item[{}]{config}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_point_a3beb8e8b3f86d4a72b1e8216b274740a}
+\hypertarget{classpoint_1_1_point_aa4853372115d4266bed361f742de339e}{}\index{point\+::\+Point@{point\+::\+Point}!init@{init}}
+\index{init@{init}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{init}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+Point.\+init (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_point_aa4853372115d4266bed361f742de339e}
+\hypertarget{classpoint_1_1_point_a85952d3d8caf273ab39cf871157d0c2f}{}\index{point\+::\+Point@{point\+::\+Point}!last@{last}}
+\index{last@{last}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{last}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+Point.\+last (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_point_a85952d3d8caf273ab39cf871157d0c2f}
+\hypertarget{classpoint_1_1_point_a27c3c9e7cafb48996d77e65cfe04df05}{}\index{point\+::\+Point@{point\+::\+Point}!lastorigin@{lastorigin}}
+\index{lastorigin@{lastorigin}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{lastorigin}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+Point.\+lastorigin (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_point_a27c3c9e7cafb48996d77e65cfe04df05}
+\hypertarget{classpoint_1_1_point_a476d116396ab916e084cfa5951e270d6}{}\index{point\+::\+Point@{point\+::\+Point}!next@{next}}
+\index{next@{next}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{next}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+Point.\+next (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_point_a476d116396ab916e084cfa5951e270d6}
+\hypertarget{classpoint_1_1_point_a77d736f755797d41a2fd87f92b17e015}{}\index{point\+::\+Point@{point\+::\+Point}!offset\+\_\+move\+\_\+point@{offset\+\_\+move\+\_\+point}}
+\index{offset\+\_\+move\+\_\+point@{offset\+\_\+move\+\_\+point}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{offset\+\_\+move\+\_\+point}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+Point.\+offset\+\_\+move\+\_\+point (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{frompos, }
+\item[{}]{topos, }
+\item[{}]{side, }
+\item[{}]{distance}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_point_a77d736f755797d41a2fd87f92b17e015}
+\hypertarget{classpoint_1_1_point_a11f285bd3b03aa083a25ec1861e3fa16}{}\index{point\+::\+Point@{point\+::\+Point}!setangle@{setangle}}
+\index{setangle@{setangle}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{setangle}]{\setlength{\rightskip}{0pt plus 5cm}def point.\+Point.\+setangle (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classpoint_1_1_point_a11f285bd3b03aa083a25ec1861e3fa16}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classpoint_1_1_point_ad3a54a3dde6c2f12289d30edcbc56f9c}{}\index{point\+::\+Point@{point\+::\+Point}!angle@{angle}}
+\index{angle@{angle}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{angle}]{\setlength{\rightskip}{0pt plus 5cm}point.\+Point.\+angle}\label{classpoint_1_1_point_ad3a54a3dde6c2f12289d30edcbc56f9c}
+\hypertarget{classpoint_1_1_point_afca575ab84d131ba560214332b039cdc}{}\index{point\+::\+Point@{point\+::\+Point}!angle0@{angle0}}
+\index{angle0@{angle0}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{angle0}]{\setlength{\rightskip}{0pt plus 5cm}point.\+Point.\+angle0}\label{classpoint_1_1_point_afca575ab84d131ba560214332b039cdc}
+\hypertarget{classpoint_1_1_point_a41b431a9eb8ae508259e307d9c918a51}{}\index{point\+::\+Point@{point\+::\+Point}!cp1@{cp1}}
+\index{cp1@{cp1}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{cp1}]{\setlength{\rightskip}{0pt plus 5cm}point.\+Point.\+cp1}\label{classpoint_1_1_point_a41b431a9eb8ae508259e307d9c918a51}
+\hypertarget{classpoint_1_1_point_aef9edf3d753bb009bb0544718c790746}{}\index{point\+::\+Point@{point\+::\+Point}!cp2@{cp2}}
+\index{cp2@{cp2}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{cp2}]{\setlength{\rightskip}{0pt plus 5cm}point.\+Point.\+cp2}\label{classpoint_1_1_point_aef9edf3d753bb009bb0544718c790746}
+\hypertarget{classpoint_1_1_point_aac7b02546ab8cd6e3131bedcce1c2025}{}\index{point\+::\+Point@{point\+::\+Point}!dot@{dot}}
+\index{dot@{dot}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{dot}]{\setlength{\rightskip}{0pt plus 5cm}point.\+Point.\+dot}\label{classpoint_1_1_point_aac7b02546ab8cd6e3131bedcce1c2025}
+\hypertarget{classpoint_1_1_point_ac0517f0911e12c1e030776c42b0ae609}{}\index{point\+::\+Point@{point\+::\+Point}!lastpoint@{lastpoint}}
+\index{lastpoint@{lastpoint}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{lastpoint}]{\setlength{\rightskip}{0pt plus 5cm}point.\+Point.\+lastpoint}\label{classpoint_1_1_point_ac0517f0911e12c1e030776c42b0ae609}
+\hypertarget{classpoint_1_1_point_a67c83c243db06689a5b8bb77652f83f1}{}\index{point\+::\+Point@{point\+::\+Point}!nextpoint@{nextpoint}}
+\index{nextpoint@{nextpoint}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{nextpoint}]{\setlength{\rightskip}{0pt plus 5cm}point.\+Point.\+nextpoint}\label{classpoint_1_1_point_a67c83c243db06689a5b8bb77652f83f1}
+\hypertarget{classpoint_1_1_point_a7bb007c1c033b4b1410aa8a0443e8098}{}\index{point\+::\+Point@{point\+::\+Point}!radius@{radius}}
+\index{radius@{radius}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{radius}]{\setlength{\rightskip}{0pt plus 5cm}point.\+Point.\+radius}\label{classpoint_1_1_point_a7bb007c1c033b4b1410aa8a0443e8098}
+\hypertarget{classpoint_1_1_point_a999ffad9951028b7456cea0afb407e48}{}\index{point\+::\+Point@{point\+::\+Point}!reverse@{reverse}}
+\index{reverse@{reverse}!point\+::\+Point@{point\+::\+Point}}
+\subsubsection[{reverse}]{\setlength{\rightskip}{0pt plus 5cm}point.\+Point.\+reverse}\label{classpoint_1_1_point_a999ffad9951028b7456cea0afb407e48}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{point_8py}{point.\+py}\end{DoxyCompactItemize}

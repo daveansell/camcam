@@ -1,0 +1,265 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespacetest" kind="namespace" language="Python">
+    <compoundname>test</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacetest_1a1f1f1b6d0fb7ae6cb8e0d7a823825e8d" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int test.top_thickness</definition>
+        <argsstring></argsstring>
+        <name>top_thickness</name>
+        <initializer>= 12</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="3" column="1" bodyfile="/home/db/camcam/test.py" bodystart="3" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1a5e58b0c7b4760f790f0c6d5e162fda87" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int test.mid_thickness</definition>
+        <argsstring></argsstring>
+        <name>mid_thickness</name>
+        <initializer>= 12</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="4" column="1" bodyfile="/home/db/camcam/test.py" bodystart="4" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1a10f54c7f8dd77a534e788bf487ff2b1a" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int test.bottom_thickness</definition>
+        <argsstring></argsstring>
+        <name>bottom_thickness</name>
+        <initializer>= 4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="5" column="1" bodyfile="/home/db/camcam/test.py" bodystart="5" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1aee352ece5b82d2a5c33a4ddc45c5c990" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int test.perspex_thickness</definition>
+        <argsstring></argsstring>
+        <name>perspex_thickness</name>
+        <initializer>= 3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="6" column="1" bodyfile="/home/db/camcam/test.py" bodystart="6" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1a62e0147a9d690a7a90d3beca23dcb944" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int test.perspex_z</definition>
+        <argsstring></argsstring>
+        <name>perspex_z</name>
+        <initializer>= -2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="7" column="1" bodyfile="/home/db/camcam/test.py" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1a0f7c1b1c2817d5785aa0407879366227" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int test.corner_rad</definition>
+        <argsstring></argsstring>
+        <name>corner_rad</name>
+        <initializer>= 10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="8" column="1" bodyfile="/home/db/camcam/test.py" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1a064937db856e36c5389241650eb91307" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int test.width</definition>
+        <argsstring></argsstring>
+        <name>width</name>
+        <initializer>= 110</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="10" column="1" bodyfile="/home/db/camcam/test.py" bodystart="10" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1a0981d504d028598d82644c006c420453" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int test.height</definition>
+        <argsstring></argsstring>
+        <name>height</name>
+        <initializer>= 110</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="11" column="1" bodyfile="/home/db/camcam/test.py" bodystart="11" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1a41fbb9ae9b5a863e7e882fc1ca2daa8a" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int test.lip</definition>
+        <argsstring></argsstring>
+        <name>lip</name>
+        <initializer>= 3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="12" column="1" bodyfile="/home/db/camcam/test.py" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1a08f26fee2fec02db82eb7b6dc5c1aaa5" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int test.magnet_offset</definition>
+        <argsstring></argsstring>
+        <name>magnet_offset</name>
+        <initializer>= 10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="14" column="1" bodyfile="/home/db/camcam/test.py" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1ab757d0228bdd92d6efdc4b6f0ec34e81" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float test.magnet_rad</definition>
+        <argsstring></argsstring>
+        <name>magnet_rad</name>
+        <initializer>= 8.2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="15" column="1" bodyfile="/home/db/camcam/test.py" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1a9cf4c1f11ba8ff11dc2b8331dfa18f1f" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float test.magnet_screw_rad</definition>
+        <argsstring></argsstring>
+        <name>magnet_screw_rad</name>
+        <initializer>= 2.5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="16" column="1" bodyfile="/home/db/camcam/test.py" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1a0abc4c703668de72c997fe9992c42fe8" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int test.window_width</definition>
+        <argsstring></argsstring>
+        <name>window_width</name>
+        <initializer>= 70</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="18" column="1" bodyfile="/home/db/camcam/test.py" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1a0d14ff24adddf44ef52460812fb711a4" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int test.window_height</definition>
+        <argsstring></argsstring>
+        <name>window_height</name>
+        <initializer>= 40</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="19" column="1" bodyfile="/home/db/camcam/test.py" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1ad2fa754f668be8d566b49d2b75c14320" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int test.side_border</definition>
+        <argsstring></argsstring>
+        <name>side_border</name>
+        <initializer>= 15</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="22" column="1" bodyfile="/home/db/camcam/test.py" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1a216fdd5fd8b05a73731fd5eadfc278dc" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple test.box</definition>
+        <argsstring></argsstring>
+        <name>box</name>
+        <initializer>= camcam.add_plane(Plane(&apos;box&apos;, cutter=&apos;1/8_endmill&apos;))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="24" column="1" bodyfile="/home/db/camcam/test.py" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1aa7b8aa9411311181f994be4bcdb6d3c5" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple test.Ltop</definition>
+        <argsstring></argsstring>
+        <name>Ltop</name>
+        <initializer>= box.add_layer(&apos;<ref refid="namespacetest_1a1dd0e7d10f3a46b2584c07bed8bc4ab8" kindref="member">top</ref>&apos;, material=&apos;pvc&apos;, thickness=<ref refid="namespacetest_1a1f1f1b6d0fb7ae6cb8e0d7a823825e8d" kindref="member">top_thickness</ref>, z0=0, zoffset=0, isback=False)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="26" column="1" bodyfile="/home/db/camcam/test.py" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacetest_1a1dd0e7d10f3a46b2584c07bed8bc4ab8" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple test.top</definition>
+        <argsstring></argsstring>
+        <name>top</name>
+        <initializer>= box.add_path(Part(name=&apos;top&apos;, layer=&apos;top&apos;))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/test.py" line="30" column="1" bodyfile="/home/db/camcam/test.py" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/test.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

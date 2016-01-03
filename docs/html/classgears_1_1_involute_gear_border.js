@@ -1,0 +1,26 @@
+var classgears_1_1_involute_gear_border =
+[
+    [ "__init__", "classgears_1_1_involute_gear_border.html#af2baab9361ff887f6ccd618f036cff96", null ],
+    [ "gears_addendum", "classgears_1_1_involute_gear_border.html#af4ed589c57bdb09b0ad868841e3b9c67", null ],
+    [ "gears_align_involute", "classgears_1_1_involute_gear_border.html#a04c60a984a7d9faaf56f5e670d722780", null ],
+    [ "gears_base_diameter", "classgears_1_1_involute_gear_border.html#a65571c455a662b6c7f354c553257610a", null ],
+    [ "gears_camcam", "classgears_1_1_involute_gear_border.html#a3f38d8790bdcf8b1cf33a0e496e8491a", null ],
+    [ "gears_circular_pitch", "classgears_1_1_involute_gear_border.html#aac568e6869352d0a0371a4eb7025ad91", null ],
+    [ "gears_circular_tooth_angle", "classgears_1_1_involute_gear_border.html#ae07ce4ec4f0069ddbc8bbef49b9a90f3", null ],
+    [ "gears_circular_tooth_thickness", "classgears_1_1_involute_gear_border.html#aa69471dcaf9c032399a256e85c75f49d", null ],
+    [ "gears_dedendum", "classgears_1_1_involute_gear_border.html#a8d6aac9c342cd973de0cc1a8c507436c", null ],
+    [ "gears_generate_involute", "classgears_1_1_involute_gear_border.html#af2d4556bd75f0883cf277f4bc217e703", null ],
+    [ "gears_locate_involute_cross_angle_for_radius", "classgears_1_1_involute_gear_border.html#a1cb98d62d4cb7c7365925afd39b95769", null ],
+    [ "gears_make_gear", "classgears_1_1_involute_gear_border.html#aad7b930d16d02bfd6313bd0508572e16", null ],
+    [ "gears_make_tooth", "classgears_1_1_involute_gear_border.html#a03d205088c8b4621a09897f1cea18f0e", null ],
+    [ "gears_mirror_involute", "classgears_1_1_involute_gear_border.html#a51be3fc3ea32eee6b7481a110cfca4d5", null ],
+    [ "gears_outer_diameter", "classgears_1_1_involute_gear_border.html#a3cd564500fb7f58919bdd70e1ae78bd5", null ],
+    [ "gears_pitch_diameter", "classgears_1_1_involute_gear_border.html#ad23633c9fe1834febbc0322d2d7d879f", null ],
+    [ "gears_root_diameter", "classgears_1_1_involute_gear_border.html#a8d74dca4e67f48499a9cc6934c9a414d", null ],
+    [ "gears_rotate", "classgears_1_1_involute_gear_border.html#a402554ab5f2304830ee5878ba14c1d19", null ],
+    [ "gears_translate", "classgears_1_1_involute_gear_border.html#a9e1f46165954de32ec23e2efb5272d35", null ],
+    [ "base_diameter", "classgears_1_1_involute_gear_border.html#af2b72779858b618dd4c69ccc529cdb13", null ],
+    [ "closed", "classgears_1_1_involute_gear_border.html#a3082fbde89cd8d0b7d7ab22002fb1eb9", null ],
+    [ "outer_diameter", "classgears_1_1_involute_gear_border.html#ac7cc57277160a2575a1dbe61fb4b1743", null ],
+    [ "root_diameter", "classgears_1_1_involute_gear_border.html#a0aabdca00ea7bbd94fb4a922f7948559", null ]
+];

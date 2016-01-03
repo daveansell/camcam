@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classshapes_1_1_angled_finger_joint_no_slope" kind="class" language="Python" prot="public">
+    <compoundname>shapes::AngledFingerJointNoSlope</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">list</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classshapes_1_1_angled_finger_joint_no_slope_1a91b614d80a08eecf07213faeea10e29a" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>shapes.AngledFingerJointNoSlope::material_thickness</definition>
+        <argsstring></argsstring>
+        <name>material_thickness</name>
+        <initializer>= thickness</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="882" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="882" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classshapes_1_1_angled_finger_joint_no_slope_1a6bfdc95eb46713361e3e22d07c3b3253" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple shapes.AngledFingerJointNoSlope::perp</definition>
+        <argsstring></argsstring>
+        <name>perp</name>
+        <initializer>= rotate((end-start).normalize(),-90)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="884" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="884" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classshapes_1_1_angled_finger_joint_no_slope_1a90d671bd76bee330bb7b57fc023d4d27" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple shapes.AngledFingerJointNoSlope::chamfer_width</definition>
+        <argsstring></argsstring>
+        <name>chamfer_width</name>
+        <initializer>= <ref refid="classshapes_1_1_angled_finger_joint_no_slope_1a91b614d80a08eecf07213faeea10e29a" kindref="member">material_thickness</ref>*math.tan(float(angle)/180*math.pi)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="887" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="887" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classshapes_1_1_angled_finger_joint_no_slope_1a2d2b4e6640f0738eba8998dc027995de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def shapes.AngledFingerJointNoSlope.__init__</definition>
+        <argsstring></argsstring>
+        <name>__init__</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>like a normal finger joint but with longer toungues to take into account the angle and cut back to the start of the slope</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="865" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="865" bodyend="878"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>like a normal finger joint but with longer toungues to take into account the angle and cut back to the start of the slope</verbatim> </para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="33">
+        <label>list</label>
+      </node>
+      <node id="32">
+        <label>shapes.AngledFingerJointNoSlope</label>
+        <link refid="classshapes_1_1_angled_finger_joint_no_slope"/>
+        <childnode refid="33" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="35">
+        <label>list</label>
+      </node>
+      <node id="34">
+        <label>shapes.AngledFingerJointNoSlope</label>
+        <link refid="classshapes_1_1_angled_finger_joint_no_slope"/>
+        <childnode refid="35" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/shapes.py" line="863" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="863" bodyend="901"/>
+    <listofallmembers>
+      <member refid="classshapes_1_1_angled_finger_joint_no_slope_1a2d2b4e6640f0738eba8998dc027995de" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointNoSlope</scope><name>__init__</name></member>
+      <member refid="classshapes_1_1_angled_finger_joint_no_slope_1a90d671bd76bee330bb7b57fc023d4d27" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointNoSlope</scope><name>chamfer_width</name></member>
+      <member refid="classshapes_1_1_angled_finger_joint_no_slope_1a91b614d80a08eecf07213faeea10e29a" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointNoSlope</scope><name>material_thickness</name></member>
+      <member refid="classshapes_1_1_angled_finger_joint_no_slope_1a6bfdc95eb46713361e3e22d07c3b3253" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointNoSlope</scope><name>perp</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

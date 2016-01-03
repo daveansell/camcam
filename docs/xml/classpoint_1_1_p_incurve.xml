@@ -1,0 +1,305 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classpoint_1_1_p_incurve" kind="class" language="Python" prot="public">
+    <compoundname>point::PIncurve</compoundname>
+    <basecompoundref refid="classpoint_1_1_p_sharp" prot="public" virt="non-virtual">point.PSharp</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classpoint_1_1_p_incurve_1aa300bcf39a6e3b82a724c3ea532dca12" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PIncurve::pos</definition>
+        <argsstring></argsstring>
+        <name>pos</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="404" column="1" bodyfile="/home/db/camcam/point.py" bodystart="404" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_incurve_1a6dcb80908b7443c2c9b470d6e5a98ed9" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PIncurve::point_type</definition>
+        <argsstring></argsstring>
+        <name>point_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="405" column="1" bodyfile="/home/db/camcam/point.py" bodystart="405" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_incurve_1aa27d5e9be14491a217d09e1296e202bb" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PIncurve::radius</definition>
+        <argsstring></argsstring>
+        <name>radius</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="406" column="1" bodyfile="/home/db/camcam/point.py" bodystart="406" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_incurve_1a3e5b144147cb1c58419c74c123215c86" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PIncurve::direction</definition>
+        <argsstring></argsstring>
+        <name>direction</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="407" column="1" bodyfile="/home/db/camcam/point.py" bodystart="407" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_incurve_1afdbd3540560247be0149ed28085af94e" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PIncurve::transform</definition>
+        <argsstring></argsstring>
+        <name>transform</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="408" column="1" bodyfile="/home/db/camcam/point.py" bodystart="408" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_incurve_1a698319edd77b838033b96507ca3c01dc" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PIncurve::obType</definition>
+        <argsstring></argsstring>
+        <name>obType</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="409" column="1" bodyfile="/home/db/camcam/point.py" bodystart="409" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classpoint_1_1_p_incurve_1a3f4ee2a8024e5a17d2c7ddb0054effd9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PIncurve.__init__</definition>
+        <argsstring></argsstring>
+        <name>__init__</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="402" column="1" bodyfile="/home/db/camcam/point.py" bodystart="402" bodyend="409"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_incurve_1aa0d973a8467ef7e32947bd22d68fa74b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PIncurve.copy</definition>
+        <argsstring>(self)</argsstring>
+        <name>copy</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="410" column="1" bodyfile="/home/db/camcam/point.py" bodystart="410" bodyend="417"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_incurve_1aafd97b26697334873f8af1afbfa1aa38" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PIncurve.origin</definition>
+        <argsstring></argsstring>
+        <name>origin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="418" column="1" bodyfile="/home/db/camcam/point.py" bodystart="418" bodyend="419"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_incurve_1a2c5d5baca83b512f63346c4c6ae33d49" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PIncurve.end</definition>
+        <argsstring>(self)</argsstring>
+        <name>end</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="420" column="1" bodyfile="/home/db/camcam/point.py" bodystart="420" bodyend="427"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_incurve_1a4dac0e1d4fcdd8e5520d216c16919ce4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PIncurve.start</definition>
+        <argsstring>(self)</argsstring>
+        <name>start</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="428" column="1" bodyfile="/home/db/camcam/point.py" bodystart="428" bodyend="435"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_incurve_1acb6e9840cd462c68055031eac62405a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PIncurve.offset</definition>
+        <argsstring>(self, side, distance, direction)</argsstring>
+        <name>offset</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>side</type>
+          <defname>side</defname>
+        </param>
+        <param>
+          <type>distance</type>
+          <defname>distance</defname>
+        </param>
+        <param>
+          <type><ref refid="classpoint_1_1_p_incurve_1a3e5b144147cb1c58419c74c123215c86" kindref="member">direction</ref></type>
+          <defname>direction</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="436" column="1" bodyfile="/home/db/camcam/point.py" bodystart="436" bodyend="453"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_incurve_1ac41e1b37c7aad7038e34e29ed2a9c554" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PIncurve.makeSegment</definition>
+        <argsstring>(self, config)</argsstring>
+        <name>makeSegment</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>config</type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="454" column="1" bodyfile="/home/db/camcam/point.py" bodystart="454" bodyend="484"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1510">
+        <label>point.Point</label>
+        <link refid="classpoint_1_1_point"/>
+        <childnode refid="1511" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1508">
+        <label>point.PIncurve</label>
+        <link refid="classpoint_1_1_p_incurve"/>
+        <childnode refid="1509" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1509">
+        <label>point.PSharp</label>
+        <link refid="classpoint_1_1_p_sharp"/>
+        <childnode refid="1510" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1511">
+        <label>object</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1514">
+        <label>point.Point</label>
+        <link refid="classpoint_1_1_point"/>
+        <childnode refid="1515" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1512">
+        <label>point.PIncurve</label>
+        <link refid="classpoint_1_1_p_incurve"/>
+        <childnode refid="1513" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1513">
+        <label>point.PSharp</label>
+        <link refid="classpoint_1_1_p_sharp"/>
+        <childnode refid="1514" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1515">
+        <label>object</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/point.py" line="401" column="1" bodyfile="/home/db/camcam/point.py" bodystart="401" bodyend="485"/>
+    <listofallmembers>
+      <member refid="classpoint_1_1_p_incurve_1a3f4ee2a8024e5a17d2c7ddb0054effd9" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>__init__</name></member>
+      <member refid="classpoint_1_1_p_sharp_1af1afffea36431e34b401c9309cc9ecdd" prot="public" virt="non-virtual" ambiguityscope="point::PSharp."><scope>point::PIncurve</scope><name>__init__</name></member>
+      <member refid="classpoint_1_1_point_1a4f2882f4c1d41b8ed0dcc040a56df10e" prot="public" virt="non-virtual" ambiguityscope="point::Point."><scope>point::PIncurve</scope><name>__init__</name></member>
+      <member refid="classpoint_1_1_p_sharp_1ac1fa66d2deea6b3f0154f9ba70980eb4" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>a</name></member>
+      <member refid="classpoint_1_1_p_sharp_1ab005edba0b9fe808530c844abe8b66f9" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>a</name></member>
+      <member refid="classpoint_1_1_point_1ad3a54a3dde6c2f12289d30edcbc56f9c" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>angle</name></member>
+      <member refid="classpoint_1_1_point_1afca575ab84d131ba560214332b039cdc" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>angle0</name></member>
+      <member refid="classpoint_1_1_point_1aff32fe36a2cb7daed2d6b836e0a104c0" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>compile</name></member>
+      <member refid="classpoint_1_1_p_incurve_1aa0d973a8467ef7e32947bd22d68fa74b" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>copy</name></member>
+      <member refid="classpoint_1_1_point_1a4a3ad4c500effc3b0a67868957108fb0" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>corner_side</name></member>
+      <member refid="classpoint_1_1_p_sharp_1aa5b16dd2ff9364241eb57b1eef00a4bf" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>cp1</name></member>
+      <member refid="classpoint_1_1_p_sharp_1aa8410ba181e860207e23e7f65808dc5a" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>cp2</name></member>
+      <member refid="classpoint_1_1_p_incurve_1a3e5b144147cb1c58419c74c123215c86" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>direction</name></member>
+      <member refid="classpoint_1_1_point_1aac7b02546ab8cd6e3131bedcce1c2025" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>dot</name></member>
+      <member refid="classpoint_1_1_p_incurve_1a2c5d5baca83b512f63346c4c6ae33d49" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>end</name></member>
+      <member refid="classpoint_1_1_point_1a3beb8e8b3f86d4a72b1e8216b274740a" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>generateSegment</name></member>
+      <member refid="classpoint_1_1_point_1aa4853372115d4266bed361f742de339e" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>init</name></member>
+      <member refid="classpoint_1_1_point_1a85952d3d8caf273ab39cf871157d0c2f" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>last</name></member>
+      <member refid="classpoint_1_1_point_1a27c3c9e7cafb48996d77e65cfe04df05" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>lastorigin</name></member>
+      <member refid="classpoint_1_1_point_1ac0517f0911e12c1e030776c42b0ae609" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>lastpoint</name></member>
+      <member refid="classpoint_1_1_p_incurve_1ac41e1b37c7aad7038e34e29ed2a9c554" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>makeSegment</name></member>
+      <member refid="classpoint_1_1_point_1a476d116396ab916e084cfa5951e270d6" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>next</name></member>
+      <member refid="classpoint_1_1_point_1a67c83c243db06689a5b8bb77652f83f1" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>nextpoint</name></member>
+      <member refid="classpoint_1_1_p_incurve_1a698319edd77b838033b96507ca3c01dc" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>obType</name></member>
+      <member refid="classpoint_1_1_p_incurve_1acb6e9840cd462c68055031eac62405a5" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>offset</name></member>
+      <member refid="classpoint_1_1_point_1a77d736f755797d41a2fd87f92b17e015" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>offset_move_point</name></member>
+      <member refid="classpoint_1_1_p_sharp_1a73d75efa18bb8f352a9dbd02efc59c9a" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>offsetSharp</name></member>
+      <member refid="classpoint_1_1_p_incurve_1aafd97b26697334873f8af1afbfa1aa38" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>origin</name></member>
+      <member refid="classpoint_1_1_p_incurve_1a6dcb80908b7443c2c9b470d6e5a98ed9" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>point_type</name></member>
+      <member refid="classpoint_1_1_p_incurve_1aa300bcf39a6e3b82a724c3ea532dca12" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>pos</name></member>
+      <member refid="classpoint_1_1_p_incurve_1aa27d5e9be14491a217d09e1296e202bb" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>radius</name></member>
+      <member refid="classpoint_1_1_point_1a999ffad9951028b7456cea0afb407e48" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>reverse</name></member>
+      <member refid="classpoint_1_1_point_1a11f285bd3b03aa083a25ec1861e3fa16" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>setangle</name></member>
+      <member refid="classpoint_1_1_p_incurve_1a4dac0e1d4fcdd8e5520d216c16919ce4" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>start</name></member>
+      <member refid="classpoint_1_1_p_sharp_1a42fca1df07d32aee57457b554d9cff1c" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>t</name></member>
+      <member refid="classpoint_1_1_p_incurve_1afdbd3540560247be0149ed28085af94e" prot="public" virt="non-virtual"><scope>point::PIncurve</scope><name>transform</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

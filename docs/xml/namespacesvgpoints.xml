@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespacesvgpoints" kind="namespace" language="Python">
+    <compoundname>svgpoints</compoundname>
+    <innerclass refid="classsvgpoints_1_1_s_v_gpoints" prot="public">svgpoints::SVGpoints</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/svgpoints.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

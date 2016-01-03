@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespacesegments" kind="namespace" language="Python">
+    <compoundname>segments</compoundname>
+    <innerclass refid="classsegments_1_1_arc" prot="public">segments::Arc</innerclass>
+    <innerclass refid="classsegments_1_1_cubic" prot="public">segments::Cubic</innerclass>
+    <innerclass refid="classsegments_1_1_line" prot="public">segments::Line</innerclass>
+    <innerclass refid="classsegments_1_1_quad" prot="public">segments::Quad</innerclass>
+    <innerclass refid="classsegments_1_1_segment" prot="public">segments::Segment</innerclass>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacesegments_1a109c96d9960dbce186b64a98c3066a1c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.V</definition>
+        <argsstring></argsstring>
+        <name>V</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="4" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="4" bodyend="12"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacesegments_1ae4847a0facad069d53643d562fac656b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.rotate</definition>
+        <argsstring>(pos, a)</argsstring>
+        <name>rotate</name>
+        <param>
+          <type>pos</type>
+          <defname>pos</defname>
+        </param>
+        <param>
+          <type>a</type>
+          <defname>a</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="13" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="13" bodyend="21"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/segments.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

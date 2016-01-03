@@ -1,0 +1,319 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classpoint_1_1_p_chamfer" kind="class" language="Python" prot="public">
+    <compoundname>point::PChamfer</compoundname>
+    <basecompoundref refid="classpoint_1_1_point" prot="public" virt="non-virtual">point.Point</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classpoint_1_1_p_chamfer_1a0f21901746d56629b131bcf0ef83eafc" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PChamfer::pos</definition>
+        <argsstring></argsstring>
+        <name>pos</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="488" column="1" bodyfile="/home/db/camcam/point.py" bodystart="488" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_chamfer_1a1989aa77e716d9709f32e8f563aef107" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PChamfer::point_type</definition>
+        <argsstring></argsstring>
+        <name>point_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="490" column="1" bodyfile="/home/db/camcam/point.py" bodystart="490" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_chamfer_1ad4727d834ae92c5056267560f9a10819" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PChamfer::radius</definition>
+        <argsstring></argsstring>
+        <name>radius</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="493" column="1" bodyfile="/home/db/camcam/point.py" bodystart="493" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_chamfer_1a2bd9755b3bc6ea3f3742ae0191398d33" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PChamfer::chamfer</definition>
+        <argsstring></argsstring>
+        <name>chamfer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="494" column="1" bodyfile="/home/db/camcam/point.py" bodystart="494" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_chamfer_1a6b0a4ae8c28eae281dfe12fc9cb824da" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PChamfer::direction</definition>
+        <argsstring></argsstring>
+        <name>direction</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="495" column="1" bodyfile="/home/db/camcam/point.py" bodystart="495" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_chamfer_1a7b0062591fb3f786a5a95cd9296645d1" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PChamfer::transform</definition>
+        <argsstring></argsstring>
+        <name>transform</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="496" column="1" bodyfile="/home/db/camcam/point.py" bodystart="496" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_chamfer_1aa9b5fa1686916ffc7c13e5db3fb47474" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PChamfer::obType</definition>
+        <argsstring></argsstring>
+        <name>obType</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="497" column="1" bodyfile="/home/db/camcam/point.py" bodystart="497" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classpoint_1_1_p_chamfer_1a4bba2fa2dc6f83559b03789ca8603219" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PChamfer.__init__</definition>
+        <argsstring></argsstring>
+        <name>__init__</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="486" column="1" bodyfile="/home/db/camcam/point.py" bodystart="486" bodyend="497"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_chamfer_1abcf4734fe9cae38b609ad10da6858962" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PChamfer.copy</definition>
+        <argsstring>(self)</argsstring>
+        <name>copy</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="498" column="1" bodyfile="/home/db/camcam/point.py" bodystart="498" bodyend="499"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_chamfer_1a0a59e088c07825f5a93c4a6d3b712be9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PChamfer.compile</definition>
+        <argsstring>(self)</argsstring>
+        <name>compile</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="500" column="1" bodyfile="/home/db/camcam/point.py" bodystart="500" bodyend="510"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_chamfer_1a71c9d9ad7a2c417184332abc716abb26" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PChamfer.origin</definition>
+        <argsstring></argsstring>
+        <name>origin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="511" column="1" bodyfile="/home/db/camcam/point.py" bodystart="511" bodyend="512"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_chamfer_1a9c47040298c0678743f359aff7222c17" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PChamfer.end</definition>
+        <argsstring>(self)</argsstring>
+        <name>end</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="513" column="1" bodyfile="/home/db/camcam/point.py" bodystart="513" bodyend="515"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_chamfer_1a9c47040298c0678743f359aff7222c17" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PChamfer.end</definition>
+        <argsstring>(self)</argsstring>
+        <name>end</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="516" column="1" bodyfile="/home/db/camcam/point.py" bodystart="516" bodyend="518"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_chamfer_1a19bfff02870c728f18607f0c29272bf7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PChamfer.offset</definition>
+        <argsstring>(self, side, distance, direction)</argsstring>
+        <name>offset</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>side</type>
+          <defname>side</defname>
+        </param>
+        <param>
+          <type>distance</type>
+          <defname>distance</defname>
+        </param>
+        <param>
+          <type><ref refid="classpoint_1_1_p_chamfer_1a6b0a4ae8c28eae281dfe12fc9cb824da" kindref="member">direction</ref></type>
+          <defname>direction</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="519" column="1" bodyfile="/home/db/camcam/point.py" bodystart="519" bodyend="521"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_chamfer_1a52d1f8529ce5dd22972de1d765933712" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PChamfer.makeSegment</definition>
+        <argsstring>(self, config)</argsstring>
+        <name>makeSegment</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>config</type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="522" column="1" bodyfile="/home/db/camcam/point.py" bodystart="522" bodyend="524"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1462">
+        <label>point.PChamfer</label>
+        <link refid="classpoint_1_1_p_chamfer"/>
+        <childnode refid="1463" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1463">
+        <label>point.Point</label>
+        <link refid="classpoint_1_1_point"/>
+        <childnode refid="1464" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1464">
+        <label>object</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1465">
+        <label>point.PChamfer</label>
+        <link refid="classpoint_1_1_p_chamfer"/>
+        <childnode refid="1466" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1466">
+        <label>point.Point</label>
+        <link refid="classpoint_1_1_point"/>
+        <childnode refid="1467" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1467">
+        <label>object</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/point.py" line="485" column="1" bodyfile="/home/db/camcam/point.py" bodystart="485" bodyend="525"/>
+    <listofallmembers>
+      <member refid="classpoint_1_1_p_chamfer_1a4bba2fa2dc6f83559b03789ca8603219" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>__init__</name></member>
+      <member refid="classpoint_1_1_point_1a4f2882f4c1d41b8ed0dcc040a56df10e" prot="public" virt="non-virtual" ambiguityscope="point::Point."><scope>point::PChamfer</scope><name>__init__</name></member>
+      <member refid="classpoint_1_1_point_1ad3a54a3dde6c2f12289d30edcbc56f9c" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>angle</name></member>
+      <member refid="classpoint_1_1_point_1afca575ab84d131ba560214332b039cdc" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>angle0</name></member>
+      <member refid="classpoint_1_1_p_chamfer_1a2bd9755b3bc6ea3f3742ae0191398d33" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>chamfer</name></member>
+      <member refid="classpoint_1_1_p_chamfer_1a0a59e088c07825f5a93c4a6d3b712be9" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>compile</name></member>
+      <member refid="classpoint_1_1_p_chamfer_1abcf4734fe9cae38b609ad10da6858962" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>copy</name></member>
+      <member refid="classpoint_1_1_point_1a4a3ad4c500effc3b0a67868957108fb0" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>corner_side</name></member>
+      <member refid="classpoint_1_1_point_1a41b431a9eb8ae508259e307d9c918a51" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>cp1</name></member>
+      <member refid="classpoint_1_1_point_1aef9edf3d753bb009bb0544718c790746" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>cp2</name></member>
+      <member refid="classpoint_1_1_p_chamfer_1a6b0a4ae8c28eae281dfe12fc9cb824da" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>direction</name></member>
+      <member refid="classpoint_1_1_point_1aac7b02546ab8cd6e3131bedcce1c2025" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>dot</name></member>
+      <member refid="classpoint_1_1_p_chamfer_1a9c47040298c0678743f359aff7222c17" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>end</name></member>
+      <member refid="classpoint_1_1_p_chamfer_1a9c47040298c0678743f359aff7222c17" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>end</name></member>
+      <member refid="classpoint_1_1_point_1a3beb8e8b3f86d4a72b1e8216b274740a" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>generateSegment</name></member>
+      <member refid="classpoint_1_1_point_1aa4853372115d4266bed361f742de339e" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>init</name></member>
+      <member refid="classpoint_1_1_point_1a85952d3d8caf273ab39cf871157d0c2f" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>last</name></member>
+      <member refid="classpoint_1_1_point_1a27c3c9e7cafb48996d77e65cfe04df05" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>lastorigin</name></member>
+      <member refid="classpoint_1_1_point_1ac0517f0911e12c1e030776c42b0ae609" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>lastpoint</name></member>
+      <member refid="classpoint_1_1_p_chamfer_1a52d1f8529ce5dd22972de1d765933712" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>makeSegment</name></member>
+      <member refid="classpoint_1_1_point_1a476d116396ab916e084cfa5951e270d6" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>next</name></member>
+      <member refid="classpoint_1_1_point_1a67c83c243db06689a5b8bb77652f83f1" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>nextpoint</name></member>
+      <member refid="classpoint_1_1_p_chamfer_1aa9b5fa1686916ffc7c13e5db3fb47474" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>obType</name></member>
+      <member refid="classpoint_1_1_p_chamfer_1a19bfff02870c728f18607f0c29272bf7" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>offset</name></member>
+      <member refid="classpoint_1_1_point_1a77d736f755797d41a2fd87f92b17e015" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>offset_move_point</name></member>
+      <member refid="classpoint_1_1_p_chamfer_1a71c9d9ad7a2c417184332abc716abb26" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>origin</name></member>
+      <member refid="classpoint_1_1_p_chamfer_1a1989aa77e716d9709f32e8f563aef107" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>point_type</name></member>
+      <member refid="classpoint_1_1_p_chamfer_1a0f21901746d56629b131bcf0ef83eafc" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>pos</name></member>
+      <member refid="classpoint_1_1_p_chamfer_1ad4727d834ae92c5056267560f9a10819" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>radius</name></member>
+      <member refid="classpoint_1_1_point_1a999ffad9951028b7456cea0afb407e48" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>reverse</name></member>
+      <member refid="classpoint_1_1_point_1a11f285bd3b03aa083a25ec1861e3fa16" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>setangle</name></member>
+      <member refid="classpoint_1_1_p_chamfer_1a7b0062591fb3f786a5a95cd9296645d1" prot="public" virt="non-virtual"><scope>point::PChamfer</scope><name>transform</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

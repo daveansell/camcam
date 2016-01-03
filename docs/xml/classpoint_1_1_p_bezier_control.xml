@@ -1,0 +1,275 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classpoint_1_1_p_bezier_control" kind="class" language="Python" prot="public">
+    <compoundname>point::PBezierControl</compoundname>
+    <basecompoundref refid="classpoint_1_1_point" prot="public" virt="non-virtual">point.Point</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classpoint_1_1_p_bezier_control_1aea32847f414296d7838d90bc621fdcc1" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PBezierControl::pos</definition>
+        <argsstring></argsstring>
+        <name>pos</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="764" column="1" bodyfile="/home/db/camcam/point.py" bodystart="764" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_bezier_control_1a10ff58a567e6a3fe7585d2b6dffc73c2" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PBezierControl::point_type</definition>
+        <argsstring></argsstring>
+        <name>point_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="765" column="1" bodyfile="/home/db/camcam/point.py" bodystart="765" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_bezier_control_1ab8fbb1bca54765469d9c3a4b94ce6331" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PBezierControl::transform</definition>
+        <argsstring></argsstring>
+        <name>transform</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="766" column="1" bodyfile="/home/db/camcam/point.py" bodystart="766" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_bezier_control_1a2e39a0d46d193e5fdc1024feaf7250e7" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PBezierControl::obType</definition>
+        <argsstring></argsstring>
+        <name>obType</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="767" column="1" bodyfile="/home/db/camcam/point.py" bodystart="767" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpoint_1_1_p_bezier_control_1afdb51ba474e73dd5eb0a281bb7b39bd8" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>point.PBezierControl::control</definition>
+        <argsstring></argsstring>
+        <name>control</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="768" column="1" bodyfile="/home/db/camcam/point.py" bodystart="768" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classpoint_1_1_p_bezier_control_1a4010a1feea03258f5a5f977cc28936f2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PBezierControl.__init__</definition>
+        <argsstring></argsstring>
+        <name>__init__</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="762" column="1" bodyfile="/home/db/camcam/point.py" bodystart="762" bodyend="768"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_bezier_control_1a7a5460934307c34e9b15274e29e6bb07" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PBezierControl.copy</definition>
+        <argsstring>(self)</argsstring>
+        <name>copy</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="769" column="1" bodyfile="/home/db/camcam/point.py" bodystart="769" bodyend="774"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_bezier_control_1a3349853e6fcd933337a75ea6441367f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PBezierControl.origin</definition>
+        <argsstring></argsstring>
+        <name>origin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="775" column="1" bodyfile="/home/db/camcam/point.py" bodystart="775" bodyend="776"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_bezier_control_1a71571dd210c3101025c49821cc9678ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PBezierControl.end</definition>
+        <argsstring>(self)</argsstring>
+        <name>end</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="777" column="1" bodyfile="/home/db/camcam/point.py" bodystart="777" bodyend="778"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_bezier_control_1a4f2bc163315c5bf277f793323c611e4b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PBezierControl.start</definition>
+        <argsstring>(self)</argsstring>
+        <name>start</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="779" column="1" bodyfile="/home/db/camcam/point.py" bodystart="779" bodyend="780"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_bezier_control_1ac576521c1d2dadc1b3cce50668f98724" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PBezierControl.offset</definition>
+        <argsstring>(self, direction, distance, pointlist)</argsstring>
+        <name>offset</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>direction</type>
+          <defname>direction</defname>
+        </param>
+        <param>
+          <type>distance</type>
+          <defname>distance</defname>
+        </param>
+        <param>
+          <type>pointlist</type>
+          <defname>pointlist</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="781" column="1" bodyfile="/home/db/camcam/point.py" bodystart="781" bodyend="785"/>
+      </memberdef>
+      <memberdef kind="function" id="classpoint_1_1_p_bezier_control_1a25e4e5c0386899c19f55f37aa143250a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def point.PBezierControl.makeSegment</definition>
+        <argsstring>(self, config)</argsstring>
+        <name>makeSegment</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>config</type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/point.py" line="786" column="1" bodyfile="/home/db/camcam/point.py" bodystart="786" bodyend="798"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1457">
+        <label>point.Point</label>
+        <link refid="classpoint_1_1_point"/>
+        <childnode refid="1458" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1458">
+        <label>object</label>
+      </node>
+      <node id="1456">
+        <label>point.PBezierControl</label>
+        <link refid="classpoint_1_1_p_bezier_control"/>
+        <childnode refid="1457" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1460">
+        <label>point.Point</label>
+        <link refid="classpoint_1_1_point"/>
+        <childnode refid="1461" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1461">
+        <label>object</label>
+      </node>
+      <node id="1459">
+        <label>point.PBezierControl</label>
+        <link refid="classpoint_1_1_p_bezier_control"/>
+        <childnode refid="1460" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/point.py" line="761" column="1" bodyfile="/home/db/camcam/point.py" bodystart="761" bodyend="799"/>
+    <listofallmembers>
+      <member refid="classpoint_1_1_p_bezier_control_1a4010a1feea03258f5a5f977cc28936f2" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>__init__</name></member>
+      <member refid="classpoint_1_1_point_1a4f2882f4c1d41b8ed0dcc040a56df10e" prot="public" virt="non-virtual" ambiguityscope="point::Point."><scope>point::PBezierControl</scope><name>__init__</name></member>
+      <member refid="classpoint_1_1_point_1ad3a54a3dde6c2f12289d30edcbc56f9c" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>angle</name></member>
+      <member refid="classpoint_1_1_point_1afca575ab84d131ba560214332b039cdc" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>angle0</name></member>
+      <member refid="classpoint_1_1_point_1aff32fe36a2cb7daed2d6b836e0a104c0" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>compile</name></member>
+      <member refid="classpoint_1_1_p_bezier_control_1afdb51ba474e73dd5eb0a281bb7b39bd8" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>control</name></member>
+      <member refid="classpoint_1_1_p_bezier_control_1a7a5460934307c34e9b15274e29e6bb07" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>copy</name></member>
+      <member refid="classpoint_1_1_point_1a4a3ad4c500effc3b0a67868957108fb0" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>corner_side</name></member>
+      <member refid="classpoint_1_1_point_1a41b431a9eb8ae508259e307d9c918a51" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>cp1</name></member>
+      <member refid="classpoint_1_1_point_1aef9edf3d753bb009bb0544718c790746" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>cp2</name></member>
+      <member refid="classpoint_1_1_point_1aac7b02546ab8cd6e3131bedcce1c2025" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>dot</name></member>
+      <member refid="classpoint_1_1_p_bezier_control_1a71571dd210c3101025c49821cc9678ac" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>end</name></member>
+      <member refid="classpoint_1_1_point_1a3beb8e8b3f86d4a72b1e8216b274740a" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>generateSegment</name></member>
+      <member refid="classpoint_1_1_point_1aa4853372115d4266bed361f742de339e" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>init</name></member>
+      <member refid="classpoint_1_1_point_1a85952d3d8caf273ab39cf871157d0c2f" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>last</name></member>
+      <member refid="classpoint_1_1_point_1a27c3c9e7cafb48996d77e65cfe04df05" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>lastorigin</name></member>
+      <member refid="classpoint_1_1_point_1ac0517f0911e12c1e030776c42b0ae609" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>lastpoint</name></member>
+      <member refid="classpoint_1_1_p_bezier_control_1a25e4e5c0386899c19f55f37aa143250a" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>makeSegment</name></member>
+      <member refid="classpoint_1_1_point_1a476d116396ab916e084cfa5951e270d6" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>next</name></member>
+      <member refid="classpoint_1_1_point_1a67c83c243db06689a5b8bb77652f83f1" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>nextpoint</name></member>
+      <member refid="classpoint_1_1_p_bezier_control_1a2e39a0d46d193e5fdc1024feaf7250e7" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>obType</name></member>
+      <member refid="classpoint_1_1_p_bezier_control_1ac576521c1d2dadc1b3cce50668f98724" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>offset</name></member>
+      <member refid="classpoint_1_1_point_1a77d736f755797d41a2fd87f92b17e015" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>offset_move_point</name></member>
+      <member refid="classpoint_1_1_p_bezier_control_1a3349853e6fcd933337a75ea6441367f0" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>origin</name></member>
+      <member refid="classpoint_1_1_p_bezier_control_1a10ff58a567e6a3fe7585d2b6dffc73c2" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>point_type</name></member>
+      <member refid="classpoint_1_1_p_bezier_control_1aea32847f414296d7838d90bc621fdcc1" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>pos</name></member>
+      <member refid="classpoint_1_1_point_1a7bb007c1c033b4b1410aa8a0443e8098" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>radius</name></member>
+      <member refid="classpoint_1_1_point_1a999ffad9951028b7456cea0afb407e48" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>reverse</name></member>
+      <member refid="classpoint_1_1_point_1a11f285bd3b03aa083a25ec1861e3fa16" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>setangle</name></member>
+      <member refid="classpoint_1_1_p_bezier_control_1a4f2bc163315c5bf277f793323c611e4b" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>start</name></member>
+      <member refid="classpoint_1_1_p_bezier_control_1ab8fbb1bca54765469d9c3a4b94ce6331" prot="public" virt="non-virtual"><scope>point::PBezierControl</scope><name>transform</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

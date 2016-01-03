@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classparts_1_1_post" kind="class" language="Python" prot="public">
+    <compoundname>parts::Post</compoundname>
+    <basecompoundref refid="classpath_1_1_part" prot="public" virt="non-virtual">path.Part</basecompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classparts_1_1_post_1a6deb62aba0a53131b444a628d053c2ff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def parts.Post.__init__</definition>
+        <argsstring>(self, pos, config)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>pos</type>
+          <defname>pos</defname>
+        </param>
+        <param>
+          <type>config</type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/parts.py" line="87" column="1" bodyfile="/home/db/camcam/parts.py" bodystart="87" bodyend="105"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1559">
+        <label>parts.Post</label>
+        <link refid="classparts_1_1_post"/>
+        <childnode refid="1560" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1561">
+        <label>object</label>
+      </node>
+      <node id="1560">
+        <label>path.Part</label>
+        <link refid="classpath_1_1_part"/>
+        <childnode refid="1561" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1562">
+        <label>parts.Post</label>
+        <link refid="classparts_1_1_post"/>
+        <childnode refid="1563" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1564">
+        <label>object</label>
+      </node>
+      <node id="1563">
+        <label>path.Part</label>
+        <link refid="classpath_1_1_part"/>
+        <childnode refid="1564" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/parts.py" line="86" column="1" bodyfile="/home/db/camcam/parts.py" bodystart="86" bodyend="106"/>
+    <listofallmembers>
+      <member refid="classpath_1_1_part_1a01c7a739dee22053cee9f0b28348f1a3" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>__deepcopy__</name></member>
+      <member refid="classparts_1_1_post_1a6deb62aba0a53131b444a628d053c2ff" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_part_1ad303df059ccf8ea977b9ba099f1f17a9" prot="public" virt="non-virtual" ambiguityscope="path::Part."><scope>parts::Post</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_part_1a45256181f3975227c838363bc31ae602" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>add</name></member>
+      <member refid="classpath_1_1_part_1abb8f248470b535ae0449e1a47f912506" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>add_bom</name></member>
+      <member refid="classpath_1_1_part_1a4476c8b030ebcf9c7df00e6a7aa9214c" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>add_border</name></member>
+      <member refid="classpath_1_1_part_1a397ea5a1af4d031e7f1fb4ceac654de5" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>add_copy</name></member>
+      <member refid="classpath_1_1_part_1af7a16e2949b4fb42f61efa17c29d9b56" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>add_internal_border</name></member>
+      <member refid="classpath_1_1_part_1a961da43effa034ade7b25ff09121784c" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>add_path</name></member>
+      <member refid="classpath_1_1_part_1a889c4d521b52576b5b4e96ce573ea602" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>bom</name></member>
+      <member refid="classpath_1_1_part_1a004c78655a7f215ff512e4b18e48b0fe" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>border</name></member>
+      <member refid="classpath_1_1_part_1aaa7dce569975af8da512ecba96f67538" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>comment</name></member>
+      <member refid="classpath_1_1_part_1aa94d1de86a82e8b96113c305c1ff63cc" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>comments</name></member>
+      <member refid="classpath_1_1_part_1a674b3be7cd8c25840d27de74b0d94797" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>contains</name></member>
+      <member refid="classpath_1_1_part_1a620639c9a733ef0f168a7c94ccae9cd8" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>copied</name></member>
+      <member refid="classpath_1_1_part_1a3d990ca845c23f206bc56224737440fd" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>copies</name></member>
+      <member refid="classpath_1_1_part_1a57d1d3471b332024af5cdc8265b96ef1" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>cutoutside</name></member>
+      <member refid="classpath_1_1_part_1aa3ab823fc2a4baeaa97300d310d3b8eb" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>get_bom</name></member>
+      <member refid="classpath_1_1_part_1ab6fccbe6e3b1b965e8fbfa0a64e33b91" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>get_config</name></member>
+      <member refid="classpath_1_1_part_1a60a0f2d6c32dc8875b191d432002860f" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>get_layers</name></member>
+      <member refid="classpath_1_1_part_1a4ce18378dbce97d9a2875e1de9653892" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>get_own_paths</name></member>
+      <member refid="classpath_1_1_part_1a55bbf4c0ea6fbf7f70c4470929ee4b26" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>get_parts</name></member>
+      <member refid="classpath_1_1_part_1a6923ae4219b5cbd4bc87e22c09da14fc" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>getParts</name></member>
+      <member refid="classpath_1_1_part_1a62650bf6a83e3063d90f7e2711784a10" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>ignore_border</name></member>
+      <member refid="classpath_1_1_part_1a78ba05bb5f29eee1830388be6d15af98" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>init</name></member>
+      <member refid="classpath_1_1_part_1ab4eb93506a42db0b4d21000dceca0e91" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>internal_borders</name></member>
+      <member refid="classpath_1_1_part_1abd77fe962ddd912e766b8a2e9220717b" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>is_border</name></member>
+      <member refid="classpath_1_1_part_1a5d3e9b6b69c5eb6b100dfbf7d7fdf488" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>isCopy</name></member>
+      <member refid="classpath_1_1_part_1aa1d9912dfa1d7e3222df898d2a18786f" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>layer</name></member>
+      <member refid="classpath_1_1_part_1adcfeed4d6166f35e3ea1eb87926f6a5e" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>layers</name></member>
+      <member refid="classpath_1_1_part_1a185c9bbf10bddf3b739441e758850c84" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>make_copies</name></member>
+      <member refid="classpath_1_1_part_1a982bb6775f254fd811f03015c7695718" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>material_shape</name></member>
+      <member refid="classpath_1_1_part_1a3e0f8f43f26a761a02616e2a2bc735e1" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>mirror</name></member>
+      <member refid="classpath_1_1_part_1a5c83f575732c5a3a949c1e7facbf548c" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>number</name></member>
+      <member refid="classpath_1_1_part_1ac56a35fa54fc9cae4b96917ef5bcdaae" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>obType</name></member>
+      <member refid="classpath_1_1_part_1ae705ca5412f4383b77dd32e9ebdd237f" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>otherargs</name></member>
+      <member refid="classpath_1_1_part_1a6ff6c586832ff637508796a8a77dbbac" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>output</name></member>
+      <member refid="classpath_1_1_part_1af5b40fad5803470c54db7d42b07f8a95" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>overwrite</name></member>
+      <member refid="classpath_1_1_part_1aac66c946dd230e64e4c24cecf1d2d4e9" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>parent</name></member>
+      <member refid="classpath_1_1_part_1a01ea69c0b818956e26ed146808d6ba74" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>parts</name></member>
+      <member refid="classpath_1_1_part_1af1c81df8b50b76bba5e7be33d8a12938" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>paths</name></member>
+      <member refid="classpath_1_1_part_1ad5f9f5edfa6d110a4de203c109223ede" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>renderable</name></member>
+      <member refid="classpath_1_1_part_1a70560f4969089436589b608259ee2ca1" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>rotate</name></member>
+      <member refid="classpath_1_1_part_1aa46bbe5ca2996ee60e388415f398b008" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>trace</name></member>
+      <member refid="classpath_1_1_part_1a77dd1289501d1f4bce4ff5b4718f7200" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>transform</name></member>
+      <member refid="classpath_1_1_part_1a27d0b520d21955962d578c55227bcff8" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>translate</name></member>
+      <member refid="classpath_1_1_part_1a56b959045a54830e9c1f99675b12a075" prot="public" virt="non-virtual"><scope>parts::Post</scope><name>varlist</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

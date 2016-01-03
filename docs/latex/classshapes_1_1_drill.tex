@@ -1,0 +1,120 @@
+\hypertarget{classshapes_1_1_drill}{}\section{shapes.\+Drill Class Reference}
+\label{classshapes_1_1_drill}\index{shapes.\+Drill@{shapes.\+Drill}}
+
+
+Inherits \hyperlink{classpath_1_1_path}{path.\+Path}.
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classshapes_1_1_drill_a31e08b931225e8948dee628beebce281}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, \hyperlink{classshapes_1_1_drill_ade0cbf719eb083c1d709e8bd142ba09e}{pos}, \hyperlink{classpath_1_1_path_a889e352f02dba833077975ce855276ed}{config})
+\item 
+def \hyperlink{classshapes_1_1_drill_af985f3a90bcf4903994b87559b1493d0}{render} (self, pconfig)
+\item 
+def \hyperlink{classshapes_1_1_drill_a4ff07e6554822824b5b61a106fd4090d}{polygonise}
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classshapes_1_1_drill_ade0cbf719eb083c1d709e8bd142ba09e}{pos}
+\item 
+\hyperlink{classshapes_1_1_drill_a514d5e174a3b7237d383669862b9158c}{peck}
+\item 
+\hyperlink{classshapes_1_1_drill_a5e03fef5821c6ec1ec92e82e7b7ba556}{drillrad}
+\item 
+\hyperlink{classshapes_1_1_drill_a1b98883ec07b24a8568e39debc93623a}{cutter}
+\item 
+\hyperlink{classshapes_1_1_drill_a2442fbb01a17112a5080d391a09b8480}{closed}
+\item 
+\hyperlink{classshapes_1_1_drill_af34520e09550d4058a672463230601c1}{bounding\+Box}
+\item 
+\hyperlink{classshapes_1_1_drill_a3525fe2393db318f023e19c270da785c}{centre}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+list \hyperlink{classshapes_1_1_drill_ab569b653f3aa01d74b6596c9d845e2dc}{dist} = \hyperlink{classpath_1_1_path_a889e352f02dba833077975ce855276ed}{config}\mbox{[}\textquotesingle{}z1\textquotesingle{}\mbox{]}
+\item 
+tuple \hyperlink{classshapes_1_1_drill_aba5c261914fcec674bd9b9c039aa53a5}{steps} = math.\+floor(\hyperlink{classshapes_1_1_drill_ab569b653f3aa01d74b6596c9d845e2dc}{dist}/self.\+peck)
+\item 
+int \hyperlink{classshapes_1_1_drill_a05155870584a057702ebfe0ad574a8bb}{steps} = 1
+\item 
+\hyperlink{classshapes_1_1_drill_a65ebd9ebcb8ffdc2f1c4682b20821f33}{step} = \hyperlink{classshapes_1_1_drill_ab569b653f3aa01d74b6596c9d845e2dc}{dist}/\hyperlink{classshapes_1_1_drill_aba5c261914fcec674bd9b9c039aa53a5}{steps}
+\item 
+string \hyperlink{classshapes_1_1_drill_a82e27472f17f220aca47b1874ac1659d}{ret} = \textquotesingle{}G0\+X\%0.\+2f\+Y\%0.\+2f\textbackslash{}n\textquotesingle{}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classshapes_1_1_drill_a31e08b931225e8948dee628beebce281}{}\index{shapes\+::\+Drill@{shapes\+::\+Drill}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!shapes\+::\+Drill@{shapes\+::\+Drill}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def shapes.\+Drill.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{pos, }
+\item[{}]{config}
+\end{DoxyParamCaption}
+)}\label{classshapes_1_1_drill_a31e08b931225e8948dee628beebce281}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classshapes_1_1_drill_a4ff07e6554822824b5b61a106fd4090d}{}\index{shapes\+::\+Drill@{shapes\+::\+Drill}!polygonise@{polygonise}}
+\index{polygonise@{polygonise}!shapes\+::\+Drill@{shapes\+::\+Drill}}
+\subsubsection[{polygonise}]{\setlength{\rightskip}{0pt plus 5cm}def shapes.\+Drill.\+polygonise (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{resolution = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)}\label{classshapes_1_1_drill_a4ff07e6554822824b5b61a106fd4090d}
+\hypertarget{classshapes_1_1_drill_af985f3a90bcf4903994b87559b1493d0}{}\index{shapes\+::\+Drill@{shapes\+::\+Drill}!render@{render}}
+\index{render@{render}!shapes\+::\+Drill@{shapes\+::\+Drill}}
+\subsubsection[{render}]{\setlength{\rightskip}{0pt plus 5cm}def shapes.\+Drill.\+render (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{pconfig}
+\end{DoxyParamCaption}
+)}\label{classshapes_1_1_drill_af985f3a90bcf4903994b87559b1493d0}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classshapes_1_1_drill_af34520e09550d4058a672463230601c1}{}\index{shapes\+::\+Drill@{shapes\+::\+Drill}!bounding\+Box@{bounding\+Box}}
+\index{bounding\+Box@{bounding\+Box}!shapes\+::\+Drill@{shapes\+::\+Drill}}
+\subsubsection[{bounding\+Box}]{\setlength{\rightskip}{0pt plus 5cm}shapes.\+Drill.\+bounding\+Box}\label{classshapes_1_1_drill_af34520e09550d4058a672463230601c1}
+\hypertarget{classshapes_1_1_drill_a3525fe2393db318f023e19c270da785c}{}\index{shapes\+::\+Drill@{shapes\+::\+Drill}!centre@{centre}}
+\index{centre@{centre}!shapes\+::\+Drill@{shapes\+::\+Drill}}
+\subsubsection[{centre}]{\setlength{\rightskip}{0pt plus 5cm}shapes.\+Drill.\+centre}\label{classshapes_1_1_drill_a3525fe2393db318f023e19c270da785c}
+\hypertarget{classshapes_1_1_drill_a2442fbb01a17112a5080d391a09b8480}{}\index{shapes\+::\+Drill@{shapes\+::\+Drill}!closed@{closed}}
+\index{closed@{closed}!shapes\+::\+Drill@{shapes\+::\+Drill}}
+\subsubsection[{closed}]{\setlength{\rightskip}{0pt plus 5cm}shapes.\+Drill.\+closed}\label{classshapes_1_1_drill_a2442fbb01a17112a5080d391a09b8480}
+\hypertarget{classshapes_1_1_drill_a1b98883ec07b24a8568e39debc93623a}{}\index{shapes\+::\+Drill@{shapes\+::\+Drill}!cutter@{cutter}}
+\index{cutter@{cutter}!shapes\+::\+Drill@{shapes\+::\+Drill}}
+\subsubsection[{cutter}]{\setlength{\rightskip}{0pt plus 5cm}shapes.\+Drill.\+cutter}\label{classshapes_1_1_drill_a1b98883ec07b24a8568e39debc93623a}
+\hypertarget{classshapes_1_1_drill_ab569b653f3aa01d74b6596c9d845e2dc}{}\index{shapes\+::\+Drill@{shapes\+::\+Drill}!dist@{dist}}
+\index{dist@{dist}!shapes\+::\+Drill@{shapes\+::\+Drill}}
+\subsubsection[{dist}]{\setlength{\rightskip}{0pt plus 5cm}list shapes.\+Drill.\+dist = {\bf config}\mbox{[}\textquotesingle{}z1\textquotesingle{}\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classshapes_1_1_drill_ab569b653f3aa01d74b6596c9d845e2dc}
+\hypertarget{classshapes_1_1_drill_a5e03fef5821c6ec1ec92e82e7b7ba556}{}\index{shapes\+::\+Drill@{shapes\+::\+Drill}!drillrad@{drillrad}}
+\index{drillrad@{drillrad}!shapes\+::\+Drill@{shapes\+::\+Drill}}
+\subsubsection[{drillrad}]{\setlength{\rightskip}{0pt plus 5cm}shapes.\+Drill.\+drillrad}\label{classshapes_1_1_drill_a5e03fef5821c6ec1ec92e82e7b7ba556}
+\hypertarget{classshapes_1_1_drill_a514d5e174a3b7237d383669862b9158c}{}\index{shapes\+::\+Drill@{shapes\+::\+Drill}!peck@{peck}}
+\index{peck@{peck}!shapes\+::\+Drill@{shapes\+::\+Drill}}
+\subsubsection[{peck}]{\setlength{\rightskip}{0pt plus 5cm}shapes.\+Drill.\+peck}\label{classshapes_1_1_drill_a514d5e174a3b7237d383669862b9158c}
+\hypertarget{classshapes_1_1_drill_ade0cbf719eb083c1d709e8bd142ba09e}{}\index{shapes\+::\+Drill@{shapes\+::\+Drill}!pos@{pos}}
+\index{pos@{pos}!shapes\+::\+Drill@{shapes\+::\+Drill}}
+\subsubsection[{pos}]{\setlength{\rightskip}{0pt plus 5cm}shapes.\+Drill.\+pos}\label{classshapes_1_1_drill_ade0cbf719eb083c1d709e8bd142ba09e}
+\hypertarget{classshapes_1_1_drill_a82e27472f17f220aca47b1874ac1659d}{}\index{shapes\+::\+Drill@{shapes\+::\+Drill}!ret@{ret}}
+\index{ret@{ret}!shapes\+::\+Drill@{shapes\+::\+Drill}}
+\subsubsection[{ret}]{\setlength{\rightskip}{0pt plus 5cm}string shapes.\+Drill.\+ret = \textquotesingle{}G0\+X\%0.\+2f\+Y\%0.\+2f\textbackslash{}n\textquotesingle{}\hspace{0.3cm}{\ttfamily [static]}}\label{classshapes_1_1_drill_a82e27472f17f220aca47b1874ac1659d}
+\hypertarget{classshapes_1_1_drill_a65ebd9ebcb8ffdc2f1c4682b20821f33}{}\index{shapes\+::\+Drill@{shapes\+::\+Drill}!step@{step}}
+\index{step@{step}!shapes\+::\+Drill@{shapes\+::\+Drill}}
+\subsubsection[{step}]{\setlength{\rightskip}{0pt plus 5cm}shapes.\+Drill.\+step = {\bf dist}/{\bf steps}\hspace{0.3cm}{\ttfamily [static]}}\label{classshapes_1_1_drill_a65ebd9ebcb8ffdc2f1c4682b20821f33}
+\hypertarget{classshapes_1_1_drill_aba5c261914fcec674bd9b9c039aa53a5}{}\index{shapes\+::\+Drill@{shapes\+::\+Drill}!steps@{steps}}
+\index{steps@{steps}!shapes\+::\+Drill@{shapes\+::\+Drill}}
+\subsubsection[{steps}]{\setlength{\rightskip}{0pt plus 5cm}tuple shapes.\+Drill.\+steps = math.\+floor({\bf dist}/self.\+peck)\hspace{0.3cm}{\ttfamily [static]}}\label{classshapes_1_1_drill_aba5c261914fcec674bd9b9c039aa53a5}
+\hypertarget{classshapes_1_1_drill_a05155870584a057702ebfe0ad574a8bb}{}\index{shapes\+::\+Drill@{shapes\+::\+Drill}!steps@{steps}}
+\index{steps@{steps}!shapes\+::\+Drill@{shapes\+::\+Drill}}
+\subsubsection[{steps}]{\setlength{\rightskip}{0pt plus 5cm}int shapes.\+Drill.\+steps = 1\hspace{0.3cm}{\ttfamily [static]}}\label{classshapes_1_1_drill_a05155870584a057702ebfe0ad574a8bb}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{shapes_8py}{shapes.\+py}\end{DoxyCompactItemize}

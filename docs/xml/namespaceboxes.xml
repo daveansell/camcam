@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespaceboxes" kind="namespace" language="Python">
+    <compoundname>boxes</compoundname>
+    <innerclass refid="classboxes_1_1_arbitrary_box" prot="public">boxes::ArbitraryBox</innerclass>
+    <innerclass refid="classboxes_1_1_pi_cam_turret" prot="public">boxes::PiCamTurret</innerclass>
+    <innerclass refid="classboxes_1_1_plain_box" prot="public">boxes::PlainBox</innerclass>
+    <innerclass refid="classboxes_1_1_rounded_box" prot="public">boxes::RoundedBox</innerclass>
+    <innerclass refid="classboxes_1_1_rounded_box_end" prot="public">boxes::RoundedBoxEnd</innerclass>
+    <innerclass refid="classboxes_1_1_thermal_turret" prot="public">boxes::ThermalTurret</innerclass>
+    <innerclass refid="classboxes_1_1_turret" prot="public">boxes::Turret</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/boxes.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

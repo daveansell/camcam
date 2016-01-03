@@ -1,0 +1,3251 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classbezier_1_1_curve_pair" kind="class" language="Python" prot="public">
+    <compoundname>bezier::CurvePair</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">boolean</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">overlapping</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">false</basecompoundref>
+    <basecompoundref refid="classbezier_1_1_bezier_curve" prot="public" virt="non-virtual">bezier.BezierCurve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c1</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c2</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t1</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t2</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">s1</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">s2</basecompoundref>
+    <basecompoundref refid="classbezier_1_1_bezier_curve" prot="public" virt="non-virtual">bezier.BezierCurve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">_c1</basecompoundref>
+    <basecompoundref refid="classbezier_1_1_bezier_curve" prot="public" virt="non-virtual">bezier.BezierCurve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">_c2</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c1</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">_c1</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c2</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">_c2</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">overlapping</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">hasBoundOverlapWith</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c2</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Is</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">this</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">pair</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">an</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">overlapping</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">pair</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">boolean</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">hasOverlap</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">return</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">overlapping</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Split</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">up</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">this</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">pair</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">into</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">two</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">subcurves</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">for</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">each</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">pair</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">and</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">permute</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">combine</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">splitAndCombine</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">sc</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">new</basecompoundref>
+    <basecompoundref refid="classbezier_1_1_bezier_curve" prot="public" virt="non-virtual">bezier.BezierCurve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c1s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">split</basecompoundref>
+    <basecompoundref refid="classbezier_1_1_bezier_curve" prot="public" virt="non-virtual">bezier.BezierCurve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c2s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">split</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">sc</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">new</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c1s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c2s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">sc</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">new</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c1s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c2s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">sc</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">new</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c1s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c2s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">sc</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">new</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c1s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c2s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">return</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">sc</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">void</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">setTValues</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t1s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">getInterval</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t2s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">getInterval</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t1</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t1s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t1s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t2</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t2s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t2s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Is</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">this</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">pair</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">small</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">enough</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">to</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">count</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">as</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">done</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">boolean</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">smallEnough</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">return</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">getCurveLength</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">and</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">getCurveLength</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">draw</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">these</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">curves</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">with</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">linked</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">coloring</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">void</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">draw</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">color</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">draw</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">draw</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">ye</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">olde</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">toStringe</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">String</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">toString</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">return</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c1</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">c2</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">A</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">special</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">computer</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">class</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">for</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">generic</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">operations</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">static</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">computation</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">class</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">class</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">BezierComputer</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">LUT</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">for</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">how</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">many</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">de</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Casteljau</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">interpolation</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">markers</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">are</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">required</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">private</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">marks</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Look</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">up</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">how</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">many</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">markers</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">are</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">there</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">in</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">de</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Casteljau</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">span</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">for</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">order</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">private</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">markers</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">if</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">length</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">marks</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">new</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">for</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">i</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">v</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">i</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">length</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">i</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">v</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">i</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">marks</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">i</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">v</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">return</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">marks</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">LUT</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">for</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">binomial</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">coefficient</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">arrays</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">per</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">curve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">order</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">private</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">binomial_coefficients</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Look</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">up</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">what</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">the</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">binomial</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">coefficient</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">is</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">for</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">pair</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">private</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">binomials</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">while</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">length</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">length</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">update_coefficients</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">new</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">arrayCopy</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">binomial_coefficients</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">update_coefficients</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">current</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">binomial_coefficients</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">next</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">new</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">update_coefficients</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">next</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">fill</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">in</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">next</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">row</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">next</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">for</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">i</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">i</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">length</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">i</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">next</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">i</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">current</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">i</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">current</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">i</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">next</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">swap</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">binomial_coefficients</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">update_coefficients</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">return</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">binomial_coefficients</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">compute</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">a</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">polynomial</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">term</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">at</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">private</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">polyterm</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">return</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">pow</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">pow</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Compute</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">the</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">curve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">value</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">at</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">getValue</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">v</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">order</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">length</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">value</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">for</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">order</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">if</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">v</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">continue</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">value</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">binomials</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">polyterm</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">v</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">return</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">value</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Compute</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">the</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">curve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">derivative</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">hodograph</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">at</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">getDerivative</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">derivative</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">v</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">the</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">derivative</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">of</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">any</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">less</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">function</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">is</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">zero</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">length</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">if</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">return</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">direct</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">values</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">compute</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">if</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">derivative</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">value</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">for</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">value</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">binomials</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">pow</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">pow</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">v</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">return</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">value</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Still</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">some</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">derivative</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">go</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">down</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">one</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">order</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">then</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">try</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">for</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">the</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">lower</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">order</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">curve</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">s</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">else</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">_v</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">new</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">float</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">length</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">for</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">int</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">length</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">_v</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">n</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">v</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">v</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">k</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">return</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">getDerivative</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">derivative</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">t</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">_v</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">quadratic</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">A</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">B</basecompoundref>
+    <derivedcompoundref refid="classbezier_1_1_no_ratio_exists_exception" prot="public" virt="non-virtual">bezier.NoRatioExistsException</derivedcompoundref>
+    <derivedcompoundref refid="classbezier_1_1_no_ratio_exists_exception" prot="public" virt="non-virtual">bezier.NoRatioExistsException</derivedcompoundref>
+    <derivedcompoundref refid="classbezier_1_1_no_ratio_exists_exception" prot="public" virt="non-virtual">bezier.NoRatioExistsException</derivedcompoundref>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="339">
+        <label>one</label>
+      </node>
+      <node id="225">
+        <label>c1s</label>
+      </node>
+      <node id="211">
+        <label>return</label>
+      </node>
+      <node id="254">
+        <label>ye</label>
+      </node>
+      <node id="243">
+        <label>c2::getCurveLength</label>
+      </node>
+      <node id="227">
+        <label>c2s</label>
+      </node>
+      <node id="249">
+        <label>coloring</label>
+      </node>
+      <node id="272">
+        <label>Casteljau</label>
+      </node>
+      <node id="295">
+        <label>curve</label>
+      </node>
+      <node id="208">
+        <label>pair</label>
+      </node>
+      <node id="207">
+        <label>this</label>
+      </node>
+      <node id="259">
+        <label>A</label>
+      </node>
+      <node id="347">
+        <label>B</label>
+      </node>
+      <node id="250">
+        <label>color</label>
+      </node>
+      <node id="322">
+        <label>getValue</label>
+      </node>
+      <node id="226">
+        <label>c1::split</label>
+      </node>
+      <node id="281">
+        <label>there</label>
+      </node>
+      <node id="313">
+        <label>a</label>
+      </node>
+      <node id="191">
+        <label>boolean</label>
+      </node>
+      <node id="251">
+        <label>c</label>
+      </node>
+      <node id="228">
+        <label>c2::split</label>
+      </node>
+      <node id="245">
+        <label>these</label>
+      </node>
+      <node id="214">
+        <label>into</label>
+      </node>
+      <node id="288">
+        <label>i</label>
+      </node>
+      <node id="338">
+        <label>down</label>
+      </node>
+      <node id="300">
+        <label>k</label>
+      </node>
+      <node id="285">
+        <label>n</label>
+      </node>
+      <node id="273">
+        <label>s</label>
+      </node>
+      <node id="317">
+        <label>t</label>
+      </node>
+      <node id="297">
+        <label>what</label>
+      </node>
+      <node id="289">
+        <label>v</label>
+      </node>
+      <node id="274">
+        <label>interpolation</label>
+      </node>
+      <node id="190">
+        <label>bezier.CurvePair</label>
+        <link refid="classbezier_1_1_curve_pair"/>
+        <childnode refid="191" relation="public-inheritance">
+        </childnode>
+        <childnode refid="192" relation="public-inheritance">
+        </childnode>
+        <childnode refid="193" relation="public-inheritance">
+        </childnode>
+        <childnode refid="194" relation="public-inheritance">
+        </childnode>
+        <childnode refid="195" relation="public-inheritance">
+        </childnode>
+        <childnode refid="196" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="198" relation="public-inheritance">
+        </childnode>
+        <childnode refid="199" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="201" relation="public-inheritance">
+        </childnode>
+        <childnode refid="202" relation="public-inheritance">
+        </childnode>
+        <childnode refid="194" relation="public-inheritance">
+        </childnode>
+        <childnode refid="203" relation="public-inheritance">
+        </childnode>
+        <childnode refid="194" relation="public-inheritance">
+        </childnode>
+        <childnode refid="204" relation="public-inheritance">
+        </childnode>
+        <childnode refid="195" relation="public-inheritance">
+        </childnode>
+        <childnode refid="203" relation="public-inheritance">
+        </childnode>
+        <childnode refid="196" relation="public-inheritance">
+        </childnode>
+        <childnode refid="204" relation="public-inheritance">
+        </childnode>
+        <childnode refid="192" relation="public-inheritance">
+        </childnode>
+        <childnode refid="205" relation="public-inheritance">
+        </childnode>
+        <childnode refid="196" relation="public-inheritance">
+        </childnode>
+        <childnode refid="206" relation="public-inheritance">
+        </childnode>
+        <childnode refid="207" relation="public-inheritance">
+        </childnode>
+        <childnode refid="208" relation="public-inheritance">
+        </childnode>
+        <childnode refid="209" relation="public-inheritance">
+        </childnode>
+        <childnode refid="192" relation="public-inheritance">
+        </childnode>
+        <childnode refid="208" relation="public-inheritance">
+        </childnode>
+        <childnode refid="191" relation="public-inheritance">
+        </childnode>
+        <childnode refid="210" relation="public-inheritance">
+        </childnode>
+        <childnode refid="211" relation="public-inheritance">
+        </childnode>
+        <childnode refid="192" relation="public-inheritance">
+        </childnode>
+        <childnode refid="212" relation="public-inheritance">
+        </childnode>
+        <childnode refid="213" relation="public-inheritance">
+        </childnode>
+        <childnode refid="207" relation="public-inheritance">
+        </childnode>
+        <childnode refid="208" relation="public-inheritance">
+        </childnode>
+        <childnode refid="214" relation="public-inheritance">
+        </childnode>
+        <childnode refid="215" relation="public-inheritance">
+        </childnode>
+        <childnode refid="216" relation="public-inheritance">
+        </childnode>
+        <childnode refid="217" relation="public-inheritance">
+        </childnode>
+        <childnode refid="218" relation="public-inheritance">
+        </childnode>
+        <childnode refid="208" relation="public-inheritance">
+        </childnode>
+        <childnode refid="219" relation="public-inheritance">
+        </childnode>
+        <childnode refid="220" relation="public-inheritance">
+        </childnode>
+        <childnode refid="221" relation="public-inheritance">
+        </childnode>
+        <childnode refid="222" relation="public-inheritance">
+        </childnode>
+        <childnode refid="223" relation="public-inheritance">
+        </childnode>
+        <childnode refid="224" relation="public-inheritance">
+        </childnode>
+        <childnode refid="194" relation="public-inheritance">
+        </childnode>
+        <childnode refid="225" relation="public-inheritance">
+        </childnode>
+        <childnode refid="226" relation="public-inheritance">
+        </childnode>
+        <childnode refid="194" relation="public-inheritance">
+        </childnode>
+        <childnode refid="227" relation="public-inheritance">
+        </childnode>
+        <childnode refid="228" relation="public-inheritance">
+        </childnode>
+        <childnode refid="223" relation="public-inheritance">
+        </childnode>
+        <childnode refid="224" relation="public-inheritance">
+        </childnode>
+        <childnode refid="225" relation="public-inheritance">
+        </childnode>
+        <childnode refid="227" relation="public-inheritance">
+        </childnode>
+        <childnode refid="223" relation="public-inheritance">
+        </childnode>
+        <childnode refid="224" relation="public-inheritance">
+        </childnode>
+        <childnode refid="225" relation="public-inheritance">
+        </childnode>
+        <childnode refid="227" relation="public-inheritance">
+        </childnode>
+        <childnode refid="223" relation="public-inheritance">
+        </childnode>
+        <childnode refid="224" relation="public-inheritance">
+        </childnode>
+        <childnode refid="225" relation="public-inheritance">
+        </childnode>
+        <childnode refid="227" relation="public-inheritance">
+        </childnode>
+        <childnode refid="223" relation="public-inheritance">
+        </childnode>
+        <childnode refid="224" relation="public-inheritance">
+        </childnode>
+        <childnode refid="225" relation="public-inheritance">
+        </childnode>
+        <childnode refid="227" relation="public-inheritance">
+        </childnode>
+        <childnode refid="211" relation="public-inheritance">
+        </childnode>
+        <childnode refid="223" relation="public-inheritance">
+        </childnode>
+        <childnode refid="229" relation="public-inheritance">
+        </childnode>
+        <childnode refid="230" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="231" relation="public-inheritance">
+        </childnode>
+        <childnode refid="232" relation="public-inheritance">
+        </childnode>
+        <childnode refid="233" relation="public-inheritance">
+        </childnode>
+        <childnode refid="234" relation="public-inheritance">
+        </childnode>
+        <childnode refid="198" relation="public-inheritance">
+        </childnode>
+        <childnode refid="231" relation="public-inheritance">
+        </childnode>
+        <childnode refid="231" relation="public-inheritance">
+        </childnode>
+        <childnode refid="199" relation="public-inheritance">
+        </childnode>
+        <childnode refid="233" relation="public-inheritance">
+        </childnode>
+        <childnode refid="233" relation="public-inheritance">
+        </childnode>
+        <childnode refid="206" relation="public-inheritance">
+        </childnode>
+        <childnode refid="207" relation="public-inheritance">
+        </childnode>
+        <childnode refid="208" relation="public-inheritance">
+        </childnode>
+        <childnode refid="235" relation="public-inheritance">
+        </childnode>
+        <childnode refid="236" relation="public-inheritance">
+        </childnode>
+        <childnode refid="237" relation="public-inheritance">
+        </childnode>
+        <childnode refid="238" relation="public-inheritance">
+        </childnode>
+        <childnode refid="239" relation="public-inheritance">
+        </childnode>
+        <childnode refid="240" relation="public-inheritance">
+        </childnode>
+        <childnode refid="191" relation="public-inheritance">
+        </childnode>
+        <childnode refid="241" relation="public-inheritance">
+        </childnode>
+        <childnode refid="211" relation="public-inheritance">
+        </childnode>
+        <childnode refid="242" relation="public-inheritance">
+        </childnode>
+        <childnode refid="219" relation="public-inheritance">
+        </childnode>
+        <childnode refid="243" relation="public-inheritance">
+        </childnode>
+        <childnode refid="244" relation="public-inheritance">
+        </childnode>
+        <childnode refid="245" relation="public-inheritance">
+        </childnode>
+        <childnode refid="246" relation="public-inheritance">
+        </childnode>
+        <childnode refid="247" relation="public-inheritance">
+        </childnode>
+        <childnode refid="248" relation="public-inheritance">
+        </childnode>
+        <childnode refid="249" relation="public-inheritance">
+        </childnode>
+        <childnode refid="229" relation="public-inheritance">
+        </childnode>
+        <childnode refid="244" relation="public-inheritance">
+        </childnode>
+        <childnode refid="250" relation="public-inheritance">
+        </childnode>
+        <childnode refid="251" relation="public-inheritance">
+        </childnode>
+        <childnode refid="252" relation="public-inheritance">
+        </childnode>
+        <childnode refid="251" relation="public-inheritance">
+        </childnode>
+        <childnode refid="253" relation="public-inheritance">
+        </childnode>
+        <childnode refid="251" relation="public-inheritance">
+        </childnode>
+        <childnode refid="254" relation="public-inheritance">
+        </childnode>
+        <childnode refid="255" relation="public-inheritance">
+        </childnode>
+        <childnode refid="256" relation="public-inheritance">
+        </childnode>
+        <childnode refid="257" relation="public-inheritance">
+        </childnode>
+        <childnode refid="258" relation="public-inheritance">
+        </childnode>
+        <childnode refid="211" relation="public-inheritance">
+        </childnode>
+        <childnode refid="195" relation="public-inheritance">
+        </childnode>
+        <childnode refid="196" relation="public-inheritance">
+        </childnode>
+        <childnode refid="259" relation="public-inheritance">
+        </childnode>
+        <childnode refid="260" relation="public-inheritance">
+        </childnode>
+        <childnode refid="261" relation="public-inheritance">
+        </childnode>
+        <childnode refid="262" relation="public-inheritance">
+        </childnode>
+        <childnode refid="217" relation="public-inheritance">
+        </childnode>
+        <childnode refid="263" relation="public-inheritance">
+        </childnode>
+        <childnode refid="264" relation="public-inheritance">
+        </childnode>
+        <childnode refid="265" relation="public-inheritance">
+        </childnode>
+        <childnode refid="266" relation="public-inheritance">
+        </childnode>
+        <childnode refid="262" relation="public-inheritance">
+        </childnode>
+        <childnode refid="262" relation="public-inheritance">
+        </childnode>
+        <childnode refid="267" relation="public-inheritance">
+        </childnode>
+        <childnode refid="268" relation="public-inheritance">
+        </childnode>
+        <childnode refid="217" relation="public-inheritance">
+        </childnode>
+        <childnode refid="269" relation="public-inheritance">
+        </childnode>
+        <childnode refid="270" relation="public-inheritance">
+        </childnode>
+        <childnode refid="271" relation="public-inheritance">
+        </childnode>
+        <childnode refid="272" relation="public-inheritance">
+        </childnode>
+        <childnode refid="273" relation="public-inheritance">
+        </childnode>
+        <childnode refid="274" relation="public-inheritance">
+        </childnode>
+        <childnode refid="275" relation="public-inheritance">
+        </childnode>
+        <childnode refid="276" relation="public-inheritance">
+        </childnode>
+        <childnode refid="277" relation="public-inheritance">
+        </childnode>
+        <childnode refid="278" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="279" relation="public-inheritance">
+        </childnode>
+        <childnode refid="280" relation="public-inheritance">
+        </childnode>
+        <childnode refid="213" relation="public-inheritance">
+        </childnode>
+        <childnode refid="269" relation="public-inheritance">
+        </childnode>
+        <childnode refid="270" relation="public-inheritance">
+        </childnode>
+        <childnode refid="275" relation="public-inheritance">
+        </childnode>
+        <childnode refid="276" relation="public-inheritance">
+        </childnode>
+        <childnode refid="281" relation="public-inheritance">
+        </childnode>
+        <childnode refid="282" relation="public-inheritance">
+        </childnode>
+        <childnode refid="271" relation="public-inheritance">
+        </childnode>
+        <childnode refid="272" relation="public-inheritance">
+        </childnode>
+        <childnode refid="273" relation="public-inheritance">
+        </childnode>
+        <childnode refid="283" relation="public-inheritance">
+        </childnode>
+        <childnode refid="217" relation="public-inheritance">
+        </childnode>
+        <childnode refid="284" relation="public-inheritance">
+        </childnode>
+        <childnode refid="278" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="275" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="286" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="287" relation="public-inheritance">
+        </childnode>
+        <childnode refid="279" relation="public-inheritance">
+        </childnode>
+        <childnode refid="224" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="217" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="288" relation="public-inheritance">
+        </childnode>
+        <childnode refid="289" relation="public-inheritance">
+        </childnode>
+        <childnode refid="288" relation="public-inheritance">
+        </childnode>
+        <childnode refid="290" relation="public-inheritance">
+        </childnode>
+        <childnode refid="288" relation="public-inheritance">
+        </childnode>
+        <childnode refid="289" relation="public-inheritance">
+        </childnode>
+        <childnode refid="288" relation="public-inheritance">
+        </childnode>
+        <childnode refid="279" relation="public-inheritance">
+        </childnode>
+        <childnode refid="288" relation="public-inheritance">
+        </childnode>
+        <childnode refid="289" relation="public-inheritance">
+        </childnode>
+        <childnode refid="211" relation="public-inheritance">
+        </childnode>
+        <childnode refid="279" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="268" relation="public-inheritance">
+        </childnode>
+        <childnode refid="217" relation="public-inheritance">
+        </childnode>
+        <childnode refid="291" relation="public-inheritance">
+        </childnode>
+        <childnode refid="292" relation="public-inheritance">
+        </childnode>
+        <childnode refid="293" relation="public-inheritance">
+        </childnode>
+        <childnode refid="294" relation="public-inheritance">
+        </childnode>
+        <childnode refid="295" relation="public-inheritance">
+        </childnode>
+        <childnode refid="284" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="278" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="296" relation="public-inheritance">
+        </childnode>
+        <childnode refid="280" relation="public-inheritance">
+        </childnode>
+        <childnode refid="213" relation="public-inheritance">
+        </childnode>
+        <childnode refid="297" relation="public-inheritance">
+        </childnode>
+        <childnode refid="298" relation="public-inheritance">
+        </childnode>
+        <childnode refid="291" relation="public-inheritance">
+        </childnode>
+        <childnode refid="292" relation="public-inheritance">
+        </childnode>
+        <childnode refid="299" relation="public-inheritance">
+        </childnode>
+        <childnode refid="217" relation="public-inheritance">
+        </childnode>
+        <childnode refid="208" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="278" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="301" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="302" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="303" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="273" relation="public-inheritance">
+        </childnode>
+        <childnode refid="290" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="304" relation="public-inheritance">
+        </childnode>
+        <childnode refid="224" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="273" relation="public-inheritance">
+        </childnode>
+        <childnode refid="305" relation="public-inheritance">
+        </childnode>
+        <childnode refid="296" relation="public-inheritance">
+        </childnode>
+        <childnode refid="304" relation="public-inheritance">
+        </childnode>
+        <childnode refid="273" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="306" relation="public-inheritance">
+        </childnode>
+        <childnode refid="296" relation="public-inheritance">
+        </childnode>
+        <childnode refid="273" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="307" relation="public-inheritance">
+        </childnode>
+        <childnode refid="224" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="273" relation="public-inheritance">
+        </childnode>
+        <childnode refid="304" relation="public-inheritance">
+        </childnode>
+        <childnode refid="273" relation="public-inheritance">
+        </childnode>
+        <childnode refid="307" relation="public-inheritance">
+        </childnode>
+        <childnode refid="308" relation="public-inheritance">
+        </childnode>
+        <childnode refid="282" relation="public-inheritance">
+        </childnode>
+        <childnode refid="307" relation="public-inheritance">
+        </childnode>
+        <childnode refid="309" relation="public-inheritance">
+        </childnode>
+        <childnode refid="307" relation="public-inheritance">
+        </childnode>
+        <childnode refid="217" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="288" relation="public-inheritance">
+        </childnode>
+        <childnode refid="288" relation="public-inheritance">
+        </childnode>
+        <childnode refid="310" relation="public-inheritance">
+        </childnode>
+        <childnode refid="288" relation="public-inheritance">
+        </childnode>
+        <childnode refid="307" relation="public-inheritance">
+        </childnode>
+        <childnode refid="288" relation="public-inheritance">
+        </childnode>
+        <childnode refid="306" relation="public-inheritance">
+        </childnode>
+        <childnode refid="288" relation="public-inheritance">
+        </childnode>
+        <childnode refid="306" relation="public-inheritance">
+        </childnode>
+        <childnode refid="288" relation="public-inheritance">
+        </childnode>
+        <childnode refid="307" relation="public-inheritance">
+        </childnode>
+        <childnode refid="273" relation="public-inheritance">
+        </childnode>
+        <childnode refid="311" relation="public-inheritance">
+        </childnode>
+        <childnode refid="296" relation="public-inheritance">
+        </childnode>
+        <childnode refid="304" relation="public-inheritance">
+        </childnode>
+        <childnode refid="211" relation="public-inheritance">
+        </childnode>
+        <childnode refid="296" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="312" relation="public-inheritance">
+        </childnode>
+        <childnode refid="313" relation="public-inheritance">
+        </childnode>
+        <childnode refid="314" relation="public-inheritance">
+        </childnode>
+        <childnode refid="315" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="316" relation="public-inheritance">
+        </childnode>
+        <childnode refid="317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="278" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="318" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="211" relation="public-inheritance">
+        </childnode>
+        <childnode refid="319" relation="public-inheritance">
+        </childnode>
+        <childnode refid="317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="319" relation="public-inheritance">
+        </childnode>
+        <childnode refid="317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="320" relation="public-inheritance">
+        </childnode>
+        <childnode refid="298" relation="public-inheritance">
+        </childnode>
+        <childnode refid="295" relation="public-inheritance">
+        </childnode>
+        <childnode refid="321" relation="public-inheritance">
+        </childnode>
+        <childnode refid="316" relation="public-inheritance">
+        </childnode>
+        <childnode refid="317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="322" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="289" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="284" relation="public-inheritance">
+        </childnode>
+        <childnode refid="323" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="321" relation="public-inheritance">
+        </childnode>
+        <childnode refid="217" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="284" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="286" relation="public-inheritance">
+        </childnode>
+        <childnode refid="289" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="324" relation="public-inheritance">
+        </childnode>
+        <childnode refid="321" relation="public-inheritance">
+        </childnode>
+        <childnode refid="301" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="318" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="289" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="211" relation="public-inheritance">
+        </childnode>
+        <childnode refid="321" relation="public-inheritance">
+        </childnode>
+        <childnode refid="320" relation="public-inheritance">
+        </childnode>
+        <childnode refid="298" relation="public-inheritance">
+        </childnode>
+        <childnode refid="295" relation="public-inheritance">
+        </childnode>
+        <childnode refid="325" relation="public-inheritance">
+        </childnode>
+        <childnode refid="326" relation="public-inheritance">
+        </childnode>
+        <childnode refid="316" relation="public-inheritance">
+        </childnode>
+        <childnode refid="317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="327" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="325" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="289" relation="public-inheritance">
+        </childnode>
+        <childnode refid="298" relation="public-inheritance">
+        </childnode>
+        <childnode refid="325" relation="public-inheritance">
+        </childnode>
+        <childnode refid="328" relation="public-inheritance">
+        </childnode>
+        <childnode refid="329" relation="public-inheritance">
+        </childnode>
+        <childnode refid="317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="330" relation="public-inheritance">
+        </childnode>
+        <childnode refid="331" relation="public-inheritance">
+        </childnode>
+        <childnode refid="299" relation="public-inheritance">
+        </childnode>
+        <childnode refid="332" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="290" relation="public-inheritance">
+        </childnode>
+        <childnode refid="286" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="211" relation="public-inheritance">
+        </childnode>
+        <childnode refid="333" relation="public-inheritance">
+        </childnode>
+        <childnode refid="334" relation="public-inheritance">
+        </childnode>
+        <childnode refid="312" relation="public-inheritance">
+        </childnode>
+        <childnode refid="286" relation="public-inheritance">
+        </childnode>
+        <childnode refid="325" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="321" relation="public-inheritance">
+        </childnode>
+        <childnode refid="217" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="321" relation="public-inheritance">
+        </childnode>
+        <childnode refid="301" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="319" relation="public-inheritance">
+        </childnode>
+        <childnode refid="317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="319" relation="public-inheritance">
+        </childnode>
+        <childnode refid="317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="289" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="211" relation="public-inheritance">
+        </childnode>
+        <childnode refid="321" relation="public-inheritance">
+        </childnode>
+        <childnode refid="335" relation="public-inheritance">
+        </childnode>
+        <childnode refid="336" relation="public-inheritance">
+        </childnode>
+        <childnode refid="325" relation="public-inheritance">
+        </childnode>
+        <childnode refid="337" relation="public-inheritance">
+        </childnode>
+        <childnode refid="338" relation="public-inheritance">
+        </childnode>
+        <childnode refid="339" relation="public-inheritance">
+        </childnode>
+        <childnode refid="284" relation="public-inheritance">
+        </childnode>
+        <childnode refid="340" relation="public-inheritance">
+        </childnode>
+        <childnode refid="341" relation="public-inheritance">
+        </childnode>
+        <childnode refid="217" relation="public-inheritance">
+        </childnode>
+        <childnode refid="298" relation="public-inheritance">
+        </childnode>
+        <childnode refid="342" relation="public-inheritance">
+        </childnode>
+        <childnode refid="284" relation="public-inheritance">
+        </childnode>
+        <childnode refid="295" relation="public-inheritance">
+        </childnode>
+        <childnode refid="273" relation="public-inheritance">
+        </childnode>
+        <childnode refid="343" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="344" relation="public-inheritance">
+        </childnode>
+        <childnode refid="224" relation="public-inheritance">
+        </childnode>
+        <childnode refid="197" relation="public-inheritance">
+        </childnode>
+        <childnode refid="290" relation="public-inheritance">
+        </childnode>
+        <childnode refid="217" relation="public-inheritance">
+        </childnode>
+        <childnode refid="200" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="345" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="344" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="285" relation="public-inheritance">
+        </childnode>
+        <childnode refid="289" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="289" relation="public-inheritance">
+        </childnode>
+        <childnode refid="300" relation="public-inheritance">
+        </childnode>
+        <childnode refid="211" relation="public-inheritance">
+        </childnode>
+        <childnode refid="327" relation="public-inheritance">
+        </childnode>
+        <childnode refid="325" relation="public-inheritance">
+        </childnode>
+        <childnode refid="317" relation="public-inheritance">
+        </childnode>
+        <childnode refid="344" relation="public-inheritance">
+        </childnode>
+        <childnode refid="346" relation="public-inheritance">
+        </childnode>
+        <childnode refid="259" relation="public-inheritance">
+        </childnode>
+        <childnode refid="347" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="294">
+        <label>per</label>
+      </node>
+      <node id="220">
+        <label>permute</label>
+      </node>
+      <node id="193">
+        <label>false</label>
+      </node>
+      <node id="257">
+        <label>String</label>
+      </node>
+      <node id="262">
+        <label>class</label>
+      </node>
+      <node id="298">
+        <label>the</label>
+      </node>
+      <node id="325">
+        <label>derivative</label>
+      </node>
+      <node id="307">
+        <label>next</label>
+      </node>
+      <node id="230">
+        <label>setTValues</label>
+      </node>
+      <node id="266">
+        <label>computation</label>
+      </node>
+      <node id="236">
+        <label>enough</label>
+      </node>
+      <node id="279">
+        <label>marks</label>
+      </node>
+      <node id="256">
+        <label>toStringe</label>
+      </node>
+      <node id="192">
+        <label>overlapping</label>
+      </node>
+      <node id="342">
+        <label>lower</label>
+      </node>
+      <node id="269">
+        <label>how</label>
+      </node>
+      <node id="206">
+        <label>Is</label>
+      </node>
+      <node id="222">
+        <label>splitAndCombine</label>
+      </node>
+      <node id="197">
+        <label>float</label>
+      </node>
+      <node id="304">
+        <label>update_coefficients</label>
+      </node>
+      <node id="333">
+        <label>direct</label>
+      </node>
+      <node id="218">
+        <label>each</label>
+      </node>
+      <node id="194">
+        <label>bezier.BezierCurve</label>
+        <link refid="classbezier_1_1_bezier_curve"/>
+      </node>
+      <node id="319">
+        <label>pow</label>
+      </node>
+      <node id="345">
+        <label>_v::length</label>
+      </node>
+      <node id="232">
+        <label>c1::getInterval</label>
+      </node>
+      <node id="234">
+        <label>c2::getInterval</label>
+      </node>
+      <node id="231">
+        <label>t1s</label>
+      </node>
+      <node id="335">
+        <label>Still</label>
+      </node>
+      <node id="235">
+        <label>small</label>
+      </node>
+      <node id="343">
+        <label>else</label>
+      </node>
+      <node id="238">
+        <label>count</label>
+      </node>
+      <node id="233">
+        <label>t2s</label>
+      </node>
+      <node id="326">
+        <label>hodograph</label>
+      </node>
+      <node id="341">
+        <label>try</label>
+      </node>
+      <node id="248">
+        <label>linked</label>
+      </node>
+      <node id="275">
+        <label>markers</label>
+      </node>
+      <node id="321">
+        <label>value</label>
+      </node>
+      <node id="253">
+        <label>c2::draw</label>
+      </node>
+      <node id="301">
+        <label>binomials</label>
+      </node>
+      <node id="334">
+        <label>values</label>
+      </node>
+      <node id="215">
+        <label>two</label>
+      </node>
+      <node id="305">
+        <label>arrayCopy</label>
+      </node>
+      <node id="315">
+        <label>term</label>
+      </node>
+      <node id="221">
+        <label>combine</label>
+      </node>
+      <node id="264">
+        <label>operations</label>
+      </node>
+      <node id="219">
+        <label>and</label>
+      </node>
+      <node id="323">
+        <label>v::length</label>
+      </node>
+      <node id="241">
+        <label>smallEnough</label>
+      </node>
+      <node id="329">
+        <label>any</label>
+      </node>
+      <node id="284">
+        <label>order</label>
+      </node>
+      <node id="312">
+        <label>compute</label>
+      </node>
+      <node id="306">
+        <label>current</label>
+      </node>
+      <node id="331">
+        <label>function</label>
+      </node>
+      <node id="200">
+        <label>int</label>
+      </node>
+      <node id="346">
+        <label>quadratic</label>
+      </node>
+      <node id="320">
+        <label>Compute</label>
+      </node>
+      <node id="293">
+        <label>arrays</label>
+      </node>
+      <node id="276">
+        <label>are</label>
+      </node>
+      <node id="291">
+        <label>binomial</label>
+      </node>
+      <node id="308">
+        <label>fill</label>
+      </node>
+      <node id="244">
+        <label>draw</label>
+      </node>
+      <node id="327">
+        <label>getDerivative</label>
+      </node>
+      <node id="280">
+        <label>Look</label>
+      </node>
+      <node id="314">
+        <label>polynomial</label>
+      </node>
+      <node id="210">
+        <label>hasOverlap</label>
+      </node>
+      <node id="348">
+        <label>bezier.NoRatioExistsException</label>
+        <link refid="classbezier_1_1_no_ratio_exists_exception"/>
+        <childnode refid="190" relation="public-inheritance">
+        </childnode>
+        <childnode refid="190" relation="public-inheritance">
+        </childnode>
+        <childnode refid="190" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="303">
+        <label>binomial_coefficients::length</label>
+      </node>
+      <node id="195">
+        <label>c1</label>
+      </node>
+      <node id="196">
+        <label>c2</label>
+      </node>
+      <node id="344">
+        <label>_v</label>
+      </node>
+      <node id="224">
+        <label>new</label>
+      </node>
+      <node id="209">
+        <label>an</label>
+      </node>
+      <node id="239">
+        <label>as</label>
+      </node>
+      <node id="316">
+        <label>at</label>
+      </node>
+      <node id="247">
+        <label>with</label>
+      </node>
+      <node id="216">
+        <label>subcurves</label>
+      </node>
+      <node id="292">
+        <label>coefficient</label>
+      </node>
+      <node id="311">
+        <label>swap</label>
+      </node>
+      <node id="271">
+        <label>de</label>
+      </node>
+      <node id="255">
+        <label>olde</label>
+      </node>
+      <node id="268">
+        <label>LUT</label>
+      </node>
+      <node id="296">
+        <label>binomial_coefficients</label>
+      </node>
+      <node id="203">
+        <label>_c1</label>
+      </node>
+      <node id="204">
+        <label>_c2</label>
+      </node>
+      <node id="337">
+        <label>go</label>
+      </node>
+      <node id="217">
+        <label>for</label>
+      </node>
+      <node id="263">
+        <label>generic</label>
+      </node>
+      <node id="287">
+        <label>marks::length</label>
+      </node>
+      <node id="286">
+        <label>if</label>
+      </node>
+      <node id="324">
+        <label>continue</label>
+      </node>
+      <node id="282">
+        <label>in</label>
+      </node>
+      <node id="299">
+        <label>is</label>
+      </node>
+      <node id="290">
+        <label>length</label>
+      </node>
+      <node id="332">
+        <label>zero</label>
+      </node>
+      <node id="309">
+        <label>row</label>
+      </node>
+      <node id="212">
+        <label>Split</label>
+      </node>
+      <node id="261">
+        <label>computer</label>
+      </node>
+      <node id="205">
+        <label>c1::hasBoundOverlapWith</label>
+      </node>
+      <node id="246">
+        <label>curves</label>
+      </node>
+      <node id="252">
+        <label>c1::draw</label>
+      </node>
+      <node id="336">
+        <label>some</label>
+      </node>
+      <node id="310">
+        <label>current::length</label>
+      </node>
+      <node id="260">
+        <label>special</label>
+      </node>
+      <node id="302">
+        <label>while</label>
+      </node>
+      <node id="328">
+        <label>of</label>
+      </node>
+      <node id="267">
+        <label>BezierComputer</label>
+      </node>
+      <node id="201">
+        <label>s1</label>
+      </node>
+      <node id="277">
+        <label>required</label>
+      </node>
+      <node id="202">
+        <label>s2</label>
+      </node>
+      <node id="198">
+        <label>t1</label>
+      </node>
+      <node id="199">
+        <label>t2</label>
+      </node>
+      <node id="283">
+        <label>span</label>
+      </node>
+      <node id="223">
+        <label>sc</label>
+      </node>
+      <node id="318">
+        <label>polyterm</label>
+      </node>
+      <node id="278">
+        <label>private</label>
+      </node>
+      <node id="229">
+        <label>void</label>
+      </node>
+      <node id="237">
+        <label>to</label>
+      </node>
+      <node id="240">
+        <label>done</label>
+      </node>
+      <node id="270">
+        <label>many</label>
+      </node>
+      <node id="213">
+        <label>up</label>
+      </node>
+      <node id="258">
+        <label>toString</label>
+      </node>
+      <node id="242">
+        <label>c1::getCurveLength</label>
+      </node>
+      <node id="265">
+        <label>static</label>
+      </node>
+      <node id="330">
+        <label>less</label>
+      </node>
+      <node id="340">
+        <label>then</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="498">
+        <label>one</label>
+      </node>
+      <node id="384">
+        <label>c1s</label>
+      </node>
+      <node id="370">
+        <label>return</label>
+      </node>
+      <node id="413">
+        <label>ye</label>
+      </node>
+      <node id="402">
+        <label>c2::getCurveLength</label>
+      </node>
+      <node id="386">
+        <label>c2s</label>
+      </node>
+      <node id="408">
+        <label>coloring</label>
+      </node>
+      <node id="431">
+        <label>Casteljau</label>
+      </node>
+      <node id="454">
+        <label>curve</label>
+      </node>
+      <node id="367">
+        <label>pair</label>
+      </node>
+      <node id="366">
+        <label>this</label>
+      </node>
+      <node id="418">
+        <label>A</label>
+      </node>
+      <node id="506">
+        <label>B</label>
+      </node>
+      <node id="409">
+        <label>color</label>
+      </node>
+      <node id="481">
+        <label>getValue</label>
+      </node>
+      <node id="385">
+        <label>c1::split</label>
+      </node>
+      <node id="440">
+        <label>there</label>
+      </node>
+      <node id="472">
+        <label>a</label>
+      </node>
+      <node id="350">
+        <label>boolean</label>
+      </node>
+      <node id="410">
+        <label>c</label>
+      </node>
+      <node id="387">
+        <label>c2::split</label>
+      </node>
+      <node id="404">
+        <label>these</label>
+      </node>
+      <node id="373">
+        <label>into</label>
+      </node>
+      <node id="447">
+        <label>i</label>
+      </node>
+      <node id="497">
+        <label>down</label>
+      </node>
+      <node id="459">
+        <label>k</label>
+      </node>
+      <node id="444">
+        <label>n</label>
+      </node>
+      <node id="432">
+        <label>s</label>
+      </node>
+      <node id="476">
+        <label>t</label>
+      </node>
+      <node id="456">
+        <label>what</label>
+      </node>
+      <node id="448">
+        <label>v</label>
+      </node>
+      <node id="433">
+        <label>interpolation</label>
+      </node>
+      <node id="349">
+        <label>bezier.CurvePair</label>
+        <link refid="classbezier_1_1_curve_pair"/>
+        <childnode refid="350" relation="public-inheritance">
+        </childnode>
+        <childnode refid="351" relation="public-inheritance">
+        </childnode>
+        <childnode refid="352" relation="public-inheritance">
+        </childnode>
+        <childnode refid="353" relation="public-inheritance">
+        </childnode>
+        <childnode refid="354" relation="public-inheritance">
+        </childnode>
+        <childnode refid="355" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="357" relation="public-inheritance">
+        </childnode>
+        <childnode refid="358" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="360" relation="public-inheritance">
+        </childnode>
+        <childnode refid="361" relation="public-inheritance">
+        </childnode>
+        <childnode refid="353" relation="public-inheritance">
+        </childnode>
+        <childnode refid="362" relation="public-inheritance">
+        </childnode>
+        <childnode refid="353" relation="public-inheritance">
+        </childnode>
+        <childnode refid="363" relation="public-inheritance">
+        </childnode>
+        <childnode refid="354" relation="public-inheritance">
+        </childnode>
+        <childnode refid="362" relation="public-inheritance">
+        </childnode>
+        <childnode refid="355" relation="public-inheritance">
+        </childnode>
+        <childnode refid="363" relation="public-inheritance">
+        </childnode>
+        <childnode refid="351" relation="public-inheritance">
+        </childnode>
+        <childnode refid="364" relation="public-inheritance">
+        </childnode>
+        <childnode refid="355" relation="public-inheritance">
+        </childnode>
+        <childnode refid="365" relation="public-inheritance">
+        </childnode>
+        <childnode refid="366" relation="public-inheritance">
+        </childnode>
+        <childnode refid="367" relation="public-inheritance">
+        </childnode>
+        <childnode refid="368" relation="public-inheritance">
+        </childnode>
+        <childnode refid="351" relation="public-inheritance">
+        </childnode>
+        <childnode refid="367" relation="public-inheritance">
+        </childnode>
+        <childnode refid="350" relation="public-inheritance">
+        </childnode>
+        <childnode refid="369" relation="public-inheritance">
+        </childnode>
+        <childnode refid="370" relation="public-inheritance">
+        </childnode>
+        <childnode refid="351" relation="public-inheritance">
+        </childnode>
+        <childnode refid="371" relation="public-inheritance">
+        </childnode>
+        <childnode refid="372" relation="public-inheritance">
+        </childnode>
+        <childnode refid="366" relation="public-inheritance">
+        </childnode>
+        <childnode refid="367" relation="public-inheritance">
+        </childnode>
+        <childnode refid="373" relation="public-inheritance">
+        </childnode>
+        <childnode refid="374" relation="public-inheritance">
+        </childnode>
+        <childnode refid="375" relation="public-inheritance">
+        </childnode>
+        <childnode refid="376" relation="public-inheritance">
+        </childnode>
+        <childnode refid="377" relation="public-inheritance">
+        </childnode>
+        <childnode refid="367" relation="public-inheritance">
+        </childnode>
+        <childnode refid="378" relation="public-inheritance">
+        </childnode>
+        <childnode refid="379" relation="public-inheritance">
+        </childnode>
+        <childnode refid="380" relation="public-inheritance">
+        </childnode>
+        <childnode refid="381" relation="public-inheritance">
+        </childnode>
+        <childnode refid="382" relation="public-inheritance">
+        </childnode>
+        <childnode refid="383" relation="public-inheritance">
+        </childnode>
+        <childnode refid="353" relation="public-inheritance">
+        </childnode>
+        <childnode refid="384" relation="public-inheritance">
+        </childnode>
+        <childnode refid="385" relation="public-inheritance">
+        </childnode>
+        <childnode refid="353" relation="public-inheritance">
+        </childnode>
+        <childnode refid="386" relation="public-inheritance">
+        </childnode>
+        <childnode refid="387" relation="public-inheritance">
+        </childnode>
+        <childnode refid="382" relation="public-inheritance">
+        </childnode>
+        <childnode refid="383" relation="public-inheritance">
+        </childnode>
+        <childnode refid="384" relation="public-inheritance">
+        </childnode>
+        <childnode refid="386" relation="public-inheritance">
+        </childnode>
+        <childnode refid="382" relation="public-inheritance">
+        </childnode>
+        <childnode refid="383" relation="public-inheritance">
+        </childnode>
+        <childnode refid="384" relation="public-inheritance">
+        </childnode>
+        <childnode refid="386" relation="public-inheritance">
+        </childnode>
+        <childnode refid="382" relation="public-inheritance">
+        </childnode>
+        <childnode refid="383" relation="public-inheritance">
+        </childnode>
+        <childnode refid="384" relation="public-inheritance">
+        </childnode>
+        <childnode refid="386" relation="public-inheritance">
+        </childnode>
+        <childnode refid="382" relation="public-inheritance">
+        </childnode>
+        <childnode refid="383" relation="public-inheritance">
+        </childnode>
+        <childnode refid="384" relation="public-inheritance">
+        </childnode>
+        <childnode refid="386" relation="public-inheritance">
+        </childnode>
+        <childnode refid="370" relation="public-inheritance">
+        </childnode>
+        <childnode refid="382" relation="public-inheritance">
+        </childnode>
+        <childnode refid="388" relation="public-inheritance">
+        </childnode>
+        <childnode refid="389" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="390" relation="public-inheritance">
+        </childnode>
+        <childnode refid="391" relation="public-inheritance">
+        </childnode>
+        <childnode refid="392" relation="public-inheritance">
+        </childnode>
+        <childnode refid="393" relation="public-inheritance">
+        </childnode>
+        <childnode refid="357" relation="public-inheritance">
+        </childnode>
+        <childnode refid="390" relation="public-inheritance">
+        </childnode>
+        <childnode refid="390" relation="public-inheritance">
+        </childnode>
+        <childnode refid="358" relation="public-inheritance">
+        </childnode>
+        <childnode refid="392" relation="public-inheritance">
+        </childnode>
+        <childnode refid="392" relation="public-inheritance">
+        </childnode>
+        <childnode refid="365" relation="public-inheritance">
+        </childnode>
+        <childnode refid="366" relation="public-inheritance">
+        </childnode>
+        <childnode refid="367" relation="public-inheritance">
+        </childnode>
+        <childnode refid="394" relation="public-inheritance">
+        </childnode>
+        <childnode refid="395" relation="public-inheritance">
+        </childnode>
+        <childnode refid="396" relation="public-inheritance">
+        </childnode>
+        <childnode refid="397" relation="public-inheritance">
+        </childnode>
+        <childnode refid="398" relation="public-inheritance">
+        </childnode>
+        <childnode refid="399" relation="public-inheritance">
+        </childnode>
+        <childnode refid="350" relation="public-inheritance">
+        </childnode>
+        <childnode refid="400" relation="public-inheritance">
+        </childnode>
+        <childnode refid="370" relation="public-inheritance">
+        </childnode>
+        <childnode refid="401" relation="public-inheritance">
+        </childnode>
+        <childnode refid="378" relation="public-inheritance">
+        </childnode>
+        <childnode refid="402" relation="public-inheritance">
+        </childnode>
+        <childnode refid="403" relation="public-inheritance">
+        </childnode>
+        <childnode refid="404" relation="public-inheritance">
+        </childnode>
+        <childnode refid="405" relation="public-inheritance">
+        </childnode>
+        <childnode refid="406" relation="public-inheritance">
+        </childnode>
+        <childnode refid="407" relation="public-inheritance">
+        </childnode>
+        <childnode refid="408" relation="public-inheritance">
+        </childnode>
+        <childnode refid="388" relation="public-inheritance">
+        </childnode>
+        <childnode refid="403" relation="public-inheritance">
+        </childnode>
+        <childnode refid="409" relation="public-inheritance">
+        </childnode>
+        <childnode refid="410" relation="public-inheritance">
+        </childnode>
+        <childnode refid="411" relation="public-inheritance">
+        </childnode>
+        <childnode refid="410" relation="public-inheritance">
+        </childnode>
+        <childnode refid="412" relation="public-inheritance">
+        </childnode>
+        <childnode refid="410" relation="public-inheritance">
+        </childnode>
+        <childnode refid="413" relation="public-inheritance">
+        </childnode>
+        <childnode refid="414" relation="public-inheritance">
+        </childnode>
+        <childnode refid="415" relation="public-inheritance">
+        </childnode>
+        <childnode refid="416" relation="public-inheritance">
+        </childnode>
+        <childnode refid="417" relation="public-inheritance">
+        </childnode>
+        <childnode refid="370" relation="public-inheritance">
+        </childnode>
+        <childnode refid="354" relation="public-inheritance">
+        </childnode>
+        <childnode refid="355" relation="public-inheritance">
+        </childnode>
+        <childnode refid="418" relation="public-inheritance">
+        </childnode>
+        <childnode refid="419" relation="public-inheritance">
+        </childnode>
+        <childnode refid="420" relation="public-inheritance">
+        </childnode>
+        <childnode refid="421" relation="public-inheritance">
+        </childnode>
+        <childnode refid="376" relation="public-inheritance">
+        </childnode>
+        <childnode refid="422" relation="public-inheritance">
+        </childnode>
+        <childnode refid="423" relation="public-inheritance">
+        </childnode>
+        <childnode refid="424" relation="public-inheritance">
+        </childnode>
+        <childnode refid="425" relation="public-inheritance">
+        </childnode>
+        <childnode refid="421" relation="public-inheritance">
+        </childnode>
+        <childnode refid="421" relation="public-inheritance">
+        </childnode>
+        <childnode refid="426" relation="public-inheritance">
+        </childnode>
+        <childnode refid="427" relation="public-inheritance">
+        </childnode>
+        <childnode refid="376" relation="public-inheritance">
+        </childnode>
+        <childnode refid="428" relation="public-inheritance">
+        </childnode>
+        <childnode refid="429" relation="public-inheritance">
+        </childnode>
+        <childnode refid="430" relation="public-inheritance">
+        </childnode>
+        <childnode refid="431" relation="public-inheritance">
+        </childnode>
+        <childnode refid="432" relation="public-inheritance">
+        </childnode>
+        <childnode refid="433" relation="public-inheritance">
+        </childnode>
+        <childnode refid="434" relation="public-inheritance">
+        </childnode>
+        <childnode refid="435" relation="public-inheritance">
+        </childnode>
+        <childnode refid="436" relation="public-inheritance">
+        </childnode>
+        <childnode refid="437" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="438" relation="public-inheritance">
+        </childnode>
+        <childnode refid="439" relation="public-inheritance">
+        </childnode>
+        <childnode refid="372" relation="public-inheritance">
+        </childnode>
+        <childnode refid="428" relation="public-inheritance">
+        </childnode>
+        <childnode refid="429" relation="public-inheritance">
+        </childnode>
+        <childnode refid="434" relation="public-inheritance">
+        </childnode>
+        <childnode refid="435" relation="public-inheritance">
+        </childnode>
+        <childnode refid="440" relation="public-inheritance">
+        </childnode>
+        <childnode refid="441" relation="public-inheritance">
+        </childnode>
+        <childnode refid="430" relation="public-inheritance">
+        </childnode>
+        <childnode refid="431" relation="public-inheritance">
+        </childnode>
+        <childnode refid="432" relation="public-inheritance">
+        </childnode>
+        <childnode refid="442" relation="public-inheritance">
+        </childnode>
+        <childnode refid="376" relation="public-inheritance">
+        </childnode>
+        <childnode refid="443" relation="public-inheritance">
+        </childnode>
+        <childnode refid="437" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="434" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="445" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="446" relation="public-inheritance">
+        </childnode>
+        <childnode refid="438" relation="public-inheritance">
+        </childnode>
+        <childnode refid="383" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="376" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="447" relation="public-inheritance">
+        </childnode>
+        <childnode refid="448" relation="public-inheritance">
+        </childnode>
+        <childnode refid="447" relation="public-inheritance">
+        </childnode>
+        <childnode refid="449" relation="public-inheritance">
+        </childnode>
+        <childnode refid="447" relation="public-inheritance">
+        </childnode>
+        <childnode refid="448" relation="public-inheritance">
+        </childnode>
+        <childnode refid="447" relation="public-inheritance">
+        </childnode>
+        <childnode refid="438" relation="public-inheritance">
+        </childnode>
+        <childnode refid="447" relation="public-inheritance">
+        </childnode>
+        <childnode refid="448" relation="public-inheritance">
+        </childnode>
+        <childnode refid="370" relation="public-inheritance">
+        </childnode>
+        <childnode refid="438" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="427" relation="public-inheritance">
+        </childnode>
+        <childnode refid="376" relation="public-inheritance">
+        </childnode>
+        <childnode refid="450" relation="public-inheritance">
+        </childnode>
+        <childnode refid="451" relation="public-inheritance">
+        </childnode>
+        <childnode refid="452" relation="public-inheritance">
+        </childnode>
+        <childnode refid="453" relation="public-inheritance">
+        </childnode>
+        <childnode refid="454" relation="public-inheritance">
+        </childnode>
+        <childnode refid="443" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="437" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="455" relation="public-inheritance">
+        </childnode>
+        <childnode refid="439" relation="public-inheritance">
+        </childnode>
+        <childnode refid="372" relation="public-inheritance">
+        </childnode>
+        <childnode refid="456" relation="public-inheritance">
+        </childnode>
+        <childnode refid="457" relation="public-inheritance">
+        </childnode>
+        <childnode refid="450" relation="public-inheritance">
+        </childnode>
+        <childnode refid="451" relation="public-inheritance">
+        </childnode>
+        <childnode refid="458" relation="public-inheritance">
+        </childnode>
+        <childnode refid="376" relation="public-inheritance">
+        </childnode>
+        <childnode refid="367" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="437" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="460" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="461" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="462" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="432" relation="public-inheritance">
+        </childnode>
+        <childnode refid="449" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="463" relation="public-inheritance">
+        </childnode>
+        <childnode refid="383" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="432" relation="public-inheritance">
+        </childnode>
+        <childnode refid="464" relation="public-inheritance">
+        </childnode>
+        <childnode refid="455" relation="public-inheritance">
+        </childnode>
+        <childnode refid="463" relation="public-inheritance">
+        </childnode>
+        <childnode refid="432" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="465" relation="public-inheritance">
+        </childnode>
+        <childnode refid="455" relation="public-inheritance">
+        </childnode>
+        <childnode refid="432" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="466" relation="public-inheritance">
+        </childnode>
+        <childnode refid="383" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="432" relation="public-inheritance">
+        </childnode>
+        <childnode refid="463" relation="public-inheritance">
+        </childnode>
+        <childnode refid="432" relation="public-inheritance">
+        </childnode>
+        <childnode refid="466" relation="public-inheritance">
+        </childnode>
+        <childnode refid="467" relation="public-inheritance">
+        </childnode>
+        <childnode refid="441" relation="public-inheritance">
+        </childnode>
+        <childnode refid="466" relation="public-inheritance">
+        </childnode>
+        <childnode refid="468" relation="public-inheritance">
+        </childnode>
+        <childnode refid="466" relation="public-inheritance">
+        </childnode>
+        <childnode refid="376" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="447" relation="public-inheritance">
+        </childnode>
+        <childnode refid="447" relation="public-inheritance">
+        </childnode>
+        <childnode refid="469" relation="public-inheritance">
+        </childnode>
+        <childnode refid="447" relation="public-inheritance">
+        </childnode>
+        <childnode refid="466" relation="public-inheritance">
+        </childnode>
+        <childnode refid="447" relation="public-inheritance">
+        </childnode>
+        <childnode refid="465" relation="public-inheritance">
+        </childnode>
+        <childnode refid="447" relation="public-inheritance">
+        </childnode>
+        <childnode refid="465" relation="public-inheritance">
+        </childnode>
+        <childnode refid="447" relation="public-inheritance">
+        </childnode>
+        <childnode refid="466" relation="public-inheritance">
+        </childnode>
+        <childnode refid="432" relation="public-inheritance">
+        </childnode>
+        <childnode refid="470" relation="public-inheritance">
+        </childnode>
+        <childnode refid="455" relation="public-inheritance">
+        </childnode>
+        <childnode refid="463" relation="public-inheritance">
+        </childnode>
+        <childnode refid="370" relation="public-inheritance">
+        </childnode>
+        <childnode refid="455" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="471" relation="public-inheritance">
+        </childnode>
+        <childnode refid="472" relation="public-inheritance">
+        </childnode>
+        <childnode refid="473" relation="public-inheritance">
+        </childnode>
+        <childnode refid="474" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="475" relation="public-inheritance">
+        </childnode>
+        <childnode refid="476" relation="public-inheritance">
+        </childnode>
+        <childnode refid="437" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="477" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="476" relation="public-inheritance">
+        </childnode>
+        <childnode refid="370" relation="public-inheritance">
+        </childnode>
+        <childnode refid="478" relation="public-inheritance">
+        </childnode>
+        <childnode refid="476" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="478" relation="public-inheritance">
+        </childnode>
+        <childnode refid="476" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="479" relation="public-inheritance">
+        </childnode>
+        <childnode refid="457" relation="public-inheritance">
+        </childnode>
+        <childnode refid="454" relation="public-inheritance">
+        </childnode>
+        <childnode refid="480" relation="public-inheritance">
+        </childnode>
+        <childnode refid="475" relation="public-inheritance">
+        </childnode>
+        <childnode refid="476" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="481" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="476" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="448" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="443" relation="public-inheritance">
+        </childnode>
+        <childnode refid="482" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="480" relation="public-inheritance">
+        </childnode>
+        <childnode refid="376" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="443" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="445" relation="public-inheritance">
+        </childnode>
+        <childnode refid="448" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="483" relation="public-inheritance">
+        </childnode>
+        <childnode refid="480" relation="public-inheritance">
+        </childnode>
+        <childnode refid="460" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="477" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="476" relation="public-inheritance">
+        </childnode>
+        <childnode refid="448" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="370" relation="public-inheritance">
+        </childnode>
+        <childnode refid="480" relation="public-inheritance">
+        </childnode>
+        <childnode refid="479" relation="public-inheritance">
+        </childnode>
+        <childnode refid="457" relation="public-inheritance">
+        </childnode>
+        <childnode refid="454" relation="public-inheritance">
+        </childnode>
+        <childnode refid="484" relation="public-inheritance">
+        </childnode>
+        <childnode refid="485" relation="public-inheritance">
+        </childnode>
+        <childnode refid="475" relation="public-inheritance">
+        </childnode>
+        <childnode refid="476" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="486" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="484" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="476" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="448" relation="public-inheritance">
+        </childnode>
+        <childnode refid="457" relation="public-inheritance">
+        </childnode>
+        <childnode refid="484" relation="public-inheritance">
+        </childnode>
+        <childnode refid="487" relation="public-inheritance">
+        </childnode>
+        <childnode refid="488" relation="public-inheritance">
+        </childnode>
+        <childnode refid="476" relation="public-inheritance">
+        </childnode>
+        <childnode refid="489" relation="public-inheritance">
+        </childnode>
+        <childnode refid="490" relation="public-inheritance">
+        </childnode>
+        <childnode refid="458" relation="public-inheritance">
+        </childnode>
+        <childnode refid="491" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="449" relation="public-inheritance">
+        </childnode>
+        <childnode refid="445" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="370" relation="public-inheritance">
+        </childnode>
+        <childnode refid="492" relation="public-inheritance">
+        </childnode>
+        <childnode refid="493" relation="public-inheritance">
+        </childnode>
+        <childnode refid="471" relation="public-inheritance">
+        </childnode>
+        <childnode refid="445" relation="public-inheritance">
+        </childnode>
+        <childnode refid="484" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="480" relation="public-inheritance">
+        </childnode>
+        <childnode refid="376" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="480" relation="public-inheritance">
+        </childnode>
+        <childnode refid="460" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="478" relation="public-inheritance">
+        </childnode>
+        <childnode refid="476" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="478" relation="public-inheritance">
+        </childnode>
+        <childnode refid="476" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="448" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="370" relation="public-inheritance">
+        </childnode>
+        <childnode refid="480" relation="public-inheritance">
+        </childnode>
+        <childnode refid="494" relation="public-inheritance">
+        </childnode>
+        <childnode refid="495" relation="public-inheritance">
+        </childnode>
+        <childnode refid="484" relation="public-inheritance">
+        </childnode>
+        <childnode refid="496" relation="public-inheritance">
+        </childnode>
+        <childnode refid="497" relation="public-inheritance">
+        </childnode>
+        <childnode refid="498" relation="public-inheritance">
+        </childnode>
+        <childnode refid="443" relation="public-inheritance">
+        </childnode>
+        <childnode refid="499" relation="public-inheritance">
+        </childnode>
+        <childnode refid="500" relation="public-inheritance">
+        </childnode>
+        <childnode refid="376" relation="public-inheritance">
+        </childnode>
+        <childnode refid="457" relation="public-inheritance">
+        </childnode>
+        <childnode refid="501" relation="public-inheritance">
+        </childnode>
+        <childnode refid="443" relation="public-inheritance">
+        </childnode>
+        <childnode refid="454" relation="public-inheritance">
+        </childnode>
+        <childnode refid="432" relation="public-inheritance">
+        </childnode>
+        <childnode refid="502" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="503" relation="public-inheritance">
+        </childnode>
+        <childnode refid="383" relation="public-inheritance">
+        </childnode>
+        <childnode refid="356" relation="public-inheritance">
+        </childnode>
+        <childnode refid="449" relation="public-inheritance">
+        </childnode>
+        <childnode refid="376" relation="public-inheritance">
+        </childnode>
+        <childnode refid="359" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="504" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="503" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="444" relation="public-inheritance">
+        </childnode>
+        <childnode refid="448" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="448" relation="public-inheritance">
+        </childnode>
+        <childnode refid="459" relation="public-inheritance">
+        </childnode>
+        <childnode refid="370" relation="public-inheritance">
+        </childnode>
+        <childnode refid="486" relation="public-inheritance">
+        </childnode>
+        <childnode refid="484" relation="public-inheritance">
+        </childnode>
+        <childnode refid="476" relation="public-inheritance">
+        </childnode>
+        <childnode refid="503" relation="public-inheritance">
+        </childnode>
+        <childnode refid="505" relation="public-inheritance">
+        </childnode>
+        <childnode refid="418" relation="public-inheritance">
+        </childnode>
+        <childnode refid="506" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="453">
+        <label>per</label>
+      </node>
+      <node id="379">
+        <label>permute</label>
+      </node>
+      <node id="352">
+        <label>false</label>
+      </node>
+      <node id="416">
+        <label>String</label>
+      </node>
+      <node id="421">
+        <label>class</label>
+      </node>
+      <node id="457">
+        <label>the</label>
+      </node>
+      <node id="484">
+        <label>derivative</label>
+      </node>
+      <node id="466">
+        <label>next</label>
+      </node>
+      <node id="389">
+        <label>setTValues</label>
+      </node>
+      <node id="425">
+        <label>computation</label>
+      </node>
+      <node id="395">
+        <label>enough</label>
+      </node>
+      <node id="438">
+        <label>marks</label>
+      </node>
+      <node id="415">
+        <label>toStringe</label>
+      </node>
+      <node id="351">
+        <label>overlapping</label>
+      </node>
+      <node id="501">
+        <label>lower</label>
+      </node>
+      <node id="428">
+        <label>how</label>
+      </node>
+      <node id="365">
+        <label>Is</label>
+      </node>
+      <node id="381">
+        <label>splitAndCombine</label>
+      </node>
+      <node id="356">
+        <label>float</label>
+      </node>
+      <node id="463">
+        <label>update_coefficients</label>
+      </node>
+      <node id="492">
+        <label>direct</label>
+      </node>
+      <node id="377">
+        <label>each</label>
+      </node>
+      <node id="353">
+        <label>bezier.BezierCurve</label>
+        <link refid="classbezier_1_1_bezier_curve"/>
+      </node>
+      <node id="478">
+        <label>pow</label>
+      </node>
+      <node id="504">
+        <label>_v::length</label>
+      </node>
+      <node id="391">
+        <label>c1::getInterval</label>
+      </node>
+      <node id="393">
+        <label>c2::getInterval</label>
+      </node>
+      <node id="390">
+        <label>t1s</label>
+      </node>
+      <node id="494">
+        <label>Still</label>
+      </node>
+      <node id="394">
+        <label>small</label>
+      </node>
+      <node id="502">
+        <label>else</label>
+      </node>
+      <node id="397">
+        <label>count</label>
+      </node>
+      <node id="392">
+        <label>t2s</label>
+      </node>
+      <node id="485">
+        <label>hodograph</label>
+      </node>
+      <node id="500">
+        <label>try</label>
+      </node>
+      <node id="407">
+        <label>linked</label>
+      </node>
+      <node id="434">
+        <label>markers</label>
+      </node>
+      <node id="480">
+        <label>value</label>
+      </node>
+      <node id="412">
+        <label>c2::draw</label>
+      </node>
+      <node id="460">
+        <label>binomials</label>
+      </node>
+      <node id="493">
+        <label>values</label>
+      </node>
+      <node id="374">
+        <label>two</label>
+      </node>
+      <node id="464">
+        <label>arrayCopy</label>
+      </node>
+      <node id="474">
+        <label>term</label>
+      </node>
+      <node id="380">
+        <label>combine</label>
+      </node>
+      <node id="423">
+        <label>operations</label>
+      </node>
+      <node id="378">
+        <label>and</label>
+      </node>
+      <node id="482">
+        <label>v::length</label>
+      </node>
+      <node id="400">
+        <label>smallEnough</label>
+      </node>
+      <node id="488">
+        <label>any</label>
+      </node>
+      <node id="443">
+        <label>order</label>
+      </node>
+      <node id="471">
+        <label>compute</label>
+      </node>
+      <node id="465">
+        <label>current</label>
+      </node>
+      <node id="490">
+        <label>function</label>
+      </node>
+      <node id="359">
+        <label>int</label>
+      </node>
+      <node id="505">
+        <label>quadratic</label>
+      </node>
+      <node id="479">
+        <label>Compute</label>
+      </node>
+      <node id="452">
+        <label>arrays</label>
+      </node>
+      <node id="435">
+        <label>are</label>
+      </node>
+      <node id="450">
+        <label>binomial</label>
+      </node>
+      <node id="467">
+        <label>fill</label>
+      </node>
+      <node id="403">
+        <label>draw</label>
+      </node>
+      <node id="486">
+        <label>getDerivative</label>
+      </node>
+      <node id="439">
+        <label>Look</label>
+      </node>
+      <node id="473">
+        <label>polynomial</label>
+      </node>
+      <node id="369">
+        <label>hasOverlap</label>
+      </node>
+      <node id="462">
+        <label>binomial_coefficients::length</label>
+      </node>
+      <node id="354">
+        <label>c1</label>
+      </node>
+      <node id="355">
+        <label>c2</label>
+      </node>
+      <node id="503">
+        <label>_v</label>
+      </node>
+      <node id="383">
+        <label>new</label>
+      </node>
+      <node id="368">
+        <label>an</label>
+      </node>
+      <node id="398">
+        <label>as</label>
+      </node>
+      <node id="475">
+        <label>at</label>
+      </node>
+      <node id="406">
+        <label>with</label>
+      </node>
+      <node id="375">
+        <label>subcurves</label>
+      </node>
+      <node id="451">
+        <label>coefficient</label>
+      </node>
+      <node id="470">
+        <label>swap</label>
+      </node>
+      <node id="430">
+        <label>de</label>
+      </node>
+      <node id="414">
+        <label>olde</label>
+      </node>
+      <node id="427">
+        <label>LUT</label>
+      </node>
+      <node id="455">
+        <label>binomial_coefficients</label>
+      </node>
+      <node id="362">
+        <label>_c1</label>
+      </node>
+      <node id="363">
+        <label>_c2</label>
+      </node>
+      <node id="496">
+        <label>go</label>
+      </node>
+      <node id="376">
+        <label>for</label>
+      </node>
+      <node id="422">
+        <label>generic</label>
+      </node>
+      <node id="446">
+        <label>marks::length</label>
+      </node>
+      <node id="445">
+        <label>if</label>
+      </node>
+      <node id="483">
+        <label>continue</label>
+      </node>
+      <node id="441">
+        <label>in</label>
+      </node>
+      <node id="458">
+        <label>is</label>
+      </node>
+      <node id="449">
+        <label>length</label>
+      </node>
+      <node id="491">
+        <label>zero</label>
+      </node>
+      <node id="468">
+        <label>row</label>
+      </node>
+      <node id="371">
+        <label>Split</label>
+      </node>
+      <node id="420">
+        <label>computer</label>
+      </node>
+      <node id="364">
+        <label>c1::hasBoundOverlapWith</label>
+      </node>
+      <node id="405">
+        <label>curves</label>
+      </node>
+      <node id="411">
+        <label>c1::draw</label>
+      </node>
+      <node id="495">
+        <label>some</label>
+      </node>
+      <node id="469">
+        <label>current::length</label>
+      </node>
+      <node id="419">
+        <label>special</label>
+      </node>
+      <node id="461">
+        <label>while</label>
+      </node>
+      <node id="487">
+        <label>of</label>
+      </node>
+      <node id="426">
+        <label>BezierComputer</label>
+      </node>
+      <node id="360">
+        <label>s1</label>
+      </node>
+      <node id="436">
+        <label>required</label>
+      </node>
+      <node id="361">
+        <label>s2</label>
+      </node>
+      <node id="357">
+        <label>t1</label>
+      </node>
+      <node id="358">
+        <label>t2</label>
+      </node>
+      <node id="442">
+        <label>span</label>
+      </node>
+      <node id="382">
+        <label>sc</label>
+      </node>
+      <node id="477">
+        <label>polyterm</label>
+      </node>
+      <node id="437">
+        <label>private</label>
+      </node>
+      <node id="388">
+        <label>void</label>
+      </node>
+      <node id="396">
+        <label>to</label>
+      </node>
+      <node id="399">
+        <label>done</label>
+      </node>
+      <node id="429">
+        <label>many</label>
+      </node>
+      <node id="372">
+        <label>up</label>
+      </node>
+      <node id="417">
+        <label>toString</label>
+      </node>
+      <node id="401">
+        <label>c1::getCurveLength</label>
+      </node>
+      <node id="424">
+        <label>static</label>
+      </node>
+      <node id="489">
+        <label>less</label>
+      </node>
+      <node id="499">
+        <label>then</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/bezier.py" line="1408" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1556" bodyend="-1"/>
+    <listofallmembers>
+      <member refid="classbezier_1_1_bezier_curve_1a9056d475eb2526c7c5a9c48313520e89" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>__init__</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a9cf4bf17eddb3214f5727e9b45a15d62" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>abc</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a52119ad0f3360312b0e32391581f3671" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>align</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a76880ee12be206cb218322e95cfa7658" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>bias</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1ad2535ff3f7797701c3bae55252cff911" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>curveLength</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a66a3a2b3ee0242789790ceace4b8c507" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>draw_x</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a1859a14a8e80f71956ff806565be4e0d" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>draw_y</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a64ef8bef255edb9e13299006896daa7d" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>elevate</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a2f6e9270634c92225ba306342c8a60d7" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>generateBoundingBox</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a28b0f5a264c1a37b4f38e3b4d9f44980" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>generateSpan</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1acaae994a33a9f9e41acb54f2691f1a86" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>generateTightBoundingBox</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aa3abeeffa97dabf2038f1a8f7d0f1940" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>generator</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a2cd7ddcf33cb2fc656ec6d422ed5c9d0" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getABC</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a56d4007381285ec7fa68041a146acc3a" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getArea</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a3bff9cf6d4ab0944c6634a95e9afa6db" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getCurveLength</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a023612963116656fc516654058647ef0" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getD2XValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a9d170ca72ea731c0824ee1e8d2675893" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getD2YValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a585ad6904fc86f56b6ab076d9e5631aa" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getDerivativePoint</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6c1c43b478d496b72b45ad4c8b7b53cc" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getDXValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1af52a33daa84c05d5ff5dc04b008509b3" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getDYValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a4b0304e414c7bfebd8dbbde6e8ca669e" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getEnd</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1ae23502e8926d52943088db91fd2bc8ba" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getInflections</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6cfb8ee3cded08c7a9d7c47d19b4abaf" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getInterval</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a964b6692250b6c3e82276eab469af6ed" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getNormal</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aaaea17f47298e5886852e33f05cb4f4a" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getPoint</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a9ba3665b11a6798f293c7aefa2f870bb" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getPointProjection</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a600fb93cad2745eaba1b011e5989c4d0" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getScaleAngle</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a1fc50ea3b49003eeb377d817a15e35ce" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getSecondDerivativePoint</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6807911cd4102ba77bb799a72a992b0b" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getSimilarity</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1ac55cd30cbbcd12cf9ea5419ba2784e74" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getSpanLines</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6dfed42b3ef446bef5f2692ede776caa" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getStart</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a0f48a9279d1bcf4dac5296162809af5c" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getXValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aebd772e37e054a8ff0c22154c9d475cb" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>getYValue</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a67f06fd66567124f37eea60321e3126b" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>hasBoundOverlapWith</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a8f368135ebb837de62ea0b663e3eee70" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>isBiased</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a0d541f51c06e2cce9fb84515188d1fb3" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>justX</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aedc1b7ba039d659a32c37c323aa079b8" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>justY</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a4570d8b0525d6fb56ffbe338aea5b9a5" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>last</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a958ec48826bf0bfd4f29c73641fd7562" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>left_split</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1af3f47c83a98f56b011858f24b7eed302" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>lower</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a631e45794713c37b7b28a1116bf7d414" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>LUT_resolution</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a4577c6349bf8568b0f0a6259c361c42d" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>LUT_x</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a5c47bd22203df84b3c9ef64389134d9d" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>LUT_y</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a0dbf1d48cda1fee475627cbb46af1913" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>makeOffsetArray</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a17976a1d7e6864d98bec238778702d5d" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>normalize</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a2cf138c2853916d8fdd6ee538decd11b" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>normals</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1acd0c66cf9592d59635d8f0cd90a6a8e6" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>nx</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a4b765fecb383d8a7bcf7400ed69f5c55" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>ny</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1ae3b2bda88c67445d6cf62a86f121d4bd" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>offset</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a0f9a46cd0b0c3060c81c503e97718e87" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>order</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1acea4fdceeab227eb5ad09f52f9b58e40" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>originalInterval</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1af54790f4736706fda65bcc87e24cef1f" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>ox</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a5cd7c967702aa92f02a0fafbf1ed719d" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>oy</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6c39346893b0610e98d124f94f098b5b" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>points</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aebb06c5028ed907c85c179cef3fd5f47" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>ratios</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a786182209f69177b13f04fdd678eeb56" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>refineProjection</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1afb7008816c2eb9b266374b543b748b1c" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>ret</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1adfebcda73ce613d7f913ed37541348c6" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>ret</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a6a567a984fdaa79b45c34650d5806b1d" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>reverse</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a1537b07a507ce3a670363ca50fcfb8b9" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>right_split</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a782e956673f761f25e256f1c2094d54b" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>roots</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a575e7ea0b4393c4007b0653488dffb00" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>scale</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a317f7fd239fe45816b1768fa5a73dd84" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>setLower</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a5e38ed6ec16131e7ab51330d66f42297" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>setOriginalT</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aea4d53a18bc2560c93b35a764fe6625c" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>simpleOffset</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1abd2b09d5ae706c4e31f22b0c199134c0" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>span</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a79e5e878938d38339da6d3bebb7bf337" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>span_t</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1aa81a80a7a9dff4c45638400d60c2aa00" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>split</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a668f0b24433e3b2c5ef87f69875a10c2" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>t_values</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a76076a6b08f173fd018861a3c53e7711" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>update</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a67d3887b8b38085157320f51305db83e" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>x</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1abae064c2182ba700fb576355e7d15bab" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>x_values</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a4daedd276ea223e485036f3ad346b33c" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>y</name></member>
+      <member refid="classbezier_1_1_bezier_curve_1a8bf9aa7947c5ff98a513b2119c3bebac" prot="public" virt="non-virtual"><scope>bezier::CurvePair</scope><name>y_values</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

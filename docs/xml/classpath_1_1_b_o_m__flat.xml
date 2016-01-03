@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classpath_1_1_b_o_m__flat" kind="class" language="Python" prot="public">
+    <compoundname>path::BOM_flat</compoundname>
+    <basecompoundref refid="classpath_1_1_b_o_m" prot="public" virt="non-virtual">path.BOM</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__flat_1a2f5117498a4d0480504b9ef482266c8d" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_flat::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1482" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1482" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__flat_1a4b14c3049f63f6fa3a3049e0a510093f" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_flat::material</definition>
+        <argsstring></argsstring>
+        <name>material</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1483" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1483" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__flat_1a5a6ced1e7078ceb5952279343b0feb1e" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_flat::width</definition>
+        <argsstring></argsstring>
+        <name>width</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1484" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1484" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__flat_1a969166401f0c01d166e40b1f0e5d9ec4" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_flat::height</definition>
+        <argsstring></argsstring>
+        <name>height</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1485" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1485" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__flat_1a0fc275e35ec2f300e6de6d15afb7b308" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_flat::number</definition>
+        <argsstring></argsstring>
+        <name>number</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1486" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1486" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_b_o_m__flat_1ad81e8b7451c079f0150cfcf6a9a6559a" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.BOM_flat::thickness</definition>
+        <argsstring></argsstring>
+        <name>thickness</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1487" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1487" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classpath_1_1_b_o_m__flat_1a0aceec1b210a56d9cabc8a7064e26f29" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.BOM_flat.__init__</definition>
+        <argsstring>(self, name, material, width, height, number, thickness)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_b_o_m__flat_1a2f5117498a4d0480504b9ef482266c8d" kindref="member">name</ref></type>
+          <defname>name</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_b_o_m__flat_1a4b14c3049f63f6fa3a3049e0a510093f" kindref="member">material</ref></type>
+          <defname>material</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_b_o_m__flat_1a5a6ced1e7078ceb5952279343b0feb1e" kindref="member">width</ref></type>
+          <defname>width</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_b_o_m__flat_1a969166401f0c01d166e40b1f0e5d9ec4" kindref="member">height</ref></type>
+          <defname>height</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_b_o_m__flat_1a0fc275e35ec2f300e6de6d15afb7b308" kindref="member">number</ref></type>
+          <defname>number</defname>
+        </param>
+        <param>
+          <type><ref refid="classpath_1_1_b_o_m__flat_1ad81e8b7451c079f0150cfcf6a9a6559a" kindref="member">thickness</ref></type>
+          <defname>thickness</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1481" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1481" bodyend="1488"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_b_o_m__flat_1a22dd7a9df382e3c8a808d16aa300a518" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.BOM_flat.__str__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__str__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1489" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1489" bodyend="1490"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="83">
+        <label>object</label>
+      </node>
+      <node id="81">
+        <label>path.BOM_flat</label>
+        <link refid="classpath_1_1_b_o_m__flat"/>
+        <childnode refid="82" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="82">
+        <label>path.BOM</label>
+        <link refid="classpath_1_1_b_o_m"/>
+        <childnode refid="83" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="86">
+        <label>object</label>
+      </node>
+      <node id="84">
+        <label>path.BOM_flat</label>
+        <link refid="classpath_1_1_b_o_m__flat"/>
+        <childnode refid="85" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="85">
+        <label>path.BOM</label>
+        <link refid="classpath_1_1_b_o_m"/>
+        <childnode refid="86" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/path.py" line="1480" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1480" bodyend="1491"/>
+    <listofallmembers>
+      <member refid="classpath_1_1_b_o_m__flat_1a0aceec1b210a56d9cabc8a7064e26f29" prot="public" virt="non-virtual"><scope>path::BOM_flat</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_b_o_m_1ac3d7521a63ca62ccb1501290be173138" prot="public" virt="non-virtual" ambiguityscope="path::BOM."><scope>path::BOM_flat</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_b_o_m__flat_1a22dd7a9df382e3c8a808d16aa300a518" prot="public" virt="non-virtual"><scope>path::BOM_flat</scope><name>__str__</name></member>
+      <member refid="classpath_1_1_b_o_m__flat_1a969166401f0c01d166e40b1f0e5d9ec4" prot="public" virt="non-virtual"><scope>path::BOM_flat</scope><name>height</name></member>
+      <member refid="classpath_1_1_b_o_m_1abc415a791d6d61925fbcb7147b9f7d9a" prot="public" virt="non-virtual"><scope>path::BOM_flat</scope><name>init</name></member>
+      <member refid="classpath_1_1_b_o_m__flat_1a4b14c3049f63f6fa3a3049e0a510093f" prot="public" virt="non-virtual"><scope>path::BOM_flat</scope><name>material</name></member>
+      <member refid="classpath_1_1_b_o_m__flat_1a2f5117498a4d0480504b9ef482266c8d" prot="public" virt="non-virtual"><scope>path::BOM_flat</scope><name>name</name></member>
+      <member refid="classpath_1_1_b_o_m__flat_1a0fc275e35ec2f300e6de6d15afb7b308" prot="public" virt="non-virtual"><scope>path::BOM_flat</scope><name>number</name></member>
+      <member refid="classpath_1_1_b_o_m_1a5748ce4bbb6dfa779752d97f0bee55d2" prot="public" virt="non-virtual"><scope>path::BOM_flat</scope><name>obType</name></member>
+      <member refid="classpath_1_1_b_o_m__flat_1ad81e8b7451c079f0150cfcf6a9a6559a" prot="public" virt="non-virtual"><scope>path::BOM_flat</scope><name>thickness</name></member>
+      <member refid="classpath_1_1_b_o_m__flat_1a5a6ced1e7078ceb5952279343b0feb1e" prot="public" virt="non-virtual"><scope>path::BOM_flat</scope><name>width</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

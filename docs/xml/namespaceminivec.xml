@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespaceminivec" kind="namespace" language="Python">
+    <compoundname>minivec</compoundname>
+    <innernamespace refid="namespaceminivec_1_1minivec">minivec::minivec</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/minivec/__init__.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

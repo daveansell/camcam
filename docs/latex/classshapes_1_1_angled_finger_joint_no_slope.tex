@@ -1,0 +1,65 @@
+\hypertarget{classshapes_1_1_angled_finger_joint_no_slope}{}\section{shapes.\+Angled\+Finger\+Joint\+No\+Slope Class Reference}
+\label{classshapes_1_1_angled_finger_joint_no_slope}\index{shapes.\+Angled\+Finger\+Joint\+No\+Slope@{shapes.\+Angled\+Finger\+Joint\+No\+Slope}}
+
+
+Inherits list.
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classshapes_1_1_angled_finger_joint_no_slope_a2d2b4e6640f0738eba8998dc027995de}{\+\_\+\+\_\+init\+\_\+\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classshapes_1_1_angled_finger_joint_no_slope_a91b614d80a08eecf07213faeea10e29a}{material\+\_\+thickness} = thickness
+\item 
+tuple \hyperlink{classshapes_1_1_angled_finger_joint_no_slope_a6bfdc95eb46713361e3e22d07c3b3253}{perp} = rotate((end-\/start).normalize(),-\/90)
+\item 
+tuple \hyperlink{classshapes_1_1_angled_finger_joint_no_slope_a90d671bd76bee330bb7b57fc023d4d27}{chamfer\+\_\+width} = \hyperlink{classshapes_1_1_angled_finger_joint_no_slope_a91b614d80a08eecf07213faeea10e29a}{material\+\_\+thickness}$\ast$math.\+tan(float(angle)/180$\ast$math.\+pi)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}like a normal finger joint but with longer toungues to take into account the angle and cut back to the start of the slope\end{DoxyVerb}
+ 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classshapes_1_1_angled_finger_joint_no_slope_a2d2b4e6640f0738eba8998dc027995de}{}\index{shapes\+::\+Angled\+Finger\+Joint\+No\+Slope@{shapes\+::\+Angled\+Finger\+Joint\+No\+Slope}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!shapes\+::\+Angled\+Finger\+Joint\+No\+Slope@{shapes\+::\+Angled\+Finger\+Joint\+No\+Slope}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def shapes.\+Angled\+Finger\+Joint\+No\+Slope.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{start, }
+\item[{}]{end, }
+\item[{}]{side, }
+\item[{}]{linemode, }
+\item[{}]{startmode, }
+\item[{}]{endmode, }
+\item[{}]{tab\+\_\+length, }
+\item[{}]{thickness, }
+\item[{}]{cutterrad, }
+\item[{}]{angle, }
+\item[{}]{lineside = {\ttfamily \textquotesingle{}back\textquotesingle{}}, }
+\item[{}]{fudge = {\ttfamily 0}, }
+\item[{}]{material\+\_\+thickness = {\ttfamily False}}
+\end{DoxyParamCaption}
+)}\label{classshapes_1_1_angled_finger_joint_no_slope_a2d2b4e6640f0738eba8998dc027995de}
+\begin{DoxyVerb}like a normal finger joint but with longer toungues to take into account the angle and cut back to the start of the slope\end{DoxyVerb}
+ 
+
+\subsection{Member Data Documentation}
+\hypertarget{classshapes_1_1_angled_finger_joint_no_slope_a90d671bd76bee330bb7b57fc023d4d27}{}\index{shapes\+::\+Angled\+Finger\+Joint\+No\+Slope@{shapes\+::\+Angled\+Finger\+Joint\+No\+Slope}!chamfer\+\_\+width@{chamfer\+\_\+width}}
+\index{chamfer\+\_\+width@{chamfer\+\_\+width}!shapes\+::\+Angled\+Finger\+Joint\+No\+Slope@{shapes\+::\+Angled\+Finger\+Joint\+No\+Slope}}
+\subsubsection[{chamfer\+\_\+width}]{\setlength{\rightskip}{0pt plus 5cm}tuple shapes.\+Angled\+Finger\+Joint\+No\+Slope.\+chamfer\+\_\+width = {\bf material\+\_\+thickness}$\ast$math.\+tan(float(angle)/180$\ast$math.\+pi)\hspace{0.3cm}{\ttfamily [static]}}\label{classshapes_1_1_angled_finger_joint_no_slope_a90d671bd76bee330bb7b57fc023d4d27}
+\hypertarget{classshapes_1_1_angled_finger_joint_no_slope_a91b614d80a08eecf07213faeea10e29a}{}\index{shapes\+::\+Angled\+Finger\+Joint\+No\+Slope@{shapes\+::\+Angled\+Finger\+Joint\+No\+Slope}!material\+\_\+thickness@{material\+\_\+thickness}}
+\index{material\+\_\+thickness@{material\+\_\+thickness}!shapes\+::\+Angled\+Finger\+Joint\+No\+Slope@{shapes\+::\+Angled\+Finger\+Joint\+No\+Slope}}
+\subsubsection[{material\+\_\+thickness}]{\setlength{\rightskip}{0pt plus 5cm}shapes.\+Angled\+Finger\+Joint\+No\+Slope.\+material\+\_\+thickness = thickness\hspace{0.3cm}{\ttfamily [static]}}\label{classshapes_1_1_angled_finger_joint_no_slope_a91b614d80a08eecf07213faeea10e29a}
+\hypertarget{classshapes_1_1_angled_finger_joint_no_slope_a6bfdc95eb46713361e3e22d07c3b3253}{}\index{shapes\+::\+Angled\+Finger\+Joint\+No\+Slope@{shapes\+::\+Angled\+Finger\+Joint\+No\+Slope}!perp@{perp}}
+\index{perp@{perp}!shapes\+::\+Angled\+Finger\+Joint\+No\+Slope@{shapes\+::\+Angled\+Finger\+Joint\+No\+Slope}}
+\subsubsection[{perp}]{\setlength{\rightskip}{0pt plus 5cm}tuple shapes.\+Angled\+Finger\+Joint\+No\+Slope.\+perp = rotate((end-\/start).normalize(),-\/90)\hspace{0.3cm}{\ttfamily [static]}}\label{classshapes_1_1_angled_finger_joint_no_slope_a6bfdc95eb46713361e3e22d07c3b3253}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{shapes_8py}{shapes.\+py}\end{DoxyCompactItemize}

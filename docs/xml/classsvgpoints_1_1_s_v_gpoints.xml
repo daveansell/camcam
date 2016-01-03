@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classsvgpoints_1_1_s_v_gpoints" kind="class" language="Python" prot="public">
+    <compoundname>svgpoints::SVGpoints</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">list</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classsvgpoints_1_1_s_v_gpoints_1aa20b883f0dd0cbf5addfcc546e807b7c" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>svgpoints.SVGpoints::cal_path</definition>
+        <argsstring></argsstring>
+        <name>cal_path</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/svgpoints.py" line="20" column="1" bodyfile="/home/db/camcam/svgpoints.py" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsvgpoints_1_1_s_v_gpoints_1a07cb40efc0d321f44952564032650be3" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>svgpoints.SVGpoints::cal_rad</definition>
+        <argsstring></argsstring>
+        <name>cal_rad</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/svgpoints.py" line="25" column="1" bodyfile="/home/db/camcam/svgpoints.py" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsvgpoints_1_1_s_v_gpoints_1a2bebb2c0ad793d166abfc4fae60f43c7" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>svgpoints.SVGpoints::cal_circ</definition>
+        <argsstring></argsstring>
+        <name>cal_circ</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/svgpoints.py" line="26" column="1" bodyfile="/home/db/camcam/svgpoints.py" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsvgpoints_1_1_s_v_gpoints_1a9f6f1c714d41a91f03ba410a8c72cbf6" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>svgpoints.SVGpoints::cal_rect</definition>
+        <argsstring></argsstring>
+        <name>cal_rect</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/svgpoints.py" line="31" column="1" bodyfile="/home/db/camcam/svgpoints.py" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsvgpoints_1_1_s_v_gpoints_1a95e111b7ea626b3531bf219c2467fb78" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>svgpoints.SVGpoints::cal_width</definition>
+        <argsstring></argsstring>
+        <name>cal_width</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/svgpoints.py" line="32" column="1" bodyfile="/home/db/camcam/svgpoints.py" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsvgpoints_1_1_s_v_gpoints_1a433ae4f0659802a86e4518dfffe74d8f" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>svgpoints.SVGpoints::cal_height</definition>
+        <argsstring></argsstring>
+        <name>cal_height</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/svgpoints.py" line="33" column="1" bodyfile="/home/db/camcam/svgpoints.py" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsvgpoints_1_1_s_v_gpoints_1a037cce810ad33fdfdb41159f24d42ca0" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>svgpoints.SVGpoints::scalex</definition>
+        <argsstring></argsstring>
+        <name>scalex</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/svgpoints.py" line="38" column="1" bodyfile="/home/db/camcam/svgpoints.py" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsvgpoints_1_1_s_v_gpoints_1a3e0367d807f3527f3e58460118a33fad" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>svgpoints.SVGpoints::scaley</definition>
+        <argsstring></argsstring>
+        <name>scaley</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/svgpoints.py" line="39" column="1" bodyfile="/home/db/camcam/svgpoints.py" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classsvgpoints_1_1_s_v_gpoints_1ac7451e9ed9ca9bb807c2508b273974cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def svgpoints.SVGpoints.__init__</definition>
+        <argsstring>(self, pos, filename, config)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>pos</type>
+          <defname>pos</defname>
+        </param>
+        <param>
+          <type>filename</type>
+          <defname>filename</defname>
+        </param>
+        <param>
+          <type>config</type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/svgpoints.py" line="9" column="1" bodyfile="/home/db/camcam/svgpoints.py" bodystart="9" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="classsvgpoints_1_1_s_v_gpoints_1a5f45b2666fb66164bbc787885f72e823" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def svgpoints.SVGpoints.is_number</definition>
+        <argsstring>(self, s)</argsstring>
+        <name>is_number</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>s</type>
+          <defname>s</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/svgpoints.py" line="103" column="1" bodyfile="/home/db/camcam/svgpoints.py" bodystart="103" bodyend="111"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>This takes an inkscape svg file and looks for circles (inkscape produces paths with circle attributes), and returns the centre of all those circles as a list of poitns.
+You can calibrate these with a rectangle or a named circle of known width and height or radius</verbatim> </para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="1743">
+        <label>list</label>
+      </node>
+      <node id="1742">
+        <label>svgpoints.SVGpoints</label>
+        <link refid="classsvgpoints_1_1_s_v_gpoints"/>
+        <childnode refid="1743" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1745">
+        <label>list</label>
+      </node>
+      <node id="1744">
+        <label>svgpoints.SVGpoints</label>
+        <link refid="classsvgpoints_1_1_s_v_gpoints"/>
+        <childnode refid="1745" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/svgpoints.py" line="6" column="1" bodyfile="/home/db/camcam/svgpoints.py" bodystart="6" bodyend="111"/>
+    <listofallmembers>
+      <member refid="classsvgpoints_1_1_s_v_gpoints_1ac7451e9ed9ca9bb807c2508b273974cc" prot="public" virt="non-virtual"><scope>svgpoints::SVGpoints</scope><name>__init__</name></member>
+      <member refid="classsvgpoints_1_1_s_v_gpoints_1a2bebb2c0ad793d166abfc4fae60f43c7" prot="public" virt="non-virtual"><scope>svgpoints::SVGpoints</scope><name>cal_circ</name></member>
+      <member refid="classsvgpoints_1_1_s_v_gpoints_1a433ae4f0659802a86e4518dfffe74d8f" prot="public" virt="non-virtual"><scope>svgpoints::SVGpoints</scope><name>cal_height</name></member>
+      <member refid="classsvgpoints_1_1_s_v_gpoints_1aa20b883f0dd0cbf5addfcc546e807b7c" prot="public" virt="non-virtual"><scope>svgpoints::SVGpoints</scope><name>cal_path</name></member>
+      <member refid="classsvgpoints_1_1_s_v_gpoints_1a07cb40efc0d321f44952564032650be3" prot="public" virt="non-virtual"><scope>svgpoints::SVGpoints</scope><name>cal_rad</name></member>
+      <member refid="classsvgpoints_1_1_s_v_gpoints_1a9f6f1c714d41a91f03ba410a8c72cbf6" prot="public" virt="non-virtual"><scope>svgpoints::SVGpoints</scope><name>cal_rect</name></member>
+      <member refid="classsvgpoints_1_1_s_v_gpoints_1a95e111b7ea626b3531bf219c2467fb78" prot="public" virt="non-virtual"><scope>svgpoints::SVGpoints</scope><name>cal_width</name></member>
+      <member refid="classsvgpoints_1_1_s_v_gpoints_1a5f45b2666fb66164bbc787885f72e823" prot="public" virt="non-virtual"><scope>svgpoints::SVGpoints</scope><name>is_number</name></member>
+      <member refid="classsvgpoints_1_1_s_v_gpoints_1a037cce810ad33fdfdb41159f24d42ca0" prot="public" virt="non-virtual"><scope>svgpoints::SVGpoints</scope><name>scalex</name></member>
+      <member refid="classsvgpoints_1_1_s_v_gpoints_1a3e0367d807f3527f3e58460118a33fad" prot="public" virt="non-virtual"><scope>svgpoints::SVGpoints</scope><name>scaley</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
