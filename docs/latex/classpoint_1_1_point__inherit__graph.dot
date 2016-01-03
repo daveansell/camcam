@@ -1,0 +1,29 @@
+digraph "point.Point"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="point.Point",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="object",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="point.PArc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classpoint_1_1_p_arc.html"];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="point.PBezierControl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classpoint_1_1_p_bezier_control.html"];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="point.PChamfer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classpoint_1_1_p_chamfer.html"];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="point.PCircle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classpoint_1_1_p_circle.html"];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node7 [label="point.PDoubleClear",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classpoint_1_1_p_double_clear.html"];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node8 [label="point.POutcurve",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classpoint_1_1_p_outcurve.html"];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node9 [label="point.PSharp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classpoint_1_1_p_sharp.html"];
+  Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node10 [label="point.PAroundcurve",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classpoint_1_1_p_aroundcurve.html"];
+  Node9 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node11 [label="point.PClear",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classpoint_1_1_p_clear.html"];
+  Node9 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node12 [label="point.PIncurve",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classpoint_1_1_p_incurve.html"];
+}

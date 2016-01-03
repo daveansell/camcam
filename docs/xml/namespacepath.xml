@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespacepath" kind="namespace" language="Python">
+    <compoundname>path</compoundname>
+    <innerclass refid="classpath_1_1_b_o_m" prot="public">path::BOM</innerclass>
+    <innerclass refid="classpath_1_1_b_o_m__flat" prot="public">path::BOM_flat</innerclass>
+    <innerclass refid="classpath_1_1_b_o_m__part" prot="public">path::BOM_part</innerclass>
+    <innerclass refid="classpath_1_1_b_o_m__pcb" prot="public">path::BOM_pcb</innerclass>
+    <innerclass refid="classpath_1_1_b_o_m__rod" prot="public">path::BOM_rod</innerclass>
+    <innerclass refid="classpath_1_1_b_o_m__software" prot="public">path::BOM_software</innerclass>
+    <innerclass refid="classpath_1_1_layer" prot="public">path::Layer</innerclass>
+    <innerclass refid="classpath_1_1_part" prot="public">path::Part</innerclass>
+    <innerclass refid="classpath_1_1_path" prot="public">path::Path</innerclass>
+    <innerclass refid="classpath_1_1_pathgroup" prot="public">path::Pathgroup</innerclass>
+    <innerclass refid="classpath_1_1_plane" prot="public">path::Plane</innerclass>
+    <innerclass refid="classpath_1_1_project" prot="public">path::Project</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacepath_1a22348be460eb3c510b50da1d6643feaa" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple path.milling</definition>
+        <argsstring></argsstring>
+        <name>milling</name>
+        <initializer>= <ref refid="class_milling_1_1_milling" kindref="compound">Milling.Milling</ref>()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="13" column="1" bodyfile="/home/db/camcam/path.py" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacepath_1ac3facb45d2ec1fec87614d74d381d058" prot="public" static="no" mutable="no">
+        <type>dictionary</type>
+        <definition>dictionary path.arg_meanings</definition>
+        <argsstring></argsstring>
+        <name>arg_meanings</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="14" column="1" bodyfile="/home/db/camcam/path.py" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacepath_1a1d2c06ebecd0a735e9c87e8b97ee9d1a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.V</definition>
+        <argsstring></argsstring>
+        <name>V</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="53" column="1" bodyfile="/home/db/camcam/path.py" bodystart="53" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacepath_1a9a6d2cc32e9e70e7f2243a31c3a1f2a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.rotate</definition>
+        <argsstring>(pos, a)</argsstring>
+        <name>rotate</name>
+        <param>
+          <type>pos</type>
+          <defname>pos</defname>
+        </param>
+        <param>
+          <type>a</type>
+          <defname>a</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="62" column="1" bodyfile="/home/db/camcam/path.py" bodystart="62" bodyend="70"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/path.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

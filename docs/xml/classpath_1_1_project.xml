@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classpath_1_1_project" kind="class" language="Python" prot="public">
+    <compoundname>path::Project</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">object</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classpath_1_1_project_1ad4153004a49fdf3a613b19ca9e90aa41" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Project::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1453" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1453" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_project_1a71f8617041c99576583bab6d34d3e121" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Project::planes</definition>
+        <argsstring></argsstring>
+        <name>planes</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1454" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1454" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classpath_1_1_project_1acddd4b828a7981218dbf6870cc61fdf8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Project.__init__</definition>
+        <argsstring>(name)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type><ref refid="classpath_1_1_project_1ad4153004a49fdf3a613b19ca9e90aa41" kindref="member">name</ref></type>
+          <defname>name</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1452" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1452" bodyend="1454"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_project_1a131978e04cf42f0f476d2eea260b7ead" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Project.add_plane</definition>
+        <argsstring>(plane)</argsstring>
+        <name>add_plane</name>
+        <param>
+          <type>plane</type>
+          <defname>plane</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1455" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1455" bodyend="1457"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1571">
+        <label>path.Project</label>
+        <link refid="classpath_1_1_project"/>
+        <childnode refid="1572" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1572">
+        <label>object</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1573">
+        <label>path.Project</label>
+        <link refid="classpath_1_1_project"/>
+        <childnode refid="1574" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1574">
+        <label>object</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/path.py" line="1451" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1451" bodyend="1458"/>
+    <listofallmembers>
+      <member refid="classpath_1_1_project_1acddd4b828a7981218dbf6870cc61fdf8" prot="public" virt="non-virtual"><scope>path::Project</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_project_1a131978e04cf42f0f476d2eea260b7ead" prot="public" virt="non-virtual"><scope>path::Project</scope><name>add_plane</name></member>
+      <member refid="classpath_1_1_project_1ad4153004a49fdf3a613b19ca9e90aa41" prot="public" virt="non-virtual"><scope>path::Project</scope><name>name</name></member>
+      <member refid="classpath_1_1_project_1a71f8617041c99576583bab6d34d3e121" prot="public" virt="non-virtual"><scope>path::Project</scope><name>planes</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

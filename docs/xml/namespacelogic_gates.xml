@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespacelogic_gates" kind="namespace" language="Python">
+    <compoundname>logicGates</compoundname>
+    <innerclass refid="classlogic_gates_1_1_a_n_dgate" prot="public">logicGates::ANDgate</innerclass>
+    <innerclass refid="classlogic_gates_1_1_logic_gate" prot="public">logicGates::LogicGate</innerclass>
+    <innerclass refid="classlogic_gates_1_1_n_o_tgate" prot="public">logicGates::NOTgate</innerclass>
+    <innerclass refid="classlogic_gates_1_1_o_rgate" prot="public">logicGates::ORgate</innerclass>
+    <innerclass refid="classlogic_gates_1_1_x_o_rgate" prot="public">logicGates::XORgate</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/logicGates.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

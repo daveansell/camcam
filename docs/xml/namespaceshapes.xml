@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespaceshapes" kind="namespace" language="Python">
+    <compoundname>shapes</compoundname>
+    <innerclass refid="classshapes_1_1_angled_finger_joint" prot="public">shapes::AngledFingerJoint</innerclass>
+    <innerclass refid="classshapes_1_1_angled_finger_joint_no_slope" prot="public">shapes::AngledFingerJointNoSlope</innerclass>
+    <innerclass refid="classshapes_1_1_angled_finger_joint_slope" prot="public">shapes::AngledFingerJointSlope</innerclass>
+    <innerclass refid="classshapes_1_1_bolt" prot="public">shapes::Bolt</innerclass>
+    <innerclass refid="classshapes_1_1_chamfer" prot="public">shapes::Chamfer</innerclass>
+    <innerclass refid="classshapes_1_1_circle" prot="public">shapes::Circle</innerclass>
+    <innerclass refid="classshapes_1_1_circle_chord" prot="public">shapes::CircleChord</innerclass>
+    <innerclass refid="classshapes_1_1_clamp" prot="public">shapes::Clamp</innerclass>
+    <innerclass refid="classshapes_1_1_clear_rect" prot="public">shapes::ClearRect</innerclass>
+    <innerclass refid="classshapes_1_1_copy_object" prot="public">shapes::CopyObject</innerclass>
+    <innerclass refid="classshapes_1_1_countersink_hole" prot="public">shapes::CountersinkHole</innerclass>
+    <innerclass refid="classshapes_1_1_cross" prot="public">shapes::Cross</innerclass>
+    <innerclass refid="classshapes_1_1_curved_rect" prot="public">shapes::CurvedRect</innerclass>
+    <innerclass refid="classshapes_1_1_double_flat" prot="public">shapes::DoubleFlat</innerclass>
+    <innerclass refid="classshapes_1_1_drill" prot="public">shapes::Drill</innerclass>
+    <innerclass refid="classshapes_1_1_filled_circle" prot="public">shapes::FilledCircle</innerclass>
+    <innerclass refid="classshapes_1_1_finger_joint" prot="public">shapes::FingerJoint</innerclass>
+    <innerclass refid="classshapes_1_1_finger_joint_box_mid_side" prot="public">shapes::FingerJointBoxMidSide</innerclass>
+    <innerclass refid="classshapes_1_1_finger_joint_box_side" prot="public">shapes::FingerJointBoxSide</innerclass>
+    <innerclass refid="classshapes_1_1_finger_joint_mid" prot="public">shapes::FingerJointMid</innerclass>
+    <innerclass refid="classshapes_1_1_four_objects" prot="public">shapes::FourObjects</innerclass>
+    <innerclass refid="classshapes_1_1_four_screws" prot="public">shapes::FourScrews</innerclass>
+    <innerclass refid="classshapes_1_1_hole" prot="public">shapes::Hole</innerclass>
+    <innerclass refid="classshapes_1_1_hole_line" prot="public">shapes::HoleLine</innerclass>
+    <innerclass refid="classshapes_1_1_key_hole" prot="public">shapes::KeyHole</innerclass>
+    <innerclass refid="classshapes_1_1_line_objects" prot="public">shapes::LineObjects</innerclass>
+    <innerclass refid="classshapes_1_1_lines" prot="public">shapes::Lines</innerclass>
+    <innerclass refid="classshapes_1_1_lobed_circle" prot="public">shapes::LobedCircle</innerclass>
+    <innerclass refid="classshapes_1_1_module" prot="public">shapes::Module</innerclass>
+    <innerclass refid="classshapes_1_1_module_clear_back" prot="public">shapes::ModuleClearBack</innerclass>
+    <innerclass refid="classshapes_1_1_module_clear_back_path" prot="public">shapes::ModuleClearBackPath</innerclass>
+    <innerclass refid="classshapes_1_1_polygon" prot="public">shapes::Polygon</innerclass>
+    <innerclass refid="classshapes_1_1_rect" prot="public">shapes::Rect</innerclass>
+    <innerclass refid="classshapes_1_1_rect_speaker_grill" prot="public">shapes::RectSpeakerGrill</innerclass>
+    <innerclass refid="classshapes_1_1_repeat_line" prot="public">shapes::RepeatLine</innerclass>
+    <innerclass refid="classshapes_1_1_repeat_spaced_grid" prot="public">shapes::RepeatSpacedGrid</innerclass>
+    <innerclass refid="classshapes_1_1_rounded_arc" prot="public">shapes::RoundedArc</innerclass>
+    <innerclass refid="classshapes_1_1_rounded_rect" prot="public">shapes::RoundedRect</innerclass>
+    <innerclass refid="classshapes_1_1_round_speaker_grill" prot="public">shapes::RoundSpeakerGrill</innerclass>
+    <innerclass refid="classshapes_1_1_screw" prot="public">shapes::Screw</innerclass>
+    <innerclass refid="classshapes_1_1_square_objects" prot="public">shapes::SquareObjects</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/shapes.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

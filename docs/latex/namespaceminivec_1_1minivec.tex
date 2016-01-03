@@ -1,0 +1,228 @@
+\hypertarget{namespaceminivec_1_1minivec}{}\section{minivec.\+minivec Namespace Reference}
+\label{namespaceminivec_1_1minivec}\index{minivec.\+minivec@{minivec.\+minivec}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classminivec_1_1minivec_1_1___epsilon_pop_context}{\+\_\+\+Epsilon\+Pop\+Context}
+\item 
+class \hyperlink{classminivec_1_1minivec_1_1___error_pop_context}{\+\_\+\+Error\+Pop\+Context}
+\item 
+class \hyperlink{classminivec_1_1minivec_1_1_mat}{Mat}
+\item 
+class \hyperlink{classminivec_1_1minivec_1_1_vec}{Vec}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{namespaceminivec_1_1minivec_a05c598591e86e4ad044aa85b35bfaf66}{V}
+\item 
+def \hyperlink{namespaceminivec_1_1minivec_a4575b51d4237083edbc93832a2c2754f}{rotate} (pos, a)
+\item 
+def \hyperlink{namespaceminivec_1_1minivec_afb2a679445010304189adfadaf5afbb3}{Epsilon} ()
+\item 
+def \hyperlink{namespaceminivec_1_1minivec_a621b0516abfdd5c4c6fa1a60c52f8539}{Reset\+Epsilon} ()
+\item 
+def \hyperlink{namespaceminivec_1_1minivec_a6f6f9c5c72491f8b2f085444db5a4edb}{Push\+Epsilon} (value)
+\item 
+def \hyperlink{namespaceminivec_1_1minivec_a5ac8925e7a712892716c2799dbaacc0f}{Pop\+Epsilon} ()
+\item 
+def \hyperlink{namespaceminivec_1_1minivec_aaa1925ce113b6959b2029bedda0dc79f}{Error} ()
+\item 
+def \hyperlink{namespaceminivec_1_1minivec_a32f05f2e9bebe41c8d7b1a810bd6acc2}{Reset\+Error} ()
+\item 
+def \hyperlink{namespaceminivec_1_1minivec_a8047c80a5c0d2919929d72f4265fd20b}{Push\+Error} (value)
+\item 
+def \hyperlink{namespaceminivec_1_1minivec_a2b5146c60a68e2eb846a46e96fdaa7cb}{Pop\+Error} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+string \hyperlink{namespaceminivec_1_1minivec_a664310998bc3f9f64caefde4176331b3}{\+\_\+\+\_\+version\+\_\+\+\_\+} = \char`\"{}0.\+4\char`\"{}
+\item 
+string \hyperlink{namespaceminivec_1_1minivec_ab8c40fffebf0c6ede3ef55861cfe4926}{\+\_\+\+\_\+author\+\_\+\+\_\+} = \char`\"{}Peter Shinners $<$pete@shinners.\+org$>$\char`\"{}
+\item 
+string \hyperlink{namespaceminivec_1_1minivec_a02847a23f8377584f9fb1f81c88e4dd0}{\+\_\+\+\_\+license\+\_\+\+\_\+} = \char`\"{}M\+I\+T\char`\"{}
+\item 
+string \hyperlink{namespaceminivec_1_1minivec_a42d6bb912b5c046963cac5e9e34bc9be}{\+\_\+\+\_\+url\+\_\+\+\_\+} = \char`\"{}http\+://code.\+google.\+com/p/minivec\char`\"{}
+\item 
+list \hyperlink{namespaceminivec_1_1minivec_aee6940c00f81893fa47f68748cb8baa7}{\+\_\+\+\_\+all\+\_\+\+\_\+}
+\item 
+tuple \hyperlink{namespaceminivec_1_1minivec_a691948dad66644e76fcdfb576b7b01f2}{\+\_\+\+Thread\+Local} = threading.\+local()
+\item 
+\hyperlink{namespaceminivec_1_1minivec_acbf0347ca8872c1c7a543ef36a0bf52f}{threading} = None
+\item 
+tuple \hyperlink{namespaceminivec_1_1minivec_abf368b58aaa6bad7fa2c6f4100f5eefe}{Nan} = struct.\+unpack(\char`\"{}f\char`\"{}, \textquotesingle{}\textbackslash{}x00\textbackslash{}x00\textbackslash{}xc0\textbackslash{}x7f\textquotesingle{})
+\item 
+tuple \hyperlink{namespaceminivec_1_1minivec_ae5b62e1c8439d519f00ee982428624e1}{\+\_\+\+Rad} = radians(1.\+0)
+\item 
+tuple \hyperlink{namespaceminivec_1_1minivec_a5b26c80dbd4b8509096773b210c87c77}{\+\_\+\+Deg} = degrees(1.\+0)
+\item 
+float \hyperlink{namespaceminivec_1_1minivec_abd8832f7f104b13c5d28376147a2fe9a}{\+\_\+\+Default\+Error} = 0.\+0
+\item 
+int \hyperlink{namespaceminivec_1_1minivec_a1bcde851e3506a674b3fcd4d4087bc09}{\+\_\+\+Default\+Epsilon} = 1
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{namespaceminivec_1_1minivec_afb2a679445010304189adfadaf5afbb3}{}\index{minivec\+::minivec@{minivec\+::minivec}!Epsilon@{Epsilon}}
+\index{Epsilon@{Epsilon}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{Epsilon}]{\setlength{\rightskip}{0pt plus 5cm}def minivec.\+minivec.\+Epsilon (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceminivec_1_1minivec_afb2a679445010304189adfadaf5afbb3}
+\begin{DoxyVerb}Get the current epsilon value used in this minivec context.
+This value will be unique per thread. Many comparisons inside minivec objects will use the
+epsilon as a threshold for comparing floating point values. The default is 10e-8.
+\end{DoxyVerb}
+ \hypertarget{namespaceminivec_1_1minivec_aaa1925ce113b6959b2029bedda0dc79f}{}\index{minivec\+::minivec@{minivec\+::minivec}!Error@{Error}}
+\index{Error@{Error}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{Error}]{\setlength{\rightskip}{0pt plus 5cm}def minivec.\+minivec.\+Error (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceminivec_1_1minivec_aaa1925ce113b6959b2029bedda0dc79f}
+\begin{DoxyVerb}Get the current error value used to construct minivec objects.
+This will usually be zero, nan. When error is set to the special NotImplemented object
+minivec will raise exceptions when creating error objects.
+This value will be unique per thread. The default is 0.0.
+\end{DoxyVerb}
+ \hypertarget{namespaceminivec_1_1minivec_a5ac8925e7a712892716c2799dbaacc0f}{}\index{minivec\+::minivec@{minivec\+::minivec}!Pop\+Epsilon@{Pop\+Epsilon}}
+\index{Pop\+Epsilon@{Pop\+Epsilon}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{Pop\+Epsilon}]{\setlength{\rightskip}{0pt plus 5cm}def minivec.\+minivec.\+Pop\+Epsilon (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceminivec_1_1minivec_a5ac8925e7a712892716c2799dbaacc0f}
+\begin{DoxyVerb}Restore the previously set epsilon value.
+This will raise an exception if there are no values to be popped.
+This value will be unique per thread. Many comparisons inside minivec objects will use the
+epsilon as a threshold for comparing floating point values.
+\end{DoxyVerb}
+ \hypertarget{namespaceminivec_1_1minivec_a2b5146c60a68e2eb846a46e96fdaa7cb}{}\index{minivec\+::minivec@{minivec\+::minivec}!Pop\+Error@{Pop\+Error}}
+\index{Pop\+Error@{Pop\+Error}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{Pop\+Error}]{\setlength{\rightskip}{0pt plus 5cm}def minivec.\+minivec.\+Pop\+Error (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceminivec_1_1minivec_a2b5146c60a68e2eb846a46e96fdaa7cb}
+\begin{DoxyVerb}Restore the previously set error value.
+This will usually be zero, nan. When error is set to the special NotImplemented object
+minivec will raise exceptions when creating error objects.
+This value will be unique per thread.
+\end{DoxyVerb}
+ \hypertarget{namespaceminivec_1_1minivec_a6f6f9c5c72491f8b2f085444db5a4edb}{}\index{minivec\+::minivec@{minivec\+::minivec}!Push\+Epsilon@{Push\+Epsilon}}
+\index{Push\+Epsilon@{Push\+Epsilon}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{Push\+Epsilon}]{\setlength{\rightskip}{0pt plus 5cm}def minivec.\+minivec.\+Push\+Epsilon (
+\begin{DoxyParamCaption}
+\item[{}]{value}
+\end{DoxyParamCaption}
+)}\label{namespaceminivec_1_1minivec_a6f6f9c5c72491f8b2f085444db5a4edb}
+\begin{DoxyVerb}Set the minimum threshold for different floating point values.
+This will create a Python context that can be used by the with operator. If a context
+is not used, it is recommended to pop the epsilon value when no longer needed.
+This value will be unique per thread. Many comparisons inside minivec objects will use the
+epsilon as a threshold for comparing floating point values. The default is 10e-8.
+\end{DoxyVerb}
+ \hypertarget{namespaceminivec_1_1minivec_a8047c80a5c0d2919929d72f4265fd20b}{}\index{minivec\+::minivec@{minivec\+::minivec}!Push\+Error@{Push\+Error}}
+\index{Push\+Error@{Push\+Error}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{Push\+Error}]{\setlength{\rightskip}{0pt plus 5cm}def minivec.\+minivec.\+Push\+Error (
+\begin{DoxyParamCaption}
+\item[{}]{value}
+\end{DoxyParamCaption}
+)}\label{namespaceminivec_1_1minivec_a8047c80a5c0d2919929d72f4265fd20b}
+\begin{DoxyVerb}Set the error value used for creating minivec objects with errors.
+This will create a Python context that can be used by the with operator. If a context
+is not used, it is recommended to pop the error value when no longer needed.
+This will usually be zero, nan. When error is set to the special NotImplemented object
+minivec will raise exceptions when creating error objects.
+This value will be unique per thread. The default is 0.0.
+\end{DoxyVerb}
+ \hypertarget{namespaceminivec_1_1minivec_a621b0516abfdd5c4c6fa1a60c52f8539}{}\index{minivec\+::minivec@{minivec\+::minivec}!Reset\+Epsilon@{Reset\+Epsilon}}
+\index{Reset\+Epsilon@{Reset\+Epsilon}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{Reset\+Epsilon}]{\setlength{\rightskip}{0pt plus 5cm}def minivec.\+minivec.\+Reset\+Epsilon (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceminivec_1_1minivec_a621b0516abfdd5c4c6fa1a60c52f8539}
+\begin{DoxyVerb}Reset the epsilon value and all pushed values back to the default.
+This value will be unique per thread. Many comparisons inside minivec objects will use the
+epsilon as a threshold for comparing floating point values. The default is 10e-8.
+\end{DoxyVerb}
+ \hypertarget{namespaceminivec_1_1minivec_a32f05f2e9bebe41c8d7b1a810bd6acc2}{}\index{minivec\+::minivec@{minivec\+::minivec}!Reset\+Error@{Reset\+Error}}
+\index{Reset\+Error@{Reset\+Error}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{Reset\+Error}]{\setlength{\rightskip}{0pt plus 5cm}def minivec.\+minivec.\+Reset\+Error (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceminivec_1_1minivec_a32f05f2e9bebe41c8d7b1a810bd6acc2}
+\begin{DoxyVerb}Reset the error value and all pushed values back to the default.
+This will usually be zero, nan. When error is set to the special NotImplemented object
+minivec will raise exceptions when creating error objects.
+This value will be unique per thread. The default is 0.0.
+\end{DoxyVerb}
+ \hypertarget{namespaceminivec_1_1minivec_a4575b51d4237083edbc93832a2c2754f}{}\index{minivec\+::minivec@{minivec\+::minivec}!rotate@{rotate}}
+\index{rotate@{rotate}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{rotate}]{\setlength{\rightskip}{0pt plus 5cm}def minivec.\+minivec.\+rotate (
+\begin{DoxyParamCaption}
+\item[{}]{pos, }
+\item[{}]{a}
+\end{DoxyParamCaption}
+)}\label{namespaceminivec_1_1minivec_a4575b51d4237083edbc93832a2c2754f}
+\hypertarget{namespaceminivec_1_1minivec_a05c598591e86e4ad044aa85b35bfaf66}{}\index{minivec\+::minivec@{minivec\+::minivec}!V@{V}}
+\index{V@{V}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{V}]{\setlength{\rightskip}{0pt plus 5cm}def minivec.\+minivec.\+V (
+\begin{DoxyParamCaption}
+\item[{}]{x = {\ttfamily False}, }
+\item[{}]{y = {\ttfamily False}, }
+\item[{}]{z = {\ttfamily False}}
+\end{DoxyParamCaption}
+)}\label{namespaceminivec_1_1minivec_a05c598591e86e4ad044aa85b35bfaf66}
+
+
+\subsection{Variable Documentation}
+\hypertarget{namespaceminivec_1_1minivec_aee6940c00f81893fa47f68748cb8baa7}{}\index{minivec\+::minivec@{minivec\+::minivec}!\+\_\+\+\_\+all\+\_\+\+\_\+@{\+\_\+\+\_\+all\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+all\+\_\+\+\_\+@{\+\_\+\+\_\+all\+\_\+\+\_\+}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{\+\_\+\+\_\+all\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}list minivec.\+minivec.\+\_\+\+\_\+all\+\_\+\+\_\+}\label{namespaceminivec_1_1minivec_aee6940c00f81893fa47f68748cb8baa7}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+1 = [
+2     \textcolor{stringliteral}{"Vec"}, \textcolor{stringliteral}{"Mat"}, \textcolor{comment}{#"Box",}
+3     \textcolor{stringliteral}{"Nan"},
+4     \textcolor{stringliteral}{"Epsilon"}, \textcolor{stringliteral}{"PushEpsilon"}, \textcolor{stringliteral}{"PopEpsilon"}, \textcolor{stringliteral}{"ResetEpsilon"},
+5     \textcolor{stringliteral}{"Error"}, \textcolor{stringliteral}{"PushError"}, \textcolor{stringliteral}{"PopError"}, \textcolor{stringliteral}{"ResetError"},
+6 ]
+\end{DoxyCode}
+\hypertarget{namespaceminivec_1_1minivec_ab8c40fffebf0c6ede3ef55861cfe4926}{}\index{minivec\+::minivec@{minivec\+::minivec}!\+\_\+\+\_\+author\+\_\+\+\_\+@{\+\_\+\+\_\+author\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+author\+\_\+\+\_\+@{\+\_\+\+\_\+author\+\_\+\+\_\+}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{\+\_\+\+\_\+author\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}string minivec.\+minivec.\+\_\+\+\_\+author\+\_\+\+\_\+ = \char`\"{}Peter Shinners $<$pete@shinners.\+org$>$\char`\"{}}\label{namespaceminivec_1_1minivec_ab8c40fffebf0c6ede3ef55861cfe4926}
+\hypertarget{namespaceminivec_1_1minivec_a02847a23f8377584f9fb1f81c88e4dd0}{}\index{minivec\+::minivec@{minivec\+::minivec}!\+\_\+\+\_\+license\+\_\+\+\_\+@{\+\_\+\+\_\+license\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+license\+\_\+\+\_\+@{\+\_\+\+\_\+license\+\_\+\+\_\+}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{\+\_\+\+\_\+license\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}string minivec.\+minivec.\+\_\+\+\_\+license\+\_\+\+\_\+ = \char`\"{}M\+I\+T\char`\"{}}\label{namespaceminivec_1_1minivec_a02847a23f8377584f9fb1f81c88e4dd0}
+\hypertarget{namespaceminivec_1_1minivec_a42d6bb912b5c046963cac5e9e34bc9be}{}\index{minivec\+::minivec@{minivec\+::minivec}!\+\_\+\+\_\+url\+\_\+\+\_\+@{\+\_\+\+\_\+url\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+url\+\_\+\+\_\+@{\+\_\+\+\_\+url\+\_\+\+\_\+}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{\+\_\+\+\_\+url\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}string minivec.\+minivec.\+\_\+\+\_\+url\+\_\+\+\_\+ = \char`\"{}http\+://code.\+google.\+com/p/minivec\char`\"{}}\label{namespaceminivec_1_1minivec_a42d6bb912b5c046963cac5e9e34bc9be}
+\hypertarget{namespaceminivec_1_1minivec_a664310998bc3f9f64caefde4176331b3}{}\index{minivec\+::minivec@{minivec\+::minivec}!\+\_\+\+\_\+version\+\_\+\+\_\+@{\+\_\+\+\_\+version\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+version\+\_\+\+\_\+@{\+\_\+\+\_\+version\+\_\+\+\_\+}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{\+\_\+\+\_\+version\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}string minivec.\+minivec.\+\_\+\+\_\+version\+\_\+\+\_\+ = \char`\"{}0.\+4\char`\"{}}\label{namespaceminivec_1_1minivec_a664310998bc3f9f64caefde4176331b3}
+\hypertarget{namespaceminivec_1_1minivec_a1bcde851e3506a674b3fcd4d4087bc09}{}\index{minivec\+::minivec@{minivec\+::minivec}!\+\_\+\+Default\+Epsilon@{\+\_\+\+Default\+Epsilon}}
+\index{\+\_\+\+Default\+Epsilon@{\+\_\+\+Default\+Epsilon}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{\+\_\+\+Default\+Epsilon}]{\setlength{\rightskip}{0pt plus 5cm}int minivec.\+minivec.\+\_\+\+Default\+Epsilon = 1}\label{namespaceminivec_1_1minivec_a1bcde851e3506a674b3fcd4d4087bc09}
+\hypertarget{namespaceminivec_1_1minivec_abd8832f7f104b13c5d28376147a2fe9a}{}\index{minivec\+::minivec@{minivec\+::minivec}!\+\_\+\+Default\+Error@{\+\_\+\+Default\+Error}}
+\index{\+\_\+\+Default\+Error@{\+\_\+\+Default\+Error}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{\+\_\+\+Default\+Error}]{\setlength{\rightskip}{0pt plus 5cm}float minivec.\+minivec.\+\_\+\+Default\+Error = 0.\+0}\label{namespaceminivec_1_1minivec_abd8832f7f104b13c5d28376147a2fe9a}
+\hypertarget{namespaceminivec_1_1minivec_a5b26c80dbd4b8509096773b210c87c77}{}\index{minivec\+::minivec@{minivec\+::minivec}!\+\_\+\+Deg@{\+\_\+\+Deg}}
+\index{\+\_\+\+Deg@{\+\_\+\+Deg}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{\+\_\+\+Deg}]{\setlength{\rightskip}{0pt plus 5cm}tuple minivec.\+minivec.\+\_\+\+Deg = degrees(1.\+0)}\label{namespaceminivec_1_1minivec_a5b26c80dbd4b8509096773b210c87c77}
+\hypertarget{namespaceminivec_1_1minivec_ae5b62e1c8439d519f00ee982428624e1}{}\index{minivec\+::minivec@{minivec\+::minivec}!\+\_\+\+Rad@{\+\_\+\+Rad}}
+\index{\+\_\+\+Rad@{\+\_\+\+Rad}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{\+\_\+\+Rad}]{\setlength{\rightskip}{0pt plus 5cm}tuple minivec.\+minivec.\+\_\+\+Rad = radians(1.\+0)}\label{namespaceminivec_1_1minivec_ae5b62e1c8439d519f00ee982428624e1}
+\hypertarget{namespaceminivec_1_1minivec_a691948dad66644e76fcdfb576b7b01f2}{}\index{minivec\+::minivec@{minivec\+::minivec}!\+\_\+\+Thread\+Local@{\+\_\+\+Thread\+Local}}
+\index{\+\_\+\+Thread\+Local@{\+\_\+\+Thread\+Local}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{\+\_\+\+Thread\+Local}]{\setlength{\rightskip}{0pt plus 5cm}tuple minivec.\+minivec.\+\_\+\+Thread\+Local = threading.\+local()}\label{namespaceminivec_1_1minivec_a691948dad66644e76fcdfb576b7b01f2}
+\hypertarget{namespaceminivec_1_1minivec_abf368b58aaa6bad7fa2c6f4100f5eefe}{}\index{minivec\+::minivec@{minivec\+::minivec}!Nan@{Nan}}
+\index{Nan@{Nan}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{Nan}]{\setlength{\rightskip}{0pt plus 5cm}tuple minivec.\+minivec.\+Nan = struct.\+unpack(\char`\"{}f\char`\"{}, \textquotesingle{}\textbackslash{}x00\textbackslash{}x00\textbackslash{}xc0\textbackslash{}x7f\textquotesingle{})}\label{namespaceminivec_1_1minivec_abf368b58aaa6bad7fa2c6f4100f5eefe}
+\hypertarget{namespaceminivec_1_1minivec_acbf0347ca8872c1c7a543ef36a0bf52f}{}\index{minivec\+::minivec@{minivec\+::minivec}!threading@{threading}}
+\index{threading@{threading}!minivec\+::minivec@{minivec\+::minivec}}
+\subsubsection[{threading}]{\setlength{\rightskip}{0pt plus 5cm}minivec.\+minivec.\+threading = None}\label{namespaceminivec_1_1minivec_acbf0347ca8872c1c7a543ef36a0bf52f}

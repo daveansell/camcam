@@ -1,0 +1,96 @@
+\hypertarget{classparts_1_1_fan}{}\section{parts.\+Fan Class Reference}
+\label{classparts_1_1_fan}\index{parts.\+Fan@{parts.\+Fan}}
+
+
+Inherits \hyperlink{classpath_1_1_pathgroup}{path.\+Pathgroup}.
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classparts_1_1_fan_accaa714c47d3bb05538732cd13298e30}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, pos, config)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+dictionary \hyperlink{classparts_1_1_fan_af88998014df582dab7a32bd3d94dc11f}{data}
+\item 
+list \hyperlink{classparts_1_1_fan_a17ae7e353907459cc49292e092644f27}{d} = \hyperlink{classparts_1_1_fan_af88998014df582dab7a32bd3d94dc11f}{data}\mbox{[}config\mbox{[}\textquotesingle{}fan\+\_\+type\textquotesingle{}\mbox{]}\mbox{]}
+\item 
+int \hyperlink{classparts_1_1_fan_a8d712cc7fd8c31702b654a2cb8c19ecd}{holerad} = 6
+\item 
+list \hyperlink{classparts_1_1_fan_a75666d4a0b6dd74f07fe5e84394aa116}{holerad} = config\mbox{[}\textquotesingle{}grill\textquotesingle{}\mbox{]}
+\item 
+float \hyperlink{classparts_1_1_fan_a23a5526fd6959e6fe44589d052682801}{spacing} = \hyperlink{classparts_1_1_fan_a8d712cc7fd8c31702b654a2cb8c19ecd}{holerad}$\ast$2.\+5
+\item 
+tuple \hyperlink{classparts_1_1_fan_a33929017332f1dd8d2bac914a8733cee}{o} = math.\+sqrt(\hyperlink{classparts_1_1_fan_a17ae7e353907459cc49292e092644f27}{d}\mbox{[}\textquotesingle{}centrerad\textquotesingle{}\mbox{]}$\ast$$\ast$2 -\/ \hyperlink{classparts_1_1_fan_a17ae7e353907459cc49292e092644f27}{d}\mbox{[}\textquotesingle{}centre\+\_\+limit\textquotesingle{}\mbox{]}$\ast$$\ast$2)
+\item 
+tuple \hyperlink{classparts_1_1_fan_a43f1ba65e0d6bf40ad6401b00eb42436}{cutout} = self.\+add(\hyperlink{classpath_1_1_path}{Path}(side=\textquotesingle{}in\textquotesingle{}, closed=True))
+\item 
+string \hyperlink{classparts_1_1_fan_a991d1caf4a1338f8acb1010c27ebc1da}{insert\+\_\+size} = \textquotesingle{}M4\textquotesingle{}
+\item 
+list \hyperlink{classparts_1_1_fan_a6737154f9b7459e8f98b5b737fcd8733}{insert} = milling.\+inserts\mbox{[}\hyperlink{classparts_1_1_fan_a991d1caf4a1338f8acb1010c27ebc1da}{insert\+\_\+size}\mbox{]}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classparts_1_1_fan_accaa714c47d3bb05538732cd13298e30}{}\index{parts\+::\+Fan@{parts\+::\+Fan}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!parts\+::\+Fan@{parts\+::\+Fan}}
+\subsubsection[{\+\_\+\+\_\+init\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}def parts.\+Fan.\+\_\+\+\_\+init\+\_\+\+\_\+ (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{pos, }
+\item[{}]{config}
+\end{DoxyParamCaption}
+)}\label{classparts_1_1_fan_accaa714c47d3bb05538732cd13298e30}
+\begin{DoxyVerb}Add a fan of fan_tpe at pos\end{DoxyVerb}
+ 
+
+\subsection{Member Data Documentation}
+\hypertarget{classparts_1_1_fan_a43f1ba65e0d6bf40ad6401b00eb42436}{}\index{parts\+::\+Fan@{parts\+::\+Fan}!cutout@{cutout}}
+\index{cutout@{cutout}!parts\+::\+Fan@{parts\+::\+Fan}}
+\subsubsection[{cutout}]{\setlength{\rightskip}{0pt plus 5cm}tuple parts.\+Fan.\+cutout = self.\+add({\bf Path}(side=\textquotesingle{}in\textquotesingle{}, closed=True))\hspace{0.3cm}{\ttfamily [static]}}\label{classparts_1_1_fan_a43f1ba65e0d6bf40ad6401b00eb42436}
+\hypertarget{classparts_1_1_fan_a17ae7e353907459cc49292e092644f27}{}\index{parts\+::\+Fan@{parts\+::\+Fan}!d@{d}}
+\index{d@{d}!parts\+::\+Fan@{parts\+::\+Fan}}
+\subsubsection[{d}]{\setlength{\rightskip}{0pt plus 5cm}list parts.\+Fan.\+d = {\bf data}\mbox{[}config\mbox{[}\textquotesingle{}fan\+\_\+type\textquotesingle{}\mbox{]}\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classparts_1_1_fan_a17ae7e353907459cc49292e092644f27}
+\hypertarget{classparts_1_1_fan_af88998014df582dab7a32bd3d94dc11f}{}\index{parts\+::\+Fan@{parts\+::\+Fan}!data@{data}}
+\index{data@{data}!parts\+::\+Fan@{parts\+::\+Fan}}
+\subsubsection[{data}]{\setlength{\rightskip}{0pt plus 5cm}dictionary parts.\+Fan.\+data\hspace{0.3cm}{\ttfamily [static]}}\label{classparts_1_1_fan_af88998014df582dab7a32bd3d94dc11f}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+1 = \{
+2             \textcolor{stringliteral}{'40mm'}:\{\textcolor{stringliteral}{'centrerad'}:38/2,  \textcolor{stringliteral}{'hole\_off'}:31.6/2, \textcolor{stringliteral}{'holeRad'}:4.5/2, \textcolor{stringliteral}{'threadRad'}:3.3/2\},          
+3             \textcolor{stringliteral}{'60mm'}:\{\textcolor{stringliteral}{'centrerad'}:58/2,  \textcolor{stringliteral}{'hole\_off'}:50/2, \textcolor{stringliteral}{'holeRad'}:4.5/2, \textcolor{stringliteral}{'threadRad'}:3.3/2\},
+4             \textcolor{stringliteral}{'80mm'}:\{\textcolor{stringliteral}{'centrerad'}:92/2, \textcolor{stringliteral}{'centre\_limit'}:78/2, \textcolor{stringliteral}{'hole\_off'}:71.5/2, \textcolor{stringliteral}{'holeRad'}:4.5/2, \textcolor{stringliteral}{'threadRad'}:
+      3.3/2 \},
+5             \textcolor{stringliteral}{'92mm'}:\{\textcolor{stringliteral}{'centrerad'}:104/2, \textcolor{stringliteral}{'centre\_limit'}:90/2, \textcolor{stringliteral}{'hole\_off'}:82.5/2, \textcolor{stringliteral}{'holeRad'}:4.5/2, \textcolor{stringliteral}{'threadRad'}
+      :3.3/2 \},
+6             \textcolor{stringliteral}{'120mm'}:\{\textcolor{stringliteral}{'centrerad'}:132/2, \textcolor{stringliteral}{'centre\_limit'}:118/2, \textcolor{stringliteral}{'hole\_off'}:105/2, \textcolor{stringliteral}{'holeRad'}:4.5/2, \textcolor{stringliteral}{'threadRad
+      '}:3.3/2 \},
+7             \textcolor{stringliteral}{'140mm'}:\{\textcolor{stringliteral}{'centrerad'}:150/2, \textcolor{stringliteral}{'centre\_limit'}:138/2, \textcolor{stringliteral}{'hole\_off'}:124.5/2, \textcolor{stringliteral}{'holeRad'}:4.5/2, \textcolor{stringliteral}{'
+      threadRad'}:3.3/2 \},
+8             \}
+\end{DoxyCode}
+\hypertarget{classparts_1_1_fan_a8d712cc7fd8c31702b654a2cb8c19ecd}{}\index{parts\+::\+Fan@{parts\+::\+Fan}!holerad@{holerad}}
+\index{holerad@{holerad}!parts\+::\+Fan@{parts\+::\+Fan}}
+\subsubsection[{holerad}]{\setlength{\rightskip}{0pt plus 5cm}int parts.\+Fan.\+holerad = 6\hspace{0.3cm}{\ttfamily [static]}}\label{classparts_1_1_fan_a8d712cc7fd8c31702b654a2cb8c19ecd}
+\hypertarget{classparts_1_1_fan_a75666d4a0b6dd74f07fe5e84394aa116}{}\index{parts\+::\+Fan@{parts\+::\+Fan}!holerad@{holerad}}
+\index{holerad@{holerad}!parts\+::\+Fan@{parts\+::\+Fan}}
+\subsubsection[{holerad}]{\setlength{\rightskip}{0pt plus 5cm}list parts.\+Fan.\+holerad = config\mbox{[}\textquotesingle{}grill\textquotesingle{}\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classparts_1_1_fan_a75666d4a0b6dd74f07fe5e84394aa116}
+\hypertarget{classparts_1_1_fan_a6737154f9b7459e8f98b5b737fcd8733}{}\index{parts\+::\+Fan@{parts\+::\+Fan}!insert@{insert}}
+\index{insert@{insert}!parts\+::\+Fan@{parts\+::\+Fan}}
+\subsubsection[{insert}]{\setlength{\rightskip}{0pt plus 5cm}list parts.\+Fan.\+insert = milling.\+inserts\mbox{[}{\bf insert\+\_\+size}\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classparts_1_1_fan_a6737154f9b7459e8f98b5b737fcd8733}
+\hypertarget{classparts_1_1_fan_a991d1caf4a1338f8acb1010c27ebc1da}{}\index{parts\+::\+Fan@{parts\+::\+Fan}!insert\+\_\+size@{insert\+\_\+size}}
+\index{insert\+\_\+size@{insert\+\_\+size}!parts\+::\+Fan@{parts\+::\+Fan}}
+\subsubsection[{insert\+\_\+size}]{\setlength{\rightskip}{0pt plus 5cm}string parts.\+Fan.\+insert\+\_\+size = \textquotesingle{}M4\textquotesingle{}\hspace{0.3cm}{\ttfamily [static]}}\label{classparts_1_1_fan_a991d1caf4a1338f8acb1010c27ebc1da}
+\hypertarget{classparts_1_1_fan_a33929017332f1dd8d2bac914a8733cee}{}\index{parts\+::\+Fan@{parts\+::\+Fan}!o@{o}}
+\index{o@{o}!parts\+::\+Fan@{parts\+::\+Fan}}
+\subsubsection[{o}]{\setlength{\rightskip}{0pt plus 5cm}tuple parts.\+Fan.\+o = math.\+sqrt({\bf d}\mbox{[}\textquotesingle{}centrerad\textquotesingle{}\mbox{]}$\ast$$\ast$2 -\/ {\bf d}\mbox{[}\textquotesingle{}centre\+\_\+limit\textquotesingle{}\mbox{]}$\ast$$\ast$2)\hspace{0.3cm}{\ttfamily [static]}}\label{classparts_1_1_fan_a33929017332f1dd8d2bac914a8733cee}
+\hypertarget{classparts_1_1_fan_a23a5526fd6959e6fe44589d052682801}{}\index{parts\+::\+Fan@{parts\+::\+Fan}!spacing@{spacing}}
+\index{spacing@{spacing}!parts\+::\+Fan@{parts\+::\+Fan}}
+\subsubsection[{spacing}]{\setlength{\rightskip}{0pt plus 5cm}float parts.\+Fan.\+spacing = {\bf holerad}$\ast$2.\+5\hspace{0.3cm}{\ttfamily [static]}}\label{classparts_1_1_fan_a23a5526fd6959e6fe44589d052682801}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{parts_8py}{parts.\+py}\end{DoxyCompactItemize}

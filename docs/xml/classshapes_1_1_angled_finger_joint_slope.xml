@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classshapes_1_1_angled_finger_joint_slope" kind="class" language="Python" prot="public">
+    <compoundname>shapes::AngledFingerJointSlope</compoundname>
+    <basecompoundref refid="classpath_1_1_pathgroup" prot="public" virt="non-virtual">path.Pathgroup</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classshapes_1_1_angled_finger_joint_slope_1aec9e488a6e295ae2ccee1d23a1d21a88" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>shapes.AngledFingerJointSlope::direction</definition>
+        <argsstring></argsstring>
+        <name>direction</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="952" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="952" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classshapes_1_1_angled_finger_joint_slope_1a4a2338c3c3171a3e6aa98991ecc7f0de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def shapes.AngledFingerJointSlope.__init__</definition>
+        <argsstring></argsstring>
+        <name>__init__</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>This will cut a load of slopes away from an AngledFingerJoint, the both must be called</verbatim><verbatim>AngledFingerJointSlope
+start - point the funger joint should start
+end - point the finger joint should end
+side - side the fingers should be cut (left/right)
+linemode - is this an external or internal finger joint (internal is in a hole in a box) 
+startmode - should start on or off the line
+endmode - should end on or off the line
+tab_length - a length of tab to aim for - will actually be an integer fraction of the length
+thickness - the thickness of the piece of wood you are slotting into
+cutterrad - radius of the cutter
+angle - angle from vertical that the finger joint is mounted at 
+lineside - the side of the piece you are cutting that the line form start to end runs along (front/back)
+fudge - fudge factor which just affects the sides of the fingers not their length
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/shapes.py" line="903" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="903" bodyend="982"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>This will cut a load of slopes away from an AngledFingerJoint, the both must be called</verbatim> </para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="37">
+        <label>path.Pathgroup</label>
+        <link refid="classpath_1_1_pathgroup"/>
+        <childnode refid="38" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>object</label>
+      </node>
+      <node id="36">
+        <label>shapes.AngledFingerJointSlope</label>
+        <link refid="classshapes_1_1_angled_finger_joint_slope"/>
+        <childnode refid="37" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="40">
+        <label>path.Pathgroup</label>
+        <link refid="classpath_1_1_pathgroup"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>object</label>
+      </node>
+      <node id="39">
+        <label>shapes.AngledFingerJointSlope</label>
+        <link refid="classshapes_1_1_angled_finger_joint_slope"/>
+        <childnode refid="40" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/shapes.py" line="901" column="1" bodyfile="/home/db/camcam/shapes.py" bodystart="901" bodyend="983"/>
+    <listofallmembers>
+      <member refid="classpath_1_1_pathgroup_1af3daf2374a35dcf1a96d1f91a96b332d" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>__deepcopy__</name></member>
+      <member refid="classshapes_1_1_angled_finger_joint_slope_1a4a2338c3c3171a3e6aa98991ecc7f0de" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_pathgroup_1a6d8fdfd1f6d3e2ac279f9407eb9ccc47" prot="public" virt="non-virtual" ambiguityscope="path::Pathgroup."><scope>shapes::AngledFingerJointSlope</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_pathgroup_1af55da85d788596bc6566091c0e457b5b" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>add</name></member>
+      <member refid="classpath_1_1_pathgroup_1a3ae2d4ec2bec6339076a190879e18bdd" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>add_path</name></member>
+      <member refid="classpath_1_1_pathgroup_1a7c5d24404c5aecfdc2055a11650ccfb6" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>comment</name></member>
+      <member refid="classpath_1_1_pathgroup_1a94e9cadebf94ef1945f8ba095631daa7" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>comments</name></member>
+      <member refid="classshapes_1_1_angled_finger_joint_slope_1aec9e488a6e295ae2ccee1d23a1d21a88" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>direction</name></member>
+      <member refid="classpath_1_1_pathgroup_1a5014fca4558ad2f5bbce999e68548610" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>get_comments</name></member>
+      <member refid="classpath_1_1_pathgroup_1ae2d5cd6d4f967daed162e238533bc393" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>get_config</name></member>
+      <member refid="classpath_1_1_pathgroup_1a67aa15f33d3db050e065ce7013ae3a3c" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>get_paths</name></member>
+      <member refid="classpath_1_1_pathgroup_1a9024aa309df58b977d4eb93e7e5e53c8" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>init</name></member>
+      <member refid="classpath_1_1_pathgroup_1a743d42584e2a6744e2fddd9d251016bb" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>obType</name></member>
+      <member refid="classpath_1_1_pathgroup_1a4ac30744a39d5bcc7fe5d792dcd1b7ce" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>otherargs</name></member>
+      <member refid="classpath_1_1_pathgroup_1a0772494387ccef124f62a3a1c547f5e8" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>output</name></member>
+      <member refid="classpath_1_1_pathgroup_1aab3791493c6fcb02fc647f03dea871a6" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>output_path</name></member>
+      <member refid="classpath_1_1_pathgroup_1a6ed90a9f0149226914056bfc3630c7b8" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>parent</name></member>
+      <member refid="classpath_1_1_pathgroup_1aebd1cee80f2cbaf72fc59245399eac6e" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>paths</name></member>
+      <member refid="classpath_1_1_pathgroup_1a446ca452a2ea35faef3e51f1e9e4c428" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>render</name></member>
+      <member refid="classpath_1_1_pathgroup_1af9588530d2d8a8f508254a11d71f7951" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>render_path</name></member>
+      <member refid="classpath_1_1_pathgroup_1ab0393714499705467f3a2edcf8858cd7" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>render_path_gcode</name></member>
+      <member refid="classpath_1_1_pathgroup_1a3637b74e2a08fc6168667ec8d21bee96" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>render_path_svg</name></member>
+      <member refid="classpath_1_1_pathgroup_1a08dd8c8ddcbc0f0fa3d19fc8b548aac3" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>rotate</name></member>
+      <member refid="classpath_1_1_pathgroup_1a4befbf72ed268a57ace2247f44e96d74" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>trace</name></member>
+      <member refid="classpath_1_1_pathgroup_1ab5f832d2785df23e41e7c9121885a002" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>transform</name></member>
+      <member refid="classpath_1_1_pathgroup_1a51342387e37950570ee0f66106d5ee0f" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>translate</name></member>
+      <member refid="classpath_1_1_pathgroup_1a506c871ab4905e489a907c64f936f4e8" prot="public" virt="non-virtual"><scope>shapes::AngledFingerJointSlope</scope><name>varlist</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

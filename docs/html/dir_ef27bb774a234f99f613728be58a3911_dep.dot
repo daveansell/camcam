@@ -1,0 +1,6 @@
+digraph "minivec" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  dir_ef27bb774a234f99f613728be58a3911 [shape=box, label="minivec", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_ef27bb774a234f99f613728be58a3911.html"];
+}

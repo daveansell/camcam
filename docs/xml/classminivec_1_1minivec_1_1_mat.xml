@@ -1,0 +1,886 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classminivec_1_1minivec_1_1_mat" kind="class" language="Python" prot="public">
+    <compoundname>minivec::minivec::Mat</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">object</basecompoundref>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classminivec_1_1minivec_1_1_mat_1a5837b7170083019d6425c16e3e3ea78b" prot="private" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple minivec.minivec.Mat::__slots__</definition>
+        <argsstring></argsstring>
+        <name>__slots__</name>
+        <initializer>= (&quot;__mat&quot;)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="517" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="517" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classminivec_1_1minivec_1_1_mat_1adfc7fe52d62b8e539ea39c718408c00a" prot="private" static="yes" mutable="no">
+        <type></type>
+        <definition>minivec.minivec.Mat::__mul__</definition>
+        <argsstring></argsstring>
+        <name>__mul__</name>
+        <initializer>= <ref refid="classminivec_1_1minivec_1_1_mat_1a18cdaa87999bc6cbd1652dca3aa63468" kindref="member">transform</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="657" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="657" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classminivec_1_1minivec_1_1_mat_1a796bb3da87b6f62fa3edf17bd8afdce3" prot="private" static="yes" mutable="no">
+        <type></type>
+        <definition>minivec.minivec.Mat::__invert__</definition>
+        <argsstring></argsstring>
+        <name>__invert__</name>
+        <initializer>= <ref refid="classminivec_1_1minivec_1_1_mat_1ad39a776c942f5a3939e5bbd95e430f1d" kindref="member">invert</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1012" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1012" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classminivec_1_1minivec_1_1_mat_1ae4933538c38dec3eee25a70104ebda08" prot="private" static="no" mutable="no">
+        <type></type>
+        <definition>minivec.minivec.Mat::__mat</definition>
+        <argsstring></argsstring>
+        <name>__mat</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="521" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="521" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a0ccec2a7a5c671a2480ad44d95139bd5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.__init__</definition>
+        <argsstring>(self, matrix)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>matrix</type>
+          <defname>matrix</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="520" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="520" bodyend="523"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1ac149ada48e389858031f6b403ccfeb48" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.Error</definition>
+        <argsstring></argsstring>
+        <name>Error</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="525" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="525" bodyend="532"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a0123fedc9f3e934a482679cbc8ffee85" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.rows</definition>
+        <argsstring>(self)</argsstring>
+        <name>rows</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Copy the matrix values into four rows of four numbers.
+The return is a list of lists.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="533" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="533" bodyend="540"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a0ca8a3d1a061e7a6176e64e6ed223287" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.columns</definition>
+        <argsstring>(self)</argsstring>
+        <name>columns</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Copy the matrix values into four columns of four numbers.
+The return is a list of lists.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="541" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="541" bodyend="548"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a5d2f01b4f68e0098b0fb506522cdf3a8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.__repr__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__repr__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="549" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="549" bodyend="558"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a7d46922c3211f2d733a05e1e22e0f71a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.__iter__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__iter__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="559" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="559" bodyend="562"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1ab013df7f6f0c343b8b103d20edd6a210" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.__len__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__len__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="563" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="563" bodyend="566"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1aaacf493226ec98915945f33bf08b9c28" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.__getitem__</definition>
+        <argsstring>(self, key)</argsstring>
+        <name>__getitem__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>key</type>
+          <defname>key</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="567" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="567" bodyend="570"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a8f5b48d14f1ce0a369ff0268c626d1b0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.transpose</definition>
+        <argsstring>(self)</argsstring>
+        <name>transpose</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Generate a new matrix that has the columns swapped for rows.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="571" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="571" bodyend="577"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1aec9ab0f8d51536378eb4996a20e9ddaf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.__neg__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__neg__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="578" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="578" bodyend="582"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a7feea87679c40a70812b04d1fb2687dc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.__pos__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__pos__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="583" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="583" bodyend="586"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1ade21bafa48994648e4ee0a15497997d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.__hash__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__hash__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="587" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="587" bodyend="590"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a85ddd2f35bf6b46a0634c09cd94ab5ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.__cmp__</definition>
+        <argsstring>(self, other)</argsstring>
+        <name>__cmp__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>other</type>
+          <defname>other</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="591" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="591" bodyend="595"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a002d8ba4508f1d8675eefc23935d58bf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.exact</definition>
+        <argsstring>(self, other)</argsstring>
+        <name>exact</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>other</type>
+          <defname>other</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Compare if two matrices are exactly equal.
+This will not use the epsilon value in the current minivec context.
+This is mostly the same as the comparison operators, although this accepts any type
+of argument that can convert into a vector.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="596" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="596" bodyend="605"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a0918a01c099515f095be4b846e642682" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.almost</definition>
+        <argsstring>(self, other)</argsstring>
+        <name>almost</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>other</type>
+          <defname>other</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Compare if two matrices are nearly equal.
+This uses the epsilon value in the current minivec context.
+This accepts any type of argument that can convert into a vector.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="606" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="606" bodyend="618"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a4f2b45ad9db9208f1a6512b61c19dbc5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.__nonzero__</definition>
+        <argsstring>(self)</argsstring>
+        <name>__nonzero__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="619" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="619" bodyend="623"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a0f223495c8c3d91f26b5d9e343bf1af7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.apply</definition>
+        <argsstring>(self, target)</argsstring>
+        <name>apply</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>target</type>
+          <defname>target</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Apply the transform onto any object with a transform method that takes a matrix</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="624" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="624" bodyend="628"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a18cdaa87999bc6cbd1652dca3aa63468" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.transform</definition>
+        <argsstring>(self, other)</argsstring>
+        <name>transform</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>other</type>
+          <defname>other</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Apply a matrix transformation to the current matrix</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="629" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="629" bodyend="656"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a6fc036840a152ec283894c481aa057bc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.__rmul__</definition>
+        <argsstring>(self, other)</argsstring>
+        <name>__rmul__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>other</type>
+          <defname>other</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="660" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="660" bodyend="686"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a155e41b3f4f78f7d0264d6ddc113da79" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.scale</definition>
+        <argsstring>(self, vec)</argsstring>
+        <name>scale</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>vec</type>
+          <defname>vec</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Create a matrix with the current transform scaled on each axis by the given triplet.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="687" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="687" bodyend="699"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a6378a96e89d988b74338258e01e8a9c3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.translate</definition>
+        <argsstring>(self, vec)</argsstring>
+        <name>translate</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>vec</type>
+          <defname>vec</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Create a matrix with the current transform translated on each axis by the given triplet.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="700" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="700" bodyend="728"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a03450442e730a17d66e07614c836418d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.shear</definition>
+        <argsstring>(self, vec)</argsstring>
+        <name>shear</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>vec</type>
+          <defname>vec</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Create a matrix with the current transform sheared by the given triplet.
+Each of the three given values wil shear by different axis.
+Value 0 will shear X by the Y axis
+Value 1 will shear X by the Z axis
+Value 2 will shear Y by the Z axis
+This does not represent every possible shearing, but these are all
+
+the shears represented by the decompose() operation. Multiple
+rotate and shear matrices can be multiplied to shear against all axis.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="729" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="729" bodyend="765"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a7d119e23e74d182f54ca330fe9c65a3c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.rotate</definition>
+        <argsstring>(self, vec)</argsstring>
+        <name>rotate</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>vec</type>
+          <defname>vec</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Create a matrix with the current transform rotated by euler degrees on each axis.
+The X axis has the most significant priority, and Z has the least.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="766" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="766" bodyend="810"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1af0762830b2b6decbc81009b4a7b7564c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.rotateAxis</definition>
+        <argsstring>(self, angle, axis)</argsstring>
+        <name>rotateAxis</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>angle</type>
+          <defname>angle</defname>
+        </param>
+        <param>
+          <type>axis</type>
+          <defname>axis</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Create a matrix with the current transform rotated around an axis in degrees.
+Axis does not need to be normalized
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="811" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="811" bodyend="856"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1abdea55611ff8a295a5ab7abeffcf5337" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.Translate</definition>
+        <argsstring>(cls, vec)</argsstring>
+        <name>Translate</name>
+        <param>
+          <type>cls</type>
+          <defname>cls</defname>
+        </param>
+        <param>
+          <type>vec</type>
+          <defname>vec</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Create a matrix with translate on each axis by the given triplet.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="858" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="858" bodyend="868"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a0120a14122002f4358a7cba3af274938" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.Scale</definition>
+        <argsstring>(cls, vec)</argsstring>
+        <name>Scale</name>
+        <param>
+          <type>cls</type>
+          <defname>cls</defname>
+        </param>
+        <param>
+          <type>vec</type>
+          <defname>vec</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Create a matrix scaled on each axis by the given triplet.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="870" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="870" bodyend="880"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1adadc85f5611a25ebfa70b823f9b812b7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.Shear</definition>
+        <argsstring>(cls, vec)</argsstring>
+        <name>Shear</name>
+        <param>
+          <type>cls</type>
+          <defname>cls</defname>
+        </param>
+        <param>
+          <type>vec</type>
+          <defname>vec</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Create a matrix sheared by the given triplet.
+Each of the three given values wil shear by different axis.
+Value 0 will shear X by the Y axis
+Value 1 will shear X by the Z axis
+Value 2 will shear Y by the Z axis
+This does not represent every possible shearing, but these are all
+the shears represented by the decompose() operation. Multiple
+rotate and shear matrices can be multiplied to shear against all axis.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="882" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="882" bodyend="899"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1ac59f34d7c3a6952b1296dc43add6244d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.Rotate</definition>
+        <argsstring>(cls, vec)</argsstring>
+        <name>Rotate</name>
+        <param>
+          <type>cls</type>
+          <defname>cls</defname>
+        </param>
+        <param>
+          <type>vec</type>
+          <defname>vec</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Create a matrix rotated by euler degrees on each axis.
+The X axis has the most significant priority, and Z has the least.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="901" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="901" bodyend="932"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a1bb7ce62b34b028fb462feb639065772" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.RotateAxis</definition>
+        <argsstring>(cls, angle, axis)</argsstring>
+        <name>RotateAxis</name>
+        <param>
+          <type>cls</type>
+          <defname>cls</defname>
+        </param>
+        <param>
+          <type>angle</type>
+          <defname>angle</defname>
+        </param>
+        <param>
+          <type>axis</type>
+          <defname>axis</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Create a matrix rotated around an axis in degrees.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="934" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="934" bodyend="967"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1ad39a776c942f5a3939e5bbd95e430f1d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.invert</definition>
+        <argsstring>(self)</argsstring>
+        <name>invert</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Create a matrix that is the inverse transform.
+If the matrix is singular the returned matrix will be all zeros, which is &apos;False&apos;.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="968" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="968" bodyend="1011"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a7b0a26d6c5202fc7fe3b9bc84c7588b9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.determinant</definition>
+        <argsstring>(self)</argsstring>
+        <name>determinant</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Compute the determinant of the matrix.
+This is single number that represents the scaled volume of the transform.
+This can be useful in determining if the matrix has been flipped by scaling on
+an odd number of axis.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1015" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1015" bodyend="1030"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1a83c559b35a4814f014308d03ddbcdad2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.decompose</definition>
+        <argsstring>(self)</argsstring>
+        <name>decompose</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Decompose the matrix into vectors representing translate, rotate, shear, and scale.
+If the matrix has been built using frustum transformations the results are undefined.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1031" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1031" bodyend="1044"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1ab94d8bf4ddf0463496fb78809f73ad9a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.Compose</definition>
+        <argsstring>(cls, translate, rotate, shear, scale)</argsstring>
+        <name>Compose</name>
+        <param>
+          <type>cls</type>
+          <defname>cls</defname>
+        </param>
+        <param>
+          <type><ref refid="classminivec_1_1minivec_1_1_mat_1a6378a96e89d988b74338258e01e8a9c3" kindref="member">translate</ref></type>
+          <defname>translate</defname>
+        </param>
+        <param>
+          <type><ref refid="classminivec_1_1minivec_1_1_mat_1a7d119e23e74d182f54ca330fe9c65a3c" kindref="member">rotate</ref></type>
+          <defname>rotate</defname>
+        </param>
+        <param>
+          <type><ref refid="classminivec_1_1minivec_1_1_mat_1a03450442e730a17d66e07614c836418d" kindref="member">shear</ref></type>
+          <defname>shear</defname>
+        </param>
+        <param>
+          <type><ref refid="classminivec_1_1minivec_1_1_mat_1a155e41b3f4f78f7d0264d6ddc113da79" kindref="member">scale</ref></type>
+          <defname>scale</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Create a new matrix by combining multiple vectors that represent
+translate, rotate, shear, and scale.
+This is the inverse of the decompose method.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1046" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1046" bodyend="1057"/>
+      </memberdef>
+      <memberdef kind="function" id="classminivec_1_1minivec_1_1_mat_1ac420d345a6db8e154b84725c28c0b7de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def minivec.minivec.Mat.lerp</definition>
+        <argsstring>(self, percent, other)</argsstring>
+        <name>lerp</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>percent</type>
+          <defname>percent</defname>
+        </param>
+        <param>
+          <type>other</type>
+          <defname>other</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Linearly interpolate between this matrix and another.
+The percentage is between 0.0 and 1.0, but numbers outside that range will also work.
+The rotations will be interpolated using shortest distance quaternion math.
+</verbatim> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/minivec/minivec.py" line="1058" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="1058" bodyend="1092"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>Immutable 4x4 matrix class for linear algebra.
+The matrix acts as a regular tuple with sixteen floating point numbers.
+All methods and operators are safe from mathematical exceptions.
+In case of an error, a matrix of all zeros is returned, which is a
+&quot;False&quot; vector.
+
+The matrix constructor, methods, and operators can work with a
+variety of types of arguments. Anything that can be an iterator
+giving sixteen numbers or four rows will work.
+Integer arguments will be converted into float.
+A single numeric argument will represent the values in the diagonal.
+With no arguments an identity matrix will be created.
+  Mat()
+  Mat(1.0)
+  Mat(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+  Mat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16])
+  Mat([1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16])
+  Mat([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+  Mat(Mat(12))
+  Mat(xrange(16))</verbatim> </para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="696">
+        <label>object</label>
+      </node>
+      <node id="695">
+        <label>minivec.minivec.Mat</label>
+        <link refid="classminivec_1_1minivec_1_1_mat"/>
+        <childnode refid="696" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="698">
+        <label>object</label>
+      </node>
+      <node id="697">
+        <label>minivec.minivec.Mat</label>
+        <link refid="classminivec_1_1minivec_1_1_mat"/>
+        <childnode refid="698" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/minivec/minivec.py" line="493" column="1" bodyfile="/home/db/camcam/minivec/minivec.py" bodystart="493" bodyend="1093"/>
+    <listofallmembers>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a85ddd2f35bf6b46a0634c09cd94ab5ba" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>__cmp__</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1aaacf493226ec98915945f33bf08b9c28" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>__getitem__</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1ade21bafa48994648e4ee0a15497997d4" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>__hash__</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a0ccec2a7a5c671a2480ad44d95139bd5" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>__init__</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a796bb3da87b6f62fa3edf17bd8afdce3" prot="private" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>__invert__</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a7d46922c3211f2d733a05e1e22e0f71a" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>__iter__</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1ab013df7f6f0c343b8b103d20edd6a210" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>__len__</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1ae4933538c38dec3eee25a70104ebda08" prot="private" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>__mat</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1adfc7fe52d62b8e539ea39c718408c00a" prot="private" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>__mul__</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1aec9ab0f8d51536378eb4996a20e9ddaf" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>__neg__</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a4f2b45ad9db9208f1a6512b61c19dbc5" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>__nonzero__</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a7feea87679c40a70812b04d1fb2687dc" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>__pos__</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a5d2f01b4f68e0098b0fb506522cdf3a8" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>__repr__</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a6fc036840a152ec283894c481aa057bc" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>__rmul__</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a5837b7170083019d6425c16e3e3ea78b" prot="private" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>__slots__</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a0918a01c099515f095be4b846e642682" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>almost</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a0f223495c8c3d91f26b5d9e343bf1af7" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>apply</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a0ca8a3d1a061e7a6176e64e6ed223287" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>columns</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1ab94d8bf4ddf0463496fb78809f73ad9a" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>Compose</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a83c559b35a4814f014308d03ddbcdad2" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>decompose</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a7b0a26d6c5202fc7fe3b9bc84c7588b9" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>determinant</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1ac149ada48e389858031f6b403ccfeb48" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>Error</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a002d8ba4508f1d8675eefc23935d58bf" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>exact</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1ad39a776c942f5a3939e5bbd95e430f1d" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>invert</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1ac420d345a6db8e154b84725c28c0b7de" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>lerp</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1ac59f34d7c3a6952b1296dc43add6244d" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>Rotate</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a7d119e23e74d182f54ca330fe9c65a3c" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>rotate</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a1bb7ce62b34b028fb462feb639065772" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>RotateAxis</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1af0762830b2b6decbc81009b4a7b7564c" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>rotateAxis</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a0123fedc9f3e934a482679cbc8ffee85" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>rows</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a0120a14122002f4358a7cba3af274938" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>Scale</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a155e41b3f4f78f7d0264d6ddc113da79" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>scale</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a03450442e730a17d66e07614c836418d" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>shear</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1adadc85f5611a25ebfa70b823f9b812b7" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>Shear</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a18cdaa87999bc6cbd1652dca3aa63468" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>transform</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1abdea55611ff8a295a5ab7abeffcf5337" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>Translate</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a6378a96e89d988b74338258e01e8a9c3" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>translate</name></member>
+      <member refid="classminivec_1_1minivec_1_1_mat_1a8f5b48d14f1ce0a369ff0268c626d1b0" prot="public" virt="non-virtual"><scope>minivec::minivec::Mat</scope><name>transpose</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

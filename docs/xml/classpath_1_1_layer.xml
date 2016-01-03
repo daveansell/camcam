@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classpath_1_1_layer" kind="class" language="Python" prot="public">
+    <compoundname>path::Layer</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">object</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classpath_1_1_layer_1a51f9cab3d6c7de0ebf353f36f78e16d0" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Layer::config</definition>
+        <argsstring></argsstring>
+        <name>config</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="2208" column="1" bodyfile="/home/db/camcam/path.py" bodystart="2208" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_layer_1a206e00134fe2e7fb98a0193924951661" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Layer::bom</definition>
+        <argsstring></argsstring>
+        <name>bom</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="2219" column="1" bodyfile="/home/db/camcam/path.py" bodystart="2219" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classpath_1_1_layer_1af7c4d2929dadc5eba95cc605d46de9b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Layer.__init__</definition>
+        <argsstring></argsstring>
+        <name>__init__</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="2207" column="1" bodyfile="/home/db/camcam/path.py" bodystart="2207" bodyend="2219"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_layer_1acf3de0562bfdc4ddc3cf3fc1fbacf960" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Layer.get_config</definition>
+        <argsstring>(self)</argsstring>
+        <name>get_config</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="2220" column="1" bodyfile="/home/db/camcam/path.py" bodystart="2220" bodyend="2223"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="633">
+        <label>path.Layer</label>
+        <link refid="classpath_1_1_layer"/>
+        <childnode refid="634" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="634">
+        <label>object</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="635">
+        <label>path.Layer</label>
+        <link refid="classpath_1_1_layer"/>
+        <childnode refid="636" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="636">
+        <label>object</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/path.py" line="2206" column="1" bodyfile="/home/db/camcam/path.py" bodystart="2206" bodyend="2223"/>
+    <listofallmembers>
+      <member refid="classpath_1_1_layer_1af7c4d2929dadc5eba95cc605d46de9b3" prot="public" virt="non-virtual"><scope>path::Layer</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_layer_1a206e00134fe2e7fb98a0193924951661" prot="public" virt="non-virtual"><scope>path::Layer</scope><name>bom</name></member>
+      <member refid="classpath_1_1_layer_1a51f9cab3d6c7de0ebf353f36f78e16d0" prot="public" virt="non-virtual"><scope>path::Layer</scope><name>config</name></member>
+      <member refid="classpath_1_1_layer_1acf3de0562bfdc4ddc3cf3fc1fbacf960" prot="public" virt="non-virtual"><scope>path::Layer</scope><name>get_config</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespacecamcam" kind="namespace" language="Python">
+    <compoundname>camcam</compoundname>
+    <innerclass refid="classcamcam_1_1_cam_cam" prot="public">camcam::CamCam</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacecamcam_1ae3b479160a02c3c139a79592025c3d1b" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple camcam.camcam</definition>
+        <argsstring></argsstring>
+        <name>camcam</name>
+        <initializer>= <ref refid="classcamcam_1_1_cam_cam" kindref="compound">CamCam</ref>()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam.py" line="98" column="1" bodyfile="/home/db/camcam/camcam.py" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecamcam_1aa70cd4db1c1fbbbdaa24f25cd8c8a62f" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple camcam.milling</definition>
+        <argsstring></argsstring>
+        <name>milling</name>
+        <initializer>= <ref refid="class_milling_1_1_milling" kindref="compound">Milling.Milling</ref>()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam.py" line="99" column="1" bodyfile="/home/db/camcam/camcam.py" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecamcam_1aade6d80745c83b5d4277022028580701" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple camcam.parser</definition>
+        <argsstring></argsstring>
+        <name>parser</name>
+        <initializer>= OptionParser()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam.py" line="100" column="1" bodyfile="/home/db/camcam/camcam.py" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecamcam_1a6c00ac1541fda0143382c4edb61b1252" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string camcam.modes</definition>
+        <argsstring></argsstring>
+        <name>modes</name>
+        <initializer>= &apos;,&apos;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam.py" line="101" column="1" bodyfile="/home/db/camcam/camcam.py" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecamcam_1a351a3f5dcbdb051846c8f8c4c0324f8a" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string camcam::help</definition>
+        <argsstring></argsstring>
+        <name>help</name>
+        <initializer>= &quot;mode the output should be in. Can be one of &quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam.py" line="104" column="1" bodyfile="/home/db/camcam/camcam.py" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecamcam_1a0122eec4817954e15d5f9edefce524fc" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string camcam::action</definition>
+        <argsstring></argsstring>
+        <name>action</name>
+        <initializer>= &quot;store_true&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam.py" line="106" column="1" bodyfile="/home/db/camcam/camcam.py" bodystart="106" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecamcam_1added01231f61d35e10fa48a4cdeede8a" prot="public" static="no" mutable="no">
+        <type>dictionary</type>
+        <definition>dictionary camcam.config</definition>
+        <argsstring></argsstring>
+        <name>config</name>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam.py" line="137" column="1" bodyfile="/home/db/camcam/camcam.py" bodystart="137" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecamcam_1a153362c1b392b8de0a98d4b93f10638c" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple camcam.a</definition>
+        <argsstring></argsstring>
+        <name>a</name>
+        <initializer>= pair.split(&apos;=&apos;)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/camcam.py" line="142" column="1" bodyfile="/home/db/camcam/camcam.py" bodystart="142" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/camcam.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

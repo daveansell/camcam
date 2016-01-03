@@ -1,0 +1,1593 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.8.9.1">
+  <compound refid="classminivec_1_1minivec_1_1___epsilon_pop_context" kind="class"><name>minivec::minivec::_EpsilonPopContext</name>
+    <member refid="classminivec_1_1minivec_1_1___epsilon_pop_context_1a6bff77413e5f291e2d59d2332bbed65b" kind="function"><name>__enter__</name></member>
+    <member refid="classminivec_1_1minivec_1_1___epsilon_pop_context_1a54fbe4b367b664f50a7a4a4136d6e147" kind="function"><name>__exit__</name></member>
+    <member refid="classminivec_1_1minivec_1_1___epsilon_pop_context_1abfd57f790b9d3f96019040fc256319b6" kind="function"><name>__repr__</name></member>
+  </compound>
+  <compound refid="classminivec_1_1minivec_1_1___error_pop_context" kind="class"><name>minivec::minivec::_ErrorPopContext</name>
+    <member refid="classminivec_1_1minivec_1_1___error_pop_context_1ad99e7d123a86f754381a736d56dcd526" kind="function"><name>__enter__</name></member>
+    <member refid="classminivec_1_1minivec_1_1___error_pop_context_1a9b12a304f7d5fc93b605c19ff371235b" kind="function"><name>__exit__</name></member>
+    <member refid="classminivec_1_1minivec_1_1___error_pop_context_1a382c21dcc5ff8ea56555b5cd1b241e17" kind="function"><name>__repr__</name></member>
+  </compound>
+  <compound refid="classlogic_gates_1_1_a_n_dgate" kind="class"><name>logicGates::ANDgate</name>
+    <member refid="classlogic_gates_1_1_a_n_dgate_1a3046ffd251165180bc29b35d5b260fc0" kind="variable"><name>l</name></member>
+    <member refid="classlogic_gates_1_1_a_n_dgate_1a4011635874a653e47fa69cd6ce968f36" kind="variable"><name>w</name></member>
+    <member refid="classlogic_gates_1_1_a_n_dgate_1ac8a2576cf72d2dc3112496a488c31beb" kind="variable"><name>h</name></member>
+    <member refid="classlogic_gates_1_1_a_n_dgate_1a5b5585a3cf1bf9fd94fcc438987b14b2" kind="variable"><name>s</name></member>
+    <member refid="classlogic_gates_1_1_a_n_dgate_1a7c31cd765c5363793824029a5be28f5b" kind="function"><name>init2</name></member>
+    <member refid="classlogic_gates_1_1_a_n_dgate_1ad2ca6756d5aa905df086fc1c985ab064" kind="function"><name>diagram</name></member>
+    <member refid="classlogic_gates_1_1_a_n_dgate_1aeeae6b6bd833f84fb503849115f722fb" kind="function"><name>holes</name></member>
+  </compound>
+  <compound refid="classparts_1_1_angle_bracket" kind="class"><name>parts::AngleBracket</name>
+    <member refid="classparts_1_1_angle_bracket_1affd23d4c9e92ee03393bda901f5498b1" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_angle_constraint" kind="class"><name>parts::AngleConstraint</name>
+    <member refid="classparts_1_1_angle_constraint_1ad9ed8be791c238240e321486b43b5370" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_angled_finger_joint" kind="class"><name>shapes::AngledFingerJoint</name>
+    <member refid="classshapes_1_1_angled_finger_joint_1acdec495b67f9651786414eefc0d20b54" kind="variable"><name>chamfer_width</name></member>
+    <member refid="classshapes_1_1_angled_finger_joint_1a3c19348b7cc2e158b580b9701c5d1612" kind="variable"><name>material_thickness</name></member>
+    <member refid="classshapes_1_1_angled_finger_joint_1aca8911daca5c644771098e059c44ca4e" kind="variable"><name>perp</name></member>
+    <member refid="classshapes_1_1_angled_finger_joint_1a23ba20478302aa6b371ab7a912d8814f" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_angled_finger_joint_no_slope" kind="class"><name>shapes::AngledFingerJointNoSlope</name>
+    <member refid="classshapes_1_1_angled_finger_joint_no_slope_1a91b614d80a08eecf07213faeea10e29a" kind="variable"><name>material_thickness</name></member>
+    <member refid="classshapes_1_1_angled_finger_joint_no_slope_1a6bfdc95eb46713361e3e22d07c3b3253" kind="variable"><name>perp</name></member>
+    <member refid="classshapes_1_1_angled_finger_joint_no_slope_1a90d671bd76bee330bb7b57fc023d4d27" kind="variable"><name>chamfer_width</name></member>
+    <member refid="classshapes_1_1_angled_finger_joint_no_slope_1a2d2b4e6640f0738eba8998dc027995de" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_angled_finger_joint_slope" kind="class"><name>shapes::AngledFingerJointSlope</name>
+    <member refid="classshapes_1_1_angled_finger_joint_slope_1aec9e488a6e295ae2ccee1d23a1d21a88" kind="variable"><name>direction</name></member>
+    <member refid="classshapes_1_1_angled_finger_joint_slope_1a4a2338c3c3171a3e6aa98991ecc7f0de" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classboxes_1_1_arbitrary_box" kind="class"><name>boxes::ArbitraryBox</name>
+    <member refid="classboxes_1_1_arbitrary_box_1a24dede6e660c9936ee28185e18db8429" kind="variable"><name>angle</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1acbfdd7c527a5b086353fe2f11b372878" kind="variable"><name>altside</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1ae912ddb018d7bd63da77694182248957" kind="variable"><name>intfact</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1a90869c57f87100a6f9264f2f51af9a39" kind="variable"><name>corner</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1a8dc28779357a95d463917e378be209fa" kind="variable"><name>corner</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1a1df58541f5d802020fb5f27a57861ca6" kind="variable"><name>lineside</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1abedf2ff5c000b46d146b0b11e5872bf7" kind="variable"><name>newpoints</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1ace4c98fbe4b9323796fd991e793bdcd2" kind="variable"><name>first</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1aa3f4f131456dc23999d99a422041c842" kind="variable"><name>tab_length</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1af7c0c8c6ebca710aa27785317764f8d3" kind="variable"><name>fudge</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1ab67b4c269874e7134565eb3338355e3d" kind="variable"><name>faces</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1a3c4f3f9e42118cbe79d0d8be915bfe4f" kind="variable"><name>sides</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1aa4c61dd48b10ff63eb8f4889d55934f6" kind="variable"><name>normals</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1a26b3d077741f59e0f58fa8b6307d1958" kind="variable"><name>side_angles</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1a0bf5dfd8e5bc77184583127a1bd4dc2b" kind="function"><name>__init__</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1a821fecbe31d7f119b15f6fc4c632dfbb" kind="function"><name>tuple_to_vec</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1a5a3b9b3a0883b166ecd1cb69b939b89f" kind="function"><name>get_border</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1abec459d0466c9f1a56a92cdd707c949b" kind="function"><name>find_direction</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1a68bd120dd123135c346fb87ef61b2aa1" kind="function"><name>get_side_parts</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1a389b98b978697efa0687f0fa706e791d" kind="function"><name>get_cut_side</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1a57bd2d3c2e315a7615c7340edb7ebb11" kind="function"><name>sign</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1a7964ab53bc41a083704f111c9b9c05d2" kind="function"><name>propagate_direction</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1a1cb83b2e5910298b4c4d4d72131044b3" kind="function"><name>set_corners</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1a5e7fe3b2283ec34c3bf580e3615b9b4f" kind="function"><name>set_tab_length</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1af1a76bf23428a71336ab686f48289f3e" kind="function"><name>other_side_mode</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1a1ad0b3dbea620c916110d96ffe3e5215" kind="function"><name>make_normal</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1adf41d3530e41e25bc1ccff538614f628" kind="function"><name>get_sid</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1aa9df9c5a4d54b25df51f3787f4a51e94" kind="function"><name>make_sides</name></member>
+    <member refid="classboxes_1_1_arbitrary_box_1ab10aa86f8c971fd656e75da2491d7422" kind="function"><name>find_angle</name></member>
+  </compound>
+  <compound refid="classsegments_1_1_arc" kind="class"><name>segments::Arc</name>
+    <member refid="classsegments_1_1_arc_1a2f9627da9fc390ae13f127c8549623b9" kind="variable"><name>dtheta</name></member>
+    <member refid="classsegments_1_1_arc_1a3e800fb7cf3ef773cd127da981876810" kind="variable"><name>dtheta</name></member>
+    <member refid="classsegments_1_1_arc_1a8e835a04e764d42e185f915fd9f3bce9" kind="variable"><name>dtheta</name></member>
+    <member refid="classsegments_1_1_arc_1a84be00812b1c397042f5b8be5feec518" kind="variable"><name>r</name></member>
+    <member refid="classsegments_1_1_arc_1a5f0e51ef80f616c6a5ccf07a29d6a1de" kind="variable"><name>thetasum</name></member>
+    <member refid="classsegments_1_1_arc_1aa60754cac3ecc1d49bfcd049b32fb6c0" kind="variable"><name>hasrisen</name></member>
+    <member refid="classsegments_1_1_arc_1a053bfc2466ef54bfb534c74ad4bb124b" kind="variable"><name>dot</name></member>
+    <member refid="classsegments_1_1_arc_1a48fad9c6c73047f249693b5068c6c7a8" kind="variable"><name>points</name></member>
+    <member refid="classsegments_1_1_arc_1a955e1e9545d5c812bc9aaa69527cd0c5" kind="variable"><name>r</name></member>
+    <member refid="classsegments_1_1_arc_1ab3da41940de4a54ca10ad965fbb87460" kind="variable"><name>newdot</name></member>
+    <member refid="classsegments_1_1_arc_1a6aa2787698e6f943a74a65737d2ed36b" kind="variable"><name>dot</name></member>
+    <member refid="classsegments_1_1_arc_1a71c20a4b59a2be61ce95288f70d9fc20" kind="variable"><name>seg_type</name></member>
+    <member refid="classsegments_1_1_arc_1aeeb31eaddd0bacd72f18c68fdada8380" kind="variable"><name>cutto</name></member>
+    <member refid="classsegments_1_1_arc_1a387ceb50f0a06ce24bf80d7984cff84e" kind="variable"><name>cutfrom</name></member>
+    <member refid="classsegments_1_1_arc_1a933f083c2aa6751f5924f810eb8ae060" kind="variable"><name>direction</name></member>
+    <member refid="classsegments_1_1_arc_1a7e382975126df937ab515c621259aca4" kind="variable"><name>centre</name></member>
+    <member refid="classsegments_1_1_arc_1a08eec2d7f6ed97eefcdc0d41152dc057" kind="function"><name>__init__</name></member>
+    <member refid="classsegments_1_1_arc_1ab622cf97665a7232a67c3ca0daed782e" kind="function"><name>gcode</name></member>
+    <member refid="classsegments_1_1_arc_1ad7afcfb937d2664dbb98f02dac056790" kind="function"><name>svg</name></member>
+    <member refid="classsegments_1_1_arc_1a19112ea291604037ab68f3892ef499d9" kind="function"><name>polygon</name></member>
+  </compound>
+  <compound refid="classparts_1_1_barn" kind="class"><name>parts::Barn</name>
+    <member refid="classparts_1_1_barn_1a14d9cf3e1d2270a2d5923d9c0779dee7" kind="variable"><name>name</name></member>
+    <member refid="classparts_1_1_barn_1a35781429e48ee8c1b0ed660a9fdf883b" kind="variable"><name>layer</name></member>
+    <member refid="classparts_1_1_barn_1a7673f26a9968c1302fe43e72bd0396f2" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classbezier_1_1_bezier_curve" kind="class"><name>bezier::BezierCurve</name>
+    <member refid="classbezier_1_1_bezier_curve_1a4570d8b0525d6fb56ffbe338aea5b9a5" kind="variable"><name>last</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a67d3887b8b38085157320f51305db83e" kind="variable"><name>x</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a4daedd276ea223e485036f3ad346b33c" kind="variable"><name>y</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a782e956673f761f25e256f1c2094d54b" kind="variable"><name>roots</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1afb7008816c2eb9b266374b543b748b1c" kind="variable"><name>ret</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1adfebcda73ce613d7f913ed37541348c6" kind="variable"><name>ret</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a668f0b24433e3b2c5ef87f69875a10c2" kind="variable"><name>t_values</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1acd0c66cf9592d59635d8f0cd90a6a8e6" kind="variable"><name>nx</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a4b765fecb383d8a7bcf7400ed69f5c55" kind="variable"><name>ny</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1af54790f4736706fda65bcc87e24cef1f" kind="variable"><name>ox</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a5cd7c967702aa92f02a0fafbf1ed719d" kind="variable"><name>oy</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a631e45794713c37b7b28a1116bf7d414" kind="variable"><name>LUT_resolution</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a0f9a46cd0b0c3060c81c503e97718e87" kind="variable"><name>order</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a6c39346893b0610e98d124f94f098b5b" kind="variable"><name>points</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a9cf4bf17eddb3214f5727e9b45a15d62" kind="variable"><name>abc</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1abd2b09d5ae706c4e31f22b0c199134c0" kind="variable"><name>span</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a958ec48826bf0bfd4f29c73641fd7562" kind="variable"><name>left_split</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a1537b07a507ce3a670363ca50fcfb8b9" kind="variable"><name>right_split</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a2cf138c2853916d8fdd6ee538decd11b" kind="variable"><name>normals</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1abae064c2182ba700fb576355e7d15bab" kind="variable"><name>x_values</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a8bf9aa7947c5ff98a513b2119c3bebac" kind="variable"><name>y_values</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a4577c6349bf8568b0f0a6259c361c42d" kind="variable"><name>LUT_x</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a5c47bd22203df84b3c9ef64389134d9d" kind="variable"><name>LUT_y</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1aebb06c5028ed907c85c179cef3fd5f47" kind="variable"><name>ratios</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1acea4fdceeab227eb5ad09f52f9b58e40" kind="variable"><name>originalInterval</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a66a3a2b3ee0242789790ceace4b8c507" kind="variable"><name>draw_x</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a1859a14a8e80f71956ff806565be4e0d" kind="variable"><name>draw_y</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a79e5e878938d38339da6d3bebb7bf337" kind="variable"><name>span_t</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1ad2535ff3f7797701c3bae55252cff911" kind="variable"><name>curveLength</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a76880ee12be206cb218322e95cfa7658" kind="variable"><name>bias</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1aa3abeeffa97dabf2038f1a8f7d0f1940" kind="variable"><name>generator</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a9056d475eb2526c7c5a9c48313520e89" kind="function"><name>__init__</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a76076a6b08f173fd018861a3c53e7711" kind="function"><name>update</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a6dfed42b3ef446bef5f2692ede776caa" kind="function"><name>getStart</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a4b0304e414c7bfebd8dbbde6e8ca669e" kind="function"><name>getEnd</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a9ba3665b11a6798f293c7aefa2f870bb" kind="function"><name>getPointProjection</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a786182209f69177b13f04fdd678eeb56" kind="function"><name>refineProjection</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a6807911cd4102ba77bb799a72a992b0b" kind="function"><name>getSimilarity</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a0f48a9279d1bcf4dac5296162809af5c" kind="function"><name>getXValue</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1aebd772e37e054a8ff0c22154c9d475cb" kind="function"><name>getYValue</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1aaaea17f47298e5886852e33f05cb4f4a" kind="function"><name>getPoint</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a6c1c43b478d496b72b45ad4c8b7b53cc" kind="function"><name>getDXValue</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1af52a33daa84c05d5ff5dc04b008509b3" kind="function"><name>getDYValue</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a585ad6904fc86f56b6ab076d9e5631aa" kind="function"><name>getDerivativePoint</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1ac55cd30cbbcd12cf9ea5419ba2784e74" kind="function"><name>getSpanLines</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a023612963116656fc516654058647ef0" kind="function"><name>getD2XValue</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a9d170ca72ea731c0824ee1e8d2675893" kind="function"><name>getD2YValue</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a1fc50ea3b49003eeb377d817a15e35ce" kind="function"><name>getSecondDerivativePoint</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a964b6692250b6c3e82276eab469af6ed" kind="function"><name>getNormal</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a28b0f5a264c1a37b4f38e3b4d9f44980" kind="function"><name>generateSpan</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a2f6e9270634c92225ba306342c8a60d7" kind="function"><name>generateBoundingBox</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a56d4007381285ec7fa68041a146acc3a" kind="function"><name>getArea</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1acaae994a33a9f9e41acb54f2691f1a86" kind="function"><name>generateTightBoundingBox</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a67f06fd66567124f37eea60321e3126b" kind="function"><name>hasBoundOverlapWith</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a0d541f51c06e2cce9fb84515188d1fb3" kind="function"><name>justX</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1aedc1b7ba039d659a32c37c323aa079b8" kind="function"><name>justY</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a6a567a984fdaa79b45c34650d5806b1d" kind="function"><name>reverse</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a8f368135ebb837de62ea0b663e3eee70" kind="function"><name>isBiased</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a3bff9cf6d4ab0944c6634a95e9afa6db" kind="function"><name>getCurveLength</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a2cd7ddcf33cb2fc656ec6d422ed5c9d0" kind="function"><name>getABC</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a600fb93cad2745eaba1b011e5989c4d0" kind="function"><name>getScaleAngle</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a6cfb8ee3cded08c7a9d7c47d19b4abaf" kind="function"><name>getInterval</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a5e38ed6ec16131e7ab51330d66f42297" kind="function"><name>setOriginalT</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1aa81a80a7a9dff4c45638400d60c2aa00" kind="function"><name>split</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a575e7ea0b4393c4007b0653488dffb00" kind="function"><name>scale</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a52119ad0f3360312b0e32391581f3671" kind="function"><name>align</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a17976a1d7e6864d98bec238778702d5d" kind="function"><name>normalize</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a64ef8bef255edb9e13299006896daa7d" kind="function"><name>elevate</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a317f7fd239fe45816b1768fa5a73dd84" kind="function"><name>setLower</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1af3f47c83a98f56b011858f24b7eed302" kind="function"><name>lower</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1ae23502e8926d52943088db91fd2bc8ba" kind="function"><name>getInflections</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1aea4d53a18bc2560c93b35a764fe6625c" kind="function"><name>simpleOffset</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1ae3b2bda88c67445d6cf62a86f121d4bd" kind="function"><name>offset</name></member>
+    <member refid="classbezier_1_1_bezier_curve_1a0dbf1d48cda1fee475627cbb46af1913" kind="function"><name>makeOffsetArray</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_bolt" kind="class"><name>shapes::Bolt</name>
+    <member refid="classshapes_1_1_bolt_1aee1e7538bd04db9ede702e155de99ada" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classpath_1_1_b_o_m" kind="class"><name>path::BOM</name>
+    <member refid="classpath_1_1_b_o_m_1ac3b3f760b4c57931b482e634daeb2777" kind="variable"><name>name</name></member>
+    <member refid="classpath_1_1_b_o_m_1a385db7437e8e98aef75fa24a98f390e4" kind="variable"><name>number</name></member>
+    <member refid="classpath_1_1_b_o_m_1a5748ce4bbb6dfa779752d97f0bee55d2" kind="variable"><name>obType</name></member>
+    <member refid="classpath_1_1_b_o_m_1ac3d7521a63ca62ccb1501290be173138" kind="function"><name>__init__</name></member>
+    <member refid="classpath_1_1_b_o_m_1abc415a791d6d61925fbcb7147b9f7d9a" kind="function"><name>init</name></member>
+  </compound>
+  <compound refid="classpath_1_1_b_o_m__flat" kind="class"><name>path::BOM_flat</name>
+    <member refid="classpath_1_1_b_o_m__flat_1a2f5117498a4d0480504b9ef482266c8d" kind="variable"><name>name</name></member>
+    <member refid="classpath_1_1_b_o_m__flat_1a4b14c3049f63f6fa3a3049e0a510093f" kind="variable"><name>material</name></member>
+    <member refid="classpath_1_1_b_o_m__flat_1a5a6ced1e7078ceb5952279343b0feb1e" kind="variable"><name>width</name></member>
+    <member refid="classpath_1_1_b_o_m__flat_1a969166401f0c01d166e40b1f0e5d9ec4" kind="variable"><name>height</name></member>
+    <member refid="classpath_1_1_b_o_m__flat_1a0fc275e35ec2f300e6de6d15afb7b308" kind="variable"><name>number</name></member>
+    <member refid="classpath_1_1_b_o_m__flat_1ad81e8b7451c079f0150cfcf6a9a6559a" kind="variable"><name>thickness</name></member>
+    <member refid="classpath_1_1_b_o_m__flat_1a0aceec1b210a56d9cabc8a7064e26f29" kind="function"><name>__init__</name></member>
+    <member refid="classpath_1_1_b_o_m__flat_1a22dd7a9df382e3c8a808d16aa300a518" kind="function"><name>__str__</name></member>
+  </compound>
+  <compound refid="classpath_1_1_b_o_m__part" kind="class"><name>path::BOM_part</name>
+    <member refid="classpath_1_1_b_o_m__part_1a45cdc1504bfd55fb0bcc430165a029ef" kind="variable"><name>name</name></member>
+    <member refid="classpath_1_1_b_o_m__part_1a7e678acf9d4bd2423b63c9203dc828d4" kind="variable"><name>number</name></member>
+    <member refid="classpath_1_1_b_o_m__part_1abcb9678bf4b051d9aa937552149d7333" kind="variable"><name>part_number</name></member>
+    <member refid="classpath_1_1_b_o_m__part_1a57329b17627b67aae27b6cfc5e7a9fa6" kind="variable"><name>description</name></member>
+    <member refid="classpath_1_1_b_o_m__part_1a15e2d4c2772fa5c901644581cf189693" kind="variable"><name>length</name></member>
+    <member refid="classpath_1_1_b_o_m__part_1a31d55f12a538e30fb1dc24ea12fe4307" kind="variable"><name>obType</name></member>
+    <member refid="classpath_1_1_b_o_m__part_1aab817071644f243f19d9401daea278bf" kind="function"><name>__init__</name></member>
+    <member refid="classpath_1_1_b_o_m__part_1ad2528e7bad2f5188ea570949adda3c47" kind="function"><name>init</name></member>
+    <member refid="classpath_1_1_b_o_m__part_1ae748371b208706bee9ddb0412a305ac3" kind="function"><name>__str__</name></member>
+  </compound>
+  <compound refid="classpath_1_1_b_o_m__pcb" kind="class"><name>path::BOM_pcb</name>
+    <member refid="classpath_1_1_b_o_m__pcb_1a9dc2e31cb5a736091b3d89618f8050d3" kind="variable"><name>name</name></member>
+    <member refid="classpath_1_1_b_o_m__pcb_1a7e12cc393a94f5172869b8b8b657deb7" kind="variable"><name>number</name></member>
+    <member refid="classpath_1_1_b_o_m__pcb_1a51369d5f6cad39b93664837b0d8192f8" kind="variable"><name>description</name></member>
+    <member refid="classpath_1_1_b_o_m__pcb_1a4dfa5a017bff453b1b6fce0849c381d9" kind="variable"><name>folder</name></member>
+    <member refid="classpath_1_1_b_o_m__pcb_1a2c2a229a0f49a2c48218a775404c2ce6" kind="variable"><name>part_number</name></member>
+    <member refid="classpath_1_1_b_o_m__pcb_1aa77908a6ec7721ae0de127f6a3915547" kind="function"><name>__init__</name></member>
+    <member refid="classpath_1_1_b_o_m__pcb_1a799de6adfef020c0eb7a1c54351d9072" kind="function"><name>__str__</name></member>
+  </compound>
+  <compound refid="classpath_1_1_b_o_m__rod" kind="class"><name>path::BOM_rod</name>
+    <member refid="classpath_1_1_b_o_m__rod_1af1cca0cffc8952f73eaa38717dd4cc9a" kind="variable"><name>name</name></member>
+    <member refid="classpath_1_1_b_o_m__rod_1a66c6cba2b9e49c6370aeec044a5a427a" kind="variable"><name>material</name></member>
+    <member refid="classpath_1_1_b_o_m__rod_1ad198f4a2306a543354efce3a2d978e6e" kind="variable"><name>diameter</name></member>
+    <member refid="classpath_1_1_b_o_m__rod_1a14a8ad7c48077b0462de5d59d07ee6bb" kind="variable"><name>length</name></member>
+    <member refid="classpath_1_1_b_o_m__rod_1a124a767902802b820af251b6c2c29af7" kind="variable"><name>number</name></member>
+    <member refid="classpath_1_1_b_o_m__rod_1ae26c0d4eb574f858a95536f62e3e8305" kind="variable"><name>description</name></member>
+    <member refid="classpath_1_1_b_o_m__rod_1ae8c232ca908c3b7d6a313c96cb158d48" kind="variable"><name>xsection</name></member>
+    <member refid="classpath_1_1_b_o_m__rod_1ae21da7cc9eff8544c9fe85a91000055e" kind="function"><name>__init__</name></member>
+    <member refid="classpath_1_1_b_o_m__rod_1aebf04020c123e8686f55a29b62d8bb40" kind="function"><name>__str__</name></member>
+  </compound>
+  <compound refid="classpath_1_1_b_o_m__software" kind="class"><name>path::BOM_software</name>
+    <member refid="classpath_1_1_b_o_m__software_1ac4bad76a279a0984ce98f7c92970a513" kind="variable"><name>name</name></member>
+    <member refid="classpath_1_1_b_o_m__software_1ac150f5e7720d6180d04fa12a99d77dd4" kind="variable"><name>folder</name></member>
+    <member refid="classpath_1_1_b_o_m__software_1a7703e0ee71e4d121b33f444f8c5de746" kind="variable"><name>description</name></member>
+    <member refid="classpath_1_1_b_o_m__software_1a2c86da364dc9b4ba49b6f9310fcd0be7" kind="variable"><name>language</name></member>
+    <member refid="classpath_1_1_b_o_m__software_1af956fffaab53d93dc8246b4670347445" kind="variable"><name>target</name></member>
+    <member refid="classpath_1_1_b_o_m__software_1a9716f51d01e6c3c6cab342fb4921817f" kind="variable"><name>number</name></member>
+    <member refid="classpath_1_1_b_o_m__software_1a3c04b7be79e6ccc7fcafdf0c53bcfcf6" kind="function"><name>__init__</name></member>
+    <member refid="classpath_1_1_b_o_m__software_1a92e19063085057026a7569de1f09c693" kind="function"><name>__str__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_cable_tie" kind="class"><name>parts::CableTie</name>
+    <member refid="classparts_1_1_cable_tie_1ad7837c7da9d33d4a517d03f3fea84d84" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classcamcam__layout_1_1_cam_cam" kind="class"><name>camcam_layout::CamCam</name>
+    <member refid="classcamcam__layout_1_1_cam_cam_1aa75dfb49cf795fe55538fd5fedd085e4" kind="variable"><name>planes</name></member>
+    <member refid="classcamcam__layout_1_1_cam_cam_1a02351504f971107694efd2766372b628" kind="variable"><name>selected</name></member>
+    <member refid="classcamcam__layout_1_1_cam_cam_1a0706ff671a864b8258ef606b4a53bfbf" kind="variable"><name>root</name></member>
+    <member refid="classcamcam__layout_1_1_cam_cam_1a320eacfe25d7621ee065adac1a038b79" kind="variable"><name>sheets</name></member>
+    <member refid="classcamcam__layout_1_1_cam_cam_1a61b884fcd41fdf82ee5558d7e422fc6b" kind="variable"><name>buttons</name></member>
+    <member refid="classcamcam__layout_1_1_cam_cam_1ad68196dc02bf35acc187e607b1079882" kind="variable"><name>layout</name></member>
+    <member refid="classcamcam__layout_1_1_cam_cam_1a5e3add24ff41a90068b83cc1c73176e0" kind="variable"><name>layer</name></member>
+    <member refid="classcamcam__layout_1_1_cam_cam_1a5154c29272561706f3f08f058fe4e39d" kind="variable"><name>sheetid</name></member>
+    <member refid="classcamcam__layout_1_1_cam_cam_1a94449317084eb1abc4707e2bc3c2ae95" kind="variable"><name>button</name></member>
+    <member refid="classcamcam__layout_1_1_cam_cam_1ad0bee697a9661370ca2d19b1c0ed6b79" kind="variable"><name>picture</name></member>
+    <member refid="classcamcam__layout_1_1_cam_cam_1aae15201c08000c6d0a01b947d0e99757" kind="function"><name>add_plane</name></member>
+    <member refid="classcamcam__layout_1_1_cam_cam_1a11c2be8d09bb6c1d7142bc79bff2ba0c" kind="function"><name>build</name></member>
+    <member refid="classcamcam__layout_1_1_cam_cam_1a699e53b6f63acfe6b457b6b91e1936f3" kind="function"><name>do_touch</name></member>
+    <member refid="classcamcam__layout_1_1_cam_cam_1a55cbd693f0e23a01969822a11cde6d2a" kind="function"><name>delete</name></member>
+    <member refid="classcamcam__layout_1_1_cam_cam_1a4247170d23fc1125ae1fcb918a99c60a" kind="function"><name>save</name></member>
+    <member refid="classcamcam__layout_1_1_cam_cam_1a5a21300e0c1b0fa919a4793bbdafc154" kind="function"><name>set_sheet</name></member>
+    <member refid="classcamcam__layout_1_1_cam_cam_1ac3bdb03463dc584fb1baaae9a6b5e4e3" kind="function"><name>on_pause</name></member>
+  </compound>
+  <compound refid="classlayout_1_1_cam_cam" kind="class"><name>layout::CamCam</name>
+    <member refid="classlayout_1_1_cam_cam_1a73683657b4cb51101c90c74ba284fc4d" kind="variable"><name>planes</name></member>
+    <member refid="classlayout_1_1_cam_cam_1afbd0630f5249f1c8bf78dc83f03df5a0" kind="variable"><name>root</name></member>
+    <member refid="classlayout_1_1_cam_cam_1af4af435043c9323a0e24f1ee7366d4c4" kind="variable"><name>picture</name></member>
+    <member refid="classlayout_1_1_cam_cam_1abdb47774e461efcaf34804dde9ef2bc4" kind="function"><name>add_plane</name></member>
+    <member refid="classlayout_1_1_cam_cam_1ad4144543a245d440a1bccb3d37fda4f1" kind="function"><name>build</name></member>
+    <member refid="classlayout_1_1_cam_cam_1a7860ae2a226534a8f54039363360a1f0" kind="function"><name>on_pause</name></member>
+  </compound>
+  <compound refid="classcamcam_1_1_cam_cam" kind="class"><name>camcam::CamCam</name>
+    <member refid="classcamcam_1_1_cam_cam_1af7e60c4dabd6dcfab7ca2d31e070c2c2" kind="variable"><name>planes</name></member>
+    <member refid="classcamcam_1_1_cam_cam_1af4e79f86f944d76fbb2e8b369d3ee206" kind="function"><name>__init__</name></member>
+    <member refid="classcamcam_1_1_cam_cam_1a98153a1dbd08286b0a8e2bd8c26a8cf1" kind="function"><name>add_plane</name></member>
+    <member refid="classcamcam_1_1_cam_cam_1a67c7d684131d923d4eca80dc585f45d4" kind="function"><name>render</name></member>
+    <member refid="classcamcam_1_1_cam_cam_1a9df1eca09309d548f366802eb78643aa" kind="function"><name>render_layout</name></member>
+    <member refid="classcamcam_1_1_cam_cam_1a6e141484cb4846a485431bfea419001a" kind="function"><name>sanitise_filename</name></member>
+    <member refid="classcamcam_1_1_cam_cam_1a8cb2fc8c85c9da7fc85c0bdbdfc1177e" kind="function"><name>listparts</name></member>
+    <member refid="classcamcam_1_1_cam_cam_1a04d01da90dc3b5c2949604c60f732090" kind="function"><name>get_bom</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_chamfer" kind="class"><name>shapes::Chamfer</name>
+    <member refid="classshapes_1_1_chamfer_1ac22786a11a48e4c2a0bbb61f70eb3c9c" kind="variable"><name>chamfer_depth</name></member>
+    <member refid="classshapes_1_1_chamfer_1a5348ee0df977ba38a18e1c2c52ad513a" kind="variable"><name>chamfer_angle</name></member>
+    <member refid="classshapes_1_1_chamfer_1a063a25fec7b9faf40b503047f7a8c2aa" kind="variable"><name>chamfer_ref</name></member>
+    <member refid="classshapes_1_1_chamfer_1a13155ac3a73d871f9529dedf9ff764eb" kind="variable"><name>chamfer_offset</name></member>
+    <member refid="classshapes_1_1_chamfer_1a87369a36f82b7c0254095aeaf9d10f31" kind="variable"><name>chamfer_side</name></member>
+    <member refid="classshapes_1_1_chamfer_1a91ff7699762a25352033fc3302ec7cd1" kind="variable"><name>chamfer_path</name></member>
+    <member refid="classshapes_1_1_chamfer_1a77feca7b13c20722c7fecedc6a5536aa" kind="variable"><name>paths</name></member>
+    <member refid="classshapes_1_1_chamfer_1a8e13e08fa6e1662f89e8007f3c5cfad2" kind="function"><name>__init__</name></member>
+    <member refid="classshapes_1_1_chamfer_1ac15e1dda4622f72736e41f9a30bd10f6" kind="function"><name>__render__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_circle" kind="class"><name>shapes::Circle</name>
+    <member refid="classshapes_1_1_circle_1ac35d8cbf4af1f68c39180ec9a326707c" kind="variable"><name>cutter</name></member>
+    <member refid="classshapes_1_1_circle_1ae6d4e9aa7838e819c3de731470657e4d" kind="variable"><name>closed</name></member>
+    <member refid="classshapes_1_1_circle_1a1405c0a2e347e5ded45ac48b0b803b0e" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_circle_chord" kind="class"><name>shapes::CircleChord</name>
+    <member refid="classshapes_1_1_circle_chord_1a4707fb2cbf0f61d3957e703578942fb5" kind="variable"><name>closed</name></member>
+    <member refid="classshapes_1_1_circle_chord_1af456bea9125565a678031dbdaba9f441" kind="variable"><name>side</name></member>
+    <member refid="classshapes_1_1_circle_chord_1abed308bff582f79d6b673937645612a1" kind="variable"><name>direction</name></member>
+    <member refid="classshapes_1_1_circle_chord_1a6a96d0b6ca44cd5d6f01e445b7e46108" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_clamp" kind="class"><name>shapes::Clamp</name>
+    <member refid="classshapes_1_1_clamp_1ae1c518e15eb0c86290d5fd8bb83fab77" kind="variable"><name>closed</name></member>
+    <member refid="classshapes_1_1_clamp_1a0c179c90d96f3c2b5e28723c6894fcef" kind="variable"><name>side</name></member>
+    <member refid="classshapes_1_1_clamp_1a608a51123f0761d3973753e44828f7a4" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_clear_rect" kind="class"><name>shapes::ClearRect</name>
+    <member refid="classshapes_1_1_clear_rect_1af31b45cf3a77cd0549931e47c84090cb" kind="variable"><name>points</name></member>
+    <member refid="classshapes_1_1_clear_rect_1a1faa6db4e06a7114d0d580cbb47586c5" kind="function"><name>__init__</name></member>
+    <member refid="classshapes_1_1_clear_rect_1ad1f4d81dead228958d6088ebfbb39ff8" kind="function"><name>pre_render</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_copy_object" kind="class"><name>shapes::CopyObject</name>
+    <member refid="classshapes_1_1_copy_object_1ae216098bf3fa3958fbe342055a9c4512" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_countersink_hole" kind="class"><name>shapes::CountersinkHole</name>
+    <member refid="classshapes_1_1_countersink_hole_1a3971b42ef4a7d5cd0e45926734d753cf" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_cross" kind="class"><name>shapes::Cross</name>
+    <member refid="classshapes_1_1_cross_1a32dcd5efc549e998d0eaecde404c5d1f" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classsegments_1_1_cubic" kind="class"><name>segments::Cubic</name>
+    <member refid="classsegments_1_1_cubic_1a3d87e63eecbf9da1becc55fb858a1f3a" kind="variable"><name>seg_type</name></member>
+    <member refid="classsegments_1_1_cubic_1a2a6bbe67c22dca2202ee9abbee280275" kind="variable"><name>cutto</name></member>
+    <member refid="classsegments_1_1_cubic_1aba3e470c7944341886bac2f751d7794a" kind="variable"><name>cutfrom</name></member>
+    <member refid="classsegments_1_1_cubic_1abba7183f1a5e759358ec3a9e0f4e5b71" kind="variable"><name>cp1</name></member>
+    <member refid="classsegments_1_1_cubic_1ae8e4d11a0e2c1dde141ea4b962da4e58" kind="variable"><name>cp2</name></member>
+    <member refid="classsegments_1_1_cubic_1ad74bc1090ec38e60e2fcc07d1d0964e3" kind="function"><name>__init__</name></member>
+    <member refid="classsegments_1_1_cubic_1a506ce3ee174658e31aaa7017f9a709ba" kind="function"><name>gcode</name></member>
+    <member refid="classsegments_1_1_cubic_1a2ee85018d2135912cfcca040b0a79118" kind="function"><name>svg</name></member>
+    <member refid="classsegments_1_1_cubic_1a2986509367f3c24a34bd9b8078ca0dcd" kind="function"><name>polygon</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_curved_rect" kind="class"><name>shapes::CurvedRect</name>
+    <member refid="classshapes_1_1_curved_rect_1a8c94b771161645f1ad000e5c4199d463" kind="variable"><name>closed</name></member>
+    <member refid="classshapes_1_1_curved_rect_1af989fc010cde1fdeff90d4b0e167a59e" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classbezier_1_1_curve_pair" kind="class"><name>bezier::CurvePair</name>
+  </compound>
+  <compound refid="classconnectors_1_1_dconnector" kind="class"><name>connectors::Dconnector</name>
+    <member refid="classconnectors_1_1_dconnector_1a84cb1f3d8a72e078a564368af8639966" kind="variable"><name>data</name></member>
+    <member refid="classconnectors_1_1_dconnector_1a058868ceb99b52efaf979d67dd401aa7" kind="variable"><name>hole_rad</name></member>
+    <member refid="classconnectors_1_1_dconnector_1a1de06b15537f4f7a27d89b1110323291" kind="variable"><name>top</name></member>
+    <member refid="classconnectors_1_1_dconnector_1a16d2a015c13d9d9213a7dce24d3ca10f" kind="variable"><name>h</name></member>
+    <member refid="classconnectors_1_1_dconnector_1ab0330b29404f3255b76a597f8f570c76" kind="variable"><name>r</name></member>
+    <member refid="classconnectors_1_1_dconnector_1a9b48f02a0e0c0e7e70385d7ed9afe5e2" kind="variable"><name>ex</name></member>
+    <member refid="classconnectors_1_1_dconnector_1a476e7ddc59901adb338df0ddd6a4331b" kind="variable"><name>dw</name></member>
+    <member refid="classconnectors_1_1_dconnector_1a8bad4a8b5a4e2ae4b9592e7b3c91bb2f" kind="variable"><name>pins</name></member>
+    <member refid="classconnectors_1_1_dconnector_1ac9f751fdd098fc9475dba88bbf268f92" kind="variable"><name>pins</name></member>
+    <member refid="classconnectors_1_1_dconnector_1a480d8064d87ece50d384018747befb81" kind="variable"><name>cutout</name></member>
+    <member refid="classconnectors_1_1_dconnector_1af4b9dd5f33e2080e36f536cdad5b5a6c" kind="variable"><name>d</name></member>
+    <member refid="classconnectors_1_1_dconnector_1a7b11131494b9d5035160b4b4fbf7308b" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_double_flat" kind="class"><name>shapes::DoubleFlat</name>
+    <member refid="classshapes_1_1_double_flat_1a10aa68c4d2abd5f0a2ae05ef5f49520a" kind="variable"><name>closed</name></member>
+    <member refid="classshapes_1_1_double_flat_1adea09d5fdfca079dd5c9940a09d589a4" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_drill" kind="class"><name>shapes::Drill</name>
+    <member refid="classshapes_1_1_drill_1ab569b653f3aa01d74b6596c9d845e2dc" kind="variable"><name>dist</name></member>
+    <member refid="classshapes_1_1_drill_1aba5c261914fcec674bd9b9c039aa53a5" kind="variable"><name>steps</name></member>
+    <member refid="classshapes_1_1_drill_1a05155870584a057702ebfe0ad574a8bb" kind="variable"><name>steps</name></member>
+    <member refid="classshapes_1_1_drill_1a65ebd9ebcb8ffdc2f1c4682b20821f33" kind="variable"><name>step</name></member>
+    <member refid="classshapes_1_1_drill_1a82e27472f17f220aca47b1874ac1659d" kind="variable"><name>ret</name></member>
+    <member refid="classshapes_1_1_drill_1ade0cbf719eb083c1d709e8bd142ba09e" kind="variable"><name>pos</name></member>
+    <member refid="classshapes_1_1_drill_1a514d5e174a3b7237d383669862b9158c" kind="variable"><name>peck</name></member>
+    <member refid="classshapes_1_1_drill_1a5e03fef5821c6ec1ec92e82e7b7ba556" kind="variable"><name>drillrad</name></member>
+    <member refid="classshapes_1_1_drill_1a1b98883ec07b24a8568e39debc93623a" kind="variable"><name>cutter</name></member>
+    <member refid="classshapes_1_1_drill_1a2442fbb01a17112a5080d391a09b8480" kind="variable"><name>closed</name></member>
+    <member refid="classshapes_1_1_drill_1af34520e09550d4058a672463230601c1" kind="variable"><name>boundingBox</name></member>
+    <member refid="classshapes_1_1_drill_1a3525fe2393db318f023e19c270da785c" kind="variable"><name>centre</name></member>
+    <member refid="classshapes_1_1_drill_1a31e08b931225e8948dee628beebce281" kind="function"><name>__init__</name></member>
+    <member refid="classshapes_1_1_drill_1af985f3a90bcf4903994b87559b1493d0" kind="function"><name>render</name></member>
+    <member refid="classshapes_1_1_drill_1a4ff07e6554822824b5b61a106fd4090d" kind="function"><name>polygonise</name></member>
+  </compound>
+  <compound refid="classparts_1_1_drilled_ball" kind="class"><name>parts::DrilledBall</name>
+    <member refid="classparts_1_1_drilled_ball_1a382aec1200c899fb920551e26de74dfa" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_fan" kind="class"><name>parts::Fan</name>
+    <member refid="classparts_1_1_fan_1af88998014df582dab7a32bd3d94dc11f" kind="variable"><name>data</name></member>
+    <member refid="classparts_1_1_fan_1a17ae7e353907459cc49292e092644f27" kind="variable"><name>d</name></member>
+    <member refid="classparts_1_1_fan_1a8d712cc7fd8c31702b654a2cb8c19ecd" kind="variable"><name>holerad</name></member>
+    <member refid="classparts_1_1_fan_1a75666d4a0b6dd74f07fe5e84394aa116" kind="variable"><name>holerad</name></member>
+    <member refid="classparts_1_1_fan_1a23a5526fd6959e6fe44589d052682801" kind="variable"><name>spacing</name></member>
+    <member refid="classparts_1_1_fan_1a33929017332f1dd8d2bac914a8733cee" kind="variable"><name>o</name></member>
+    <member refid="classparts_1_1_fan_1a43f1ba65e0d6bf40ad6401b00eb42436" kind="variable"><name>cutout</name></member>
+    <member refid="classparts_1_1_fan_1a991d1caf4a1338f8acb1010c27ebc1da" kind="variable"><name>insert_size</name></member>
+    <member refid="classparts_1_1_fan_1a6737154f9b7459e8f98b5b737fcd8733" kind="variable"><name>insert</name></member>
+    <member refid="classparts_1_1_fan_1accaa714c47d3bb05538732cd13298e30" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_filled_circle" kind="class"><name>shapes::FilledCircle</name>
+    <member refid="classshapes_1_1_filled_circle_1acf773eb81f9e81aabbc1877ad62a1c06" kind="variable"><name>rad</name></member>
+    <member refid="classshapes_1_1_filled_circle_1ac694d06688a290a3931bebf794d27366" kind="variable"><name>pos</name></member>
+    <member refid="classshapes_1_1_filled_circle_1a75282e0e0fadfe3ad1bd53fe0cba6568" kind="variable"><name>circle</name></member>
+    <member refid="classshapes_1_1_filled_circle_1acefd4214639d5c1a8c82efab2bcca410" kind="variable"><name>paths</name></member>
+    <member refid="classshapes_1_1_filled_circle_1a2ef7c82959da6611c35f28dc01076caa" kind="function"><name>__init__</name></member>
+    <member refid="classshapes_1_1_filled_circle_1a8abe52dcba99352c72cc42dc0fe4a3e2" kind="function"><name>__render__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_finger_joint" kind="class"><name>shapes::FingerJoint</name>
+    <member refid="classshapes_1_1_finger_joint_1ae4184d844b9cddcc482723c807e92784" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_finger_joint_box_mid_side" kind="class"><name>shapes::FingerJointBoxMidSide</name>
+    <member refid="classshapes_1_1_finger_joint_box_mid_side_1ade09659acbf36dd004378c4ccc40f9eb" kind="variable"><name>closed</name></member>
+    <member refid="classshapes_1_1_finger_joint_box_mid_side_1a1ea61073dc9e25ef8becce4b843bd15d" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_finger_joint_box_side" kind="class"><name>shapes::FingerJointBoxSide</name>
+    <member refid="classshapes_1_1_finger_joint_box_side_1a184079abaa002c907b608675733490ae" kind="variable"><name>fudge</name></member>
+    <member refid="classshapes_1_1_finger_joint_box_side_1a3ae3ee63817dffa7beea2a0d271e60ed" kind="variable"><name>fudge</name></member>
+    <member refid="classshapes_1_1_finger_joint_box_side_1a78fb54597f90413a205b9d7a0adc6c0c" kind="variable"><name>s</name></member>
+    <member refid="classshapes_1_1_finger_joint_box_side_1a85cade359cd34d777158202cc3e6674a" kind="variable"><name>linemode</name></member>
+    <member refid="classshapes_1_1_finger_joint_box_side_1a1b08f1a625b6b1bca02dc4dd42d515ea" kind="variable"><name>thickness</name></member>
+    <member refid="classshapes_1_1_finger_joint_box_side_1a5e5865caa2530987c882fb86fbe57c26" kind="variable"><name>c</name></member>
+    <member refid="classshapes_1_1_finger_joint_box_side_1ae038c24a3bbe34afb5419a4e33afa829" kind="variable"><name>cutterrad</name></member>
+    <member refid="classshapes_1_1_finger_joint_box_side_1abb820730a624a5baa93bfeb45ad3816d" kind="variable"><name>cutterrad</name></member>
+    <member refid="classshapes_1_1_finger_joint_box_side_1a9a16221e6316b0f811e841990f151886" kind="variable"><name>cornertypes</name></member>
+    <member refid="classshapes_1_1_finger_joint_box_side_1a697b524bcc668931603cd7dc75177803" kind="variable"><name>cornertypes</name></member>
+    <member refid="classshapes_1_1_finger_joint_box_side_1aece206e78443db271178fcfdbafd191c" kind="variable"><name>cs</name></member>
+    <member refid="classshapes_1_1_finger_joint_box_side_1a8e9345153cd602774dba620ea4fffac5" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_finger_joint_mid" kind="class"><name>shapes::FingerJointMid</name>
+    <member refid="classshapes_1_1_finger_joint_mid_1a33c93a44febee5037b3e1d3cf98ebd72" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_flat_monitor" kind="class"><name>parts::FlatMonitor</name>
+    <member refid="classparts_1_1_flat_monitor_1a5b12e95057e3b393ec757287d34117d4" kind="variable"><name>base</name></member>
+    <member refid="classparts_1_1_flat_monitor_1a39d2920a0ecf49aa777c8e6a882cf137" kind="variable"><name>base</name></member>
+    <member refid="classparts_1_1_flat_monitor_1a5c9d47de6a4736f41a4e4364948295cb" kind="variable"><name>underbase</name></member>
+    <member refid="classparts_1_1_flat_monitor_1aabfe77e5bd4348b9878651bb8c27338b" kind="variable"><name>underbase</name></member>
+    <member refid="classparts_1_1_flat_monitor_1a7d9c9c12ad6f9aa631e1311fc0d3fa94" kind="variable"><name>paper</name></member>
+    <member refid="classparts_1_1_flat_monitor_1a06549e5fe9a98b11e78c86b1c7c42ce5" kind="variable"><name>paper</name></member>
+    <member refid="classparts_1_1_flat_monitor_1a235b01403ad3bb1c5d95d6cbc08dac96" kind="variable"><name>data</name></member>
+    <member refid="classparts_1_1_flat_monitor_1aeb1da09bd78cfac34f42ed8dabe0c386" kind="variable"><name>d</name></member>
+    <member refid="classparts_1_1_flat_monitor_1a301f413ff58034dd8afd5c9771a59edf" kind="variable"><name>cover_offset</name></member>
+    <member refid="classparts_1_1_flat_monitor_1a070aab76902eac0b8335e2f68e0c8241" kind="variable"><name>cover_offset</name></member>
+    <member refid="classparts_1_1_flat_monitor_1a32ee97ffa1cbb8196a5341c2864dbddb" kind="variable"><name>cutout</name></member>
+    <member refid="classparts_1_1_flat_monitor_1a898e85713098a6dcbf1209d812af1e98" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_four_objects" kind="class"><name>shapes::FourObjects</name>
+    <member refid="classshapes_1_1_four_objects_1a5f0870895eda50cf4aee625f7179e849" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_four_screws" kind="class"><name>shapes::FourScrews</name>
+    <member refid="classshapes_1_1_four_screws_1aab91e103e9a600a27b0e50de6b9c9176" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_hole" kind="class"><name>shapes::Hole</name>
+    <member refid="classshapes_1_1_hole_1abc132bb09c7115de383af5928974bef4" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_hole_line" kind="class"><name>shapes::HoleLine</name>
+    <member refid="classshapes_1_1_hole_line_1aec0844eebe660a77e3a0df46ee4471a3" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_insert" kind="class"><name>parts::Insert</name>
+    <member refid="classparts_1_1_insert_1ad7585d51af6054179975d444b437b8e0" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classgears_1_1_involute_gear" kind="class"><name>gears::InvoluteGear</name>
+    <member refid="classgears_1_1_involute_gear_1aafe3c7fddb229c32b203d87c65d5be33" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classgears_1_1_involute_gear_border" kind="class"><name>gears::InvoluteGearBorder</name>
+    <member refid="classgears_1_1_involute_gear_border_1a3082fbde89cd8d0b7d7ab22002fb1eb9" kind="variable"><name>closed</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1af2b72779858b618dd4c69ccc529cdb13" kind="variable"><name>base_diameter</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1ac7cc57277160a2575a1dbe61fb4b1743" kind="variable"><name>outer_diameter</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1a0aabdca00ea7bbd94fb4a922f7948559" kind="variable"><name>root_diameter</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1a8d74dca4e67f48499a9cc6934c9a414d" kind="function"><name>gears_root_diameter</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1a65571c455a662b6c7f354c553257610a" kind="function"><name>gears_base_diameter</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1a3cd564500fb7f58919bdd70e1ae78bd5" kind="function"><name>gears_outer_diameter</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1ad23633c9fe1834febbc0322d2d7d879f" kind="function"><name>gears_pitch_diameter</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1aac568e6869352d0a0371a4eb7025ad91" kind="function"><name>gears_circular_pitch</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1aa69471dcaf9c032399a256e85c75f49d" kind="function"><name>gears_circular_tooth_thickness</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1ae07ce4ec4f0069ddbc8bbef49b9a90f3" kind="function"><name>gears_circular_tooth_angle</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1af4ed589c57bdb09b0ad868841e3b9c67" kind="function"><name>gears_addendum</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1a8d6aac9c342cd973de0cc1a8c507436c" kind="function"><name>gears_dedendum</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1af2d4556bd75f0883cf277f4bc217e703" kind="function"><name>gears_generate_involute</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1a1cb98d62d4cb7c7365925afd39b95769" kind="function"><name>gears_locate_involute_cross_angle_for_radius</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1a04c60a984a7d9faaf56f5e670d722780" kind="function"><name>gears_align_involute</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1a51be3fc3ea32eee6b7481a110cfca4d5" kind="function"><name>gears_mirror_involute</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1a402554ab5f2304830ee5878ba14c1d19" kind="function"><name>gears_rotate</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1a9e1f46165954de32ec23e2efb5272d35" kind="function"><name>gears_translate</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1a03d205088c8b4621a09897f1cea18f0e" kind="function"><name>gears_make_tooth</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1aad7b930d16d02bfd6313bd0508572e16" kind="function"><name>gears_make_gear</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1a3f38d8790bdcf8b1cf33a0e496e8491a" kind="function"><name>gears_camcam</name></member>
+    <member refid="classgears_1_1_involute_gear_border_1af2baab9361ff887f6ccd618f036cff96" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_key_hole" kind="class"><name>shapes::KeyHole</name>
+    <member refid="classshapes_1_1_key_hole_1a31590b3a5db61a40e63796078c22def8" kind="variable"><name>kw</name></member>
+    <member refid="classshapes_1_1_key_hole_1a27b3c27c4e6fd8faa8cda12afea87b15" kind="variable"><name>kh</name></member>
+    <member refid="classshapes_1_1_key_hole_1a46f3432dd350ca5051ac62cba9ab6ea0" kind="variable"><name>kr</name></member>
+    <member refid="classshapes_1_1_key_hole_1a544f4cb7ddd5fddf07266fe47f78f667" kind="variable"><name>ky</name></member>
+    <member refid="classshapes_1_1_key_hole_1a4ee98943c2657427edc29b474e950e2c" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_knob" kind="class"><name>parts::Knob</name>
+    <member refid="classparts_1_1_knob_1a70e8ca990049757bdf9e89038c76cc9b" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classlayout_1_1_kv_part" kind="class"><name>layout::KvPart</name>
+    <member refid="classlayout_1_1_kv_part_1a9312cd8095be3ad77b82abf86df37067" kind="variable"><name>center</name></member>
+    <member refid="classlayout_1_1_kv_part_1aed82f67195a9613bc3dc65d5e3848631" kind="variable"><name>size</name></member>
+    <member refid="classlayout_1_1_kv_part_1a1739f4ee84babf0064e76863c5656db3" kind="variable"><name>do_rotation</name></member>
+    <member refid="classlayout_1_1_kv_part_1a4fc185fde93f1abf7b5a5af29f700c14" kind="variable"><name>do_scale</name></member>
+    <member refid="classlayout_1_1_kv_part_1a23cd17027451dd736536090dfbc96f13" kind="variable"><name>do_translation</name></member>
+    <member refid="classlayout_1_1_kv_part_1a5b5cc4aed905227df926c21752f8509a" kind="function"><name>draw</name></member>
+  </compound>
+  <compound refid="classcamcam__layout_1_1_kv_part" kind="class"><name>camcam_layout::KvPart</name>
+    <member refid="classcamcam__layout_1_1_kv_part_1a9579f7d28205b8183edce020a090200a" kind="variable"><name>deleted</name></member>
+    <member refid="classcamcam__layout_1_1_kv_part_1a802f4bf14a71700a9019b069ed29916e" kind="variable"><name>part</name></member>
+    <member refid="classcamcam__layout_1_1_kv_part_1adbf6e3a41fb3ebaf219b7c948fc68ee7" kind="variable"><name>startcentre</name></member>
+    <member refid="classcamcam__layout_1_1_kv_part_1abf1410f1bd0b1d64327cd3d35c923493" kind="variable"><name>back_colour</name></member>
+    <member refid="classcamcam__layout_1_1_kv_part_1afeef47f5c689151138611b54edef348a" kind="variable"><name>size</name></member>
+    <member refid="classcamcam__layout_1_1_kv_part_1a5d24a5b060975df8723369d28c67eb76" kind="variable"><name>linecolour</name></member>
+    <member refid="classcamcam__layout_1_1_kv_part_1ab1629e55d722b727c5e28bd5e8d4df39" kind="variable"><name>center</name></member>
+    <member refid="classcamcam__layout_1_1_kv_part_1aa7d453718127aa8315189cbc3675a5f6" kind="variable"><name>startpos</name></member>
+    <member refid="classcamcam__layout_1_1_kv_part_1a6c922fe0be4d0ceae22690a327c84dff" kind="variable"><name>do_rotation</name></member>
+    <member refid="classcamcam__layout_1_1_kv_part_1ae3230d8f5b1be8806b350216f4117e7f" kind="variable"><name>do_scale</name></member>
+    <member refid="classcamcam__layout_1_1_kv_part_1a1710eb3f3da193538ea500a25f4b948d" kind="variable"><name>do_translation</name></member>
+    <member refid="classcamcam__layout_1_1_kv_part_1aaf59bb33b7b6219c158491e4a6577fe9" kind="function"><name>draw</name></member>
+    <member refid="classcamcam__layout_1_1_kv_part_1a96759e03e1694ba9ed5a6dd0feb3bc63" kind="function"><name>on_bring_to_front</name></member>
+  </compound>
+  <compound refid="classpath_1_1_layer" kind="class"><name>path::Layer</name>
+    <member refid="classpath_1_1_layer_1a51f9cab3d6c7de0ebf353f36f78e16d0" kind="variable"><name>config</name></member>
+    <member refid="classpath_1_1_layer_1a206e00134fe2e7fb98a0193924951661" kind="variable"><name>bom</name></member>
+    <member refid="classpath_1_1_layer_1af7c4d2929dadc5eba95cc605d46de9b3" kind="function"><name>__init__</name></member>
+    <member refid="classpath_1_1_layer_1acf3de0562bfdc4ddc3cf3fc1fbacf960" kind="function"><name>get_config</name></member>
+  </compound>
+  <compound refid="classparts_1_1_led_holder" kind="class"><name>parts::LedHolder</name>
+    <member refid="classparts_1_1_led_holder_1a5be5908125d4e4fbe475ad5f00698022" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classsegments_1_1_line" kind="class"><name>segments::Line</name>
+    <member refid="classsegments_1_1_line_1a74853391d86b0d95c01c67ca216208dc" kind="variable"><name>seg_type</name></member>
+    <member refid="classsegments_1_1_line_1aad74ac6b6db34eb6c1405584d92fe66e" kind="variable"><name>cutto</name></member>
+    <member refid="classsegments_1_1_line_1ab2b16d59351a9749a5061a01e19f96dc" kind="variable"><name>cutfrom</name></member>
+    <member refid="classsegments_1_1_line_1a62e5d7c179e16a06e08b5d80fc3355eb" kind="function"><name>__init__</name></member>
+    <member refid="classsegments_1_1_line_1ab11c4c3e05f163d8b8b4866113ca36b0" kind="function"><name>gcode</name></member>
+    <member refid="classsegments_1_1_line_1a9e4708f2a4b61ff8433d70d638f134a6" kind="function"><name>svg</name></member>
+    <member refid="classsegments_1_1_line_1ad7bc5ee97b9b70253b6c403f8d0dfff9" kind="function"><name>polygon</name></member>
+  </compound>
+  <compound refid="classparts_1_1_linear_bearing" kind="class"><name>parts::LinearBearing</name>
+    <member refid="classparts_1_1_linear_bearing_1aa5cfb7b566d410938e2fdaac7e3460b9" kind="variable"><name>dims</name></member>
+    <member refid="classparts_1_1_linear_bearing_1a35cb1c77becec87252a175e88b873591" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_linear_rail" kind="class"><name>parts::LinearRail</name>
+    <member refid="classparts_1_1_linear_rail_1aec60902b77e5604b1d7c2a012dfd1e6f" kind="variable"><name>d</name></member>
+    <member refid="classparts_1_1_linear_rail_1a71edb569200bfa52c7a3670f82a5e43b" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_line_objects" kind="class"><name>shapes::LineObjects</name>
+    <member refid="classshapes_1_1_line_objects_1a53cf7637deff25956c77cda44d1ad682" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_lines" kind="class"><name>shapes::Lines</name>
+    <member refid="classshapes_1_1_lines_1a87e81650a1ec34c0e8a32cf7c31d81a3" kind="variable"><name>closed</name></member>
+    <member refid="classshapes_1_1_lines_1a07360cb4c8d8ecf9ab2103456297f316" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_load_cell" kind="class"><name>parts::LoadCell</name>
+    <member refid="classparts_1_1_load_cell_1ac59a57ce7cd369689ba3da03f3859929" kind="variable"><name>dims</name></member>
+    <member refid="classparts_1_1_load_cell_1a1f9b89b58944de2c9e206d45b0295e2b" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_lobed_circle" kind="class"><name>shapes::LobedCircle</name>
+    <member refid="classshapes_1_1_lobed_circle_1a9ed93ca485834ea6a798040d2168728e" kind="variable"><name>closed</name></member>
+    <member refid="classshapes_1_1_lobed_circle_1acdd4e88e21aa8849ef6a25f43c1886ac" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classlogic_gates_1_1_logic_gate" kind="class"><name>logicGates::LogicGate</name>
+    <member refid="classlogic_gates_1_1_logic_gate_1a4c75447bac7b94a545d9089459fbcce3" kind="variable"><name>conn_len</name></member>
+    <member refid="classlogic_gates_1_1_logic_gate_1ad2e7099b8ce947b455ad6177c40e0204" kind="variable"><name>conn_wid</name></member>
+    <member refid="classlogic_gates_1_1_logic_gate_1ada12c5194b562a1928ed72d76291fba4" kind="function"><name>__init__</name></member>
+    <member refid="classlogic_gates_1_1_logic_gate_1ac4b0b533ccc70bef86d528e2413c64a7" kind="function"><name>init2</name></member>
+    <member refid="classlogic_gates_1_1_logic_gate_1a24577fd2fb6106be52e1cccd3a85888b" kind="function"><name>diagram</name></member>
+    <member refid="classlogic_gates_1_1_logic_gate_1a6c0ac3a4339841ad5ddfeb8059404ccf" kind="function"><name>holes</name></member>
+  </compound>
+  <compound refid="classminivec_1_1minivec_1_1_mat" kind="class"><name>minivec::minivec::Mat</name>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a5837b7170083019d6425c16e3e3ea78b" kind="variable"><name>__slots__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1adfc7fe52d62b8e539ea39c718408c00a" kind="variable"><name>__mul__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a796bb3da87b6f62fa3edf17bd8afdce3" kind="variable"><name>__invert__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1ae4933538c38dec3eee25a70104ebda08" kind="variable"><name>__mat</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a0ccec2a7a5c671a2480ad44d95139bd5" kind="function"><name>__init__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1ac149ada48e389858031f6b403ccfeb48" kind="function"><name>Error</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a0123fedc9f3e934a482679cbc8ffee85" kind="function"><name>rows</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a0ca8a3d1a061e7a6176e64e6ed223287" kind="function"><name>columns</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a5d2f01b4f68e0098b0fb506522cdf3a8" kind="function"><name>__repr__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a7d46922c3211f2d733a05e1e22e0f71a" kind="function"><name>__iter__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1ab013df7f6f0c343b8b103d20edd6a210" kind="function"><name>__len__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1aaacf493226ec98915945f33bf08b9c28" kind="function"><name>__getitem__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a8f5b48d14f1ce0a369ff0268c626d1b0" kind="function"><name>transpose</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1aec9ab0f8d51536378eb4996a20e9ddaf" kind="function"><name>__neg__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a7feea87679c40a70812b04d1fb2687dc" kind="function"><name>__pos__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1ade21bafa48994648e4ee0a15497997d4" kind="function"><name>__hash__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a85ddd2f35bf6b46a0634c09cd94ab5ba" kind="function"><name>__cmp__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a002d8ba4508f1d8675eefc23935d58bf" kind="function"><name>exact</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a0918a01c099515f095be4b846e642682" kind="function"><name>almost</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a4f2b45ad9db9208f1a6512b61c19dbc5" kind="function"><name>__nonzero__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a0f223495c8c3d91f26b5d9e343bf1af7" kind="function"><name>apply</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a18cdaa87999bc6cbd1652dca3aa63468" kind="function"><name>transform</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a6fc036840a152ec283894c481aa057bc" kind="function"><name>__rmul__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a155e41b3f4f78f7d0264d6ddc113da79" kind="function"><name>scale</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a6378a96e89d988b74338258e01e8a9c3" kind="function"><name>translate</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a03450442e730a17d66e07614c836418d" kind="function"><name>shear</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a7d119e23e74d182f54ca330fe9c65a3c" kind="function"><name>rotate</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1af0762830b2b6decbc81009b4a7b7564c" kind="function"><name>rotateAxis</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1abdea55611ff8a295a5ab7abeffcf5337" kind="function"><name>Translate</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a0120a14122002f4358a7cba3af274938" kind="function"><name>Scale</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1adadc85f5611a25ebfa70b823f9b812b7" kind="function"><name>Shear</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1ac59f34d7c3a6952b1296dc43add6244d" kind="function"><name>Rotate</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a1bb7ce62b34b028fb462feb639065772" kind="function"><name>RotateAxis</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1ad39a776c942f5a3939e5bbd95e430f1d" kind="function"><name>invert</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a7b0a26d6c5202fc7fe3b9bc84c7588b9" kind="function"><name>determinant</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1a83c559b35a4814f014308d03ddbcdad2" kind="function"><name>decompose</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1ab94d8bf4ddf0463496fb78809f73ad9a" kind="function"><name>Compose</name></member>
+    <member refid="classminivec_1_1minivec_1_1_mat_1ac420d345a6db8e154b84725c28c0b7de" kind="function"><name>lerp</name></member>
+  </compound>
+  <compound refid="class_milling_1_1_milling" kind="class"><name>Milling::Milling</name>
+    <member refid="class_milling_1_1_milling_1a082414fc35afc6686d84e08716cb528e" kind="variable"><name>mode_config</name></member>
+    <member refid="class_milling_1_1_milling_1a5a69f8b51168e80e5bb692c6f2a6e36b" kind="variable"><name>tools</name></member>
+    <member refid="class_milling_1_1_milling_1abfe2fc691de0e96daeabfa54c923cd49" kind="variable"><name>materials</name></member>
+    <member refid="class_milling_1_1_milling_1a39d61172ac8837d2b71f9445b967ea95" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_module" kind="class"><name>shapes::Module</name>
+    <member refid="classshapes_1_1_module_1a03f8526270348aa01870341f71585e72" kind="variable"><name>bom</name></member>
+    <member refid="classshapes_1_1_module_1a402a64427f8ffe5f46611459ea497776" kind="variable"><name>perspex_layer</name></member>
+    <member refid="classshapes_1_1_module_1ac9aaa9c2e58d198b0f4749d2183297ca" kind="variable"><name>base_layer</name></member>
+    <member refid="classshapes_1_1_module_1a83b5d6a540e5ee42db561e0bc8569562" kind="variable"><name>underbase_layer</name></member>
+    <member refid="classshapes_1_1_module_1aa5f8f21ac48d755e251e1bf33c42c1ec" kind="variable"><name>pibarn_layer</name></member>
+    <member refid="classshapes_1_1_module_1ab209624dffecfc33a7410dda997c27f7" kind="variable"><name>backgap</name></member>
+    <member refid="classshapes_1_1_module_1a3ed342ba3d585a3efb51ebbf4679720f" kind="variable"><name>width</name></member>
+    <member refid="classshapes_1_1_module_1adf009e86e07064ae6997cb7a8bf8aef8" kind="variable"><name>height</name></member>
+    <member refid="classshapes_1_1_module_1a927cbd0791f0c2df66627a81f5c27faa" kind="variable"><name>perspex</name></member>
+    <member refid="classshapes_1_1_module_1a28d52660b6f10ba2e97c47089d3d1afd" kind="variable"><name>base</name></member>
+    <member refid="classshapes_1_1_module_1ae0fbc8d70e8dccf42ad620aec94e2692" kind="variable"><name>paper</name></member>
+    <member refid="classshapes_1_1_module_1ac05cf9348ab70df94cbe4f1eadb191e1" kind="variable"><name>underbase</name></member>
+    <member refid="classshapes_1_1_module_1a04e446e8ef138c8ea18f38df7fc99935" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_module_clear_back" kind="class"><name>shapes::ModuleClearBack</name>
+    <member refid="classshapes_1_1_module_clear_back_1ac5bf7831e42f93c24d5c3be3c0250687" kind="variable"><name>layer</name></member>
+    <member refid="classshapes_1_1_module_clear_back_1a9e9313a8151d046c9db1218b4f8fe1fa" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_module_clear_back_path" kind="class"><name>shapes::ModuleClearBackPath</name>
+    <member refid="classshapes_1_1_module_clear_back_path_1ae9b4de4bb691ca879b444b0ef8a56f09" kind="variable"><name>side</name></member>
+    <member refid="classshapes_1_1_module_clear_back_path_1a12fc0d332c9d61f38d7b7672c6cbabbf" kind="variable"><name>closed</name></member>
+    <member refid="classshapes_1_1_module_clear_back_path_1a1cc6c6001d2f1161ce8cdc95dcac3a15" kind="variable"><name>corner</name></member>
+    <member refid="classshapes_1_1_module_clear_back_path_1a374965179b9890f2c6aa124f84e6eaac" kind="variable"><name>mid_height</name></member>
+    <member refid="classshapes_1_1_module_clear_back_path_1aa3cf5e734ca237d66bcb547d069f12b3" kind="variable"><name>mid_width</name></member>
+    <member refid="classshapes_1_1_module_clear_back_path_1ae0b07466eafd64881149c3615309fa36" kind="variable"><name>mid_edge</name></member>
+    <member refid="classshapes_1_1_module_clear_back_path_1a8b42577e0da207b9898189e1e4aa8223" kind="variable"><name>mid_mid</name></member>
+    <member refid="classshapes_1_1_module_clear_back_path_1aa57e0254bc676db2ca4999168d7b568c" kind="variable"><name>width</name></member>
+    <member refid="classshapes_1_1_module_clear_back_path_1a456184c8cd3b1a322564e8b04acc35c7" kind="variable"><name>height</name></member>
+    <member refid="classshapes_1_1_module_clear_back_path_1a1684f9245c5dc4169aed51ebdde6f6a2" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_monitor" kind="class"><name>parts::Monitor</name>
+    <member refid="classparts_1_1_monitor_1a8d04e0db11599312c498783d7da8ce51" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classbezier_1_1_no_ratio_exists_exception" kind="class"><name>bezier::NoRatioExistsException</name>
+  </compound>
+  <compound refid="classlogic_gates_1_1_n_o_tgate" kind="class"><name>logicGates::NOTgate</name>
+    <member refid="classlogic_gates_1_1_n_o_tgate_1ab47a320e872d79c3f1e37f57d05ce7c1" kind="variable"><name>l</name></member>
+    <member refid="classlogic_gates_1_1_n_o_tgate_1aa5e10a5bdbf9f08eda14cd29a24c441d" kind="variable"><name>w1</name></member>
+    <member refid="classlogic_gates_1_1_n_o_tgate_1ae6ee30c79e4d96547825e82bd0aec53f" kind="variable"><name>w2</name></member>
+    <member refid="classlogic_gates_1_1_n_o_tgate_1afc9d219c6fc7e218b0ef26bd21adbd8f" kind="variable"><name>h</name></member>
+    <member refid="classlogic_gates_1_1_n_o_tgate_1adb710f70194af197f3f8a1d34c90a8a4" kind="variable"><name>r</name></member>
+    <member refid="classlogic_gates_1_1_n_o_tgate_1a89d6729ade6b87de39b2c9c9736c67a8" kind="function"><name>init2</name></member>
+    <member refid="classlogic_gates_1_1_n_o_tgate_1a7f8952528e28c7162211934b854db02a" kind="function"><name>diagram</name></member>
+    <member refid="classlogic_gates_1_1_n_o_tgate_1a2e42e5d7851e2b09877e076564f41ed1" kind="function"><name>holes</name></member>
+  </compound>
+  <compound refid="classbezier_1_1_null_bezier_curve" kind="class"><name>bezier::NullBezierCurve</name>
+  </compound>
+  <compound refid="classlogic_gates_1_1_o_rgate" kind="class"><name>logicGates::ORgate</name>
+    <member refid="classlogic_gates_1_1_o_rgate_1a10cd1ca58ed2efef1b4ad53873f49c91" kind="variable"><name>l</name></member>
+    <member refid="classlogic_gates_1_1_o_rgate_1a2a9cf8819b881ab774218bac01fe536e" kind="variable"><name>w</name></member>
+    <member refid="classlogic_gates_1_1_o_rgate_1a7221b928423b4f7810424e688048b9ed" kind="variable"><name>h</name></member>
+    <member refid="classlogic_gates_1_1_o_rgate_1affc3c9cf483a216c8dfc1ee743482b69" kind="variable"><name>s</name></member>
+    <member refid="classlogic_gates_1_1_o_rgate_1a34dc994a956b79c631ab4991fe39b640" kind="function"><name>init2</name></member>
+    <member refid="classlogic_gates_1_1_o_rgate_1a6efef0b970d48fc122f45dd3dcb97c8a" kind="function"><name>diagram</name></member>
+    <member refid="classlogic_gates_1_1_o_rgate_1aebfea01916ff6cffe2a615264c2c310a" kind="function"><name>diagram2</name></member>
+    <member refid="classlogic_gates_1_1_o_rgate_1a143d1cbdb02208d7befb7711fe6d7cc6" kind="function"><name>holes</name></member>
+  </compound>
+  <compound refid="classpoint_1_1_p_arc" kind="class"><name>point::PArc</name>
+    <member refid="classpoint_1_1_p_arc_1a63d062c53f0c2232c0ff29fbc490b820" kind="variable"><name>pos</name></member>
+    <member refid="classpoint_1_1_p_arc_1a8b8a7011a622c35fdaef3e1a684281f5" kind="variable"><name>radius</name></member>
+    <member refid="classpoint_1_1_p_arc_1af38c8778c3b2863f9b6354ac483c3969" kind="variable"><name>direction</name></member>
+    <member refid="classpoint_1_1_p_arc_1a2f61a9a998f24a3146c2054d93b1f3ab" kind="variable"><name>length</name></member>
+    <member refid="classpoint_1_1_p_arc_1a1e706569aa26185265004dd619ffe0ef" kind="variable"><name>transform</name></member>
+    <member refid="classpoint_1_1_p_arc_1ab8c6246d191ebc6d342a6e339d91759e" kind="variable"><name>point_type</name></member>
+    <member refid="classpoint_1_1_p_arc_1a7262e7618275455c4be25eec31c8badc" kind="variable"><name>control</name></member>
+    <member refid="classpoint_1_1_p_arc_1a7fac00f664540af214f6f8d8f3f7a456" kind="variable"><name>obType</name></member>
+    <member refid="classpoint_1_1_p_arc_1a052f5ccae99936b8d39120d398a9c7ff" kind="variable"><name>reverse</name></member>
+    <member refid="classpoint_1_1_p_arc_1ae0cd85a19d18f2d91b90da5d945d237b" kind="function"><name>__init__</name></member>
+    <member refid="classpoint_1_1_p_arc_1ad2fc001c2ef68b8cacc5e85599ad98ef" kind="function"><name>copy</name></member>
+    <member refid="classpoint_1_1_p_arc_1ac40eec0f8a2a6883dc54a10277712967" kind="function"><name>checkArc</name></member>
+    <member refid="classpoint_1_1_p_arc_1a91f29f626af24534b1f1fd7e87a6c461" kind="function"><name>makeSegment</name></member>
+    <member refid="classpoint_1_1_p_arc_1a7f3d20cce8a284d130c03fd5e8e11b2f" kind="function"><name>end</name></member>
+    <member refid="classpoint_1_1_p_arc_1aeacf917d9e8dc6de2482703f2196396d" kind="function"><name>start</name></member>
+    <member refid="classpoint_1_1_p_arc_1ada11779d2818520888b74ad48a7f8755" kind="function"><name>offset</name></member>
+  </compound>
+  <compound refid="classpoint_1_1_p_aroundcurve" kind="class"><name>point::PAroundcurve</name>
+    <member refid="classpoint_1_1_p_aroundcurve_1a0f9730c4deffcd70cb9f6af6762f09d8" kind="variable"><name>astart</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1aae06cb74d805aa35dbd4e47505168e2b" kind="variable"><name>aend</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1af76b1c28fe995c4cdc83bfd822d6480f" kind="variable"><name>d</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1ad271346d88ab501f065b6172f3de629d" kind="variable"><name>d</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1aa991f6099845e2e54363ca607ec0f58e" kind="variable"><name>pos</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1ade9f5e6f5419e6aea11c020385a38f6a" kind="variable"><name>point_type</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1a9b5f99d653825fb5395078f3595c03cc" kind="variable"><name>radius</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1a35548cdf3426f241a2f4dca3c4c07cf4" kind="variable"><name>direction</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1a1a8bd2e8bba44444912fb13e79f53c1a" kind="variable"><name>transform</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1a57f68703c7c964bb2b92dae3002fe7f5" kind="variable"><name>cp1</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1a8eb53f5eb3d2dda9c52f70c658a215b9" kind="variable"><name>obType</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1a3241c3671e0fa3d11b165e8ca2801997" kind="variable"><name>reverse</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1abf8a513ce57f9b1477a64cb68f29a229" kind="function"><name>__init__</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1aa62a97561ec9a6a39360db3bc4afb9b5" kind="function"><name>offset</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1ab3adc6be84047ee66a5cbbf4b6396b94" kind="function"><name>setDirection</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1a63c9705a5fbdbde72b5bde450324178d" kind="function"><name>makeSegment</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1a9f9818c6d18639d55b79af5f1c0a46d6" kind="function"><name>start</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1ad2db9dc27bd5b55354382b2cf9863303" kind="function"><name>end</name></member>
+    <member refid="classpoint_1_1_p_aroundcurve_1a73d952075b6e0a82897d597e5a5235e2" kind="function"><name>origin</name></member>
+  </compound>
+  <compound refid="classpath_1_1_part" kind="class"><name>path::Part</name>
+    <member refid="classpath_1_1_part_1ac56a35fa54fc9cae4b96917ef5bcdaae" kind="variable"><name>obType</name></member>
+    <member refid="classpath_1_1_part_1aa46bbe5ca2996ee60e388415f398b008" kind="variable"><name>trace</name></member>
+    <member refid="classpath_1_1_part_1af1c81df8b50b76bba5e7be33d8a12938" kind="variable"><name>paths</name></member>
+    <member refid="classpath_1_1_part_1a01ea69c0b818956e26ed146808d6ba74" kind="variable"><name>parts</name></member>
+    <member refid="classpath_1_1_part_1a3d990ca845c23f206bc56224737440fd" kind="variable"><name>copies</name></member>
+    <member refid="classpath_1_1_part_1a620639c9a733ef0f168a7c94ccae9cd8" kind="variable"><name>copied</name></member>
+    <member refid="classpath_1_1_part_1a5d3e9b6b69c5eb6b100dfbf7d7fdf488" kind="variable"><name>isCopy</name></member>
+    <member refid="classpath_1_1_part_1aa1d9912dfa1d7e3222df898d2a18786f" kind="variable"><name>layer</name></member>
+    <member refid="classpath_1_1_part_1aa94d1de86a82e8b96113c305c1ff63cc" kind="variable"><name>comments</name></member>
+    <member refid="classpath_1_1_part_1aac66c946dd230e64e4c24cecf1d2d4e9" kind="variable"><name>parent</name></member>
+    <member refid="classpath_1_1_part_1ab4eb93506a42db0b4d21000dceca0e91" kind="variable"><name>internal_borders</name></member>
+    <member refid="classpath_1_1_part_1a62650bf6a83e3063d90f7e2711784a10" kind="variable"><name>ignore_border</name></member>
+    <member refid="classpath_1_1_part_1a77dd1289501d1f4bce4ff5b4718f7200" kind="variable"><name>transform</name></member>
+    <member refid="classpath_1_1_part_1a56b959045a54830e9c1f99675b12a075" kind="variable"><name>varlist</name></member>
+    <member refid="classpath_1_1_part_1ae705ca5412f4383b77dd32e9ebdd237f" kind="variable"><name>otherargs</name></member>
+    <member refid="classpath_1_1_part_1a6ff6c586832ff637508796a8a77dbbac" kind="variable"><name>output</name></member>
+    <member refid="classpath_1_1_part_1a5c83f575732c5a3a949c1e7facbf548c" kind="variable"><name>number</name></member>
+    <member refid="classpath_1_1_part_1a57d1d3471b332024af5cdc8265b96ef1" kind="variable"><name>cutoutside</name></member>
+    <member refid="classpath_1_1_part_1a889c4d521b52576b5b4e96ce573ea602" kind="variable"><name>bom</name></member>
+    <member refid="classpath_1_1_part_1adcfeed4d6166f35e3ea1eb87926f6a5e" kind="variable"><name>layers</name></member>
+    <member refid="classpath_1_1_part_1a982bb6775f254fd811f03015c7695718" kind="variable"><name>material_shape</name></member>
+    <member refid="classpath_1_1_part_1a004c78655a7f215ff512e4b18e48b0fe" kind="variable"><name>border</name></member>
+    <member refid="classpath_1_1_part_1abd77fe962ddd912e766b8a2e9220717b" kind="variable"><name>is_border</name></member>
+    <member refid="classpath_1_1_part_1ad303df059ccf8ea977b9ba099f1f17a9" kind="function"><name>__init__</name></member>
+    <member refid="classpath_1_1_part_1a78ba05bb5f29eee1830388be6d15af98" kind="function"><name>init</name></member>
+    <member refid="classpath_1_1_part_1a01c7a739dee22053cee9f0b28348f1a3" kind="function"><name>__deepcopy__</name></member>
+    <member refid="classpath_1_1_part_1a70560f4969089436589b608259ee2ca1" kind="function"><name>rotate</name></member>
+    <member refid="classpath_1_1_part_1a3e0f8f43f26a761a02616e2a2bc735e1" kind="function"><name>mirror</name></member>
+    <member refid="classpath_1_1_part_1a27d0b520d21955962d578c55227bcff8" kind="function"><name>translate</name></member>
+    <member refid="classpath_1_1_part_1abb8f248470b535ae0449e1a47f912506" kind="function"><name>add_bom</name></member>
+    <member refid="classpath_1_1_part_1aa3ab823fc2a4baeaa97300d310d3b8eb" kind="function"><name>get_bom</name></member>
+    <member refid="classpath_1_1_part_1aaa7dce569975af8da512ecba96f67538" kind="function"><name>comment</name></member>
+    <member refid="classpath_1_1_part_1ab6fccbe6e3b1b965e8fbfa0a64e33b91" kind="function"><name>get_config</name></member>
+    <member refid="classpath_1_1_part_1ad5f9f5edfa6d110a4de203c109223ede" kind="function"><name>renderable</name></member>
+    <member refid="classpath_1_1_part_1a6923ae4219b5cbd4bc87e22c09da14fc" kind="function"><name>getParts</name></member>
+    <member refid="classpath_1_1_part_1a55bbf4c0ea6fbf7f70c4470929ee4b26" kind="function"><name>get_parts</name></member>
+    <member refid="classpath_1_1_part_1a4476c8b030ebcf9c7df00e6a7aa9214c" kind="function"><name>add_border</name></member>
+    <member refid="classpath_1_1_part_1af7a16e2949b4fb42f61efa17c29d9b56" kind="function"><name>add_internal_border</name></member>
+    <member refid="classpath_1_1_part_1a397ea5a1af4d031e7f1fb4ceac654de5" kind="function"><name>add_copy</name></member>
+    <member refid="classpath_1_1_part_1a45256181f3975227c838363bc31ae602" kind="function"><name>add</name></member>
+    <member refid="classpath_1_1_part_1a961da43effa034ade7b25ff09121784c" kind="function"><name>add_path</name></member>
+    <member refid="classpath_1_1_part_1a185c9bbf10bddf3b739441e758850c84" kind="function"><name>make_copies</name></member>
+    <member refid="classpath_1_1_part_1a60a0f2d6c32dc8875b191d432002860f" kind="function"><name>get_layers</name></member>
+    <member refid="classpath_1_1_part_1a4ce18378dbce97d9a2875e1de9653892" kind="function"><name>get_own_paths</name></member>
+    <member refid="classpath_1_1_part_1a674b3be7cd8c25840d27de74b0d94797" kind="function"><name>contains</name></member>
+    <member refid="classpath_1_1_part_1af5b40fad5803470c54db7d42b07f8a95" kind="function"><name>overwrite</name></member>
+  </compound>
+  <compound refid="classpath_1_1_path" kind="class"><name>path::Path</name>
+    <member refid="classpath_1_1_path_1aa035284a3ee351f3322692310a394019" kind="variable"><name>thisdir</name></member>
+    <member refid="classpath_1_1_path_1ad8b573890c87e26baed6baaca4d6510d" kind="variable"><name>finalpass</name></member>
+    <member refid="classpath_1_1_path_1a90d350ebcf02a6abf6f2b8d373707158" kind="variable"><name>finishing</name></member>
+    <member refid="classpath_1_1_path_1a90d350ebcf02a6abf6f2b8d373707158" kind="variable"><name>finishing</name></member>
+    <member refid="classpath_1_1_path_1afec2f41c3bc8ffadb200eaf30e780ea5" kind="variable"><name>dist</name></member>
+    <member refid="classpath_1_1_path_1a63daa52ac2ed46d3c512d22650245b86" kind="variable"><name>numpasses</name></member>
+    <member refid="classpath_1_1_path_1a197eeae0afc70cd672c698e5aa7fda86" kind="variable"><name>step</name></member>
+    <member refid="classpath_1_1_path_1a4c7bc21a39224d1712c3cacadf9dc8ca" kind="variable"><name>numpasses</name></member>
+    <member refid="classpath_1_1_path_1a6369a7d2acdd80e89933c87baa92a961" kind="variable"><name>step</name></member>
+    <member refid="classpath_1_1_path_1acee5971500259152902b431cfae4248a" kind="variable"><name>ns</name></member>
+    <member refid="classpath_1_1_path_1aba8a261c06a62c46b5b50cc2218984e5" kind="variable"><name>ns</name></member>
+    <member refid="classpath_1_1_path_1ae925ef71c080bd87e3599b6d4f9944fc" kind="variable"><name>fillpath</name></member>
+    <member refid="classpath_1_1_path_1a4ca57bb02bfd7328aa373670e42cc7c2" kind="variable"><name>p</name></member>
+    <member refid="classpath_1_1_path_1a3cd9f7f776de6ac323126a84e0a9d118" kind="variable"><name>reverse</name></member>
+    <member refid="classpath_1_1_path_1a17defa4d0edda7c8df002844662f3eb5" kind="variable"><name>frompos</name></member>
+    <member refid="classpath_1_1_path_1a082ac83dbda37eba9befcae8be0df595" kind="variable"><name>tpath</name></member>
+    <member refid="classpath_1_1_path_1a267b3e61d69b7d9283b8d751eda8eaab" kind="variable"><name>tpath</name></member>
+    <member refid="classpath_1_1_path_1ac029f86e7895332b5d9a4a2948e18f4f" kind="variable"><name>temppath</name></member>
+    <member refid="classpath_1_1_path_1a9c87a4a17044e1bdfc596ebc4f894b60" kind="variable"><name>offpath</name></member>
+    <member refid="classpath_1_1_path_1a4337dff6fcad60083e92642dd6e15dea" kind="variable"><name>thepath</name></member>
+    <member refid="classpath_1_1_path_1a32a005518b591b36c440e28d127b3058" kind="variable"><name>seg</name></member>
+    <member refid="classpath_1_1_path_1a9f41c796727af301dfd7803f47f4414c" kind="variable"><name>segments</name></member>
+    <member refid="classpath_1_1_path_1a5c2420e508fe938cb377392ba67e40c6" kind="variable"><name>cutto</name></member>
+    <member refid="classpath_1_1_path_1af61683e602531ffee156f32343753260" kind="variable"><name>cutfrom</name></member>
+    <member refid="classpath_1_1_path_1ac10e339216b461a2eaa85065dda321f1" kind="variable"><name>diff</name></member>
+    <member refid="classpath_1_1_path_1a27bd4991713fd71e2c6f9b935b733c22" kind="variable"><name>centre</name></member>
+    <member refid="classpath_1_1_path_1a86fc6ad7091063ef4fd5122a134d64a1" kind="variable"><name>p</name></member>
+    <member refid="classpath_1_1_path_1a663e52d70abaa8958fdc38169a2e5eab" kind="variable"><name>angle</name></member>
+    <member refid="classpath_1_1_path_1a537add4e1eef9920422656b6a0759d47" kind="variable"><name>closed</name></member>
+    <member refid="classpath_1_1_path_1a5f76d0fb0a06d73b38f79528ca7c7611" kind="variable"><name>obType</name></member>
+    <member refid="classpath_1_1_path_1a7c28949b03cd0ede340ca5329a845220" kind="variable"><name>trace</name></member>
+    <member refid="classpath_1_1_path_1a5723ebb394e0c22b8426ca7a31c7f345" kind="variable"><name>points</name></member>
+    <member refid="classpath_1_1_path_1abf6d3e08b8c336762ae78a242f69574f" kind="variable"><name>Fsegments</name></member>
+    <member refid="classpath_1_1_path_1ac90e50464e0fcd8afa425e3a706716b9" kind="variable"><name>Bsegments</name></member>
+    <member refid="classpath_1_1_path_1a18e1d6f703cbee9b5df9e326dc4dfe4d" kind="variable"><name>transform</name></member>
+    <member refid="classpath_1_1_path_1a78b59e663ba7afb929d918d74081e6f6" kind="variable"><name>otherargs</name></member>
+    <member refid="classpath_1_1_path_1a2e9e6fbbaa8a13ae3f6d634fda839383" kind="variable"><name>varlist</name></member>
+    <member refid="classpath_1_1_path_1a41f1eb86fefc47e877323cd91313aa9b" kind="variable"><name>start</name></member>
+    <member refid="classpath_1_1_path_1aebbcc8a89fc649f3afa2b18c71186fef" kind="variable"><name>extents</name></member>
+    <member refid="classpath_1_1_path_1a3b09da18da506517817d6b1d85c08aa8" kind="variable"><name>output</name></member>
+    <member refid="classpath_1_1_path_1adde8a7ba1a15327b7010a1cef412cbed" kind="variable"><name>boundingBox</name></member>
+    <member refid="classpath_1_1_path_1a3bdcbf7c20d9a25b4ad138b6578f72f3" kind="variable"><name>centre</name></member>
+    <member refid="classpath_1_1_path_1a2e8dfa39ef829bfc17d794dbe8543eda" kind="variable"><name>polygon</name></member>
+    <member refid="classpath_1_1_path_1a7f7cad7f41927bbf090c9550eb057112" kind="variable"><name>changed</name></member>
+    <member refid="classpath_1_1_path_1a2e9b1478c9ea417ce0d6e852c7095f4f" kind="variable"><name>input_direction</name></member>
+    <member refid="classpath_1_1_path_1afa252e375cf870407532af77b881f43f" kind="variable"><name>parent</name></member>
+    <member refid="classpath_1_1_path_1a36bc8f2dc9601b9c7abd08890190aab0" kind="variable"><name>isreversed</name></member>
+    <member refid="classpath_1_1_path_1a00b1a9227b72fe5bc60bcf7335f1f768" kind="variable"><name>mirrored</name></member>
+    <member refid="classpath_1_1_path_1ab4089a2e9ac6e1b0539f194a572f4960" kind="variable"><name>mode</name></member>
+    <member refid="classpath_1_1_path_1a889e352f02dba833077975ce855276ed" kind="variable"><name>config</name></member>
+    <member refid="classpath_1_1_path_1af9334fbbb2456c2fd075ddf20cc50d60" kind="function"><name>__init__</name></member>
+    <member refid="classpath_1_1_path_1a279457ad33d1f70a5312ed70de3a9c0e" kind="function"><name>init</name></member>
+    <member refid="classpath_1_1_path_1a015b42e4d8c8f9e664445493ec16d156" kind="function"><name>__deepcopy__</name></member>
+    <member refid="classpath_1_1_path_1a2bb1f852efea2b482b1a5adaf8ad971e" kind="function"><name>comment</name></member>
+    <member refid="classpath_1_1_path_1afd3f9ffc67fa33fc9d990a1d70651d02" kind="function"><name>overwrite</name></member>
+    <member refid="classpath_1_1_path_1ac216692856eef8d1f1499c3413ffa2e1" kind="function"><name>rotate</name></member>
+    <member refid="classpath_1_1_path_1aaafbd4effab0e762e4c85db926ba18d2" kind="function"><name>mirror</name></member>
+    <member refid="classpath_1_1_path_1a685528d275c53fc0e12656cc4144f8be" kind="function"><name>translate</name></member>
+    <member refid="classpath_1_1_path_1ac7db720ae721fa0b90c89a8058f66fc2" kind="function"><name>set_cutter</name></member>
+    <member refid="classpath_1_1_path_1a1a7addfede0136894c89f3fcff8ede33" kind="function"><name>set_material</name></member>
+    <member refid="classpath_1_1_path_1a1a0bdea95906d71366482b8b4bc46ac9" kind="function"><name>add_point</name></member>
+    <member refid="classpath_1_1_path_1ae810d46d90ddb2958cdb4435a7b46986" kind="function"><name>reset_points</name></member>
+    <member refid="classpath_1_1_path_1aff0878c706c68a21e9eb885486719782" kind="function"><name>make_point</name></member>
+    <member refid="classpath_1_1_path_1a153ca161905a5d5390297a69490f6ddb" kind="function"><name>prepend_point</name></member>
+    <member refid="classpath_1_1_path_1a4fdf46b330645eac861257b1970a07af" kind="function"><name>add_points</name></member>
+    <member refid="classpath_1_1_path_1ace3137c91261b5018a9425084221108c" kind="function"><name>get_last_vec</name></member>
+    <member refid="classpath_1_1_path_1a52f1714160d03df04339f9a463937215" kind="function"><name>get_first_vec</name></member>
+    <member refid="classpath_1_1_path_1a6ae95ee07ed109482be34ff886290384" kind="function"><name>add_points_intersect</name></member>
+    <member refid="classpath_1_1_path_1a857ff09790f690a955d1514d71e3d6df" kind="function"><name>close_intersect</name></member>
+    <member refid="classpath_1_1_path_1a9be74a59165e2602f0a123ef5002cae3" kind="function"><name>intersect_lines</name></member>
+    <member refid="classpath_1_1_path_1ad750fe3a73f693587414e6f2a13c7e58" kind="function"><name>has_changed</name></member>
+    <member refid="classpath_1_1_path_1a8a0b4d6f4e9c46f09e99c3155c70e79b" kind="function"><name>transform_pointlist</name></member>
+    <member refid="classpath_1_1_path_1a98309c4cbc3cd4268e1fbdc8dbdef2b0" kind="function"><name>make_segments</name></member>
+    <member refid="classpath_1_1_path_1ac464566f5ba70d4f927962eb309bf02a" kind="function"><name>otherDir</name></member>
+    <member refid="classpath_1_1_path_1a49af3a1258dbfdec2bb9b01ff37a5fd2" kind="function"><name>delete_point</name></member>
+    <member refid="classpath_1_1_path_1a93fd34e5c9a41701845c09aa9aaee4e0" kind="function"><name>simplify_points</name></member>
+    <member refid="classpath_1_1_path_1adf67e9d04d691ed77d494ccdf8ee70cd" kind="function"><name>offset_path</name></member>
+    <member refid="classpath_1_1_path_1af6c4dbb4d6d4014fe65a4fcf920f7c9a" kind="function"><name>find_direction</name></member>
+    <member refid="classpath_1_1_path_1a5a198d7743b685530180b6f1cb2a21b6" kind="function"><name>cut_direction</name></member>
+    <member refid="classpath_1_1_path_1a3b54a01d175b9b051d694caa30cf28a0" kind="function"><name>polygonise</name></member>
+    <member refid="classpath_1_1_path_1a17c5f43e1c156a296bd7448defd8c946" kind="function"><name>in_bounding_box</name></member>
+    <member refid="classpath_1_1_path_1af354f0b26b8ba4d21a902dab71c69920" kind="function"><name>intersect_bounding_box</name></member>
+    <member refid="classpath_1_1_path_1a0058f9bd843f63eaeb85ea717d9f2138" kind="function"><name>contains</name></member>
+    <member refid="classpath_1_1_path_1a753dbb17e43cf5e39d5f637d03658cf0" kind="function"><name>contains_point</name></member>
+    <member refid="classpath_1_1_path_1ad82178ddd7330372c472291e73309bee" kind="function"><name>get_side</name></member>
+    <member refid="classpath_1_1_path_1aca1366e16e6617c73438bf83bcd5fa00" kind="function"><name>is_point_in_closed_segment</name></member>
+    <member refid="classpath_1_1_path_1a06b9c5f2189c6ff577a74a1bbab010e3" kind="function"><name>closed_segment_intersect</name></member>
+    <member refid="classpath_1_1_path_1adc90cd9e5cfbed6ba42868adc708222f" kind="function"><name>get_depths</name></member>
+    <member refid="classpath_1_1_path_1a4cade06157627d90509e751e167e1d96" kind="function"><name>get_config</name></member>
+    <member refid="classpath_1_1_path_1a8f8b471ad54b528e2455a64a7a4c890d" kind="function"><name>generate_config</name></member>
+    <member refid="classpath_1_1_path_1a4c13dbe9e125454eca037eacec681056" kind="function"><name>render</name></member>
+    <member refid="classpath_1_1_path_1a29f7e2494e80aa23b6d548dac6781a8a" kind="function"><name>fill_path</name></member>
+    <member refid="classpath_1_1_path_1a23f0bfc7551364a56fa47cdaeb4ca69a" kind="function"><name>self_intersects</name></member>
+    <member refid="classpath_1_1_path_1adc00ccbbee85cdc2ec80c8ed85f40311" kind="function"><name>other_intersects</name></member>
+    <member refid="classpath_1_1_path_1abe1106d4dd28e45cd6cdb084e899d875" kind="function"><name>split_path</name></member>
+    <member refid="classpath_1_1_path_1aa281581a5d6bd9b65b1ad365c44df1ff" kind="function"><name>get_frompos</name></member>
+    <member refid="classpath_1_1_path_1a5c4f41597db3791ad2e3f2a1d2b4e559" kind="function"><name>render_path</name></member>
+    <member refid="classpath_1_1_path_1a0e1797ce469f06b794c78c35f8dc3578" kind="function"><name>render_path_svg</name></member>
+    <member refid="classpath_1_1_path_1abfa95d624558761384779e535352e6b1" kind="function"><name>render_path_gcode</name></member>
+    <member refid="classpath_1_1_path_1ab1571d434b945b6fee19b16c9154ca1f" kind="function"><name>render_path_scr</name></member>
+    <member refid="classpath_1_1_path_1aa28b6ee0117dc6e248125dc8e8d73194" kind="function"><name>get_feedrate</name></member>
+    <member refid="classpath_1_1_path_1aacea846261d61c97b97793ccb01da15c" kind="function"><name>add_feedrates</name></member>
+    <member refid="classpath_1_1_path_1af29c03b2fee696e2e8108b3fb1dee9cf" kind="function"><name>add_colour</name></member>
+    <member refid="classpath_1_1_path_1aff9b72c643f93279713370a65896e4f3" kind="function"><name>get_colour</name></member>
+    <member refid="classpath_1_1_path_1a788ae5638ea4240ebc236cc405c04952" kind="function"><name>output_path</name></member>
+    <member refid="classpath_1_1_path_1a1f80a16e3ca69cb2fbeff18fafa4f389" kind="function"><name>quickdown</name></member>
+    <member refid="classpath_1_1_path_1a27d1699ec110e1f4b987f3df70cdf7a9" kind="function"><name>cutdown</name></member>
+    <member refid="classpath_1_1_path_1a999ed74b0c314e45cd48a6f22b8f2992" kind="function"><name>add_out</name></member>
+    <member refid="classpath_1_1_path_1a3c1eee94a367757ef583fc5a23e9b14f" kind="function"><name>move</name></member>
+    <member refid="classpath_1_1_path_1a4c5e4718eaa88771355d67dad27e2085" kind="function"><name>setside</name></member>
+    <member refid="classpath_1_1_path_1a8019b817dfbe1008d6d62275012404cf" kind="function"><name>cut_filled</name></member>
+    <member refid="classpath_1_1_path_1a8bb4181cb5b7df33af8ded807dcda821" kind="function"><name>runin</name></member>
+    <member refid="classpath_1_1_path_1a3347f14afca8697534ed8585f5ded174" kind="function"><name>runout</name></member>
+  </compound>
+  <compound refid="classpath_1_1_pathgroup" kind="class"><name>path::Pathgroup</name>
+    <member refid="classpath_1_1_pathgroup_1a743d42584e2a6744e2fddd9d251016bb" kind="variable"><name>obType</name></member>
+    <member refid="classpath_1_1_pathgroup_1aebd1cee80f2cbaf72fc59245399eac6e" kind="variable"><name>paths</name></member>
+    <member refid="classpath_1_1_pathgroup_1a4befbf72ed268a57ace2247f44e96d74" kind="variable"><name>trace</name></member>
+    <member refid="classpath_1_1_pathgroup_1a506c871ab4905e489a907c64f936f4e8" kind="variable"><name>varlist</name></member>
+    <member refid="classpath_1_1_pathgroup_1a4ac30744a39d5bcc7fe5d792dcd1b7ce" kind="variable"><name>otherargs</name></member>
+    <member refid="classpath_1_1_pathgroup_1a0772494387ccef124f62a3a1c547f5e8" kind="variable"><name>output</name></member>
+    <member refid="classpath_1_1_pathgroup_1a6ed90a9f0149226914056bfc3630c7b8" kind="variable"><name>parent</name></member>
+    <member refid="classpath_1_1_pathgroup_1a94e9cadebf94ef1945f8ba095631daa7" kind="variable"><name>comments</name></member>
+    <member refid="classpath_1_1_pathgroup_1ab5f832d2785df23e41e7c9121885a002" kind="variable"><name>transform</name></member>
+    <member refid="classpath_1_1_pathgroup_1a6d8fdfd1f6d3e2ac279f9407eb9ccc47" kind="function"><name>__init__</name></member>
+    <member refid="classpath_1_1_pathgroup_1a9024aa309df58b977d4eb93e7e5e53c8" kind="function"><name>init</name></member>
+    <member refid="classpath_1_1_pathgroup_1af3daf2374a35dcf1a96d1f91a96b332d" kind="function"><name>__deepcopy__</name></member>
+    <member refid="classpath_1_1_pathgroup_1ae2d5cd6d4f967daed162e238533bc393" kind="function"><name>get_config</name></member>
+    <member refid="classpath_1_1_pathgroup_1a7c5d24404c5aecfdc2055a11650ccfb6" kind="function"><name>comment</name></member>
+    <member refid="classpath_1_1_pathgroup_1a5014fca4558ad2f5bbce999e68548610" kind="function"><name>get_comments</name></member>
+    <member refid="classpath_1_1_pathgroup_1af55da85d788596bc6566091c0e457b5b" kind="function"><name>add</name></member>
+    <member refid="classpath_1_1_pathgroup_1a3ae2d4ec2bec6339076a190879e18bdd" kind="function"><name>add_path</name></member>
+    <member refid="classpath_1_1_pathgroup_1aab3791493c6fcb02fc647f03dea871a6" kind="function"><name>output_path</name></member>
+    <member refid="classpath_1_1_pathgroup_1a67aa15f33d3db050e065ce7013ae3a3c" kind="function"><name>get_paths</name></member>
+    <member refid="classpath_1_1_pathgroup_1a446ca452a2ea35faef3e51f1e9e4c428" kind="function"><name>render</name></member>
+    <member refid="classpath_1_1_pathgroup_1af9588530d2d8a8f508254a11d71f7951" kind="function"><name>render_path</name></member>
+    <member refid="classpath_1_1_pathgroup_1a3637b74e2a08fc6168667ec8d21bee96" kind="function"><name>render_path_svg</name></member>
+    <member refid="classpath_1_1_pathgroup_1ab0393714499705467f3a2edcf8858cd7" kind="function"><name>render_path_gcode</name></member>
+    <member refid="classpath_1_1_pathgroup_1a08dd8c8ddcbc0f0fa3d19fc8b548aac3" kind="function"><name>rotate</name></member>
+    <member refid="classpath_1_1_pathgroup_1a51342387e37950570ee0f66106d5ee0f" kind="function"><name>translate</name></member>
+  </compound>
+  <compound refid="classpoint_1_1_p_bezier_control" kind="class"><name>point::PBezierControl</name>
+    <member refid="classpoint_1_1_p_bezier_control_1aea32847f414296d7838d90bc621fdcc1" kind="variable"><name>pos</name></member>
+    <member refid="classpoint_1_1_p_bezier_control_1a10ff58a567e6a3fe7585d2b6dffc73c2" kind="variable"><name>point_type</name></member>
+    <member refid="classpoint_1_1_p_bezier_control_1ab8fbb1bca54765469d9c3a4b94ce6331" kind="variable"><name>transform</name></member>
+    <member refid="classpoint_1_1_p_bezier_control_1a2e39a0d46d193e5fdc1024feaf7250e7" kind="variable"><name>obType</name></member>
+    <member refid="classpoint_1_1_p_bezier_control_1afdb51ba474e73dd5eb0a281bb7b39bd8" kind="variable"><name>control</name></member>
+    <member refid="classpoint_1_1_p_bezier_control_1a4010a1feea03258f5a5f977cc28936f2" kind="function"><name>__init__</name></member>
+    <member refid="classpoint_1_1_p_bezier_control_1a7a5460934307c34e9b15274e29e6bb07" kind="function"><name>copy</name></member>
+    <member refid="classpoint_1_1_p_bezier_control_1a3349853e6fcd933337a75ea6441367f0" kind="function"><name>origin</name></member>
+    <member refid="classpoint_1_1_p_bezier_control_1a71571dd210c3101025c49821cc9678ac" kind="function"><name>end</name></member>
+    <member refid="classpoint_1_1_p_bezier_control_1a4f2bc163315c5bf277f793323c611e4b" kind="function"><name>start</name></member>
+    <member refid="classpoint_1_1_p_bezier_control_1ac576521c1d2dadc1b3cce50668f98724" kind="function"><name>offset</name></member>
+    <member refid="classpoint_1_1_p_bezier_control_1a25e4e5c0386899c19f55f37aa143250a" kind="function"><name>makeSegment</name></member>
+  </compound>
+  <compound refid="classpoint_1_1_p_chamfer" kind="class"><name>point::PChamfer</name>
+    <member refid="classpoint_1_1_p_chamfer_1a0f21901746d56629b131bcf0ef83eafc" kind="variable"><name>pos</name></member>
+    <member refid="classpoint_1_1_p_chamfer_1a1989aa77e716d9709f32e8f563aef107" kind="variable"><name>point_type</name></member>
+    <member refid="classpoint_1_1_p_chamfer_1ad4727d834ae92c5056267560f9a10819" kind="variable"><name>radius</name></member>
+    <member refid="classpoint_1_1_p_chamfer_1a2bd9755b3bc6ea3f3742ae0191398d33" kind="variable"><name>chamfer</name></member>
+    <member refid="classpoint_1_1_p_chamfer_1a6b0a4ae8c28eae281dfe12fc9cb824da" kind="variable"><name>direction</name></member>
+    <member refid="classpoint_1_1_p_chamfer_1a7b0062591fb3f786a5a95cd9296645d1" kind="variable"><name>transform</name></member>
+    <member refid="classpoint_1_1_p_chamfer_1aa9b5fa1686916ffc7c13e5db3fb47474" kind="variable"><name>obType</name></member>
+    <member refid="classpoint_1_1_p_chamfer_1a4bba2fa2dc6f83559b03789ca8603219" kind="function"><name>__init__</name></member>
+    <member refid="classpoint_1_1_p_chamfer_1abcf4734fe9cae38b609ad10da6858962" kind="function"><name>copy</name></member>
+    <member refid="classpoint_1_1_p_chamfer_1a0a59e088c07825f5a93c4a6d3b712be9" kind="function"><name>compile</name></member>
+    <member refid="classpoint_1_1_p_chamfer_1a71c9d9ad7a2c417184332abc716abb26" kind="function"><name>origin</name></member>
+    <member refid="classpoint_1_1_p_chamfer_1a9c47040298c0678743f359aff7222c17" kind="function"><name>end</name></member>
+    <member refid="classpoint_1_1_p_chamfer_1a9c47040298c0678743f359aff7222c17" kind="function"><name>end</name></member>
+    <member refid="classpoint_1_1_p_chamfer_1a19bfff02870c728f18607f0c29272bf7" kind="function"><name>offset</name></member>
+    <member refid="classpoint_1_1_p_chamfer_1a52d1f8529ce5dd22972de1d765933712" kind="function"><name>makeSegment</name></member>
+  </compound>
+  <compound refid="classpoint_1_1_p_circle" kind="class"><name>point::PCircle</name>
+    <member refid="classpoint_1_1_p_circle_1afd3ca22d6db40a41ad58972ad9e51aae" kind="variable"><name>pos</name></member>
+    <member refid="classpoint_1_1_p_circle_1ae3538c963da5a83e8b24d7fb064ffa5a" kind="variable"><name>radius</name></member>
+    <member refid="classpoint_1_1_p_circle_1a5659534b267f87d91e369f741830fdf5" kind="variable"><name>transform</name></member>
+    <member refid="classpoint_1_1_p_circle_1a2f06a0a2f070da738547ad6bbb2355be" kind="variable"><name>point_type</name></member>
+    <member refid="classpoint_1_1_p_circle_1a5b8998606102289e3d4fc165256fe127" kind="variable"><name>obType</name></member>
+    <member refid="classpoint_1_1_p_circle_1a2f347dfa1df7d18042d2891d4bc98118" kind="variable"><name>direction</name></member>
+    <member refid="classpoint_1_1_p_circle_1a849979339b44346f6d30eb4d7116a529" kind="function"><name>__init__</name></member>
+    <member refid="classpoint_1_1_p_circle_1a590ec8df59749fbeb48eef342699301f" kind="function"><name>copy</name></member>
+    <member refid="classpoint_1_1_p_circle_1a964f3e531f3bc96e02cc7c4ef4725e97" kind="function"><name>makeSegment</name></member>
+    <member refid="classpoint_1_1_p_circle_1a7aea6d37bce51f0fe31165d5680106dc" kind="function"><name>offset</name></member>
+  </compound>
+  <compound refid="classpoint_1_1_p_clear" kind="class"><name>point::PClear</name>
+    <member refid="classpoint_1_1_p_clear_1a6051eea4188c6f2acb1496e95bdc7f06" kind="variable"><name>pos</name></member>
+    <member refid="classpoint_1_1_p_clear_1a2a692cd131203f0018a81476bba88e23" kind="variable"><name>point_type</name></member>
+    <member refid="classpoint_1_1_p_clear_1ae84c174d23d054f5109d278998895803" kind="variable"><name>transform</name></member>
+    <member refid="classpoint_1_1_p_clear_1af6452e3be04889160c538093e5eb53ff" kind="variable"><name>obType</name></member>
+    <member refid="classpoint_1_1_p_clear_1acbccd5e8a9bf836fdfdefe1b69e36acc" kind="function"><name>__init__</name></member>
+    <member refid="classpoint_1_1_p_clear_1ae4949d8b603ad7e93170e3c278dd20e5" kind="function"><name>copy</name></member>
+    <member refid="classpoint_1_1_p_clear_1a5283af1ced19d7cd6a03535e18bfbc0b" kind="function"><name>makeSegment</name></member>
+  </compound>
+  <compound refid="classpoint_1_1_p_double_clear" kind="class"><name>point::PDoubleClear</name>
+    <member refid="classpoint_1_1_p_double_clear_1ad349fbcbf216675a5c33ad59eda87fc9" kind="variable"><name>pos</name></member>
+    <member refid="classpoint_1_1_p_double_clear_1af5eeea4a2fbc7d0120ea721984a3feae" kind="variable"><name>point_type</name></member>
+    <member refid="classpoint_1_1_p_double_clear_1a59e98444f472f8413c8d0cf8531c2530" kind="variable"><name>transform</name></member>
+    <member refid="classpoint_1_1_p_double_clear_1a5541242e024d4ff0b279d79bd6f6dce6" kind="variable"><name>obType</name></member>
+    <member refid="classpoint_1_1_p_double_clear_1a1ae945501703f49143c9c9aebe3596d7" kind="function"><name>__init__</name></member>
+    <member refid="classpoint_1_1_p_double_clear_1a5337110414ba0c0d88bf950fbd9f1571" kind="function"><name>copy</name></member>
+    <member refid="classpoint_1_1_p_double_clear_1a53a7b2f8c9f5c8104bb4c58c6a767428" kind="function"><name>makeSegment</name></member>
+  </compound>
+  <compound refid="classparts_1_1_pi" kind="class"><name>parts::Pi</name>
+    <member refid="classparts_1_1_pi_1a75fe736b8254a8dd8202885fb6250cf0" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_pi_barn" kind="class"><name>parts::PiBarn</name>
+    <member refid="classparts_1_1_pi_barn_1ae7facd5e416ec84a6b5943bdfcb348d6" kind="variable"><name>name</name></member>
+    <member refid="classparts_1_1_pi_barn_1a483a5583efe3f94acf693803a5282155" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classboxes_1_1_pi_cam_turret" kind="class"><name>boxes::PiCamTurret</name>
+    <member refid="classboxes_1_1_pi_cam_turret_1a3c55835e83924ed5de65cc953facca8d" kind="variable"><name>camera_face</name></member>
+    <member refid="classboxes_1_1_pi_cam_turret_1af88b8225bcf4705f0b77931fce6e3bac" kind="variable"><name>camera_window</name></member>
+    <member refid="classboxes_1_1_pi_cam_turret_1a168d0c74aaa88822277e76c56dbaf3b4" kind="variable"><name>camera_holder</name></member>
+    <member refid="classboxes_1_1_pi_cam_turret_1aed88f57fc48ecacafdb7807ee68cc780" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classpoint_1_1_p_incurve" kind="class"><name>point::PIncurve</name>
+    <member refid="classpoint_1_1_p_incurve_1aa300bcf39a6e3b82a724c3ea532dca12" kind="variable"><name>pos</name></member>
+    <member refid="classpoint_1_1_p_incurve_1a6dcb80908b7443c2c9b470d6e5a98ed9" kind="variable"><name>point_type</name></member>
+    <member refid="classpoint_1_1_p_incurve_1aa27d5e9be14491a217d09e1296e202bb" kind="variable"><name>radius</name></member>
+    <member refid="classpoint_1_1_p_incurve_1a3e5b144147cb1c58419c74c123215c86" kind="variable"><name>direction</name></member>
+    <member refid="classpoint_1_1_p_incurve_1afdbd3540560247be0149ed28085af94e" kind="variable"><name>transform</name></member>
+    <member refid="classpoint_1_1_p_incurve_1a698319edd77b838033b96507ca3c01dc" kind="variable"><name>obType</name></member>
+    <member refid="classpoint_1_1_p_incurve_1a3f4ee2a8024e5a17d2c7ddb0054effd9" kind="function"><name>__init__</name></member>
+    <member refid="classpoint_1_1_p_incurve_1aa0d973a8467ef7e32947bd22d68fa74b" kind="function"><name>copy</name></member>
+    <member refid="classpoint_1_1_p_incurve_1aafd97b26697334873f8af1afbfa1aa38" kind="function"><name>origin</name></member>
+    <member refid="classpoint_1_1_p_incurve_1a2c5d5baca83b512f63346c4c6ae33d49" kind="function"><name>end</name></member>
+    <member refid="classpoint_1_1_p_incurve_1a4dac0e1d4fcdd8e5520d216c16919ce4" kind="function"><name>start</name></member>
+    <member refid="classpoint_1_1_p_incurve_1acb6e9840cd462c68055031eac62405a5" kind="function"><name>offset</name></member>
+    <member refid="classpoint_1_1_p_incurve_1ac41e1b37c7aad7038e34e29ed2a9c554" kind="function"><name>makeSegment</name></member>
+  </compound>
+  <compound refid="classboxes_1_1_plain_box" kind="class"><name>boxes::PlainBox</name>
+    <member refid="classboxes_1_1_plain_box_1a9402a6371c8a944c3d0960e9141d00b7" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classpath_1_1_plane" kind="class"><name>path::Plane</name>
+    <member refid="classpath_1_1_plane_1a6f7241b4f23c72b0608ca6b713d5d281" kind="variable"><name>layers</name></member>
+    <member refid="classpath_1_1_plane_1a07fffbf7ef837b7f8a0d9e2a69161e1b" kind="variable"><name>origin</name></member>
+    <member refid="classpath_1_1_plane_1aa10bd618cd80d3ee1fe348a94b173736" kind="variable"><name>plane</name></member>
+    <member refid="classpath_1_1_plane_1a57144197eff51c6e23a38a1d28541f8f" kind="variable"><name>parts</name></member>
+    <member refid="classpath_1_1_plane_1a9c3565a0c72c585ffd3d9305d9e59b64" kind="variable"><name>config</name></member>
+    <member refid="classpath_1_1_plane_1acf3722b8287fdbdca683bd82ef536201" kind="variable"><name>paths</name></member>
+    <member refid="classpath_1_1_plane_1a52d1301106910689f429002086854c0b" kind="variable"><name>obType</name></member>
+    <member refid="classpath_1_1_plane_1a83242faa5f70bd6aa867c977d4f4a6c1" kind="variable"><name>name</name></member>
+    <member refid="classpath_1_1_plane_1a2fa8b34d6558289254bb548239672db0" kind="variable"><name>transform</name></member>
+    <member refid="classpath_1_1_plane_1ae45a5caa84aa06a12b132b98a4bf7b5d" kind="variable"><name>parent</name></member>
+    <member refid="classpath_1_1_plane_1a17bfb0110c1141d362eb715129058fa4" kind="variable"><name>varlist</name></member>
+    <member refid="classpath_1_1_plane_1a70c65dfa7270b5c4cbc1d15c513df3d8" kind="variable"><name>out</name></member>
+    <member refid="classpath_1_1_plane_1ab7c505d0f7c91a505f8cc786504f1cc2" kind="variable"><name>isCopy</name></member>
+    <member refid="classpath_1_1_plane_1a71f825ab207c8a45abb6c6e25551b949" kind="variable"><name>copied</name></member>
+    <member refid="classpath_1_1_plane_1a67fb6a225b9da98f1074711105499db9" kind="variable"><name>copies</name></member>
+    <member refid="classpath_1_1_plane_1aa499e661977ffef2655b5c844eba30e3" kind="variable"><name>bom</name></member>
+    <member refid="classpath_1_1_plane_1ab3693d278c25eb3183f1e87b4d478ca9" kind="variable"><name>number</name></member>
+    <member refid="classpath_1_1_plane_1aeb4647226d990dcc53bd09a27dad388a" kind="variable"><name>ignore_border</name></member>
+    <member refid="classpath_1_1_plane_1aa0494eb77e5605add3fd16367d9cc91d" kind="variable"><name>callmode</name></member>
+    <member refid="classpath_1_1_plane_1ac23023bbc6c9f6a3726c40466a0e0e71" kind="variable"><name>modeconfig</name></member>
+    <member refid="classpath_1_1_plane_1acd9711469d21f4785a72a27794f625cf" kind="variable"><name>mode</name></member>
+    <member refid="classpath_1_1_plane_1ae77d75fa4cfaf2141bc464e079e64ef8" kind="variable"><name>lay_out</name></member>
+    <member refid="classpath_1_1_plane_1a8c7b599791d3c3452ee585a386631e26" kind="function"><name>__init__</name></member>
+    <member refid="classpath_1_1_plane_1adf18d22bc49d69c89b576a79fdba4db8" kind="function"><name>init</name></member>
+    <member refid="classpath_1_1_plane_1addfb772498362a6c1fe70872f8a8eca8" kind="function"><name>get_config</name></member>
+    <member refid="classpath_1_1_plane_1ae408776ac58181141026a5f5ca581668" kind="function"><name>add_part_layer</name></member>
+    <member refid="classpath_1_1_plane_1a1c4c4deb3480dcb9fc421764e63dc253" kind="function"><name>add_layer</name></member>
+    <member refid="classpath_1_1_plane_1a5490de0bcdc4abcbb6d11824bd4dcfe1" kind="function"><name>render_layer</name></member>
+    <member refid="classpath_1_1_plane_1a8caaa3344bb41858e2b9fc64d58e0879" kind="function"><name>render_all</name></member>
+    <member refid="classpath_1_1_plane_1a292f4f9b0135fec614b9310213977ccb" kind="function"><name>list_all</name></member>
+    <member refid="classpath_1_1_plane_1a8d5bd7c7a44335da1c32db64110734d0" kind="function"><name>get_layer_config</name></member>
+    <member refid="classpath_1_1_plane_1a2405b1700e1eaf4dcf4b992c207bfb2a" kind="function"><name>render_part</name></member>
+    <member refid="classpath_1_1_plane_1a1716fc0cf4fb6f62ec5ea76d59b1ea67" kind="function"><name>writeGcodeFile</name></member>
+    <member refid="classpath_1_1_plane_1a9de8b4b12f301c25e9919ab0cc488df9" kind="function"><name>offset_gcode</name></member>
+    <member refid="classpath_1_1_plane_1af067e53069dc33b30e194aaa04e28235" kind="function"><name>sanitise_filename</name></member>
+  </compound>
+  <compound refid="classparts_1_1_plate" kind="class"><name>parts::Plate</name>
+    <member refid="classparts_1_1_plate_1a23ed4bbfbfe13a065a06ba86521525a2" kind="variable"><name>name</name></member>
+    <member refid="classparts_1_1_plate_1a7a97307757824cf574eb989e06b0eeb4" kind="variable"><name>transform</name></member>
+    <member refid="classparts_1_1_plate_1a2f319734232a2fc2a61e4fc3c23e973a" kind="variable"><name>layer</name></member>
+    <member refid="classparts_1_1_plate_1a17ed7b9a3e147b3403aaae271692076c" kind="function"><name>__init__</name></member>
+    <member refid="classparts_1_1_plate_1a5d76345ac0bf7bf9e27cdfa501292a62" kind="function"><name>initPlate</name></member>
+  </compound>
+  <compound refid="classpoint_1_1_point" kind="class"><name>point::Point</name>
+    <member refid="classpoint_1_1_point_1a67c83c243db06689a5b8bb77652f83f1" kind="variable"><name>nextpoint</name></member>
+    <member refid="classpoint_1_1_point_1ac0517f0911e12c1e030776c42b0ae609" kind="variable"><name>lastpoint</name></member>
+    <member refid="classpoint_1_1_point_1a41b431a9eb8ae508259e307d9c918a51" kind="variable"><name>cp1</name></member>
+    <member refid="classpoint_1_1_point_1aef9edf3d753bb009bb0544718c790746" kind="variable"><name>cp2</name></member>
+    <member refid="classpoint_1_1_point_1a7bb007c1c033b4b1410aa8a0443e8098" kind="variable"><name>radius</name></member>
+    <member refid="classpoint_1_1_point_1a999ffad9951028b7456cea0afb407e48" kind="variable"><name>reverse</name></member>
+    <member refid="classpoint_1_1_point_1aac7b02546ab8cd6e3131bedcce1c2025" kind="variable"><name>dot</name></member>
+    <member refid="classpoint_1_1_point_1ad3a54a3dde6c2f12289d30edcbc56f9c" kind="variable"><name>angle</name></member>
+    <member refid="classpoint_1_1_point_1afca575ab84d131ba560214332b039cdc" kind="variable"><name>angle0</name></member>
+    <member refid="classpoint_1_1_point_1a4f2882f4c1d41b8ed0dcc040a56df10e" kind="function"><name>__init__</name></member>
+    <member refid="classpoint_1_1_point_1aa4853372115d4266bed361f742de339e" kind="function"><name>init</name></member>
+    <member refid="classpoint_1_1_point_1aff32fe36a2cb7daed2d6b836e0a104c0" kind="function"><name>compile</name></member>
+    <member refid="classpoint_1_1_point_1a476d116396ab916e084cfa5951e270d6" kind="function"><name>next</name></member>
+    <member refid="classpoint_1_1_point_1a85952d3d8caf273ab39cf871157d0c2f" kind="function"><name>last</name></member>
+    <member refid="classpoint_1_1_point_1a3beb8e8b3f86d4a72b1e8216b274740a" kind="function"><name>generateSegment</name></member>
+    <member refid="classpoint_1_1_point_1a11f285bd3b03aa083a25ec1861e3fa16" kind="function"><name>setangle</name></member>
+    <member refid="classpoint_1_1_point_1a4a3ad4c500effc3b0a67868957108fb0" kind="function"><name>corner_side</name></member>
+    <member refid="classpoint_1_1_point_1a77d736f755797d41a2fd87f92b17e015" kind="function"><name>offset_move_point</name></member>
+    <member refid="classpoint_1_1_point_1a27c3c9e7cafb48996d77e65cfe04df05" kind="function"><name>lastorigin</name></member>
+  </compound>
+  <compound refid="classbezier_1_1_point" kind="class"><name>bezier::Point</name>
+    <member refid="classbezier_1_1_point_1a7aae96210ba0b027585354da7a89ed70" kind="variable"><name>normal</name></member>
+    <member refid="classbezier_1_1_point_1a1fafe43db62786b6440ed7da2f65c94c" kind="variable"><name>x</name></member>
+    <member refid="classbezier_1_1_point_1afef026c2349e08af94ac206129e0b1bf" kind="variable"><name>y</name></member>
+    <member refid="classbezier_1_1_point_1a7646bb0cfbce0ffe70b3a91c8cfbac16" kind="variable"><name>d</name></member>
+    <member refid="classbezier_1_1_point_1a68259b21ff696fd50080620830eb50e4" kind="function"><name>__init__</name></member>
+    <member refid="classbezier_1_1_point_1a274eed2d595fbf1e04441634c3f32f18" kind="function"><name>scale</name></member>
+    <member refid="classbezier_1_1_point_1affa05deaf327ba3f06ad22549f58aa62" kind="function"><name>normalize</name></member>
+    <member refid="classbezier_1_1_point_1a1e926219773aa0684a6329c8aaca6903" kind="function"><name>moveTo</name></member>
+    <member refid="classbezier_1_1_point_1aa2ac4c3811bf9f6ada0ad9ae37d0b49c" kind="function"><name>moveBy</name></member>
+    <member refid="classbezier_1_1_point_1ab80043486d5208080b886508bc7d6a45" kind="function"><name>rotateOver</name></member>
+    <member refid="classbezier_1_1_point_1a69e0e3843fed67dc4def6003fc47943f" kind="function"><name>reflect</name></member>
+    <member refid="classbezier_1_1_point_1ac46a979a6b714559a066096cb10f23e4" kind="function"><name>over</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_polygon" kind="class"><name>shapes::Polygon</name>
+    <member refid="classshapes_1_1_polygon_1a941c41ed1047fbba7fd5fbffa67683b4" kind="variable"><name>closed</name></member>
+    <member refid="classshapes_1_1_polygon_1a5fbd0ce5a674abd53c73a8bd03d42a97" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_post" kind="class"><name>parts::Post</name>
+    <member refid="classparts_1_1_post_1a6deb62aba0a53131b444a628d053c2ff" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classpoint_1_1_p_outcurve" kind="class"><name>point::POutcurve</name>
+    <member refid="classpoint_1_1_p_outcurve_1a272d155a477a41ad7a917162447aa9cf" kind="variable"><name>pos</name></member>
+    <member refid="classpoint_1_1_p_outcurve_1a43b2f03d671dad564b6e2e44af19ecd4" kind="variable"><name>point_type</name></member>
+    <member refid="classpoint_1_1_p_outcurve_1ab3da10b0f1738c4ba0ed1e8000bd1c13" kind="variable"><name>radius</name></member>
+    <member refid="classpoint_1_1_p_outcurve_1aaf8b3c62f842baf778b96ec5282498a3" kind="variable"><name>direction</name></member>
+    <member refid="classpoint_1_1_p_outcurve_1af0f9106c1983ccfd7d513d9475d83e76" kind="variable"><name>transform</name></member>
+    <member refid="classpoint_1_1_p_outcurve_1a1055fb24d6bde1dfa85f69655f2371b3" kind="variable"><name>obType</name></member>
+    <member refid="classpoint_1_1_p_outcurve_1a58bf27c16d951f13b6f3d5405319983e" kind="function"><name>__init__</name></member>
+    <member refid="classpoint_1_1_p_outcurve_1a90ee64579962293144941631d9367a42" kind="function"><name>copy</name></member>
+    <member refid="classpoint_1_1_p_outcurve_1a50530cf0ac62c3981d546f449ead9416" kind="function"><name>origin</name></member>
+    <member refid="classpoint_1_1_p_outcurve_1af7ac3d99aa94780f5de641b505ba0c76" kind="function"><name>end</name></member>
+    <member refid="classpoint_1_1_p_outcurve_1aa211f73705ba4dec6fa352e6ac438d8d" kind="function"><name>start</name></member>
+    <member refid="classpoint_1_1_p_outcurve_1affa6746bf64924da6a97a91921d9bec2" kind="function"><name>offset</name></member>
+    <member refid="classpoint_1_1_p_outcurve_1aad0382d8d7abb33b86928fc55877545d" kind="function"><name>makeSegment</name></member>
+  </compound>
+  <compound refid="classpath_1_1_project" kind="class"><name>path::Project</name>
+    <member refid="classpath_1_1_project_1ad4153004a49fdf3a613b19ca9e90aa41" kind="variable"><name>name</name></member>
+    <member refid="classpath_1_1_project_1a71f8617041c99576583bab6d34d3e121" kind="variable"><name>planes</name></member>
+    <member refid="classpath_1_1_project_1acddd4b828a7981218dbf6870cc61fdf8" kind="function"><name>__init__</name></member>
+    <member refid="classpath_1_1_project_1a131978e04cf42f0f476d2eea260b7ead" kind="function"><name>add_plane</name></member>
+  </compound>
+  <compound refid="classpoint_1_1_p_sharp" kind="class"><name>point::PSharp</name>
+    <member refid="classpoint_1_1_p_sharp_1ac1fa66d2deea6b3f0154f9ba70980eb4" kind="variable"><name>a</name></member>
+    <member refid="classpoint_1_1_p_sharp_1ab005edba0b9fe808530c844abe8b66f9" kind="variable"><name>a</name></member>
+    <member refid="classpoint_1_1_p_sharp_1a42fca1df07d32aee57457b554d9cff1c" kind="variable"><name>t</name></member>
+    <member refid="classpoint_1_1_p_sharp_1a9787083a24ff63bac9811134b2745ac1" kind="variable"><name>pos</name></member>
+    <member refid="classpoint_1_1_p_sharp_1a48bcd12ae60304ad485a57aa30508055" kind="variable"><name>point_type</name></member>
+    <member refid="classpoint_1_1_p_sharp_1a7c2aab94ed972ccba83e761b4e2e8798" kind="variable"><name>radius</name></member>
+    <member refid="classpoint_1_1_p_sharp_1aa5b16dd2ff9364241eb57b1eef00a4bf" kind="variable"><name>cp1</name></member>
+    <member refid="classpoint_1_1_p_sharp_1aa8410ba181e860207e23e7f65808dc5a" kind="variable"><name>cp2</name></member>
+    <member refid="classpoint_1_1_p_sharp_1a80d49050d431b2469e4052e0e85c05e7" kind="variable"><name>direction</name></member>
+    <member refid="classpoint_1_1_p_sharp_1a0cdbf01fff6be3360181828a5e3a5dd0" kind="variable"><name>transform</name></member>
+    <member refid="classpoint_1_1_p_sharp_1adbdd89730398e84df13fe635506ef1f1" kind="variable"><name>obType</name></member>
+    <member refid="classpoint_1_1_p_sharp_1af1afffea36431e34b401c9309cc9ecdd" kind="function"><name>__init__</name></member>
+    <member refid="classpoint_1_1_p_sharp_1afa05c02a7dd62f7a96c30de45a25a357" kind="function"><name>copy</name></member>
+    <member refid="classpoint_1_1_p_sharp_1a336940f711b57c174563dd7e98ea3be3" kind="function"><name>origin</name></member>
+    <member refid="classpoint_1_1_p_sharp_1abd1c47a814f20256e037bc5169b2ac74" kind="function"><name>end</name></member>
+    <member refid="classpoint_1_1_p_sharp_1a31d9c83669e3e3f40fc139dd2652638e" kind="function"><name>start</name></member>
+    <member refid="classpoint_1_1_p_sharp_1a83811b734c116321893fa08cc8caaf68" kind="function"><name>offset</name></member>
+    <member refid="classpoint_1_1_p_sharp_1a73d75efa18bb8f352a9dbd02efc59c9a" kind="function"><name>offsetSharp</name></member>
+    <member refid="classpoint_1_1_p_sharp_1a8045adba8b185ad525d6d35aa2fee744" kind="function"><name>makeSegment</name></member>
+  </compound>
+  <compound refid="classsegments_1_1_quad" kind="class"><name>segments::Quad</name>
+    <member refid="classsegments_1_1_quad_1a4bcbb4fe3a385dcfeaa6c4ed9d1bc733" kind="variable"><name>seg_type</name></member>
+    <member refid="classsegments_1_1_quad_1ad166ba20f4e5779d9ad8ec66258799b2" kind="variable"><name>cutto</name></member>
+    <member refid="classsegments_1_1_quad_1a8ffff4e377db1600730a73f8ef4c9fe1" kind="variable"><name>cutfrom</name></member>
+    <member refid="classsegments_1_1_quad_1aa240fcc6e8f664bdf01efe2e507b27be" kind="variable"><name>cp</name></member>
+    <member refid="classsegments_1_1_quad_1a3ed922539b916867e3248c11553f1373" kind="function"><name>__init__</name></member>
+    <member refid="classsegments_1_1_quad_1ab93f4537c7d8a1757b1629ba0fbae831" kind="function"><name>gcode</name></member>
+    <member refid="classsegments_1_1_quad_1a556ff70ecf9d172781370a234e0ebcad" kind="function"><name>svg</name></member>
+    <member refid="classsegments_1_1_quad_1ac06297d8460988688d9d6f094dc1ec2e" kind="function"><name>polygon</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_rect" kind="class"><name>shapes::Rect</name>
+    <member refid="classshapes_1_1_rect_1ab3fc607561cc0d198df5d121219a0f7c" kind="variable"><name>closed</name></member>
+    <member refid="classshapes_1_1_rect_1a2d448761423a1a363090ca0128019770" kind="function"><name>__init__</name></member>
+    <member refid="classshapes_1_1_rect_1a6b5071a2692041a7e405a8d189204f95" kind="function"><name>cut_square</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_rect_speaker_grill" kind="class"><name>shapes::RectSpeakerGrill</name>
+    <member refid="classshapes_1_1_rect_speaker_grill_1af55060a9b14a8c33b6586c97b0fb27f7" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classlayout_1_1_render_part" kind="class"><name>layout::RenderPart</name>
+    <member refid="classlayout_1_1_render_part_1a75e05e413ecaa4a9aeb8d0c5751523c6" kind="variable"><name>offset</name></member>
+    <member refid="classlayout_1_1_render_part_1a7854669838d9409538a941905861168b" kind="variable"><name>rotate</name></member>
+    <member refid="classlayout_1_1_render_part_1a477b02f95169bd34d027da38f9a45b9a" kind="variable"><name>borders</name></member>
+    <member refid="classlayout_1_1_render_part_1a6f1175809def8c95002868cdac53f687" kind="variable"><name>resolution</name></member>
+    <member refid="classlayout_1_1_render_part_1a5687c60cdcc33e242f4ec48dceca7921" kind="function"><name>__init__</name></member>
+    <member refid="classlayout_1_1_render_part_1a13d671d839fd290c5ac7a82e8d2f1500" kind="function"><name>set_part</name></member>
+  </compound>
+  <compound refid="classcamcam__layout_1_1_render_part" kind="class"><name>camcam_layout::RenderPart</name>
+    <member refid="classcamcam__layout_1_1_render_part_1a43ca2084bc146b0183c197b89892e11d" kind="variable"><name>offset</name></member>
+    <member refid="classcamcam__layout_1_1_render_part_1a1903e2c57970fa796187eb102da72f6d" kind="variable"><name>rotate</name></member>
+    <member refid="classcamcam__layout_1_1_render_part_1af18f485b6204ecff970d6717e9e31269" kind="variable"><name>borders</name></member>
+    <member refid="classcamcam__layout_1_1_render_part_1a57c3a35bc7e737e8302024812676496f" kind="variable"><name>resolution</name></member>
+    <member refid="classcamcam__layout_1_1_render_part_1a8d8ac25bb54002d4b24f2381519243f6" kind="function"><name>__init__</name></member>
+    <member refid="classcamcam__layout_1_1_render_part_1a8d908231daef8cc7f76a4b1cf660f24c" kind="function"><name>set_part</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_repeat_line" kind="class"><name>shapes::RepeatLine</name>
+    <member refid="classshapes_1_1_repeat_line_1a6938094f2559b6c25f7288b42e6cf719" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_repeat_spaced_grid" kind="class"><name>shapes::RepeatSpacedGrid</name>
+    <member refid="classshapes_1_1_repeat_spaced_grid_1a6ff771d059e6f77ee4d68218451cf1a6" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_r_f_i_d__holder" kind="class"><name>parts::RFID_holder</name>
+    <member refid="classparts_1_1_r_f_i_d__holder_1a49212514e6af1f07c8774e677fab84ba" kind="variable"><name>name</name></member>
+    <member refid="classparts_1_1_r_f_i_d__holder_1aaf5a99086a6b558117e5d126290b51ed" kind="variable"><name>layer</name></member>
+    <member refid="classparts_1_1_r_f_i_d__holder_1a61953c80b5a141da84e9c916a3a67947" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_rounded_arc" kind="class"><name>shapes::RoundedArc</name>
+    <member refid="classshapes_1_1_rounded_arc_1a3e90c90536ac5110e30d9e29cb004696" kind="variable"><name>closed</name></member>
+    <member refid="classshapes_1_1_rounded_arc_1a6d1c0933a068ba100ed73f4c0011afc0" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classboxes_1_1_rounded_box" kind="class"><name>boxes::RoundedBox</name>
+    <member refid="classboxes_1_1_rounded_box_1abbd3848c34516c2a8c1ad080c5643a1e" kind="variable"><name>end</name></member>
+    <member refid="classboxes_1_1_rounded_box_1a0bfab353f08c5f127b2811db4a8eb8ac" kind="variable"><name>end2</name></member>
+    <member refid="classboxes_1_1_rounded_box_1a1e345027fcdf3930a1e4c6f9c5bfaccf" kind="variable"><name>side</name></member>
+    <member refid="classboxes_1_1_rounded_box_1a314bf4364532c8f957a5c7c7979fef58" kind="variable"><name>bottom</name></member>
+    <member refid="classboxes_1_1_rounded_box_1a820ee46cf38c83dc8c74a0e1679bb48f" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classboxes_1_1_rounded_box_end" kind="class"><name>boxes::RoundedBoxEnd</name>
+    <member refid="classboxes_1_1_rounded_box_end_1a45d2a6098b926041ff90261c3a91812d" kind="variable"><name>name</name></member>
+    <member refid="classboxes_1_1_rounded_box_end_1a7c010d7f52ed873fb0cac5a8d9d66ef9" kind="variable"><name>layer</name></member>
+    <member refid="classboxes_1_1_rounded_box_end_1a765ea9e1db8122190d9c94df02b7a341" kind="variable"><name>centrepos</name></member>
+    <member refid="classboxes_1_1_rounded_box_end_1a59c1d8804a33c525d582be8c4667f7ce" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_rounded_rect" kind="class"><name>shapes::RoundedRect</name>
+    <member refid="classshapes_1_1_rounded_rect_1a55fa42750fb532b7aeb5458171f755f0" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_round_plate" kind="class"><name>parts::RoundPlate</name>
+    <member refid="classparts_1_1_round_plate_1a7eab01531137f9b61b27cf80b8c6047e" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_round_shaft_support" kind="class"><name>parts::RoundShaftSupport</name>
+    <member refid="classparts_1_1_round_shaft_support_1ace8862690471a8674b3ea4765a731865" kind="variable"><name>dims</name></member>
+    <member refid="classparts_1_1_round_shaft_support_1a4b144de6ba8a315f05e49d7653978eef" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_round_speaker_grill" kind="class"><name>shapes::RoundSpeakerGrill</name>
+    <member refid="classshapes_1_1_round_speaker_grill_1a33ef093a90d026edc154f101e99d3458" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_screen_holder_fixed" kind="class"><name>parts::ScreenHolderFixed</name>
+    <member refid="classparts_1_1_screen_holder_fixed_1aed5720668f62afd26a28fc8151b14964" kind="variable"><name>back</name></member>
+    <member refid="classparts_1_1_screen_holder_fixed_1ae30140c4d28a98d4e84ee0e82929d89c" kind="variable"><name>front</name></member>
+    <member refid="classparts_1_1_screen_holder_fixed_1a662619b6a30c976e63cdfdbb75652190" kind="variable"><name>mid</name></member>
+    <member refid="classparts_1_1_screen_holder_fixed_1a7b501ea434983af081eeb315d4917280" kind="variable"><name>window</name></member>
+    <member refid="classparts_1_1_screen_holder_fixed_1a0cf4859ae01ec067b964ffc963ecd2bc" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_screen_holder_removable" kind="class"><name>parts::ScreenHolderRemovable</name>
+    <member refid="classparts_1_1_screen_holder_removable_1a93d9e972d917237b632b3e1486a26753" kind="variable"><name>back</name></member>
+    <member refid="classparts_1_1_screen_holder_removable_1ab9353d8a8f50a4befec54255b14e3701" kind="variable"><name>front</name></member>
+    <member refid="classparts_1_1_screen_holder_removable_1ad35d5ab861b1c9235ce85f9983df2fe5" kind="variable"><name>front_top</name></member>
+    <member refid="classparts_1_1_screen_holder_removable_1af1e5f3e16411c642f41ea631f697a425" kind="variable"><name>mid</name></member>
+    <member refid="classparts_1_1_screen_holder_removable_1abda61ab8d911e57fc44cab7154c18f34" kind="variable"><name>mid_inner</name></member>
+    <member refid="classparts_1_1_screen_holder_removable_1a34094a846f352a3e3f6878cae03ab647" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_screw" kind="class"><name>shapes::Screw</name>
+    <member refid="classshapes_1_1_screw_1a4a8040cf2f672307daa183b5f636b7a8" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_screw_b_o_m" kind="class"><name>parts::ScrewBOM</name>
+    <member refid="classparts_1_1_screw_b_o_m_1a6fdeb65838dbe1de849e62a88a9461a5" kind="variable"><name>name</name></member>
+    <member refid="classparts_1_1_screw_b_o_m_1a28bae5532d3be075028dc5a687ac6fe5" kind="variable"><name>number</name></member>
+    <member refid="classparts_1_1_screw_b_o_m_1a2de725e42c9c4c5303e30128778ba565" kind="variable"><name>part_number</name></member>
+    <member refid="classparts_1_1_screw_b_o_m_1ae47b602b120b6a426dad48fc4b7ac6ab" kind="variable"><name>description</name></member>
+    <member refid="classparts_1_1_screw_b_o_m_1a495faf4fe06182e68eade0fa667cbc1e" kind="variable"><name>length</name></member>
+    <member refid="classparts_1_1_screw_b_o_m_1ae145cf54d25864023b5975c20a91cc95" kind="variable"><name>head</name></member>
+    <member refid="classparts_1_1_screw_b_o_m_1a7f6d2d536640d638b0391a6b9a1002c7" kind="variable"><name>thread</name></member>
+    <member refid="classparts_1_1_screw_b_o_m_1a2a1afdbf3e5b87a15c94c7bfed7d4693" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classsegments_1_1_segment" kind="class"><name>segments::Segment</name>
+    <member refid="classsegments_1_1_segment_1acaccd5af98d8073bdad79805908fefe4" kind="variable"><name>seg_types</name></member>
+    <member refid="classsegments_1_1_segment_1a4861399cabc87392517f539c38bb79d1" kind="variable"><name>temp</name></member>
+    <member refid="classsegments_1_1_segment_1adcbfe80739fb05b3e68920b7139219e7" kind="variable"><name>seg_type</name></member>
+    <member refid="classsegments_1_1_segment_1a1361eaaf9eaa73cb73d9201808842108" kind="function"><name>__init__</name></member>
+    <member refid="classsegments_1_1_segment_1a22b1c733c65857a39bcedbc86654d4a0" kind="function"><name>gcode</name></member>
+    <member refid="classsegments_1_1_segment_1a8b156fa2dcd4f93f6d781d820b931da4" kind="function"><name>start</name></member>
+    <member refid="classsegments_1_1_segment_1ad755cb568f5a00ba72459d41721a652e" kind="function"><name>out</name></member>
+    <member refid="classsegments_1_1_segment_1a1b1ebb51664cb1aa198e6dd5a37520ba" kind="function"><name>svg</name></member>
+    <member refid="classsegments_1_1_segment_1ae8a07de4e87b72e7f915866647c577b8" kind="function"><name>polygon</name></member>
+    <member refid="classsegments_1_1_segment_1a7a8dd4167be305d3adbc27ffa3a41ff1" kind="function"><name>simplegcode</name></member>
+  </compound>
+  <compound refid="classparts_1_1_seven_segment_display" kind="class"><name>parts::SevenSegmentDisplay</name>
+    <member refid="classparts_1_1_seven_segment_display_1ad6b559fb70e911cb05f8f9f59bb405cb" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classgears_1_1_sprocket_border" kind="class"><name>gears::SprocketBorder</name>
+    <member refid="classgears_1_1_sprocket_border_1a2293099c37d12d6e54c968a1cce04c9d" kind="variable"><name>closed</name></member>
+    <member refid="classgears_1_1_sprocket_border_1a08bc25ed0c3c55b343d2ef5afe10ce2f" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classshapes_1_1_square_objects" kind="class"><name>shapes::SquareObjects</name>
+    <member refid="classshapes_1_1_square_objects_1a0721c173781996c7caede44f6386ddcd" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_stepper" kind="class"><name>parts::Stepper</name>
+    <member refid="classparts_1_1_stepper_1af97f06317153cb6a8e72d41318400cd0" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classparts_1_1_stepper_driver" kind="class"><name>parts::StepperDriver</name>
+    <member refid="classparts_1_1_stepper_driver_1abfd0550eeeb65495a45df9328db09546" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classsvg_1_1_s_v_gimport" kind="class"><name>svg::SVGimport</name>
+    <member refid="classsvg_1_1_s_v_gimport_1a242bdc1625e73130488acf639210e35b" kind="function"><name>__init__</name></member>
+    <member refid="classsvg_1_1_s_v_gimport_1a1b129349afecda1dc38900f9098b4949" kind="function"><name>parse_d</name></member>
+    <member refid="classsvg_1_1_s_v_gimport_1a154e64f5718f1c4693ff81830ae29f57" kind="function"><name>is_number</name></member>
+  </compound>
+  <compound refid="classsvgpoints_1_1_s_v_gpoints" kind="class"><name>svgpoints::SVGpoints</name>
+    <member refid="classsvgpoints_1_1_s_v_gpoints_1aa20b883f0dd0cbf5addfcc546e807b7c" kind="variable"><name>cal_path</name></member>
+    <member refid="classsvgpoints_1_1_s_v_gpoints_1a07cb40efc0d321f44952564032650be3" kind="variable"><name>cal_rad</name></member>
+    <member refid="classsvgpoints_1_1_s_v_gpoints_1a2bebb2c0ad793d166abfc4fae60f43c7" kind="variable"><name>cal_circ</name></member>
+    <member refid="classsvgpoints_1_1_s_v_gpoints_1a9f6f1c714d41a91f03ba410a8c72cbf6" kind="variable"><name>cal_rect</name></member>
+    <member refid="classsvgpoints_1_1_s_v_gpoints_1a95e111b7ea626b3531bf219c2467fb78" kind="variable"><name>cal_width</name></member>
+    <member refid="classsvgpoints_1_1_s_v_gpoints_1a433ae4f0659802a86e4518dfffe74d8f" kind="variable"><name>cal_height</name></member>
+    <member refid="classsvgpoints_1_1_s_v_gpoints_1a037cce810ad33fdfdb41159f24d42ca0" kind="variable"><name>scalex</name></member>
+    <member refid="classsvgpoints_1_1_s_v_gpoints_1a3e0367d807f3527f3e58460118a33fad" kind="variable"><name>scaley</name></member>
+    <member refid="classsvgpoints_1_1_s_v_gpoints_1ac7451e9ed9ca9bb807c2508b273974cc" kind="function"><name>__init__</name></member>
+    <member refid="classsvgpoints_1_1_s_v_gpoints_1a5f45b2666fb66164bbc787885f72e823" kind="function"><name>is_number</name></member>
+  </compound>
+  <compound refid="classparts_1_1_switch" kind="class"><name>parts::Switch</name>
+    <member refid="classparts_1_1_switch_1a835fd856d13ca2fc24c344d4488ae8b7" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classboxes_1_1_thermal_turret" kind="class"><name>boxes::ThermalTurret</name>
+    <member refid="classboxes_1_1_thermal_turret_1a7d43a7aee8813859340e72f8f885425d" kind="variable"><name>cam_front_z</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1ae661f068d7a528bd63faf91871bdb3fb" kind="variable"><name>cam_back_z</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a5c59e160df5140c8c75f60bb38a67e53" kind="variable"><name>centre_rad</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a36b76143cdf4df55cabf319ffac90770" kind="variable"><name>centre_inner_rad</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a2e661e57f0edb505bba19f7b4448746b" kind="variable"><name>tube_wall</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a078053e29ed936247e167e380726b3a5" kind="variable"><name>rod_rad</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1ab638dbd5aef255277401150a92f53919" kind="variable"><name>rod_length</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a0dd4d0cb1a67fdf730678ae529907b06" kind="variable"><name>window_holder_thickness</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1af32d01022aa50258191fa93abfd79d34" kind="variable"><name>window_holder_rad</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a95d0367c1f976db346546a5bfa66de19" kind="variable"><name>window_rad</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a7700fadf35f25068cf68c73c2bdbbcc7" kind="variable"><name>window_hole_rad</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a7bcdff7fb33674f0789854c382ce877f" kind="variable"><name>accel_width</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a43c3ebccf10ab0d89ffe5c4830b07a4c" kind="variable"><name>accel_depth</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1aec3eeb69c8f1c74fc941ce7bbe79231f" kind="variable"><name>window_thickness</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a48e28948ac70c45aa41b3ee3f1260c88" kind="variable"><name>window_thickness</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a3fa55e0be67cd754f7a2ee6ba9114bd7" kind="variable"><name>face_thickness</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a60cdde3cc35554e9e663b97222c04323" kind="variable"><name>face_thickness</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1ae4006d874c27a729856c09b1e2e0b761" kind="variable"><name>minimum_bite_depth</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a352dbf0c59cb3cadbfca9a36c5b6f3f6" kind="variable"><name>camera_centre</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a9120663d179eeb2f51fbd6a0533d82be" kind="variable"><name>hole_y</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a0dc21b9d8ef70d2d7c7f3768b58c883d" kind="variable"><name>camera_cutout</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1ab658b9678ea4d2be36c21999d1d40ad9" kind="variable"><name>t</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a83b3903d6f4c066c1b9eea21acc88ce8" kind="variable"><name>angle</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1ac73c1f1b0ed041451a3265b27e94a132" kind="variable"><name>startz</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a08a1751af40bb992edc18a384fc6fe72" kind="variable"><name>startr</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1adcda318805d472c85a557b9cf8f4b7e0" kind="variable"><name>steps</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a46edac8584fe0fbb4b5412b3ace9fe20" kind="variable"><name>stepz</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a4e43e3ea402e72692de5043762894613" kind="variable"><name>stepr</name></member>
+    <member refid="classboxes_1_1_thermal_turret_1a0406fe96dfb6c002179213807f4c04ac" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classboxes_1_1_turret" kind="class"><name>boxes::Turret</name>
+    <member refid="classboxes_1_1_turret_1a237b36a79f2060a19c9f445eb2c0b0c0" kind="variable"><name>d</name></member>
+    <member refid="classboxes_1_1_turret_1a4175ec32cd0bc70355aaa2a7d46a1814" kind="variable"><name>bottom</name></member>
+    <member refid="classboxes_1_1_turret_1af346dccee6a020fe485e1849d3597eaf" kind="variable"><name>end</name></member>
+    <member refid="classboxes_1_1_turret_1a1f5dd6ea8b99161aefb38d331cb093f4" kind="variable"><name>side</name></member>
+    <member refid="classboxes_1_1_turret_1aaae8d70aa9dbb9ece6843b17158e3756" kind="variable"><name>base_protector_rad</name></member>
+    <member refid="classboxes_1_1_turret_1afe961dea5213247a7092ada092737eb9" kind="variable"><name>bearing_ring</name></member>
+    <member refid="classboxes_1_1_turret_1a272bc7853e19ca7a75349c6468be7aed" kind="variable"><name>end_plate</name></member>
+    <member refid="classboxes_1_1_turret_1a54964571038999e8bb1d1fdd7925d280" kind="variable"><name>tube_insert</name></member>
+    <member refid="classboxes_1_1_turret_1ae048a79551ef7acf28b6f4621a2ef5a4" kind="variable"><name>tube_insert_in</name></member>
+    <member refid="classboxes_1_1_turret_1a1b7fc41b7419700d5ec007f56ba8a3cc" kind="variable"><name>under_base</name></member>
+    <member refid="classboxes_1_1_turret_1a7232707a55553fe266619e76b836313b" kind="variable"><name>base</name></member>
+    <member refid="classboxes_1_1_turret_1a6f0186ebbe28ed264198027539752e1f" kind="variable"><name>base_protector</name></member>
+    <member refid="classboxes_1_1_turret_1a1ec72e74c3d0fec8d0723fb171a636fb" kind="variable"><name>holdDownHoleRad</name></member>
+    <member refid="classboxes_1_1_turret_1a61691e8112654e9fc0d7ea87ab8c7bc6" kind="function"><name>__init__</name></member>
+    <member refid="classboxes_1_1_turret_1a3e0f98b723433111372ab331e74ef168" kind="function"><name>init_turret</name></member>
+  </compound>
+  <compound refid="classminivec_1_1minivec_1_1_vec" kind="class"><name>minivec::minivec::Vec</name>
+    <member refid="classminivec_1_1minivec_1_1_vec_1acbfa7634f17faed54025b90b90647ee5" kind="variable"><name>__slots__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a1844b6c500d6b3870acb8cd66b403849" kind="variable"><name>__radd__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a0a4ce4059d98e2559b999c1c96e77ce0" kind="variable"><name>__rmul__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a63e38658c73b937ac6815d866e9baee5" kind="variable"><name>__truediv__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a89dac32c40effe32ec1c676441d28edb" kind="variable"><name>__rtruediv__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a4e8f175475a02b38ead9af90c41a503b" kind="variable"><name>__xor__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a6be8d4a72052c9a94d97143256395eb5" kind="variable"><name>__rxor__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a08687ea44386e049c4e687da7f3603de" kind="variable"><name>__mod__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1aa2fbd35b0c2059f8cb983e523bc0dcbf" kind="variable"><name>__rmod__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1ac08a2b6165dcf25f73dc8c87fd981a1f" kind="variable"><name>radians</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1ad7016baec3ea675848a21a9a3420eb6f" kind="variable"><name>__vec</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a4c2c0865dc203579c270a0cc58d9eb39" kind="function"><name>__init__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1aa97b731d40eca557a4c325d4678b2f7c" kind="function"><name>Error</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a8b513799d2c6926e09989b0c25365cb8" kind="function"><name>__repr__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1ace2b8ef3008f5499d4a823a1e8c3b893" kind="function"><name>__iter__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1ac4520965b2684c281fea32aa004f853e" kind="function"><name>__len__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a73f13171f6bf65f6883eed6b41443186" kind="function"><name>__getitem__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a5982c7bfb6f16755c3ed1a236800ab6e" kind="function"><name>exact</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1acf9ecce0bb0d81440115c8d7c1e56910" kind="function"><name>almost</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1ad61ccbe3ada89322c315406699b59517" kind="function"><name>length</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a71c1a5133bf7ec08d78abdb865a8fedc" kind="function"><name>length2</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a46468d59979725bfd60926ac1b3e8298" kind="function"><name>normalize</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1ac1c9841ef2b35a601ae8dce1a3899406" kind="function"><name>reflect</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a36990fc110e133b4ee50a95965e6fa19" kind="function"><name>project</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1ae6dfe759bb369d54948485099161bf1a" kind="function"><name>orthogonal</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1aa4aec894883922ca4901a2ebc5ce8160" kind="function"><name>cross</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a026c12dff843c6a2dda345baf6a11bc6" kind="function"><name>dot</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1ae57feb83d476b9ba9bec8d74603a9b1e" kind="function"><name>angle</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a51b8eb5018aa4fc5be94d4fdaf4e7bef" kind="function"><name>__neg__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1aa3b1a2a83fe703afa6eb5f84cbad2f87" kind="function"><name>__pos__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1ab17e5813d9c7f3fa56fc4592128e9eee" kind="function"><name>__hash__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1ae0f860d7cfd7b0f008fbf846a772e3ee" kind="function"><name>__cmp__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a9806118391eb96ea97f4bf5427d40c41" kind="function"><name>__nonzero__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a15e11ffd0086905fd76638df069991fa" kind="function"><name>__add__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a94056d5948a4953a5b16aa88e85693c9" kind="function"><name>__sub__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1ac6b1aae988f6cdba5e83a3b0291f1357" kind="function"><name>__rsub__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1affb657e861acd24287f2faaf6a1e0ce4" kind="function"><name>__mul__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1aba3d464d7c66b4bc517db32b6df1c5cb" kind="function"><name>__div__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a8768df83cc4ac5d21e38ee804d339210" kind="function"><name>__rdiv__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1aed509a7f6cf9612ef4340a8007be802e" kind="function"><name>__floordiv__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1ac8994c91d9d51f598a843bea33c0c903" kind="function"><name>__rfloordiv__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a874e050c750a9247db2d4888ec786738" kind="function"><name>__pow__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a67e96d808a604a6b097c5f7e948936da" kind="function"><name>__rpow__</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a574d9ffdbb0882b8eeffb1de2349c400" kind="function"><name>lerp</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a739a2e0dc01ccf7933e7d3049db2df6b" kind="function"><name>swizzle</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a0c738e1b2b652117221c7c65b1f86ed6" kind="function"><name>transform</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1afed5a575947602d4465c575c9a7cb487" kind="function"><name>transformDir</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a900f4777f70b5890dd3d00f0d03c3ae6" kind="function"><name>contains</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1ac982df914bb9c39e4d047394038f8d23" kind="function"><name>intersect_lines</name></member>
+    <member refid="classminivec_1_1minivec_1_1_vec_1a0f5fa85fedf86c37d86dc831048110ff" kind="function"><name>intersects</name></member>
+  </compound>
+  <compound refid="classconnectors_1_1_x_l_r" kind="class"><name>connectors::XLR</name>
+    <member refid="classconnectors_1_1_x_l_r_1ad58f86f45c6f5461a290adbe5352966e" kind="function"><name>__init__</name></member>
+  </compound>
+  <compound refid="classlogic_gates_1_1_x_o_rgate" kind="class"><name>logicGates::XORgate</name>
+    <member refid="classlogic_gates_1_1_x_o_rgate_1a181237b730e8172c62a1789b5e6a418d" kind="variable"><name>l</name></member>
+    <member refid="classlogic_gates_1_1_x_o_rgate_1a7ac5f8b1e7b12b1f99256f1def471f7d" kind="variable"><name>w</name></member>
+    <member refid="classlogic_gates_1_1_x_o_rgate_1a482818a967d7153279806f576e1239f6" kind="variable"><name>h</name></member>
+    <member refid="classlogic_gates_1_1_x_o_rgate_1ad91478c42fd771f96c756c5b054f2d95" kind="variable"><name>s</name></member>
+    <member refid="classlogic_gates_1_1_x_o_rgate_1a25eca7404e631052516890824ab8a345" kind="function"><name>init2</name></member>
+    <member refid="classlogic_gates_1_1_x_o_rgate_1ae58f69e5703e6e61307fc2d20cf9de42" kind="function"><name>diagram</name></member>
+  </compound>
+  <compound refid="namespacebezier" kind="namespace"><name>bezier</name>
+    <member refid="namespacebezier_1a9df8c553fbf62057af742910a55bda90" kind="variable"><name>closed</name></member>
+    <member refid="namespacebezier_1ad3e176f900e0e892b1621ab09241ca08" kind="variable"><name>lastStart</name></member>
+    <member refid="namespacebezier_1acdfb18e445ac8e833eda8fb411fe7373" kind="variable"><name>c</name></member>
+    <member refid="namespacebezier_1af5dc7bac630ffee9827391cfaac1e06b" kind="variable"><name>segments</name></member>
+    <member refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kind="variable"><name>t</name></member>
+    <member refid="namespacebezier_1adfc12e63653920e367a9c81631c20a52" kind="variable"><name>p</name></member>
+    <member refid="namespacebezier_1a928e2d96e49d7898d0f47903caf0f866" kind="variable"><name>i</name></member>
+    <member refid="namespacebezier_1a119a2ba91f8e406351b32bb87ab3f461" kind="variable"><name>dy</name></member>
+    <member refid="namespacebezier_1a7a011a9ac17e30960f8474441f256e6c" kind="variable"><name>m</name></member>
+    <member refid="namespacebezier_1afea563cafd3cc59f5602af082de31682" kind="variable"><name>current</name></member>
+    <member refid="namespacebezier_1a73a62826780aabf596dcf302d422c619" kind="variable"><name>reflected</name></member>
+    <member refid="namespacebezier_1a9c15e0bd907e89888a94c1abad682558" kind="variable"><name>dx</name></member>
+    <member refid="namespacebezier_1a071d613d4d6e142ebebd01d0201eb7e8" kind="variable"><name>phi1</name></member>
+    <member refid="namespacebezier_1ac56c7cbbcdf67f6322e12351b2187cb1" kind="variable"><name>phi2</name></member>
+    <member refid="namespacebezier_1ae4beec9a717adf1c578294a19edbca65" kind="variable"><name>segment</name></member>
+    <member refid="namespacebezier_1a58fa425c725113cb9f5504c6c3603dec" kind="variable"><name>currentIntersections</name></member>
+    <member refid="namespacebezier_1a508894c735abb837df1774cee031b231" kind="variable"><name>c2</name></member>
+    <member refid="namespacebezier_1aabfbe79208c73c8e1d3c9b14c0d2a5b8" kind="variable"><name>t1</name></member>
+    <member refid="namespacebezier_1a73e5c5dcb6bf619524a72f09d6bcd15b" kind="variable"><name>t2</name></member>
+    <member refid="namespacebezier_1a7bc830cadb0e4876722b68296da442d0" kind="variable"><name>tn</name></member>
+    <member refid="namespacebezier_1a8f2a3ea08791f163da137639e5cac244" kind="variable"><name>mtn</name></member>
+    <member refid="namespacebezier_1a6af7fcd36e64d55245071a38cffbae33" kind="variable"><name>n</name></member>
+    <member refid="namespacebezier_1a6d52742576263b89b839a5e3cbc68ef1" kind="variable"><name>d</name></member>
+    <member refid="namespacebezier_1a83cd11a8fa14a0feb1b8bf9beb29f92d" kind="variable"><name>points</name></member>
+    <member refid="namespacebezier_1a1842cea8a4b02363c663c007716e5837" kind="variable"><name>rx</name></member>
+    <member refid="namespacebezier_1a503cbe2696a09601b3361ae9cff46771" kind="variable"><name>values</name></member>
+    <member refid="namespacebezier_1a64145e7ef3e125162f1139dd32325fa1" kind="variable"><name>root</name></member>
+    <member refid="namespacebezier_1a25e79f92e794bbc94fad7d80d53bd07c" kind="variable"><name>df</name></member>
+    <member refid="namespacebezier_1aac0d87ae23a8bc4edfe0cc52fef63788" kind="variable"><name>x2</name></member>
+    <member refid="namespacebezier_1a7ca12664d6cb3f7f50eab616886b7b0d" kind="variable"><name>x3</name></member>
+    <member refid="namespacebezier_1a4af26cae8b8f71d0f4ae9db67690ccda" kind="variable"><name>x4</name></member>
+    <member refid="namespacebezier_1a5c7571dbff24fb6f29715b41642f9c19" kind="variable"><name>nx</name></member>
+    <member refid="namespacebezier_1ac63543ece85dc0cb795314fa0ad3f11c" kind="variable"><name>ny</name></member>
+    <member refid="namespacebezier_1a2863af6e4685d9fce5c5669231ec503e" kind="variable"><name>dy1</name></member>
+    <member refid="namespacebezier_1ac0aa3f491a487ced7f96fa3288ad805b" kind="variable"><name>dx2</name></member>
+    <member refid="namespacebezier_1af0ca6962c8c3be669e5b74235ab11d9e" kind="variable"><name>dy2</name></member>
+    <member refid="namespacebezier_1aaf2772c5a20e34fa95649b49addf2e96" kind="variable"><name>l2</name></member>
+    <member refid="namespacebezier_1a78534ab25df67271c40d717cb26aac0b" kind="variable"><name>nx1</name></member>
+    <member refid="namespacebezier_1a57b85f411b9bce81bb7155997ea1808c" kind="variable"><name>ny1</name></member>
+    <member refid="namespacebezier_1acea3a71abf7405dfb057e2cf0a3f10b3" kind="variable"><name>pbc</name></member>
+    <member refid="namespacebezier_1ab351668ea604cb148440efa1ea7db562" kind="variable"><name>e</name></member>
+    <member refid="namespacebezier_1a01a1f8683e5f9f801018e651c0de1abc" kind="variable"><name>cross</name></member>
+    <member refid="namespacebezier_1ad649969fef81af63abc92b1015251242" kind="variable"><name>f</name></member>
+  </compound>
+  <compound refid="namespaceboxes" kind="namespace"><name>boxes</name>
+  </compound>
+  <compound refid="namespacecamcam" kind="namespace"><name>camcam</name>
+    <member refid="namespacecamcam_1ae3b479160a02c3c139a79592025c3d1b" kind="variable"><name>camcam</name></member>
+    <member refid="namespacecamcam_1aa70cd4db1c1fbbbdaa24f25cd8c8a62f" kind="variable"><name>milling</name></member>
+    <member refid="namespacecamcam_1aade6d80745c83b5d4277022028580701" kind="variable"><name>parser</name></member>
+    <member refid="namespacecamcam_1a6c00ac1541fda0143382c4edb61b1252" kind="variable"><name>modes</name></member>
+    <member refid="namespacecamcam_1a351a3f5dcbdb051846c8f8c4c0324f8a" kind="variable"><name>help</name></member>
+    <member refid="namespacecamcam_1a0122eec4817954e15d5f9edefce524fc" kind="variable"><name>action</name></member>
+    <member refid="namespacecamcam_1added01231f61d35e10fa48a4cdeede8a" kind="variable"><name>config</name></member>
+    <member refid="namespacecamcam_1a153362c1b392b8de0a98d4b93f10638c" kind="variable"><name>a</name></member>
+  </compound>
+  <compound refid="namespacecamcam__layout" kind="namespace"><name>camcam_layout</name>
+    <member refid="namespacecamcam__layout_1ae87c88da350af649972459a28988ebb8" kind="variable"><name>camcam</name></member>
+    <member refid="namespacecamcam__layout_1aac26a995c03881acd11062893ac5daec" kind="variable"><name>milling</name></member>
+    <member refid="namespacecamcam__layout_1a81d184a591905f9b4ed2f6032fcab2ec" kind="variable"><name>parser</name></member>
+    <member refid="namespacecamcam__layout_1a8dd26061aa3b54fe561f7ed0a9017030" kind="variable"><name>modes</name></member>
+    <member refid="namespacecamcam__layout_1a0af636005ce49aadd41c5bc3ff4e8bae" kind="variable"><name>help</name></member>
+    <member refid="namespacecamcam__layout_1a71172dacf7602866e7e96b4252a15441" kind="variable"><name>action</name></member>
+    <member refid="namespacecamcam__layout_1a6cec7cab5f48675ec716f94c0a23836e" kind="variable"><name>config</name></member>
+    <member refid="namespacecamcam__layout_1a4693b9fdabb3c2c214239fcba102f1ce" kind="variable"><name>a</name></member>
+    <member refid="namespacecamcam__layout_1ac7f3bbb8118ef7b6eea636a1316c0817" kind="variable"><name>files</name></member>
+    <member refid="namespacecamcam__layout_1a4d08c4feed053d3ab8a799dd7f3fcec4" kind="variable"><name>lastfile</name></member>
+  </compound>
+  <compound refid="namespaceconnectors" kind="namespace"><name>connectors</name>
+  </compound>
+  <compound refid="namespacegears" kind="namespace"><name>gears</name>
+  </compound>
+  <compound refid="namespacekivy_1_1graphics" kind="namespace"><name>kivy::graphics</name>
+  </compound>
+  <compound refid="namespacekivy_1_1uix_1_1label" kind="namespace"><name>kivy::uix::label</name>
+  </compound>
+  <compound refid="namespacelayout" kind="namespace"><name>layout</name>
+    <member refid="namespacelayout_1a4efd63b3001435f3c27da5cdd394c4cc" kind="variable"><name>camcam</name></member>
+    <member refid="namespacelayout_1a917f5d5f3feb2ac6efb7e20bdae63d72" kind="variable"><name>milling</name></member>
+    <member refid="namespacelayout_1a465a2855518606877a0a8671d58a1c9a" kind="variable"><name>parser</name></member>
+    <member refid="namespacelayout_1a47fd03efd473398dfb10a65fc64eafe4" kind="variable"><name>modes</name></member>
+    <member refid="namespacelayout_1aa8bcd46c44222a15f73de3e096725e5e" kind="variable"><name>help</name></member>
+    <member refid="namespacelayout_1aa92f20c6edf696c44f7073122603ad4d" kind="variable"><name>action</name></member>
+    <member refid="namespacelayout_1addf4c4f1e95013fa5057f1d16a235035" kind="variable"><name>config</name></member>
+    <member refid="namespacelayout_1a748292864d9c627e94e6b6cc41304291" kind="variable"><name>a</name></member>
+  </compound>
+  <compound refid="namespacelogic_gates" kind="namespace"><name>logicGates</name>
+  </compound>
+  <compound refid="namespacemath" kind="namespace"><name>math</name>
+  </compound>
+  <compound refid="namespace_milling" kind="namespace"><name>Milling</name>
+  </compound>
+  <compound refid="namespaceminivec" kind="namespace"><name>minivec</name>
+  </compound>
+  <compound refid="namespaceminivec_1_1minivec" kind="namespace"><name>minivec::minivec</name>
+    <member refid="namespaceminivec_1_1minivec_1a664310998bc3f9f64caefde4176331b3" kind="variable"><name>__version__</name></member>
+    <member refid="namespaceminivec_1_1minivec_1ab8c40fffebf0c6ede3ef55861cfe4926" kind="variable"><name>__author__</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a02847a23f8377584f9fb1f81c88e4dd0" kind="variable"><name>__license__</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a42d6bb912b5c046963cac5e9e34bc9be" kind="variable"><name>__url__</name></member>
+    <member refid="namespaceminivec_1_1minivec_1aee6940c00f81893fa47f68748cb8baa7" kind="variable"><name>__all__</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a691948dad66644e76fcdfb576b7b01f2" kind="variable"><name>_ThreadLocal</name></member>
+    <member refid="namespaceminivec_1_1minivec_1acbf0347ca8872c1c7a543ef36a0bf52f" kind="variable"><name>threading</name></member>
+    <member refid="namespaceminivec_1_1minivec_1abf368b58aaa6bad7fa2c6f4100f5eefe" kind="variable"><name>Nan</name></member>
+    <member refid="namespaceminivec_1_1minivec_1ae5b62e1c8439d519f00ee982428624e1" kind="variable"><name>_Rad</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a5b26c80dbd4b8509096773b210c87c77" kind="variable"><name>_Deg</name></member>
+    <member refid="namespaceminivec_1_1minivec_1abd8832f7f104b13c5d28376147a2fe9a" kind="variable"><name>_DefaultError</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a1bcde851e3506a674b3fcd4d4087bc09" kind="variable"><name>_DefaultEpsilon</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a05c598591e86e4ad044aa85b35bfaf66" kind="function"><name>V</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a4575b51d4237083edbc93832a2c2754f" kind="function"><name>rotate</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a9ebe9cc95049fe89595cc8e22acf6eea" kind="function"><name>_QuatLerp</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a5ff840e11b9a4cbf820ab7ba410e9ab9" kind="function"><name>_QuatToMat</name></member>
+    <member refid="namespaceminivec_1_1minivec_1aa4313c4faad2b70314c1f635d0863e88" kind="function"><name>_DecomposeScaling</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a5dfad8f9bbd1255fbf93fa9c4c7146dd" kind="function"><name>_DecomposeRotation</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a1f232324fb6a7622b65f96d0250eea62" kind="function"><name>_DecomposeQuat</name></member>
+    <member refid="namespaceminivec_1_1minivec_1afb2a679445010304189adfadaf5afbb3" kind="function"><name>Epsilon</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a621b0516abfdd5c4c6fa1a60c52f8539" kind="function"><name>ResetEpsilon</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a6f6f9c5c72491f8b2f085444db5a4edb" kind="function"><name>PushEpsilon</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a5ac8925e7a712892716c2799dbaacc0f" kind="function"><name>PopEpsilon</name></member>
+    <member refid="namespaceminivec_1_1minivec_1aaa1925ce113b6959b2029bedda0dc79f" kind="function"><name>Error</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a32f05f2e9bebe41c8d7b1a810bd6acc2" kind="function"><name>ResetError</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a8047c80a5c0d2919929d72f4265fd20b" kind="function"><name>PushError</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a2b5146c60a68e2eb846a46e96fdaa7cb" kind="function"><name>PopError</name></member>
+    <member refid="namespaceminivec_1_1minivec_1af66fdcfa1cc1975dc94880c37dc72411" kind="function"><name>_Triplet</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a268f8d7f952689aade60f8a24aaafb08" kind="function"><name>_Quadlet</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a0f22d32bf15fbff8b7a8e90c364510f9" kind="function"><name>_Sixteenlet</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a93fb3b2583dd807a83d75a588b2dd44f" kind="function"><name>_FloatOrSequence</name></member>
+    <member refid="namespaceminivec_1_1minivec_1a2cb36d54232945c704660bbe96f09584" kind="function"><name>_TupleOfFloats</name></member>
+    <member refid="namespaceminivec_1_1minivec_1af7c8a839521583de6f4a8ebd9237a016" kind="function"><name>_FindOperationType</name></member>
+  </compound>
+  <compound refid="namespaceparts" kind="namespace"><name>parts</name>
+  </compound>
+  <compound refid="namespacepath" kind="namespace"><name>path</name>
+    <member refid="namespacepath_1a22348be460eb3c510b50da1d6643feaa" kind="variable"><name>milling</name></member>
+    <member refid="namespacepath_1ac3facb45d2ec1fec87614d74d381d058" kind="variable"><name>arg_meanings</name></member>
+    <member refid="namespacepath_1a1d2c06ebecd0a735e9c87e8b97ee9d1a" kind="function"><name>V</name></member>
+    <member refid="namespacepath_1a9a6d2cc32e9e70e7f2243a31c3a1f2a5" kind="function"><name>rotate</name></member>
+  </compound>
+  <compound refid="namespacepoint" kind="namespace"><name>point</name>
+    <member refid="namespacepoint_1a4e295d3289aafe0a3abd09e42c25b45c" kind="variable"><name>last</name></member>
+    <member refid="namespacepoint_1a4b048a13e23e86c6f5d0a5f4c2ff3e15" kind="function"><name>rotate</name></member>
+    <member refid="namespacepoint_1acc12f97640322a665d56d0233654a8ac" kind="function"><name>V</name></member>
+    <member refid="namespacepoint_1acd0a0abb4fae2415425eadf1be1501f7" kind="function"><name>nextorigin</name></member>
+    <member refid="namespacepoint_1a0b5edbbdc66b95211a7202245613c176" kind="function"><name>otherDir</name></member>
+    <member refid="namespacepoint_1aeaf6c17aef5ff8c0239b968250a24f4c" kind="function"><name>lineArcIntersect</name></member>
+  </compound>
+  <compound refid="namespacesegments" kind="namespace"><name>segments</name>
+    <member refid="namespacesegments_1a109c96d9960dbce186b64a98c3066a1c" kind="function"><name>V</name></member>
+    <member refid="namespacesegments_1ae4847a0facad069d53643d562fac656b" kind="function"><name>rotate</name></member>
+  </compound>
+  <compound refid="namespaceshapes" kind="namespace"><name>shapes</name>
+  </compound>
+  <compound refid="namespacesvg" kind="namespace"><name>svg</name>
+  </compound>
+  <compound refid="namespacesvgpoints" kind="namespace"><name>svgpoints</name>
+  </compound>
+  <compound refid="namespacetest" kind="namespace"><name>test</name>
+    <member refid="namespacetest_1a1f1f1b6d0fb7ae6cb8e0d7a823825e8d" kind="variable"><name>top_thickness</name></member>
+    <member refid="namespacetest_1a5e58b0c7b4760f790f0c6d5e162fda87" kind="variable"><name>mid_thickness</name></member>
+    <member refid="namespacetest_1a10f54c7f8dd77a534e788bf487ff2b1a" kind="variable"><name>bottom_thickness</name></member>
+    <member refid="namespacetest_1aee352ece5b82d2a5c33a4ddc45c5c990" kind="variable"><name>perspex_thickness</name></member>
+    <member refid="namespacetest_1a62e0147a9d690a7a90d3beca23dcb944" kind="variable"><name>perspex_z</name></member>
+    <member refid="namespacetest_1a0f7c1b1c2817d5785aa0407879366227" kind="variable"><name>corner_rad</name></member>
+    <member refid="namespacetest_1a064937db856e36c5389241650eb91307" kind="variable"><name>width</name></member>
+    <member refid="namespacetest_1a0981d504d028598d82644c006c420453" kind="variable"><name>height</name></member>
+    <member refid="namespacetest_1a41fbb9ae9b5a863e7e882fc1ca2daa8a" kind="variable"><name>lip</name></member>
+    <member refid="namespacetest_1a08f26fee2fec02db82eb7b6dc5c1aaa5" kind="variable"><name>magnet_offset</name></member>
+    <member refid="namespacetest_1ab757d0228bdd92d6efdc4b6f0ec34e81" kind="variable"><name>magnet_rad</name></member>
+    <member refid="namespacetest_1a9cf4c1f11ba8ff11dc2b8331dfa18f1f" kind="variable"><name>magnet_screw_rad</name></member>
+    <member refid="namespacetest_1a0abc4c703668de72c997fe9992c42fe8" kind="variable"><name>window_width</name></member>
+    <member refid="namespacetest_1a0d14ff24adddf44ef52460812fb711a4" kind="variable"><name>window_height</name></member>
+    <member refid="namespacetest_1ad2fa754f668be8d566b49d2b75c14320" kind="variable"><name>side_border</name></member>
+    <member refid="namespacetest_1a216fdd5fd8b05a73731fd5eadfc278dc" kind="variable"><name>box</name></member>
+    <member refid="namespacetest_1aa7b8aa9411311181f994be4bcdb6d3c5" kind="variable"><name>Ltop</name></member>
+    <member refid="namespacetest_1a1dd0e7d10f3a46b2584c07bed8bc4ab8" kind="variable"><name>top</name></member>
+  </compound>
+  <compound refid="bezier_8py" kind="file"><name>bezier.py</name>
+  </compound>
+  <compound refid="boxes_8py" kind="file"><name>boxes.py</name>
+  </compound>
+  <compound refid="camcam_8py" kind="file"><name>camcam.py</name>
+  </compound>
+  <compound refid="camcam__layout_8py" kind="file"><name>camcam_layout.py</name>
+  </compound>
+  <compound refid="connectors_8py" kind="file"><name>connectors.py</name>
+  </compound>
+  <compound refid="gears_8py" kind="file"><name>gears.py</name>
+  </compound>
+  <compound refid="layout_8py" kind="file"><name>layout.py</name>
+  </compound>
+  <compound refid="logic_gates_8py" kind="file"><name>logicGates.py</name>
+  </compound>
+  <compound refid="_milling_8py" kind="file"><name>Milling.py</name>
+  </compound>
+  <compound refid="____init_____8py" kind="file"><name>__init__.py</name>
+  </compound>
+  <compound refid="minivec_8py" kind="file"><name>minivec.py</name>
+  </compound>
+  <compound refid="parts_8py" kind="file"><name>parts.py</name>
+  </compound>
+  <compound refid="path_8py" kind="file"><name>path.py</name>
+  </compound>
+  <compound refid="point_8py" kind="file"><name>point.py</name>
+  </compound>
+  <compound refid="_r_e_a_d_m_e_8md" kind="file"><name>README.md</name>
+  </compound>
+  <compound refid="segments_8py" kind="file"><name>segments.py</name>
+  </compound>
+  <compound refid="shapes_8py" kind="file"><name>shapes.py</name>
+  </compound>
+  <compound refid="svg_8py" kind="file"><name>svg.py</name>
+  </compound>
+  <compound refid="svgpoints_8py" kind="file"><name>svgpoints.py</name>
+  </compound>
+  <compound refid="test_8py" kind="file"><name>test.py</name>
+  </compound>
+  <compound refid="md__r_e_a_d_m_e" kind="page"><name>md_README</name>
+  </compound>
+  <compound refid="dir_ef27bb774a234f99f613728be58a3911" kind="dir"><name>minivec</name>
+  </compound>
+</doxygenindex>

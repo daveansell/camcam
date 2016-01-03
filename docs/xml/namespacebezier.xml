@@ -1,0 +1,620 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespacebezier" kind="namespace" language="Python">
+    <compoundname>bezier</compoundname>
+    <innerclass refid="classbezier_1_1_bezier_curve" prot="public">bezier::BezierCurve</innerclass>
+    <innerclass refid="classbezier_1_1_curve_pair" prot="public">bezier::CurvePair</innerclass>
+    <innerclass refid="classbezier_1_1_no_ratio_exists_exception" prot="public">bezier::NoRatioExistsException</innerclass>
+    <innerclass refid="classbezier_1_1_null_bezier_curve" prot="public">bezier::NullBezierCurve</innerclass>
+    <innerclass refid="classbezier_1_1_point" prot="public">bezier::Point</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacebezier_1a9df8c553fbf62057af742910a55bda90" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.closed</definition>
+        <argsstring></argsstring>
+        <name>closed</name>
+        <initializer>= true;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="973" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="973" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1ad3e176f900e0e892b1621ab09241ca08" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.lastStart</definition>
+        <argsstring></argsstring>
+        <name>lastStart</name>
+        <initializer>= segments.size()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="974" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="974" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1acdfb18e445ac8e833eda8fb411fe7373" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.c</definition>
+        <argsstring></argsstring>
+        <name>c</name>
+        <initializer>= segments.get(<ref refid="namespacebezier_1a928e2d96e49d7898d0f47903caf0f866" kindref="member">i</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1031" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1031" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1af5dc7bac630ffee9827391cfaac1e06b" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.segments</definition>
+        <argsstring></argsstring>
+        <name>segments</name>
+        <initializer>= newSegments;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1035" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1035" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>int bezier.t</definition>
+        <argsstring></argsstring>
+        <name>t</name>
+        <initializer>= c.over(mx, my)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1051" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1051" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1adfc12e63653920e367a9c81631c20a52" prot="public" static="no" mutable="no">
+        <type>list</type>
+        <definition>list bezier.p</definition>
+        <argsstring></argsstring>
+        <name>p</name>
+        <initializer>= c.points[<ref refid="namespacebezier_1a928e2d96e49d7898d0f47903caf0f866" kindref="member">i</ref>]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1067" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1067" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a928e2d96e49d7898d0f47903caf0f866" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.i</definition>
+        <argsstring></argsstring>
+        <name>i</name>
+        <initializer>= idx%pointCount;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1090" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1090" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a119a2ba91f8e406351b32bb87ab3f461" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.dy</definition>
+        <argsstring></argsstring>
+        <name>dy</name>
+        <initializer>= <ref refid="namespacebezier_1ac63543ece85dc0cb795314fa0ad3f11c" kindref="member">ny</ref>-p.y;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1094" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1094" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a7a011a9ac17e30960f8474441f256e6c" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>list bezier.m</definition>
+        <argsstring></argsstring>
+        <name>m</name>
+        <initializer>= getPoint(<ref refid="namespacebezier_1a6af7fcd36e64d55245071a38cffbae33" kindref="member">n</ref>, 1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1129" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1129" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1afea563cafd3cc59f5602af082de31682" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.current</definition>
+        <argsstring></argsstring>
+        <name>current</name>
+        <initializer>= segments.get(<ref refid="namespacebezier_1ae4beec9a717adf1c578294a19edbca65" kindref="member">segment</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1196" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1196" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a73a62826780aabf596dcf302d422c619" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>list bezier.reflected</definition>
+        <argsstring></argsstring>
+        <name>reflected</name>
+        <initializer>= m.reflect(master.points[1])</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1199" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1199" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a9c15e0bd907e89888a94c1abad682558" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>tuple bezier.dx</definition>
+        <argsstring></argsstring>
+        <name>dx</name>
+        <initializer>= reflected.x-m.x;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1205" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1205" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a071d613d4d6e142ebebd01d0201eb7e8" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.phi1</definition>
+        <argsstring></argsstring>
+        <name>phi1</name>
+        <initializer>= atan2(<ref refid="namespacebezier_1a119a2ba91f8e406351b32bb87ab3f461" kindref="member">dy</ref>, <ref refid="namespacebezier_1a9c15e0bd907e89888a94c1abad682558" kindref="member">dx</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1207" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1207" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1ac56c7cbbcdf67f6322e12351b2187cb1" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.phi2</definition>
+        <argsstring></argsstring>
+        <name>phi2</name>
+        <initializer>= atan2(<ref refid="namespacebezier_1a119a2ba91f8e406351b32bb87ab3f461" kindref="member">dy</ref>, <ref refid="namespacebezier_1a9c15e0bd907e89888a94c1abad682558" kindref="member">dx</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1210" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1210" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1ae4beec9a717adf1c578294a19edbca65" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.segment</definition>
+        <argsstring></argsstring>
+        <name>segment</name>
+        <initializer>= segments.get(<ref refid="namespacebezier_1a928e2d96e49d7898d0f47903caf0f866" kindref="member">i</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1257" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1257" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a58fa425c725113cb9f5504c6c3603dec" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.currentIntersections</definition>
+        <argsstring></argsstring>
+        <name>currentIntersections</name>
+        <initializer>= comp.findIntersections(<ref refid="namespacebezier_1acdfb18e445ac8e833eda8fb411fe7373" kindref="member">c</ref>, <ref refid="namespacebezier_1ae4beec9a717adf1c578294a19edbca65" kindref="member">segment</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1282" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1282" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a508894c735abb837df1774cee031b231" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.c2</definition>
+        <argsstring></argsstring>
+        <name>c2</name>
+        <initializer>= segments.get(pos2)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1300" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1300" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1aabfbe79208c73c8e1d3c9b14c0d2a5b8" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>bezier.t1</definition>
+        <argsstring></argsstring>
+        <name>t1</name>
+        <initializer>= t1%1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1301" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1301" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a73e5c5dcb6bf619524a72f09d6bcd15b" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>tuple bezier.t2</definition>
+        <argsstring></argsstring>
+        <name>t2</name>
+        <initializer>= t2%1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1302" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1302" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a7bc830cadb0e4876722b68296da442d0" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>tuple bezier.tn</definition>
+        <argsstring></argsstring>
+        <name>tn</name>
+        <initializer>= 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1564" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1564" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a8f2a3ea08791f163da137639e5cac244" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>tuple bezier.mtn</definition>
+        <argsstring></argsstring>
+        <name>mtn</name>
+        <initializer>= 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1565" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1565" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a6af7fcd36e64d55245071a38cffbae33" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>int bezier.n</definition>
+        <argsstring></argsstring>
+        <name>n</name>
+        <initializer>= <ref refid="namespacebezier_1a7bc830cadb0e4876722b68296da442d0" kindref="member">tn</ref>-<ref refid="namespacebezier_1a8f2a3ea08791f163da137639e5cac244" kindref="member">mtn</ref>;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1566" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1566" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a6d52742576263b89b839a5e3cbc68ef1" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>tuple bezier.d</definition>
+        <argsstring></argsstring>
+        <name>d</name>
+        <initializer>= <ref refid="namespacebezier_1a6af7fcd36e64d55245071a38cffbae33" kindref="member">n</ref>+1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1567" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1567" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a83cd11a8fa14a0feb1b8bf9beb29f92d" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.points</definition>
+        <argsstring></argsstring>
+        <name>points</name>
+        <initializer>= curve.points;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1594" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1594" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a1842cea8a4b02363c663c007716e5837" prot="public" static="no" mutable="no">
+        <type>list</type>
+        <definition>list bezier.rx</definition>
+        <argsstring></argsstring>
+        <name>rx</name>
+        <initializer>= <ref refid="namespacebezier_1a503cbe2696a09601b3361ae9cff46771" kindref="member">values</ref>[<ref refid="namespacebezier_1a928e2d96e49d7898d0f47903caf0f866" kindref="member">i</ref>]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1723" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1723" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a503cbe2696a09601b3361ae9cff46771" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.values</definition>
+        <argsstring></argsstring>
+        <name>values</name>
+        <initializer>= _v;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1747" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1747" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a64145e7ef3e125162f1139dd32325fa1" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.root</definition>
+        <argsstring></argsstring>
+        <name>root</name>
+        <initializer>= round(findRoots(derivative, <ref refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kindref="member">t</ref>, <ref refid="namespacebezier_1a503cbe2696a09601b3361ae9cff46771" kindref="member">values</ref>)/NRRF_PRECISION)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1763" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1763" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a25e79f92e794bbc94fad7d80d53bd07c" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.df</definition>
+        <argsstring></argsstring>
+        <name>df</name>
+        <initializer>= getDerivative(derivative+1, <ref refid="namespacebezier_1a21309dd6a23cee0f4b3888de7b66b7ff" kindref="member">t</ref>, <ref refid="namespacebezier_1a503cbe2696a09601b3361ae9cff46771" kindref="member">values</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1793" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1793" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1aac0d87ae23a8bc4edfe0cc52fef63788" prot="public" static="no" mutable="no">
+        <type>list</type>
+        <definition>list bezier.x2</definition>
+        <argsstring></argsstring>
+        <name>x2</name>
+        <initializer>= pts[1]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1821" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1821" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a7ca12664d6cb3f7f50eab616886b7b0d" prot="public" static="no" mutable="no">
+        <type>list</type>
+        <definition>list bezier.x3</definition>
+        <argsstring></argsstring>
+        <name>x3</name>
+        <initializer>= pts[2]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1822" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1822" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a4af26cae8b8f71d0f4ae9db67690ccda" prot="public" static="no" mutable="no">
+        <type>list</type>
+        <definition>list bezier.x4</definition>
+        <argsstring></argsstring>
+        <name>x4</name>
+        <initializer>= pts[3]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1823" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1823" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a5c7571dbff24fb6f29715b41642f9c19" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.nx</definition>
+        <argsstring></argsstring>
+        <name>nx</name>
+        <initializer>= (x1*y2-y1*<ref refid="namespacebezier_1aac0d87ae23a8bc4edfe0cc52fef63788" kindref="member">x2</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1824" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1824" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1ac63543ece85dc0cb795314fa0ad3f11c" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.ny</definition>
+        <argsstring></argsstring>
+        <name>ny</name>
+        <initializer>= (x1*y2-y1*<ref refid="namespacebezier_1aac0d87ae23a8bc4edfe0cc52fef63788" kindref="member">x2</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1825" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1825" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a2863af6e4685d9fce5c5669231ec503e" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.dy1</definition>
+        <argsstring></argsstring>
+        <name>dy1</name>
+        <initializer>= p2.y-p1.y,</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1844" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1844" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1ac0aa3f491a487ced7f96fa3288ad805b" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.dx2</definition>
+        <argsstring></argsstring>
+        <name>dx2</name>
+        <initializer>= p4.x-p3.x,</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1845" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1845" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1af0ca6962c8c3be669e5b74235ab11d9e" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.dy2</definition>
+        <argsstring></argsstring>
+        <name>dy2</name>
+        <initializer>= p4.y-p3.y;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1846" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1846" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1aaf2772c5a20e34fa95649b49addf2e96" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.l2</definition>
+        <argsstring></argsstring>
+        <name>l2</name>
+        <initializer>= sqrt(<ref refid="namespacebezier_1ac0aa3f491a487ced7f96fa3288ad805b" kindref="member">dx2</ref>*<ref refid="namespacebezier_1ac0aa3f491a487ced7f96fa3288ad805b" kindref="member">dx2</ref> + <ref refid="namespacebezier_1af0ca6962c8c3be669e5b74235ab11d9e" kindref="member">dy2</ref>*<ref refid="namespacebezier_1af0ca6962c8c3be669e5b74235ab11d9e" kindref="member">dy2</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1849" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1849" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a78534ab25df67271c40d717cb26aac0b" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.nx1</definition>
+        <argsstring></argsstring>
+        <name>nx1</name>
+        <initializer>= dx1*ca-<ref refid="namespacebezier_1a2863af6e4685d9fce5c5669231ec503e" kindref="member">dy1</ref>*sa,</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1873" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1873" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a57b85f411b9bce81bb7155997ea1808c" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.ny1</definition>
+        <argsstring></argsstring>
+        <name>ny1</name>
+        <initializer>= dx1*sa+<ref refid="namespacebezier_1a2863af6e4685d9fce5c5669231ec503e" kindref="member">dy1</ref>*ca;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1874" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1874" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1acea3a71abf7405dfb057e2cf0a3f10b3" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.pbc</definition>
+        <argsstring></argsstring>
+        <name>pbc</name>
+        <initializer>= p.split(<ref refid="namespacebezier_1aabfbe79208c73c8e1d3c9b14c0d2a5b8" kindref="member">t1</ref>,<ref refid="namespacebezier_1a73e5c5dcb6bf619524a72f09d6bcd15b" kindref="member">t2</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="1998" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="1998" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1ab351668ea604cb148440efa1ea7db562" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.e</definition>
+        <argsstring></argsstring>
+        <name>e</name>
+        <initializer>= pbc.getLast()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="2045" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="2045" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1a01a1f8683e5f9f801018e651c0de1abc" prot="public" static="no" mutable="no">
+        <type>tuple</type>
+        <definition>tuple bezier.cross</definition>
+        <argsstring></argsstring>
+        <name>cross</name>
+        <initializer>= p2.contains(<ref refid="namespacebezier_1acea3a71abf7405dfb057e2cf0a3f10b3" kindref="member">pbc</ref>, getReference(<ref refid="namespacebezier_1acea3a71abf7405dfb057e2cf0a3f10b3" kindref="member">pbc</ref>))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="2085" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="2085" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacebezier_1ad649969fef81af63abc92b1015251242" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int bezier.f</definition>
+        <argsstring></argsstring>
+        <name>f</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="2093" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="2093" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/bezier.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="test_8py" kind="file" language="Python">
+    <compoundname>test.py</compoundname>
+    <innernamespace refid="namespacetest">test</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="namespacetest" refkind="compound"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal">top_thickness=12</highlight></codeline>
+<codeline lineno="4"><highlight class="normal">mid_thickness=12</highlight></codeline>
+<codeline lineno="5"><highlight class="normal">bottom_thickness=4</highlight></codeline>
+<codeline lineno="6"><highlight class="normal">perspex_thickness=3</highlight></codeline>
+<codeline lineno="7"><highlight class="normal">perspex_z=-2</highlight></codeline>
+<codeline lineno="8"><highlight class="normal">corner_rad=10</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal">width=110</highlight></codeline>
+<codeline lineno="11"><highlight class="normal">height=110</highlight></codeline>
+<codeline lineno="12"><highlight class="normal">lip=3</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal">magnet_offset=10</highlight></codeline>
+<codeline lineno="15"><highlight class="normal">magnet_rad=8.2/2</highlight></codeline>
+<codeline lineno="16"><highlight class="normal">magnet_screw_rad=2.5/2</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal">window_width=70</highlight></codeline>
+<codeline lineno="19"><highlight class="normal">window_height=40</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="comment">#side<sp/>border<sp/>is<sp/>the<sp/>slide<sp/>left<sp/>either<sp/>side<sp/>of<sp/>the<sp/>void<sp/>in<sp/>the<sp/>middle</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal">side_border=15</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal">box<sp/>=<sp/>camcam.add_plane(Plane(</highlight><highlight class="stringliteral">&apos;box&apos;</highlight><highlight class="normal">,<sp/>cutter=</highlight><highlight class="stringliteral">&apos;1/8_endmill&apos;</highlight><highlight class="normal">))</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal">Ltop=box.add_layer(</highlight><highlight class="stringliteral">&apos;top&apos;</highlight><highlight class="normal">,<sp/>material=</highlight><highlight class="stringliteral">&apos;pvc&apos;</highlight><highlight class="normal">,<sp/>thickness=top_thickness,<sp/>z0=0,<sp/>zoffset=0,<sp/>isback=</highlight><highlight class="keyword">False</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal">top=box.add_path(Part(name=</highlight><highlight class="stringliteral">&apos;top&apos;</highlight><highlight class="normal">,<sp/>layer=</highlight><highlight class="stringliteral">&apos;top&apos;</highlight><highlight class="normal">))</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">top.add_border(RoundedRect(<ref refid="namespaceminivec_1_1minivec_1a05c598591e86e4ad044aa85b35bfaf66" kindref="member">V</ref>(0,0),tr=<ref refid="namespaceminivec_1_1minivec_1a05c598591e86e4ad044aa85b35bfaf66" kindref="member">V</ref>(120,120),<sp/><sp/>cornertype=</highlight><highlight class="stringliteral">&quot;outcurve&quot;</highlight><highlight class="normal">,<sp/>rad=50,<sp/>side=</highlight><highlight class="stringliteral">&apos;out&apos;</highlight><highlight class="normal">,<sp/>centred=</highlight><highlight class="keyword">False</highlight><highlight class="normal">,<sp/>finishing=1))</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="comment">#top.add_path(Polygon(V(0,0),<sp/>40,<sp/>3,<sp/>&apos;outcurve&apos;,<sp/>10))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="comment">#bottom_border=Path(closed=True,<sp/>side=&apos;out&apos;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="comment">#bottom_border.add_point(V(0,0),<sp/>radius=50,<sp/>point_type=&apos;outcurve&apos;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="comment">#bottom_border.add_point(V(60,1),<sp/>radius=5,<sp/>point_type=&apos;outcurve&apos;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="comment">#bottom_border.add_point(V(60,-1),<sp/>radius=5,<sp/>point_type=&apos;outcurve&apos;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="comment">#top.add_path(bottom_border)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="comment">#b2=<sp/>copy.deepcopy(bottom_border)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="comment">#b2.rotate(V(50,0),180)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="comment">#top.add_path(b2,&apos;top&apos;)</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/db/camcam/test.py"/>
+  </compounddef>
+</doxygen>

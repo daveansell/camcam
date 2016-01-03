@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespacegears" kind="namespace" language="Python">
+    <compoundname>gears</compoundname>
+    <innerclass refid="classgears_1_1_involute_gear" prot="public">gears::InvoluteGear</innerclass>
+    <innerclass refid="classgears_1_1_involute_gear_border" prot="public">gears::InvoluteGearBorder</innerclass>
+    <innerclass refid="classgears_1_1_sprocket_border" prot="public">gears::SprocketBorder</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/gears.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespaceparts" kind="namespace" language="Python">
+    <compoundname>parts</compoundname>
+    <innerclass refid="classparts_1_1_angle_bracket" prot="public">parts::AngleBracket</innerclass>
+    <innerclass refid="classparts_1_1_angle_constraint" prot="public">parts::AngleConstraint</innerclass>
+    <innerclass refid="classparts_1_1_barn" prot="public">parts::Barn</innerclass>
+    <innerclass refid="classparts_1_1_cable_tie" prot="public">parts::CableTie</innerclass>
+    <innerclass refid="classparts_1_1_drilled_ball" prot="public">parts::DrilledBall</innerclass>
+    <innerclass refid="classparts_1_1_fan" prot="public">parts::Fan</innerclass>
+    <innerclass refid="classparts_1_1_flat_monitor" prot="public">parts::FlatMonitor</innerclass>
+    <innerclass refid="classparts_1_1_insert" prot="public">parts::Insert</innerclass>
+    <innerclass refid="classparts_1_1_knob" prot="public">parts::Knob</innerclass>
+    <innerclass refid="classparts_1_1_led_holder" prot="public">parts::LedHolder</innerclass>
+    <innerclass refid="classparts_1_1_linear_bearing" prot="public">parts::LinearBearing</innerclass>
+    <innerclass refid="classparts_1_1_linear_rail" prot="public">parts::LinearRail</innerclass>
+    <innerclass refid="classparts_1_1_load_cell" prot="public">parts::LoadCell</innerclass>
+    <innerclass refid="classparts_1_1_monitor" prot="public">parts::Monitor</innerclass>
+    <innerclass refid="classparts_1_1_pi" prot="public">parts::Pi</innerclass>
+    <innerclass refid="classparts_1_1_pi_barn" prot="public">parts::PiBarn</innerclass>
+    <innerclass refid="classparts_1_1_plate" prot="public">parts::Plate</innerclass>
+    <innerclass refid="classparts_1_1_post" prot="public">parts::Post</innerclass>
+    <innerclass refid="classparts_1_1_r_f_i_d__holder" prot="public">parts::RFID_holder</innerclass>
+    <innerclass refid="classparts_1_1_round_plate" prot="public">parts::RoundPlate</innerclass>
+    <innerclass refid="classparts_1_1_round_shaft_support" prot="public">parts::RoundShaftSupport</innerclass>
+    <innerclass refid="classparts_1_1_screen_holder_fixed" prot="public">parts::ScreenHolderFixed</innerclass>
+    <innerclass refid="classparts_1_1_screen_holder_removable" prot="public">parts::ScreenHolderRemovable</innerclass>
+    <innerclass refid="classparts_1_1_screw_b_o_m" prot="public">parts::ScrewBOM</innerclass>
+    <innerclass refid="classparts_1_1_seven_segment_display" prot="public">parts::SevenSegmentDisplay</innerclass>
+    <innerclass refid="classparts_1_1_stepper" prot="public">parts::Stepper</innerclass>
+    <innerclass refid="classparts_1_1_stepper_driver" prot="public">parts::StepperDriver</innerclass>
+    <innerclass refid="classparts_1_1_switch" prot="public">parts::Switch</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/parts.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

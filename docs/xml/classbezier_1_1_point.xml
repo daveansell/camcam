@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classbezier_1_1_point" kind="class" language="Python" prot="public">
+    <compoundname>bezier::Point</compoundname>
+    <derivedcompoundref refid="classbezier_1_1_null_bezier_curve" prot="public" virt="non-virtual">bezier.NullBezierCurve</derivedcompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classbezier_1_1_point_1a7aae96210ba0b027585354da7a89ed70" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.Point::normal</definition>
+        <argsstring></argsstring>
+        <name>normal</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="17" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_point_1a1fafe43db62786b6440ed7da2f65c94c" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.Point::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="33" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_point_1afef026c2349e08af94ac206129e0b1bf" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.Point::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="34" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classbezier_1_1_point_1a7646bb0cfbce0ffe70b3a91c8cfbac16" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>bezier.Point::d</definition>
+        <argsstring></argsstring>
+        <name>d</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="35" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classbezier_1_1_point_1a68259b21ff696fd50080620830eb50e4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.Point.__init__</definition>
+        <argsstring></argsstring>
+        <name>__init__</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="14" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="14" bodyend="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_point_1a274eed2d595fbf1e04441634c3f32f18" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.Point.scale</definition>
+        <argsstring>(self, f)</argsstring>
+        <name>scale</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type><ref refid="namespacebezier_1ad649969fef81af63abc92b1015251242" kindref="member">f</ref></type>
+          <defname>f</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="22" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="22" bodyend="24"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_point_1affa05deaf327ba3f06ad22549f58aa62" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.Point.normalize</definition>
+        <argsstring>(self)</argsstring>
+        <name>normalize</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="26" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="26" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_point_1a1e926219773aa0684a6329c8aaca6903" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.Point.moveTo</definition>
+        <argsstring></argsstring>
+        <name>moveTo</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="31" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="31" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_point_1aa2ac4c3811bf9f6ada0ad9ae37d0b49c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.Point.moveBy</definition>
+        <argsstring>(_x, _y)</argsstring>
+        <name>moveBy</name>
+        <param>
+          <type>_x</type>
+          <defname>_x</defname>
+        </param>
+        <param>
+          <type>_y</type>
+          <defname>_y</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="40" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="40" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_point_1ab80043486d5208080b886508bc7d6a45" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.Point.rotateOver</definition>
+        <argsstring>(o, angle)</argsstring>
+        <name>rotateOver</name>
+        <param>
+          <type>o</type>
+          <defname>o</defname>
+        </param>
+        <param>
+          <type>angle</type>
+          <defname>angle</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="44" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="44" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_point_1a69e0e3843fed67dc4def6003fc47943f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.Point.reflect</definition>
+        <argsstring>(original)</argsstring>
+        <name>reflect</name>
+        <param>
+          <type>original</type>
+          <defname>original</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="56" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="56" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="classbezier_1_1_point_1ac46a979a6b714559a066096cb10f23e4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def bezier.Point.over</definition>
+        <argsstring>(mx, my)</argsstring>
+        <name>over</name>
+        <param>
+          <type>mx</type>
+          <defname>mx</defname>
+        </param>
+        <param>
+          <type>my</type>
+          <defname>my</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/bezier.py" line="61" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="61" bodyend="77"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1551">
+        <label>bezier.NullBezierCurve</label>
+        <link refid="classbezier_1_1_null_bezier_curve"/>
+        <childnode refid="1550" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1550">
+        <label>bezier.Point</label>
+        <link refid="classbezier_1_1_point"/>
+      </node>
+    </inheritancegraph>
+    <location file="/home/db/camcam/bezier.py" line="13" column="1" bodyfile="/home/db/camcam/bezier.py" bodystart="13" bodyend="78"/>
+    <listofallmembers>
+      <member refid="classbezier_1_1_point_1a68259b21ff696fd50080620830eb50e4" prot="public" virt="non-virtual"><scope>bezier::Point</scope><name>__init__</name></member>
+      <member refid="classbezier_1_1_point_1a7646bb0cfbce0ffe70b3a91c8cfbac16" prot="public" virt="non-virtual"><scope>bezier::Point</scope><name>d</name></member>
+      <member refid="classbezier_1_1_point_1aa2ac4c3811bf9f6ada0ad9ae37d0b49c" prot="public" virt="non-virtual"><scope>bezier::Point</scope><name>moveBy</name></member>
+      <member refid="classbezier_1_1_point_1a1e926219773aa0684a6329c8aaca6903" prot="public" virt="non-virtual"><scope>bezier::Point</scope><name>moveTo</name></member>
+      <member refid="classbezier_1_1_point_1a7aae96210ba0b027585354da7a89ed70" prot="public" virt="non-virtual"><scope>bezier::Point</scope><name>normal</name></member>
+      <member refid="classbezier_1_1_point_1affa05deaf327ba3f06ad22549f58aa62" prot="public" virt="non-virtual"><scope>bezier::Point</scope><name>normalize</name></member>
+      <member refid="classbezier_1_1_point_1ac46a979a6b714559a066096cb10f23e4" prot="public" virt="non-virtual"><scope>bezier::Point</scope><name>over</name></member>
+      <member refid="classbezier_1_1_point_1a69e0e3843fed67dc4def6003fc47943f" prot="public" virt="non-virtual"><scope>bezier::Point</scope><name>reflect</name></member>
+      <member refid="classbezier_1_1_point_1ab80043486d5208080b886508bc7d6a45" prot="public" virt="non-virtual"><scope>bezier::Point</scope><name>rotateOver</name></member>
+      <member refid="classbezier_1_1_point_1a274eed2d595fbf1e04441634c3f32f18" prot="public" virt="non-virtual"><scope>bezier::Point</scope><name>scale</name></member>
+      <member refid="classbezier_1_1_point_1a1fafe43db62786b6440ed7da2f65c94c" prot="public" virt="non-virtual"><scope>bezier::Point</scope><name>x</name></member>
+      <member refid="classbezier_1_1_point_1afef026c2349e08af94ac206129e0b1bf" prot="public" virt="non-virtual"><scope>bezier::Point</scope><name>y</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

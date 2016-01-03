@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="namespaceconnectors" kind="namespace" language="Python">
+    <compoundname>connectors</compoundname>
+    <innerclass refid="classconnectors_1_1_dconnector" prot="public">connectors::Dconnector</innerclass>
+    <innerclass refid="classconnectors_1_1_x_l_r" prot="public">connectors::XLR</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/db/camcam/connectors.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

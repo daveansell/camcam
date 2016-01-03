@@ -1,0 +1,353 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classsegments_1_1_arc" kind="class" language="Python" prot="public">
+    <compoundname>segments::Arc</compoundname>
+    <basecompoundref refid="classsegments_1_1_segment" prot="public" virt="non-virtual">segments.Segment</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classsegments_1_1_arc_1a2f9627da9fc390ae13f127c8549623b9" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple segments.Arc::dtheta</definition>
+        <argsstring></argsstring>
+        <name>dtheta</name>
+        <initializer>= math.atan(resolution/r1.length())</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="149" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="149" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_arc_1a3e800fb7cf3ef773cd127da981876810" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int segments.Arc::dtheta</definition>
+        <argsstring></argsstring>
+        <name>dtheta</name>
+        <initializer>= 45</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="151" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="151" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_arc_1a8e835a04e764d42e185f915fd9f3bce9" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>segments.Arc::dtheta</definition>
+        <argsstring></argsstring>
+        <name>dtheta</name>
+        <initializer>= -dtheta</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="153" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="153" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_arc_1a84be00812b1c397042f5b8be5feec518" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>segments.Arc::r</definition>
+        <argsstring></argsstring>
+        <name>r</name>
+        <initializer>= r1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="156" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="156" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_arc_1a5f0e51ef80f616c6a5ccf07a29d6a1de" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int segments.Arc::thetasum</definition>
+        <argsstring></argsstring>
+        <name>thetasum</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="157" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="157" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_arc_1aa60754cac3ecc1d49bfcd049b32fb6c0" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int segments.Arc::hasrisen</definition>
+        <argsstring></argsstring>
+        <name>hasrisen</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="158" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="158" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_arc_1a053bfc2466ef54bfb534c74ad4bb124b" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple segments.Arc::dot</definition>
+        <argsstring></argsstring>
+        <name>dot</name>
+        <initializer>= r.dot(r2)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="159" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="159" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_arc_1a48fad9c6c73047f249693b5068c6c7a8" prot="public" static="yes" mutable="no">
+        <type>list</type>
+        <definition>list segments.Arc::points</definition>
+        <argsstring></argsstring>
+        <name>points</name>
+        <initializer>= []</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="160" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="160" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_arc_1a955e1e9545d5c812bc9aaa69527cd0c5" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple segments.Arc::r</definition>
+        <argsstring></argsstring>
+        <name>r</name>
+        <initializer>= <ref refid="namespacesegments_1ae4847a0facad069d53643d562fac656b" kindref="member">rotate</ref>(r,<ref refid="classsegments_1_1_arc_1a2f9627da9fc390ae13f127c8549623b9" kindref="member">dtheta</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="162" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="162" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_arc_1ab3da41940de4a54ca10ad965fbb87460" prot="public" static="yes" mutable="no">
+        <type>tuple</type>
+        <definition>tuple segments.Arc::newdot</definition>
+        <argsstring></argsstring>
+        <name>newdot</name>
+        <initializer>= r.dot(r2)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="163" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="163" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_arc_1a6aa2787698e6f943a74a65737d2ed36b" prot="public" static="yes" mutable="no">
+        <type></type>
+        <definition>segments.Arc::dot</definition>
+        <argsstring></argsstring>
+        <name>dot</name>
+        <initializer>= <ref refid="classsegments_1_1_arc_1ab3da41940de4a54ca10ad965fbb87460" kindref="member">newdot</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="171" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="171" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classsegments_1_1_arc_1a71c20a4b59a2be61ce95288f70d9fc20" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>segments.Arc::seg_type</definition>
+        <argsstring></argsstring>
+        <name>seg_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="95" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_arc_1aeeb31eaddd0bacd72f18c68fdada8380" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>segments.Arc::cutto</definition>
+        <argsstring></argsstring>
+        <name>cutto</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="96" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_arc_1a387ceb50f0a06ce24bf80d7984cff84e" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>segments.Arc::cutfrom</definition>
+        <argsstring></argsstring>
+        <name>cutfrom</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="97" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_arc_1a933f083c2aa6751f5924f810eb8ae060" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>segments.Arc::direction</definition>
+        <argsstring></argsstring>
+        <name>direction</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="98" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classsegments_1_1_arc_1a7e382975126df937ab515c621259aca4" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>segments.Arc::centre</definition>
+        <argsstring></argsstring>
+        <name>centre</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="100" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classsegments_1_1_arc_1a08eec2d7f6ed97eefcdc0d41152dc057" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Arc.__init__</definition>
+        <argsstring></argsstring>
+        <name>__init__</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="94" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="94" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="classsegments_1_1_arc_1ab622cf97665a7232a67c3ca0daed782e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Arc.gcode</definition>
+        <argsstring></argsstring>
+        <name>gcode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="103" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="103" bodyend="116"/>
+      </memberdef>
+      <memberdef kind="function" id="classsegments_1_1_arc_1ad7afcfb937d2664dbb98f02dac056790" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Arc.svg</definition>
+        <argsstring></argsstring>
+        <name>svg</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="117" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="117" bodyend="137"/>
+      </memberdef>
+      <memberdef kind="function" id="classsegments_1_1_arc_1a19112ea291604037ab68f3892ef499d9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def segments.Arc.polygon</definition>
+        <argsstring></argsstring>
+        <name>polygon</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/segments.py" line="138" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="138" bodyend="146"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="48">
+        <label>segments.Arc</label>
+        <link refid="classsegments_1_1_arc"/>
+        <childnode refid="49" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>object</label>
+      </node>
+      <node id="49">
+        <label>segments.Segment</label>
+        <link refid="classsegments_1_1_segment"/>
+        <childnode refid="50" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="51">
+        <label>segments.Arc</label>
+        <link refid="classsegments_1_1_arc"/>
+        <childnode refid="52" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>object</label>
+      </node>
+      <node id="52">
+        <label>segments.Segment</label>
+        <link refid="classsegments_1_1_segment"/>
+        <childnode refid="53" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/segments.py" line="93" column="1" bodyfile="/home/db/camcam/segments.py" bodystart="93" bodyend="176"/>
+    <listofallmembers>
+      <member refid="classsegments_1_1_arc_1a08eec2d7f6ed97eefcdc0d41152dc057" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>__init__</name></member>
+      <member refid="classsegments_1_1_segment_1a1361eaaf9eaa73cb73d9201808842108" prot="public" virt="non-virtual" ambiguityscope="segments::Segment."><scope>segments::Arc</scope><name>__init__</name></member>
+      <member refid="classsegments_1_1_arc_1a7e382975126df937ab515c621259aca4" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>centre</name></member>
+      <member refid="classsegments_1_1_arc_1a387ceb50f0a06ce24bf80d7984cff84e" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>cutfrom</name></member>
+      <member refid="classsegments_1_1_arc_1aeeb31eaddd0bacd72f18c68fdada8380" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>cutto</name></member>
+      <member refid="classsegments_1_1_arc_1a933f083c2aa6751f5924f810eb8ae060" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>direction</name></member>
+      <member refid="classsegments_1_1_arc_1a053bfc2466ef54bfb534c74ad4bb124b" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>dot</name></member>
+      <member refid="classsegments_1_1_arc_1a6aa2787698e6f943a74a65737d2ed36b" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>dot</name></member>
+      <member refid="classsegments_1_1_arc_1a2f9627da9fc390ae13f127c8549623b9" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>dtheta</name></member>
+      <member refid="classsegments_1_1_arc_1a3e800fb7cf3ef773cd127da981876810" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>dtheta</name></member>
+      <member refid="classsegments_1_1_arc_1a8e835a04e764d42e185f915fd9f3bce9" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>dtheta</name></member>
+      <member refid="classsegments_1_1_arc_1ab622cf97665a7232a67c3ca0daed782e" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>gcode</name></member>
+      <member refid="classsegments_1_1_arc_1aa60754cac3ecc1d49bfcd049b32fb6c0" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>hasrisen</name></member>
+      <member refid="classsegments_1_1_arc_1ab3da41940de4a54ca10ad965fbb87460" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>newdot</name></member>
+      <member refid="classsegments_1_1_segment_1ad755cb568f5a00ba72459d41721a652e" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>out</name></member>
+      <member refid="classsegments_1_1_arc_1a48fad9c6c73047f249693b5068c6c7a8" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>points</name></member>
+      <member refid="classsegments_1_1_arc_1a19112ea291604037ab68f3892ef499d9" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>polygon</name></member>
+      <member refid="classsegments_1_1_segment_1ae8a07de4e87b72e7f915866647c577b8" prot="public" virt="non-virtual" ambiguityscope="segments::Segment."><scope>segments::Arc</scope><name>polygon</name></member>
+      <member refid="classsegments_1_1_arc_1a84be00812b1c397042f5b8be5feec518" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>r</name></member>
+      <member refid="classsegments_1_1_arc_1a955e1e9545d5c812bc9aaa69527cd0c5" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>r</name></member>
+      <member refid="classsegments_1_1_arc_1a71c20a4b59a2be61ce95288f70d9fc20" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>seg_type</name></member>
+      <member refid="classsegments_1_1_segment_1acaccd5af98d8073bdad79805908fefe4" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>seg_types</name></member>
+      <member refid="classsegments_1_1_segment_1a7a8dd4167be305d3adbc27ffa3a41ff1" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>simplegcode</name></member>
+      <member refid="classsegments_1_1_segment_1a8b156fa2dcd4f93f6d781d820b931da4" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>start</name></member>
+      <member refid="classsegments_1_1_arc_1ad7afcfb937d2664dbb98f02dac056790" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>svg</name></member>
+      <member refid="classsegments_1_1_segment_1a1b1ebb51664cb1aa198e6dd5a37520ba" prot="public" virt="non-virtual" ambiguityscope="segments::Segment."><scope>segments::Arc</scope><name>svg</name></member>
+      <member refid="classsegments_1_1_segment_1a4861399cabc87392517f539c38bb79d1" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>temp</name></member>
+      <member refid="classsegments_1_1_arc_1a5f0e51ef80f616c6a5ccf07a29d6a1de" prot="public" virt="non-virtual"><scope>segments::Arc</scope><name>thetasum</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

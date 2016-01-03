@@ -1,0 +1,640 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.9.1">
+  <compounddef id="classpath_1_1_pathgroup" kind="class" language="Python" prot="public">
+    <compoundname>path::Pathgroup</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">object</basecompoundref>
+    <derivedcompoundref refid="classparts_1_1_cable_tie" prot="public" virt="non-virtual">parts.CableTie</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_fan" prot="public" virt="non-virtual">parts.Fan</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_led_holder" prot="public" virt="non-virtual">parts.LedHolder</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_linear_bearing" prot="public" virt="non-virtual">parts.LinearBearing</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_round_shaft_support" prot="public" virt="non-virtual">parts.RoundShaftSupport</derivedcompoundref>
+    <derivedcompoundref refid="classparts_1_1_stepper_driver" prot="public" virt="non-virtual">parts.StepperDriver</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_angled_finger_joint_slope" prot="public" virt="non-virtual">shapes.AngledFingerJointSlope</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_chamfer" prot="public" virt="non-virtual">shapes.Chamfer</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_countersink_hole" prot="public" virt="non-virtual">shapes.CountersinkHole</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_cross" prot="public" virt="non-virtual">shapes.Cross</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_filled_circle" prot="public" virt="non-virtual">shapes.FilledCircle</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_finger_joint_box_mid_side" prot="public" virt="non-virtual">shapes.FingerJointBoxMidSide</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_finger_joint_mid" prot="public" virt="non-virtual">shapes.FingerJointMid</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_hole" prot="public" virt="non-virtual">shapes.Hole</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_hole_line" prot="public" virt="non-virtual">shapes.HoleLine</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_rect_speaker_grill" prot="public" virt="non-virtual">shapes.RectSpeakerGrill</derivedcompoundref>
+    <derivedcompoundref refid="classshapes_1_1_round_speaker_grill" prot="public" virt="non-virtual">shapes.RoundSpeakerGrill</derivedcompoundref>
+    <derivedcompoundref refid="classsvg_1_1_s_v_gimport" prot="public" virt="non-virtual">svg.SVGimport</derivedcompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classpath_1_1_pathgroup_1a743d42584e2a6744e2fddd9d251016bb" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Pathgroup::obType</definition>
+        <argsstring></argsstring>
+        <name>obType</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1233" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1233" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_pathgroup_1aebd1cee80f2cbaf72fc59245399eac6e" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Pathgroup::paths</definition>
+        <argsstring></argsstring>
+        <name>paths</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1234" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1234" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_pathgroup_1a4befbf72ed268a57ace2247f44e96d74" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Pathgroup::trace</definition>
+        <argsstring></argsstring>
+        <name>trace</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1235" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1235" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_pathgroup_1a506c871ab4905e489a907c64f936f4e8" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Pathgroup::varlist</definition>
+        <argsstring></argsstring>
+        <name>varlist</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1236" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1236" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_pathgroup_1a4ac30744a39d5bcc7fe5d792dcd1b7ce" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Pathgroup::otherargs</definition>
+        <argsstring></argsstring>
+        <name>otherargs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1237" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1237" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_pathgroup_1a0772494387ccef124f62a3a1c547f5e8" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Pathgroup::output</definition>
+        <argsstring></argsstring>
+        <name>output</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1244" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1244" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_pathgroup_1a6ed90a9f0149226914056bfc3630c7b8" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Pathgroup::parent</definition>
+        <argsstring></argsstring>
+        <name>parent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1245" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1245" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_pathgroup_1a94e9cadebf94ef1945f8ba095631daa7" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Pathgroup::comments</definition>
+        <argsstring></argsstring>
+        <name>comments</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1246" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1246" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classpath_1_1_pathgroup_1ab5f832d2785df23e41e7c9121885a002" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>path.Pathgroup::transform</definition>
+        <argsstring></argsstring>
+        <name>transform</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1247" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1247" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classpath_1_1_pathgroup_1a6d8fdfd1f6d3e2ac279f9407eb9ccc47" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Pathgroup.__init__</definition>
+        <argsstring>(self, args)</argsstring>
+        <name>__init__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>args</type>
+          <defname>args</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1228" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1228" bodyend="1230"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_pathgroup_1a9024aa309df58b977d4eb93e7e5e53c8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Pathgroup.init</definition>
+        <argsstring>(self, args)</argsstring>
+        <name>init</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>args</type>
+          <defname>args</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1231" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1231" bodyend="1248"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_pathgroup_1af3daf2374a35dcf1a96d1f91a96b332d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Pathgroup.__deepcopy__</definition>
+        <argsstring>(self, memo)</argsstring>
+        <name>__deepcopy__</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>memo</type>
+          <defname>memo</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1249" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1249" bodyend="1261"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_pathgroup_1ae2d5cd6d4f967daed162e238533bc393" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Pathgroup.get_config</definition>
+        <argsstring>(self)</argsstring>
+        <name>get_config</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1262" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1262" bodyend="1286"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_pathgroup_1a7c5d24404c5aecfdc2055a11650ccfb6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Pathgroup.comment</definition>
+        <argsstring>(self, comment)</argsstring>
+        <name>comment</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>comment</type>
+          <defname>comment</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1287" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1287" bodyend="1289"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_pathgroup_1a5014fca4558ad2f5bbce999e68548610" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Pathgroup.get_comments</definition>
+        <argsstring>(self, mode)</argsstring>
+        <name>get_comments</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>mode</type>
+          <defname>mode</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1290" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1290" bodyend="1298"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_pathgroup_1af55da85d788596bc6566091c0e457b5b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Pathgroup.add</definition>
+        <argsstring>(self, path)</argsstring>
+        <name>add</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>path</type>
+          <defname>path</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1299" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1299" bodyend="1300"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_pathgroup_1a3ae2d4ec2bec6339076a190879e18bdd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Pathgroup.add_path</definition>
+        <argsstring>(self, path)</argsstring>
+        <name>add_path</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>path</type>
+          <defname>path</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1301" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1301" bodyend="1313"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_pathgroup_1aab3791493c6fcb02fc647f03dea871a6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Pathgroup.output_path</definition>
+        <argsstring></argsstring>
+        <name>output_path</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1314" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1314" bodyend="1332"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_pathgroup_1a67aa15f33d3db050e065ce7013ae3a3c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Pathgroup.get_paths</definition>
+        <argsstring>(self, config)</argsstring>
+        <name>get_paths</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>config</type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1333" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1333" bodyend="1342"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_pathgroup_1a446ca452a2ea35faef3e51f1e9e4c428" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Pathgroup.render</definition>
+        <argsstring>(self, pconfig)</argsstring>
+        <name>render</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>pconfig</type>
+          <defname>pconfig</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1343" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1343" bodyend="1364"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_pathgroup_1af9588530d2d8a8f508254a11d71f7951" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Pathgroup.render_path</definition>
+        <argsstring>(self, path, config)</argsstring>
+        <name>render_path</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>path</type>
+          <defname>path</defname>
+        </param>
+        <param>
+          <type>config</type>
+          <defname>config</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1365" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1365" bodyend="1372"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_pathgroup_1a3637b74e2a08fc6168667ec8d21bee96" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Pathgroup.render_path_svg</definition>
+        <argsstring>(self, path)</argsstring>
+        <name>render_path_svg</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>path</type>
+          <defname>path</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1373" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1373" bodyend="1413"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_pathgroup_1ab0393714499705467f3a2edcf8858cd7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Pathgroup.render_path_gcode</definition>
+        <argsstring>(self, path)</argsstring>
+        <name>render_path_gcode</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>path</type>
+          <defname>path</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1414" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1414" bodyend="1439"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_pathgroup_1a08dd8c8ddcbc0f0fa3d19fc8b548aac3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Pathgroup.rotate</definition>
+        <argsstring>(self, pos, angle)</argsstring>
+        <name>rotate</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>pos</type>
+          <defname>pos</defname>
+        </param>
+        <param>
+          <type>angle</type>
+          <defname>angle</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1440" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1440" bodyend="1444"/>
+      </memberdef>
+      <memberdef kind="function" id="classpath_1_1_pathgroup_1a51342387e37950570ee0f66106d5ee0f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def path.Pathgroup.translate</definition>
+        <argsstring>(self, vec)</argsstring>
+        <name>translate</name>
+        <param>
+          <type>self</type>
+          <defname>self</defname>
+        </param>
+        <param>
+          <type>vec</type>
+          <defname>vec</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/db/camcam/path.py" line="1445" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1445" bodyend="1450"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1443">
+        <label>shapes.Chamfer</label>
+        <link refid="classshapes_1_1_chamfer"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1436">
+        <label>parts.CableTie</label>
+        <link refid="classparts_1_1_cable_tie"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1445">
+        <label>shapes.Cross</label>
+        <link refid="classshapes_1_1_cross"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1453">
+        <label>svg.SVGimport</label>
+        <link refid="classsvg_1_1_s_v_gimport"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1448">
+        <label>shapes.FingerJointMid</label>
+        <link refid="classshapes_1_1_finger_joint_mid"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1439">
+        <label>parts.LinearBearing</label>
+        <link refid="classparts_1_1_linear_bearing"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1434">
+        <label>path.Pathgroup</label>
+        <link refid="classpath_1_1_pathgroup"/>
+        <childnode refid="1435" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1437">
+        <label>parts.Fan</label>
+        <link refid="classparts_1_1_fan"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1452">
+        <label>shapes.RoundSpeakerGrill</label>
+        <link refid="classshapes_1_1_round_speaker_grill"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1435">
+        <label>object</label>
+      </node>
+      <node id="1449">
+        <label>shapes.Hole</label>
+        <link refid="classshapes_1_1_hole"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1447">
+        <label>shapes.FingerJointBoxMidSide</label>
+        <link refid="classshapes_1_1_finger_joint_box_mid_side"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1444">
+        <label>shapes.CountersinkHole</label>
+        <link refid="classshapes_1_1_countersink_hole"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1451">
+        <label>shapes.RectSpeakerGrill</label>
+        <link refid="classshapes_1_1_rect_speaker_grill"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1438">
+        <label>parts.LedHolder</label>
+        <link refid="classparts_1_1_led_holder"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1441">
+        <label>parts.StepperDriver</label>
+        <link refid="classparts_1_1_stepper_driver"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1442">
+        <label>shapes.AngledFingerJointSlope</label>
+        <link refid="classshapes_1_1_angled_finger_joint_slope"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1446">
+        <label>shapes.FilledCircle</label>
+        <link refid="classshapes_1_1_filled_circle"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1450">
+        <label>shapes.HoleLine</label>
+        <link refid="classshapes_1_1_hole_line"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1440">
+        <label>parts.RoundShaftSupport</label>
+        <link refid="classparts_1_1_round_shaft_support"/>
+        <childnode refid="1434" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1454">
+        <label>path.Pathgroup</label>
+        <link refid="classpath_1_1_pathgroup"/>
+        <childnode refid="1455" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1455">
+        <label>object</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/db/camcam/path.py" line="1227" column="1" bodyfile="/home/db/camcam/path.py" bodystart="1227" bodyend="1451"/>
+    <listofallmembers>
+      <member refid="classpath_1_1_pathgroup_1af3daf2374a35dcf1a96d1f91a96b332d" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>__deepcopy__</name></member>
+      <member refid="classpath_1_1_pathgroup_1a6d8fdfd1f6d3e2ac279f9407eb9ccc47" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>__init__</name></member>
+      <member refid="classpath_1_1_pathgroup_1af55da85d788596bc6566091c0e457b5b" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>add</name></member>
+      <member refid="classpath_1_1_pathgroup_1a3ae2d4ec2bec6339076a190879e18bdd" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>add_path</name></member>
+      <member refid="classpath_1_1_pathgroup_1a7c5d24404c5aecfdc2055a11650ccfb6" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>comment</name></member>
+      <member refid="classpath_1_1_pathgroup_1a94e9cadebf94ef1945f8ba095631daa7" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>comments</name></member>
+      <member refid="classpath_1_1_pathgroup_1a5014fca4558ad2f5bbce999e68548610" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>get_comments</name></member>
+      <member refid="classpath_1_1_pathgroup_1ae2d5cd6d4f967daed162e238533bc393" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>get_config</name></member>
+      <member refid="classpath_1_1_pathgroup_1a67aa15f33d3db050e065ce7013ae3a3c" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>get_paths</name></member>
+      <member refid="classpath_1_1_pathgroup_1a9024aa309df58b977d4eb93e7e5e53c8" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>init</name></member>
+      <member refid="classpath_1_1_pathgroup_1a743d42584e2a6744e2fddd9d251016bb" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>obType</name></member>
+      <member refid="classpath_1_1_pathgroup_1a4ac30744a39d5bcc7fe5d792dcd1b7ce" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>otherargs</name></member>
+      <member refid="classpath_1_1_pathgroup_1a0772494387ccef124f62a3a1c547f5e8" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>output</name></member>
+      <member refid="classpath_1_1_pathgroup_1aab3791493c6fcb02fc647f03dea871a6" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>output_path</name></member>
+      <member refid="classpath_1_1_pathgroup_1a6ed90a9f0149226914056bfc3630c7b8" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>parent</name></member>
+      <member refid="classpath_1_1_pathgroup_1aebd1cee80f2cbaf72fc59245399eac6e" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>paths</name></member>
+      <member refid="classpath_1_1_pathgroup_1a446ca452a2ea35faef3e51f1e9e4c428" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>render</name></member>
+      <member refid="classpath_1_1_pathgroup_1af9588530d2d8a8f508254a11d71f7951" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>render_path</name></member>
+      <member refid="classpath_1_1_pathgroup_1ab0393714499705467f3a2edcf8858cd7" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>render_path_gcode</name></member>
+      <member refid="classpath_1_1_pathgroup_1a3637b74e2a08fc6168667ec8d21bee96" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>render_path_svg</name></member>
+      <member refid="classpath_1_1_pathgroup_1a08dd8c8ddcbc0f0fa3d19fc8b548aac3" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>rotate</name></member>
+      <member refid="classpath_1_1_pathgroup_1a4befbf72ed268a57ace2247f44e96d74" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>trace</name></member>
+      <member refid="classpath_1_1_pathgroup_1ab5f832d2785df23e41e7c9121885a002" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>transform</name></member>
+      <member refid="classpath_1_1_pathgroup_1a51342387e37950570ee0f66106d5ee0f" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>translate</name></member>
+      <member refid="classpath_1_1_pathgroup_1a506c871ab4905e489a907c64f936f4e8" prot="public" virt="non-virtual"><scope>path::Pathgroup</scope><name>varlist</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
