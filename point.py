@@ -228,6 +228,7 @@ class Point(object):
 
 class PSharp(Point):
 	def __init__(self, pos, radius=0, cp1=False, cp2=False, direction=False, transform=False):
+		"""Create a sharp point at position=pos"""
 		self.init()
                 self.pos=Vec(pos)
                 self.point_type='sharp'
@@ -310,6 +311,7 @@ class PSharp(Point):
 
 class PAroundcurve(PSharp):
 	def __init__(self, pos, centre=False, radius=0, direction=False, transform=False):
+		"""Create a point which will head for point pos and then add an arc around the point centre with a radius=radius. Useful for adding ears around screw holes. if centre is not specified it is assumed it is the same as pos"""
                 self.init()
                 self.pos=Vec(pos)
                 self.point_type='aroundcurve'
@@ -405,6 +407,7 @@ class PAroundcurve(PSharp):
 
 class PIncurve(PSharp):
 	def __init__(self, pos, radius=0, direction=False, transform=False):
+		"""Create a point at position=pos which is then rounded off wot a rad=raidius, as if it were a piece of wood you have sanded off"""
 		self.init()
                 self.pos=Vec(pos)
                 self.point_type='incurve'
@@ -489,6 +492,7 @@ class PIncurve(PSharp):
 
 class PChamfer(Point):
 	def __init__(self, pos, chamfer=0, radius=0, direction=False, transform=False):
+		"""Create a chamfered point at position=pos, with the end cut off straight to a radius radius"""
 		self.init()
 		self.pos=Vec(pos)
 		if chamfer==0:
@@ -529,6 +533,7 @@ class PChamfer(Point):
 
 class POutcurve(Point):
 	def __init__(self, pos, radius=0, direction=False, transform=False):
+		"""Create an arc centred at position=pos with lines going towards and away from it at a tangent. """
 		self.init()
                 self.pos=Vec(pos)
                 self.point_type='outcurve'
@@ -692,6 +697,7 @@ class POutcurve(Point):
 		
 class PClear(PSharp):
 	def __init__(self, pos, transform=False):
+		"""Create a sharp point at position=pos with an extra cut so that a sharp corner will fit inside it"""
 		self.init()
                 self.pos=Vec(pos)
                 self.point_type='clear'
@@ -725,6 +731,7 @@ class PClear(PSharp):
 
 class PDoubleClear(Point):
 	def __init__(self, pos, transform=False):
+		"""Create a sharp point at position=pos with a cut on inside and out so it definitely clears all the material - useful for filling shapes"""
 		self.init()
                 self.pos=Vec(pos)
                 self.point_type='doubleclear'
@@ -803,7 +810,12 @@ class PBezierControl(Point):
 
 class PArc(Point):
 	def __init__(self, pos=False, radius=False, direction=False, length=False, transform=False):
-		"""radius - arc radius, direction - direction of arc, length - [short, long]"""
+		"""Create a sharp point at position=pos 
+radius - arc radius, direction - direction of arc, length - [short, long]
+Will try to guess the type of arc you have specified if insufficiently specified
+Must have sharp points either side of it
+If it can't reach either point with the arc, it will join up to them perpendicularly to the arc with straight lines
+"""
 		self.init()
 		self.pos=pos
 		self.radius=radius
