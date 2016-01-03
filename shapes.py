@@ -32,6 +32,12 @@ class Rect(Path):
 			ct=config['cornertype']
 		else:
 			ct='sharp'
+		args={}
+		if ct=='aroundcurve':
+			if 'direction' in config:
+				args['direction']=config['direction']
+			else:
+				args['direction'] = 'ccw'	
 		self.closed=True
 		if 'rad' not in config or config['rad'] is False:
 			rad = 0.01
@@ -44,10 +50,10 @@ class Rect(Path):
 			raise ValueError("Rectangle has no area")
 		self.comment("Rounded Square")
 		self.comment("bl="+str(bl)+" tr="+str(tr)+" rad="+str(rad))
-                self.add_point(bl,ct, radius=rad)
-                self.add_point(V(bl[0],tr[1],0),ct,radius=rad)
-                self.add_point(tr,ct,radius=rad)
-                self.add_point(V(tr[0],bl[1],0),ct,radius=rad)
+                self.add_point(bl,ct, radius=rad, **args)
+                self.add_point(V(bl[0],tr[1],0),ct,radius=rad, **args)
+                self.add_point(tr,ct,radius=rad, **args)
+                self.add_point(V(tr[0],bl[1],0),ct,radius=rad, **args)
 
 class RoundedRect(Rect):
 	def __init__(self, bl,  **config):
