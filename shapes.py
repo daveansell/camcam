@@ -1198,6 +1198,54 @@ class RoundedArc(Path):
 		self.add_point(PArc(pos+V(0,rad), radius=w, direction='cw', transform={'rotate':[pos, a1]}))
 
 
+class CutFunction(list):
+	def __init__(self, start, end, func, **config):
+		return cut_function(start, end, func, config)
+
+	def cut_function(self, start, end, func, config):
+		length = (end-start).length()
+		para = (end-start).normalize()
+		perp = rotate(para, 90)
+		
+		if 'step' in config:
+			step = config['step']
+			del(config['step'])
+		else:
+			step = 4
+		x=0
+		while x<length:
+			self.append( PSharp(start+x*para+func(x, **config)*perp))
+			x+=step
+		self.append(PSharp(end))
+		
+		
+
+class SineWave(CutFunction):
+	def __init__(self, start, end, **config):
+		args={}
+		length = (end-start).length()
+		if 'amplitude' in config:
+			args['amplitude'] = float(config['amplitude'])
+		else:
+			args['amplitude'] = 10.0
+		if 'cycles' in config:
+			args['k']= 2*math.pi*float(config['cycles'])/length
+		elif 'wavelength' in config:
+			args['k']= 2*math.pi/config['wavelength']
+		elif 'k' in config:
+			args['k'] = config['k']
+		if 'phase' in config:
+			args['phase'] = config['phase']
+		else:
+			args['phase'] = 0
+		if 'step' in config:
+			args['step'] = config['step']
+
+		return self.cut_function(start, end, self.sine, args)
+
+	def sine(self, x, amplitude, k, phase):
+		return amplitude * math.sin(x*k+phase)
+
 class Clamp(Path):
         def __init__(self, pos, inner_rad, outer_rad, **config):
                 self.init(config)
