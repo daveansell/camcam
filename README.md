@@ -25,3 +25,8 @@ It has quite nice features for dealing with objects made of multiple layers
 It can do funky things with finger joints including create arbitary polyhedra from them with the ArbitraryBox
 
 as the docs indicate this is very alpha atm  
+
+# Dependencies
+
+python-kivy
+dos2unix
