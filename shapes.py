@@ -1212,11 +1212,19 @@ class CutFunction(list):
 			del(config['step'])
 		else:
 			step = 4
+
+		if 'skew' in config:
+			skew = config['skew']
+			del(config['skew'])
+		else:
+			skew = 0
 		x=0
 		while x<length:
-			self.append( PSharp(start+x*para+func(x, **config)*perp))
+			y = func(x, **config)
+			self.append( PSharp(start+ (x+y*skew) *para + y*perp))
 			x+=step
 		self.append(PSharp(end))
+
 		
 		
 
@@ -1224,6 +1232,8 @@ class SineWave(CutFunction):
 	def __init__(self, start, end, **config):
 		args={}
 		length = (end-start).length()
+		para = (end-start).normalize()
+		perp = rotate(para, 90)
 		if 'amplitude' in config:
 			args['amplitude'] = float(config['amplitude'])
 		else:
@@ -1240,11 +1250,69 @@ class SineWave(CutFunction):
 			args['phase'] = 0
 		if 'step' in config:
 			args['step'] = config['step']
+		if 'skew' in config:
+			args['skew'] = config['skew']
 
 		return self.cut_function(start, end, self.sine, args)
 
 	def sine(self, x, amplitude, k, phase):
 		return amplitude * math.sin(x*k+phase)
+
+class RepeatWave(list):
+	def __init__(self, start, end, points, **config):
+		self.cut_wave(start, end, points, config)
+
+	def cut_wave(self, start, end, points, config):
+		length = (end-start).length()
+		if 'wavelength' in config:
+			wavelength = config['wavelength']
+			cycles = length / wavelength
+		elif 'cycles' in config:
+			cycles = config['cycles']
+			wavelength = length/cycles
+		if 'amplitude' in config:
+			amplitude = config['amplitude']
+		else:
+			amplitude = 10
+		print length
+		print wavelength
+		print cycles
+		para = (end-start).normalize() 
+		print para
+		perp = rotate(para, 90) * amplitude
+		para *= wavelength
+		print para
+		print perp
+		for i in range(0,int(cycles)):	
+			print wavelength * i	
+			for p in points:
+				self.append( PSharp(  start + i * para + para* float(p[0]) + perp * float(p[1])))
+		
+
+class SquareWave(RepeatWave):
+	def __init__(self, start, end, **config):
+		args={}
+		length = (end-start).length()
+		if 'amplitude' in config:
+			args['amplitude'] = float(config['amplitude'])
+		else:
+			args['amplitude'] = 10.0
+		if 'offset' in config:
+			args['offset']=config['offset']
+		else:
+			args['offset']=0
+
+		if 'cycles' in config:
+			args['wavelength'] = length/config['cycles']
+			args['cycles'] = config['cycles']  
+		else:
+			args['wavelength'] = config['wavelength']
+			args['cycles'] = int(length/config['wavelength'])
+		return self.cut_wave(start, end, [V(0, 0), V(0, 1), V(0.5, 1), V(0.5, 0), V(0.5, -1), V(1, -1), V(1, 0)], args)
+
+
+	
+
 
 class Clamp(Path):
         def __init__(self, pos, inner_rad, outer_rad, **config):
