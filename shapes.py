@@ -1274,19 +1274,17 @@ class RepeatWave(list):
 			amplitude = config['amplitude']
 		else:
 			amplitude = 10
-		print length
-		print wavelength
-		print cycles
+		if 'skew' in config:
+			skew = config['skew']
+		else:
+			skew = 0
+		print skew
 		para = (end-start).normalize() 
-		print para
 		perp = rotate(para, 90) * amplitude
 		para *= wavelength
-		print para
-		print perp
 		for i in range(0,int(cycles)):	
-			print wavelength * i	
 			for p in points:
-				self.append( PSharp(  start + i * para + para* float(p[0]) + perp * float(p[1])))
+				self.append( PSharp(  start + i * para + para* (float(p[0]) + skew * float(p[1])) + perp * float(p[1])))
 		
 
 class SquareWave(RepeatWave):
@@ -1301,6 +1299,8 @@ class SquareWave(RepeatWave):
 			args['offset']=config['offset']
 		else:
 			args['offset']=0
+		if 'skew' in config:
+			args['skew'] = config['skew']
 
 		if 'cycles' in config:
 			args['wavelength'] = length/config['cycles']
@@ -1311,6 +1311,28 @@ class SquareWave(RepeatWave):
 		return self.cut_wave(start, end, [V(0, 0), V(0, 1), V(0.5, 1), V(0.5, 0), V(0.5, -1), V(1, -1), V(1, 0)], args)
 
 
+class TriangleWave(RepeatWave):
+	def __init__(self, start, end, **config):
+		args={}
+		length = (end-start).length()
+		if 'amplitude' in config:
+			args['amplitude'] = float(config['amplitude'])
+		else:
+			args['amplitude'] = 10.0
+		if 'offset' in config:
+			args['offset']=config['offset']
+		else:
+			args['offset']=0
+		if 'skew' in config:
+			args['skew'] = config['skew']
+
+		if 'cycles' in config:
+			args['wavelength'] = length/config['cycles']
+			args['cycles'] = config['cycles']  
+		else:
+			args['wavelength'] = config['wavelength']
+			args['cycles'] = int(length/config['wavelength'])
+		return self.cut_wave(start, end, [V(0, 0), V(0.25, 1),  V(0.5, 0), V(0.75, -1), V(1, 0)], args)
 	
 
 
