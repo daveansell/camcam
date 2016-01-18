@@ -149,6 +149,8 @@ class Point(object):
 		self.dot=b1.dot(b2)
                 if self.dot>=1:
                         self.angle = 0
+		elif self.dot<=-1:
+			self.angle = math.pi
                 else:
                         self.angle = math.acos(b1.dot(b2))
 		a=b2-b1
