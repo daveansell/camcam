@@ -702,7 +702,7 @@ class Path(object):
 		return config
 #  output the path
 	def render(self,pconfig):
-		out=""
+		out=[]
 # Do something about offsets manually so as not to rely on linuxcnc
 		config=self.generate_config(pconfig)
 		if hasattr(self,'__render__') and callable(self.__render__):
@@ -833,13 +833,13 @@ class Path(object):
 			thepath=fillpath
 
 		thepath.output_path(c)
-		out += thepath.render_path(thepath,c)
+		out.append( thepath.render_path(thepath,c))
 		if finalpass:
 			c['z0']=c['z1']
 			c['z1']=config['z1']
 			c['partial_fill']=None
 			offpath.output_path(c)
-			out += offpath.render_path(offpath,c)
+			out.append( offpath.render_path(offpath,c))
 		return [config['cutter'],out]
 
 
@@ -896,6 +896,7 @@ class Path(object):
 			ret+=self.render_path_gcode(self.output,config)
 		elif config['mode']=='scr':
 			ret+=self.render_path_scr(self.output,config)
+			
 # 		elif config['mode']=='simplegcode':
 #			ret+=self.render_path_gcode(self.output,config)+'G0Z%0.2f\n'%config['clear_height']
 		return ret
@@ -1340,102 +1341,6 @@ class Pathgroup(object):
 			elif p.obType=='Pathgroup':
 				paths.extend(p.get_paths(config))
 		return paths
-	def render(self, pconfig):
-		if hasattr(self,'__render__') and callable(self.__render__):
-                        self.__render__(pconfig)
-		paths = self.output_path( pconfig)
-		ret={}
-		comments=self.get_comments(pconfig['mode'])
-		config=pconfig
-		for path in paths:
-			if path.obType=='Path':
-				(k,p)=path.render(pconfig)
-				if config['mode']=='svg':
-					ret[p[0]]+="<g>\n"+p[1]+"</g>\n"
-				else:
-					ret[p[0]]+= p[1] #path.render_path(path,config)
-			elif path.obType=='Pathgroup':
-				for p in path.render(pconfig):
-					if config['mode']=='svg':
-	                                        ret[p[0]]+="<g>\n"+p[1]+"</g>\n"
-					else:
-						ret[p[0]]+= p[1]
-		return ret
-			
-	def render_path(self,path,config):
-		ret=""
-		if config['mode']=='svg':
-			ret+=self.render_path_svg(path)
-		elif config['mode']=='gcode' or config['mode']=='simplegcode':
-			ret+=self.render_path_gcode(path)+'G0Z%0.2f\n'%config['clear_height']
-		return ret
-		
-	def render_path_svg(self,path):
-		ret=""
-		comments=""
-		for point in path:
-			if 'cmd' in point:
-				ret+=" "+point['cmd']
-			if 'rx' in point:
-				ret+=" %0.2f"%point['rx']
-			if 'ry' in point:
-				ret+=",%0.2f"%point['ry']
-			if '_rot' in point:
-				ret+=" %0.0f"%point['_rot']
-			if '_lf' in point:
-				ret+=" %s"%point['_lf']
-			if '_dir' in point:
-				ret+=" %s"%point['_dir']
-			if 'x' in point:
-				ret+=" %0.2f"%point['x']
-			if 'y' in point:
-				ret+=",%0.2f"%point['y']
-			if 'x2' in point:
-				ret+=" %0.2f"%point['x2']
-			if 'y2' in point:
-				ret+=",%0.2f"%point['y2']
-			if 'x3' in point:
-				ret+=" %0.2f"%point['x3']
-			if 'y3' in point:
-				ret+=",%0.2f"%point['y3']
-			if '_comment' in point:
-				comments+="<!--"+point['_comment']+"-->\n"
-			if '_colour' in point and point['colour'] is not None:
-				colour=point['_colour']
-			else:
-				colour='black'
-			if '_closed' in point and point['_closed']:
-				z=' Z'
-			else:
-				z=''
-		ret+=z
-		return comments+"<path d=\""+ret+"\"  stroke-width='0.1px' fill='none' stroke='"+colour+"'/>\n"
-
-	def render_path_gcode(self,path):
-		ret=""
-		for point in path:
-			if '_comment' in point:
-				ret+="("+point['_comment']+")"
-			if 'cmd' in point:
-				ret+=point['cmd']
-			if 'X' in point:
-                                ret+="X%0.2f"%point['X']
-			if 'Y' in point:
-                                ret+="Y%0.2f"%point['Y']
-			if 'Z' in point:
-                                ret+="Z%0.2f"%point['Z']
-			if 'I' in point:
-                                ret+="I%0.2f"%point['I']
-			if 'J' in point:
-                                ret+="J%0.2f"%point['J']
-			if 'K' in point:
-                                ret+="K%0.2f"%point['K']
-			if 'L' in point:
-                                ret+="L%0.2f"%point['L']
-			if 'F' in point:
-                                ret+="F%0.2f"%point['F']
-			ret+="\n"
-		return ret
 
 	def rotate(self,pos, angle):
 		if self.transform==False:
@@ -1905,6 +1810,7 @@ class Part(object):
 
 # stores a series of parts which can overlap in layers
 class Plane(Part):
+	output_modes={}
 	def __init__(self,name, **config):
 		if 'plane' not in config:
 			plane=V(0,0,1)
@@ -1934,6 +1840,7 @@ class Plane(Part):
 		self.copies=[]
 		self.bom=[]
 		self.number=1
+	#	self.output_modes={}
 		self.ignore_border=False
 		for v in self.varlist:
                         if v in config:
@@ -2076,6 +1983,9 @@ class Plane(Part):
 				out+="<!-- "+str(part.name)+" - "+str(key)+" -->\n"+output[key]
 			elif self.modeconfig['mode']=='scr':
 				out+='\n\n'+output[key]
+			elif self.modeconfig['mode'] in self.output_modes:
+				self.output_modes[self.modeconfig['mode']](part.name,key, output[key], part.border, config)
+
 		if self.modeconfig['mode']=='svg' or self.modeconfig['mode']=='scr':	
 		#	f=open(parent.name+"_"+self.name+"_"+part.name)
 			if part.border != None:
