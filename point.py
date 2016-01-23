@@ -39,8 +39,12 @@ class Point(object):
 		self.cp1=V(0,0)
 		self.cp2=V(0,0)
 		self.radius=0
+		self.setup=False
 		if not hasattr(self,'reverse'):
 			self.reverse=False	
+	def _setup(self):
+		self.setup=True
+
         def copy(self):
                 t = Point( self.pos, self.point_type, self.radius, self.cp1, self.cp2, self.direction, self.transform)
 		
@@ -121,9 +125,11 @@ class Point(object):
 	def next(self):
 		if self.reverse:
 			self.lastpoint.reverse=1
+		#	self.lastpoint._setup()
 			return self.lastpoint
 		else:
 			self.nextpoint.reverse=0
+		#	self.lastpoint._setup()
 			return self.nextpoint
 
 	def last(self):
@@ -132,6 +138,7 @@ class Point(object):
 			return self.nextpoint
 		else:
 			self.lastpoint.reverse=0
+			self.lastpoint._setup()
 			return self.lastpoint
 
 	def generateSegment(self, reverse, config):
@@ -144,6 +151,7 @@ class Point(object):
 			return []
 
 	def setangle(self):
+		self._setup()
 		b1=(self.pos-self.lastorigin()).normalize()
                 b2=(self.nextorigin()-self.pos).normalize()
 		self.dot=b1.dot(b2)
@@ -268,11 +276,11 @@ class PSharp(Point):
 	#		t=POutcurve(self.pos, radius=distance, transform=self.transform)
            		if (self.angle==0 or self.angle==math.pi and self.dot<0) and self.last().point_type in ['sharp', 'clear', 'doubleclear'] and self.next().point_type in ['sharp', 'clear', 'doubleclear']:
       				pass
-			elif self.angle==0 and self.point_type in ['sharp', 'clear', 'doubleclear'] and self.next().point_type in ['sharp', 'clear', 'doubleclear']:
+			elif self.angle==0  and self.point_type in ['sharp', 'clear', 'doubleclear'] and self.next().point_type in ['sharp', 'clear', 'doubleclear']:
 					return []
 				
                    	else:
-				if abs(self.dot-1)<=0.00000001:
+				if abs(self.dot-1)<=0.00000001 or abs(self.dot+1) <=0.00000001:
 					t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, -distance)
                           	elif self.dot<=0:
                                     	if self.angle>math.pi/2:
@@ -407,6 +415,7 @@ class PAroundcurve(PSharp):
 		else:
 			return op+rotate(vecin,90)
 
+
 class PIncurve(PSharp):
 	def __init__(self, pos, radius=0, direction=False, transform=False):
 		"""Create a point at position=pos which is then rounded off wot a rad=raidius, as if it were a piece of wood you have sanded off"""
@@ -426,6 +435,7 @@ class PIncurve(PSharp):
 		t.forcenextpoint = self.nextpoint
 		return t
 	def origin(self, forward=True):
+		self._setup()
 		return self.pos
 	def end(self):
 		lastpoint=self.last().origin()
@@ -444,6 +454,7 @@ class PIncurve(PSharp):
 			return self.pos
 		return self.pos+(lastpoint-self.pos).normalize()*dl
 	def offset(self, side, distance, direction):
+		self._setup()
 		self.setangle()
 		t=copy.copy(self)
 		if self.corner_side(side)=='external':
@@ -462,6 +473,7 @@ class PIncurve(PSharp):
                          #               t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.cos(angle0)))
 		return t
 	def makeSegment(self, config):
+		self._setup()
 		if self.last() != None and self.next() !=None:
 			lastpoint=self.lastorigin()
 			nextpoint=self.nextorigin()
@@ -491,6 +503,50 @@ class PIncurve(PSharp):
 			return [Line(self.last().origin(), self.pos)]
 		else:
 			return []
+
+
+class PSmoothArc(PIncurve):
+	def __init__(self, pos=False, radius=0, direction=False, transform=False):
+		"""Create a point at position=pos which is then rounded off wot a rad=raidius, as if it were a piece of wood you have sanded off"""
+		self.init()
+#                self.pos=Vec(pos)
+                self.point_type='incurve'
+		self.pos=None
+		self.direction=False
+		self.transform = transform
+#                self.radius=radius
+#                self.direction=direction
+#                self.transform=transform
+                self.obType="Point"
+        def copy(self):
+		if self.setup:
+	                t= PIncurve( self.pos, self.radius, self.direction, self.transform)
+		else:
+			t= PSmoothArc(transform=self.transform)
+                t.reverse=self.reverse
+                t.lastpoint=self.lastpoint
+                t.nextpoint=self.nextpoint
+                t.forcelastpoint = self.lastpoint
+                t.forcenextpoint = self.nextpoint
+		return t
+	def _setup(self):
+		if not self.setup:
+			lastvec=self.last().pos-self.last().lastorigin()
+#                        rlastvec=rotate(lastvec,90)
+                        nextvec=self.next().pos-self.next().nextorigin()
+ #                       rnextvec=rotate(nextvec,90)
+                        self.pos = self.next().pos.intersect_lines(self.last().pos, self.last().lastorigin(), self.next().pos, self.next().nextorigin())
+			dot=lastvec.normalize().dot(nextvec.normalize())
+                	if dot>=1:
+                        	angle = 0
+                	elif dot<=-1:
+                        	angle = math.pi
+                	else:
+                        	angle = math.acos(dot)
+			
+			d = min((self.pos-self.next().pos).length(), (self.pos-self.last().pos).length())
+			self.radius = d * math.tan(angle/2)
+			self.setup=True
 
 class PChamfer(Point):
 	def __init__(self, pos, chamfer=0, radius=0, direction=False, transform=False):
@@ -811,7 +867,7 @@ class PBezierControl(Point):
 			return []
 
 class PArc(Point):
-	def __init__(self, pos=False, radius=False, direction=False, length=False, transform=False):
+	def __init__(self, pos=None, radius=None, direction=None, length=False, transform=False):
 		"""Create a sharp point at position=pos 
 radius - arc radius, direction - direction of arc, length - [short, long]
 Will try to guess the type of arc you have specified if insufficiently specified
@@ -837,7 +893,6 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 		return t
 
 	def checkArc(self):
-		print "PArc radius="+str(self.radius) +" pos="+str(self.pos) + " length="+ str(self.length)
 		if self.pos is not None and self.radius is not False:
 			if (self.pos-self.last().pos).length()-self.radius>000.1 or (self.next().pos-self.pos).length()-self.radius>0.001:
 				print "Arc's radius should be <= distance to the centre"+str(self.next().pos)+"->"+str(self.pos)+"->"+str(self.last().pos)+" radius="+str(self.radius)+" AC-radius="+str((self.pos-self.last().pos).length()-self.radius)+" BC-raiuds="+str((self.next().pos-self.pos).length()-self.radius)
@@ -853,7 +908,6 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 			else:
 				perp=rotate(l.normalize(),90)
 			self.pos = self.last().pos + l/2 + perp * b
-			print "ARC GENERATE POS = "+str(self.pos)
 		elif self.pos is not None:
 			self.radius=min((self.next().pos-self.pos).length(), (self.pos- self.last().pos).length())
 	def makeSegment(self, config):
@@ -874,6 +928,7 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 			return [ Line(self.last().pos, centre-a), Arc(centre-a, centre+a, self.pos, d), Line(centre+a, self.next().pos)]
 		
         def origin(self, forward=True):
+		self.checkArc()
                 if forward:
                         op=self.last().pos
                 else:
