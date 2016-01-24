@@ -831,7 +831,6 @@ class Path(object):
 #				fillpath.points = fillpath.points[::-1]
 			offpath=thepath
 			thepath=fillpath
-
 		thepath.output_path(c)
 		out.append( thepath.render_path(thepath,c))
 		if finalpass:
@@ -896,7 +895,8 @@ class Path(object):
 			ret+=self.render_path_gcode(self.output,config)
 		elif config['mode']=='scr':
 			ret+=self.render_path_scr(self.output,config)
-			
+		else:
+			return self.output	
 # 		elif config['mode']=='simplegcode':
 #			ret+=self.render_path_gcode(self.output,config)+'G0Z%0.2f\n'%config['clear_height']
 		return ret
@@ -1932,9 +1932,15 @@ class Plane(Part):
 					#	k=getattr(path,self.modeconfig['group'])
 					#	if (k==False or k==None) and self.modeconfig['group']=='cutter':
 					#		k=config['cutter']
-					if k not in output.keys():
-						output[k]=''
-					output[k]+=''.join(pa)
+					if 'render_string' not in self.modeconfig or self.modeconfig['render_string']:
+						if k not in output.keys():
+							output[k]=''
+						output[k]+=''.join(pa)
+					else:
+						if k not in output.keys():
+							output[k]=[]
+						output[k].append(pa)
+						
 					lastcutter=k
 			if path.obType=="Pathgroup":
 				for p in path.get_paths(config):
@@ -1945,9 +1951,15 @@ class Plane(Part):
 							c=c+1
 						#else:
 						#	k=config[self.modeconfig['group']]#getattr(p,self.modeconfig['group'])
-						if k not in output.keys():
-							output[k]=''
-						output[k] += ''.join(pa)
+						if 'render_string' not in self.modeconfig or self.modeconfig['render_string']:
+							if k not in output.keys():
+								output[k]=''
+							output[k] += ''.join(pa)
+						else:
+							if k not in output.keys():
+								output[k]=[]
+							output[k].append(pa)
+							
 						lastcutter = k
 					
 				# this may be a pathgroup - needs flattening - needs config to propagate earlier or upwards- drill a hole of non-infinite depth through several layers??
@@ -1963,19 +1975,28 @@ class Plane(Part):
 				if not config['sep_border']: #1==1 or part.cutter == lastcutter:
 					if self.modeconfig['mode'] == 'scr':
 						output[k] += "LAYER " + str(self.modeconfig[k])+"\n"
-					if not k in output:
-						output[k]=''
-					output[k]+=b
+					if 'render_string' not in self.modeconfig or self.modeconfig['render_string']:
+						if not k in output:
+							output[k]=''
+						output[k]+=b
+					else:
+						if k not in output.keys():
+							output[k]=[]
+						output[k].append(pa)
 				else:
 					if self.modeconfig['mode'] == 'scr':
 						output[k] += "LAYER " + str(self.modeconfig['border_layer'])+"\n"
 					output['__border']=b
 			else:
-				if self.modeconfig['mode'] == 'scr':
-					output['__border'] = "LAYER " + str(self.modeconfig['border_layer'])+"\n"
+				if 'render_string' not in self.modeconfig or self.modeconfig['render_string']:
+					if self.modeconfig['mode'] == 'scr':
+						output['__border'] = "LAYER " + str(self.modeconfig['border_layer'])+"\n"
+					else:
+						output['__border'] = ''
+					output['__border']+=b
 				else:
-					output['__border'] = ''
-				output['__border']+=b
+					
+					output['__border']=[b]
 		for key in sorted(output.iterkeys()):
 			if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
 				self.writeGcodeFile(part.name,key, output[key], part.border, config)
@@ -1983,8 +2004,8 @@ class Plane(Part):
 				out+="<!-- "+str(part.name)+" - "+str(key)+" -->\n"+output[key]
 			elif self.modeconfig['mode']=='scr':
 				out+='\n\n'+output[key]
-			elif self.modeconfig['mode'] in self.output_modes:
-				self.output_modes[self.modeconfig['mode']](part.name,key, output[key], part.border, config)
+			elif self.modeconfig['mode'] in self.output_modes and self.modeconfig['group']!=False:
+				self.output_modes[self.modeconfig['mode']](self, part.name,key, output[key], part.border, config)
 
 		if self.modeconfig['mode']=='svg' or self.modeconfig['mode']=='scr':	
 		#	f=open(parent.name+"_"+self.name+"_"+part.name)
@@ -2004,6 +2025,8 @@ class Plane(Part):
 				f=open(filename,'w')
 				f.write( self.modeconfig['prefix'] + out + self.modeconfig['postfix'] )
 				f.close()
+		elif self.modeconfig['mode'] in self.output_modes and self.modeconfig['group'] == False:
+			self.output_modes[self.modeconfig['mode']](self, part.name,key, output, part.border, config)
 
 	def writeGcodeFile(self,partName, key, output, border, config):
 		filename=str(partName)+"_"+str(self.name)+"_"+str(key)

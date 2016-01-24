@@ -28,8 +28,8 @@ class Milling:
 				'border_layer':20, #dimension
 				'postfix':'',
                                 'mode':'scr',
-                                'group':False,
                                 'toolchange':'none',
+                                'group':False,
 				'mirror_backs':False,
 				'overview':False,
 				'clear_height':10,
