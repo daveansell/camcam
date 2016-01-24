@@ -99,7 +99,7 @@ class Milling:
 				'toolchange':'none',
 				'group':False,
 				'overview':False,
-                                'hide_cuts':False,
+                                'hide_cuts':True,
 				'label':False,
 				'zero':False,
 				'file_suffix':'.dxf',
