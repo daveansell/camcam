@@ -271,16 +271,21 @@ class RectSpeakerGrill(Pathgroup):
                 """Cut a rectangular grid with width :param width: and height :param height: of holes with radius :param holerad: and :param spacing:"""+self.otherargs
 		yspacing=spacing*math.cos(math.pi/6)
                 numholesx = int(math.ceil(width/spacing)+1)
-                numholesy = int(math.ceil(height/yspacing)+1)
+                numholesy = float(math.floor(height/yspacing)+1)
+		print numholesy
+		print height/yspacing
 		for x in range(-numholesx,numholesx):
-                        for y in range(-numholesy,numholesy):
-                                if y%2:
+			count =0;
+                        for y0 in range(-int(numholesy),int(numholesy),2):
+				y=float(y0)/2
+				print str(y0)+"  "+str(y)
+                                if count%2:
                                         p=V(x*spacing, y*yspacing)
                                 else:
                                         p=V((x+0.5)*spacing, y*yspacing)
 				if abs(p[0])<width/2-holerad and abs(p[1])<height/2-holerad:
 	                                self.add(Hole(pos+p, rad=holerad))
-
+				count+=1
 class LobedCircle(Path):
 	def __init__(self,pos, rad, lobe_angle, loberad, num_lobes, lobe_length, **config):
 		self.init(config)
