@@ -1031,8 +1031,8 @@ class Path(object):
 			cut['_colour']=self.get_colour(config)
 			if 'opacity' in config:
 				cut['_opacity'] = config['opacity']
-			if 'closed' in config:
-				cut['_closed'] = config['closed']
+			if self.closed:
+				cut['_closed'] = self.closed
 	# get the colour this path should be cut in
 	def get_colour(self,config):
 		if 'forcecolour' in config and config['forcecolour']:
@@ -1139,7 +1139,7 @@ class Path(object):
 		if self.mode=='gcode' or self.mode=='simplegcode':
 			self.add_out([{'cmd':'G0','Z':config['clear_height']}])
 			self.add_feedrates(config)
-		elif self.mode=='svg':
+		elif self.mode=='svg' or self.mode=='scr':
 			self.add_colour(config)	
 	def quickdown(self,z):
 		if self.mode=='gcode' or self.mode=='simplegcode':
@@ -1978,7 +1978,7 @@ class Plane(Part):
 					if 'render_string' not in self.modeconfig or self.modeconfig['render_string']:
 						if not k in output:
 							output[k]=''
-						output[k]+=b
+						output[k]+= ''.join(b)
 					else:
 						if k not in output.keys():
 							output[k]=[]
