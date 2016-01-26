@@ -271,7 +271,7 @@ class RectSpeakerGrill(Pathgroup):
                 """Cut a rectangular grid with width :param width: and height :param height: of holes with radius :param holerad: and :param spacing:"""+self.otherargs
 		yspacing=spacing*math.cos(math.pi/6)
                 numholesx = int(math.ceil(width/spacing)+1)
-                numholesy = int(math.ceil(height/yspacing))
+                numholesy = int(math.ceil(height/yspacing)+1)
 		for x in range(-numholesx,numholesx):
                         for y in range(-numholesy,numholesy):
                                 if y%2:
