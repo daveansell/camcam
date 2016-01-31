@@ -719,7 +719,7 @@ class Path(object):
 			elif config['overview']:
 				self.output_path(config)
 				#out = thepath.render_path(thepath,c) + self.render_path(self,config)
-				out = self.render_path(self,config)
+				out = [self.render_path(self,config)]
 #			else:
 #				out = thepath.render_path(thepath,config)
 		else:
@@ -1993,7 +1993,9 @@ class Plane(Part):
 						output['__border'] = "LAYER " + str(self.modeconfig['border_layer'])+"\n"
 					else:
 						output['__border'] = ''
-					output['__border']+=b
+					print output['__border']
+					print b
+					output['__border']+=b[0]
 				else:
 					
 					output['__border']=[b]
