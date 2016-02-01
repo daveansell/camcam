@@ -271,16 +271,21 @@ class RectSpeakerGrill(Pathgroup):
                 """Cut a rectangular grid with width :param width: and height :param height: of holes with radius :param holerad: and :param spacing:"""+self.otherargs
 		yspacing=spacing*math.cos(math.pi/6)
                 numholesx = int(math.ceil(width/spacing)+1)
-                numholesy = int(math.ceil(height/yspacing))
+                numholesy = float(math.floor(height/yspacing)+1)
+		print numholesy
+		print height/yspacing
 		for x in range(-numholesx,numholesx):
-                        for y in range(-numholesy,numholesy):
-                                if y%2:
+			count =0;
+                        for y0 in range(-int(numholesy),int(numholesy),2):
+				y=float(y0)/2
+				print str(y0)+"  "+str(y)
+                                if count%2:
                                         p=V(x*spacing, y*yspacing)
                                 else:
                                         p=V((x+0.5)*spacing, y*yspacing)
 				if abs(p[0])<width/2-holerad and abs(p[1])<height/2-holerad:
 	                                self.add(Hole(pos+p, rad=holerad))
-
+				count+=1
 class LobedCircle(Path):
 	def __init__(self,pos, rad, lobe_angle, loberad, num_lobes, lobe_length, **config):
 		self.init(config)
@@ -1196,6 +1201,144 @@ class RoundedArc(Path):
 		self.add_point(PArc(pos+V(0,0), radius=rad-w, direction='ccw'))
 		self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a1]}))
 		self.add_point(PArc(pos+V(0,rad), radius=w, direction='cw', transform={'rotate':[pos, a1]}))
+
+
+class CutFunction(list):
+	def __init__(self, start, end, func, **config):
+		return cut_function(start, end, func, config)
+
+	def cut_function(self, start, end, func, config):
+		length = (end-start).length()
+		para = (end-start).normalize()
+		perp = rotate(para, 90)
+		
+		if 'step' in config:
+			step = config['step']
+			del(config['step'])
+		else:
+			step = 4
+
+		if 'skew' in config:
+			skew = config['skew']
+			del(config['skew'])
+		else:
+			skew = 0
+		x=0
+		while x<length:
+			y = func(x, **config)
+			self.append( PSharp(start+ (x+y*skew) *para + y*perp))
+			x+=step
+		self.append(PSharp(end))
+
+		
+		
+
+class SineWave(CutFunction):
+	def __init__(self, start, end, **config):
+		args={}
+		length = (end-start).length()
+		para = (end-start).normalize()
+		perp = rotate(para, 90)
+		if 'amplitude' in config:
+			args['amplitude'] = float(config['amplitude'])
+		else:
+			args['amplitude'] = 10.0
+		if 'cycles' in config:
+			args['k']= 2*math.pi*float(config['cycles'])/length
+		elif 'wavelength' in config:
+			args['k']= 2*math.pi/config['wavelength']
+		elif 'k' in config:
+			args['k'] = config['k']
+		if 'phase' in config:
+			args['phase'] = config['phase']
+		else:
+			args['phase'] = 0
+		if 'step' in config:
+			args['step'] = config['step']
+		if 'skew' in config:
+			args['skew'] = config['skew']
+
+		return self.cut_function(start, end, self.sine, args)
+
+	def sine(self, x, amplitude, k, phase):
+		return amplitude * math.sin(x*k+phase)
+
+class RepeatWave(list):
+	def __init__(self, start, end, points, **config):
+		self.cut_wave(start, end, points, config)
+
+	def cut_wave(self, start, end, points, config):
+		length = (end-start).length()
+		if 'wavelength' in config:
+			wavelength = config['wavelength']
+			cycles = length / wavelength
+		elif 'cycles' in config:
+			cycles = config['cycles']
+			wavelength = length/cycles
+		if 'amplitude' in config:
+			amplitude = config['amplitude']
+		else:
+			amplitude = 10
+		if 'skew' in config:
+			skew = config['skew']
+		else:
+			skew = 0
+		print skew
+		para = (end-start).normalize() 
+		perp = rotate(para, 90) * amplitude
+		para *= wavelength
+		for i in range(0,int(cycles)):	
+			for p in points:
+				self.append( PSharp(  start + i * para + para* (float(p[0]) + skew * float(p[1])) + perp * float(p[1])))
+		
+
+class SquareWave(RepeatWave):
+	def __init__(self, start, end, **config):
+		args={}
+		length = (end-start).length()
+		if 'amplitude' in config:
+			args['amplitude'] = float(config['amplitude'])
+		else:
+			args['amplitude'] = 10.0
+		if 'offset' in config:
+			args['offset']=config['offset']
+		else:
+			args['offset']=0
+		if 'skew' in config:
+			args['skew'] = config['skew']
+
+		if 'cycles' in config:
+			args['wavelength'] = length/config['cycles']
+			args['cycles'] = config['cycles']  
+		else:
+			args['wavelength'] = config['wavelength']
+			args['cycles'] = int(length/config['wavelength'])
+		return self.cut_wave(start, end, [V(0, 0), V(0, 1), V(0.5, 1), V(0.5, 0), V(0.5, -1), V(1, -1), V(1, 0)], args)
+
+
+class TriangleWave(RepeatWave):
+	def __init__(self, start, end, **config):
+		args={}
+		length = (end-start).length()
+		if 'amplitude' in config:
+			args['amplitude'] = float(config['amplitude'])
+		else:
+			args['amplitude'] = 10.0
+		if 'offset' in config:
+			args['offset']=config['offset']
+		else:
+			args['offset']=0
+		if 'skew' in config:
+			args['skew'] = config['skew']
+
+		if 'cycles' in config:
+			args['wavelength'] = length/config['cycles']
+			args['cycles'] = config['cycles']  
+		else:
+			args['wavelength'] = config['wavelength']
+			args['cycles'] = int(length/config['wavelength'])
+		return self.cut_wave(start, end, [V(0, 0), V(0.25, 1),  V(0.5, 0), V(0.75, -1), V(1, 0)], args)
+	
 
 
 class Clamp(Path):

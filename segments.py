@@ -40,7 +40,7 @@ class Segment(object):
                         temp=self.simplegcode(zfrom, zto, direction)
                         return temp
 		else:
-			return self.seg_types[mode](direction)
+			return getattr(self, self.seg_types[mode])(direction)
 #                if mode=='gcode':
  #                       temp=self.gcode(direction)
   #                      if len(temp)>0 and zfrom!=zto:

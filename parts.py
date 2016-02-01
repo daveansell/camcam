@@ -664,12 +664,16 @@ class FlatMonitor(Part):
                         paper = 'paper'
 
                 data={
-                        'B101UAN02'  :{'ext_width':230.0, 'ext_height':149.7, 'screen_width':217.0,  'screen_height':135.5 },
+                        'B101UAN02'  :{'ext_width':230.0, 'ext_height':149.7, 'screen_width':217.0,  'screen_height':135.5, 'depth':4, 'border':5 },
                         'B140HAN01.2':{'ext_width':321, 'ext_height':188, 'screen_width':309.14, 'screen_height':173.89, 'lug_width':15, 'lug_depth':1, 'lug_height':7, 'toplug_fe':20, 'botlug_fe':36, 'elec_width':223, 'elec_height':12, 'conn_width':30, 'conn_x':115, 'conn_y0':-87, 'conn_y1':-117},
 			'B156HAN01.2':{'ext_width':359.5, 'ext_height':223.8, 'screen_width':344.16, 'screen_height':193.59},
                 }
 		assert monitorType in data
 		d = data[monitorType]
+		if 'border' in d:
+			border = d['border']
+		else:
+			border = 5
 		if 'cover_offset' in config:
 			cover_offset = config['cover_offset']
 		else:
@@ -679,12 +683,15 @@ class FlatMonitor(Part):
 			self.add(Rect(V(d['ext_width']/2- d['toplug_fe'] - d['lug_width']/2, d['ext_height']/2+d['lug_height']/2), centred=True, width=d['lug_width'], height=d['lug_height'], z1=-d['lug_depth'], side='in'),base)
 			self.add(Rect(V(-d['ext_width']/2+ d['toplug_fe'] + d['lug_width']/2, d['ext_height']/2+d['lug_height']/2), centred=True, width=d['lug_width'], height=d['lug_height'], z1=-d['lug_depth'], side='in'), base)
 		if 'botlug_fe' in d:
-			self.add(Rect(V(d['ext_width']/2- d['botlug_fe'], -d['ext_height']/2 - d['lug_height']/2), centred=True, width=d['lug_width'], height=d['lug_height'], z1=-d['lug_depth'], side='in'), 'base')
-			self.add(Rect(V(-d['ext_width']/2+ d['botlug_fe'], -d['ext_height']/2 - d['lug_height']/2), centred=True, width=d['lug_width'], height=d['lug_height'], z1=-d['lug_depth'], side='in'), 'base')
+			self.add(Rect(V(d['ext_width']/2- d['botlug_fe'], -d['ext_height']/2 - d['lug_height']/2), centred=True, width=d['lug_width'], height=d['lug_height'], z1=-d['lug_depth'], side='in'), base)
+			self.add(Rect(V(-d['ext_width']/2+ d['botlug_fe'], -d['ext_height']/2 - d['lug_height']/2), centred=True, width=d['lug_width'], height=d['lug_height'], z1=-d['lug_depth'], side='in'), base)
 		
-		self.add(FourObjects(V(0,0), Hole(V(0,0), rad=4.5/2),centred=True, width=d['ext_width']-20, height = d['ext_height']-20, layers='base'))
-		self.add(FourObjects(V(0,0), Insert(cover_offset, 'M4', ['underbase','base']),centred=True, height=d['ext_width']-20, width = d['ext_height']-20))
-		self.add(Rect(V(0,0), centred=True, width=d['ext_width']-10, height = d['ext_height']-10), 'base')
+#		self.add(FourObjects(V(0,0), Hole(V(0,0), rad=4.5/2),centred=True, width=d['ext_width']+20, height = d['ext_height']+20, layers=base))
+#		self.add(FourObjects(V(0,0), Insert(cover_offset, 'M4', [underbase,base]),centred=True, height=d['ext_width']-20, width = d['ext_height']-20))
+		self.add(Rect(V(0,0), centred=True, width=d['ext_width']-2*border, height = d['ext_height']-2*border), base)
+		if 'depth' in d and 'border' in d:
+			self.add(Rect(V(0,0), centred=True, width=d['ext_width'], height = d['ext_height'], z1=-d['depth'], partial_fill=border), base)
+		
 		cutout=self.add(Path(closed=True, side='in'), base)
 		cutout.add_point(V(d['ext_width']/2, d['ext_height']/2))
 		cutout.add_point(V(-d['ext_width']/2, d['ext_height']/2))
