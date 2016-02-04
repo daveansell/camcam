@@ -196,9 +196,6 @@ class InvoluteGearBorder(Path):
 		self.gears_camcam(x,y)
 		self.translate(pos)
 		self.base_diameter=self.gears_base_diameter(pressure_angle, number_teeth, Pd)
-		print "Rad="+str(config['rad'])
-		print "Pd="+str(Pd)
-		print "base_diameter="+str(self.base_diameter)
 		self.outer_diameter=self.gears_outer_diameter(pressure_angle, number_teeth, Pd)
 		self.root_diameter=self.gears_root_diameter(pressure_angle, number_teeth, Pd)
 
