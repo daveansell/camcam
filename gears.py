@@ -191,7 +191,7 @@ class InvoluteGearBorder(Path):
 		if 'pitch' in config:
 			Pd=math.pi/float(config['pitch'])
 		elif 'rad' in config:
-			Pd=1/2*float(config['rad'])/number_teeth
+			Pd=1.0/(float(config['rad'])/number_teeth)
 		x, y = self.gears_make_gear(pressure_angle, number_teeth, Pd)
 		self.gears_camcam(x,y)
 		self.translate(pos)
@@ -201,9 +201,13 @@ class InvoluteGearBorder(Path):
 
 
 class InvoluteGear(Part):
-	def __init__(self, pos, pressure_angle, number_teeth, pitch, **config):
+	def __init__(self, pos, pressure_angle, number_teeth, **config):
 		self.init(config)
-		c=[]
+		c={}
+		if 'layer' in config:
+			self.layer= config['layer']
+		if 'name' in config:
+			self.layer=config['layer']
 		if 'pitch' in config:
 			c['pitch'] = config['pitch']
 		elif 'rad' in config:
