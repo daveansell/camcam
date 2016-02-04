@@ -191,19 +191,26 @@ class InvoluteGearBorder(Path):
 		if 'pitch' in config:
 			Pd=math.pi/float(config['pitch'])
 		elif 'rad' in config:
-			Pd=1/2*float(config['rad'])/number_teeth
+			Pd=1.0/(float(config['rad'])/number_teeth)
 		x, y = self.gears_make_gear(pressure_angle, number_teeth, Pd)
 		self.gears_camcam(x,y)
 		self.translate(pos)
 		self.base_diameter=self.gears_base_diameter(pressure_angle, number_teeth, Pd)
+		print "Rad="+str(config['rad'])
+		print "Pd="+str(Pd)
+		print "base_diameter="+str(self.base_diameter)
 		self.outer_diameter=self.gears_outer_diameter(pressure_angle, number_teeth, Pd)
 		self.root_diameter=self.gears_root_diameter(pressure_angle, number_teeth, Pd)
 
 
 class InvoluteGear(Part):
-	def __init__(self, pos, pressure_angle, number_teeth, pitch, **config):
+	def __init__(self, pos, pressure_angle, number_teeth, **config):
 		self.init(config)
-		c=[]
+		c={}
+		if 'layer' in config:
+			self.layer= config['layer']
+		if 'name' in config:
+			self.layer=config['layer']
 		if 'pitch' in config:
 			c['pitch'] = config['pitch']
 		elif 'rad' in config:
