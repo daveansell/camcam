@@ -162,12 +162,16 @@ class InvoluteGearBorder(Path):
 	
 	# generates a spur gear with a given pressure angle (pa),
 	# number of teeth (N) and pitch (P)
-	def gears_make_gear(self, pa, N, P ):
+	def gears_make_gear(self, pa, N, P, ignore_teeth=False ):
 	    tx, ty = self.gears_make_tooth( pa, N, P )
 	    x = []
 	    y = []
 	    for i in range( 0, N ):
-	        rx, ry = self.gears_rotate( float(i)*2.0*math.pi/float(N), tx, ty )
+		if ignore_teeth and N-i>=ignore_teeth:
+                        rx=[self.base_diameter/2*math.sin( float(i)*2.0*math.pi/float(N))]
+                        ry=[self.base_diameter/2*math.cos( float(i)*2.0*math.pi/float(N))]
+                else:
+	        	rx, ry = self.gears_rotate( float(i)*2.0*math.pi/float(N), tx, ty )
 	        x.extend( rx )
 	        y.extend( ry )
 #	    x.append( x[0] )
@@ -192,7 +196,11 @@ class InvoluteGearBorder(Path):
 			Pd=math.pi/float(config['pitch'])
 		elif 'rad' in config:
 			Pd=1.0/(float(config['rad'])/number_teeth)
-		x, y = self.gears_make_gear(pressure_angle, number_teeth, Pd)
+		if 'ignore_teeth' in config:
+                        ignore_teeth = config['ignore_teeth']
+                else:
+                        ignore_teeth = False
+		x, y = self.gears_make_gear(pressure_angle, number_teeth, Pd, ignore_teeth)
 		self.gears_camcam(x,y)
 		self.translate(pos)
 		self.base_diameter=self.gears_base_diameter(pressure_angle, number_teeth, Pd)
