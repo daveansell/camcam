@@ -306,6 +306,7 @@ class Path(object):
                                 end=points[p]
                                 break
                 return [start, end]
+
 	def add_points_intersect(self, points):
 		thisvec=self.get_last_vec()
 		thatvec=self.get_first_vec(points)
@@ -324,6 +325,24 @@ class Path(object):
 		
 		self.points[0].pos=joint
 		self.reset_points()
+
+	def ccw(self, a, b, c):
+		return (b[0] - a[0]) * (c[1] - a[1]) - (c[0] - a[0]) * (b[1] - a[1]);
+
+	def intersects(self, ap, aq, bp, bq):
+		if (self.ccw(ap, aq, bp) * self.ccw(ap, aq, bq) > 0):
+			return False
+		if (self.ccw(bp, bq, ap) * self.ccw(bp, bq, aq) > 0):
+			return False
+		return True;
+	def self_intersects(self):
+		ret=[]
+		l=len(self.points)
+		for i in range(0, len(self.points)):
+			for j in range(i+1, len(self.points)):
+				if self.intersects(self.points[i], self.points[(i-1)%l], self.points[j], self.points[(j-1)%l]):
+					ret.append( [i,j, self.intersect_lines(self.points[i], self.points[(i-1)%l], self.points[j], self.points[(j-1)%l])])
+		return ret
 
 
 	def intersect_lines(self,a, b, c, d):
@@ -700,6 +719,48 @@ class Path(object):
 			else:
 				config['z1'] = - config['thickness']
 		return config
+
+	def fill_path(self, side, cutterrad, distance=False, step=False, poly=False):
+		if step==False:
+			step = cutterrad
+		ret=[self]
+		path = self.polygonise(2*cutterrad)
+		
+		path = self.offset_path(side, 2*cutterrad)
+		if distance !=False and distance< 2*cutterrad:
+			return ret
+		else:
+			offset = 2*step
+	def fill_path_step(self, side, cutterrad, distance, step):
+		ret=[self]
+		newdist=distance-step
+		if distance-step<0:
+			return [self]
+		path=self.offset_path(side, step)
+		paths = path.clean_simplepath()
+		for p in paths:
+			# check if the path has the same curl direction as the parent we carry on, else we dump it
+			ret.append(p.fill_path_step(side, cutterad, newdist, step))
+
+	def _key_cross(self, a):
+		return a[0]
+	# If a simplepath crosses itself 	
+	def clean_simplepath(self):
+		intersections = self.self_intersects()
+		crosses = []
+		for i,intersection in intersections.iteritems():
+		 	crosses.append([intersection[0],intersection[1],i,0,intersection[2],0])
+			crosses.append([intersection[1],intersection[0],i,1,intersection[2],0])
+		sorted(crosses, key=self._key_crosses)
+               	points = self.points
+               	paths = []
+               	while len(points):
+			pass
+ 
+ 
+       	def traverse_loop(self, crosses, direction):
+               pass
+			
 #  output the path
 	def render(self,pconfig):
 		out=[]
@@ -1993,9 +2054,10 @@ class Plane(Part):
 						output['__border'] = "LAYER " + str(self.modeconfig['border_layer'])+"\n"
 					else:
 						output['__border'] = ''
-					print output['__border']
-					print b
-					output['__border']+=b[0]
+					if type(b) is list:
+						output['__border']+=b[0]
+					else:
+						output['__border']+=b
 				else:
 					
 					output['__border']=[b]
