@@ -376,6 +376,20 @@ class Milling:
                         "stepdown":0.2,
                         "kress_setting":1,
                },
+                "polypropelene":{
+                        "vertfeed":100,
+                        "sidefeed":700,
+                        "stepdown":2.0,
+                        "kress_setting":1.5,
+			"mill_dir":'up',
+               },
+                "polyethene":{
+                        "vertfeed":100,
+                        "sidefeed":700,
+                        "stepdown":2.0,
+                        "kress_setting":1.5,
+			"mill_dir":'up',
+               },
                 "pvc":{
                         "vertfeed":100,
                         "sidefeed":700,
@@ -406,7 +420,7 @@ class Milling:
 	                'M3':{
                         'diam':3.0,
                         'tap':2.5,
-			'clearance':4.0,
+			'clearance':3.5,
                         'allen':{
                                 'head_d':5.5,
                                 'head_l':3.0,
