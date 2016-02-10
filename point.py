@@ -782,10 +782,12 @@ class PClear(PSharp):
 			if nextpoint==self.pos:
 				nextpoint=self.next().nextorigin()
                       	angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
-
-                	d=config['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1)
+			if abs(angle-180)>0.00001:
+	                	d=config['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1)
 			
-                	extrapoint=self.pos-(((lastpoint-self.pos).normalize()+(nextpoint-self.pos).normalize())/2).normalize()*d
+	                	extrapoint=self.pos-(((lastpoint-self.pos).normalize()+(nextpoint-self.pos).normalize())/2).normalize()*d
+			else:
+				return [Line(self.last().end(),self.pos)]
 
                 return [
 			Line(self.last().end(),self.pos),
@@ -925,14 +927,19 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 			l=self.next().pos - self.last().pos
 			perp=rotate(l.normalize(),-90)
 			centre=self.pos.intersect_lines(self.last().pos, self.next().pos, self.pos, self.pos+perp)
-			c=math.sqrt(self.radius**2 - (self.pos-centre).length()**2)
-			a = l.normalize()*c
-			if not self.reverse:
-				d=self.otherDir(self.direction)
+			print self.radius
+			print (self.pos-centre).length()
+			if self.radius**2 - (self.pos-centre).length()**2 >0:
+				c=math.sqrt(self.radius**2 - (self.pos-centre).length()**2)
+				a = l.normalize()*c
+				if not self.reverse:
+					d=self.otherDir(self.direction)
+				else:
+					d=self.direction
+				return [ Line(self.last().pos, centre-a), Arc(centre-a, centre+a, self.pos, d), Line(centre+a, self.next().pos)]
 			else:
-				d=self.direction
-			return [ Line(self.last().pos, centre-a), Arc(centre-a, centre+a, self.pos, d), Line(centre+a, self.next().pos)]
-		
+				return [ Line(self.last().pos, centre), Line(centre, self.next().pos)]
+
         def origin(self, forward=True):
 		self.checkArc()
                 if forward:
@@ -957,9 +964,12 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 		l=self.next().pos - self.last().pos
                 perp=rotate(l.normalize(),-90)
                 centre=self.pos.intersect_lines(self.last().pos, self.next().pos, self.pos, self.pos+perp)
-                c=math.sqrt(self.radius**2 - (self.pos-centre).length()**2)
-                a = l.normalize()*c
-		return centre+a
+		if self.radius**2 - (self.pos-centre).length()**2 > 0:
+	                c=math.sqrt(self.radius**2 - (self.pos-centre).length()**2)
+	                a = l.normalize()*c
+			return centre+a
+		else:
+			return centre
 	def start(self):
 		self.checkArc()
 		l=self.next().pos - self.last().pos
