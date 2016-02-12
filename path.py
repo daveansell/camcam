@@ -380,7 +380,6 @@ class Path(object):
 	#	else:
 	#		numpoints=len(pointlist)*2-2
 #		for p,point in enumerate(pointlist):
-		
 		for p in range(0,numpoints):
 			segment_array.extend(pointlist[p].generateSegment(self.isreversed, config))
 	#	else:
