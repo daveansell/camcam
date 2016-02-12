@@ -1455,7 +1455,7 @@ class Module(Plane):
 		#name, material, thickness, z0=0,zoffset=0
 		self.perspex_layer=self.add_layer('perspex',material='perspex',thickness=perspex_thickness,z0=0,zoffset=3)
 		self.base_layer=self.add_layer('base',material='plywood', thickness=base_thickness, z0=0,zoffset=0, add_back=True)
-		self.underbase_layer=self.add_layer('underbase',material='plywood', thickness=base_thickness, z0=0,zoffset=-base_thickness, add_back=True)
+		self.underbase_layer=self.add_layer('underbase',material='plywood', thickness=underbase_thickness, z0=0,zoffset=-base_thickness, add_back=True)
 		self.pibarn_layer=self.add_layer('pibarn',material='perspex', thickness=6, z0=0,zoffset=30, add_back=False)
 		self.add_layer('paper',material='paper',thickness=0.05,z0=0,zoffset=0.05)
 		radius=30
