@@ -312,19 +312,21 @@ class Path(object):
 		thatvec=self.get_first_vec(points)
 		if thisvec[1].pos!=thatvec[0].pos and (thisvec[1].pos-thisvec[0].pos).dot(thatvec[1].pos-thatvec[0].pos) !=1:
 			joint=self.intersect_lines(thisvec[0].pos,thisvec[1].pos, thatvec[0].pos, thatvec[1].pos)
+			if joint is not False:
 #		joint=self.intersect_lines(self.points[len(self.points)-2].pos, self.points[len(self.points)-1].pos, points[0].pos, points[1].pos)
-	                del(self.points[len(self.points)-1])
-	                self.points.append(PSharp(joint))
+		                del(self.points[len(self.points)-1])
+		                self.points.append(PSharp(joint))
 #			del(self.points[len(self.points)-1])
                 for i in range(1, len(points)):
                         self.points.append(points[i])
 		self.reset_points()
 	def close_intersect(self):
 		joint=self.intersect_lines(self.points[len(self.points)-2].pos, self.points[len(self.points)-1].pos, self.points[0].pos, self.points[1].pos)
-		del(self.points[len(self.points)-1])
+		if joint is not False:
+			del(self.points[len(self.points)-1])
 		
-		self.points[0].pos=joint
-		self.reset_points()
+			self.points[0].pos=joint
+			self.reset_points()
 
 	def ccw(self, a, b, c):
 		return (b[0] - a[0]) * (c[1] - a[1]) - (c[0] - a[0]) * (b[1] - a[1]);
@@ -347,8 +349,16 @@ class Path(object):
 
 	def intersect_lines(self,a, b, c, d):
 		# if the things we are trying to intersect are parallel we don't have to do any work
-		if abs((d-c).dot(b-a) -1) <0.0001:
+#		if abs((d-c).normalize().dot((b-a).normalize())) -1 <0.0001:
+#			print "intersect parallel lines"
+#			return False
+		if (a[0]-b[0])==0 and a[1]-b[1]==0:
 			return b
+		if (c[1]-d[1])==0 and (c[0]-d[0])==0:
+			return c
+		# if the denominator is zero the rest of this will explode because they don't intersect, so return false
+		if ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))==0:
+			return False
 		x= ((a[0]*b[1]-a[1]*b[0])*(c[0]-d[0]) - (a[0]-b[0])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
 		y= ((a[0]*b[1]-a[1]*b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
 		return V(x,y)

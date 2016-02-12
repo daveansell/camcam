@@ -1050,7 +1050,6 @@ The line defines the
 				self.append(offpointmode(start+along*i+crp+cra+cutin))
 				self.append(onpointmode(start+along*i+crp+cra))
 				m='on'
-		
 		if endmode=='on':
 #			self.append(Point(end+crp+cra, onpointmode))
 			self.append(PSharp(end+crp))#onpointmode))
@@ -1283,13 +1282,22 @@ class RepeatWave(list):
 			skew = config['skew']
 		else:
 			skew = 0
+		if 'point_type' in config:
+			point_type = config['point_type']
+		else:
+			point_type = PSharp
+		if 'point_args' in config:
+			point_args = config['point_args']
+		else:
+			point_args = {}
 		print skew
 		para = (end-start).normalize() 
 		perp = rotate(para, 90) * amplitude
 		para *= wavelength
 		for i in range(0,int(cycles)):	
 			for p in points:
-				self.append( PSharp(  start + i * para + para* (float(p[0]) + skew * float(p[1])) + perp * float(p[1])))
+				#self.append( PSharp(  start + i * para + para* (float(p[0]) + skew * float(p[1])) + perp * float(p[1])))
+				self.append( point_type(  start + i * para + para* (float(p[0]) + skew * float(p[1])) + perp * float(p[1]), **point_args))
 		
 
 class SquareWave(RepeatWave):
