@@ -853,9 +853,12 @@ class Path(object):
 					fillpath.add_point(p.pos+V(p.radius,0), point_type='sharp')
 					fillpath.add_point(p.pos, point_type='aroundcurve',radius=p.radius, direction='cw')
 					fillpath.add_point(p.pos-V(p.radius,0), point_type='sharp')
+# there seems to be a problem with arcs and reversing...
 			if fillpath.find_direction(c)!=config['direction']:
-				reverse=True
-				fillpath.points=fillpath.points[::-1]
+				reverse=False
+				print "REVERSE"
+#				fillpath.isreversed=True
+#				fillpath.points=fillpath.points[::-1]
 			else:
 				reverse=False
 #				fillpath.points=fillpath.points[::-1]
@@ -875,10 +878,11 @@ class Path(object):
 			
 			tpath=thepath
 			for d in range(0,int(numpasses)):
+				print "PARTIEAL FILL"+str(config['partial_fill'])+" numpasses="+str(numpasses)
 		#		temppath.output_path(config)
 				tpath.output_path(config)
 #				temppath=thepath.offset_path(ns, step*(d+1), c)
-				tpath=tpath.offset_path(ns, step, c)
+				tpath=thepath.offset_path(ns, step*(d+1), c)
 				temppath=copy.deepcopy(tpath)
 #				temppath.points[0].forcelastpoint = temppath.points[len(temppath.points)-1]
 #/				temppath.points[len(temppath.points)-1].forcenextpoint = temppath.points[0]
