@@ -982,7 +982,6 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 	def offset(self, side, distance, direction):
 		self.checkArc()
 		t=copy.copy(self)
-#		print "side="+str(side)+" direction="+str(self.direction)
 		if side=='left' and self.direction=='cw' or side=='right' and self.direction=='ccw':
 			t.radius+=distance
 		else:
@@ -990,6 +989,7 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 				t.radius-=distance
 			else:
 				t.radius=0
+		
 		return [t]
 class PCircle(Point):
 	def __init__(self, pos=False, radius=False, transform = False):
