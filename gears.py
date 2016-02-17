@@ -167,9 +167,9 @@ class InvoluteGearBorder(Path):
 	    x = []
 	    y = []
 	    for i in range( 0, N ):
-		if ignore_teeth and N-i>=ignore_teeth:
-                        rx=[self.base_diameter/2*math.sin( float(i)*2.0*math.pi/float(N))]
-                        ry=[self.base_diameter/2*math.cos( float(i)*2.0*math.pi/float(N))]
+		if ignore_teeth and N-i<=ignore_teeth:
+                        rx=[self.gears_outer_diameter( pa, N, P)/2*math.cos( float(i)*2.0*math.pi/float(N))]
+                        ry=[self.gears_outer_diameter( pa, N, P)/2*math.sin( float(i)*2.0*math.pi/float(N))]
                 else:
 	        	rx, ry = self.gears_rotate( float(i)*2.0*math.pi/float(N), tx, ty )
 	        x.extend( rx )
@@ -200,6 +200,7 @@ class InvoluteGearBorder(Path):
                         ignore_teeth = config['ignore_teeth']
                 else:
                         ignore_teeth = False
+		print config
 		x, y = self.gears_make_gear(pressure_angle, number_teeth, Pd, ignore_teeth)
 		self.gears_camcam(x,y)
 		self.translate(pos)
@@ -220,6 +221,8 @@ class InvoluteGear(Part):
 			c['pitch'] = config['pitch']
 		elif 'rad' in config:
 			c['rad'] = config['rad']
+		if 'ignore_teeth' in config:
+                        c['ignore_teeth'] = config['ignore_teeth']
 		self.add_border(InvoluteGearBorder(V(0,0), pressure_angle, number_teeth, **c))
 		if 'holerad' in config:
 			self.add(Hole(V(0,0), rad=config['holerad']))
