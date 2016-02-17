@@ -96,7 +96,13 @@ class CurvedRect(Path):
                 self.add_point(PArc(None, radius=siderad, direction='cw', length='short'))
                 self.add_point(pos+V(width/2, -height/2))
                 self.add_point(PArc(None, radius=siderad, direction='cw', length='short'))
-
+class Egg(Path):
+	def __init__(self, pos1, rad1, pos2, rad2, **config):
+		self.init(config)
+		self.closed=True
+		self.add_point(POutcurve(pos1, radius=rad1))
+		self.add_point(POutcurve(pos2, radius=rad2))
+		
 
 class Drill(Path):
 	def __init__(self, pos, **config):
