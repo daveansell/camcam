@@ -43,6 +43,7 @@ class KvPart(Scatter):
 			centrey = part.border.centre[1]
 			self.canvas.add(Rectangle(pos=(0,0), size=(width, height)))
 			print part.name+" self.center"+str(self.center)+" pos="+str(self.pos)
+			
 			self.startcentre = (centrex, centrey)
 			self.size = (part.border.boundingBox['tr'][0]-part.border.boundingBox['bl'][0],part.border.boundingBox['tr'][1]-part.border.boundingBox['bl'][1])
 			kvpoints=[]
@@ -60,7 +61,7 @@ class KvPart(Scatter):
 			self.canvas.add(kivy.graphics.Line(points=kvpoints, width=1))
 			self.canvas.add(Color(0,1,0,1))
 			self.canvas.add(Ellipse(pos=(ccpoints[0][0] -centrex+width/2, ccpoints[0][1] -centrey+height/2), size=(3,3)))
-			self.center = ( centrex , centrey)
+			self.center = ( centrex +100, centrey+100)
 #			kvpoints=[]
 #			indices = []
 #			for p in ccpoints:
