@@ -46,7 +46,6 @@ class Text(Pathgroup):
     			else :
        	 			kern = 0
 			advance = face.glyph.advance 
-			print ch+" "+str(advance.x)+" "+str(kern)
 
 			slot = face.glyph
 			outline = slot.outline
@@ -67,7 +66,6 @@ class Text(Pathgroup):
 			self.chars.append(char)
 	def import_outline(self, outline, start, end, side):
 		out=Path(closed=True, side=side)
-		print "start"+str(start)+" ebd="+str(end)+" len"+str(len(outline.points))
 		l = end-start
 		for p in range(start, end+1):
 			if p==start:
@@ -79,18 +77,13 @@ class Text(Pathgroup):
 			else:
 				np=p+1
 			point=outline.points[p]
-			print "p="+str(p)+" pnt="+str(point)
 			if (outline.tags[p] & 1) ==1:
-#				print "sharp "+str(point)
 				out.add_point(PSharp(V(point[0], point[1])))
 			else:
 				if point!=outline.points[lp]:
 					if( (outline.tags[lp]&1)!=1):
-#						print "esharp "+str((V(point[0], point[1])+V(outline.points[lp][0], outline.points[lp][1]))/2)
 						out.add_point(PSharp((V(point[0], point[1])+V(outline.points[lp][0], outline.points[lp][1]))/2))
-#					print "bc "+str(point)
-					out.add_point(PBezierControl(V(point[0], point[1])))
-#					out.add_point(PSharp(V(point[0], point[1])))
+# lets just move to straight lines as beziers don't offset yet
 		out2=Path(closed=True, side=side)
 		for p in out.polygonise(0.2):
 			out2.add_point(p)
