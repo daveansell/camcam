@@ -179,14 +179,14 @@ class Quad(Segment):
                 self.cutto=cutto
                 self.cutfrom=cutfrom
                 self.cp=cp
-        def gcode(direction=True):
+        def gcode(self,direction=True):
                 if(direction):
                         offset = cp - self.cutfrom
                         return [{"cmd":"G5.1", "X":self.cutto[0], "Y":self.cutto[1], "I":offset[0], "J":offset[1]}]
                 else:
                         offset = cp - self.cutto
                         return [{"cmd":"G5.1", "X":self.cutfrom[0], "Y":self.cutfrom[1], "I":offset[0], "J":offset[1]}]
-        def svg(direction = True):
+        def svg(self,direction = True):
                 if(direction):
                         offset = cp - self.cutfrom
                         return [{"cmd":"Q", "x1":self.cutto[0], "y1":self.cutto[1], "x":offset[0], "y":offset[1]}]
@@ -199,9 +199,9 @@ class Quad(Segment):
                 p1=self.cp1
                 p2=self.cutto
                 ret=[]
-                numsteps = ((p2-p1).length()+(p1-p0).length())/resolution
+                numsteps = int(((p2-p1).length()+(p1-p0).length())/resolution)
                 step = 1/numsteps
-                for i in range[1:numsteps-1]:
+                for i in range(1,numsteps-1):
                         t=i*step
                         ret.append((1-t)*(1-t)*p0 + 2*(1-t)*t*p1 + t*t*p2 )
                 return ret
@@ -214,7 +214,7 @@ class Cubic(Segment):
                 self.cp1=cp1
                 self.cp2=cp2
 
-        def gcode(direction=True):
+        def gcode(self,direction=True):
                 if(direction):
                         offset1 = cp1 - self.cutfrom
                         offset2 = cp2 - self.cutfrom
@@ -223,11 +223,11 @@ class Cubic(Segment):
                         offset1 = cp2 - self.cutto
                         offset2 = cp1 - self.cutto
                         return [{"cmd":"G5", "X":self.cutfrom[0], "Y":self.cutfrom[1], "I":offset1[0], "J":offset1[1], "P":offset2[0], "Q":offset2[1]}]
-        def svg(direction = True):
+        def svg(self,direction = True):
                 if(direction):
-                        return [{"cmd":"Q", "x2":self.cutto[0], "y2":self.cutto[1], "x1":cp1[0], "y1":cp1[1], "x":cp2[0], "y":cp2[1]}]
+                        return [{"cmd":"Q", "x2":self.cutto[0], "y2":self.cutto[1], "x1":self.cp1[0], "y1":self.cp1[1], "x":self.cp2[0], "y":self.cp2[1]}]
                 else:
-                        return [{"cmd":"Q", "x2":self.cutfrom[0], "y2":self.cutfrom[1], "x1":cp2[0], "y1":cp2[1], "x":cp1[0], "y":cp1[1]}]
+                        return [{"cmd":"Q", "x2":self.cutfrom[0], "y2":self.cutfrom[1], "x1":self.cp2[0], "y1":self.cp2[1], "x":self.cp1[0], "y":self.cp1[1]}]
 
         def polygon(self,resolution=1, direction=1):
                 p0=self.cutfrom
@@ -235,9 +235,9 @@ class Cubic(Segment):
                 p2=self.cp2
                 p3=self.cutto
                 ret=[]
-                numsteps = ((p3-p2).length()+(p2-p1).length()+(p1-p0).length())/resolution
+                numsteps = int(((p3-p2).length()+(p2-p1).length()+(p1-p0).length())/resolution)
                 step = 1/numsteps
-                for i in range[1:numsteps-1]:
+                for i in range(1,numsteps-1):
                         t=i*step
                         ret.append((1-t)*(1-t)*(1-t)*p0 + 3*(1-t)*(1-t)*t*p1 + 3*(1-t)*t*t +  t*t*t*p3 )
                 return ret
