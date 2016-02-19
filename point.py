@@ -609,7 +609,7 @@ class POutcurve(Point):
 		return t
 	def origin(self, forward=True):
 		seg=self.makeSegment({})
-
+		print "a"+str(seg[1])
 		if forward:
 			return seg[1].cutfrom
 		else:
@@ -716,7 +716,7 @@ class POutcurve(Point):
                         lr=self.last().radius
                 else:
                         lr=0
-		if self.last() is not None and self.last().point_type not in ['sharp', 'outcurve', 'clear', 'doubleclear']:
+		if self.last() is not None and self.last().point_type not in ['sharp', 'outcurve', 'clear', 'doubleclear', 'incurve']:
 
 			print "Outcurve must be preceeded by a sharp point or another outcurve not a "+str(self.last().point_type)
 			return []
@@ -864,7 +864,7 @@ class PBezierControl(Point):
 	def makeSegment(self, config):
 		if self.last().point_type=='sharp' and self.next().point_type=='sharp':
 			#quadratic
-			return [Quad(self.last().end(), self.pos(), self.next().pos())]
+			return [Quad(self.last().pos, self.next().pos, self.pos)]
 		elif self.last().last().point_type=='sharp' and self.last().point_type=='bcontrol' and self.next().point_type=='sharp':
 			#cubic
 			return [Cubic(self.last().last().end(), self.last().pos, self.pos, self.next().pos)]

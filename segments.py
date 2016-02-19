@@ -181,28 +181,34 @@ class Quad(Segment):
                 self.cp=cp
         def gcode(self,direction=True):
                 if(direction):
-                        offset = cp - self.cutfrom
+                        offset = self.cp - self.cutfrom
                         return [{"cmd":"G5.1", "X":self.cutto[0], "Y":self.cutto[1], "I":offset[0], "J":offset[1]}]
                 else:
-                        offset = cp - self.cutto
+                        offset = self.cp - self.cutto
                         return [{"cmd":"G5.1", "X":self.cutfrom[0], "Y":self.cutfrom[1], "I":offset[0], "J":offset[1]}]
         def svg(self,direction = True):
                 if(direction):
-                        offset = cp - self.cutfrom
+                        offset = self.cp - self.cutfrom
                         return [{"cmd":"Q", "x1":self.cutto[0], "y1":self.cutto[1], "x":offset[0], "y":offset[1]}]
                 else:
-                        offset = cp - self.cutto
+                        offset = self.cp - self.cutto
                         return [{"cmd":"Q", "x1":self.cutfrom[0], "y1":self.cutfrom[1], "x":offset[0], "y":offset[1]}]
 
         def polygon(self,resolution=1, direction=1):
                 p0=self.cutfrom
-                p1=self.cp1
+                p1=self.cp
                 p2=self.cutto
                 ret=[]
-                numsteps = int(((p2-p1).length()+(p1-p0).length())/resolution)
-                step = 1/numsteps
+#		print str(p0)+"->"+str(p1)+"->"+str(p2)
+#		print (p2-p1).length()
+#		print (p1-p0).length()
+                numsteps = int(((p2-p1).length()+(p1-p0).length())/float(resolution))
+#		print ((p2-p1).length()+(p1-p0).length())
+		if numsteps<3:
+			numsteps=3
+                step = 1.0/float(numsteps)
                 for i in range(1,numsteps-1):
-                        t=i*step
+                        t=float(i)*step
                         ret.append((1-t)*(1-t)*p0 + 2*(1-t)*t*p1 + t*t*p2 )
                 return ret
 
@@ -236,7 +242,7 @@ class Cubic(Segment):
                 p3=self.cutto
                 ret=[]
                 numsteps = int(((p3-p2).length()+(p2-p1).length()+(p1-p0).length())/resolution)
-                step = 1/numsteps
+                step = 1.0/float(numsteps)
                 for i in range(1,numsteps-1):
                         t=i*step
                         ret.append((1-t)*(1-t)*(1-t)*p0 + 3*(1-t)*(1-t)*t*p1 + 3*(1-t)*t*t +  t*t*t*p3 )
