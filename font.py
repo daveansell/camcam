@@ -9,7 +9,11 @@ class Text(Pathgroup):
 		if 'font' in config:
 			font=config['font']
 		else:
-			font='/home/usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-B.ttf'
+			font='/home/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf'
+		if 'scale' in config:
+			self.scale =config['scale']
+		else:
+			self.scale=1.0
 		if 'charwidth' in config:
 			charwidth =config['charwidth']
 		else:
@@ -78,11 +82,11 @@ class Text(Pathgroup):
 				np=p+1
 			point=outline.points[p]
 			if (outline.tags[p] & 1) ==1:
-				out.add_point(PSharp(V(point[0], point[1])))
+				out.add_point(PSharp(V(point[0], point[1])*self.scale))
 			else:
 				if point!=outline.points[lp]:
 					if( (outline.tags[lp]&1)!=1):
-						out.add_point(PSharp((V(point[0], point[1])+V(outline.points[lp][0], outline.points[lp][1]))/2))
+						out.add_point(PSharp((V(point[0], point[1])+V(outline.points[lp][0], outline.points[lp][1]))/2*self.scale))
 # lets just move to straight lines as beziers don't offset yet
 		out2=Path(closed=True, side=side)
 		for p in out.polygonise(0.2):
