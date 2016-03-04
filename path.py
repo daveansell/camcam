@@ -877,12 +877,14 @@ class Path(object):
 			
 			tpath=thepath
 			for d in range(0,int(numpasses)):
-				print "PARTIEAL FILL"+str(config['partial_fill'])+" numpasses="+str(numpasses)
+				print "PARTIEAL FILL"+str(config['partial_fill'])+" numpasses="+str(numpasses)+" step="+str(step)+" d="+str(d)+" offset="+str(step*(d+1))
 		#		temppath.output_path(config)
-				tpath.output_path(config)
-#				temppath=thepath.offset_path(ns, step*(d+1), c)
-				tpath=thepath.offset_path(ns, step*(d+1), c)
 				temppath=copy.deepcopy(tpath)
+				#tpath.output_path(config)
+#				temppath=thepath.offset_path(ns, step*(d+1), c)
+				tpath=temppath.offset_path(ns, step, c)
+				for i in temppath.points:
+					print i.pos
 #				temppath.points[0].forcelastpoint = temppath.points[len(temppath.points)-1]
 #/				temppath.points[len(temppath.points)-1].forcenextpoint = temppath.points[0]
 				
