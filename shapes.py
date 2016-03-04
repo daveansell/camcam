@@ -200,15 +200,17 @@ class ClearRect(Rect):
 class Polygon(Path):
 	def __init__(self, pos, rad, sides, cornertype='sharp', cornerrad=False, **config):
 		self.init( config)
+		print [pos, rad, sides, cornertype,cornerrad]
 		"""Cut a regular polygon with radius to the points :param rad: centred at :param pos:, with :param sides: sides with corners of type :param cornertype:\n"""+self.otherargs
                 self.closed=True
-		step=360.0/sides
+		step=360.0/float(sides)
 		if 'cornerdir' in config:
 			cornerdir=config['cornerdir']
 		else:
 			cornerdir=False
 		for i in range(0,int(sides)):
 			self.add_point(pos+V(rad,0),cornertype,cornerrad,direction=cornerdir, transform={'rotate':[pos,i*step]})
+			print pos+V(rad,0)
 		self.comment("Polygon")
 		self.comment("pos="+str(pos)+" rad="+str(rad)+" sides="+str(sides)+" cornertype="+cornertype)
 
@@ -1275,19 +1277,19 @@ class RepeatWave(list):
 	def cut_wave(self, start, end, points, config):
 		length = (end-start).length()
 		if 'wavelength' in config:
-			wavelength = config['wavelength']
-			cycles = length / wavelength
+			wavelength = float(config['wavelength'])
+			cycles = float(length) / wavelength
 		elif 'cycles' in config:
-			cycles = config['cycles']
+			cycles = float(config['cycles'])
 			wavelength = length/cycles
 		if 'amplitude' in config:
-			amplitude = config['amplitude']
+			amplitude = float(config['amplitude'])
 		else:
-			amplitude = 10
+			amplitude = 10.0
 		if 'skew' in config:
-			skew = config['skew']
+			skew = float(config['skew'])
 		else:
-			skew = 0
+			skew = 0.0
 		if 'point_type' in config:
 			point_type = config['point_type']
 		else:
@@ -1296,14 +1298,22 @@ class RepeatWave(list):
 			point_args = config['point_args']
 		else:
 			point_args = {}
-		print skew
+		if 'start_offset' in config:
+			start_offset = float(config['start_offset'])
+		else:
+			start_offset = 0.0
+
 		para = (end-start).normalize() 
 		perp = rotate(para, 90) * amplitude
 		para *= wavelength
-		for i in range(0,int(cycles)):	
+		print "start="+str(start)+" end="+str(end)
+		for i in range(0,int(math.ceil(cycles))):
+			print "cycles="+str(cycles-i)+" i"+str(i)	
 			for p in points:
+				if (cycles-i>1 or p[0]-start_offset<cycles-i) and (start_offset-i<=0 or start_offset<p[0]):
+					print "p[0]="+str(p[0])+" offset="+str(cycles-i)+str(start + i * para + para* (float(p[0]-start_offset) + skew * float(p[1])) + perp * float(p[1]))
 				#self.append( PSharp(  start + i * para + para* (float(p[0]) + skew * float(p[1])) + perp * float(p[1])))
-				self.append( point_type(  start + i * para + para* (float(p[0]) + skew * float(p[1])) + perp * float(p[1]), **point_args))
+					self.append( point_type(  start + i * para + para* (float(p[0]-start_offset) + skew * float(p[1])) + perp * float(p[1]), **point_args))
 		
 
 class SquareWave(RepeatWave):
