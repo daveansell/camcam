@@ -16,7 +16,7 @@ dave-emc - emc2 compatible gcode
 makespacerouter - very simple gcode formatted as DOS file  
 eagle - a file you can import into eagle PCB software  
 laser - individual svg files for each part   
-
+laserdxf - individual dxf files for each part
 
 python camcam.py -B  
 will produce a bill of materials  
@@ -30,3 +30,8 @@ as the docs indicate this is very alpha atm
 
 python-kivy
 dos2unix
+
+pip packages
+
+freetype-py
+dxfwrite
