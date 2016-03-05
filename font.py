@@ -5,7 +5,6 @@ from point import *
 class Text(Pathgroup):
 	def __init__(self, pos, text, **config): 
 		self.init(config)
-		self.translate(pos)
 		if 'font' in config:
 			font=config['font']
 		else:
@@ -40,6 +39,12 @@ class Text(Pathgroup):
 		face = Face(font)
 		face.set_char_size(charwidth, charheight)
 		self.chars=[]
+		
+		if 'centred' in config and config['centred']:
+			offset = self.get_length(text, face)/2 *self.scale
+		else:
+			offset = 0
+		self.translate(pos-V(offset,0))
 		for ch in text :
 			char = self.add(Pathgroup())
 			char.translate(V(x,0))
