@@ -60,11 +60,12 @@ class Text(Pathgroup):
 			outline = slot.outline
 			lastc=-1
 			for c in outline.contours:
-				if lastc==-1:
-					s=side
+				o = self.import_outline(outline,lastc+1, c, side)
+				if o.orig_direction=='cw':
+					o.side = side
 				else:
-					s=notside
-				char.add(self.import_outline(outline,lastc+1, c, s))
+					o.side = notside
+				char.add(o)
 				lastc=c
 
 			x+= float(face.glyph.linearHoriAdvance)/1000 + kern
@@ -101,15 +102,18 @@ class Text(Pathgroup):
 				np=p+1
 			point=outline.points[p]
 			if (outline.tags[p] & 1) ==1:
-				out.add_point(PSharp(offset + V(point[0], point[1])*self.scale))
+				out.add_point(PSharp(offset + V(point[0], point[1])*self.scale, sharp=False))
 			else:
 				if point!=outline.points[lp]:
 					if( (outline.tags[lp]&1)!=1):
-						out.add_point( PSharp(offset+(V(point[0], point[1])+V(outline.points[lp][0], outline.points[lp][1]))/2*self.scale))
+						out.add_point( PSharp(offset+(V(point[0], point[1])+V(outline.points[lp][0], outline.points[lp][1]))/2*self.scale, sharp=False))
 # lets just move to straight lines as beziers don't offset yet
 		out2=Path(closed=True, side=side)
 		for p in out.polygonise(0.2):
-			out2.add_point(p)
+			out2.add_point(PSharp(p, sharp=False))
+		out2.simplify_points()
+# we will need to know what the original direction was to work out if this is internal or not
+		out2.orig_direction = out.find_direction({})
 		return out2
 
 class CurvedText(Text):
@@ -176,7 +180,6 @@ class CurvedText(Text):
 		glyph_index = face.get_char_index(ord("a"))
                 face.load_glyph(glyph_index, FT_LOAD_DEFAULT)
 		aheight = 44.1/63*face.glyph.linearVertAdvance * self.scale/1000
-		print "HHeight="+str(Hheight)
 		if line == 'bottom':
 			spacing_angle = 360.0 / (math.pi * 2.0 * (abs(rad+Hheight/2) )) * direction
 		elif line == 'middle':
@@ -192,7 +195,6 @@ class CurvedText(Text):
                 for ch in text :
                         char = self.add(Pathgroup())
                         char.translate( V(0,0) )
-			print "Angle="+str(x * spacing_angle + start_angle)
                         glyph_index = face.get_char_index(ord(ch))
                         face.load_glyph(glyph_index, FT_LOAD_DEFAULT)
                         if prev_glyph != None :
@@ -205,15 +207,21 @@ class CurvedText(Text):
                         outline = slot.outline
                         lastc=-1
                         for c in outline.contours:
-                                if lastc==-1:
-                                        s=side
-                                else:
-                                        s=notside
-                                char.add(self.import_outline(outline,lastc+1, c, s, V(-float(face.glyph.linearHoriAdvance)/1000/2*self.scale, rad)))
+				o = self.import_outline(outline,lastc+1, c, side, V(-float(face.glyph.linearHoriAdvance)/1000/2*self.scale, rad))
+				if o.orig_direction=='cw':
+					o.side = side
+				else:
+					o.side = notside
+				char.add(o)
+#				lastc=c
+    #                            if lastc==-1:
+   #                                     s=side
+  #                              else:
+ #                                       s=notside
+#                                char.add(self.import_outline(outline,lastc+1, c, s, V(-float(face.glyph.linearHoriAdvance)/1000/2*self.scale, rad)))
                                 lastc=c
 			
 			move = float(face.glyph.linearHoriAdvance)/1000+kern
-			print "move="+str(move)+" lastmove="+str(lastmove)
                         x+= move/2 + lastmove/2
 			char.rotate( V(0,0), x * spacing_angle * self.scale + start_angle)
 			lastmove = move
