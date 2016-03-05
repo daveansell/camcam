@@ -65,10 +65,26 @@ class Text(Pathgroup):
 			x+= float(face.glyph.linearHoriAdvance)/1000 + kern
 			prev_glyph = glyph_index
 			self.chars.append(char)
+	def get_length(self, text, face):
+		x=0
+		prev_glyph = None
+		for ch in text :
+			glyph_index = face.get_char_index(ord(ch))
+                        face.load_glyph(glyph_index, FT_LOAD_DEFAULT)
+			if prev_glyph != None :
+                                kern = face.get_kerning(prev_glyph, glyph_index, FT_KERNING_DEFAULT).x
+                        else :
+                                kern = 0
+			prev_glyph = glyph_index
+			x+= float(face.glyph.linearHoriAdvance)/1000 + kern
+	
+		return x
 
-	def import_outline(self, outline, start, end, side):
+	def import_outline(self, outline, start, end, side, offset=False):
 		out=Path(closed=True, side=side)
 		l = end-start
+		if type(offset) is False:
+			offset=V(0,0)
 		for p in range(start, end+1):
 			if p==start:
 				lp=end-1
@@ -80,11 +96,11 @@ class Text(Pathgroup):
 				np=p+1
 			point=outline.points[p]
 			if (outline.tags[p] & 1) ==1:
-				out.add_point(PSharp(V(point[0], point[1])*self.scale))
+				out.add_point(PSharp(offset + V(point[0], point[1])*self.scale))
 			else:
 				if point!=outline.points[lp]:
 					if( (outline.tags[lp]&1)!=1):
-						out.add_point(PSharp((V(point[0], point[1])+V(outline.points[lp][0], outline.points[lp][1]))/2*self.scale))
+						out.add_point( PSharp(offset+(V(point[0], point[1])+V(outline.points[lp][0], outline.points[lp][1]))/2*self.scale))
 # lets just move to straight lines as beziers don't offset yet
 		out2=Path(closed=True, side=side)
 		for p in out.polygonise(0.2):
@@ -134,20 +150,44 @@ class CurvedText(Text):
 		else:
 			direction = 1
 		if 'startangle' in config:
-			startangle = config['startangle']
+			start_angle = config['startangle']
 		else:
-			startangle = 0
-
-		spacing_angle = 360.0 / math.pi * 2.0 * rad 
+			start_angle = 0
+# the line you are defining by rad - can be top, middle, bottom
+		if 'line' in config:
+			line = config['line']
+		else:
+			line = 'bottom'
                 prev_glyph = None
                 x=0
                 face = Face(font)
                 face.set_char_size(charwidth, charheight)
+			
                 self.chars=[]
+		glyph_index = face.get_char_index(ord("H"))
+		face.load_glyph(glyph_index, FT_LOAD_DEFAULT)
+#		slot = face.glyph
+		Hheight = 44.1/63*face.glyph.linearVertAdvance * self.scale/1000 
+		glyph_index = face.get_char_index(ord("a"))
+                face.load_glyph(glyph_index, FT_LOAD_DEFAULT)
+		aheight = 44.1/63*face.glyph.linearVertAdvance * self.scale/1000
+		print "HHeight="+str(Hheight)
+		if line == 'bottom':
+			spacing_angle = 360.0 / (math.pi * 2.0 * (abs(rad+Hheight/2) )) * direction
+		elif line == 'middle':
+			rad-=aheight
+			spacing_angle = 360.0 / (math.pi * 2.0 * (abs(rad+Hheight/2) )) * direction
+		elif line == 'top':
+			rad-=Hheight
+			spacing_angle = 360.0 / (math.pi * 2.0 * (abs(rad+Hheight/2) )) * direction
+		if 'centred' in config and config['centred']:
+			start_angle -= self.get_length(text, face)/2 * spacing_angle *self.scale
+			
+		lastmove=0	
                 for ch in text :
                         char = self.add(Pathgroup())
-                        char.translate( V(0,rad) )
-			char.rotate( V(0,0), x * spacing_angle + start_angle)
+                        char.translate( V(0,0) )
+			print "Angle="+str(x * spacing_angle + start_angle)
                         glyph_index = face.get_char_index(ord(ch))
                         face.load_glyph(glyph_index, FT_LOAD_DEFAULT)
                         if prev_glyph != None :
@@ -164,10 +204,14 @@ class CurvedText(Text):
                                         s=side
                                 else:
                                         s=notside
-                                char.add(self.import_outline(outline,lastc+1, c, s))
+                                char.add(self.import_outline(outline,lastc+1, c, s, V(-float(face.glyph.linearHoriAdvance)/1000/2*self.scale, rad)))
                                 lastc=c
-
-                        x+= float(face.glyph.linearHoriAdvance)/1000 + kern
+			
+			move = float(face.glyph.linearHoriAdvance)/1000+kern
+			print "move="+str(move)+" lastmove="+str(lastmove)
+                        x+= move/2 + lastmove/2
+			char.rotate( V(0,0), x * spacing_angle * self.scale + start_angle)
+			lastmove = move
                         prev_glyph = glyph_index
                         self.chars.append(char)
         
