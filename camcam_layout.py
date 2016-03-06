@@ -11,6 +11,8 @@ import Milling
 import kivy
 kivy.require('1.0.6')
 import pickle
+import transformations
+import numpy
 
 from glob import glob
 from random import randint
@@ -179,11 +181,21 @@ class CamCam(App):
 				rec['name']=p.part.name
 				rec['translate'] = (p.pos[0] - p.startpos[0], p.pos[1] - p.startpos[1])
 				
-			#	m= p.get_window_matrix(x = p.center[0], y = p.center[1])
+				m= p.get_window_matrix(x = p.center[0], y = p.center[1])
+		#		print m
+				m2 = numpy.matrix(m.tolist())
+		#		print m2
+				d = transformations.decompose_matrix(m2)
+#				print "rotate="+str(d[2][2]/math.pi*180)
+#				print "translate="+str(d[3])
+#				print "perspective="+str(d[4])
+#				print "position="+ str( [d[4][0]/d[4][3], d[4][1]/d[4][3] ])
+#				print "kivy_translate="+str(rec['translate'])
 		#		rec['rotate'] = math.atan2(m[4], m[0])/math.pi*180
-				rec['rotate'] = 0
+				rec['rotate'] = d[2][2]/math.pi*180
 				rec['startcentre'] = p.startcentre
-				rec['startpos'] = p.startpos
+				#rec['startpos'] = p.startpos
+				rec['startpos'] = [d[4][0]/d[4][3], d[4][1]/d[4][3] ]
 				if p.deleted ==0:
 					data['sheets'][s].append(rec)
 #				print p.get_window_matrix(0,0)
