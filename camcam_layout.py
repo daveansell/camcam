@@ -30,6 +30,30 @@ from kivy.uix.button import Button
 from functools import partial
 from kivy.properties import NumericProperty
 
+
+class KvSheet(Scatter):
+	deleted = False
+	def draw(self, bl, tr):
+		self.bl = bl
+		self.tr = tr
+		self.linecolour = Color(0,0,1)
+		self.back_colour = Color(0,0,1,0.05)
+		self.canvas.add(self.linecolour)
+		self.canvas.add(kivy.graphics.Line(rectangle=(bl[0], bl[1], tr[0], tr[1]), width=2))
+                self.canvas.add( self.back_colour)
+		self.canvas.add(Rectangle(pos=(0,0), size=( (tr[0]- bl[0]),  (tr[1]- bl[1])) ))
+		self.startpos = self.pos
+                self.do_rotation = False
+                self.do_scale = True
+                self.do_translation = True
+        def on_bring_to_front(self, touch):
+                print "shhet"
+
+                self.camcam.do_touch()
+                self.back_colour.g = 1
+                self.camcam.selected = self
+
+
 class KvPart(Scatter):
 	deleted = False
 	def draw(self, part):
@@ -142,6 +166,10 @@ class CamCam(App):
 		layout.add_widget(button)
 		for sheet in sheets:
 			print sheet
+			material = KvSheet()
+			material.draw([0,0], [600,500])
+			material.camcam = self
+			self.sheet_widgets[sheet].append(material)
 			for part in sheets[sheet]:
 				for i in range(0, part.number):
 					picture = KvPart()#rotation=randint(-30,30))
