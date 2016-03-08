@@ -712,9 +712,22 @@ class POutcurve(Point):
                 if(diff[0]<0):
                         rvec[0]*=-1
                 return point+rvec
+	def getDirection(self):
+		if self.direction:
+			if self.reverse:
+				if self.direction=='cw':
+					return 'ccw'
+				else:
+					return 'cw'
+			else:
+				return self.direction
+		else:
+			return self.direction
 
 	def makeSegment(self, config):
 		segment_array=[]
+		sd = self.direction
+
 		if self.last().point_type=='outcurve':
                         lr=self.last().radius
                 else:
@@ -726,8 +739,8 @@ class POutcurve(Point):
 		if lr!=0:
 			if type(self.last().last()) == None:
 				print "OUtcurve must be preceeded by 2 points if previous point is outcurce"
-			if(self.last().direction):
-				d1=self.last().direction
+			if(self.last().getDirection()):
+				d1=self.last().getDirection()
                        	elif (self.last().pos-self.last().last().pos).cross(self.pos-self.last().pos)[2] <0:
                        	        d1='cw'
                        	else:
@@ -735,8 +748,8 @@ class POutcurve(Point):
 		else:
 			# if lr=0 we don't care about the direction
 			d1='cw'
-		if self.direction:
-			d2=self.direction
+		if self.getDirection():
+			d2=self.getDirection()
                 elif (self.pos-self.last().pos).cross(self.next().pos-self.pos)[2] <0:
                         d2='cw'
                 else:
@@ -746,8 +759,8 @@ class POutcurve(Point):
                 d3=''
                 if self.next().point_type=="outcurve":
 #                        if (self.nextorigin()-self.pos).cross(self.next().nextorigin()-self.nextorigin())[2] <0:
-			if self.next().direction:
-                        	d3=self.next().direction
+			if self.next().getDirection():
+                        	d3=self.next().getDirection()
                         elif (self.next().pos-self.pos).cross(self.next().next().pos-self.next().pos)[2] <0:
                                 d3='cw'
                         else:
