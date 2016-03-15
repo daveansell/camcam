@@ -96,13 +96,60 @@ class CurvedRect(Path):
                 self.add_point(PArc(None, radius=siderad, direction='cw', length='short'))
                 self.add_point(pos+V(width/2, -height/2))
                 self.add_point(PArc(None, radius=siderad, direction='cw', length='short'))
+
+# Two circles joined with straight lines
 class Egg(Path):
 	def __init__(self, pos1, rad1, pos2, rad2, **config):
+		"""Two circles joined with straight line with rad1, and rad2, centred at pos1, pos2"""
 		self.init(config)
 		self.closed=True
 		self.add_point(POutcurve(pos1, radius=rad1))
 		self.add_point(POutcurve(pos2, radius=rad2))
 		
+class Ellipse(Path):
+	def __init__(self, pos, **config):
+		self.init(config)
+                self.closed=True
+		if 'width' in config:
+			width = config['width']
+		else:
+			print 'width not defined in Ellipse'
+		if 'height' in config:
+                        height = config['height']
+                else:
+                        print 'Height not defined in Ellipse'
+		if 'resolution' in config:
+			points = config['resolution']
+		else:
+			points = 32
+		
+		a = 2.0 * math.pi / points
+		for i in range(0, points):
+			self.add_point(V( width/2 * math.cos( a * float(i)), height/2 * math.sin( a * float(i)) )) 
+
+
+class RepeatEllipse(Part):
+        def __init__(self, pos, ob, **config):
+                self.init(config)
+                self.closed=True
+                if 'width' in config:
+                        width = config['width']
+                else:
+                        print 'width not defined in Ellipse'
+                if 'height' in config:
+                        height = config['height']
+                else:
+                        print 'Height not defined in Ellipse'
+                if 'number' in config:
+                        points = config['number']
+                else:
+                        points = 32 
+                a = 2.0 * math.pi / points
+                for i in range(0, points):
+			t=copy.deepcopy(ob)
+                        t.transform['translate'] = V( width/2 * math.cos( a * float(i)), height/2 * math.sin( a * float(i)) )
+                        self.add(t)
+
 
 class Drill(Path):
 	def __init__(self, pos, **config):
