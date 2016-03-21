@@ -11,6 +11,8 @@ import Milling
 import kivy
 kivy.require('1.0.6')
 import pickle
+import transformations
+import numpy
 
 from glob import glob
 from random import randint
@@ -27,6 +29,30 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from functools import partial
 from kivy.properties import NumericProperty
+
+
+class KvSheet(Scatter):
+	deleted = False
+	def draw(self, bl, tr):
+		self.bl = bl
+		self.tr = tr
+		self.linecolour = Color(0,0,1)
+		self.back_colour = Color(0,0,1,0.05)
+		self.canvas.add(self.linecolour)
+		self.canvas.add(kivy.graphics.Line(rectangle=(bl[0], bl[1], tr[0], tr[1]), width=2))
+                self.canvas.add( self.back_colour)
+		self.canvas.add(Rectangle(pos=(0,0), size=( (tr[0]- bl[0]),  (tr[1]- bl[1])) ))
+		self.startpos = self.pos
+                self.do_rotation = False
+                self.do_scale = True
+                self.do_translation = True
+        def on_bring_to_front(self, touch):
+                print "shhet"
+
+                self.camcam.do_touch()
+                self.back_colour.g = 1
+                self.camcam.selected = self
+
 
 class KvPart(Scatter):
 	deleted = False
@@ -140,6 +166,10 @@ class CamCam(App):
 		layout.add_widget(button)
 		for sheet in sheets:
 			print sheet
+			material = KvSheet()
+			material.draw([0,0], [600,500])
+			material.camcam = self
+			self.sheet_widgets[sheet].append(material)
 			for part in sheets[sheet]:
 				for i in range(0, part.number):
 					picture = KvPart()#rotation=randint(-30,30))
@@ -179,11 +209,21 @@ class CamCam(App):
 				rec['name']=p.part.name
 				rec['translate'] = (p.pos[0] - p.startpos[0], p.pos[1] - p.startpos[1])
 				
-			#	m= p.get_window_matrix(x = p.center[0], y = p.center[1])
+				m= p.get_window_matrix(x = p.center[0], y = p.center[1])
+		#		print m
+				m2 = numpy.matrix(m.tolist())
+		#		print m2
+				d = transformations.decompose_matrix(m2)
+#				print "rotate="+str(d[2][2]/math.pi*180)
+#				print "translate="+str(d[3])
+#				print "perspective="+str(d[4])
+#				print "position="+ str( [d[4][0]/d[4][3], d[4][1]/d[4][3] ])
+#				print "kivy_translate="+str(rec['translate'])
 		#		rec['rotate'] = math.atan2(m[4], m[0])/math.pi*180
-				rec['rotate'] = 0
+				rec['rotate'] = d[2][2]/math.pi*180
 				rec['startcentre'] = p.startcentre
-				rec['startpos'] = p.startpos
+				#rec['startpos'] = p.startpos
+				rec['startpos'] = [d[4][0]/d[4][3], d[4][1]/d[4][3] ]
 				if p.deleted ==0:
 					data['sheets'][s].append(rec)
 #				print p.get_window_matrix(0,0)

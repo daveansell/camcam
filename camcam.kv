@@ -35,8 +35,17 @@ FloatLayout:
     on_size: self.center = win.Window.center
     size: canvas.size
     size_hint: None, None
+    
 
     canvas:
 	id: canvas
 	size: 100,200
+
+<KvSheet>:
+    on_size: self.center = win.Window.center
+#    size: canvas.size
+    size_hint: None, None
+#    canvas:
+#        id: canvas2
+#        size: 100,200
 

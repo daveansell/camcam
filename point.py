@@ -47,7 +47,7 @@ class Point(object):
 
         def copy(self):
                 t = Point( self.pos, self.point_type, self.radius, self.cp1, self.cp2, self.direction, self.transform)
-		
+		return t		
         def point_transform(self,ext_transformations=[]):
                 p=self.copy()
                 # If we are applying the transfomations the point shouldn't have them as a transform any more
@@ -237,7 +237,7 @@ class Point(object):
 		
 
 class PSharp(Point):
-	def __init__(self, pos, radius=0, cp1=False, cp2=False, direction=False, transform=False):
+	def __init__(self, pos, radius=0, cp1=False, cp2=False, direction=False, transform=False, sharp=True):
 		"""Create a sharp point at position=pos"""
 		self.init()
                 self.pos=Vec(pos)
@@ -248,6 +248,7 @@ class PSharp(Point):
                 self.direction=direction
                 self.transform=transform
                 self.obType="Point"
+		self.sharp=sharp
 
 	def copy(self):
                 t=PSharp( self.pos, self.radius, self.cp1, self.cp2, self.direction, self.transform)
@@ -256,6 +257,7 @@ class PSharp(Point):
 		t.lastpoint = self.lastpoint
 		t.nextpoint = self.nextpoint
                 t.reverse = self.reverse
+		t.sharp = self.sharp
 		return t
 
 	def origin(self, forward=True):
@@ -266,7 +268,7 @@ class PSharp(Point):
 		return self.start
 
 	def offset(self, side, distance, direction):
-		return self.offsetSharp( side, distance, direction)
+		return self.offsetSharp( side, distance, direction, self.sharp)
 
 	def offsetSharp(self, side, distance, direction, sharp=True):
 		self.setangle()
@@ -426,6 +428,7 @@ class PIncurve(PSharp):
                 self.direction=direction
                 self.transform=transform
                 self.obType="Point"
+		self.sharp = False
 	def copy(self):
                 t= PIncurve( self.pos, self.radius, self.direction, self.transform)
 		t.reverse=self.reverse
@@ -709,9 +712,22 @@ class POutcurve(Point):
                 if(diff[0]<0):
                         rvec[0]*=-1
                 return point+rvec
+	def getDirection(self):
+		if self.direction:
+			if self.reverse:
+				if self.direction=='cw':
+					return 'ccw'
+				else:
+					return 'cw'
+			else:
+				return self.direction
+		else:
+			return self.direction
 
 	def makeSegment(self, config):
 		segment_array=[]
+		sd = self.direction
+
 		if self.last().point_type=='outcurve':
                         lr=self.last().radius
                 else:
@@ -723,8 +739,8 @@ class POutcurve(Point):
 		if lr!=0:
 			if type(self.last().last()) == None:
 				print "OUtcurve must be preceeded by 2 points if previous point is outcurce"
-			if(self.last().direction):
-				d1=self.last().direction
+			if(self.last().getDirection()):
+				d1=self.last().getDirection()
                        	elif (self.last().pos-self.last().last().pos).cross(self.pos-self.last().pos)[2] <0:
                        	        d1='cw'
                        	else:
@@ -732,8 +748,8 @@ class POutcurve(Point):
 		else:
 			# if lr=0 we don't care about the direction
 			d1='cw'
-		if self.direction:
-			d2=self.direction
+		if self.getDirection():
+			d2=self.getDirection()
                 elif (self.pos-self.last().pos).cross(self.next().pos-self.pos)[2] <0:
                         d2='cw'
                 else:
@@ -743,8 +759,8 @@ class POutcurve(Point):
                 d3=''
                 if self.next().point_type=="outcurve":
 #                        if (self.nextorigin()-self.pos).cross(self.next().nextorigin()-self.nextorigin())[2] <0:
-			if self.next().direction:
-                        	d3=self.next().direction
+			if self.next().getDirection():
+                        	d3=self.next().getDirection()
                         elif (self.next().pos-self.pos).cross(self.next().next().pos-self.next().pos)[2] <0:
                                 d3='cw'
                         else:
@@ -767,6 +783,7 @@ class PClear(PSharp):
                 self.point_type='clear'
                 self.transform=transform
                 self.obType="Point"
+		self.sharp = True
 	def copy(self):
                 t = PClear( self.pos, self.transform)
 		t.lastpoint=self.lastpoint
@@ -803,6 +820,7 @@ class PDoubleClear(Point):
                 self.point_type='doubleclear'
                 self.transform=transform
                 self.obType="Point"
+		self.sharp = True
 	def copy(self):
                 t = PDoubleClear( self.pos, self.transform)
 		t.lastpoint=self.lastpoint
