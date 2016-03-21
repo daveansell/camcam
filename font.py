@@ -9,7 +9,7 @@ class Text(Pathgroup):
 		if 'font' in config:
 			font=config['font']
 		else:
-			font='/home/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf'
+			font='/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf'
 		if 'scale' in config:
 			self.scale =config['scale']
 		else:
