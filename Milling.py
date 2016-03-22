@@ -394,7 +394,7 @@ class Milling:
                 "aluminium":{
                         "vertfeed":50,
                         "sidefeed":950,
-                        "stepdown":0.2,
+                        "stepdown":0.3,
                         "kress_setting":1,
                },
                 "polypropelene":{

@@ -876,7 +876,7 @@ class Path(object):
 	                        fillpath.prepend_point(frompos,'sharp')
 			
 			tpath=thepath
-			for d in range(0,int(numpasses)):
+			for d in range(0,int(numpasses+1)):
 				print "PARTIEAL FILL"+str(config['partial_fill'])+" numpasses="+str(numpasses)+" step="+str(step)+" d="+str(d)+" offset="+str(step*(d+1))
 		#		temppath.output_path(config)
 				temppath=copy.deepcopy(tpath)
