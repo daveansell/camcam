@@ -110,6 +110,7 @@ class Ellipse(Path):
 	def __init__(self, pos, **config):
 		self.init(config)
                 self.closed=True
+		self.translate(pos)
 		if 'width' in config:
 			width = config['width']
 		else:
@@ -122,11 +123,16 @@ class Ellipse(Path):
 			points = config['resolution']
 		else:
 			points = 32
-		
+		if 'extra_height' in config:
+			extra_height=config['extra_height']
+		else:
+			extra_height=0	
 		a = 2.0 * math.pi / points
 		for i in range(0, points):
-			self.add_point(V( width/2 * math.cos( a * float(i)), height/2 * math.sin( a * float(i)) )) 
-
+			if(math.sin( a * float(i)) * extra_height>0 ):
+				self.add_point(V( width/2 * math.cos( a * float(i)), height/2 * math.sin( a * float(i)) +extra_height)) 
+			else:
+				self.add_point(V( width/2 * math.cos( a * float(i)), height/2 * math.sin( a * float(i)) ))
 
 class RepeatEllipse(Part):
         def __init__(self, pos, ob, **config):
