@@ -298,8 +298,8 @@ class Circle(Path):
 		if rad==0:
 			raise ValueError("circle of zero radius")
 		else:
-			if rad<3.17/2:
-				self.cutter='2mm_endmill'	
+#			if rad<3.17/2:
+#				self.cutter='2mm_endmill'	
 			self.closed=True
 			self.add_point(pos,'circle',rad)
 			self.comment("Circle")
