@@ -332,6 +332,14 @@ class LinearBearing(Pathgroup):
 				self.add(Hole(pos+V(-d['K']/2, d['J']/2), milling.bolts[d['s1']]['clearance']/2))
 				self.add(Hole(pos+V(d['K']/2, d['J']/2), milling.bolts[d['s1']]['clearance']/2))
 
+class Bearing(Pathgroup):
+	def __init__(self, pos, outer_rad, inner_rad, depth, **config):
+		self.init(config)
+		self.add(FilledCircle(pos, outer_rad, z1=-depth))
+		overlap = max(1, (outer_rad-inner_rad)/5)
+		self.add(Hole(pos, outer_rad-overlap))
+#		self.add_bom("Ball_bearing_"+str(outer_rad*2)+'x'+str(inner_rad*2)+'x'+str(depth), 1, 'OD='+str(outer_rad*2)+"mm ID="+str(inner_rad*2)+" Depth="+str(depth),'')
+
 class LinearRail(Part):
 	def __init__(self, start, end, rail_type, **config):
 		self.init(config)
@@ -341,6 +349,9 @@ class LinearRail(Part):
 			'LFS-12-10':{'width':36, 'centre_height':16, 'centre_width':24, 'holespacing_x':50, 'holespacing_y':0, 'bolt_type':'M6'},
 			'LFS-12-3':{'width':90, 'centre_height':25, 'centre_width':49, 'holespacing_x':100, 'holespacing_y':75, 'bolt_type':'M6'},
 			'LFS-12-2':{'width':62, 'centre_height':25, 'centre_width':12, 'holespacing_x':100, 'holespacing_y':50, 'bolt_type':'M6'},
+			'MGN-9C':{'width':9, 'holespacing_y':0, 'bolt_type':'M3', 'holespacing_x':20,}, 
+			'MGN-12C':{'width':12, 'holespacing_y':0, 'bolt_type':'M3', 'holespacing_x':25,}, 
+			'MGN-15C':{'width':12, 'holespacing_y':0, 'bolt_type':'M3', 'holespacing_x':40,}, 
 		}
 		if rail_type in dat:
 			d=dat[rail_type]
