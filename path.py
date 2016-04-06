@@ -2188,30 +2188,20 @@ class Plane(Part):
 				os.system("/usr/bin/unix2dos "+self.sanitise_filename(filename+config['file_suffix']))
 		
 	def offset_gcode(self, output, offset):
-		xreg=re.compile('X[\d\.-]+')
-		yreg=re.compile('Y[\d\.-]+')
-		zreg=re.compile('Z[\d\.-]+')
+		print offset
+		def reg_add_offset(m):
+			if len(m.group(1)) and len(m.group(2)):
+				axismap={'X':0, 'Y':1, 'Z':2}
+				val=float(m.group(2))
+				val += offset[axismap[m.group(1)]]
+		#		print m.group(1)+str(val)
+				return m.group(1)+str(val)
+			else:
+				return m.group(0)
+				
+		reg = re.compile('([XYZ])([\d\.-]+)')
 		tempoutput=output
-		matches = xreg.findall(tempoutput)
-		for match in matches:
-			if len(match):
-				val=float(match[1::])
-				val+=float(offset[0])
-				tempoutput=tempoutput.replace(match,'X'+str(val))
-		matches=yreg.findall( tempoutput)
-                for match in matches:
-                       if len(match):
-                               val=float(match[1::])
-                               val+=float(offset[1])
-                               tempoutput=tempoutput.replace(match,'Y'+str(val))
-		if(len(offset)>2 and offset[2]!=0):
-			matches=zreg.findall( tempoutput)
-	                for match in matches:
-	                       if len(match):
-	                               val=float(match[1::])
-	                               val+=float(offset[2])
-	                               tempoutput=tempoutput.replace(match,'Z'+str(val))
-		return tempoutput
+		return reg.sub(reg_add_offset, tempoutput)
 	
 	def sanitise_filename(self,filename):
 		return "".join(x for x in filename if x.isalnum() or x in '-._')
