@@ -161,6 +161,10 @@ class Drill(Path):
 	def __init__(self, pos, **config):
 		self.init(config)
 		self.pos=pos
+		if 'chipbreak' in config and config['chipbreak']:
+			self.chipbreak = config['chipbreak']
+		else:
+			self.chipbreak = False
 		if 'peck' in config and config['peck']:
 			self.peck = config['peck']
 		else:
@@ -190,6 +194,8 @@ class Drill(Path):
 		elif config['mode']=='gcode':
 			if self.peck:
 				return [config['cutter'], 'G83X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.peck, config['vertfeed'],config['clear_height'])]
+			elif self.chipbreak:
+				return [config['cutter'], 'G73X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.chipbreak, config['vertfeed'],config['clear_height'])]
 			else:
 				return [config['cutter'], 'G81X%0.2fY%0.2fZ%0.2fR%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3,config['vertfeed'],config['clear_height'])]
 		elif config['mode']=='simplegcode':
@@ -304,8 +310,8 @@ class Circle(Path):
 		if rad==0:
 			raise ValueError("circle of zero radius")
 		else:
-			if rad<3.17/2:
-				self.cutter='2mm_endmill'	
+#			if rad<3.17/2:
+#				self.cutter='2mm_endmill'	
 			self.closed=True
 			self.add_point(pos,'circle',rad)
 			self.comment("Circle")
@@ -644,7 +650,10 @@ class Screw(Part):
 			layer_conf=config['layer_config']
 			for c in layer_conf.keys():
 				conf = copy.deepcopy(layer_conf[c])
-				self.add(Hole(pos, **conf), c)
+				if 'drill' in conf and conf['drill']:
+					self.add(Drill(pos, **conf), c)
+				else:
+					self.add(Hole(pos, **conf), c)
 class FourScrews(Part):
 	def __init__(self, bl, tr, layer_conf, **config):
 		self.init(config)

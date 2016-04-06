@@ -812,7 +812,7 @@ class Path(object):
 				finishing=0
 		else:
 			finishing=0
-	
+
 		if not config['hide_cuts']  and 'partial_fill' in config and config['partial_fill']>0:
 			dist=max(config['partial_fill']-config['cutterrad'], finishing)
 			if dist<=0:
