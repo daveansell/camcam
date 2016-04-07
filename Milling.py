@@ -572,6 +572,11 @@ class Milling:
                                 'length':1.8,
                         },
                 },
+                'RMS':{
+                        'diam':20.32,
+                        'tap':19.6,
+			'clearance':21.0,
+                },
 
 	}
 		self.inserts={
