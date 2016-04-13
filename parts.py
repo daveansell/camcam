@@ -271,7 +271,7 @@ class Stepper(Part):
 				'pilot_depth':2,
 			},
 		}
-		self.add(Hole(pos, rad=10))
+	#	self.add(Hole(pos, rad=10))
 		d=dat[stepper_type]
 		if 'mode' in config and config['mode']=='justshaft':
 			self.add(Hole(pos, rad=d['shaft_diam']/2+1),layer)
@@ -317,6 +317,7 @@ class RoundShaftSupport(Pathgroup):
 			self.add(Hole(pos+V(0,d['B']/2), rad = milling.bolts[d['bolt']]['clearance']/2))
 			self.add(Hole(pos+V(0,-d['B']/2), rad = milling.bolts[d['bolt']]['clearance']/2))
 			self.add(ClearRect(pos, centred=True, width=d['L']+0.4, height=d['W']+0.4, partial_fill=(d['L']+0.4)/2, fill_direction='in'))
+
 class LinearBearing(Pathgroup):
 	def __init__(self,pos, bearing_type, mode,  **config):
 		self.init(config)
@@ -332,12 +333,51 @@ class LinearBearing(Pathgroup):
 				self.add(Hole(pos+V(-d['K']/2, d['J']/2), milling.bolts[d['s1']]['clearance']/2))
 				self.add(Hole(pos+V(d['K']/2, d['J']/2), milling.bolts[d['s1']]['clearance']/2))
 
+class ProfileBearing(Part):
+	def __init__(self,pos, bearing_type, mode,  **config):
+		self.init(config)
+		dat={
+#http://dgjiayi88.en.alibaba.com/product/423259063-210484550/TAIWAN_original_MGN9C_HIWIN_linear_guide.html
+			'MGN9C':{'W':20, 'H':10, 'B':15, 'W':42, 'L':28.9,'C':10, 'thread':'M3', 'H1':2.4, }
+		}
+		self.bearing_type=bearing_type
+		self.d=dat[bearing_type]
+		self.create_layer=True
+		self.translate(pos)
+		if 'layers' in config:
+			layers = config['layers']
+			if 'carriage' in layers:
+				self.carriage_layer=layers['carriage']
+				self.create_layer=False
+			else:
+				self.carriage_layer = 'carriage_layer'
+			if 'clearance' in layers:
+				print "ADDING HOLE"+self.carriage_layer
+				self.add(Bolt(V(self.d['B']/2, self.d['C']/2), clearance_layers=layers['clearance'], insert_layer=[], thread_layer=self.carriage_layer))
+				self.add(Bolt(V(-self.d['B']/2, self.d['C']/2), clearance_layers=layers['clearance'], insert_layer=[], thread_layer=self.carriage_layer))
+				self.add(Bolt(V(-self.d['B']/2, -self.d['C']/2), clearance_layers=layers['clearance'], insert_layer=[], thread_layer=self.carriage_layer))
+				self.add(Bolt(V(self.d['B']/2, -self.d['C']/2), clearance_layers=layers['clearance'], insert_layer=[], thread_layer=self.carriage_layer))
+		self.layer=self.carriage_layer
+		self.add_border(Rect(V(0,0), centred=True, width = self.d['W'], height=self.d['L']))
+		self.name=self.bearing_type+"_carriage"
+	def _pre_render(self):
+		print "pre_render"
+		print self.transform
+		if self.create_layer:
+			self.carriage_layer = 'carriage_layer'
+			self.get_plane().add_layer(self.carriage_layer, 'aluminium', self.d['H']-self.d['H1'], zoffset=self.d['H'], colour='#808080')
+		print self.get_plane().layers
 class Bearing(Pathgroup):
 	def __init__(self, pos, outer_rad, inner_rad, depth, **config):
+		outer_rad=float(outer_rad)
+		inner_rad=float(inner_rad)
 		self.init(config)
-		self.add(FilledCircle(pos, outer_rad, z1=-depth))
+		self.add(FilledCircle(pos, rad=outer_rad, z1=-depth))
 		overlap = max(1, (outer_rad-inner_rad)/5)
-		self.add(Hole(pos, outer_rad-overlap))
+		print outer_rad
+		print outer_rad-overlap
+		self.add(Hole(pos, rad=outer_rad-overlap))
+		
 #		self.add_bom("Ball_bearing_"+str(outer_rad*2)+'x'+str(inner_rad*2)+'x'+str(depth), 1, 'OD='+str(outer_rad*2)+"mm ID="+str(inner_rad*2)+" Depth="+str(depth),'')
 
 class LinearRail(Part):
@@ -349,9 +389,9 @@ class LinearRail(Part):
 			'LFS-12-10':{'width':36, 'centre_height':16, 'centre_width':24, 'holespacing_x':50, 'holespacing_y':0, 'bolt_type':'M6'},
 			'LFS-12-3':{'width':90, 'centre_height':25, 'centre_width':49, 'holespacing_x':100, 'holespacing_y':75, 'bolt_type':'M6'},
 			'LFS-12-2':{'width':62, 'centre_height':25, 'centre_width':12, 'holespacing_x':100, 'holespacing_y':50, 'bolt_type':'M6'},
-			'MGN-9C':{'width':9, 'holespacing_y':0, 'bolt_type':'M3', 'holespacing_x':20,}, 
-			'MGN-12C':{'width':12, 'holespacing_y':0, 'bolt_type':'M3', 'holespacing_x':25,}, 
-			'MGN-15C':{'width':12, 'holespacing_y':0, 'bolt_type':'M3', 'holespacing_x':40,}, 
+			'MGN-9C':{'width':9, 'holespacing_y':0, 'bolt_type':'M3', 'holespacing_x':20, 'height':6.5}, 
+			'MGN-12C':{'width':12, 'holespacing_y':0, 'bolt_type':'M3', 'holespacing_x':25, 'height':8}, 
+			'MGN-15C':{'width':12, 'holespacing_y':0, 'bolt_type':'M3', 'holespacing_x':40, 'height':10}, 
 		}
 		if rail_type in dat:
 			d=dat[rail_type]
