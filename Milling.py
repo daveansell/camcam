@@ -41,6 +41,16 @@ class Milling:
 				'label':False,
 				'zero':False,
 			},
+			'3D':{
+				'overview':False,
+                                'mirror_backs':False,
+
+			},
+			'3Dall':{
+				'overview':True,
+                                'mirror_backs':True,
+
+			},
                         'makespacerouter2':{
 #                                'prefix':'T1M6\nG17\nG0Z10S11000M3\n',
 				'prefix':'T1M6\nG17\nG0Z30S11000M3\n',
