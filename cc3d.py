@@ -8,15 +8,23 @@ from types import MethodType
 
 
 SEGMENTS = 120
-RESOLUTION = 0.2
+RESOLUTION = 0.3
+_delta = 0
+SCALEUP = 1
+PRECISION = 3
 
 def path_render3D(self, pconfig, border=False):
+	global _delta, PRECISION, SCALEUP
 	config={}
 	config=self.overwrite(config,pconfig)
       	inherited = self.get_config()
 #               if('transformations' in config):
       	config=self.overwrite(config, inherited)
 
+	if 'zoffset' in pconfig and  pconfig['zoffset']:
+		zoffset= pconfig['zoffset']
+	else:
+		zoffset = 0
 	if config['z0'] is None or config['z0'] is False:
 		z0=0
 	else:
@@ -33,19 +41,29 @@ def path_render3D(self, pconfig, border=False):
 	else:
 		z1= config['z1']
 	if 'isback' in config and config['isback'] and border==False:
-		print "isback"
 		z0 = - config['thickness'] - z0
 		z1 = - config['thickness'] - z1
-
+# try to avoid faces and points touching by offsetting them slightly
+	z0+=_delta
+	z1-=_delta
+	_delta+=0.001
 	outline = []
 	points = self.polygonise(RESOLUTION)
-	extrude_path = [ Point3(0,0,float(z0)), Point3(0,0, float(z1)) ]
-	print extrude_path
+	extrude_path = [ Point3(0,0,zoffset + float(z0)), Point3(0,0, zoffset + float(z1)) ]
 	for p in points:
-		outline.append(Point3(p[0], p[1], 0))
-	extruded = extrude_along_path(shape_pts=outline, path_pts=extrude_path)
+		outline.append( [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
+	outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
+#		outline.append( Point3(p[0], p[1], p[2] ))
+#	outline.append( Point3(points[0][0], points[0][1], points[0][2] ))
+	h = round(abs(z1-z0),PRECISION)*SCALEUP
+	bottom = round((min(z1,z0)+zoffset),PRECISION) *SCALEUP
+	print "h="+str(h)+" botom="+str(bottom)+" top="+str(bottom+h)
+#	extruded = extrude_along_path(shape_pts=outline, path_pts=extrude_path)
+	extruded = translate([0,0,bottom])(linear_extrude(height=h, center=False)(polygon(points=outline)))
 	if 'isback' in config and config['isback'] and border==False:
 		extruded = mirror([1,0,0])(extruded )
+	if 'colour' in config and config['colour']:
+		extruded = color(self.scad_colour(config['colour']))(extruded)
 	return [extruded]
 #def path_transform3D(self, pconfig):
 #	config=self.overwrite(config,pconfig)
@@ -56,6 +74,18 @@ def path_render3D(self, pconfig, border=False):
 
 
 Path.render3D = path_render3D
+
+def path_scad_colour(self, svgcolour):
+	if svgcolour[0]=='#':
+		r = float(int(svgcolour[1:3],16))/255
+		g = float(int(svgcolour[3:5],16))/255
+		b = float(int(svgcolour[5:7],16))/255
+		return [r, g, b]
+	else:
+		lookup={'green':[0,1.0,0], 'red':[1.0, 0, 0], 'yellow':[1.0,1.0,0], 'blue':[0,0,1.0]}
+		return 
+Path.scad_colour = path_scad_colour
+
 
 def pathgroup_render3D(self, pconfig):
 	ret=[]
@@ -72,12 +102,19 @@ def part_translate3D(self, vec):
 
 Part.translate3D = part_translate3D
 
+def part_rotate3D(self, vec):
+	if self.transform is False or self.transform is None:
+            	self.transform={}
+      	self.transform['rotate3D']=vec
+
+Part.rotate3D = part_rotate3D
+
 def plane_generate_part3D(self, thepart, pconfig):
 	self.mode='3D'
 	self.callmode='3D'
 	layers = self.get_layers()
 	config=pconfig
-	print thepart
+	config['layer'] = thepart.layer
      	if thepart.layer in layers and thepart.layer is not False and thepart.layer is not None:
       		paths=layers[thepart.layer]
            	config.update(self.get_layer_config(thepart.layer))
@@ -88,19 +125,27 @@ def plane_generate_part3D(self, thepart, pconfig):
              	paths=[]
 	if 'all' in layers:
         	paths.extend(layers['all'])
+	config = thepart.overwrite(config,thepart.get_config())
+	print config['transformations']
 	if(thepart.border is not False and thepart.border is not None):
-		thepart.border3D = thepart.border.render3D(pconfig, True)[0]
-	
+		thepart.border3D = thepart.border.render3D(config, True)[0]
 	thepart.cutouts3D = []
 	for path in paths:
-		thepart.cutouts3D.extend(path.render3D(pconfig))
+		thepart.cutouts3D.extend(path.render3D(config))
 	
 def plane_make_part3D(self, thepart, pconfig):
-	print pconfig
 	self.generate_part3D(thepart, pconfig)
+#	for cutout in thepart.cutouts3D:
+#		for c in cutout:
+#			thepart.border3D = thepart.border3D - c
+	cutouts = [thepart.border3D]
 	for cutout in thepart.cutouts3D:
 		for c in cutout:
-			thepart.border3D = thepart.border3D + hole()(c)
+			cutouts.append(c)
+
+	thepart.border3D = difference()(*cutouts)
+	if 'rotate3D' in thepart.transform:
+		thepart.border3D=solidpython.rotate([thepart.transform['rotate3D'][0], thepart.transform['rotate3D'][1],thepart.transform['rotate3D'][2] ])(thepart.border3D)
 	if 'translate3D' in thepart.transform:
 		thepart.border3D=translate([thepart.transform['translate3D'][0], thepart.transform['translate3D'][1],thepart.transform['translate3D'][2] ])(thepart.border3D)
 def plane_render_part3D(self, thepart, pconfig, filename=False):
