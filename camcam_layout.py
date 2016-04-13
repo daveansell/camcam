@@ -1,4 +1,24 @@
 #!/usr/bin/python
+
+# This file is part of CamCam.
+
+#    CamCam is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+
+#    Foobar is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with CamCam.  If not, see <http://www.gnu.org/licenses/>.
+
+#    Author Dave Ansell
+
+
+
 from path import *
 from shapes import *
 from parts import *
@@ -36,6 +56,7 @@ class KvSheet(Scatter):
 	def draw(self, bl, tr):
 		self.bl = bl
 		self.tr = tr
+		self.part = None
 		self.linecolour = Color(0,0,1)
 		self.back_colour = Color(0,0,1,0.05)
 		self.canvas.add(self.linecolour)
@@ -204,28 +225,30 @@ class CamCam(App):
 		for s in self.sheet_widgets:
 			data['sheets'][s]=[]
 			for p in self.sheet_widgets[s]:
-				print p.part.name+" self.center"+str(p.center)+" startcentre"+str(p.startcentre)+" pos="+str(p.pos)+" startpos="+str(p.startpos)
-				rec = {}
-				rec['name']=p.part.name
-				rec['translate'] = (p.pos[0] - p.startpos[0], p.pos[1] - p.startpos[1])
+				print p
+				if p.part is not None:
+					print p.part.name+" self.center"+str(p.center)+" startcentre"+str(p.startcentre)+" pos="+str(p.pos)+" startpos="+str(p.startpos)
+					rec = {}
+					rec['name']=p.part.name
+					rec['translate'] = (p.pos[0] - p.startpos[0], p.pos[1] - p.startpos[1])
 				
-				m= p.get_window_matrix(x = p.center[0], y = p.center[1])
+					m= p.get_window_matrix(x = p.center[0], y = p.center[1])
 		#		print m
-				m2 = numpy.matrix(m.tolist())
+					m2 = numpy.matrix(m.tolist())
 		#		print m2
-				d = transformations.decompose_matrix(m2)
+					d = transformations.decompose_matrix(m2)
 #				print "rotate="+str(d[2][2]/math.pi*180)
 #				print "translate="+str(d[3])
 #				print "perspective="+str(d[4])
 #				print "position="+ str( [d[4][0]/d[4][3], d[4][1]/d[4][3] ])
 #				print "kivy_translate="+str(rec['translate'])
 		#		rec['rotate'] = math.atan2(m[4], m[0])/math.pi*180
-				rec['rotate'] = d[2][2]/math.pi*180
-				rec['startcentre'] = p.startcentre
+					rec['rotate'] = d[2][2]/math.pi*180
+					rec['startcentre'] = [0,0]
 				#rec['startpos'] = p.startpos
-				rec['startpos'] = [d[4][0]/d[4][3], d[4][1]/d[4][3] ]
-				if p.deleted ==0:
-					data['sheets'][s].append(rec)
+					rec['startpos'] = [d[4][0]/d[4][3], d[4][1]/d[4][3]]
+					if p.deleted ==0:
+						data['sheets'][s].append(rec)
 #				print p.get_window_matrix(0,0)
 		h = open( 'layout_file', 'w') 
 		pickle.dump(data, h)

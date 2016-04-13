@@ -1,3 +1,21 @@
+# This file is part of CamCam.
+
+#    CamCam is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+
+#    Foobar is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with CamCam.  If not, see <http://www.gnu.org/licenses/>.
+
+#    Author Dave Ansell
+
+
 
 from solid import *
 from solid.utils import *
@@ -57,11 +75,10 @@ def path_render3D(self, pconfig, border=False):
 #	outline.append( Point3(points[0][0], points[0][1], points[0][2] ))
 	h = round(abs(z1-z0),PRECISION)*SCALEUP
 	bottom = round((min(z1,z0)+zoffset),PRECISION) *SCALEUP
-	print "h="+str(h)+" botom="+str(bottom)+" top="+str(bottom+h)
 #	extruded = extrude_along_path(shape_pts=outline, path_pts=extrude_path)
 	extruded = translate([0,0,bottom])(linear_extrude(height=h, center=False)(polygon(points=outline)))
-	if 'isback' in config and config['isback'] and border==False:
-		extruded = mirror([1,0,0])(extruded )
+#	if 'isback' in config and config['isback'] and border==False:
+#		extruded = mirror([1,0,0])(extruded )
 	if 'colour' in config and config['colour']:
 		extruded = color(self.scad_colour(config['colour']))(extruded)
 	return [extruded]
@@ -126,7 +143,6 @@ def plane_generate_part3D(self, thepart, pconfig):
 	if 'all' in layers:
         	paths.extend(layers['all'])
 	config = thepart.overwrite(config,thepart.get_config())
-	print config['transformations']
 	if(thepart.border is not False and thepart.border is not None):
 		thepart.border3D = thepart.border.render3D(config, True)[0]
 	thepart.cutouts3D = []
@@ -144,10 +160,14 @@ def plane_make_part3D(self, thepart, pconfig):
 			cutouts.append(c)
 
 	thepart.border3D = difference()(*cutouts)
-	if 'rotate3D' in thepart.transform:
-		thepart.border3D=solidpython.rotate([thepart.transform['rotate3D'][0], thepart.transform['rotate3D'][1],thepart.transform['rotate3D'][2] ])(thepart.border3D)
-	if 'translate3D' in thepart.transform:
-		thepart.border3D=translate([thepart.transform['translate3D'][0], thepart.transform['translate3D'][1],thepart.transform['translate3D'][2] ])(thepart.border3D)
+	# 3D transformations can only be applied to parts, so we can just go up the tree
+	p = thepart
+	while(p and type(p) is not Plane):
+		if 'rotate3D' in p.transform:
+			thepart.border3D=solidpython.rotate([p.transform['rotate3D'][0], p.transform['rotate3D'][1],p.transform['rotate3D'][2] ])(thepart.border3D)
+		if 'translate3D' in p.transform:
+			thepart.border3D=solidpython.translate([p.transform['translate3D'][0], p.transform['translate3D'][1],p.transform['translate3D'][2] ])(thepart.border3D)
+		p=p.parent
 def plane_render_part3D(self, thepart, pconfig, filename=False):
 	self.make_part3D(thepart, pconfig)
 	if filename==False:

@@ -1,3 +1,20 @@
+# This file is part of CamCam.
+
+#    CamCam is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+
+#    Foobar is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with CamCam.  If not, see <http://www.gnu.org/licenses/>.
+
+#    Author Dave Ansell
+
 import os
 import math
 from minivec import Vec, Mat
@@ -1669,7 +1686,7 @@ class Part(object):
 		return config
 	# is this a part we can render or just a multilayer pathgroup	
 	def renderable(self):
-		if (not hasattr(self, 'border') or self.border is False or self.layer is False or self.border is None) and not (hasattr(self,'ignore_border') and self.ignore_border==True):
+		if (not hasattr(self, 'border') or self.border is False or self.layer is False or self.border is None) and not (hasattr(self,'ignore_border') and not (self.ignore_border==True) and (hasattr(self,'subpart') and self.subpart==True and self.layer is True)):
 		#if (not hasattr(self, 'border') or self.border is False or self.layer is False or self.border is None) or not (hasattr(self,'ignore_border') and self.ignore_border!=True):
 			return False
 		else:

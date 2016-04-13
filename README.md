@@ -31,7 +31,14 @@ as the docs indicate this is very alpha atm
 python-kivy
 dos2unix
 
+# for 3d
+openscad
+
 pip packages
 
 freetype-py
 dxfwrite
+
+# for experimental 3D
+euclid
+solidpython
