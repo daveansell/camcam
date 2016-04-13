@@ -164,7 +164,7 @@ class Arc(Segment):
                         if newdot>dot:
                                 hasrisen=1
                         if hasrisen and newdot<dot:
-                                points.append(cutto)
+                              #  points.append(cutto)
                                 break
                         points.append(self.centre+r)
                         thetasum+=dtheta
