@@ -1523,14 +1523,14 @@ class Part(object):
 		self.internal_borders=[]
 		self.ignore_border=False
 		self.transform={}
-		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter']
+		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in config:
 				setattr(self,v, config[v])
 			else:
 				setattr(self,v,None)
-			self.otherargs+=':param v: '+arg_meanings[v]+"\n"
+	#		self.otherargs+=':param v: '+arg_meanings[v]+"\n"
 		self.output=[]
 		self.number=1
 		if 'transform' in config:
@@ -1570,7 +1570,6 @@ class Part(object):
 	                                self.layers[l] = ltemp['name']
 	                        elif l not in self.layers:
 					raise ValueError('Creating new layer "'+str(l)+'". config not sent as dict with name, thickness and material elements so can not create it.')
-
 	def __deepcopy__(self,memo):
 		conf={}
 		for v in self.varlist:
@@ -1638,6 +1637,12 @@ class Part(object):
 		return ret
 	def comment(self,comment):
 		self.comments.append(str(comment))
+
+	def get_plane(self):
+		if self.parent:
+			return self.parent.get_plane()
+		else:
+			return False
 	def get_config(self):
 		if self.parent is not False:
 			pconfig = self.parent.get_config()
@@ -1675,6 +1680,8 @@ class Part(object):
 		if self.isCopy and not overview:
 			return []
 		for part in self.parts:
+			if getattr(part, "_pre_render", None) and callable(part._pre_render):
+				part._pre_render()
 			ret.extend(part.getParts(overview))
 		if self.renderable():
 			ret.append(self)
@@ -1793,6 +1800,7 @@ class Part(object):
 			# find all the contents of layers
 			part.mode=self.mode
 			part.callmode=self.callmode
+# this may be dangerous as pre_render will be called more than oncee
 			ls=part.get_layers()
 			p=""
 			if(ls is not False and ls is not None):
@@ -1923,6 +1931,8 @@ class Plane(Part):
 				self.config[v]=config[v]
                         else:
 				self.config[v]=None
+	def get_plane(self):
+		return self
 	def get_config(self):
 		return self.config
 	def add_part_layer(self, part, material, thickness, z0=0,zoffset=0, add_back=False, isback=False, colour=False):
