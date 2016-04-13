@@ -306,6 +306,7 @@ if :param cutter: is not explicitly specified it will use the countersink cutter
 class Circle(Path):
 	def __init__(self, pos, rad, **config):
 		self.init( config)
+		self.rad = rad
 		"""Cut a circle centre at :param pos: with radius :param rad:"""+self.otherargs
 		if rad==0:
 			raise ValueError("circle of zero radius")
