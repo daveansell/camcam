@@ -338,7 +338,7 @@ class ProfileBearing(Part):
 		self.init(config)
 		dat={
 #http://dgjiayi88.en.alibaba.com/product/423259063-210484550/TAIWAN_original_MGN9C_HIWIN_linear_guide.html
-			'MGN9C':{'W':20, 'H':10, 'B':15, 'W':42, 'L':28.9,'C':10, 'thread':'M3', 'H1':2.4, }
+			'MGN9C':{'W':20, 'H':10, 'B':15, 'L':28.9,'C':10, 'thread':'M3', 'H1':2.4, }
 		}
 		self.bearing_type=bearing_type
 		self.d=dat[bearing_type]
@@ -361,12 +361,9 @@ class ProfileBearing(Part):
 		self.add_border(Rect(V(0,0), centred=True, width = self.d['W'], height=self.d['L']))
 		self.name=self.bearing_type+"_carriage"
 	def _pre_render(self):
-		print "pre_render"
-		print self.transform
 		if self.create_layer:
 			self.carriage_layer = 'carriage_layer'
 			self.get_plane().add_layer(self.carriage_layer, 'aluminium', self.d['H']-self.d['H1'], zoffset=self.d['H'], colour='#808080')
-		print self.get_plane().layers
 class Bearing(Pathgroup):
 	def __init__(self, pos, outer_rad, inner_rad, depth, **config):
 		outer_rad=float(outer_rad)
@@ -404,7 +401,20 @@ class LinearRail(Part):
 				offsetx = (tot_len - hole_gaps*d['holespacing_x'])/2
 			else:
 				offsetx = config['offsetx']
-			
+			border=Path(side='out', closed=True)
+			border.add_point(perp*-d['width']/2+parallel*tot_len/2) 
+			border.add_point(perp*d['width']/2+parallel*tot_len/2) 
+			border.add_point(perp*d['width']/2-parallel*tot_len/2) 
+			border.add_point(perp*-d['width']/2-parallel*tot_len/2) 
+			self.add_border(border)
+			self.layer = '_rail_layer'
+			if 'clearance_layers' in config:
+				if type(config['clearance_layers']) is list:
+					config['clearance_layers'].append('_rail_layer')
+				else:
+					config['clearance_layers'] = [ config['clearance_layers'], '_rail_layer' ]
+			else:
+				config['clearance_layers'] = '_rail_layer'
 			for i in range(0, hole_gaps+1):
 				if d['holespacing_y'] ==0:
 					self.add(Bolt(start+ parallel *(offsetx+ d['holespacing_x']*i), d['bolt_type'], **config))
@@ -412,6 +422,9 @@ class LinearRail(Part):
 					self.add(Bolt(start+parallel*(offsetx+ d['holespacing_x']*i) + perp * d['holespacing_y'] , d['bolt_type'], **config))
 					self.add(Bolt(start+parallel*(offsetx+ d['holespacing_x']*i) - perp * d['holespacing_y'] , d['bolt_type'], **config))
 			self.add(Lines([start+perp*d['width']/2, start-perp*d['width']/2, end-perp*d['width']/2, end+perp*d['width']/2], closed=True), 'paper')
+	def _pre_render(self):
+		self.carriage_layer = '_rail_layer'
+		self.get_plane().add_layer(self.carriage_layer, 'aluminium', self.d['height'], zoffset=self.d['height'], colour='#808080')
 
 class Insert(Part):
 	def __init__(self, pos, insert_size,layer, **config):
