@@ -425,7 +425,7 @@ class Stepper(Part):
 #			self.add(Hole(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5),layer)
 			self.add(FilledCircle(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5),layer)
 		self.layer='_stepper_layer'
-		self.border=RoundedRect(pos, centred=True, width=d['width'], height=d['width'], rad=d['corner_rad'])
+		self.add_border(RoundedRect(pos, centred=True, width=d['width'], height=d['width'], rad=d['corner_rad']))
 		self.z0=0
 		self.z1=self.length
 		print "shaft_length="+str(self.shaft_length)
