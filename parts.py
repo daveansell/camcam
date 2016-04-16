@@ -66,6 +66,7 @@ class Switch(Part):
 					self.add(ClearRect(V(0,0), width=data['cutout_width'], height=data['cutout_height'], centred=True),layers=l)
 				if task=='clearance':
 					self.add(ClearRect(V(0,0), width=data['clearance_width'], height=data['clearance_height'], centred=True),layers=l)
+
 class SevenSegmentDisplay(Part):
 	def __init__(self, pos, **config):
 		self.init(config)
@@ -211,6 +212,92 @@ class Pi(Part):
                         self.add(Hole(hole_bl+V(hw, hl),rad=3.3/2), layer_config['clearance'])
                         self.add(Hole(hole_bl+V(0,hl),rad=3.3/2), layer_config['clearance'])
 
+class Pi3(Part):
+	def __init__(self, pos,**config):
+		self.init(config)
+		w=85
+		h=49
+		o=1.5
+		self.layer='_pilayer'
+		self.name='Pi3'
+		self.add_border(RoundedRect(V(0,0), width=w, height=h, centred=True, rad=3, thickness=1.5, zoffset=o, colour="#008030"))
+		self.hdmi = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-w/2+32, -35.6), centred=True, width=14, height=12.2, zoffset=o+6, thickness=6, colour='#808080')))	
+		self.network = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(22.9, -h/2+10.25), centred=True, width=21.1, height=15.5, zoffset=o+15, thickness=15, colour='#808080'))	)
+		self.USB1 = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(26.46, -h/2+29), centred=True, width=17.7, height=13.3, zoffset=o+20, thickness=20, colour='#808080')))	
+		self.USB2 = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(26.46, -h/2+47), centred=True, width=17.7, height=13.3, zoffset=o+20, thickness=20, colour='#808080')))	
+		self.GPIO = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-w/2+29, 25.6), centred=True, width=50.5, height=8.5, zoffset=o+5, thickness=5, colour='#101010')))
+		self.CPU = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-15.6, -10.3), centred=True, width=13.8, height=1.8, zoffset=o+1, thickness=1, colour='#101010')))
+		self.CSI = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-2.6, -h/2+11.5), centred=True, width=4, height=22.2, zoffset=o+4, thickness=4, colour='#dddddd')))
+		self.DSI = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-39, -h/2+28), centred=True, width=4, height=22.2, zoffset=o+4, thickness=4, colour='#dddddd')))
+		if 'clearance_layers' in config:
+			if type(config['clearance_layers']) is list:
+				config['clearance_layers'].append('_pilayer')
+			else:
+				config['clearance_layers']=[config['clearance_layers'], '_pilayer']
+		else:
+			config['clearance_layers']='_pilayer'
+		if 'thread_layer' not in config:
+			config['thread_layer'] = []
+		if 'insert_layer' not in config:
+			config['insert_layer'] = []
+		self.add(Bolt(V(-w+3.5, 49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+		self.add(Bolt(V(-w+3.5, -49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+		self.add(Bolt(V(-w+3.5+58, 49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+		self.add(Bolt(V(-w+3.5+58, -49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+	def _pre_render(self):
+		self.get_plane().add_layer('_pilayer', 'pcb', 1, zoffset=0, colour='#808080')
+ 
+class PiCam(Pathgroup):
+        def __init__(self, pos, **config):
+                self.init(config)
+                self.translate(pos)
+                self.holder_width = 25.5
+                self.holder_height = 24
+		self.cam_pos=self.holder_height-14.5
+		centre = V(0,self.holder_height-14.5)
+                holder_depression_top = -1.5
+                holder_depression_bottom = -14.2
+                holder_depression_depth = 1.5
+                holder_hole_h1=-2
+                holder_hole_h2=-14.5
+                holder_hole_sp=21
+                holder_wire_top = -16
+                holder_wire_width = 21
+		self.wire_width = holder_wire_width
+                holder_wire_length = 15
+                holder_wire_length2 = 20
+                holder_wire_depth = 2.5
+                hw = self.holder_width/2
+                self.cutter="2mm_endmill"
+                depression = self.add(
+                        Rect(
+                                centre + V(-self.holder_width/2,holder_depression_bottom),
+                                tr = centre + V(self.holder_width/2,holder_depression_top),
+                                partial_fill=(holder_depression_top-holder_depression_bottom)/2,
+                                z1=-holder_depression_depth
+                        )
+                )
+                wire = self.add(
+                        Rect(
+                                centre + V(-holder_wire_width/2, holder_wire_top-holder_wire_length),
+                                tr=centre + V(holder_wire_width/2, holder_wire_top),
+                                partial_fill=holder_wire_width/2,
+                                z1=-holder_wire_depth
+                        )
+                )
+                self.add(
+                        Rect(
+                                centre + V(-holder_wire_width/2, holder_wire_top-holder_wire_length2),
+                                tr=centre + V(holder_wire_width/2, holder_wire_top-holder_wire_length),
+                                partial_fill=holder_wire_width/2,
+                                z1=-holder_wire_depth/2
+                        )
+                )
+                self.add(Hole(centre + V(-holder_hole_sp/2,holder_hole_h2), rad=1.1, z1=-3))
+                self.add(Hole(centre + V(holder_hole_sp/2,holder_hole_h2), rad=1.1, z1=-3))
+                self.add(Hole(centre + V(holder_hole_sp/2,holder_hole_h1), rad=1.1, z1=-3))
+                self.add(Hole(centre + V(-holder_hole_sp/2,holder_hole_h1), rad=1.1, z1=-3))
+
 class CableTie(Pathgroup):
 	def __init__(self, pos, cable_width, tie_width,**config):
 		self.init(config)
@@ -251,6 +338,9 @@ class Stepper(Part):
 				'shaft_diam':4,
 				'pilot_diam':15,
 				'pilot_depth':1.5,
+				'width':20.4,
+				'shaft_len':15,
+				'corner_rad':2,
 			},
 			'NEMA1.1':{
 				'bolt_size':'M4',
@@ -258,6 +348,9 @@ class Stepper(Part):
 				'shaft_diam':5,
 				'pilot_diam':22,
 				'pilot_depth':2,
+				'width':28,
+				'shaft_len':20,
+				'corner_rad':3,
 			},
 			'NEMA1.4':{
 				'bolt_size':'M4',
@@ -265,6 +358,10 @@ class Stepper(Part):
 				'shaft_diam':5,
 				'pilot_diam':22,
 				'pilot_depth':2,
+				'width':36,
+				'shaft_len':21,
+				'back_shaft_len':10,
+				'corner_rad':4,
 			},
 			'NEMA1.7':{
 				'bolt_size':'M4',
@@ -272,6 +369,10 @@ class Stepper(Part):
 				'shaft_diam':5,
 				'pilot_diam':22,
 				'pilot_depth':2,
+				'width':44,
+				'shaft_len':24,
+				'back_shaft_len':10,
+				'corner_rad':5,
 			},
 			'NEMA2.3':{
 				'bolt_size':'M5',
@@ -279,6 +380,11 @@ class Stepper(Part):
 				'shaft_diam':6.35,
 				'pilot_diam':38.1,
 				'pilot_depth':1.6,
+                                'width':58.5,
+				'flange_thickness':5,
+				'shaft_len':20.6,
+				'back_shaft_len':15,
+				'corner_rad':4,
 			},
 			'NEMA3.4':{
 				'bolt_size':'M5',
@@ -286,22 +392,57 @@ class Stepper(Part):
 				'shaft_diam':9,
 				'pilot_diam':22,
 				'pilot_depth':2,
+				'width':86.5,
+				'flange_thickness':9.3,
+				'shaft_len':30,
+				'back_shaft_len':28,
+				'corner_rad':4,
 			},
 		}
+		if 'length' in config:
+			self.length=config['length']
+		else:
+			self.length=50
 	#	self.add(Hole(pos, rad=10))
 		d=dat[stepper_type]
+		self.d=d
+		self.cutlayer=layer
+		if 'shaft_length' in config:
+			self.shaft_length=config['shaft_len']
+		else:
+			self.shaft_length=d['shaft_len']
+
 		if 'mode' in config and config['mode']=='justshaft':
 			self.add(Hole(pos, rad=d['shaft_diam']/2+1),layer)
 		else:	
-			self.add(Hole(pos+V(d['bolt_sep']/2,d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2),layer)
-			self.add(Hole(pos+V(d['bolt_sep']/2,-d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2),layer)
-			self.add(Hole(pos+V(-d['bolt_sep']/2,-d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2),layer)
-			self.add(Hole(pos+V(-d['bolt_sep']/2,d['bolt_sep']/2), rad=milling.bolts[d['bolt_size']]['clearance']/2),layer)
+			self.add(Bolt(pos+V(d['bolt_sep']/2,d['bolt_sep']/2), d['bolt_size'], clearance_layers=layer, thread_layer='_stepper_layer', insert_layer=[]))
+			self.add(Bolt(pos+V(d['bolt_sep']/2,-d['bolt_sep']/2), d['bolt_size'], clearance_layers=layer, thread_layer='_stepper_layer', insert_layer=[]))
+			self.add(Bolt(pos+V(-d['bolt_sep']/2,-d['bolt_sep']/2), d['bolt_size'], clearance_layers=layer, thread_layer='_stepper_layer', insert_layer=[]))
+			self.add(Bolt(pos+V(-d['bolt_sep']/2,d['bolt_sep']/2), d['bolt_size'], clearance_layers=layer, thread_layer='_stepper_layer', insert_layer=[]))
 		
 			self.add(Hole(pos, rad=d['shaft_diam']/2+1),layer)
 #			self.add(Hole(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5, partial_fill=d['pilot_diam']/2-1, fill_direction='in'),layer)
 #			self.add(Hole(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5),layer)
 			self.add(FilledCircle(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5),layer)
+		self.layer='_stepper_layer'
+		self.border=RoundedRect(pos, centred=True, width=d['width'], height=d['width'], rad=d['corner_rad'])
+		self.z0=0
+		self.z1=self.length
+		print "shaft_length="+str(self.shaft_length)
+		self.shaft = self.add(Part(name='shaft', layer='_stepper_layer', border=Circle(pos, rad=d['shaft_diam']/2), thickness=self.shaft_length, zoffset=0))
+		self.pilot = self.add(Part(name='pilot', layer='_stepper_layer', border=Circle(pos, rad=d['pilot_diam']/2), thickness=d['pilot_depth'], zoffset=0)) 
+
+        def _pre_render(self):
+                self.stepper_layer = '_stepper_layer'
+		l= self.get_plane().get_layer_config(self.cutlayer)
+		print l
+		zoffset=l['zoffset']
+		if l['isback']:
+			self.z1=-self.length
+			zoffset-=l['thickness']
+			self.shaft.zoffset=self.shaft_length-l['thickness']
+			self.pilot.zoffset=self.d['pilot_depth']-l['thickness']
+                self.get_plane().add_layer(self.stepper_layer, 'aluminium', 10, colour='#808080', zoffset=zoffset)
 
 
 class RoundShaftSupport(Pathgroup):
@@ -368,12 +509,19 @@ class ProfileBearing(Part):
 				self.create_layer=False
 			else:
 				self.carriage_layer = 'carriage_layer'
-			if 'clearance' in layers:
-				print "ADDING HOLE"+self.carriage_layer
-				self.add(Bolt(V(self.d['B']/2, self.d['C']/2), clearance_layers=layers['clearance'], insert_layer=[], thread_layer=self.carriage_layer))
-				self.add(Bolt(V(-self.d['B']/2, self.d['C']/2), clearance_layers=layers['clearance'], insert_layer=[], thread_layer=self.carriage_layer))
-				self.add(Bolt(V(-self.d['B']/2, -self.d['C']/2), clearance_layers=layers['clearance'], insert_layer=[], thread_layer=self.carriage_layer))
-				self.add(Bolt(V(self.d['B']/2, -self.d['C']/2), clearance_layers=layers['clearance'], insert_layer=[], thread_layer=self.carriage_layer))
+			if 'clearance' not in layers:
+				layers['clearance'] = []
+			if 'head' not in layers:
+				layers['head'] =[]
+			if 'head' in config:
+				head=config['head']
+			else:
+				head= 'cap'
+
+			self.add(Bolt(V(self.d['B']/2, self.d['C']/2), self.d['thread'], clearance_layers=layers['clearance'], insert_layer=[], thread_layer=self.carriage_layer, head_layer=layers['head'], head='cap'))
+			self.add(Bolt(V(-self.d['B']/2, self.d['C']/2), self.d['thread'], clearance_layers=layers['clearance'], insert_layer=[], thread_layer=self.carriage_layer, head_layer=layers['head'], head='cap'))
+			self.add(Bolt(V(-self.d['B']/2, -self.d['C']/2), self.d['thread'], clearance_layers=layers['clearance'], insert_layer=[], thread_layer=self.carriage_layer, head_layer=layers['head'], head='cap'))
+			self.add(Bolt(V(self.d['B']/2, -self.d['C']/2), self.d['thread'], clearance_layers=layers['clearance'], insert_layer=[], thread_layer=self.carriage_layer, head_layer=layers['head'], head='cap'))
 		self.layer=self.carriage_layer
 		self.add_border(Rect(V(0,0), centred=True, width = self.d['W'], height=self.d['L']))
 		self.name=self.bearing_type+"_carriage"
@@ -388,8 +536,6 @@ class Bearing(Pathgroup):
 		self.init(config)
 		self.add(FilledCircle(pos, rad=outer_rad, z1=-depth))
 		overlap = max(1, (outer_rad-inner_rad)/5)
-		print outer_rad
-		print outer_rad-overlap
 		self.add(Hole(pos, rad=outer_rad-overlap))
 		
 #		self.add_bom("Ball_bearing_"+str(outer_rad*2)+'x'+str(inner_rad*2)+'x'+str(depth), 1, 'OD='+str(outer_rad*2)+"mm ID="+str(inner_rad*2)+" Depth="+str(depth),'')
@@ -425,13 +571,14 @@ class LinearRail(Part):
 			border.add_point(perp*-d['width']/2-parallel*tot_len/2) 
 			self.add_border(border)
 			self.layer = '_rail_layer'
-			if 'clearance_layers' in config:
-				if type(config['clearance_layers']) is list:
-					config['clearance_layers'].append('_rail_layer')
+			if 'head_layer' in config:
+				if type(config['head_layer']) is list:
+					config['head_layer'].append('_rail_layer')
 				else:
-					config['clearance_layers'] = [ config['clearance_layers'], '_rail_layer' ]
+					config['head_layer'] = [ config['head_layer'], '_rail_layer' ]
 			else:
-				config['clearance_layers'] = '_rail_layer'
+				config['head_layer'] = '_rail_layer'
+			config['head']='cap'
 			for i in range(0, hole_gaps+1):
 				if d['holespacing_y'] ==0:
 					self.add(Bolt(start+ parallel *(offsetx+ d['holespacing_x']*i), d['bolt_type'], **config))
@@ -874,12 +1021,9 @@ class AngleConstraint(Part):
 		
 		d=(bolt['allen']['head_d']+0.7)
 		e = d-3
-		print "e="+str(e)
 		n = math.floor(float(e)/2.2)
 		step = float(d)/n
-		print "d="+str(d)+" step="+str(step)
 		for i in range(0,int(n)):
-			print d-i*step
 			self.add(RoundedArc(V(0,0), rad, 
 				d-i*step, 
 				angle, startangle=startangle, 
