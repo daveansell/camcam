@@ -17,8 +17,8 @@
 
 
 
-from solid import *
-from solid.utils import *
+import solid #import *
+import solid.utils #import *
 from path import *
 from segments import *
 import math
@@ -39,8 +39,8 @@ def path_render3D(self, pconfig, border=False):
 #               if('transformations' in config):
       	config=self.overwrite(config, inherited)
 
-	if 'zoffset' in pconfig and  pconfig['zoffset']:
-		zoffset= pconfig['zoffset']
+	if 'zoffset' in config and  config['zoffset']:
+		zoffset= config['zoffset']
 	else:
 		zoffset = 0
 	if config['z0'] is None or config['z0'] is False:
@@ -67,7 +67,7 @@ def path_render3D(self, pconfig, border=False):
 	_delta+=0.001
 	outline = []
 	points = self.polygonise(RESOLUTION)
-	extrude_path = [ Point3(0,0,zoffset + float(z0)), Point3(0,0, zoffset + float(z1)) ]
+#	extrude_path = [ Point3(0,0,zoffset + float(z0)), Point3(0,0, zoffset + float(z1)) ]
 	for p in points:
 		outline.append( [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
 	outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
@@ -76,11 +76,27 @@ def path_render3D(self, pconfig, border=False):
 	h = round(abs(z1-z0),PRECISION)*SCALEUP
 	bottom = round((min(z1,z0)+zoffset),PRECISION) *SCALEUP
 #	extruded = extrude_along_path(shape_pts=outline, path_pts=extrude_path)
-	extruded = translate([0,0,bottom])(linear_extrude(height=h, center=False)(polygon(points=outline)))
+	
+	if self.extrude_scale is not None:
+                scale = self.extrude_scale
+		if self.extrude_centre is None:
+			self.extrude_centre = V(0,0)
+		centre = (PSharp(V(0,0)).point_transform(config['transformations']).pos+self.extrude_centre)
+		centre = [centre[0], centre[1]]
+		print centre
+		uncentre = [-centre[0], -centre[1]]	
+		extruded = solid.translate([0,0,bottom])(
+				solid.translate(centre)(
+					solid.linear_extrude(height=h, center=False, scale = scale)(
+						solid.translate(uncentre)(solid.polygon(points=outline)))))
+        else:
+                scale = 1
+	        extruded = solid.translate([0,0,bottom])(solid.linear_extrude(height=h, center=False)(solid.polygon(points=outline)))
+	#extruded = translate([0,0,bottom])(linear_extrude(height=h, center=False)(solid.polygon(points=outline)))
 #	if 'isback' in config and config['isback'] and border==False:
 #		extruded = mirror([1,0,0])(extruded )
 	if 'colour' in config and config['colour']:
-		extruded = color(self.scad_colour(config['colour']))(extruded)
+		extruded = solid.color(self.scad_colour(config['colour']))(extruded)
 	return [extruded]
 #def path_transform3D(self, pconfig):
 #	config=self.overwrite(config,pconfig)
@@ -93,11 +109,22 @@ def path_render3D(self, pconfig, border=False):
 Path.render3D = path_render3D
 
 def path_scad_colour(self, svgcolour):
+	a=1.0
 	if svgcolour[0]=='#':
-		r = float(int(svgcolour[1:3],16))/255
-		g = float(int(svgcolour[3:5],16))/255
-		b = float(int(svgcolour[5:7],16))/255
-		return [r, g, b]
+		if len(svgcolour)<7:
+			r = float(int(svgcolour[1],16))/15
+			g = float(int(svgcolour[2],16))/15
+			b = float(int(svgcolour[3],16))/15
+			if(len(svgcolour)==5):
+				a = float(int(svgcolour[4],16))/15
+		else:
+			r = float(int(svgcolour[1:3],16))/255
+			g = float(int(svgcolour[3:5],16))/255
+			b = float(int(svgcolour[5:7],16))/255
+			if(len(svgcolour)>=9):
+				a = float(int(svgcolour[7:9],16))/255
+		print "ALPHA="+str(a)+"  "+svgcolour
+		return [r, g, b,a]
 	else:
 		lookup={'green':[0,1.0,0], 'red':[1.0, 0, 0], 'yellow':[1.0,1.0,0], 'blue':[0,0,1.0]}
 		return 
@@ -125,6 +152,14 @@ def part_rotate3D(self, vec):
       	self.transform['rotate3D']=vec
 
 Part.rotate3D = part_rotate3D
+
+def part_matrix3D(self, vec):
+	if self.transform is False or self.transform is None:
+            	self.transform={}
+      	self.transform['matrix3D']=vec
+
+Part.matrix3D = part_matrix3D
+
 
 def plane_generate_part3D(self, thepart, pconfig):
 	self.mode='3D'
@@ -159,14 +194,17 @@ def plane_make_part3D(self, thepart, pconfig):
 		for c in cutout:
 			cutouts.append(c)
 
-	thepart.border3D = difference()(*cutouts)
+	thepart.border3D = solid.difference()(*cutouts)
 	# 3D transformations can only be applied to parts, so we can just go up the tree
 	p = thepart
 	while(p and type(p) is not Plane):
+		if 'matrix3D' in p.transform:
+			thepart.border3D=solid.multmatrix(m=p.transform['matrix3D'])(thepart.border3D)
+
 		if 'rotate3D' in p.transform:
-			thepart.border3D=solidpython.rotate([p.transform['rotate3D'][0], p.transform['rotate3D'][1],p.transform['rotate3D'][2] ])(thepart.border3D)
+			thepart.border3D=solid.rotate([p.transform['rotate3D'][0], p.transform['rotate3D'][1],p.transform['rotate3D'][2] ])(thepart.border3D)
 		if 'translate3D' in p.transform:
-			thepart.border3D=solidpython.translate([p.transform['translate3D'][0], p.transform['translate3D'][1],p.transform['translate3D'][2] ])(thepart.border3D)
+			thepart.border3D=solid.translate([p.transform['translate3D'][0], p.transform['translate3D'][1],p.transform['translate3D'][2] ])(thepart.border3D)
 		p=p.parent
 def plane_render_part3D(self, thepart, pconfig, filename=False):
 	self.make_part3D(thepart, pconfig)
@@ -174,7 +212,7 @@ def plane_render_part3D(self, thepart, pconfig, filename=False):
 		filename = thepart.name+'.scad'
 	else:
 		filename = filename +',scad'
-	scad_render_to_file(thepart.border3D, filename, include_orig_code=False)
+	solid.scad_render_to_file(thepart.border3D, filename, include_orig_code=False)
 
 def plane_render_all3D(self,callmode,config):
      	"""Render all parts in the Plane"""
@@ -189,10 +227,10 @@ def plane_render_all3D(self,callmode,config):
 		for thepart in self.getParts(True):
 			self.make_part3D(thepart, config)
 			if scene==False:
-				scene = part()(thepart.border3D)
+				scene = solid.part()(thepart.border3D)
 			else:
-				scene += part()(thepart.border3D)
-		scad_render_to_file(scene, 'Overview.scad', include_orig_code=False)
+				scene += solid.part()(thepart.border3D)
+		solid.scad_render_to_file(scene, 'Overview.scad', include_orig_code=False)
 
 Plane.generate_part3D = plane_generate_part3D# MethodType(plane_generate_part3D, Plane)
 Plane.make_part3D = plane_make_part3D#MethodType(plane_render_part3D, Plane)
