@@ -66,6 +66,8 @@ arg_meanings = {'order':'A field to sort paths by',
 		'material_length':'length of raw material needed', 
 		'material_diameter':'diameter of raw material',
 		'input_direction':'force the direction it thinks you inputted the points in',
+		'extrude_scale': ' If shape is not same size at bottom as top this is the scaling factor',
+		'extrude_centre':'centre of extrusion',
 }
 def V(x=False,y=False,z=False):
         if x==False:
@@ -98,7 +100,7 @@ class Path(object):
 		self.Bsegments = []
 		self.transform={}
 		self.otherargs=''
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing', 'input_direction']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing', 'input_direction', 'extrude_scale', 'extrude_centre']
 		for v in self.varlist:
 			if v in config:
 				setattr(self,v, config[v])
@@ -894,14 +896,11 @@ class Path(object):
 			
 			tpath=thepath
 			for d in range(0,int(numpasses+1)):
-				print "PARTIEAL FILL"+str(config['partial_fill'])+" numpasses="+str(numpasses)+" step="+str(step)+" d="+str(d)+" offset="+str(step*(d+1))
 		#		temppath.output_path(config)
 				temppath=copy.deepcopy(tpath)
 				#tpath.output_path(config)
 #				temppath=thepath.offset_path(ns, step*(d+1), c)
 				tpath=temppath.offset_path(ns, step, c)
-				for i in temppath.points:
-					print i.pos
 #				temppath.points[0].forcelastpoint = temppath.points[len(temppath.points)-1]
 #/				temppath.points[len(temppath.points)-1].forcenextpoint = temppath.points[0]
 				
@@ -1724,7 +1723,6 @@ class Part(object):
 		else:
 			#self.add_path(path,self.layer)
 			if path.obType!="Path":
-				print path.obType
 				raise TypeError("Part border should be a Path not a"+str(path.obType))
 			self.border=copy.deepcopy(path)
 			if self.border.side==None:
