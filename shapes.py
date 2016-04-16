@@ -826,6 +826,10 @@ class Bolt(Part):
 			self.add(Hole(pos, (milling.bolts[thread]['clearance'])/2, side='in'),clearance_layers)
 			if(head=='countersunk'):
 				self.add(Countersink(pos, milling.bolts[thread]['clearance'], milling.bolts[thread]['countersunk']['diam']/2, config),head_layer)
+			elif head=='cap':
+				print "CAP"+str(head_layer)
+				self.add(Hole(pos, rad=milling.bolts[thread]['allen']['head_d']/2, z1=-milling.bolts[thread]['allen']['head_l']), head_layer)
+				self.add(Hole(pos, milling.bolts[thread]['clearance']/2, side='in'),head_layer)
 			else:
 				self.add(Hole(pos, milling.bolts[thread]['clearance']/2, side='in'),head_layer)
 			if thread_layer:
