@@ -594,6 +594,10 @@ class ArbitraryBox(Part):
 		x = face['x'] 
 		y = x.cross(z*-1)
 
+		if 'isback' in face:
+#			z *= -1
+			y *= -1
+			x *= -1
 		zs = [z[0],z[1],z[2],0]
 		xs = [x[0],x[1],x[2],0]
 		ys = [y[0],y[1],y[2],0]
