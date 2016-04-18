@@ -38,11 +38,12 @@ def path_render3D(self, pconfig, border=False):
       	inherited = self.get_config()
 #               if('transformations' in config):
       	config=self.overwrite(config, inherited)
-
 	if 'zoffset' in config and  config['zoffset']:
 		zoffset= config['zoffset']
 	else:
 		zoffset = 0
+	if 'thickness' not in config:
+		config['thickness']=pconfig['thickness']
 	if config['z0'] is None or config['z0'] is False:
 		z0=0
 	else:
@@ -53,14 +54,15 @@ def path_render3D(self, pconfig, border=False):
 
 	if (config['z1'] is False or config['z1'] is None) and config['z0'] is not None and config['thickness'] is not None:
         	if  border==False:
-                 	z1 = - config['thickness']- 1
+                 	z1 = - config['thickness']- 20
            	else:
                    	z1 = - config['thickness']
 	else:
 		z1= config['z1']
-	if 'isback' in config and config['isback'] and border==False:
-		z0 = - config['thickness'] - z0
-		z1 = - config['thickness'] - z1
+	z0 *=config['zdir']
+	z1*=config['zdir']
+	#	z0 = - config['thickness'] - z0
+	#	z1 = - config['thickness'] - z1
 # try to avoid faces and points touching by offsetting them slightly
 	z0+=_delta
 	z1-=_delta
@@ -83,7 +85,6 @@ def path_render3D(self, pconfig, border=False):
 			self.extrude_centre = V(0,0)
 		centre = (PSharp(V(0,0)).point_transform(config['transformations']).pos+self.extrude_centre)
 		centre = [centre[0], centre[1]]
-		print centre
 		uncentre = [-centre[0], -centre[1]]	
 		extruded = solid.translate([0,0,bottom])(
 				solid.translate(centre)(
@@ -123,7 +124,6 @@ def path_scad_colour(self, svgcolour):
 			b = float(int(svgcolour[5:7],16))/255
 			if(len(svgcolour)>=9):
 				a = float(int(svgcolour[7:9],16))/255
-		print "ALPHA="+str(a)+"  "+svgcolour
 		return [r, g, b,a]
 	else:
 		lookup={'green':[0,1.0,0], 'red':[1.0, 0, 0], 'yellow':[1.0,1.0,0], 'blue':[0,0,1.0]}
