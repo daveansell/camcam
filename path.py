@@ -68,6 +68,9 @@ arg_meanings = {'order':'A field to sort paths by',
 		'input_direction':'force the direction it thinks you inputted the points in',
 		'extrude_scale': ' If shape is not same size at bottom as top this is the scaling factor',
 		'extrude_centre':'centre of extrusion',
+		'zoffset':'offset z=0 in 3D modes',
+		'isback':'is a back',
+		'no_mirror':'don\'t mirror',
 }
 def V(x=False,y=False,z=False):
         if x==False:
@@ -100,7 +103,7 @@ class Path(object):
 		self.Bsegments = []
 		self.transform={}
 		self.otherargs=''
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing', 'input_direction', 'extrude_scale', 'extrude_centre']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror']
 		for v in self.varlist:
 			if v in config:
 				setattr(self,v, config[v])
@@ -369,7 +372,6 @@ class Path(object):
 	def intersect_lines(self,a, b, c, d):
 		# if the things we are trying to intersect are parallel we don't have to do any work
 #		if abs((d-c).normalize().dot((b-a).normalize())) -1 <0.0001:
-#			print "intersect parallel lines"
 #			return False
 		if (a[0]-b[0])==0 and a[1]-b[1]==0:
 			return b
@@ -387,7 +389,6 @@ class Path(object):
 			self.changed[c]=True
 	def transform_pointlist(self, pointlist,transformations):
 		pout=[]
-#		print "transforms for +"+str(self)+" "+str(transformations)
 		
 		for p in pointlist:
 			pout.append(p.point_transform(transformations))
@@ -670,6 +671,11 @@ class Path(object):
 	    return True
 		
 
+        def get_plane(self):
+                if self.parent:
+                        return self.parent.get_plane()
+                else:
+                        return False
 
 
 # find depths you should cut at
@@ -701,8 +707,9 @@ class Path(object):
 		if self.transform!=None:
 			config['transformations'].append(self.transform)
 		#	self.transform=None
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'forcecutter', 'mode','partial_fill','finishing','fill_direction','precut_z']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'forcecutter', 'mode','partial_fill','finishing','fill_direction','precut_z', 'layer', 'no_mirror']
                 for v in self.varlist:
+			# we want to be able to know if we are on the front or the back
 			if v !='transform' and v !='transformations':
 	                        if hasattr(self,v) and getattr(self,v) is not None:
 					config[v]=getattr(self,v)
@@ -710,6 +717,36 @@ class Path(object):
 	                                config[v]=pconfig[v]
 				else:
 					config[v]=None
+               	if pconfig is not False and 'zdir' in pconfig and pconfig['zdir'] is not None:
+                        config['zdir']= pconfig['zdir']
+                else:
+                        config['zdir']=1
+                if config['layer'] is not None:
+                        l=self.get_plane().get_layer_config(config['layer'])
+                else:
+                        l={'thickness':0, 'zoffset':0, 'isback':False}
+                if hasattr(self, 'thickness') and self.thickness is not None:
+                        l['thickness'] = self.thickness
+                if  hasattr(self,'isback') and getattr(self,'isback') or l['isback']:
+                        config['zdir']*=-1
+
+		if config['zdir']==-1 and config['no_mirror']:
+			self.mirror(V(0,0), V(0,1,0))
+
+                if hasattr(self,'zoffset') and getattr(self,'zoffset') is not None:
+                        if pconfig is not False and 'zoffset' in pconfig and pconfig['zoffset'] is not None:
+                                config['zoffset'] = pconfig['zoffset'] + getattr(self,'zoffset') * config['zdir']
+                        else:
+                                config['zoffset'] = getattr(self,'zoffset') * config['zdir']
+                elif pconfig is not False and 'zoffset' in pconfig and pconfig['zoffset'] is not None:
+                        config['zoffset']=pconfig['zoffset']
+                else:
+                        config['zoffset']=0
+
+                if  hasattr(self,'isback') and getattr(self,'isback') or l['isback']:
+                        config['zoffset'] += l['thickness'] * config['zdir']
+
+
 		return config
 
 	def generate_config(self, pconfig):
@@ -1326,7 +1363,7 @@ class Pathgroup(object):
 		self.obType = "Pathgroup"
 		self.paths=[]
 		self.trace = traceback.extract_stack()
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in args:
@@ -1338,6 +1375,13 @@ class Pathgroup(object):
 		self.parent=False
 		self.comments=[]
 		self.transform={}
+
+        def get_plane(self):
+                if self.parent:
+                        return self.parent.get_plane()
+                else:
+                        return False
+
 
 	def __deepcopy__(self,memo):
 		conf={}
@@ -1359,7 +1403,7 @@ class Pathgroup(object):
 			#raise Warning( "PATHGROUP has no parent Created:"+str(self.trace))
 			pconfig = False
 		config = {}
-		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour','rendermode','partial_fill','finishing','fill_direction','cutter','precut_z']
+		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour','rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'layer', 'no_mirror']
 		if pconfig is False or  'transformations' not in pconfig or pconfig['transformations'] is False or pconfig['transformations'] is None:
 			config['transformations']=[]
 		else:
@@ -1375,6 +1419,33 @@ class Pathgroup(object):
                 	                config[v]=pconfig[v]
 				else:
 					config[v]=None
+               	if pconfig is not False and 'zdir' in pconfig and pconfig['zdir'] is not None:
+                        config['zdir']= pconfig['zdir']
+                else:
+                        config['zdir']=1
+                if config['layer'] is not None:
+                        l=self.get_plane().get_layer_config(config['layer'])
+                else:
+                        l={'thickness':0, 'zoffset':0, 'isback':False}
+                if hasattr(self, 'thickness') and self.thickness is not None:
+                        l['thickness'] = self.thickness
+
+                if  hasattr(self,'isback') and getattr(self,'isback') or l['isback']:
+                        config['zdir']*=-1
+			print "PATHGROUP ISBACK"
+                                        
+                if hasattr(self,'zoffset') and getattr(self,'zoffset') is not None:
+                        if pconfig is not False and 'zoffset' in pconfig and pconfig['zoffset'] is not None:
+                                config['zoffset'] = pconfig['zoffset'] + getattr(self,'zoffset') * config['zdir']
+                        else:
+                                config['zoffset'] = getattr(self,'zoffset') * config['zdir']
+                elif pconfig is not False and 'zoffset' in pconfig and pconfig['zoffset'] is not None:
+                        config['zoffset']=pconfig['zoffset']
+                else:
+                        config['zoffset']=0
+
+                if  hasattr(self,'isback') and getattr(self,'isback') or l['isback']:
+                        config['zoffset'] += l['thickness'] * config['zdir']
 		return config
 
 	def comment(self, comment):
@@ -1539,7 +1610,7 @@ class Part(object):
 		self.internal_borders=[]
 		self.ignore_border=False
 		self.transform={}
-		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset']
+		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in config:
@@ -1678,11 +1749,36 @@ class Part(object):
                         	if hasattr(self,v) and getattr(self,v) is not None and getattr(self,v) is not False:
 					config[v] = getattr(self,v)
 				elif(v in pconfig and pconfig[v] is not None and pconfig[v] is not False):
-		#			print v +" | "+ str(pconfig[v])
 					config[v] = pconfig[v]
 				else:
 					config[v] = None
+                if pconfig is not False and 'zdir' in pconfig and pconfig['zdir'] is not None:
+                        config['zdir']= pconfig['zdir']
+                else:   
+                        config['zdir']=1
+                if config['layer'] is not None: 
+			l=self.get_plane().get_layer_config(config['layer'])
+		else:
+			l={'thickness':0, 'zoffset':0, 'isback':False}
+		if hasattr(self, 'thickness') and self.thickness is not None:
+			l['thickness'] = self.thickness
+                if  (hasattr(self,'isback') and getattr(self,'isback') or l['isback']) and not (hasattr(self,'isback') and getattr(self,'isback') and l['isback']):
+                        config['zdir']*=-1
+                                        
+                if hasattr(self,'zoffset') and getattr(self,'zoffset') is not None:
+                        if pconfig is not False and 'zoffset' in pconfig and pconfig['zoffset'] is not None:
+                                config['zoffset'] = pconfig['zoffset'] + getattr(self,'zoffset') * config['zdir']
+                        else:
+                                config['zoffset'] = getattr(self,'zoffset') * config['zdir']
+                elif pconfig is not False and 'zoffset' in pconfig and pconfig['zoffset'] is not None:
+                        config['zoffset']=pconfig['zoffset']
+                else:
+                        config['zoffset']=0
+
+                if   (hasattr(self,'isback') and getattr(self,'isback') or l['isback']) and not (hasattr(self,'isback') and getattr(self,'isback') and l['isback']):
+                        config['zoffset'] += l['thickness'] * config['zdir']
 		return config
+
 	# is this a part we can render or just a multilayer pathgroup	
 	def renderable(self):
 		if (not hasattr(self, 'border') or self.border is False or self.layer is False or self.border is None) and not (hasattr(self,'ignore_border') and not (self.ignore_border==True) and (hasattr(self,'subpart') and self.subpart==True and self.layer is True)):
@@ -1838,14 +1934,11 @@ class Part(object):
 						layers[l].extend(ls[l])
 					else:
 						pass
-#						print "CPIES"+str(part.name)
 #						for copytrans in part.copies:
 #							for p in ls[l]:
-#								print copytrans
 #								t = copy.deepcopy(p)
 #								t.is_copy = True		
 #								t.transform = copytrans
-#								print t
 #								layers[l].append(t)
 					#if not hasattr(part,'layer') or part.layer==False or l!=part.layer:# or milling.mode_config[self.mode]['overview']:
 		for l in self.paths.keys():
@@ -1951,7 +2044,6 @@ class Plane(Part):
 	def get_config(self):
 		return self.config
 	def add_part_layer(self, part, material, thickness, z0=0,zoffset=0, add_back=False, isback=False, colour=False):
-		print (self, part, material, thickness, z0,zoffset, add_back, isback, colour)
 		self.add_layer(part.name, material, thickness, z0, zoffset, add_back, isback, colour)
 		part.layer=part.name
 		self.add(part)
@@ -2213,13 +2305,11 @@ class Plane(Part):
 				os.system("/usr/bin/unix2dos "+self.sanitise_filename(filename+config['file_suffix']))
 		
 	def offset_gcode(self, output, offset):
-		print offset
 		def reg_add_offset(m):
 			if len(m.group(1)) and len(m.group(2)):
 				axismap={'X':0, 'Y':1, 'Z':2}
 				val=float(m.group(2))
 				val += offset[axismap[m.group(1)]]
-		#		print m.group(1)+str(val)
 				return m.group(1)+str(val)
 			else:
 				return m.group(0)
