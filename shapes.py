@@ -157,69 +157,6 @@ class RepeatEllipse(Part):
                         self.add(t)
 
 
-class Drill(Path):
-	def __init__(self, pos, **config):
-		self.init(config)
-		self.pos=pos
-		if 'chipbreak' in config and config['chipbreak']:
-			self.chipbreak = config['chipbreak']
-		else:
-			self.chipbreak = False
-		if 'peck' in config and config['peck']:
-			self.peck = config['peck']
-		else:
-			self.peck = False
-		if 'rad' in config and config['rad']:
-			if self.cutter is False or self.cutter is None:
-				self.drillrad=config['rad']
-				for m in milling.tools:
-					if milling.tools[m]['diameter']/2==self.drillrad:
-						self.cutter=m
-			else:
-				self.drillrad=milling.tools[m]['diameter']/2
-
-			if self.cutter is False or self.cutter is None:
-				print "drill of "+str(self.drillrad)+"mm not found in tools"
-		self.closed=True
-		self.add_point(PSharp(self.pos))
-
-	def render(self, pconfig):
-		config=self.generate_config(pconfig)
-		p=PSharp(self.pos).point_transform(config['transformations'])
-		
-	#	print "Drill render"+str(config['mode'])
-		if config['mode']=='svg':
-	#		print '<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>\n'%(p.pos[0], p.pos[1], self.drillrad)
-			return [config['cutter'], '<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>\n'%(p.pos[0], p.pos[1], self.drillrad)]
-		elif config['mode']=='gcode':
-			if self.peck:
-				return [config['cutter'], 'G83X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.peck, config['vertfeed'],config['clear_height'])]
-			elif self.chipbreak:
-				return [config['cutter'], 'G73X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.chipbreak, config['vertfeed'],config['clear_height'])]
-			else:
-				return [config['cutter'], 'G81X%0.2fY%0.2fZ%0.2fR%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3,config['vertfeed'],config['clear_height'])]
-		elif config['mode']=='simplegcode':
-			dist= config['z1']-config['z0']
-			if self.peck:
-				steps = math.floor(dist/self.peck)
-			else:
-				steps = 1
-			step = dist / steps
-			ret = 'G0X%0.2fY%0.2f\n'%[p.pos[0], p.pos[1]]
-			for i in range(1,steps+1):
-				ret+='G0Z%0.2f\n'% i-1*step+0.5
-				ret+='G1Z%0.2f\n'% i*step
-				ret+='G0Z%0.2f\n'% config['z0']+0.5
-			ret += 'G0Z%0.2f\n'%config['clear_height']
-			return [config['cutter'], ret]
-	#	print "NO MODE="+str(config['mode'])
-
-	def polygonise(self, resolution=0):
-		config=self.generate_config({'cutterrad':0})
-		p=PSharp(self.pos).point_transform(config['transformations'])
-		self.boundingBox={'bl':p.pos, 'tr':p.pos}
-		self.centre=p.pos
-		return [self.pos]	
 
 class Lines(Path):
 	def __init__(self, points, **config):
@@ -316,6 +253,70 @@ class Circle(Path):
 			self.add_point(pos,'circle',rad)
 			self.comment("Circle")
 			self.comment("pos="+str(pos)+" rad="+str(rad))
+class Drill(Circle):
+	def __init__(self, pos, **config):
+		self.init(config)
+		self.pos=pos
+		if 'chipbreak' in config and config['chipbreak']:
+			self.chipbreak = config['chipbreak']
+		else:
+			self.chipbreak = False
+		if 'peck' in config and config['peck']:
+			self.peck = config['peck']
+		else:
+			self.peck = False
+		if 'rad' in config and config['rad']:
+			if self.cutter is False or self.cutter is None:
+				self.drillrad=config['rad']
+				for m in milling.tools:
+					if milling.tools[m]['diameter']/2==self.drillrad:
+						self.cutter=m
+			else:
+				self.drillrad=milling.tools[m]['diameter']/2
+
+			if self.cutter is False or self.cutter is None:
+				print "drill of "+str(self.drillrad)+"mm not found in tools"
+		self.closed=True
+		self.add_point(pos,'circle',self.drillrad)
+#		self.add_point(PSharp(self.pos))
+
+	def render(self, pconfig):
+		config=self.generate_config(pconfig)
+		p=PSharp(self.pos).point_transform(config['transformations'])
+		
+	#	print "Drill render"+str(config['mode'])
+		if config['mode']=='svg':
+	#		print '<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>\n'%(p.pos[0], p.pos[1], self.drillrad)
+			return [config['cutter'], '<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>\n'%(p.pos[0], p.pos[1], self.drillrad)]
+		elif config['mode']=='gcode':
+			if self.peck:
+				return [config['cutter'], 'G83X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.peck, config['vertfeed'],config['clear_height'])]
+			elif self.chipbreak:
+				return [config['cutter'], 'G73X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.chipbreak, config['vertfeed'],config['clear_height'])]
+			else:
+				return [config['cutter'], 'G81X%0.2fY%0.2fZ%0.2fR%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3,config['vertfeed'],config['clear_height'])]
+		elif config['mode']=='simplegcode':
+			dist= config['z1']-config['z0']
+			if self.peck:
+				steps = math.floor(dist/self.peck)
+			else:
+				steps = 1
+			step = dist / steps
+			ret = 'G0X%0.2fY%0.2f\n'%[p.pos[0], p.pos[1]]
+			for i in range(1,steps+1):
+				ret+='G0Z%0.2f\n'% i-1*step+0.5
+				ret+='G1Z%0.2f\n'% i*step
+				ret+='G0Z%0.2f\n'% config['z0']+0.5
+			ret += 'G0Z%0.2f\n'%config['clear_height']
+			return [config['cutter'], ret]
+	#	print "NO MODE="+str(config['mode'])
+
+#	def polygonise(self, resolution=0):
+#		config=self.generate_config({'cutterrad':0})
+#		p=PSharp(self.pos).point_transform(config['transformations'])
+#		self.boundingBox={'bl':p.pos, 'tr':p.pos}
+#		self.centre=p.pos
+#		return [self.pos]	
 
 class RoundSpeakerGrill(Pathgroup):
 	def __init__(self,pos, rad, holerad, spacing, **config):
