@@ -1,3 +1,20 @@
+# This file is part of CamCam.
+
+#    CamCam is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+
+#    Foobar is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with CamCam.  If not, see <http://www.gnu.org/licenses/>.
+
+#    Author Dave Ansell
+
 import os
 import math
 from minivec import Vec, Mat
@@ -49,6 +66,8 @@ arg_meanings = {'order':'A field to sort paths by',
 		'material_length':'length of raw material needed', 
 		'material_diameter':'diameter of raw material',
 		'input_direction':'force the direction it thinks you inputted the points in',
+		'extrude_scale': ' If shape is not same size at bottom as top this is the scaling factor',
+		'extrude_centre':'centre of extrusion',
 }
 def V(x=False,y=False,z=False):
         if x==False:
@@ -81,7 +100,7 @@ class Path(object):
 		self.Bsegments = []
 		self.transform={}
 		self.otherargs=''
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing', 'input_direction']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing', 'input_direction', 'extrude_scale', 'extrude_centre']
 		for v in self.varlist:
 			if v in config:
 				setattr(self,v, config[v])
@@ -877,14 +896,11 @@ class Path(object):
 			
 			tpath=thepath
 			for d in range(0,int(numpasses+1)):
-				print "PARTIEAL FILL"+str(config['partial_fill'])+" numpasses="+str(numpasses)+" step="+str(step)+" d="+str(d)+" offset="+str(step*(d+1))
 		#		temppath.output_path(config)
 				temppath=copy.deepcopy(tpath)
 				#tpath.output_path(config)
 #				temppath=thepath.offset_path(ns, step*(d+1), c)
 				tpath=temppath.offset_path(ns, step, c)
-				for i in temppath.points:
-					print i.pos
 #				temppath.points[0].forcelastpoint = temppath.points[len(temppath.points)-1]
 #/				temppath.points[len(temppath.points)-1].forcenextpoint = temppath.points[0]
 				
@@ -1523,14 +1539,14 @@ class Part(object):
 		self.internal_borders=[]
 		self.ignore_border=False
 		self.transform={}
-		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter']
+		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in config:
 				setattr(self,v, config[v])
 			else:
 				setattr(self,v,None)
-			self.otherargs+=':param v: '+arg_meanings[v]+"\n"
+	#		self.otherargs+=':param v: '+arg_meanings[v]+"\n"
 		self.output=[]
 		self.number=1
 		if 'transform' in config:
@@ -1570,7 +1586,6 @@ class Part(object):
 	                                self.layers[l] = ltemp['name']
 	                        elif l not in self.layers:
 					raise ValueError('Creating new layer "'+str(l)+'". config not sent as dict with name, thickness and material elements so can not create it.')
-
 	def __deepcopy__(self,memo):
 		conf={}
 		for v in self.varlist:
@@ -1638,6 +1653,12 @@ class Part(object):
 		return ret
 	def comment(self,comment):
 		self.comments.append(str(comment))
+
+	def get_plane(self):
+		if self.parent:
+			return self.parent.get_plane()
+		else:
+			return False
 	def get_config(self):
 		if self.parent is not False:
 			pconfig = self.parent.get_config()
@@ -1664,7 +1685,7 @@ class Part(object):
 		return config
 	# is this a part we can render or just a multilayer pathgroup	
 	def renderable(self):
-		if (not hasattr(self, 'border') or self.border is False or self.layer is False or self.border is None) and not (hasattr(self,'ignore_border') and self.ignore_border==True):
+		if (not hasattr(self, 'border') or self.border is False or self.layer is False or self.border is None) and not (hasattr(self,'ignore_border') and not (self.ignore_border==True) and (hasattr(self,'subpart') and self.subpart==True and self.layer is True)):
 		#if (not hasattr(self, 'border') or self.border is False or self.layer is False or self.border is None) or not (hasattr(self,'ignore_border') and self.ignore_border!=True):
 			return False
 		else:
@@ -1675,6 +1696,8 @@ class Part(object):
 		if self.isCopy and not overview:
 			return []
 		for part in self.parts:
+			if getattr(part, "_pre_render", None) and callable(part._pre_render):
+				part._pre_render()
 			ret.extend(part.getParts(overview))
 		if self.renderable():
 			ret.append(self)
@@ -1700,7 +1723,6 @@ class Part(object):
 		else:
 			#self.add_path(path,self.layer)
 			if path.obType!="Path":
-				print path.obType
 				raise TypeError("Part border should be a Path not a"+str(path.obType))
 			self.border=copy.deepcopy(path)
 			if self.border.side==None:
@@ -1793,6 +1815,7 @@ class Part(object):
 			# find all the contents of layers
 			part.mode=self.mode
 			part.callmode=self.callmode
+# this may be dangerous as pre_render will be called more than oncee
 			ls=part.get_layers()
 			p=""
 			if(ls is not False and ls is not None):
@@ -1923,6 +1946,8 @@ class Plane(Part):
 				self.config[v]=config[v]
                         else:
 				self.config[v]=None
+	def get_plane(self):
+		return self
 	def get_config(self):
 		return self.config
 	def add_part_layer(self, part, material, thickness, z0=0,zoffset=0, add_back=False, isback=False, colour=False):

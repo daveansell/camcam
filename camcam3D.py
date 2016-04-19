@@ -21,6 +21,7 @@
 
 from minivec import *
 from path import *
+from cc3d import *
 from shapes import *
 from parts import *
 from boxes import *
@@ -45,50 +46,20 @@ class CamCam:
 			print "Tring to add a non-plane to camcam"
 
 	def render(self, mode,config):
-		modeconfig=milling.mode_config[mode]
-		if modeconfig['overview']:
-			out=''
-			for plane in self.planes:
-				plane.render_all(mode,config)
-				out+=plane.out
-		 	f=open("Overview_"+mode+".svg",'w')
-			f.write(modeconfig['prefix'] + out + modeconfig['postfix'])
-			f.close()
-
-		else:
-			for plane in self.planes:
-				plane.render_all(mode,config)
-	def render_layout( self, mode, layout_file, config):
-		modeconfig=milling.mode_config[mode]
-		parts={}
-		out = []
-		config['layout'] = True
+	#	modeconfig=milling.mode_config[mode]
+#		if modeconfig['overview']:
+#			out=''
+#			for plane in self.planes:
+#				plane.render_all(mode,config)
+#				out+=plane.out
+#		 	f=open("Overview_"+mode+".svg",'w')
+#			f.write(modeconfig['prefix'] + out + modeconfig['postfix'])
+#			f.close()
+#
+#		else:
+		config['mode'] = 'dave-emc'
 		for plane in self.planes:
-			for part in plane.getParts():
-				parts[part.name] = [plane, part]
-		l = open(layout_file, 'r')
-		sheets = pickle.load(l)
-		print sheets
-		for sheet in sheets['sheets']:
-			out = {}
-			for p in sheets['sheets'][sheet]:
-				(plane, part) = parts[p['name']]
-				tconfig = config
-				tconfig['transformations'] = [{'rotate':[ V(p['startcentre'][0],p['startcentre'][1]), p['rotate']], 'translate':V(p['translate'][0], p['translate'][1] ) }]
-				plane.render_part(part, mode, tconfig)
-				if type(plane.lay_out) is dict:
-					for i in plane.lay_out:
-						if i not in out:
-							out[i]=''
-						out[i] += plane.lay_out[i]
-				else:
-					print "plane.lay_out is not a dict"
-			if 'suffix' not in modeconfig:
-				modeconfig['suffix'] = ''
-			for i in out:
-				f=open(self.sanitise_filename(sheet+ i + modeconfig['file_suffix']), 'w')
-				f.write(modeconfig['prefix'] + out[i] + modeconfig['postfix'])
-		
+			plane.render_all3D(mode,config)
 
 
 	def sanitise_filename(self,filename):
@@ -133,14 +104,6 @@ parser.add_option("-b", "--sep-border",
 parser.add_option("-B", "--bom",
                   action="store_true", dest="bom", default=False,
                   help="Print Bill of Materials")
-parser.add_option("-x", "--xreps", dest="repeatx",
-                  help="number of times should be repeated in x direction")
-parser.add_option("-y", "--yreps", dest="repeaty",
-                  help="number of times should be repeated in y direction")
-parser.add_option("-X", "--xspacing", dest="xspacing",
-                  help="spacing in x direction")
-parser.add_option("-Y", "--yspacing", dest="yspacing",
-                  help="spacing in x direction")
 parser.add_option("-r", "--repeatmode", dest="repeatmode",
                   help="Repeat mode - can be origin - move the origin, regexp - replace all the X and Y coordinates")
 parser.add_option('-o', '--options', dest='options',
@@ -165,27 +128,6 @@ if options.options:
 		if len(a)>1:
 			camcam.command_args[a[0]]=a[1]
 config['command_args']=camcam.command_args
-if options.xspacing and options.repeatx and options.yspacing and options.repeaty:
-	config['xspacing']=options.xspacing
-	config['repeatx']=options.repeatx
-	config['yspacing']=options.yspacing
-	config['repeaty']=options.repeaty
-elif options.xspacing and options.repeatx:
-	config['xspacing']=options.xspacing
-	config['repeatx']=options.repeatx
-	config['yspacing']=1
-	config['repeaty']=0
-elif options.yspacing and options.repeaty:
-	config['yspacing']=options.yspacing
-	config['repeaty']=options.repeaty
-	config['xspacing']=1
-	config['repeatx']=1
-if options.repeatmode:
-	config['repeatmode']=options.repeatmode	
-if options.sep_border:
-	config['sep_border']=True
-else:
-	config['sep_border']=False
 config['transformations']=[{}]
 if options.rotate:
 	config['transformations'][0]['rotate'] = [V(0,0), float(options.rotate)]
@@ -202,8 +144,6 @@ if options.listparts:
 	camcam.listparts()
 if options.bom:
 	camcam.get_bom()
-elif options.layout_file:
-	camcam.render_layout(options.mode, options.layout_file, config)
-else:
-	camcam.render(options.mode,config)
+
+camcam.render(options.mode,config)
 

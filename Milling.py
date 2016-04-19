@@ -1,3 +1,21 @@
+# This file is part of CamCam.
+
+#    CamCam is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+
+#    Foobar is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with CamCam.  If not, see <http://www.gnu.org/licenses/>.
+
+#    Author Dave Ansell
+
+
 class Milling:
 	def __init__(self):
 
@@ -40,6 +58,16 @@ class Milling:
 				'dosfile':True,
 				'label':False,
 				'zero':False,
+			},
+			'3D':{
+				'overview':False,
+                                'mirror_backs':False,
+
+			},
+			'3Dall':{
+				'overview':True,
+                                'mirror_backs':True,
+
 			},
                         'makespacerouter2':{
 #                                'prefix':'T1M6\nG17\nG0Z10S11000M3\n',
@@ -571,6 +599,11 @@ class Milling:
                                 'diam':18,
                                 'length':1.8,
                         },
+                },
+                'RMS':{
+                        'diam':20.32,
+                        'tap':19.6,
+			'clearance':21.0,
                 },
 
 	}

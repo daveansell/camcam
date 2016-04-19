@@ -1,3 +1,22 @@
+# This file is part of CamCam.
+
+#    CamCam is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+
+#    Foobar is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with CamCam.  If not, see <http://www.gnu.org/licenses/>.
+
+#    Author Dave Ansell
+
+
+
 from path import *
 from minivec import *
 from segments import *
@@ -243,6 +262,7 @@ if :param cutter: is not explicitly specified it will use the countersink cutter
 class Circle(Path):
 	def __init__(self, pos, rad, **config):
 		self.init( config)
+		self.rad = rad
 		"""Cut a circle centre at :param pos: with radius :param rad:"""+self.otherargs
 		if rad==0:
 			raise ValueError("circle of zero radius")
@@ -807,6 +827,10 @@ class Bolt(Part):
 			self.add(Hole(pos, (milling.bolts[thread]['clearance'])/2, side='in'),clearance_layers)
 			if(head=='countersunk'):
 				self.add(Countersink(pos, milling.bolts[thread]['clearance'], milling.bolts[thread]['countersunk']['diam']/2, config),head_layer)
+			elif head=='cap':
+				print "CAP"+str(head_layer)
+				self.add(Hole(pos, rad=milling.bolts[thread]['allen']['head_d']/2, z1=-milling.bolts[thread]['allen']['head_l']), head_layer)
+				self.add(Hole(pos, milling.bolts[thread]['clearance']/2, side='in'),head_layer)
 			else:
 				self.add(Hole(pos, milling.bolts[thread]['clearance']/2, side='in'),head_layer)
 			if thread_layer:

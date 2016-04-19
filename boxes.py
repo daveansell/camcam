@@ -1,7 +1,24 @@
+# This file is part of CamCam.
+
+#    CamCam is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+
+#    Foobar is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with CamCam.  If not, see <http://www.gnu.org/licenses/>.
+
+#    Author Dave Ansell
+
 from path import *
 from shapes import *
 from parts import *
-
+from cc3d import *
 class RoundedBoxEnd(Part):
 	def __init__(self,pos, layer, name, width, centre_height, centre_rad, centre_holerad, side_height, bend_rad=0,  sidemodes=False, thickness=6, tab_length=False,  fudge=0, **config):
 		self.init(config)
@@ -484,7 +501,7 @@ class ArbitraryBox(Part):
 
 		}
 	"""
-	def __init__(self, faces, tab_length, fudge, *config):
+	def __init__(self, faces, tab_length, fudge, **config):
 		self.init(config)
 		self.tab_length = tab_length
 		self.fudge = fudge
@@ -568,8 +585,40 @@ class ArbitraryBox(Part):
 				self.get_border(p,  f, face, 'external')
 			# DECIDE WHICH SISDE WE ARE CUttng FROM
 			# CHECK THE DIRECTION OF THR LOOP
-			
+			self.align3d_face(p, face)
 			setattr(self, 'face_' + f, self.add(p))
+				
+	def align3d_face(self, p, face):
+		z = face['normal']*face['good_direction'] *-1
+
+		x = face['x'] 
+		y = x.cross(z*-1)
+
+		zs = [z[0],z[1],z[2],0]
+		xs = [x[0],x[1],x[2],0]
+		ys = [y[0],y[1],y[2],0]
+		qs = [0,0,0,1]
+		print p.name+" normal="+str(face['normal'])+" good="+str(face['good_direction'])+" wood="+str(face['wood_direction'])+" z="+str(z)
+#		print [xs,ys,zs,qs]
+
+#		print x
+#		a=math.atan2(x[1],x[0])/math.pi*180
+		
+#		if p.name=='right':
+#			a=180
+#		elif p.name=='top':
+#			a=0
+#		else:
+#			a=0
+#		b=math.acos(face['normal'][2])#/math.pi*180
+#		c=math.atan2(face['normal'][1], face['normal'][0])#/math.pi*180
+
+#		newx = V(math.sin(b) * math.cos(c), math.sin(b)*math.sin(c), math.cos(b))
+#		print newx
+
+#		print p.name+str([a,b/math.pi*180,c/math.pi*180])
+		p.matrix3D([xs,ys,zs,qs])
+		p.translate3D(face['origin'])
 
 	def tuple_to_vec(self, t):
 		return V(t[0], t[1], t[2])
@@ -735,6 +784,12 @@ class ArbitraryBox(Part):
 				if t not in newface:
 					self.faces[newf][t] = d * face[t]
 					self.propagate_direction(t, newf, recursion)
+		for f in self.faces:
+			if t not in self.faces[f] and 'alt_'+t in self.faces[f]:
+				if self.faces[f]['alt_'+t].dot(self.faces[f]['normal'])>0:
+	                                self.faces[f][t]=1
+				else:
+					self.faces[f][t]=-1
 
 	def set_corners(self, side, f, scount):
 		face = self.faces[f]
@@ -801,18 +856,20 @@ class ArbitraryBox(Part):
 		p = 0
 		for point in points:
 			new_normal = (points[(p-1)%len(points)]-point).normalize().cross( (points[(p+1)%len(points)]-point).normalize())
+			print normal
+			print new_normal
 			if type(normal) is bool and normal == False:
 				normal = new_normal
-			elif (normal.normalize() - new_normal.normalize()).length() > 0.00001: #and normal.normalize() != - new_normal.normalize():
+			elif abs(abs((normal.normalize().dot(new_normal.normalize()))))-1 > 0.00001: #and normal.normalize() != - new_normal.normalize():
 				raise ValueError( "points in face "+f+" are not in a plane "+str(points) )
 			p += 1
 		if 'origin' in self.faces[f]:
 			o = self.faces[f]['origin']
 			p = points[0]
 			p2 = points[1]
-			new_normal = (p-o).normalize().cross( (p2-o).normalize()).normalize()
+			new_normal = (p-o).normalize().cross( (p2-o).normalize() ).normalize()
 			if new_normal.length()>0.000001 and not new_normal.almost(normal) and not new_normal.almost(-normal):
-				raise ValueError( "origin of face "+f+" are not in a plane origin="+str(o)+ "  points="+str(points) +" normal="+str(normal) + "new_normal="+str(new_normal) )
+				raise ValueError( "origin of face "+f+" are not in a plane origin="+str(o)+ "  points="+str(points) +" normal="+str(normal) + " new_normal="+str(new_normal) )
 		self.faces[f]['normal']=normal
 			
 	def get_sid(self, p1, p2):
