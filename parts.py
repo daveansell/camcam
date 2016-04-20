@@ -216,19 +216,22 @@ class Pi3(Part):
 	def __init__(self, pos,**config):
 		self.init(config)
 		w=85
-		h=49
+		h=56
 		o=1.5
 		self.layer='_pilayer'
 		self.name='Pi3'
-		self.add_border(RoundedRect(V(0,0), width=w, height=h, centred=True, rad=3, thickness=1.5, zoffset=o, colour="#008030"))
-		self.hdmi = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-w/2+32, -35.6), centred=True, width=14, height=12.2, zoffset=o+6, thickness=6, colour='#808080')))	
-		self.network = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(22.9, -h/2+10.25), centred=True, width=21.1, height=15.5, zoffset=o+15, thickness=15, colour='#808080'))	)
-		self.USB1 = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(26.46, -h/2+29), centred=True, width=17.7, height=13.3, zoffset=o+20, thickness=20, colour='#808080')))	
-		self.USB2 = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(26.46, -h/2+47), centred=True, width=17.7, height=13.3, zoffset=o+20, thickness=20, colour='#808080')))	
-		self.GPIO = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-w/2+29, 25.6), centred=True, width=50.5, height=8.5, zoffset=o+5, thickness=5, colour='#101010')))
-		self.CPU = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-15.6, -10.3), centred=True, width=13.8, height=1.8, zoffset=o+1, thickness=1, colour='#101010')))
-		self.CSI = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-2.6, -h/2+11.5), centred=True, width=4, height=22.2, zoffset=o+4, thickness=4, colour='#dddddd')))
-		self.DSI = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-39, -h/2+28), centred=True, width=4, height=22.2, zoffset=o+4, thickness=4, colour='#dddddd')))
+		self.translate(pos)
+#		self.zoffset+=o
+		self.no_mirror = True
+		self.add_border(RoundedRect(V(0,0), width=w, height=h, centred=True, rad=3, thickness=1.5,  colour="#008030"))
+		self.hdmi = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-w/2+32, -h/2+6.1-2), centred=True, width=14, height=12.2, zoffset=6, thickness=6, colour='#808080')))	
+		self.network = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(w/2-8.55, -h/2+10.25), centred=True, width=21.1, height=15.5, zoffset=13.6, thickness=13.6, colour='#808080'))	)
+		self.USB1 = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(w/2-6.65, -h/2+29), centred=True, width=17.7, height=13.3, zoffset=15.0, thickness=15.0, colour='#808080')))	
+		self.USB2 = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(w/2-6.65, -h/2+47), centred=True, width=17.7, height=13.3, zoffset=15.0, thickness=15.0, colour='#808080')))	
+		self.GPIO = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-w/2+29+3.5, 49/2), centred=True, width=50.5, height=5, zoffset=5, thickness=5, colour='#101010')))
+		self.CPU = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-15.6, -h/2+30.3), centred=True, width=13.8, height=13.8, zoffset=1, thickness=1, colour='#101010')))
+		self.CSI = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-2.6, -h/2+11.5), centred=True, width=4, height=22.2, zoffset=4, thickness=4, colour='#dddddd')))
+		self.DSI = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-39, -h/2+28), centred=True, width=4, height=22.2, zoffset=4, thickness=4, colour='#dddddd')))
 		if 'clearance_layers' in config:
 			if type(config['clearance_layers']) is list:
 				config['clearance_layers'].append('_pilayer')
@@ -240,12 +243,74 @@ class Pi3(Part):
 			config['thread_layer'] = []
 		if 'insert_layer' not in config:
 			config['insert_layer'] = []
-		self.add(Bolt(V(-w+3.5, 49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
-		self.add(Bolt(V(-w+3.5, -49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
-		self.add(Bolt(V(-w+3.5+58, 49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
-		self.add(Bolt(V(-w+3.5+58, -49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+#		self.add(Hole(V(0,0), rad=3))
+		self.add(Bolt(V(-w/2+3.5, 49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+		self.add(Bolt(V(-w/2+3.5, -49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+		self.add(Bolt(V(-w/2+3.5+58, 49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+		self.add(Bolt(V(-w/2+3.5+58, -49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
 	def _pre_render(self):
 		self.get_plane().add_layer('_pilayer', 'pcb', 1, zoffset=0, colour='#808080')
+
+
+class ArduinoUno(Part):
+	def __init__(self, pos,**config):
+                self.init(config)
+                w=68
+                h=53.3
+                t=1.5
+		fe=2.5
+                self.layer='_ardlayer'
+                self.name='ArduinoUno'
+                self.translate(pos)
+		self.no_mirror=True
+
+		border=Path(closed=True, side='out', thickness=t,  colour="#001080")
+		border.add_point(V(-w/2, h/2))
+		border.add_point(V(-w/2, -h/2))
+		border.add_point(V(w/2-fe, -h/2))
+		border.add_point(V(w/2-fe, -h/2+2))
+		border.add_point(V(w/2, -h/2+5))
+		border.add_point(V(w/2, -h/2+37))
+		border.add_point(V(w/2-fe, -h/2+40))
+		border.add_point(V(w/2-fe, +h/2))
+                self.add_border(border)
+		if 'mode' in config and config['mode']=='shield':
+			self.zoffset=12
+			self.pins1 = self.add(Part(subpart=True, layer='_ardlayer', border=Rect(V(w/2-fe-1-10, -h/2+50.5), centred=True, width=20, height=2.5, zoffset=-t, thickness=2, colour='#202020')))
+			self.pins2 = self.add(Part(subpart=True, layer='_ardlayer', border=Rect(V(w/2-fe-1-10-22.5, -h/2+50.5), centred=True, width=20, height=2.5, zoffset=-t, thickness=2, colour='#202020')))
+			self.pinsA = self.add(Part(subpart=True, layer='_ardlayer', border=Rect(V(w/2-fe-1-7.5, h/2-50.5), centred=True, width=15, height=2.5, zoffset=-t, thickness=2, colour='#202020')))
+			self.pinsP = self.add(Part(subpart=True, layer='_ardlayer', border=Rect(V(w/2-fe-1-25, h/2-50.5), centred=True, width=15, height=2.5, zoffset=-t, thickness=2, colour='#202020')))
+
+		else:
+			self.USB = self.add(Part(subpart=True, layer='_ardlayer', border=Rect(V(-w/2-6.2+9, h/2-9.6-6), centred=True, width=18, height=12, zoffset=10.9, thickness=10.9, colour='#808080')))
+			self.USB = self.add(Part(subpart=True, layer='_ardlayer', border=Rect(V(-w/2+5-1.8, -h/2+3.3+4.5), centred=True, width=10, height=9, zoffset=10, thickness=10, colour='#202020')))
+			self.pins1 = self.add(Part(subpart=True, layer='_ardlayer', border=Rect(V(w/2-fe-1-10, -h/2+50.5), centred=True, width=20, height=2.5, zoffset=8, thickness=10, colour='#202020')))
+			self.pins2 = self.add(Part(subpart=True, layer='_ardlayer', border=Rect(V(w/2-fe-1-10-22.5, -h/2+50.5), centred=True, width=20, height=2.5, zoffset=8, thickness=10, colour='#202020')))
+			self.pinsA = self.add(Part(subpart=True, layer='_ardlayer', border=Rect(V(w/2-fe-1-7.5, h/2-50.5), centred=True, width=15, height=2.5, zoffset=8, thickness=10, colour='#202020')))
+			self.pinsP = self.add(Part(subpart=True, layer='_ardlayer', border=Rect(V(w/2-fe-1-25, h/2-50.5), centred=True, width=15, height=2.5, zoffset=8, thickness=10, colour='#202020')))
+
+		if 'clearance_layers' in config:
+                   	if type(config['clearance_layers']) is list:
+                                config['clearance_layers'].append('_ardlayer')
+                     	else:
+                                config['clearance_layers']=[config['clearance_layers'], '_ardlayer']
+                else:
+                        config['clearance_layers']='_ardlayer'
+		print "CLEARA"+str( config['clearance_layers'])
+                if 'thread_layer' not in config:
+                        config['thread_layer'] = []
+                if 'insert_layer' not in config:
+                        config['insert_layer'] = []
+#               self.add(Hole(V(0,0), rad=3))
+                self.add(Bolt(V(-w/2+15, -h/2+50.5), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+                self.add(Bolt(V(-w/2+65.5, -h/2+35), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+                self.add(Bolt(V(-w/2+65.5, -h/2+7), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+                self.add(Bolt(V(-w/2+3.5+58-51.9, -h/2+3.3), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+        def _pre_render(self):
+                self.get_plane().add_layer('_ardlayer', 'pcb', 1, zoffset=0, colour='#808080')
+
+
+
  
 class PiCam(Pathgroup):
         def __init__(self, pos, **config):
@@ -297,6 +362,11 @@ class PiCam(Pathgroup):
                 self.add(Hole(centre + V(holder_hole_sp/2,holder_hole_h2), rad=1.1, z1=-3))
                 self.add(Hole(centre + V(holder_hole_sp/2,holder_hole_h1), rad=1.1, z1=-3))
                 self.add(Hole(centre + V(-holder_hole_sp/2,holder_hole_h1), rad=1.1, z1=-3))
+
+
+
+
+
 
 class CableTie(Pathgroup):
 	def __init__(self, pos, cable_width, tie_width,**config):
@@ -421,28 +491,18 @@ class Stepper(Part):
 			self.add(Bolt(pos+V(-d['bolt_sep']/2,d['bolt_sep']/2), d['bolt_size'], clearance_layers=layer, thread_layer='_stepper_layer', insert_layer=[]))
 		
 			self.add(Hole(pos, rad=d['shaft_diam']/2+1),layer)
-#			self.add(Hole(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5, partial_fill=d['pilot_diam']/2-1, fill_direction='in'),layer)
-#			self.add(Hole(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5),layer)
 			self.add(FilledCircle(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5),layer)
-		self.layer='_stepper_layer'
-		self.border=RoundedRect(pos, centred=True, width=d['width'], height=d['width'], rad=d['corner_rad'])
-		self.z0=0
-		self.z1=self.length
-		print "shaft_length="+str(self.shaft_length)
-		self.shaft = self.add(Part(name='shaft', layer='_stepper_layer', border=Circle(pos, rad=d['shaft_diam']/2), thickness=self.shaft_length, zoffset=0))
-		self.pilot = self.add(Part(name='pilot', layer='_stepper_layer', border=Circle(pos, rad=d['pilot_diam']/2), thickness=d['pilot_depth'], zoffset=0)) 
+		self.layer = '_stepper_layer'
+		self.add_border( RoundedRect(pos, centred=True, width=d['width'], height=d['width'], rad=d['corner_rad'], zoffset=self.length, thickness=self.length))
+		
+		self.shaft = self.add(Part(name='shaft', layer='_stepper_layer', border = Circle(pos, rad=d['shaft_diam']/2, thickness=self.shaft_length, zoffset=0)))
+		self.pilot = self.add(Part(name='pilot', layer='_stepper_layer', border = Circle(pos, rad=d['pilot_diam']/2), thickness=d['pilot_depth'], zoffset=0)) 
 
         def _pre_render(self):
                 self.stepper_layer = '_stepper_layer'
 		l= self.get_plane().get_layer_config(self.cutlayer)
-		print l
 		zoffset=l['zoffset']
-		if l['isback']:
-			self.z1=-self.length
-			zoffset-=l['thickness']
-			self.shaft.zoffset=self.shaft_length-l['thickness']
-			self.pilot.zoffset=self.d['pilot_depth']-l['thickness']
-                self.get_plane().add_layer(self.stepper_layer, 'aluminium', 10, colour='#808080', zoffset=zoffset)
+                self.get_plane().add_layer(self.stepper_layer, 'aluminium', 10, colour='#808080', zoffset=0)
 
 
 class RoundShaftSupport(Pathgroup):
@@ -525,10 +585,11 @@ class ProfileBearing(Part):
 		self.layer=self.carriage_layer
 		self.add_border(Rect(V(0,0), centred=True, width = self.d['W'], height=self.d['L']))
 		self.name=self.bearing_type+"_carriage"
+		self.zoffset=self.d['H']
 	def _pre_render(self):
 		if self.create_layer:
 			self.carriage_layer = 'carriage_layer'
-			self.get_plane().add_layer(self.carriage_layer, 'aluminium', self.d['H']-self.d['H1'], zoffset=self.d['H'], colour='#808080')
+			self.get_plane().add_layer(self.carriage_layer, 'aluminium', self.d['H']-self.d['H1'],  colour='#808080')
 class Bearing(Pathgroup):
 	def __init__(self, pos, outer_rad, inner_rad, depth, **config):
 		outer_rad=float(outer_rad)
@@ -570,6 +631,7 @@ class LinearRail(Part):
 			border.add_point(perp*d['width']/2-parallel*tot_len/2) 
 			border.add_point(perp*-d['width']/2-parallel*tot_len/2) 
 			self.add_border(border)
+			self.zoffset=self.d['height']
 			self.layer = '_rail_layer'
 			if 'head_layer' in config:
 				if type(config['head_layer']) is list:
@@ -588,7 +650,7 @@ class LinearRail(Part):
 			self.add(Lines([start+perp*d['width']/2, start-perp*d['width']/2, end-perp*d['width']/2, end+perp*d['width']/2], closed=True), 'paper')
 	def _pre_render(self):
 		self.carriage_layer = '_rail_layer'
-		self.get_plane().add_layer(self.carriage_layer, 'aluminium', self.d['height'], zoffset=self.d['height'], colour='#808080')
+		self.get_plane().add_layer(self.carriage_layer, 'aluminium', self.d['height'], colour='#808080')
 
 class Insert(Part):
 	def __init__(self, pos, insert_size,layer, **config):

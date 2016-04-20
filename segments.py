@@ -123,7 +123,7 @@ class Arc(Segment):
                 if (self.centre-self.cutfrom).length()==0:
                         print Warning( "Arc of zero length")
                         return []
-                if(not direction):
+                if( not  direction):
                         if self.direction=='cw':
                                 return [{"cmd":"G2","X":self.cutfrom[0],"Y":self.cutfrom[1], "I":self.centre[0]-self.cutto[0], "J":self.centre[1]-self.cutto[1]}]
                         else:

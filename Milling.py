@@ -466,7 +466,20 @@ class Milling:
                },
 	}
 		self.bolts={
-	                'M3':{
+	        'M2.5':{
+                        'diam':2.5,
+                        'tap':2.1,
+			'clearance':2.7,
+                        'allen':{
+                                'head_d':4.7,
+                                'head_l':2.5,
+                        },
+                        'button':{
+                                'head_d':5,
+                                'head_l':1.65,
+                        },
+		},
+	        'M3':{
                         'diam':3.0,
                         'tap':2.5,
 			'clearance':3.5,
@@ -608,6 +621,11 @@ class Milling:
 
 	}
 		self.inserts={
+		'M2.5':{
+			"diams":[4/2],
+			"depths":[False],
+
+		},
 		"M3":{
 			"diams":[5,4.5/2],
 			"depths":[-0.1,False],

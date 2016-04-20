@@ -41,4 +41,6 @@ dxfwrite
 
 # for experimental 3D
 euclid
-solidpython
+solidpython 
+- as of 20160416 you will probably have to get the github version as pip version is too old
+https://github.com/SolidCode/SolidPython
