@@ -42,7 +42,7 @@ def V(x=False,y=False,z=False):
 
 
 class Point(object):
-        def __init__(self, pos, point_type, radius=0, cp1=False, cp2=False, direction=False, transform=False):
+        def __init__(self, pos, point_type, radius=0, cp1=False, cp2=False, direction=False, transform=False, invert=False):
 		self.init()
                 self.pos=Vec(pos)
                 self.point_type=point_type
@@ -52,6 +52,7 @@ class Point(object):
                 self.direction=direction
                 self.transform=transform
                 self.obType="Point"
+		self.invert = invert
 	def init(self):
 		self.nextpoint=None
 		self.lastpoint=None
@@ -60,12 +61,14 @@ class Point(object):
 		self.radius=0
 		self.setup=False
 		if not hasattr(self,'reverse'):
-			self.reverse=False	
+			self.reverse=False
+		self.invert = False	
 	def _setup(self):
 		self.setup=True
 
         def copy(self):
-                t = Point( self.pos, self.point_type, self.radius, self.cp1, self.cp2, self.direction, self.transform)
+                t = Point( self.pos, self.point_type, self.radius, self.cp1, self.cp2, self.direction, self.transform, self.invert)
+		t.invert = self.invert
 		return t		
         def point_transform(self,ext_transformations=[]):
                 p=self.copy()
@@ -76,6 +79,7 @@ class Point(object):
                 else:
                         transformations=[]
                 transformations[:0] = ext_transformations
+		self.invert = False
                 if type(transformations) is list:
                         for t in reversed(transformations):
                                 if type(t) is dict and p.pos is not None:
@@ -88,6 +92,7 @@ class Point(object):
                                                 p.cp1 += t['translate']
                                                 p.cp2 += t['translate']
                                         if 'mirror' in t:
+						p.invert = not p.invert
                                                 p.pos = self.reflect(p.pos, t['mirror'])
                                                 p.cp1 = self.reflect(p.cp1, t['mirror'])
                                                 p.cp2 = self.reflect(p.cp2, t['mirror'])
@@ -277,6 +282,7 @@ class PSharp(Point):
 		t.nextpoint = self.nextpoint
                 t.reverse = self.reverse
 		t.sharp = self.sharp
+		t.invert = self.invert
 		return t
 
 	def origin(self, forward=True):
@@ -362,6 +368,7 @@ class PAroundcurve(PSharp):
 		t.nextpoint=self.nextpoint
 		t.forcelastpoint = self.lastpoint
 		t.forcenextpoint = self.nextpoint
+		t.invert = self.invert
                 return t
 
 	def offset(self, side, distance, direction):
@@ -455,6 +462,7 @@ class PIncurve(PSharp):
 		t.nextpoint=self.nextpoint
 		t.forcelastpoint = self.lastpoint
 		t.forcenextpoint = self.nextpoint
+		t.invert = self.invert
 		return t
 	def origin(self, forward=True):
 		self._setup()
@@ -550,6 +558,7 @@ class PSmoothArc(PIncurve):
                 t.nextpoint=self.nextpoint
                 t.forcelastpoint = self.lastpoint
                 t.forcenextpoint = self.nextpoint
+		t.invert = self.invert
 		return t
 	def _setup(self):
 		if not self.setup:
@@ -628,10 +637,10 @@ class POutcurve(Point):
 		t.forcelastpoint = self.lastpoint
 		t.forcenextpoint = self.nextpoint
 		t.reverse = self.reverse
+		t.invert = self.invert
 		return t
 	def origin(self, forward=True):
 		seg=self.makeSegment({})
-		print "a"+str(seg[1])
 		if forward:
 			return seg[1].cutfrom
 		else:
@@ -808,6 +817,7 @@ class PClear(PSharp):
 		t.lastpoint=self.lastpoint
 		t.nextpoint=self.nextpoint
 		t.reverse=self.reverse
+		t.invert = self.invert
 		return t
 	def makeSegment(self, config):
 		if self.last() != None and self.next() !=None:
@@ -847,6 +857,7 @@ class PDoubleClear(Point):
 		t.forcelastpoint = self.lastpoint
 		t.forcenextpoint = self.nextpoint
 		t.reverse=self.reverse
+		t.invert = self.invert
 		return t
 	def makeSegment(self, config):
 		if self.last() != None and self.next() !=None:
@@ -886,6 +897,7 @@ class PBezierControl(Point):
 		t.lastpoint=self.lastpoint
 		t.nextpoint=self.nextpoint
 		t.reverse=self.reverse
+		t.invert = self.invert
 		return t
 	def origin(self, forward=True):
 		return self.pos
@@ -935,6 +947,7 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 		t.forcelastpoint = self.lastpoint
 		t.forcenextpoint = self.nextpoint
 		t.reverse=self.reverse
+		t.invert = self.invert
 		return t
 
 	def checkArc(self):
@@ -964,15 +977,13 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 			l=self.next().pos - self.last().pos
 			perp=rotate(l.normalize(),-90)
 			centre=self.pos.intersect_lines(self.last().pos, self.next().pos, self.pos, self.pos+perp)
-			print self.radius
-			print (self.pos-centre).length()
 			if self.radius**2 - (self.pos-centre).length()**2 >0:
 				c=math.sqrt(self.radius**2 - (self.pos-centre).length()**2)
 				a = l.normalize()*c
-				if not self.reverse:
-					d=self.otherDir(self.direction)
-				else:
+				if  self.reverse != self.invert:
 					d=self.direction
+				else:
+					d=self.otherDir(self.direction)
 				return [ Line(self.last().pos, centre-a), Arc(centre-a, centre+a, self.pos, d), Line(centre+a, self.next().pos)]
 			else:
 				return [ Line(self.last().pos, centre), Line(centre, self.next().pos)]
@@ -1041,6 +1052,7 @@ class PCircle(Point):
 		t.lastpoint=self.lastpoint
 		t.nextpoint=self.nextpoint
 		t.reverse=self.reverse
+		t.invert = self.invert
 		return t
 	def makeSegment(self, config):
 		r1 = V(self.radius, 0)
