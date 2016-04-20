@@ -542,13 +542,9 @@ class ArbitraryBox(Part):
 		self.propagate_direction('good_direction', good_direction_face,0)
 		self.propagate_direction('wood_direction', wood_direction_face,0)
 
+
 		for f, face in faces.iteritems():
 			self.get_cut_side(f, face)
-			scount = 0
-			for s in face['sides']:
-				self.set_corners(self.sides[s], f, scount)
-				self.set_tab_length(self.sides[s], f, scount)
-				scount+=1
 
 			if 'x' in face:
 				if abs(face['x'].dot(face['normal'])) > 0.0000001 :
@@ -570,6 +566,18 @@ class ArbitraryBox(Part):
 				p2 = p-face['origin']
 				face['ppoints'].append(V(p2.dot(face['x']), p2.dot(face['y'])))
 
+		# go through unconnected sides and see if they are in the middle of any faces
+		for s,side in self.sides.iteritems():
+			if len(side)==1:
+				self.find_in_face(s,side)
+
+
+		for f, face in faces.iteritems():
+			scount = 0
+			for s in face['sides']:
+				self.set_corners(self.sides[s], f, scount)
+				self.set_tab_length(self.sides[s], f, scount)
+				scount+=1
 		# if we are cutting an internal hole then don't make it the part border
 			if "layer" not in face:
 				raise ValueError( "Face "+f+" does not have a layer") 
@@ -587,7 +595,34 @@ class ArbitraryBox(Part):
 			# CHECK THE DIRECTION OF THR LOOP
 			self.align3d_face(p, face)
 			setattr(self, 'face_' + f, self.add(p))
-				
+		
+	def find_in_face(self,s,side):
+		face1 = self.faces[side[0][0]]
+		p1 = face1['points'][ (side[0][1]-1)%len(face1['points']) ]
+		p2 = face1['points'][side[0][1]]
+
+		for f, face in self.faces.iteritems():
+			if f!= side[0][0]:
+				p1p = V(p1.dot(face['x']), p1.dot(face['y']), p1.dot(face['normal']))
+				p2p = V(p2.dot(face['x']), p2.dot(face['y']), p2.dot(face['normal']))
+				print p1p
+				print p2p
+				if abs(p1p[2])<0.0000001 and abs(p2p[2])<0.0000001:
+					# we are in plane are we in the face
+					p=Path(closed=True)
+					for point in face['ppoints']:
+						p.add_point(point)
+					poly=p.polygonise()
+					if p.contains_point(p1p,poly)>-1 and p.contains_point(p2p, poly)>-1:
+
+						print "************* In face *****************"+side[0][0]+str(side[0][1])+" is in "+f
+
+                # The edge cross the normal gives you a vector that is in the plane and perpendicular to the edge
+                svec1 = (face1['points'][ (side[0][1]-1)%len(face1['points']) ] - face1['points'][side[0][1]]).cross( face1['normal'] ).normalize()
+
+
+
+		
 	def align3d_face(self, p, face):
 		z = face['normal']*face['good_direction'] *-1
 
@@ -602,25 +637,6 @@ class ArbitraryBox(Part):
 		xs = [x[0],x[1],x[2],0]
 		ys = [y[0],y[1],y[2],0]
 		qs = [0,0,0,1]
-		print p.name+" normal="+str(face['normal'])+" good="+str(face['good_direction'])+" wood="+str(face['wood_direction'])+" z="+str(z)
-#		print [xs,ys,zs,qs]
-
-#		print x
-#		a=math.atan2(x[1],x[0])/math.pi*180
-		
-#		if p.name=='right':
-#			a=180
-#		elif p.name=='top':
-#			a=0
-#		else:
-#			a=0
-#		b=math.acos(face['normal'][2])#/math.pi*180
-#		c=math.atan2(face['normal'][1], face['normal'][0])#/math.pi*180
-
-#		newx = V(math.sin(b) * math.cos(c), math.sin(b)*math.sin(c), math.cos(b))
-#		print newx
-
-#		print p.name+str([a,b/math.pi*180,c/math.pi*180])
 		p.matrix3D([xs,ys,zs,qs])
 		p.translate3D(face['origin'])
 
