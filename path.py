@@ -911,7 +911,6 @@ class Path(object):
 # there seems to be a problem with arcs and reversing...
 			if fillpath.find_direction(c)!=config['direction']:
 				reverse=False
-				print "REVERSE"
 #				fillpath.isreversed=True
 #				fillpath.points=fillpath.points[::-1]
 			else:
@@ -1225,9 +1224,9 @@ class Path(object):
 						if firstdepth and (mode=='gcode' or mode=='simplegcode'):
 							self.add_out(self.quickdown(depth-step+config['precut_z']))
 							firstdepth=0
-						self.add_out(segment.out(direction,mode,depth-step,depth)) 
+						self.add_out(segment.out(True,mode,depth-step,depth)) 
 					else:
-						self.add_out(segment.out(direction,mode))
+						self.add_out(segment.out(True,mode))
 					first=0
 			# if we are in ramp mode, redo the first segment
 			if downmode=='ramp' and mode=='gcode' or mode=='simplegcode':
@@ -1251,9 +1250,9 @@ class Path(object):
 						if firstdepth and (mode=='gcode' or mode=='simplemode'):
 							self.add_out(self.quickdown(depth-step+config['precut_z']))
 							firstdepth=0
-						self.add_out(segment.out(direction,mode,depth-step,depth))
+						self.add_out(segment.out(d,mode,depth-step,depth))
 					else:
-						self.add_out(segment.out(direction,mode))
+						self.add_out(segment.out(d,mode))
 					first=0
 				d= not d
 			if downmode=='ramp':
@@ -1432,7 +1431,6 @@ class Pathgroup(object):
 
                 if  hasattr(self,'isback') and getattr(self,'isback') or l['isback']:
                         config['zdir']*=-1
-			print "PATHGROUP ISBACK"
                                         
                 if hasattr(self,'zoffset') and getattr(self,'zoffset') is not None:
                         if pconfig is not False and 'zoffset' in pconfig and pconfig['zoffset'] is not None:
