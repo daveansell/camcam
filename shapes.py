@@ -1283,10 +1283,9 @@ class RoundedArc(Path):
 			startangle = 0
 		
 		self.closed=True
-		a1 = -angle/2+startangle
-		a2 = angle/2+startangle
-		w = width/2
-		print "WIDTH = "+str(width)
+		a1 = -float(angle)/2+startangle
+		a2 = float(angle)/2+startangle
+		w = float(width)/2
 		self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a1]}))
 		self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
 		self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a2]}))
@@ -1344,13 +1343,13 @@ class SineWave(CutFunction):
 		elif 'k' in config:
 			args['k'] = config['k']
 		if 'phase' in config:
-			args['phase'] = config['phase']
+			args['phase'] = float(config['phase'])
 		else:
 			args['phase'] = 0
 		if 'step' in config:
-			args['step'] = config['step']
+			args['step'] = float(config['step'])
 		if 'skew' in config:
-			args['skew'] = config['skew']
+			args['skew'] = float(config['skew'])
 
 		return self.cut_function(start, end, self.sine, args)
 
