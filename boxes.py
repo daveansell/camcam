@@ -191,7 +191,6 @@ class Turret(Part):
 		self.base_protector.add(Lines([V(5, base_protector_rad-20), V(5, base_protector_rad-24)]))
 		self.holdDownHoleRad=base_rad-8
 		for i in range(0,6):
-			print "Hole rad for turret ="+str(base_rad-8)
 			t=self.base.add(Bolt(V(0, base_rad-8), 'M4', clearance_layers=['perspex', 'paper', name+'_base']))
 			t.rotate(V(0,0), i*60)
 			t=self.under_base.add(Bolt(V(0, base_protector_rad-7), 'M4', clearance_layers=[ name+'_under_base'], thread_layer=[], insert_layer=[]))
@@ -514,6 +513,7 @@ class ArbitraryBox(Part):
 		for f, face in faces.iteritems():
 			self.make_sides(f,face['points'])
 			self.make_normal(f, face['points'])
+			face['internal_joints'] = []
 #			self.check_layer(face)
 			if 'tab_length' not in face:
                                 face['tab_length'] = {}
@@ -562,6 +562,8 @@ class ArbitraryBox(Part):
 			if 'origin' not in face:
 				face['origin'] = face['points'][0]
 			face['ppoints'] = []
+			if 'isback' in face and face['isback']:
+				face['y'] *=-1
 			for p in face['points']:
 				p2 = p-face['origin']
 				face['ppoints'].append(V(p2.dot(face['x']), p2.dot(face['y'])))
@@ -578,6 +580,18 @@ class ArbitraryBox(Part):
 				self.set_corners(self.sides[s], f, scount)
 				self.set_tab_length(self.sides[s], f, scount)
 				scount+=1
+			if 'internal' in face and face['internal']:
+				face['intfact']=-1
+			else:
+				face['intfact']=1
+			if face['wood_direction'] * face['good_direction']*face['intfact']>0:
+                              	face['lineside']='front'
+                     	else:
+                            	face['lineside']= 'back'
+
+
+		for f, face in faces.iteritems():
+
 		# if we are cutting an internal hole then don't make it the part border
 			if "layer" not in face:
 				raise ValueError( "Face "+f+" does not have a layer") 
@@ -603,10 +617,10 @@ class ArbitraryBox(Part):
 
 		for f, face in self.faces.iteritems():
 			if f!= side[0][0]:
-				p1p = V(p1.dot(face['x']), p1.dot(face['y']), p1.dot(face['normal']))
-				p2p = V(p2.dot(face['x']), p2.dot(face['y']), p2.dot(face['normal']))
-				print p1p
-				print p2p
+				p1a = p1-face['origin']
+				p2a = p2-face['origin']
+				p1p = V(p1a.dot(face['x']), p1a.dot(face['y']), p1a.dot(face['normal']))
+				p2p = V(p2a.dot(face['x']), p2a.dot(face['y']), p2a.dot(face['normal']))
 				if abs(p1p[2])<0.0000001 and abs(p2p[2])<0.0000001:
 					# we are in plane are we in the face
 					p=Path(closed=True)
@@ -614,9 +628,10 @@ class ArbitraryBox(Part):
 						p.add_point(point)
 					poly=p.polygonise()
 					if p.contains_point(p1p,poly)>-1 and p.contains_point(p2p, poly)>-1:
-
-						print "************* In face *****************"+side[0][0]+str(side[0][1])+" is in "+f
-
+						
+						self.faces[f]['internal_joints'].append( { 'side':s, 'otherside':side[0], 'from':p1p, 'to':p2p, 'otherface':face1, 'otherf':side[0][0] } ) 	
+						side.append( [ '_internal', f, len(self.faces[f]['internal_joints'])-1 ])
+						self.find_angle(s, side)
                 # The edge cross the normal gives you a vector that is in the plane and perpendicular to the edge
                 svec1 = (face1['points'][ (side[0][1]-1)%len(face1['points']) ] - face1['points'][side[0][1]]).cross( face1['normal'] ).normalize()
 
@@ -630,15 +645,18 @@ class ArbitraryBox(Part):
 		y = x.cross(z*-1)
 
 		if 'isback' in face:
-#			z *= -1
+			z *= -1
 			y *= -1
 			x *= -1
+			pass
 		zs = [z[0],z[1],z[2],0]
 		xs = [x[0],x[1],x[2],0]
 		ys = [y[0],y[1],y[2],0]
 		qs = [0,0,0,1]
 		p.matrix3D([xs,ys,zs,qs])
 		p.translate3D(face['origin'])
+		if 'isback' in face:
+			p.translate3D([0,0,-face['thickness']])
 
 	def tuple_to_vec(self, t):
 		return V(t[0], t[1], t[2])
@@ -664,8 +682,10 @@ class ArbitraryBox(Part):
              		s = face['sides'][scount]
 			side = self.sides[s]
 			(thisside, otherside) = self.get_side_parts(side, f)
-			if otherside!=None:
+			if otherside!=None and otherside[0]!='_internal':
 				otherface = self.faces[otherside[0]]
+			elif  otherside!=None and otherside[0]=='_internal':
+				otherface = self.faces[otherside[1]]
 			else:	
 				otherface = None
 			simplepoints.append(PSharp(point))
@@ -679,22 +699,17 @@ class ArbitraryBox(Part):
   #             	    	else: 
 					angle = thisside[4]
 					altside = thisside[5]
+					joint_type = thisside[6]
 #					angle = 15
 					if mode == 'internal':
-						intfact = -1
 						corner = self.other_side_mode(face['corners'][scount])
 					else:
-						intfact = 1
 						corner = face['corners'][scount]
 					if angle!=0:
 						# this is being cut from the side we are cutting:
 
-						if face['wood_direction'] * face['good_direction']*intfact>0:
-							lineside='front'
-						else:
-							lineside = 'back';
-
-						if thisside[3]*face['good_direction']*intfact<0:
+						lineside=face['lineside']	
+						if thisside[3]*face['good_direction']*face['intfact']<0:
 # THIS PUTS THE SLOPE ON THE WRONG PART OF THE JOINT
 # create a new mode in finger joints called int and have it behave properly
 							newpoints = AngledFingerJoint(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
@@ -702,6 +717,10 @@ class ArbitraryBox(Part):
 						else:
 							newpoints = AngledFingerJointNoSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
 					else:
+						if cutside=='left' and joint_type=='concave':
+							cutside='right'
+						if cutside=='right' and joint_type=='concave':	
+							cutside='left'
 						newpoints = FingerJoint(lastpoint, point, cutside, 'external', corner, corner, face['tab_length'][scount], face['thickness'], 0, self.fudge)
 			
 			if first or len(newpoints)<2:
@@ -710,6 +729,8 @@ class ArbitraryBox(Part):
 			else:
 				path.add_points_intersect(newpoints)
 			p += 1
+			 
+
 		if len(newpoints) >1:
 			path.close_intersect()
 		simplepath.add_points(simplepoints)
@@ -717,7 +738,23 @@ class ArbitraryBox(Part):
 		if mode=='internal':
 			part.add(path)
 		else:
-			part.add_border(path)	
+			part.add_border(path)
+	
+		for joint in face['internal_joints']:
+			if (joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal'])*face['good_direction'] <0:
+				cutside='right'
+			else:
+				cutside='left'
+
+			prevmode = 'on'
+			nextmode = 'on'
+			part.add(FingerJointMid( joint['from'], joint['to'], cutside,'internal',  joint['corners'], joint['corners'], joint['tab_length'], joint['otherface']['thickness'], 0, prevmode, nextmode))
+	def set_wood_factor(self, face):
+		if face['wood_direction'].dot(face['normal'])>0:
+			face['wood_factor']=1
+		else:
+			face['wood_factor']=-1
+	
 
 	def find_direction(self, points):
 		total = 0
@@ -818,6 +855,19 @@ class ArbitraryBox(Part):
 		elif len(side) ==1:
 			face['corners'][scount] = 'straight'
 		else:
+			if side[1][0]=='_internal':
+				otherf = side[1][1]
+				otherIJ = side[1][2]
+				intJoint = self.faces[otherf]['internal_joints'][otherIJ]
+				if scount in face['corners']:
+					intJoint['corners'] = self.other_side_mode(face['corners'][scount])
+					pass
+				else:
+					face['corners'][scount] = 'on'
+					intJoint['corners'] = 'off'
+				return
+
+
 			if side[0][0]==f:
 				otherf = side[1][0]
 				otherscount = side[1][1]
@@ -843,6 +893,19 @@ class ArbitraryBox(Part):
 		elif len(side) ==1:
 			face['tab_length'][scount] = 'straight'
 		else:
+			if 'tab_length' not in face:
+				face['tab_length']={}
+			if side[1][0]=='_internal':
+                                otherf = side[1][1]
+                                otherIJ = side[1][2]
+                                intJoint = self.faces[otherf]['internal_joints'][otherIJ]
+				if scount in face['tab_length']:
+					intJoint['tab_length'] = face['tab_length'][scount]
+				else:
+					face['tab_length'][scount]=self.tab_length
+					intJoint['tab_length'] = self.tab_length
+				return
+
 			if side[0][0]==f:
 				otherf = side[1][0]
 				otherscount = side[1][1]
@@ -850,8 +913,6 @@ class ArbitraryBox(Part):
 				otherf = side[0][0]
 				otherscount = side[0][1]
 			otherface = self.faces[otherf]
-			if 'tab_length' not in face:
-				face['tab_length']={}
 			if 'tab_length' not in otherface:
 				otherface['tab_length']={}
 			if scount in face['tab_length'] and otherscount in otherface['tab_length']:
@@ -876,8 +937,6 @@ class ArbitraryBox(Part):
 		p = 0
 		for point in points:
 			new_normal = (points[(p-1)%len(points)]-point).normalize().cross( (points[(p+1)%len(points)]-point).normalize())
-			print normal
-			print new_normal
 			if type(normal) is bool and normal == False:
 				normal = new_normal
 			elif abs(abs((normal.normalize().dot(new_normal.normalize()))))-1 > 0.00001: #and normal.normalize() != - new_normal.normalize():
@@ -920,14 +979,22 @@ class ArbitraryBox(Part):
 
 	def find_angle(self, s,side):
 		if len(side)!=2:
-			print "side with only one face"
+#			print "side with only one face"
 			return False
 		face1 = self.faces[side[0][0]]
-		face2 = self.faces[side[1][0]]
+		internal=False
+		if side[1][0]=='_internal':
+			face2 = self.faces[side[1][1]]
+			internal=True
+		#	intJoint = self.faces['internal_joints'][side[1][2]]
+			svec2 = (face1['points'][ (side[0][1]-1)%len(face1['points']) ] - face1['points'][side[0][1]]).cross( face2['normal']).normalize()
+		else:
+			face2 = self.faces[side[1][0]]
 		# The edge cross the normal gives you a vector that is in the plane and perpendicular to the edge
+			svec2 = (face2['points'][ (side[1][1]-1)%len(face2['points']) ] - face2['points'][side[1][1]]).cross( face2['normal'] ).normalize()
+
 		svec1 = (face1['points'][ (side[0][1]-1)%len(face1['points']) ] - face1['points'][side[0][1]]).cross( face1['normal'] ).normalize()
 
-		svec2 = (face2['points'][ (side[1][1]-1)%len(face2['points']) ] - face2['points'][side[1][1]]).cross( face2['normal'] ).normalize()
 
 		# base angle is angle between the two svecs
 
@@ -956,7 +1023,11 @@ class ArbitraryBox(Part):
 		# if this is +ve cut on same side as positive normal otherwse opposite direction to normal
 		avSvec = (svec1 + svec2).normalize()
 		
-
+		# if you start a distance away from the joint and follow the normal, if they are coming together the going is internal, otherwise it is external
+		if (svec1+svec2).length()*5 > 	(svec1 * 5 + face1['normal'] + svec2 * 5 + face2['normal']).length():
+			joint_type='concave'
+		else:
+			joint_type='convex'
 		# Is the normal of both faces in the same directions vs inside and outside 
 		# will only break with zero if  if planes are parallel
 		t = face1['normal'].dot(avSvec) * avSvec.dot(face2['normal'] )
@@ -965,15 +1036,15 @@ class ArbitraryBox(Part):
 		elif t<0:
 			sideSign = -1
 		else:
-			raise ValueError( " Two adjoinig faces are parallel")
+			raise ValueError( " Two adjoinig faces are parallel "+str(face1['normal'])+" == "+str(face2['normal']))
 		side[0].append(sideSign)
-		side[1].append(sideSign)
 		side[0].append( avSvec.dot ( face1['normal'] ) * cutsign)
-		side[1].append( avSvec.dot ( face2['normal'] ) * cutsign)
-
-		
-
 		side[0].append( angle )
-		side[1].append( angle )
 		side[0].append(altside)
+		side[0].append(joint_type)
+
+		side[1].append(sideSign)
+		side[1].append( avSvec.dot ( face2['normal'] ) * cutsign)
+		side[1].append( angle )
 		side[1].append(altside)
+		side[1].append(joint_type)
