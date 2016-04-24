@@ -278,7 +278,6 @@ class ClearRect(Rect):
 class Polygon(Path):
 	def __init__(self, pos, rad, sides, cornertype='sharp', cornerrad=False, **config):
 		self.init( config)
-		print [pos, rad, sides, cornertype,cornerrad]
 		"""Cut a regular polygon with radius to the points :param rad: centred at :param pos:, with :param sides: sides with corners of type :param cornertype:\n"""+self.otherargs
                 self.closed=True
 		step=360.0/float(sides)
@@ -288,7 +287,6 @@ class Polygon(Path):
 			cornerdir=False
 		for i in range(0,int(sides)):
 			self.add_point(pos+V(rad,0),cornertype,cornerrad,direction=cornerdir, transform={'rotate':[pos,i*step]})
-			print pos+V(rad,0)
 		self.comment("Polygon")
 		self.comment("pos="+str(pos)+" rad="+str(rad)+" sides="+str(sides)+" cornertype="+cornertype)
 
@@ -359,13 +357,10 @@ class RectSpeakerGrill(Pathgroup):
 		yspacing=spacing*math.cos(math.pi/6)
                 numholesx = int(math.ceil(width/spacing)+1)
                 numholesy = float(math.floor(height/yspacing)+1)
-		print numholesy
-		print height/yspacing
 		for x in range(-numholesx,numholesx):
 			count =0;
                         for y0 in range(-int(numholesy),int(numholesy),2):
 				y=float(y0)/2
-				print str(y0)+"  "+str(y)
                                 if count%2:
                                         p=V(x*spacing, y*yspacing)
                                 else:
@@ -566,7 +561,6 @@ class KeyHole(Path):
                 kh = h
                 kr = rad
                 ky = math.sqrt(rad**2 - kw**2)+0.01
-		print pos
 		if 'double' in config and config['double']:
                 	self.add_point(PIncurve(pos+V(kw, kh), radius = kw))
                 	self.add_point(PIncurve(pos+V(-kw, kh), radius = kw))
@@ -712,7 +706,6 @@ class FourObjects(Part):
 			if 'tr' in config:
 				d=config['tr']-bl
 				points=[bl, bl+V(d[0], 0), bl+d, bl+V(0,d[1])]
-		print ob
 		print points
 		if ob.obType=='Part':
 			self.add(CopyObject(ob, points))
@@ -827,7 +820,6 @@ class Bolt(Part):
 			if(head=='countersunk'):
 				self.add(Countersink(pos, milling.bolts[thread]['clearance'], milling.bolts[thread]['countersunk']['diam']/2, config),head_layer)
 			elif head=='cap':
-				print "CAP"+str(head_layer)
 				self.add(Hole(pos, rad=milling.bolts[thread]['allen']['head_d']/2, z1=-milling.bolts[thread]['allen']['head_l']), head_layer)
 				self.add(Hole(pos, milling.bolts[thread]['clearance']/2, side='in'),head_layer)
 			else:
@@ -872,7 +864,6 @@ The line defines the
 		along=parallel*tab_length
 		cra=(end-start).normalize()*(cutterrad+fudge)
 		crp=perp*cutterrad
-		print "thickness"+str(thickness)
 		cutin=perp*thickness
 		if startmode=='on':
 			# cut a bit extra on first tab if the previous tab was off as well
@@ -899,10 +890,6 @@ The line defines the
 class FingerJointBoxMidSide(Pathgroup):
 	def __init__(self, pos, width, height, corners, sidemodes, tab_length, thickness, cutter,**config):
 		config['direction']='ccw'
-		print sidemodes
-		print corners
-		print "tab_length="+str(tab_length)
-		print "thickness"+str(thickness)
 		self.init(config)
 		if 'centred' in config:
 			pos=pos - V(width, height)/2
@@ -1036,7 +1023,6 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 		else:
 			num_tabs = num_tab_pairs*2
 		tab_length = (end-start).length()/num_tabs
-		print "FINGER SLOPEL lineside="+lineside+" ANGLE="+str(angle)
 		if side=='left':
 			perp = rotate((end-start).normalize(),-90)
 		else:
@@ -1114,11 +1100,11 @@ The line defines the
 		crp=perp*cutterrad
 		cutin=perp*thickness
 		if linemode=='external':
-			onpointmode=PClear
-			offpointmode=PSharp
+			onpointmode = PClear
+			offpointmode = PSharp
 		if linemode=='internal':
-			onpointmode=PSharp
-			offpointmode=PClear
+			onpointmode = PSharp
+			offpointmode = PClear
 			cra=-cra
 			crp=-crp
 		if cutterrad==0:
@@ -1184,7 +1170,6 @@ class FingerJointBoxSide(Path):
 			cornertypes = {}
 		cs = [('left','top'), ('top', 'right'), ('right', 'bottom'), ('bottom','left')]
 		for cor in cs:
-			print cor
 			if(cor in cornertypes):
 				
 				cornertypes[(cor[1],cor[0])] = cornertypes[cor]
@@ -1194,7 +1179,6 @@ class FingerJointBoxSide(Path):
 				 cornertypes[cor] = 'sharp'
 				 cornertypes[(cor[1],cor[0])] ='sharp'
 
-		print cornertypes
 			
 		for k in thickness.keys():
 			if k in corners and corners[k]=='on':
