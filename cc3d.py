@@ -198,17 +198,19 @@ def plane_make_part3D(self, thepart, pconfig):
 	# 3D transformations can only be applied to parts, so we can just go up the tree
 	p = thepart
 	while(p and type(p) is not Plane):
-		if 'matrix3D' in p.transform:
+		if hasattr(p, 'transform') and 'matrix3D' in p.transform:
 			thepart.border3D=solid.multmatrix(m=p.transform['matrix3D'])(thepart.border3D)
 
-		if 'rotate3D' in p.transform:
+		if hasattr(p, 'transform') and 'rotate3D' in p.transform:
 			thepart.border3D=solid.rotate([p.transform['rotate3D'][0], p.transform['rotate3D'][1],p.transform['rotate3D'][2] ])(thepart.border3D)
-		if 'translate3D' in p.transform:
+		if hasattr(p, 'transform') and 'translate3D' in p.transform:
 			thepart.border3D=solid.translate([p.transform['translate3D'][0], p.transform['translate3D'][1],p.transform['translate3D'][2] ])(thepart.border3D)
 		p=p.parent
 def plane_render_part3D(self, thepart, pconfig, filename=False):
 	self.make_part3D(thepart, pconfig)
 	if filename==False:
+		if thepart.name is None:
+			return
 		filename = thepart.name+'.scad'
 	else:
 		filename = filename +',scad'
