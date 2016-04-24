@@ -505,6 +505,10 @@ class ArbitraryBox(Part):
 		self.tab_length = tab_length
 		self.fudge = fudge
 		self.faces = faces
+		self.auto_properties = ['tab_length', 'joint_mode', 'butt_depression', 'butt_holerad', 'butt_numholes', 'hole_spacing']
+		for prop in self.auto_properties:
+			if prop in config:
+				setattr(self, prop, config[prop])
 		self.sides={}
 		self.normals = {}
 		self.side_angles={}
@@ -517,6 +521,16 @@ class ArbitraryBox(Part):
 #			self.check_layer(face)
 			if 'tab_length' not in face:
                                 face['tab_length'] = {}
+			if 'joint_mode' not in face:
+                                face['joint_mode'] = {}
+			if 'butt_depression' not in face:
+                                face['butt_depression'] = {}
+			if 'butt_holerad' not in face:
+                                face['butt_holerad'] = {}
+			if 'butt_numholes' not in face:
+                                face['butt_numholes'] = {}
+			if 'hole_spacing' not in face:
+                                face['hole_spacing'] = {}
 			if 'corners' not in face:
                                 face['corners'] = {}
 			if 'wood_direction' in face:
@@ -578,7 +592,14 @@ class ArbitraryBox(Part):
 			scount = 0
 			for s in face['sides']:
 				self.set_corners(self.sides[s], f, scount)
-				self.set_tab_length(self.sides[s], f, scount)
+#				self.set_tab_length(self.sides[s], f, scount)
+				self.set_property(self.sides[s], f, scount, 'tab_length')
+				self.set_property(self.sides[s], f, scount, 'joint_mode')
+				self.set_property(self.sides[s], f, scount, 'butt_depression')
+				self.set_property(self.sides[s], f, scount, 'butt_holrad')
+				self.set_property(self.sides[s], f, scount, 'butt_numholes')
+				self.set_property(self.sides[s], f, scount, 'butt_holerad')
+				self.set_property(self.sides[s], f, scount, 'hole_spacing')
 				scount+=1
 			if 'internal' in face and face['internal']:
 				face['intfact']=-1
@@ -705,23 +726,34 @@ class ArbitraryBox(Part):
 						corner = self.other_side_mode(face['corners'][scount])
 					else:
 						corner = face['corners'][scount]
-					if angle!=0:
-						# this is being cut from the side we are cutting:
+					if face['joint_mode'][scount]=='butt':
+						if angle==0:
+							if cutside=='left' and joint_type=='concave':
+                                                                cutside='right'
+                                                        if cutside=='right' and joint_type=='concave':
+                                                                cutside='left'
+							newpoints = ButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], face['thickness'], 0, fudge = self.fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount])
+							part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], face['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount]))
+					else:
 
-						lineside=face['lineside']	
-						if thisside[3]*face['good_direction']*face['intfact']<0:
+
+						if angle!=0:
+							# this is being cut from the side we are cutting:
+
+							lineside=face['lineside']	
+							if thisside[3]*face['good_direction']*face['intfact']<0:
 # THIS PUTS THE SLOPE ON THE WRONG PART OF THE JOINT
 # create a new mode in finger joints called int and have it behave properly
-							newpoints = AngledFingerJoint(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
-							part.add( AngledFingerJointSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 3.17/2, angle, lineside, self.fudge, material_thickness=face['thickness']))
+								newpoints = AngledFingerJoint(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
+								part.add( AngledFingerJointSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 3.17/2, angle, lineside, self.fudge, material_thickness=face['thickness']))
+							else:
+								newpoints = AngledFingerJointNoSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
 						else:
-							newpoints = AngledFingerJointNoSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
-					else:
-						if cutside=='left' and joint_type=='concave':
-							cutside='right'
-						if cutside=='right' and joint_type=='concave':	
-							cutside='left'
-						newpoints = FingerJoint(lastpoint, point, cutside, 'external', corner, corner, face['tab_length'][scount], face['thickness'], 0, self.fudge)
+							if cutside=='left' and joint_type=='concave':
+								cutside='right'
+							if cutside=='right' and joint_type=='concave':	
+								cutside='left'
+							newpoints = FingerJoint(lastpoint, point, cutside, 'external', corner, corner, face['tab_length'][scount], face['thickness'], 0, self.fudge)
 			
 			if first or len(newpoints)<2:
 				first = False
@@ -748,7 +780,10 @@ class ArbitraryBox(Part):
 
 			prevmode = 'on'
 			nextmode = 'on'
-			part.add(FingerJointMid( joint['from'], joint['to'], cutside,'internal',  joint['corners'], joint['corners'], joint['tab_length'], joint['otherface']['thickness'], 0, prevmode, nextmode))
+			if joint['joint_mode']=='butt':
+				part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], butt_holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes']))
+			else:
+				part.add(FingerJointMid( joint['from'], joint['to'], cutside,'internal',  joint['corners'], joint['corners'], joint['tab_length'], joint['otherface']['thickness'], 0, prevmode, nextmode))
 	def set_wood_factor(self, face):
 		if face['wood_direction'].dot(face['normal'])>0:
 			face['wood_factor']=1
@@ -886,45 +921,65 @@ class ArbitraryBox(Part):
 			else:
 				face['corners'][scount] = 'off'
 				otherface['corners'][otherscount] = 'on'
-	def set_tab_length(self, side, f, scount):
-		face = self.faces[f]		
-		if len(side)==0:
-			raise ValueError( "Side "+str(side)+" has no values")
-		elif len(side) ==1:
-			face['tab_length'][scount] = 'straight'
-		else:
-			if 'tab_length' not in face:
-				face['tab_length']={}
-			if side[1][0]=='_internal':
+
+
+        def set_property(self, side, f, scount, prop):
+                face = self.faces[f]
+		fprop = None
+		if prop not in face: 
+			face[prop] = {}
+		elif  type(face[prop]) is not dict:
+			fprop = face[prop]
+			face[prop] = {}
+                if len(side)==0:
+                        raise ValueError( "Side "+str(side)+" has no values")
+                elif len(side) ==1:
+                        face[prop][scount] = 'straight'
+                else:
+                        if prop not in face:
+                                face[prop]={}
+                        if side[1][0]=='_internal':
                                 otherf = side[1][1]
                                 otherIJ = side[1][2]
                                 intJoint = self.faces[otherf]['internal_joints'][otherIJ]
-				if scount in face['tab_length']:
-					intJoint['tab_length'] = face['tab_length'][scount]
+                                if scount in face[prop]:
+                                        intJoint[prop] = face[prop][scount]
+				elif fprop != None:
+					face[prop][scount]=fprop
+                                        intJoint[prop] = fprop	
+                                elif hasattr(self, prop):
+                                        face[prop][scount]=getattr(self,prop)
+                                        intJoint[prop] = getattr(self,prop)
 				else:
-					face['tab_length'][scount]=self.tab_length
-					intJoint['tab_length'] = self.tab_length
-				return
+					face[prop][scount]=None
+                                        intJoint[prop] = None
+                                return
 
-			if side[0][0]==f:
-				otherf = side[1][0]
-				otherscount = side[1][1]
-			else:
-				otherf = side[0][0]
-				otherscount = side[0][1]
-			otherface = self.faces[otherf]
-			if 'tab_length' not in otherface:
-				otherface['tab_length']={}
-			if scount in face['tab_length'] and otherscount in otherface['tab_length']:
-				if face['tab_length'][scount]!=otherface['tab_length'][otherscount]:
-					raise ValueError("side "+str(scount)+" in face "+str(f)+" and side "+str(otherscount)+" in face "+str(otherf)+" have different tab lengths, but are the same side"+str(face['tab_length'][scount])+" "+str(otherface['tab_length'][otherscount]))
-			elif scount in face['tab_length']:
-				otherface['tab_length'][otherscount]=face['tab_length'][scount]
-			elif otherscount in otherface['tab_length']:
-				face['tab_length'][scount]=otherface['tab_length'][otherscount]
-			else:
-				face['tab_length'][scount]=self.tab_length
-				otherface['tab_length'][otherscount]=self.tab_length
+                        if side[0][0]==f:
+                                otherf = side[1][0]
+                                otherscount = side[1][1]
+                        else:
+                                otherf = side[0][0]
+                                otherscount = side[0][1]
+                        otherface = self.faces[otherf]
+                        if prop not in otherface:
+                                otherface[prop]={}
+                        if scount in face[prop] and otherscount in otherface[prop]:
+                                if face[prop][scount]!=otherface[prop][otherscount]:
+                                        raise ValueError("side "+str(scount)+" in face "+str(f)+" and side "+str(otherscount)+" in face "+str(otherf)+" have different "+prop+"s, but are the same side"+str(face[prop][scount])+" "+str(otherface[prop][otherscount]))
+                        elif scount in face[prop]:
+                                otherface[prop][otherscount]=face[prop][scount]
+                        elif otherscount in otherface[prop]:
+                                face[prop][scount]=otherface[prop][otherscount]
+			elif fprop != None:
+				face[prop][scount]=fprop
+				otherface[prop][otherscount]=fprop
+                        elif hasattr(self, prop):
+                                face[prop][scount]=getattr(self,prop)
+                                otherface[prop][otherscount]=getattr(self, prop)
+                        else:
+                                face[prop][scount]=None
+                                otherface[prop][otherscount]=None
 
 	def other_side_mode(self, mode):
 		if mode=='on':

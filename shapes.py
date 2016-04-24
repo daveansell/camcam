@@ -831,6 +831,67 @@ class Bolt(Part):
 				else:
 					self.add(Hole(pos, milling.bolts[thread]['tap']/2, side='in'),thread_layer)
 
+class ButtJoint(list):
+	def __init__(self, start, end, side, linemode, startmode, endmode, hole_spacing, thickness, cutterrad, **config):
+		assert startmode==endmode, "ButtJoint - startmode and endmode should be the same"
+                if side=='left':
+                        perp = rotate((end-start).normalize(),-90)
+                else:
+                        perp = rotate((end-start).normalize(),90)
+                parallel=(end-start).normalize( )
+		depth=1
+		if 'butt_depression' in config:
+                        if config['butt_depression']>0:
+                                depression=True
+                                depth = config['butt_depression']
+                        else:
+                                depression=False
+
+		if startmode == 'off':
+			extra=thickness
+		else:
+			extra=depth
+		self.append(PSharp(start+extra*perp))
+		self.append(PSharp(end+extra*perp))
+
+class ButtJointMid(Pathgroup):
+	def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode, **config):
+		self.init(config)
+		assert startmode==endmode, "ButtJoint - startmode and endmode should be the same"
+		if 'fudge' in config:
+			fudge = config['fudge']
+		else:
+			fudge = 0
+                if side=='left':
+                        perp = rotate((end-start).normalize(),-90)
+                else:
+                        perp = rotate((end-start).normalize(),90)
+		if 'butt_num_holes' in config and type(config['butt_num_holes']) is not None:
+			num_holes = config['butt_num_holes']
+		else:
+			num_holes = int(math.floor((end-start).length()/hole_spacing))
+                hole_length = (end-start).length()/num_holes
+                parallel=(end-start).normalize( )
+		holes=True
+		depression=False
+		if startmode == 'off':
+			if 'butt_depression' in config and config['butt_depression']!=None:
+				if config['butt_depression']>0:
+					depression=True
+					depth = config['butt_depression']
+				else:
+					depression=False
+			if 'butt_holerad' in config and config['butt_holerad']!=None:
+	                        holerad = config['holerad']
+			else:
+				holerad = 4.2/2
+	
+			if holes:
+				self.add(HoleLine(start+parallel*hole_length/2+perp*thickness/2, end - parallel*hole_length/2 + perp*thickness/2, num_holes,  holerad))
+	
+			if depression:
+				self.add(Rect(start-parallel*fudge-perp*fudge, tr=end+perp*(thickness+fudge)+parallel*fudge, z1=-depth, partial_fill=thickness/2))
+
 
 class FingerJointMid(Pathgroup):
 	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, prevmode, nextmode, **config):
