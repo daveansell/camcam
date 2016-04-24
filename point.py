@@ -101,6 +101,7 @@ class Point(object):
                                                 p.cp1 = self.scale(p.cp1, t['scale'])
                                                 p.cp2 = self.scale(p.cp2, t['scale'])
                 return p
+		
 	def compile(self):
 		return [self]
 # rotate point about a point 
@@ -961,7 +962,7 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 			
 			if l.length()>2*self.radius:
 				print "Can't make an arc longer than twice its radius"
-			if self.direction=='cw' and self.reverse or self.direction=='ccw' and not self.reverse:
+			if (self.direction=='cw' and self.reverse or self.direction=='ccw' and not self.reverse) !=self.reverse:
 				perp=rotate(l.normalize(),-90)
 			else:
 				perp=rotate(l.normalize(),90)
@@ -997,7 +998,7 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 
 		if abs(op.length()-self.radius)>-0.001:
 	                vecin=(op-self.pos).normalize()
-	                if (self.direction=='cw' and self.reverse==False or self.direction=='ccw' and self.reverse==True)==forward:
+	                if (self.direction=='cw' and self.reverse==self.invert or self.direction=='ccw' and self.reverse!=self.invert)==forward:
 	                        return op+rotate(vecin,90)
 	                else:
 	                        return op+rotate(vecin,-90)
@@ -1030,7 +1031,8 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 	def offset(self, side, distance, direction):
 		self.checkArc()
 		t=copy.copy(self)
-		if side=='left' and self.direction=='cw' or side=='right' and self.direction=='ccw':
+		print "side="+str(side)+" self.direction="+str(self.direction)
+		if (side=='left' and self.direction=='cw' or side=='right' and self.direction=='ccw')!=self.invert:
 			t.radius+=distance
 		else:
 			if t.radius>=distance:
