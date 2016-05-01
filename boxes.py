@@ -504,6 +504,7 @@ class ArbitraryBox(Part):
 		self.init(config)
 		self.tab_length = tab_length
 		self.fudge = fudge
+		print "self.fudge-"+str(fudge)
 		self.faces = faces
 		self.auto_properties = ['tab_length', 'joint_mode', 'butt_depression', 'butt_holerad', 'butt_numholes', 'hole_spacing']
 		for prop in self.auto_properties:
@@ -518,6 +519,8 @@ class ArbitraryBox(Part):
 			self.make_sides(f,face['points'])
 			self.make_normal(f, face['points'])
 			face['internal_joints'] = []
+			if 'zoffset' not in face:
+				face['zoffset'] = 0
 #			self.check_layer(face)
 			if 'tab_length' not in face:
                                 face['tab_length'] = {}
@@ -555,11 +558,18 @@ class ArbitraryBox(Part):
 			self.faces[good_direction_face]['good_direction'] *= -1
 		self.propagate_direction('good_direction', good_direction_face,0)
 		self.propagate_direction('wood_direction', wood_direction_face,0)
+		for s, side in self.sides.iteritems():
+			self.set_joint_type(s, side)
 
 
 		for f, face in faces.iteritems():
 			self.get_cut_side(f, face)
-
+#			face['good_direction'] *= face['cut_from']
+			if face['cut_from']<0:
+				pass
+#				face['isback']=True
+				face['good_direction'] *= face['cut_from']
+				face['zoffset'] += face['thickness']
 			if 'x' in face:
 				if abs(face['x'].dot(face['normal'])) > 0.0000001 :
 					raise ValueError('face[x] in face '+str(f)+' not in plane of the rest of the face')
@@ -593,8 +603,8 @@ class ArbitraryBox(Part):
 			for s in face['sides']:
 				self.set_corners(self.sides[s], f, scount)
 #				self.set_tab_length(self.sides[s], f, scount)
-				self.set_property(self.sides[s], f, scount, 'tab_length')
 				self.set_property(self.sides[s], f, scount, 'joint_mode')
+				self.set_property(self.sides[s], f, scount, 'tab_length')
 				self.set_property(self.sides[s], f, scount, 'butt_depression')
 				self.set_property(self.sides[s], f, scount, 'butt_holrad')
 				self.set_property(self.sides[s], f, scount, 'butt_numholes')
@@ -621,10 +631,10 @@ class ArbitraryBox(Part):
 
 			# add points here
 
-				p = Part(name = f, layer = face['layer'])
+				p = Part(name = f, layer = face['layer'], zoffset=face['zoffset'])
 				self.get_border(p,  f, face, 'internal')
 			else:
-				p = Part(name = f, layer = face['layer'])
+				p = Part(name = f, layer = face['layer'], zoffset=face['zoffset'])
 				self.get_border(p,  f, face, 'external')
 			# DECIDE WHICH SISDE WE ARE CUttng FROM
 			# CHECK THE DIRECTION OF THR LOOP
@@ -730,10 +740,17 @@ class ArbitraryBox(Part):
 						if angle==0:
 							if cutside=='left' and joint_type=='concave':
                                                                 cutside='right'
+								print "Conc "+f+" "+otherside[0]
                                                         if cutside=='right' and joint_type=='concave':
                                                                 cutside='left'
-							newpoints = ButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], face['thickness'], 0, fudge = self.fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount])
-							part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], face['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount]))
+								print "Conc "+f+" "+otherside[0]
+							newpoints = ButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = self.fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type)
+							if face['cut_from']<0:
+								if  cutside=='left':
+									cutside= 'right'
+								else:
+									cutside='left'
+							part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=self.fudge))
 					else:
 
 
@@ -777,11 +794,16 @@ class ArbitraryBox(Part):
 				cutside='right'
 			else:
 				cutside='left'
+			if 'isback' in face and face['isback']:
+				if  cutside=='left':
+					cutside= 'right'
+				else:
+					cutside='left'
 
 			prevmode = 'on'
 			nextmode = 'on'
 			if joint['joint_mode']=='butt':
-				part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], butt_holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes']))
+				part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], butt_holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes'], joint_type='convex', fudge= self.fudge))
 			else:
 				part.add(FingerJointMid( joint['from'], joint['to'], cutside,'internal',  joint['corners'], joint['corners'], joint['tab_length'], joint['otherface']['thickness'], 0, prevmode, nextmode))
 	def set_wood_factor(self, face):
@@ -816,6 +838,14 @@ class ArbitraryBox(Part):
 		return (thisside, otherside)
 
 	def get_cut_side(self, f, face):
+		if 'force_cut_direction' in face:
+			assert face['force_cut_direction'].dot(face['normal'])!=0, "force_cut_direction for face "+f+" is parallel with face"
+			if face['force_cut_direction'].dot(face['normal'])>0:
+				face['cut_from'] = 1
+			else:
+				face['cut_from'] = -1
+			print "FACE CUT FORCED = "+str(face['cut_from'])
+			return
 		good_direction = face['wood_direction']
 		need_cut_from={}
 		pref_cut_from = False
@@ -827,6 +857,10 @@ class ArbitraryBox(Part):
 				thisside = side[1]
 			# make sure this side is a joint
 			if len(thisside)>2:
+#				print f+" Joint Mode="+str(face['joint_mode'])
+#				if face['joint_mode'][side[0][1]]=='butt':
+#					print "GET CUT SIDE BUTT JOINT"
+#				else:
 				cutside = thisside[3]
 				if cutside * good_direction>0.0001:
 					need_cut_from[self.sign(cutside)]=True
@@ -954,7 +988,6 @@ class ArbitraryBox(Part):
 					face[prop][scount]=None
                                         intJoint[prop] = None
                                 return
-
                         if side[0][0]==f:
                                 otherf = side[1][0]
                                 otherscount = side[1][1]
@@ -1032,6 +1065,27 @@ class ArbitraryBox(Part):
 		if len(self.sides[sid]) > 2:
 			raise ValueError("more than 2 faces with the same side "+str(self.sides[sid1]))
 
+	def set_joint_type(self, s, side):
+		print side
+		face1 = self.faces[side[0][0]]
+		if len(side)==1:
+			return False
+		elif side[1][0]=='_internal':
+			joint_type='convex'
+		else:
+			face2 = self.faces[side[1][0]]
+			svec1 = (face1['points'][ (side[0][1]-1)%len(face1['points']) ] - face1['points'][side[0][1]]).cross( face1['normal'] ).normalize()
+			svec2 = (face2['points'][ (side[1][1]-1)%len(face2['points']) ] - face2['points'][side[1][1]]).cross( face2['normal'] ).normalize()
+			if (svec1+svec2).length()*5 >   (svec1 * 5 + face1['normal']*face1['wood_direction'] + svec2 * 5 + face2['normal']*face2['wood_direction']).length():
+				joint_type='concave'
+			else:
+	                        joint_type='convex'
+		print side[1]
+		side[0][6] = joint_type
+		if len(side)>1:
+			side[1][6] = joint_type
+
+
 	def find_angle(self, s,side):
 		if len(side)!=2:
 #			print "side with only one face"
@@ -1079,10 +1133,6 @@ class ArbitraryBox(Part):
 		avSvec = (svec1 + svec2).normalize()
 		
 		# if you start a distance away from the joint and follow the normal, if they are coming together the going is internal, otherwise it is external
-		if (svec1+svec2).length()*5 > 	(svec1 * 5 + face1['normal'] + svec2 * 5 + face2['normal']).length():
-			joint_type='concave'
-		else:
-			joint_type='convex'
 		# Is the normal of both faces in the same directions vs inside and outside 
 		# will only break with zero if  if planes are parallel
 		t = face1['normal'].dot(avSvec) * avSvec.dot(face2['normal'] )
@@ -1096,10 +1146,10 @@ class ArbitraryBox(Part):
 		side[0].append( avSvec.dot ( face1['normal'] ) * cutsign)
 		side[0].append( angle )
 		side[0].append(altside)
-		side[0].append(joint_type)
+		side[0].append('convex')
 
 		side[1].append(sideSign)
 		side[1].append( avSvec.dot ( face2['normal'] ) * cutsign)
 		side[1].append( angle )
 		side[1].append(altside)
-		side[1].append(joint_type)
+		side[1].append('convex')
