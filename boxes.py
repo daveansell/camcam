@@ -679,6 +679,7 @@ class ArbitraryBox(Part):
 			z *= -1
 			y *= -1
 			x *= -1
+			p.rotate3D([0,0,180])
 			pass
 		zs = [z[0],z[1],z[2],0]
 		xs = [x[0],x[1],x[2],0]
