@@ -66,7 +66,7 @@ def path_render3D(self, pconfig, border=False):
 # try to avoid faces and points touching by offsetting them slightly
 	z0+=_delta
 	z1-=_delta
-	_delta+=0.001
+	_delta+=0.00001
 	outline = []
 	points = self.polygonise(RESOLUTION)
 #	extrude_path = [ Point3(0,0,zoffset + float(z0)), Point3(0,0, zoffset + float(z1)) ]
@@ -198,12 +198,14 @@ def plane_make_part3D(self, thepart, pconfig):
 	# 3D transformations can only be applied to parts, so we can just go up the tree
 	p = thepart
 	while(p and type(p) is not Plane):
-		if hasattr(p, 'transform') and 'matrix3D' in p.transform:
+		print p
+		print p.transform
+		if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and 'matrix3D' in p.transform:
 			thepart.border3D=solid.multmatrix(m=p.transform['matrix3D'])(thepart.border3D)
 
-		if hasattr(p, 'transform') and 'rotate3D' in p.transform:
+		if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and 'rotate3D' in p.transform:
 			thepart.border3D=solid.rotate([p.transform['rotate3D'][0], p.transform['rotate3D'][1],p.transform['rotate3D'][2] ])(thepart.border3D)
-		if hasattr(p, 'transform') and 'translate3D' in p.transform:
+		if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and 'translate3D' in p.transform:
 			thepart.border3D=solid.translate([p.transform['translate3D'][0], p.transform['translate3D'][1],p.transform['translate3D'][2] ])(thepart.border3D)
 		p=p.parent
 def plane_render_part3D(self, thepart, pconfig, filename=False):
