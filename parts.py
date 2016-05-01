@@ -349,10 +349,12 @@ class WashingBowl(Part):
 		for i in range(0, int(self.d['num_bolts'])):
 			t = self.add(Bolt(V(0, (self.d['top_outer_rad']+self.d['top_rad'])/2), 'M4', clearance_layers = clearance_layers+bowl_layers, insert_layer=insert_layer, thread_layer= thread_layer))
 			t.rotate(V(0,0), i * 360.0/self.d['num_bolts'])
-		support = self.add(Part(name='washing_bowl_support', layer='_washing_bowl_support', border = RoundedArc(V(0,0), (self.d['top_outer_rad']+self.d['top_rad'])/2, 8, 360.0/self.d['num_bolts']+5, startangle=360.0/self.d['num_bolts']/2)))
+		support = self.add(Part(name='washing_bowl_support', layer='_washing_bowl_support', border = RoundedArc(V(0,0), (self.d['top_outer_rad']+self.d['top_rad'])/2, 8, 360.0/self.d['num_bolts']*2-5, startangle=360.0/self.d['num_bolts']/2)))
+		for i in range(0, int(self.d['num_bolts']/2)):
+			support.add_copy({'rotate':[V(0,0), i*360.0/self.d['num_bolts']*2]})
         def _pre_render(self):
                 self.get_plane().add_layer('_washing_bowl', 'delrin', 1, colour='#80808040')
-                self.get_plane().add_layer('_washing_bowl_support', 'delrin', self.d['lip_depth']-2, colour='#808080')
+                self.get_plane().add_layer('_washing_bowl_support', 'pvc', self.d['lip_depth']-2, colour='#808080')
 
 
 
