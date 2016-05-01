@@ -840,6 +840,10 @@ class ButtJoint(list):
                         perp = rotate((end-start).normalize(),90)
                 parallel=(end-start).normalize( )
 		depth=1
+		if 'joint_type' in config:
+			joint_type=config['joint_type']
+		else:
+			joint_type='convex'
 		if 'butt_depression' in config:
                         if config['butt_depression']>0:
                                 depression=True
@@ -847,10 +851,14 @@ class ButtJoint(list):
                         else:
                                 depression=False
 
-		if startmode == 'off':
+		if (startmode == 'off') and (joint_type=='convex') :
 			extra=thickness
-		else:
+		elif (startmode == 'on') and (joint_type=='convex') :
 			extra=depth
+		elif (startmode == 'off') and (joint_type=='concave') :
+			 extra=thickness-depth
+		elif (startmode == 'on') and (joint_type=='concave') :
+                         extra=0
 		self.append(PSharp(start+extra*perp))
 		self.append(PSharp(end+extra*perp))
 
@@ -862,6 +870,10 @@ class ButtJointMid(Pathgroup):
 			fudge = config['fudge']
 		else:
 			fudge = 0
+		if 'joint_type' in config:
+			joint_type=config['joint_type']
+		else:
+			joint_type='convex'
                 if side=='left':
                         perp = rotate((end-start).normalize(),-90)
                 else:
@@ -874,7 +886,7 @@ class ButtJointMid(Pathgroup):
                 parallel=(end-start).normalize( )
 		holes=True
 		depression=False
-		if startmode == 'off':
+		if (startmode == 'off') == (joint_type=='convex'):
 			if 'butt_depression' in config and config['butt_depression']!=None:
 				if config['butt_depression']>0:
 					depression=True
@@ -887,10 +899,12 @@ class ButtJointMid(Pathgroup):
 				holerad = 4.2/2
 	
 			if holes:
-				self.add(HoleLine(start+parallel*hole_length/2+perp*thickness/2, end - parallel*hole_length/2 + perp*thickness/2, num_holes,  holerad))
+				self.add(HoleLine(start+parallel*hole_length/2 + perp*thickness/2, end - parallel*hole_length/2 + perp*thickness/2, num_holes,  holerad))
 	
 			if depression:
-				self.add(Rect(start-parallel*fudge-perp*fudge, tr=end+perp*(thickness+fudge)+parallel*fudge, z1=-depth, partial_fill=thickness/2))
+				self.add(Rect(	start-parallel*fudge - perp*fudge, 
+						tr=end+perp*(thickness+fudge)+parallel*fudge, 
+						z1=-depth, partial_fill=thickness/2))
 
 
 class FingerJointMid(Pathgroup):
