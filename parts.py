@@ -309,6 +309,51 @@ class ArduinoUno(Part):
         def _pre_render(self):
                 self.get_plane().add_layer('_ardlayer', 'pcb', 1, zoffset=0, colour='#808080')
 
+class WashingBowl(Part):
+	def __init__(self, pos, bowl_type, **config):
+		self.init(config)
+		self.translate(pos)
+		bowl_layers=['_washing_bowl', '_washing_bowl_support']
+		if 'clearance_layers' in config:
+			clearance_layers=config['clearance_layers']
+		else:
+			clearance_layers=['perspex', 'paper']
+		if 'insert_layer' in config:
+			insert_layer=config['iinsert_layer']
+			if type(insert_layer) is not list:
+				insert_layer = [insert_layer]
+		else:
+			insert_layer = ['base']
+		if 'thread_layer' in config:
+			thread_layer=config['ithread_layer']
+			if type(thread_layer) is not list:
+				thread_layer = [thread_layer]
+		else:
+			thread_layer = []
+
+
+		data = {
+			'bline-27cm':{'outer_rad':270.0/2, 'top_outer_rad':260.0/2, 'bottom_rad':205.0/2, 'depth':90.0, 'lip_depth':8.0, 'top_rad':233.0/2, 'num_bolts':8, 'wall':1}
+		}
+		if bowl_type in data:
+			self.d=data[bowl_type]
+		self.bowl = self.add(Part(subpart=True, layer='_washing_bowl', thickness = self.d['depth']+self.d['lip_depth'], zoffset = 0, border = Circle(V(0,0), rad = self.d['top_rad'],)))# extrude_scale = self.d['bottom_rad']/self.d['top_rad'])))
+		self.layer = '_washing_bowl'
+		self.name = '_washing_bowl'
+		self.thickness = self.d['lip_depth']
+		self.zoffset = self.d['lip_depth']
+		self.add_border( Circle(V(0,0), rad=self.d['top_outer_rad'],))#  extrude_scale = self.d['outer_rad']/self.d['top_outer_rad']))
+		self.add(Hole(V(0,0), self.d['top_rad']-self.d['wall']))
+		self.bowl.add(Circle(V(0,0), rad=self.d['top_rad']-self.d['wall'], z1=-self.d['lip_depth']-self.d['depth']+self.d['wall'], side='in',))#  extrude_scale = (self.d['top_rad']-self.d['wall'])/(self.d['bottom_rad']-self.d['wall']), extrude_centre=V(0,0)))
+		self.add(Hole(V(0,0), rad=self.d['top_rad']+1), clearance_layers + insert_layer)
+		for i in range(0, int(self.d['num_bolts'])):
+			t = self.add(Bolt(V(0, (self.d['top_outer_rad']+self.d['top_rad'])/2), 'M4', clearance_layers = clearance_layers+bowl_layers, insert_layer=insert_layer, thread_layer= thread_layer))
+			t.rotate(V(0,0), i * 360.0/self.d['num_bolts'])
+		support = self.add(Part(name='washing_bowl_support', layer='_washing_bowl_support', border = RoundedArc(V(0,0), (self.d['top_outer_rad']+self.d['top_rad'])/2, 8, 360.0/self.d['num_bolts']+5, startangle=360.0/self.d['num_bolts']/2)))
+        def _pre_render(self):
+                self.get_plane().add_layer('_washing_bowl', 'delrin', 1, colour='#80808040')
+                self.get_plane().add_layer('_washing_bowl_support', 'delrin', self.d['lip_depth']-2, colour='#808080')
+
 
 
  
