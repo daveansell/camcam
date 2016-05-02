@@ -178,6 +178,7 @@ class PiBarn(Part):
 			depth = config['depth']
 		else:
 			depth = 30
+		self.depth=depth
 		bolt_conf={'clearance_layers':[config['layer']], 'length':50, 'insert_layer':[], 'underinsert_layer':'base'}
 
 		self.add(RepeatLine(pos+V(-x_units/2*spacing, -y_units/2*spacing), pos+V(x_units/2*spacing, -y_units/2*spacing), x_units+1, Bolt, bolt_conf)).paths
@@ -186,6 +187,10 @@ class PiBarn(Part):
 		self.add(RepeatLine(pos+V(-x_units/2*spacing, (y_units/2-1)*spacing), pos+V(-x_units/2*spacing, (-y_units/2+1)*spacing), y_units-1, Bolt, bolt_conf))
 		self.add_border(RoundedRect(pos, centred=True, width=x_units*spacing+15, height=y_units*spacing+15, side='out', rad=8))
 		self.add_bom('standoff'+str(depth),4, description=str(depth)+'mm standoff')
+		self.zoffset=depth+6
+        def _pre_render(self):
+                self.get_plane().add_layer('pibarn', 'perspex', 6, colour='#80808080')
+
 
 class Pi(Part):
 	def __init__(self, pos,**config):
@@ -250,6 +255,77 @@ class Pi3(Part):
 		self.add(Bolt(V(-w/2+3.5+58, -49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
 	def _pre_render(self):
 		self.get_plane().add_layer('_pilayer', 'pcb', 1, zoffset=0, colour='#808080')
+
+class PiCompute(Part):
+	def __init__(self, pos, **config):
+		self.init(config)
+                w=67
+                h=28
+		self.zoffset=4
+		self.no_mirror = True
+		if 'clearance_layers' in config:
+                        if type(config['clearance_layers']) is list:
+                                config['clearance_layers'].append('_piclayer')
+                        else:
+                                config['clearance_layers']=[config['clearance_layers'], '_piclayer']
+                else:
+                        config['clearance_layers']='_piclayer'
+                if 'thread_layer' not in config:
+                        config['thread_layer'] = []
+                if 'insert_layer' not in config:
+                        config['insert_layer'] = []
+		self.layer = '_piclayer'
+		self.add_border(RoundedRect(V(0,h/2), width=w, height=h, centred=True, rad=0, thickness=1.5,  colour="#008030"))	
+		self.CPU = self.add(Part(subpart=True, layer='_piclayer', border=Rect(V(-w/2+44, -h/2+22), centred=True, width=13.8, height=13.8, zoffset=1, thickness=1, colour='#101010')))
+		self.MEM = self.add(Part(subpart=True, layer='_piclayer', border=Rect(V(-w/2+18, -h/2+22), centred=True, width=13.8, height=13.8, zoffset=1, thickness=1, colour='#101010')))
+	def _pre_render(self):
+		self.get_plane().add_layer('_piclayer', 'pcb', 1, zoffset=0, colour='#808080')
+class PiComputeIO(Part):
+	def __init__(self, pos, **config):
+		self.init(config)
+		w=105
+		h=85
+		hsy=77
+		hsx=92	
+
+		o=1.5
+		self.layer='_piciolayer'
+		self.name='PiComputeIO'
+		self.translate(pos)
+#		self.zoffset+=o
+		self.no_mirror = True
+	
+		if 'clearance_layers' in config:
+			if type(config['clearance_layers']) is list:
+				config['clearance_layers'].append('_piciolayer')
+			else:
+				config['clearance_layers']=[config['clearance_layers'], '_piciolayer']
+		else:
+			config['clearance_layers']='_piciolayer'
+		if 'thread_layer' not in config:
+			config['thread_layer'] = []
+		if 'insert_layer' not in config:
+			config['insert_layer'] = []
+		self.add_border(RoundedRect(V(0,0), width=w, height=h, centred=True, rad=3, thickness=1.5,  colour="#008030"))
+		self.hdmi = self.add(Part(subpart=True, layer='_piciolayer', border=Rect(V(0, -h/2+6.1-2), centred=True, width=14, height=12.2, zoffset=6, thickness=6, colour='#808080')))
+		self.add(Bolt(V(-hsx/2, -hsy/2), 'M3', clearance_layers=config['clearance_layers'], thread_layer=config['thread_layer'], insert_layer=config['insert_layer']))	
+		self.add(Bolt(V(hsx/2, -hsy/2), 'M3', clearance_layers=config['clearance_layers'], thread_layer=config['thread_layer'], insert_layer=config['insert_layer']))	
+		self.add(Bolt(V(hsx/2, hsy/2), 'M3', clearance_layers=config['clearance_layers'], thread_layer=config['thread_layer'], insert_layer=config['insert_layer']))	
+		self.add(Bolt(V(-hsx/2, hsy/2), 'M3', clearance_layers=config['clearance_layers'], thread_layer=config['thread_layer'], insert_layer=config['insert_layer']))
+#               self.add(Hole(V(0,0), rad=3))
+		self.USB1 = self.add(Part(subpart=True, layer='_piciolayer', border=Rect(V(w/2-6.65, -h/2+29), centred=True, width=17.7, height=13.3, zoffset=7.0, thickness=7.0, colour='#808080')))	
+                self.USBSL = self.add(Part(subpart=True, layer='_piciolayer', border=Rect(V(w/2-2, -h/2+14), centred=True, width=5, height=7, zoffset=3.0, thickness=3.0, colour='#808080')))
+                self.USBPOW = self.add(Part(subpart=True, layer='_piciolayer', border=Rect(V(w/2-2, h/2-12), centred=True, width=5, height=7, zoffset=3.0, thickness=3.0, colour='#808080')))
+                self.GPIO = self.add(Part(subpart=True, layer='_piciolayer', border=Rect(V(-3.5, h/2-5.5), centred=True, width=76, height=5, zoffset=5, thickness=5, colour='#101010')))
+                self.GPIO2 = self.add(Part(subpart=True, layer='_piciolayer', border=Rect(V(-3.5, h/2-18), centred=True, width=76, height=5, zoffset=5, thickness=5, colour='#101010')))
+                self.DSI = self.add(Part(subpart=True, layer='_piciolayer', border=Rect(V(-w/2+35, -h/2+2.5), centred=True, width=16, height=3, zoffset=2, thickness=2, colour='#dddddd')))
+                self.DSI = self.add(Part(subpart=True, layer='_piciolayer', border=Rect(V(-w/2+17, -h/2+2.5), centred=True, width=16, height=3, zoffset=2, thickness=2, colour='#dddddd')))
+                self.DSI = self.add(Part(subpart=True, layer='_piciolayer', border=Rect(V( w/2-35, -h/2+2.5), centred=True, width=16, height=3, zoffset=2, thickness=2, colour='#dddddd')))
+                self.DSI = self.add(Part(subpart=True, layer='_piciolayer', border=Rect(V( w/2-17, -h/2+2.5), centred=True, width=16, height=3, zoffset=2, thickness=2, colour='#dddddd')))
+		self.add(PiCompute(V(46-w/2, 20-w/2), clearance_layers='_piciolayer'))	
+	def _pre_render(self):
+		self.get_plane().add_layer('_piciolayer', 'pcb', 1, zoffset=0, colour='#808080')
+
 
 
 class ArduinoUno(Part):
