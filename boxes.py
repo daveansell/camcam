@@ -579,6 +579,8 @@ class ArbitraryBox(Part):
 				face['x'] = (self.tuple_to_vec(face['sides'][0][1])- self.tuple_to_vec(face['sides'][0][0])).normalize()
 			face['y'] = face['x'].cross(face['normal']).normalize()
 			# if we are cutting from the back flip x
+#			if 'isback' in face and face['isback']:
+#				face['y'] *=-1
 			if face['good_direction'] == -1:
 				 face['x'] = - face['x']
 
@@ -586,8 +588,6 @@ class ArbitraryBox(Part):
 			if 'origin' not in face:
 				face['origin'] = face['points'][0]
 			face['ppoints'] = []
-			if 'isback' in face and face['isback']:
-				face['y'] *=-1
 			for p in face['points']:
 				p2 = p-face['origin']
 				face['ppoints'].append(V(p2.dot(face['x']), p2.dot(face['y'])))
@@ -675,12 +675,12 @@ class ArbitraryBox(Part):
 		x = face['x'] 
 		y = x.cross(z*-1)
 
-		if 'isback' in face:
-			z *= -1
-			y *= -1
-			x *= -1
-			p.rotate3D([0,0,180])
-			pass
+#		if 'isback' in face:
+	#		z *= -1
+	#		y *= -1
+	#		x *= -1
+	#		p.rotate3D([0,0,180])
+	#		pass
 		zs = [z[0],z[1],z[2],0]
 		xs = [x[0],x[1],x[2],0]
 		ys = [y[0],y[1],y[2],0]
