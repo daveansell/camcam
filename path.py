@@ -721,12 +721,16 @@ class Path(object):
                         config['zdir']= pconfig['zdir']
                 else:
                         config['zdir']=1
-                if config['layer'] is not None:
-                        l=self.get_plane().get_layer_config(config['layer'])
-                else:
-                        l={'thickness':0, 'zoffset':0, 'isback':False}
+		if hasattr(self, 'layer') and self.layer is not None:
+                        l=copy.copy(self.get_plane().get_layer_config(self.layer))
+			if 'thickness' in l and l['thickness'] is not None:
+				config['thickness'] = l['thickness']
+			if 'isback' not in l:
+				l['isback']=False
+		else:
+			l={'thickness':0, 'zoffset':0, 'isback':False}
                 if hasattr(self, 'thickness') and self.thickness is not None:
-                        l['thickness'] = self.thickness
+			config['thickness'] = self.thickness
                 if  hasattr(self,'isback') and getattr(self,'isback') or l['isback']:
                         config['zdir']*=-1
 
@@ -1422,12 +1426,17 @@ class Pathgroup(object):
                         config['zdir']= pconfig['zdir']
                 else:
                         config['zdir']=1
-                if config['layer'] is not None:
-                        l=self.get_plane().get_layer_config(config['layer'])
+		if hasattr(self, 'layer') and self.layer is not None:
+                        l=copy.copy(self.get_plane().get_layer_config(self.layer))
+                        if 'thickness' in l and l['thickness'] is not None:
+                                config['thickness'] = l['thickness']
+                        if 'isback' not in l:
+                                l['isback']=False
                 else:
                         l={'thickness':0, 'zoffset':0, 'isback':False}
                 if hasattr(self, 'thickness') and self.thickness is not None:
-                        l['thickness'] = self.thickness
+                        config['thickness'] = self.thickness
+
 
                 if  hasattr(self,'isback') and getattr(self,'isback') or l['isback']:
                         config['zdir']*=-1
@@ -1754,12 +1763,17 @@ class Part(object):
                         config['zdir']= pconfig['zdir']
                 else:   
                         config['zdir']=1
-                if config['layer'] is not None: 
-			l=self.get_plane().get_layer_config(config['layer'])
-		else:
-			l={'thickness':0, 'zoffset':0, 'isback':False}
-		if hasattr(self, 'thickness') and self.thickness is not None:
-			l['thickness'] = self.thickness
+		if hasattr(self, 'layer') and self.layer is not None:
+                        l=copy.copy(self.get_plane().get_layer_config(self.layer))
+                        if 'thickness' in l and l['thickness'] is not None:
+                                config['thickness'] = l['thickness']
+                        if 'isback' not in l:
+                                l['isback']=False
+                else:
+                        l={'thickness':0, 'zoffset':0, 'isback':False}
+                if hasattr(self, 'thickness') and self.thickness is not None:
+                        config['thickness'] = self.thickness
+
                 if  (hasattr(self,'isback') and getattr(self,'isback') or l['isback']) and not (hasattr(self,'isback') and getattr(self,'isback') and l['isback']):
                         config['zdir']*=-1
                                         
