@@ -882,7 +882,10 @@ class ButtJointMid(Pathgroup):
 			num_holes = config['butt_num_holes']
 		else:
 			num_holes = int(math.floor((end-start).length()/hole_spacing))
-                hole_length = (end-start).length()/num_holes
+		if num_holes>0:
+	                hole_length = (end-start).length()/num_holes
+		else:
+			hole_length = 1
                 parallel=(end-start).normalize( )
 		holes=True
 		depression=False
