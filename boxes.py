@@ -638,7 +638,7 @@ class ArbitraryBox(Part):
 				self.get_border(p,  f, face, 'external')
 			# DECIDE WHICH SISDE WE ARE CUttng FROM
 			# CHECK THE DIRECTION OF THR LOOP
-			self.align3d_face(p, face)
+			self.align3d_face(p, f, face)
 			setattr(self, 'face_' + f, self.add(p))
 		
 	def find_in_face(self,s,side):
@@ -669,12 +669,16 @@ class ArbitraryBox(Part):
 
 
 		
-	def align3d_face(self, p, face):
+	def align3d_face(self, p, f, face):
+		print f
+		print face['normal']
 		z = face['normal']*face['good_direction'] *-1
 
 		x = face['x'] 
 		y = x.cross(z*-1)
-
+		print "x="+str(x)
+		print "y="+str(y)
+		print "z="+str(z)
 #		if 'isback' in face:
 	#		z *= -1
 	#		y *= -1
@@ -1142,7 +1146,10 @@ class ArbitraryBox(Part):
 		elif t<0:
 			sideSign = -1
 		else:
-			raise ValueError( " Two adjoinig faces are parallel "+str(face1['normal'])+" == "+str(face2['normal']))
+			print  str(face1['points'][ (side[0][1]-1)%len(face1['points']) ])+" -> "+str( face1['points'][side[0][1]])
+			print "svec1="+str(svec1)+" svec2="+str(svec2)
+			print " f1 normal "+str(face1['normal'])+" avSvec="+str(avSvec)+" f2 normal="+str(face2['normal'])
+			raise ValueError( " Two adjoinig faces are parallel "+side[0][0]+" and "+ side[1][0]+" "+side[1][1]+" "+str(face1['normal'])+" == "+str(face2['normal']))
 		side[0].append(sideSign)
 		side[0].append( avSvec.dot ( face1['normal'] ) * cutsign)
 		side[0].append( angle )
