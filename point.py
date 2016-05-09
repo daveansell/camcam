@@ -192,14 +192,12 @@ class Point(object):
 
 	def corner_side(self, side, direction):
 		cross=(self.pos-self.lastorigin()).cross(self.nextorigin()-self.pos)[2]
-		print "cross="+str(cross)
 		if abs(cross)<0.0000001:
 			return 'external'
 		if (cross<=-0.0000001 and side=='left' or cross>=0.00000001 and side=='right') == (direction=='cw'):
 			corner='external'
 		else:
 			corner='internal'
-		print corner
 		return corner
 
 	def offset_move_point(self, frompos, topos, side, distance):
@@ -490,7 +488,6 @@ class PIncurve(PSharp):
 		self._setup()
 		self.setangle()
 		t=copy.copy(self)
-		print "PIncurve_rad="+str(self.radius)+" side="+str(side)+ " direction="+direction+ " invert="+str(self.invert)
 		if self.corner_side(side, direction)=='external':
 			t=self.offsetSharp( side, distance, direction)
 			t[0].radius+=distance
@@ -505,7 +502,6 @@ class PIncurve(PSharp):
                                         t[0].point_type='sharp'
                                         t[0].radius=0
                          #               t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.cos(angle0)))
-		print t[0].radius
 		return t
 	def makeSegment(self, config):
 		self._setup()
