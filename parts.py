@@ -181,10 +181,10 @@ class PiBarn(Part):
 		self.depth=depth
 		bolt_conf={'clearance_layers':[config['layer']], 'length':50, 'insert_layer':[], 'underinsert_layer':'base'}
 
-		self.add(RepeatLine(pos+V(-x_units/2*spacing, -y_units/2*spacing), pos+V(x_units/2*spacing, -y_units/2*spacing), x_units+1, Bolt, bolt_conf)).paths
-		self.add(RepeatLine(pos+V(x_units/2*spacing, (-y_units/2+1)*spacing), pos+V(x_units/2*spacing, (y_units/2-1)*spacing), y_units-1, Bolt, bolt_conf))
-		self.add(RepeatLine(pos+V(x_units/2*spacing, y_units/2*spacing), pos+V(-x_units/2*spacing, y_units/2*spacing), x_units+1, Bolt, bolt_conf))
-		self.add(RepeatLine(pos+V(-x_units/2*spacing, (y_units/2-1)*spacing), pos+V(-x_units/2*spacing, (-y_units/2+1)*spacing), y_units-1, Bolt, bolt_conf))
+		self.add(RepeatLine(pos+V(-float(x_units)/2*spacing, -float(y_units)/2*spacing), pos+V(float(x_units)/2*spacing, -float(y_units)/2*spacing), x_units+1, Bolt, bolt_conf)).paths
+		self.add(RepeatLine(pos+V(float(x_units)/2*spacing, (-float(y_units)/2+1)*spacing), pos+V(float(x_units)/2*spacing, (float(y_units)/2-1)*spacing), y_units-1, Bolt, bolt_conf))
+		self.add(RepeatLine(pos+V(float(x_units)/2*spacing, float(y_units)/2*spacing), pos+V(-float(x_units)/2*spacing, float(y_units)/2*spacing), x_units+1, Bolt, bolt_conf))
+		self.add(RepeatLine(pos+V(-float(x_units)/2*spacing, (float(y_units)/2-1)*spacing), pos+V(-float(x_units)/2*spacing, (-float(y_units)/2+1)*spacing), y_units-1, Bolt, bolt_conf))
 		self.add_border(RoundedRect(pos, centred=True, width=x_units*spacing+15, height=y_units*spacing+15, side='out', rad=8))
 		self.add_bom('standoff'+str(depth),4, description=str(depth)+'mm standoff')
 		self.zoffset=depth+6
