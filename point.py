@@ -190,11 +190,11 @@ class Point(object):
 		self.angle0=math.atan2(a[1], a[0])
 #		self.angle2=(b1.angle(-b2)-90)*math.pi/180
 
-	def corner_side(self, side):
+	def corner_side(self, side, direction):
 		cross=(self.pos-self.lastorigin()).cross(self.nextorigin()-self.pos)[2]
 		if abs(cross)<0.0000001:
 			return 'external'
-		if cross<=0.0000001 and side=='left' or cross>=-0.00000001 and side=='right':
+		if (cross<=-0.0000001 and side=='left' or cross>=0.00000001 and side=='right') == (direction=='cw'):
 			corner='external'
 		else:
 			corner='internal'
@@ -299,7 +299,7 @@ class PSharp(Point):
 	def offsetSharp(self, side, distance, direction, sharp=True):
 		self.setangle()
 
-		if self.corner_side(side)=='external':# and side=='out' or corner=='internal' and side=='in':
+		if self.corner_side(side, direction)=='external':# and side=='out' or corner=='internal' and side=='in':
 			t = copy.copy(self)
 	#		t=POutcurve(self.pos, radius=distance, transform=self.transform)
            		if (self.angle==0 or self.angle==math.pi and self.dot<0) and self.last().point_type in ['sharp', 'clear', 'doubleclear'] and self.next().point_type in ['sharp', 'clear', 'doubleclear']:
@@ -488,7 +488,7 @@ class PIncurve(PSharp):
 		self._setup()
 		self.setangle()
 		t=copy.copy(self)
-		if self.corner_side(side)=='external':
+		if self.corner_side(side, direction)=='external':
 			t=self.offsetSharp( side, distance, direction)
 			t[0].radius+=distance
                         #t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, -distance/abs(math.cos(self.angle2)))
@@ -661,7 +661,7 @@ class POutcurve(Point):
 	def offset(self, side, distance, direction):
 		t=copy.copy(self)
 		self.setangle()
-		if self.corner_side(side)=='external':
+		if self.corner_side(side, direction)=='external':
 			t.radius += distance
 		elif(self.radius>=distance):
 			t.radius -= distance
