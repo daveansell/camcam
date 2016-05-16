@@ -577,13 +577,27 @@ class ArbitraryBox(Part):
 			else: 
 #				print str(self.tuple_to_vec(face['sides'][0]
 				face['x'] = (self.tuple_to_vec(face['sides'][0][1])- self.tuple_to_vec(face['sides'][0][0])).normalize()
-			face['y'] = face['x'].cross(face['normal']).normalize()
+                        if 'y' in face:
+				print "y IN FACE"
+				print face['x']
+				print face['y']
+				print face['good_direction']
+                                if abs(face['y'].dot(face['x'])) > 0.0000001 :
+                                        raise ValueError('face[y] in face '+str(f)+' not perpendicular to x')
+                                if abs(face['y'].dot(face['normal'])) > 0.0000001 :
+                                        raise ValueError('face[y] in face '+str(f)+' not in plane of the rest of the face')
+                        else:
+                                face['y'] = face['x'].cross(face['normal']).normalize()
+
+#			face['y'] = face['x'].cross(face['normal']).normalize()
 			# if we are cutting from the back flip x
 #			if 'isback' in face and face['isback']:
 #				face['y'] *=-1
-			if face['good_direction'] == -1:
-				 face['x'] = - face['x']
 
+#			if face['good_direction'] == -1:
+#				 face['x'] = - face['x']
+
+			print f+" x="+str(face['x'])+" y="+str(face['y'])
 
 			if 'origin' not in face:
 				face['origin'] = face['points'][0]
@@ -636,10 +650,18 @@ class ArbitraryBox(Part):
 			else:
 				p = Part(name = f, layer = face['layer'], zoffset=face['zoffset'])
 				self.get_border(p,  f, face, 'external')
+			if face['y'] == -face['x'].cross(face['normal']).normalize():
+#			if face['good_direction'] == -1:
+				print "******** ISBACK *********"
+				p.isback=True
+				print p
+				print p.isback
 			# DECIDE WHICH SISDE WE ARE CUttng FROM
 			# CHECK THE DIRECTION OF THR LOOP
-			self.align3d_face(p, f, face)
-			setattr(self, 'face_' + f, self.add(p))
+			t =  self.add(p)
+			setattr(self, 'face_' + f, t)
+#		def _pre_render(self):
+			self.align3d_face(t, f, face)
 		
 	def find_in_face(self,s,side):
 		face1 = self.faces[side[0][0]]
@@ -672,10 +694,16 @@ class ArbitraryBox(Part):
 	def align3d_face(self, p, f, face):
 		print f
 		print face['normal']
+		print p
+#		config = p.get_config()
+#		print config
 		z = face['normal']*face['good_direction'] *-1
 
 		x = face['x'] 
-		y = x.cross(z*-1)
+		if 'y' in face:
+			y=face['y']
+		else:
+			y = x.cross(z*-1)
 		print "x="+str(x)
 		print "y="+str(y)
 		print "z="+str(z)
@@ -689,10 +717,12 @@ class ArbitraryBox(Part):
 		xs = [x[0],x[1],x[2],0]
 		ys = [y[0],y[1],y[2],0]
 		qs = [0,0,0,1]
+#		print "p.zdir"+str( config['zdir'])
+		if hasattr(p, 'isback') and p.isback:
+			p.rotate3D([0, 180, 0])
+			p.translate3D([0,0,-face['thickness']])
 		p.matrix3D([xs,ys,zs,qs])
 		p.translate3D(face['origin'])
-		if 'isback' in face:
-			p.translate3D([0,0,-face['thickness']])
 
 	def tuple_to_vec(self, t):
 		return V(t[0], t[1], t[2])
@@ -712,7 +742,9 @@ class ArbitraryBox(Part):
 			cutside='left'
 		else:
 			cutside='right'
+		print "get_border "+f
          	for point in face['ppoints']:
+			print point
 			lastpoint = face['ppoints'][(p-1)%len(face['sides'])]
 			scount = (p)%len(face['sides'])
              		s = face['sides'][scount]
