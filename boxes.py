@@ -658,8 +658,10 @@ class ArbitraryBox(Part):
 				print p.isback
 			# DECIDE WHICH SISDE WE ARE CUttng FROM
 			# CHECK THE DIRECTION OF THR LOOP
-			self.align3d_face(p, f, face)
-			setattr(self, 'face_' + f, self.add(p))
+			t =  self.add(p)
+			setattr(self, 'face_' + f, t)
+#		def _pre_render(self):
+			self.align3d_face(t, f, face)
 		
 	def find_in_face(self,s,side):
 		face1 = self.faces[side[0][0]]
@@ -692,6 +694,9 @@ class ArbitraryBox(Part):
 	def align3d_face(self, p, f, face):
 		print f
 		print face['normal']
+		print p
+#		config = p.get_config()
+#		print config
 		z = face['normal']*face['good_direction'] *-1
 
 		x = face['x'] 
@@ -712,10 +717,12 @@ class ArbitraryBox(Part):
 		xs = [x[0],x[1],x[2],0]
 		ys = [y[0],y[1],y[2],0]
 		qs = [0,0,0,1]
+#		print "p.zdir"+str( config['zdir'])
+		if hasattr(p, 'isback') and p.isback:
+			p.rotate3D([0, 180, 0])
+			p.translate3D([0,0,-face['thickness']])
 		p.matrix3D([xs,ys,zs,qs])
 		p.translate3D(face['origin'])
-		if 'isback' in face:
-			p.translate3D([0,0,-face['thickness']])
 
 	def tuple_to_vec(self, t):
 		return V(t[0], t[1], t[2])
