@@ -38,7 +38,9 @@ def path_render3D(self, pconfig, border=False):
       	inherited = self.get_config()
 #               if('transformations' in config):
       	config=self.overwrite(config, inherited)
-	if 'zoffset' in config and  config['zoffset']:
+	if border==False and 'zoffset' in pconfig:
+                zoffset= pconfig['zoffset']
+	elif 'zoffset' in config and  config['zoffset']:
 		zoffset= config['zoffset']
 	else:
 		zoffset = 0
