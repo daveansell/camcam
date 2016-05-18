@@ -180,6 +180,7 @@ def plane_generate_part3D(self, thepart, pconfig):
 	config = thepart.overwrite(config,thepart.get_config())
 	if(thepart.border is not False and thepart.border is not None):
 		thepart.border3D = thepart.border.render3D(config, True)[0]
+#	print thepart.border3D
 	thepart.cutouts3D = []
 	for path in paths:
 		thepart.cutouts3D.extend(path.render3D(config))
@@ -189,6 +190,19 @@ def plane_make_part3D(self, thepart, pconfig):
 #	for cutout in thepart.cutouts3D:
 #		for c in cutout:
 #			thepart.border3D = thepart.border3D - c
+	subparts = []
+	for sp in thepart.parts:
+		if hasattr(sp, 'subpart') and sp.subpart:
+			self.make_part3D(sp, pconfig)
+			if hasattr(sp, 'border3D'):
+				subparts.append(sp.border3D)
+	if len(subparts):
+		if hasattr(thepart, 'border3D'):
+			thepart.border3D=solid.union()(thepart.border3D,*subparts)
+		else:
+			thepart.border3D=solid.union()(*subparts)
+	if not hasattr(thepart, 'border3D'):
+		return False
 	cutouts = [thepart.border3D]
 	for cutout in thepart.cutouts3D:
 		for c in cutout:
@@ -197,9 +211,8 @@ def plane_make_part3D(self, thepart, pconfig):
 	thepart.border3D = solid.difference()(*cutouts)
 	# 3D transformations can only be applied to parts, so we can just go up the tree
 	p = thepart
-	while(p and type(p) is not Plane):
-		print p
-		print p.transform
+	c=0
+	while(p and type(p) is not Plane and c==0):
 		if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and 'matrix3D' in p.transform:
 			thepart.border3D=solid.multmatrix(m=p.transform['matrix3D'])(thepart.border3D)
 
@@ -207,6 +220,7 @@ def plane_make_part3D(self, thepart, pconfig):
 			thepart.border3D=solid.rotate([p.transform['rotate3D'][0], p.transform['rotate3D'][1],p.transform['rotate3D'][2] ])(thepart.border3D)
 		if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and 'translate3D' in p.transform:
 			thepart.border3D=solid.translate([p.transform['translate3D'][0], p.transform['translate3D'][1],p.transform['translate3D'][2] ])(thepart.border3D)
+		c+=1
 		p=p.parent
 def plane_render_part3D(self, thepart, pconfig, filename=False):
 	self.make_part3D(thepart, pconfig)
@@ -216,7 +230,8 @@ def plane_render_part3D(self, thepart, pconfig, filename=False):
 		filename = thepart.name+'.scad'
 	else:
 		filename = filename +',scad'
-	solid.scad_render_to_file(thepart.border3D, filename, include_orig_code=False)
+	if hasattr(thepart, 'border3D'):
+		solid.scad_render_to_file(thepart.border3D, filename, include_orig_code=False)
 
 def plane_render_all3D(self,callmode,config):
      	"""Render all parts in the Plane"""
@@ -225,15 +240,18 @@ def plane_render_all3D(self,callmode,config):
 	config=copy.copy(self.modeconfig)
 	if(self.modeconfig['overview']==False):
 	     	for thepart in self.getParts(False):
-        	 	self.render_part3D(thepart,config)
+			if not (hasattr(thepart, 'subpart') and thepart.subpart):
+	        	 	self.render_part3D(thepart,config)
 	else:
 		scene = False
 		for thepart in self.getParts(True):
-			self.make_part3D(thepart, config)
-			if scene==False:
-				scene = solid.part()(thepart.border3D)
-			else:
-				scene += solid.part()(thepart.border3D)
+			if not (hasattr(thepart, 'subpart') and thepart.subpart):
+
+				self.make_part3D(thepart, config)
+				if scene==False:
+					scene = solid.part()(thepart.border3D)
+				else:
+					scene += solid.part()(thepart.border3D)
 		solid.scad_render_to_file(scene, 'Overview.scad', include_orig_code=False)
 
 Plane.generate_part3D = plane_generate_part3D# MethodType(plane_generate_part3D, Plane)
