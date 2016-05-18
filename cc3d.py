@@ -100,6 +100,24 @@ def path_render3D(self, pconfig, border=False):
 #		extruded = mirror([1,0,0])(extruded )
 	if 'colour' in config and config['colour']:
 		extruded = solid.color(self.scad_colour(config['colour']))(extruded)
+	print self.transform
+	if hasattr(self, 'transform') and self.transform is not None and self.transform is not False and 'matrix3D' in self.transform:
+		extruded=solid.multmatrix(m=self.transform['matrix3D'])(extruded)
+
+	if hasattr(self, 'transform') and self.transform is not None and self.transform is not False and 'rotate3D' in self.transform:
+		print "rotate3d path"
+		print extruded
+		print self.transform['rotate3D']
+		if type(self.transform['rotate3D'][0]) is list:
+			print self.transform['rotate3D'] 
+			extruded=solid.translate([-self.transform['rotate3D'][1][0], - self.transform['rotate3D'][1][1]])(extruded)
+			extruded=solid.rotate([self.transform['rotate3D'][0][0], self.transform['rotate3D'][0][1],self.transform['rotate3D'][0][2] ])(extruded)
+			extruded=solid.translate([self.transform['rotate3D'][1][0], self.transform['rotate3D'][1][1]])(extruded)
+		else:
+			extruded=solid.rotate([self.transform['rotate3D'][0], self.transform['rotate3D'][1],self.transform['rotate3D'][2] ])(extruded)
+		print extruded
+	if hasattr(self, 'transform') and self.transform is not None and self.transform is not False and 'translate3D' in self.transform:
+		extruded=solid.translate([self.transform['translate3D'][0], self.transform['translate3D'][1],self.transform['translate3D'][2] ])(extruded)
 	return [extruded]
 #def path_transform3D(self, pconfig):
 #	config=self.overwrite(config,pconfig)
@@ -141,19 +159,27 @@ def pathgroup_render3D(self, pconfig):
 	
 Pathgroup.render3D = pathgroup_render3D
 
+
+
 def part_translate3D(self, vec):
 	if self.transform is False or self.transform is None:
             	self.transform={}
       	self.transform['translate3D']=vec
 
 Part.translate3D = part_translate3D
+Path.translate3D = part_translate3D
+Pathgroup.translate3D = part_translate3D
 
-def part_rotate3D(self, vec):
+def part_rotate3D(self, vec, pos=False):
 	if self.transform is False or self.transform is None:
             	self.transform={}
-      	self.transform['rotate3D']=vec
-
+	if pos==False:
+	      	self.transform['rotate3D']=vec
+	else:
+		self.transform['rotate3D']=[pos, vec]
 Part.rotate3D = part_rotate3D
+Path.rotate3D = part_rotate3D
+Pathgroup.rotate3D = part_rotate3D
 
 def part_matrix3D(self, vec):
 	if self.transform is False or self.transform is None:
@@ -219,7 +245,12 @@ def plane_make_part3D(self, thepart, pconfig):
 			thepart.border3D=solid.multmatrix(m=p.transform['matrix3D'])(thepart.border3D)
 
 		if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and 'rotate3D' in p.transform:
-			thepart.border3D=solid.rotate([p.transform['rotate3D'][0], p.transform['rotate3D'][1],p.transform['rotate3D'][2] ])(thepart.border3D)
+			if type(thepart.transform['rotate3D'][0]) is list:
+				thepart.border3D=solid.translate(-thepart.transform['rotate3D'][0])(thepart.border3D)
+				thepart.border3D=solid.rotate([thepart.transform['rotate3D'][1][0], thepart.transform['rotate3D'][1][1],thepart.transform['rotate3D'][1][2] ])(thepart.border3D)
+				thepart.border3D=solid.translate(thepart.transform['rotate3D'][0])(thepart.border3D)
+			else:
+				thepart.border3D=solid.rotate([p.transform['rotate3D'][0], p.transform['rotate3D'][1],p.transform['rotate3D'][2] ])(thepart.border3D)
 		if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and 'translate3D' in p.transform:
 			thepart.border3D=solid.translate([p.transform['translate3D'][0], p.transform['translate3D'][1],p.transform['translate3D'][2] ])(thepart.border3D)
 		c+=1
