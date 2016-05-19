@@ -1357,6 +1357,33 @@ class RoundedArc(Path):
 		self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a1]}))
 		self.add_point(PArc(pos+V(0,rad), radius=w, direction='cw', transform={'rotate':[pos, a1]}))
 
+class ArcRect(Path):
+	def __init__(self, pos, rad, width, minorrad, angle,  **config):
+		self.init(config)
+		if 'startangle' in config:
+			startangle = config['startangle']
+		else:
+			startangle = 0
+		
+		self.closed=True
+		a1 = -float(angle)/2+startangle
+		a2 = float(angle)/2+startangle
+		w = float(width)/2
+		self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a1]}))
+		self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
+		self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a2]}))
+
+		self.add_point(POutcurve(pos+V(0,rad+w-minorrad), radius=minorrad-0.01, transform={'rotate':[pos, a2]}, direction='cw'))
+		self.add_point(POutcurve(pos+V(0,rad-w+minorrad), radius=minorrad-0.01, transform={'rotate':[pos, a2]}, direction='cw'))
+#		self.add_point(PArc(pos+V(0,rad), radius=w, direction='cw', transform={'rotate':[pos, a2]}))
+
+		self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a2]}))
+		self.add_point(PArc(pos+V(0,0), radius=rad-w, direction='ccw'))
+		self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a1]}))
+
+		self.add_point(POutcurve(pos+V(0,rad-w+minorrad), radius=minorrad-0.01, transform={'rotate':[pos, a1]}, direction='cw'))
+		self.add_point(POutcurve(pos+V(0,rad+w-minorrad), radius=minorrad-0.01, transform={'rotate':[pos, a1]}, direction='cw'))
+#		self.add_point(PArc(pos+V(0,rad), radius=w, direction='cw', transform={'rotate':[pos, a1]}))
 
 class CutFunction(list):
 	def __init__(self, start, end, func, **config):
