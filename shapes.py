@@ -707,7 +707,6 @@ class FourObjects(Part):
 			if 'tr' in config:
 				d=config['tr']-bl
 				points=[bl, bl+V(d[0], 0), bl+d, bl+V(0,d[1])]
-		print points
 		if ob.obType=='Part':
 			self.add(CopyObject(ob, points))
 		else:
@@ -1338,6 +1337,7 @@ class FingerJointBoxSide(Path):
 
 class RoundedArc(Path):
 	def __init__(self, pos, rad, width, angle,  **config):
+		""" An arc of length angle with width - width """
 		self.init(config)
 		if 'startangle' in config:
 			startangle = config['startangle']
@@ -1359,6 +1359,7 @@ class RoundedArc(Path):
 
 class ArcRect(Path):
 	def __init__(self, pos, rad, width, minorrad, angle,  **config):
+		""" A curved rounded rect with length angle around rad and a minorrad around the corners"""
 		self.init(config)
 		if 'startangle' in config:
 			startangle = config['startangle']
@@ -1384,6 +1385,36 @@ class ArcRect(Path):
 		self.add_point(POutcurve(pos+V(0,rad-w+minorrad), radius=minorrad-0.01, transform={'rotate':[pos, a1]}, direction='cw'))
 		self.add_point(POutcurve(pos+V(0,rad+w-minorrad), radius=minorrad-0.01, transform={'rotate':[pos, a1]}, direction='cw'))
 #		self.add_point(PArc(pos+V(0,rad), radius=w, direction='cw', transform={'rotate':[pos, a1]}))
+
+class RoundedCorner(Path):
+	def __init__(self, pos, dir1, len1, dir2, len2, endrad, **config):
+		assert type(dir1) is Vec
+		assert type(dir2) is Vec
+		if 'innerrad' in config and 'outerrad' in config:
+			width = config['outerrad'] - config['innerrad']
+		elif 'width' in config:
+			width = config['width']
+			if 'innerrad' in config:
+				outerrad = config['innerrad'] + width
+			elif 'outerrad' in config:
+				outerrad = config['outerrad']
+		else:
+			raise ValueError("Must have two of innerrad, outerrad and width defined")
+		if 'from_inside' in config and config['from_inside']:
+			pos += dir1*-width + dir2*-width
+			len1+=width
+			len2+=width
+		dir1 = dir1.normalize()
+		dir2 = dir2.normalize()
+		self.init(config)
+		self.closed=True
+		self.add_point(PIncurve(pos, radius=outerrad))
+		self.add_point(PIncurve(pos+ dir1*len1, radius=endrad))
+		self.add_point(PIncurve(pos+ dir1*len1 + dir2*width, radius=endrad))
+		self.add_point(PIncurve(pos+ dir1*width + dir2*width, radius=outerrad - width))
+		self.add_point(PIncurve(pos+ dir2*len1 + dir1*width, radius=endrad))
+		self.add_point(PIncurve(pos+ dir2*len1, radius=endrad))
+		
 
 class CutFunction(list):
 	def __init__(self, start, end, func, **config):
