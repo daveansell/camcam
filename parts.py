@@ -499,6 +499,44 @@ class CableTie(Pathgroup):
 		self.add(RoundedRect(V(0,cw/2), centred=True, width=tie_width, height=3.4, rad=3.3/2))
 		self.add(RoundedRect(V(0,-cw/2), centred=True, width=tie_width, height=3.4, rad=3.3/2))
 
+class CableClipR(Part):
+	def __init__(self, pos, clip_type, direction, layer,  **config):
+		"""Add an R type cable clip. centred on the cable, mode set to inset will bury the cable"""
+		self.init(config)
+		self.translate(pos)
+		data = {
+			'5mm':{'width':9.5, 'length':19.0, 'clamp_depth':7.5, 'body_depth':3, 'body_length':8, 'hole_from_end':4.5, 'cable_from_end':4, 'bolt_size':'M4'},
+			'6mm':{'width':9.5, 'length':20.0, 'clamp_depth':9.2, 'body_depth':3, 'body_length':9.8, 'hole_from_end':4.5, 'cable_from_end':4.9, 'bolt_size':'M4'},
+			'10mm':{'width':9.5, 'length':25.0, 'clamp_depth':12.5, 'body_depth':3, 'body_length':12.8, 'hole_from_end':6, 'cable_from_end':6.4, 'bolt_size':'M4'},
+		}
+		assert clip_type in data
+		direction = direction.normalize()
+		d = data[clip_type]
+		if 'mode' in config:
+			mode = config['mode']
+		else:
+			mode = 'hole'
+		if 'thread_depth' in config:
+			thread_depth = config['thread_depth']
+		else:
+			thread_depth = False
+		if 'clearance_layers' in config:
+			clearance_layers=config['clearance_layers']
+		else:
+			clearance_layers = []
+		rect_centre = V(0, -d['length']/2 + d['cable_from_end'])
+		if mode=='hole_thread' or mode =='inset' or mode=='flat':
+			self.add(Bolt(rect_centre + V(0, -d['length']/2 + d['hole_from_end']), d['bolt_size'], thread_layer=layer, insert_layer=[], clearance_layers=clearance_layers, thread_depth=thread_depth) )
+		if mode=='hole_thread':
+			self.add(Bolt(rect_centre +V(0,-d['length']/2 + d['hole_from_end'] + d['cable_from_end']), d['bolt_size'],  insert_layer=thread, clearance_layers=clearance_layers, thread_depth=thread_depth)) 
+		a = math.atan2(direction[1], direction[0])/math.pi*180
+		self.rotate(V(0,0), -a-90)
+		if mode=='inset':
+			self.add(FilledRect(V(0,0), width = d['width'], height = d['body_length'], z1=-d['body_depth'], centred=True, side='in'), layer)
+		if mode=='flat':
+			self.add(FilledRect(V(0,0), width = d['width'], height = d['body_length'], z1=-d['clamp_depth'], centred=True, side='in'), layer)
+			self.add(FilledRect(rect_centre, width = d['width'], height = d['length'], z1=-d['body_depth'], centred=True, side='in'), layer)
+
 class LedHolder(Pathgroup):
 	def __init__(self, pos, size, holder_type, **config):
 		self.init(config)
