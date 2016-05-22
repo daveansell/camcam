@@ -792,7 +792,7 @@ class Path(object):
                                 thickness = pconfig['thickness']
 
 			if 'z_overshoot' in config:
-				config['z1'] = thickness - config['z_overshoot']
+				config['z1'] = - thickness - config['z_overshoot']
 			else:
 				config['z1'] = - thickness
 		return config
