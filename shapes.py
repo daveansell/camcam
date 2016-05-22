@@ -404,6 +404,42 @@ class FilledCircle(Pathgroup):
 		step=r/steps
 		for i in range(0,int(steps)+1):
 			self.add(Circle(self.pos, self.rad-(steps-i)*step, side='in'))
+class FilledRect(Pathgroup):
+
+        def __init__(self, bl,  **config):
+                self.init(config)
+                if 'centred' in config and config['centred']:
+			self.width = float(config['width'])
+			self.height = float(config['height'])
+			self.pos=bl
+		else:
+			d = bl-tr
+			self.width = float(abs(bl[0]-tr[0]))
+			self.height = float(abs(bl[1]-tr[1]))
+                	self.pos=(bl+tr)/2
+		self.maxdist = min(self.width, self.height)/2
+		if 'rad' in config:
+			self.rad=config['rad']
+		else:
+			self.rad=0
+#               sides=int(max(8, rad))
+
+#               self.add(Polygon(pos, rad, sides, partial_fill=rad-0.5, fill_direction='in', side='in'))
+                self.rect=self.add(RoundedRect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in'))
+        def __render__(self,config):
+                c=self.rect.generate_config(config)
+                self.paths=[]
+                d=self.maxdist-c['cutterrad']
+                steps=math.ceil(d/c['cutterrad']/1.2)
+                step=self.maxdist/steps
+                for i in range(0,int(steps)):
+			rad=self.rad-step*i
+			if rad<0:
+				rad=0
+			diff = step*i
+			self.add(RoundedRect(self.pos, rad=rad, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in'))
+
+
 class Chamfer(Pathgroup):
 	def __init__(self, path, chamfer_side, **config):
 		if 'chamfer_depth' not in config:
