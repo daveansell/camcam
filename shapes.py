@@ -265,8 +265,8 @@ class Circle(Path):
 		if rad==0:
 			raise ValueError("circle of zero radius")
 		else:
-#			if rad<3.17/2:
-#				self.cutter='2mm_endmill'	
+			if rad<3.17/2:
+				self.cutter='2mm_endmill'	
 			self.closed=True
 			self.add_point(pos,'circle',rad)
 			self.comment("Circle")
@@ -859,8 +859,10 @@ class ButtJoint(list):
 			 extra=thickness-depth
 		elif (startmode == 'on') and (joint_type=='concave') :
                          extra=0
+		self.append(PSharp(start))
 		self.append(PSharp(start+extra*perp))
 		self.append(PSharp(end+extra*perp))
+		self.append(PSharp(end))
 
 class ButtJointMid(Pathgroup):
 	def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode, **config):
