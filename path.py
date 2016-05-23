@@ -792,7 +792,7 @@ class Path(object):
                                 thickness = pconfig['thickness']
 
 			if 'z_overshoot' in config:
-				config['z1'] = thickness - config['z_overshoot']
+				config['z1'] = - thickness - config['z_overshoot']
 			else:
 				config['z1'] = - thickness
 		return config
@@ -1764,7 +1764,7 @@ class Part(object):
 			if v !='transform' and v !='transformations':
                         	if hasattr(self,v) and getattr(self,v) is not None and getattr(self,v) is not False:
 					config[v] = getattr(self,v)
-				elif(v in pconfig and pconfig[v] is not None and pconfig[v] is not False):
+				elif pconfig is not None and pconfig is not False and v in pconfig and pconfig[v] is not None and pconfig[v] is not False:
 					config[v] = pconfig[v]
 				else:
 					config[v] = None
@@ -1808,11 +1808,18 @@ class Part(object):
 
 	# is this a part we can render or just a multilayer pathgroup	
 	def renderable(self):
-		if (not hasattr(self, 'border') or self.border is False or self.layer is False or self.border is None) and not (hasattr(self,'ignore_border') and not (self.ignore_border==True) and (hasattr(self,'subpart') and self.subpart==True and self.layer is False)):
-		#if (not hasattr(self, 'border') or self.border is False or self.layer is False or self.border is None) or not (hasattr(self,'ignore_border') and self.ignore_border!=True):
-			return False
-		else:
+#		if (not hasattr(self, 'border') or self.border is False or self.layer is False or self.border is None) and not (hasattr(self,'ignore_border') and not (self.ignore_border==True) and (hasattr(self,'subpart') and self.subpart==True and self.layer is False)):
+#			return False
+#		else:
+#			return True
+		if  hasattr(self, 'border') and self.border is not False and self.layer is not False and self.border is not None:
 			return True
+		if hasattr(self,'ignore_border') and self.ignore_border==True and self.layer is not False:
+			return True
+		if hasattr(self,'subpart') and self.subpart==True and self.layer is False:
+			return False
+		return False
+ 
 
 	def getParts(self, overview=True):
 		ret=[]

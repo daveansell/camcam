@@ -404,6 +404,42 @@ class FilledCircle(Pathgroup):
 		step=r/steps
 		for i in range(0,int(steps)+1):
 			self.add(Circle(self.pos, self.rad-(steps-i)*step, side='in'))
+class FilledRect(Pathgroup):
+
+        def __init__(self, bl,  **config):
+                self.init(config)
+                if 'centred' in config and config['centred']:
+			self.width = float(config['width'])
+			self.height = float(config['height'])
+			self.pos=bl
+		else:
+			d = bl-tr
+			self.width = float(abs(bl[0]-tr[0]))
+			self.height = float(abs(bl[1]-tr[1]))
+                	self.pos=(bl+tr)/2
+		self.maxdist = min(self.width, self.height)/2
+		if 'rad' in config:
+			self.rad=config['rad']
+		else:
+			self.rad=0
+#               sides=int(max(8, rad))
+
+#               self.add(Polygon(pos, rad, sides, partial_fill=rad-0.5, fill_direction='in', side='in'))
+                self.rect=self.add(RoundedRect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in'))
+        def __render__(self,config):
+                c=self.rect.generate_config(config)
+                self.paths=[]
+                d=self.maxdist-c['cutterrad']
+                steps=math.ceil(d/c['cutterrad']/1.2)
+                step=self.maxdist/steps
+                for i in range(0,int(steps)):
+			rad=self.rad-step*i
+			if rad<0:
+				rad=0
+			diff = step*i
+			self.add(RoundedRect(self.pos, rad=rad, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in'))
+
+
 class Chamfer(Pathgroup):
 	def __init__(self, path, chamfer_side, **config):
 		if 'chamfer_depth' not in config:
@@ -707,7 +743,6 @@ class FourObjects(Part):
 			if 'tr' in config:
 				d=config['tr']-bl
 				points=[bl, bl+V(d[0], 0), bl+d, bl+V(0,d[1])]
-		print points
 		if ob.obType=='Part':
 			self.add(CopyObject(ob, points))
 		else:
@@ -1340,6 +1375,7 @@ class FingerJointBoxSide(Path):
 
 class RoundedArc(Path):
 	def __init__(self, pos, rad, width, angle,  **config):
+		""" An arc of length angle with width - width """
 		self.init(config)
 		if 'startangle' in config:
 			startangle = config['startangle']
@@ -1359,6 +1395,64 @@ class RoundedArc(Path):
 		self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a1]}))
 		self.add_point(PArc(pos+V(0,rad), radius=w, direction='cw', transform={'rotate':[pos, a1]}))
 
+class ArcRect(Path):
+	def __init__(self, pos, rad, width, minorrad, angle,  **config):
+		""" A curved rounded rect with length angle around rad and a minorrad around the corners"""
+		self.init(config)
+		if 'startangle' in config:
+			startangle = config['startangle']
+		else:
+			startangle = 0
+		
+		self.closed=True
+		a1 = -float(angle)/2+startangle
+		a2 = float(angle)/2+startangle
+		w = float(width)/2
+		self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a1]}))
+		self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
+		self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a2]}))
+
+		self.add_point(POutcurve(pos+V(0,rad+w-minorrad), radius=minorrad-0.01, transform={'rotate':[pos, a2]}, direction='cw'))
+		self.add_point(POutcurve(pos+V(0,rad-w+minorrad), radius=minorrad-0.01, transform={'rotate':[pos, a2]}, direction='cw'))
+#		self.add_point(PArc(pos+V(0,rad), radius=w, direction='cw', transform={'rotate':[pos, a2]}))
+
+		self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a2]}))
+		self.add_point(PArc(pos+V(0,0), radius=rad-w, direction='ccw'))
+		self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a1]}))
+
+		self.add_point(POutcurve(pos+V(0,rad-w+minorrad), radius=minorrad-0.01, transform={'rotate':[pos, a1]}, direction='cw'))
+		self.add_point(POutcurve(pos+V(0,rad+w-minorrad), radius=minorrad-0.01, transform={'rotate':[pos, a1]}, direction='cw'))
+#		self.add_point(PArc(pos+V(0,rad), radius=w, direction='cw', transform={'rotate':[pos, a1]}))
+
+class RoundedCorner(Path):
+	def __init__(self, pos, dir1, len1, dir2, len2, endrad, **config):
+		assert type(dir1) is Vec
+		assert type(dir2) is Vec
+		if 'innerrad' in config and 'outerrad' in config:
+			width = config['outerrad'] - config['innerrad']
+		elif 'width' in config:
+			width = config['width']
+			if 'innerrad' in config:
+				outerrad = config['innerrad'] + width
+			elif 'outerrad' in config:
+				outerrad = config['outerrad']
+		else:
+			raise ValueError("Must have two of innerrad, outerrad and width defined")
+		if 'from_inside' in config and config['from_inside']:
+			pos += dir1*-width + dir2*-width
+			len1+=width
+			len2+=width
+		dir1 = dir1.normalize()
+		dir2 = dir2.normalize()
+		self.init(config)
+		self.closed=True
+		self.add_point(PIncurve(pos, radius=outerrad))
+		self.add_point(PIncurve(pos+ dir1*len1, radius=endrad))
+		self.add_point(PIncurve(pos+ dir1*len1 + dir2*width, radius=endrad))
+		self.add_point(PIncurve(pos+ dir1*width + dir2*width, radius=outerrad - width))
+		self.add_point(PIncurve(pos+ dir2*len1 + dir1*width, radius=endrad))
+		self.add_point(PIncurve(pos+ dir2*len1, radius=endrad))
+		
 
 class CutFunction(list):
 	def __init__(self, start, end, func, **config):
