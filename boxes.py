@@ -360,7 +360,7 @@ class ThermalTurret(Turret):
  #               self.window_holder.add(Hole(V(0,0), rad= window_rad-1))
                 self.add_bom(BOM_rod('rod', 'black pvc', 'round', rod_rad*2, 58, 1, 'rod for camera, should have a bite takenout of the middle of one side of radius the tube, and depth '+str(minimum_bite_depth)+'mm'))
 
-	
+
 class PlainBox(Part):
 	"""pos       - position
 	   name      - part base name - the subparts will be called name_back etc
@@ -502,6 +502,13 @@ class ArbitraryBox(Part):
 	"""
 	def __init__(self, faces, tab_length, fudge, **config):
 		self.init(config)
+		self.make_box(faces, tab_length, fudge, **config)
+	def make_box(self, faces, tab_length, fudge, **config):
+		if 'pos' in config:
+			self.pos = config['pos']
+		else:
+			self.pos = V(0,0)
+		self.translate(self.pos)
 		self.tab_length = tab_length
 		self.fudge = fudge
 		print "self.fudge-"+str(fudge)
@@ -692,6 +699,7 @@ class ArbitraryBox(Part):
 
 		
 	def align3d_face(self, p, f, face):
+		print "align3d_face"
 		print f
 		print face['normal']
 		print p
@@ -707,6 +715,8 @@ class ArbitraryBox(Part):
 		print "x="+str(x)
 		print "y="+str(y)
 		print "z="+str(z)
+		print face['good_direction']
+		print face['wood_direction']	
 #		if 'isback' in face:
 	#		z *= -1
 	#		y *= -1
@@ -718,10 +728,19 @@ class ArbitraryBox(Part):
 		ys = [y[0],y[1],y[2],0]
 		qs = [0,0,0,1]
 #		print "p.zdir"+str( config['zdir'])
-		if hasattr(p, 'isback') and p.isback:
-			p.rotate3D([0, 180, 0])
+		print (hasattr(p, 'isback') and p.isback)
+		print (face['good_direction']==1)
+		if face['good_direction']==1:
+			print "FLIP"+str(-face['thickness'])
+			p.isback=True
+			p.border.translate3D([0,0,face['thickness']])
+			p.rotate3D([0, 180, 0], self.pos)
+		elif (hasattr(p, 'isback') and p.isback is True):
+			print "ISBACK"
+			p.rotate3D([0, 180, 0],self.pos)
 			p.translate3D([0,0,-face['thickness']])
-		p.matrix3D([xs,ys,zs,qs])
+		print [xs,ys,zs,qs]
+		p.matrix3D([xs,ys,zs,qs],self.pos)
 		p.translate3D(face['origin'])
 
 	def tuple_to_vec(self, t):
@@ -1178,9 +1197,6 @@ class ArbitraryBox(Part):
 		elif t<0:
 			sideSign = -1
 		else:
-			print  str(face1['points'][ (side[0][1]-1)%len(face1['points']) ])+" -> "+str( face1['points'][side[0][1]])
-			print "svec1="+str(svec1)+" svec2="+str(svec2)
-			print " f1 normal "+str(face1['normal'])+" avSvec="+str(avSvec)+" f2 normal="+str(face2['normal'])
 			raise ValueError( " Two adjoinig faces are parallel "+side[0][0]+" and "+ side[1][0]+" "+side[1][1]+" "+str(face1['normal'])+" == "+str(face2['normal']))
 		side[0].append(sideSign)
 		side[0].append( avSvec.dot ( face1['normal'] ) * cutsign)
@@ -1193,3 +1209,108 @@ class ArbitraryBox(Part):
 		side[1].append( angle )
 		side[1].append(altside)
 		side[1].append('convex')
+
+
+class PlainBox2(ArbitraryBox):
+	def __init__(self, pos, name, layers, width, height, depth, thickness, tab_length, **config):
+		self.init(config)
+		all_layers = ['top', 'bottom', 'left', 'right', 'front', 'back']
+		self.new_layers = []
+		self.thickness = thickness
+		if 'material' in config:
+			self.material = config['material']
+		else:
+			self.material = 'plywood'
+		if 'fudge' in config:
+			fudge = config['fudge']
+		else:
+			fudge = 0
+		for l in all_layers:
+			if l not in layers:
+				self.new_layers.append(name+'_'+l)
+				layers[l]=name+'_'+l
+		n = name+"_"
+		faces={
+			'front':{
+				'points':[V(-width/2, -height/2, depth), V(width/2, -height/2, depth), V( width/2, height/2, depth), V(-width/2, height/2, depth)],
+				'face2num':{'left':0, 'bottom':1,'right':2, 'top':3, },
+				'x':V(1,0,0),
+				'origin':V(0,0,depth),
+				'layer':layers['front'],
+				'thickness':thickness,
+				'internal':False,
+				'corners':{0:'off', 1:'off',2:'off', 3:'off'},
+				'good_direction':V(0,0,1),
+				'wood_direction':V(0,0,1),
+			},
+			'back':{
+				'points':[V(-width/2, -height/2, 0), V(width/2, -height/2, 0), V( width/2, height/2, 0), V(-width/2, height/2, 0)],
+				'face2num':{'left':0, 'bottom':1,'right':2, 'top':3, },
+				'x':V(1,0,0),
+				'origin':V(0,0,0),
+				'layer':layers['back'],
+				'thickness':thickness,
+				'internal':False,
+				'corners':{0:'off', 1:'off',2:'off', 3:'off'},
+			},
+			'bottom':{
+				'points':[V(-width/2, -height/2, 0), V(-width/2, -height/2, depth), V( width/2, -height/2, depth), V(width/2, -height/2, 0)],
+				'face2num':{'left':0, 'front':1,'right':2, 'back':3, },
+				'x':V(1,0,0),
+				'origin':V(0,-height/2,0),
+				'layer':layers['bottom'],
+				'thickness':thickness,
+				'internal':False,
+			},
+			'top':{
+				'points':[V(-width/2, height/2, 0), V(-width/2, height/2, depth), V( width/2, height/2, depth), V(width/2, height/2, 0)],
+				'face2num':{'left':0, 'front':1,'right':2, 'back':3, },
+				'x':V(1,0,0),
+				'origin':V(0,height/2,0),
+				'layer':layers['top'],
+				'thickness':thickness,
+				'internal':False,
+			},
+			'left':{
+				'points':[V(-width/2, -height/2, 0), V(-width/2, -height/2, depth), V( -width/2, height/2, depth), V(-width/2, height/2, 0)],
+				'face2num':{'bottom':0, 'front':1,'top':2, 'back':3, },
+				'x':V(0,1,0),
+				'origin':V(-width/2,0,0),
+				'layer':layers['left'],
+				'thickness':thickness,
+				'internal':False,
+				'corners':{0:'on', 1:'on',2:'on', 3:'on'},
+			},
+			'right':{
+				'points':[V( width/2, -height/2, 0), V( width/2, -height/2, depth), V(  width/2, height/2, depth), V(width/2, height/2, 0)],
+				'face2num':{'bottom':0, 'front':1,'top':2, 'back':3, },
+				'x':V(0,1,0),
+				'origin':V( width/2,0,0),
+				'layer':layers['right'],
+				'thickness':thickness,
+				'internal':False,
+				'corners':{0:'on', 1:'on',2:'on', 3:'on'},
+			},
+		}
+		if 'cornermodes' in config:
+			assert type(config['cornermodes']) is dict
+			for m in config['cornermodes']:
+				if 'corners' not in faces[m[0]]:
+					faces[m[0]]['corners']={}
+				if 'corners' not in faces[m[1]]:
+					faces[m[1]]['corners']={}
+				faces[m[0]]['corners'][faces[m[0]]['face2num'][m[1]]] = config['cornermodes'][m]
+				faces[m[1]]['corners'][faces[m[1]]['face2num'][m[0]]] = self.other_side_mode(config['cornermodes'][m])
+                else:
+                        cornermodes = {}
+                if 'facemodes' in config:
+                        facemodes = config['facemodes']
+                else:
+                        facemodes = {}
+		config['pos'] = pos
+		self.make_box(faces, tab_length, fudge, **config)
+
+	def _pre_render(self):
+		for l in self.new_layers:
+			self.get_plane().add_layer(l, self.material, self.thickness)
+
