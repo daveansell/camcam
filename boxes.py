@@ -511,7 +511,6 @@ class ArbitraryBox(Part):
 		self.translate(self.pos)
 		self.tab_length = tab_length
 		self.fudge = fudge
-		print "self.fudge-"+str(fudge)
 		self.faces = faces
 		self.auto_properties = ['tab_length', 'joint_mode', 'butt_depression', 'butt_holerad', 'butt_numholes', 'hole_spacing']
 		for prop in self.auto_properties:
@@ -585,10 +584,6 @@ class ArbitraryBox(Part):
 #				print str(self.tuple_to_vec(face['sides'][0]
 				face['x'] = (self.tuple_to_vec(face['sides'][0][1])- self.tuple_to_vec(face['sides'][0][0])).normalize()
                         if 'y' in face:
-				print "y IN FACE"
-				print face['x']
-				print face['y']
-				print face['good_direction']
                                 if abs(face['y'].dot(face['x'])) > 0.0000001 :
                                         raise ValueError('face[y] in face '+str(f)+' not perpendicular to x')
                                 if abs(face['y'].dot(face['normal'])) > 0.0000001 :
@@ -604,7 +599,6 @@ class ArbitraryBox(Part):
 #			if face['good_direction'] == -1:
 #				 face['x'] = - face['x']
 
-			print f+" x="+str(face['x'])+" y="+str(face['y'])
 
 			if 'origin' not in face:
 				face['origin'] = face['points'][0]
@@ -659,10 +653,6 @@ class ArbitraryBox(Part):
 				self.get_border(p,  f, face, 'external')
 			if face['y'] == -face['x'].cross(face['normal']).normalize():
 #			if face['good_direction'] == -1:
-				print "******** ISBACK *********"
-				p.isback=True
-				print p
-				print p.isback
 			# DECIDE WHICH SISDE WE ARE CUttng FROM
 			# CHECK THE DIRECTION OF THR LOOP
 			t =  self.add(p)
@@ -699,12 +689,7 @@ class ArbitraryBox(Part):
 
 		
 	def align3d_face(self, p, f, face):
-		print "align3d_face"
-		print f
-		print face['normal']
-		print p
 #		config = p.get_config()
-#		print config
 		z = face['normal']*face['good_direction'] *-1
 
 		x = face['x'] 
@@ -712,11 +697,6 @@ class ArbitraryBox(Part):
 			y=face['y']
 		else:
 			y = x.cross(z*-1)
-		print "x="+str(x)
-		print "y="+str(y)
-		print "z="+str(z)
-		print face['good_direction']
-		print face['wood_direction']	
 #		if 'isback' in face:
 	#		z *= -1
 	#		y *= -1
@@ -728,18 +708,13 @@ class ArbitraryBox(Part):
 		ys = [y[0],y[1],y[2],0]
 		qs = [0,0,0,1]
 #		print "p.zdir"+str( config['zdir'])
-		print (hasattr(p, 'isback') and p.isback)
-		print (face['good_direction']==1)
 		if face['good_direction']==1:
-			print "FLIP"+str(-face['thickness'])
 			p.isback=True
 			p.border.translate3D([0,0,face['thickness']])
 			p.rotate3D([0, 180, 0], self.pos)
 		elif (hasattr(p, 'isback') and p.isback is True):
-			print "ISBACK"
 			p.rotate3D([0, 180, 0],self.pos)
 			p.translate3D([0,0,-face['thickness']])
-		print [xs,ys,zs,qs]
 		p.matrix3D([xs,ys,zs,qs],self.pos)
 		p.translate3D(face['origin'])
 
@@ -1273,7 +1248,7 @@ class PlainBox2(ArbitraryBox):
 			},
 			'left':{
 				'points':[V(-width/2, -height/2, 0), V(-width/2, -height/2, depth), V( -width/2, height/2, depth), V(-width/2, height/2, 0)],
-				'face2num':{'bottom':0, 'front':1,'top':2, 'back':3, },
+				'face2num':{'bottom':3, 'front':0,'top':1, 'back':2, },
 				'x':V(0,1,0),
 				'origin':V(-width/2,0,0),
 				'layer':layers['left'],
@@ -1283,7 +1258,7 @@ class PlainBox2(ArbitraryBox):
 			},
 			'right':{
 				'points':[V( width/2, -height/2, 0), V( width/2, -height/2, depth), V(  width/2, height/2, depth), V(width/2, height/2, 0)],
-				'face2num':{'bottom':0, 'front':1,'top':2, 'back':3, },
+				'face2num':{'bottom':3, 'front':0,'top':1, 'back':2, },
 				'x':V(0,1,0),
 				'origin':V( width/2,0,0),
 				'layer':layers['right'],
@@ -1299,6 +1274,12 @@ class PlainBox2(ArbitraryBox):
 					faces[m[0]]['corners']={}
 				if 'corners' not in faces[m[1]]:
 					faces[m[1]]['corners']={}
+				print m[0]
+				print m[1]
+				print faces[m[0]]['face2num'][m[1]]
+				print faces[m[1]]['face2num'][m[0]]
+				print config['cornermodes'][m]
+				print self.other_side_mode(config['cornermodes'][m])
 				faces[m[0]]['corners'][faces[m[0]]['face2num'][m[1]]] = config['cornermodes'][m]
 				faces[m[1]]['corners'][faces[m[1]]['face2num'][m[0]]] = self.other_side_mode(config['cornermodes'][m])
                 else:
