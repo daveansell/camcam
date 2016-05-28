@@ -1304,7 +1304,51 @@ class AngleBracket(Part):
 				recess_depth = False
 			self.add(LineObjects(V(0, -top_thickness - d['hole_from_inside']+fe), V(0, -top_thickness - d['hole_from_inside'] - d['hole_spacing'] * (d['num_holes']-1)+fe), 0,  d['num_holes'], Bolt(V(0,0), bolt, clearance_layers = clearance_layers, insert_layer=[])))
 			self.add(Rect(V(-d['width']/2-0.5, 0), tr = V(d['width']/2+0.5, -d['outer_length']+fe), partial_fill = d['width']/2-1, z1= recess_depth, side='in'), recess_layers)
+	
+class PipeClamp(Part):
+	def __init__(self,pos, clamp_type, **config):
+                self.init(config)
+                self.translate(pos)
+                data = {
+			'stauff763.5PP':{'D1':63.5, 'L1':121, 'L2':94, 'H':93, 'S':0.8, 'W':30, 'bolt':'M6'}, 
+			'stauff650.8PP':{'D1':50.8, 'L1':86, 'L2':66, 'H':66, 'S':0.8, 'W':30, 'bolt':'M6'}, 
+			'stauff538PP':{'D1':38, 'L1':71, 'L2':52, 'H':58, 'S':0.8, 'W':30, 'bolt':'M6'}, 
+			'stauff325PP':{'D1':25, 'L1':50, 'L2':33, 'H':36, 'S':0.6, 'W':30, 'bolt':'M6'}, 
+			'stauff319PP':{'D1':19, 'L1':50, 'L2':33, 'H':36, 'S':0.6, 'W':30, 'bolt':'M6'}, 
+			'stauff216PP':{'D1':16, 'L1':42, 'L2':26, 'H':33, 'S':0.6, 'W':30, 'bolt':'M6'}, 
+			'stauff212.7PP':{'D1':12.7, 'L1':42, 'L2':26, 'H':33, 'S':0.6, 'W':30, 'bolt':'M6'}, 
+			'stauff109.5APP':{'D1':9.5, 'L1':37, 'L2':20, 'H':27, 'S':0.4, 'W':30, 'bolt':'M6'}, 
+		}
+		assert clamp_type in data
+		if 'insert_layer' in config:
+			insert_layer = config['insert_layer']
+		else:
+			insert_layer = []
+		if 'thread_layer' in config:
+			thread_layer = config['thread_layer']
+		else:
+			thread_layer = []
+		if 'clearance_layers' in config:
+			clearance_layers = config['clearance_layers']
+		else:
+			clearance_layers = []
+		head_layer = '_pipeclamp'
+
+		d = data[clamp_type]
+		self.add_border(RoundedRect(V(0,0), centred=True, width=d['L1'], height=d['W'], rad=d['W']/2))
+		self.thickness = d['H']
+		self.zoffset = d['H']
+		self.layer = '_pipeclamp'
+		self.name = '_pipeclamp_'+clamp_type
+		hole=self.add(Circle(V(0,0), rad=d['D1']/2, z0=d['W'], z1=-d['W']))
+		hole.rotate3D(V(0,0,0), [90,0,0]) 
+		hole.translate3D(V(0,0,-d['H']/2))
+		self.add(Bolt(V(d['L2']/2,0), d['bolt'], clearance_layers=clearance_layers, head_layer=head_layer, insert_layer=insert_layer, thread_layer=thread_layer))
+		self.add(Bolt(V(-d['L2']/2,0), d['bolt'], clearance_layers=clearance_layers, head_layer=head_layer, insert_layer=insert_layer, thread_layer=thread_layer))
+        def _pre_render(self):
+                self.get_plane().add_layer('_pipeclamp', 'polyethene', 6, colour='#80ff80')
 		
+	
 class ScreenHolderFixed(Part):
         def __init__(self,pos, plane, name, **config):
                 self.init(config)
