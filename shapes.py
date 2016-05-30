@@ -1411,18 +1411,19 @@ class ArcRect(Path):
 		self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a1]}))
 		self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
 		self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a2]}))
-
-		self.add_point(POutcurve(pos+V(0,rad+w-minorrad), radius=minorrad-0.01, transform={'rotate':[pos, a2]}, direction='cw'))
-		self.add_point(POutcurve(pos+V(0,rad-w+minorrad), radius=minorrad-0.01, transform={'rotate':[pos, a2]}, direction='cw'))
-#		self.add_point(PArc(pos+V(0,rad), radius=w, direction='cw', transform={'rotate':[pos, a2]}))
+		self.add_point(PIncurve(pos+V(minorrad, rad+w), radius=minorrad, transform={'rotate':[pos, a2]}))
+		self.add_point(PSharp(pos+V(minorrad, rad+w-minorrad), transform={'rotate':[pos, a2]}))
+		self.add_point(PSharp(pos+V(minorrad, rad-w+minorrad), transform={'rotate':[pos, a2]}))
+		self.add_point(PIncurve(pos+V(minorrad, rad-w), radius=minorrad, transform={'rotate':[pos, a2]}))
 
 		self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a2]}))
 		self.add_point(PArc(pos+V(0,0), radius=rad-w, direction='ccw'))
 		self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a1]}))
+		self.add_point(PIncurve(pos+V(-minorrad,rad-w), radius=minorrad, transform={'rotate':[pos, a1]}))
+		self.add_point(PSharp(pos+V(-minorrad, rad-w+minorrad), transform={'rotate':[pos, a1]}))
+		self.add_point(PIncurve(pos+V(-minorrad, rad+w), radius=minorrad, transform={'rotate':[pos, a1]}))
+		self.add_point(PSharp(pos+V(0, rad+w), transform={'rotate':[pos, a1]}))
 
-		self.add_point(POutcurve(pos+V(0,rad-w+minorrad), radius=minorrad-0.01, transform={'rotate':[pos, a1]}, direction='cw'))
-		self.add_point(POutcurve(pos+V(0,rad+w-minorrad), radius=minorrad-0.01, transform={'rotate':[pos, a1]}, direction='cw'))
-#		self.add_point(PArc(pos+V(0,rad), radius=w, direction='cw', transform={'rotate':[pos, a1]}))
 
 class RoundedCorner(Path):
 	def __init__(self, pos, dir1, len1, dir2, len2, endrad, **config):
