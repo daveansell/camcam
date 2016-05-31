@@ -532,10 +532,10 @@ class CableClipR(Part):
 		a = math.atan2(direction[1], direction[0])/math.pi*180
 		self.rotate(V(0,0), -a-90)
 		if mode=='inset':
-			self.add(FilledRect(V(0,0), width = d['width'], height = d['body_length'], z1=-d['body_depth'], centred=True, side='in'), layer)
+			self.add(FilledRect(V(0,0), width = d['width']+1, height = d['body_length']+1, z1=-d['body_depth'], centred=True, side='in'), layer)
 		if mode=='flat':
-			self.add(FilledRect(V(0,0), width = d['width'], height = d['body_length'], z1=-d['clamp_depth'], centred=True, side='in'), layer)
-			self.add(FilledRect(rect_centre, width = d['width'], height = d['length'], z1=-d['body_depth'], centred=True, side='in'), layer)
+			self.add(FilledRect(V(0,0), width = d['width']+1, height = d['body_length']+1, z1=-d['clamp_depth'], centred=True, side='in'), layer)
+			self.add(FilledRect(rect_centre, width = d['width']+1, height = d['length']+1, z1=-d['body_depth'], centred=True, side='in'), layer)
 
 class LedHolder(Pathgroup):
 	def __init__(self, pos, size, holder_type, **config):
