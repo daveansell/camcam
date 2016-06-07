@@ -42,6 +42,12 @@ def rotations_to_3D(self):
 					del(p.transform['rotate'])
 				else:
 					print "OVERWRITING rotate3D with rotate which is unstable"
+#			if 'translate' in p.transform:
+#				if 'translate3D' not in p.transform:
+#					p.transform['translate3D'] = [ p.transform['translate'][0],  p.transform['translate'][0], 0 ]
+#					del(p.transform['translate'])
+#				else:
+#					print "OVERWRITING rotate3D with rotate which is unstable"
 		p = p.parent
 #				self.transform['rotate3D'] = [ self.transform['rotate3D'][0], [0,0, self.transform['rotate3D'][1]] ]
 #				del(self.transform['rotate'])
@@ -129,6 +135,7 @@ def path_render3D(self, pconfig, border=False):
 			extruded=solid.multmatrix(m=self.transform['matrix3D'])(extruded)
 	if hasattr(self, 'transform') and self.transform is not None and self.transform is not False and 'rotate3D' in self.transform:
 		if type(self.transform['rotate3D'][0]) is list:
+			print [-self.transform['rotate3D'][1][0], - self.transform['rotate3D'][1][1], - self.transform['rotate3D'][1][2]- zoffset]
 			extruded=solid.translate([-self.transform['rotate3D'][1][0], - self.transform['rotate3D'][1][1], - self.transform['rotate3D'][1][2]- zoffset])(extruded)
 			extruded=solid.rotate([self.transform['rotate3D'][0][0], self.transform['rotate3D'][0][1],self.transform['rotate3D'][0][2] ])(extruded)
 			extruded=solid.translate([self.transform['rotate3D'][1][0], self.transform['rotate3D'][1][1], self.transform['rotate3D'][1][1] + zoffset])(extruded)
@@ -260,22 +267,24 @@ def plane_make_part3D(self, thepart, pconfig):
 	# 3D transformations can only be applied to parts, so we can just go up the tree
 	p = thepart
 	c=0
-	while(p and type(p) is not Plane and (c==0 or not p.renderable() )):
+	print p
+	while(p and type(p) is not Plane):# and (c==0 or not p.renderable() )):
 		p.rotations_to_3D()
 		if hasattr(p, 'transform') and p.transform is not None and p.transform is not False:
+			print p.transform
 			if 'matrix3D' in p.transform:
-				if type(thepart.transform['matrix3D'][0]) is list or type(thepart.transform['matrix3D'][0]) is Vec:
-                                        thepart.border3D=solid.translate([-thepart.transform['matrix3D'][0][0], -thepart.transform['matrix3D'][0][1],-thepart.transform['matrix3D'][0][2]])(thepart.border3D)
+				if type(p.transform['matrix3D'][0]) is list or type(p.transform['matrix3D'][0]) is Vec:
+                                        thepart.border3D=solid.translate([-p.transform['matrix3D'][0][0], -p.transform['matrix3D'][0][1],-p.transform['matrix3D'][0][2]])(thepart.border3D)
 					thepart.border3D=solid.multmatrix(m=p.transform['matrix3D'][1])(thepart.border3D)
-					thepart.border3D=solid.translate([thepart.transform['matrix3D'][0][0], thepart.transform['matrix3D'][0][1],thepart.transform['matrix3D'][0][2]])(thepart.border3D)
+					thepart.border3D=solid.translate([p.transform['matrix3D'][0][0], p.transform['matrix3D'][0][1],p.transform['matrix3D'][0][2]])(thepart.border3D)
 				else:
 					thepart.border3D=solid.multmatrix(m=p.transform['matrix3D'])(thepart.border3D)
 
-			if 'rotate3D' in p.transform:
-				if type(thepart.transform['rotate3D'][0]) is list or type(thepart.transform['rotate3D'][0]) is Vec:
-					thepart.border3D=solid.translate([-thepart.transform['rotate3D'][0][0], -thepart.transform['rotate3D'][0][1],-thepart.transform['rotate3D'][0][2]])(thepart.border3D)
-					thepart.border3D=solid.rotate([thepart.transform['rotate3D'][1][0], thepart.transform['rotate3D'][1][1],thepart.transform['rotate3D'][1][2] ])(thepart.border3D)
-					thepart.border3D=solid.translate([thepart.transform['rotate3D'][0][0], thepart.transform['rotate3D'][0][1],thepart.transform['rotate3D'][0][2]])(thepart.border3D)
+			if 'rotate3D' in p.transform: 
+				if type(p.transform['rotate3D'][0]) is list or type(p.transform['rotate3D'][0]) is Vec:
+					thepart.border3D=solid.translate([-p.transform['rotate3D'][0][0], -p.transform['rotate3D'][0][1],-p.transform['rotate3D'][0][2]])(thepart.border3D)
+					thepart.border3D=solid.rotate([p.transform['rotate3D'][1][0], p.transform['rotate3D'][1][1],p.transform['rotate3D'][1][2] ])(thepart.border3D)
+					thepart.border3D=solid.translate([p.transform['rotate3D'][0][0], p.transform['rotate3D'][0][1],p.transform['rotate3D'][0][2]])(thepart.border3D)
 				else:
 					thepart.border3D=solid.rotate([p.transform['rotate3D'][0], p.transform['rotate3D'][1],p.transform['rotate3D'][2] ])(thepart.border3D)
 			if 'translate3D' in p.transform:
