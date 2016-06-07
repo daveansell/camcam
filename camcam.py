@@ -36,6 +36,7 @@ import pickle
 class CamCam:
 	def __init__(self):
 		self.planes=[]
+		self.files=[]
 	def add_plane(self,plane):
 	#	print plane.obType
 		if hasattr(plane,'obType') and plane.obType=='Plane':#type(plane) is Plane:
@@ -51,7 +52,7 @@ class CamCam:
 			for plane in self.planes:
 				plane.render_all(mode,config)
 				out+=plane.out
-		 	f=open("Overview_"+mode+".svg",'w')
+		 	f=open("Overview_"+mode+"_"+self.files[0]+"_"+".svg",'w')
 			f.write(modeconfig['prefix'] + out + modeconfig['postfix'])
 			f.close()
 
@@ -197,6 +198,7 @@ if options.zbase:
 # load all the requested files	
 for arg in args:
 	execfile(arg)
+	camcam.files.append(arg)
 
 if options.listparts:
 	camcam.listparts()
