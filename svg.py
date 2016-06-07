@@ -50,11 +50,9 @@ class SVGimport(Pathgroup):
 		for p in outpaths:
 			transform = p.get('transform')
 			self.parse_d(p.get('d'),transform, config)
-		print paths
 	def svgtransform(self, pos, transform):
 		if transform is None:
 			return pos
-		print transform
 		commands=transform.split(';')
 		for command in commands:
 			m= re.search('(.*?)\((.*?),(.*?)\)', command)
@@ -62,7 +60,6 @@ class SVGimport(Pathgroup):
 #			m = re.search('(.*?)\(([-,\d]+),\s*([-,\d]+)\)', command)
 			if m.groups(1)[0] == 'scale':
 				pos=V(pos[0]*float(m.groups(1)[1]), pos[1]*float(m.groups(1)[2]))
-		print pos
 		return pos
 # at the moment this just treats everything as a line so add lots of points
 	def parse_d(self,d,transform, config):
