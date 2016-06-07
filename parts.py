@@ -88,6 +88,7 @@ class SevenSegmentDisplay(Part):
 class Knob(Part):
 	def __init__(self,pos, **config):
 		self.init(config)
+		self.translate(pos)
 		if 'layer_config' not in config or type(config['layer_config']) is not dict:
 			config['layer_config']={'base':'stepper_mount', 'perspex':'shaft'}
 		if 'knob_type' not in config:
@@ -97,9 +98,20 @@ class Knob(Part):
 			for l in config['layer_config'].keys():
 				task =  config['layer_config'][l]
 				if task=='stepper_mount':
-					print self.add(Stepper(pos, 'NEMA1.7', mode='stepper', layer=l))
+					stepper = self.add(Stepper(V(0,0), 'NEMA1.7', mode='stepper', layer=l, length=43))
 				if task=='shaft':
-					print self.add(Stepper(pos, 'NEMA1.7', mode='justshaft', layer=l))
+					stepper = self.add(Stepper(V(0,0), 'NEMA1.7', mode='justshaft', layer=l, length=43))
+		self.magnetometer_holder = self.add(Part(layer='_magnetometer_holder', name='_magnetometer_holder', border=RoundedRect(V(0,0), centred=True, width=stepper.d['width'], height=stepper.d['width'], rad=stepper.d['corner_rad'], cutter='2mm_endmill'))) 
+		bolt_spacing = 11
+		bolt_y = 6
+		solder_y = -6
+		solder_width = 2.54*5
+		self.magnetometer_holder.add(Hole(V(0,0), rad=8/2))
+		self.magnetometer_holder.add(Hole(V(bolt_spacing/2, bolt_y), rad=2.5/2))
+		self.magnetometer_holder.add(Hole(V(-bolt_spacing/2, bolt_y), rad=2.5/2))
+		self.magnetometer_holder.add(RoundedRect(V(0, solder_y), centred=True, width = solder_width, height=3, z1=-2))
+        def _pre_render(self):
+                self.get_plane().add_layer('_magnetometer_holder', 'pvc', 6, colour='#80808080', zoffset=49)
 
 class Post(Part):
 	def __init__(self, pos, **config):
@@ -759,7 +771,7 @@ class Bearing(Pathgroup):
 		self.add(FilledCircle(pos, rad=outer_rad, z1=-depth))
 		overlap = max(1, (outer_rad-inner_rad)/5)
 		self.add(Hole(pos, rad=outer_rad-overlap))
-		
+#		self.add_bom('Bearing', 1, part_number='Bearing_ID_'+str(inner_rad*2)+"_OD_"+str(outer_rad*2)+"_D_"+str(depth), description='Ball Bearing ID='+str(innerrad*2)+" OD="+str(outerrad*2)+" depth="+str(depth))		
 #		self.add_bom("Ball_bearing_"+str(outer_rad*2)+'x'+str(inner_rad*2)+'x'+str(depth), 1, 'OD='+str(outer_rad*2)+"mm ID="+str(inner_rad*2)+" Depth="+str(depth),'')
 
 class LinearRail(Part):
@@ -1340,6 +1352,7 @@ class PipeClamp(Part):
 		self.zoffset = d['H']
 		self.layer = '_pipeclamp'
 		self.name = '_pipeclamp_'+clamp_type
+		#hole=self.add(Circle(V(0,0), rad=20, z0=0, z1=-d['W']))
 		hole=self.add(Circle(V(0,0), rad=d['D1']/2, z0=d['W'], z1=-d['W']))
 		hole.rotate3D(V(0,0,0), [90,0,0]) 
 		hole.translate3D(V(0,0,-d['H']/2))
