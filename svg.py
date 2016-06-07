@@ -48,15 +48,31 @@ class SVGimport(Pathgroup):
 			for p in paths.keys():
 				outpaths= tree.xpath(".//n:path[@"+path[p]['attrib']+"='"+path[p]['value']+"']", namespaces={'n': "http://www.w3.org/2000/svg"})
 		for p in outpaths:
-			self.parse_d(p.get('d'),config)
+			transform = p.get('transform')
+			self.parse_d(p.get('d'),transform, config)
+		print paths
+	def svgtransform(self, pos, transform):
+		if transform is None:
+			return pos
+		print transform
+		commands=transform.split(';')
+		for command in commands:
+			m= re.search('(.*?)\((.*?),(.*?)\)', command)
+			print m.groups(1)
+#			m = re.search('(.*?)\(([-,\d]+),\s*([-,\d]+)\)', command)
+			if m.groups(1)[0] == 'scale':
+				pos=V(pos[0]*float(m.groups(1)[1]), pos[1]*float(m.groups(1)[2]))
+		print pos
+		return pos
 # at the moment this just treats everything as a line so add lots of points
-	def parse_d(self,d,config):
+	def parse_d(self,d,transform, config):
 		outpaths=[]
 		outpath=False
 		items = re.split('[, ]+', d)
 		pos=V(0,0)
 		firstpath=True
 		i=0
+		print transform
 		while i<len(items):
 			if items[i]=='M':
 				i+=1
@@ -69,59 +85,59 @@ class SVGimport(Pathgroup):
 				outpath = Path()
 				pos=V(float(items[i]), -float(items[i+1]))
 				startpos = pos
-				outpath.add_point(pos)
+				outpath.add_point(self.svgtransform(pos, transform))
 				i+=2
 				while i<len(items) and self.is_number(items[i]):
 					pos=V(float(items[i]), -float(items[i+1]))
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=2
 			elif items[i]=='L':
 				i+=1
 				while i<len(items) and self.is_number(items[i]):
 					pos=V(float(items[i]), -float(items[i+1]))
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=2
 			elif items[i]=='A':
 				i+=1
 				while i<len(items) and self.is_number(items[i]):
 					pos=V(float(items[i+5]), -float(items[i+6]))
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=7
 			elif items[i]=='C':
 				i+=1
 				while i<len(items) and self.is_number(items[i]):
 					pos=V(float(items[i+4]), -float(items[i+5]))
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=6	
 			elif items[i]=='S':
 				i+=1
 				while i<len(items) and self.is_number(items[i]):
 					pos=V(float(items[i+2]), -float(items[i+3]))
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=4	
 			elif items[i]=='Q':
 				i+=1
 				while i<len(items) and self.is_number(items[i]):
 					pos=V(float(items[i+2]), -float(items[i+3]))
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=4	
 			elif items[i]=='T':
 				i+=1
 				while i<len(items) and self.is_number(items[i]):
 					pos=V(float(items[i]), -float(items[i+1]))
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=2	
 			elif items[i]=='H':
 				i+=1
 				while i<len(items) and self.is_number(items[i]):
 					pos=V(float(items[i]), pos[1])
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=1
 			elif items[i]=='V':
 				i+=1
 				while i<len(items) and self.is_number(items[i]):
 					pos=V(pos[0],float(items[i]))
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=1
 			if items[i]=='m':
 				if outpath!=False and len(outpath.points)>1:
@@ -133,59 +149,59 @@ class SVGimport(Pathgroup):
 				i+=1
 				pos+=V(float(items[i]), -float(items[i+1]))
 				startpos = pos
-				outpath.add_point(pos)
+				outpath.add_point(self.svgtransform(pos, transform))
 				i+=2
 				while i<len(items) and self.is_number(items[i]):
 					pos+=V(float(items[i]), -float(items[i+1]))
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=2
 			elif items[i]=='l':
 				i+=1
 				while i<len(items) and self.is_number(items[i]):
 					pos+=V(float(items[i]), -float(items[i+1]))
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=2
 			elif items[i]=='a':
 				i+=1
 				while i<len(items) and self.is_number(items[i]):
 					pos+=V(float(items[i+5]), -float(items[i+6]))
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=7
 			elif items[i]=='c':
 				i+=1
 				while i<len(items) and self.is_number(items[i]):
 					pos+=V(float(items[i+4]), -float(items[i+5]))
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=6
 			elif items[i]=='s':
 				i+=1
 				while i<len(items) and self.is_number(items[i]):
 					pos=V(float(items[i+2]), -float(items[i+3]))
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=4	
 			elif items[i]=='q':
 				i+=1
 				while i<len(items) and self.is_number(items[i]):
 					pos=V(float(items[i+2]), -float(items[i+3]))
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=4
 			elif items[i]=='t':
 				i+=1
 				while i<len(items) and self.is_number(items[i]):
 					pos=V(float(items[i]), -float(items[i+1]))
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=2
 			elif items[i]=='h':
 				i+=1
 				while i<len(items) and self.is_number(items[i]):
 					pos+=V(float(items[i]), 0)
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=1
 			elif items[i]=='v':
 				i+=1
 				while i<len(items) and self.is_number(items[i]):
 					pos+=V(0, -float(items[0]))
-					outpath.add_point(pos)
+					outpath.add_point(self.svgtransform(pos, transform))
 					i+=1
 			elif items[i]=='z' or items[i]=='Z':
 				i+=1
