@@ -265,8 +265,8 @@ class Circle(Path):
 		if rad==0:
 			raise ValueError("circle of zero radius")
 		else:
-#			if rad<3.17/2:
-#				self.cutter='2mm_endmill'	
+			if rad<3.17/2:
+				self.cutter='2mm_endmill'	
 			self.closed=True
 			self.add_point(pos,'circle',rad)
 			self.comment("Circle")
@@ -412,7 +412,8 @@ class FilledRect(Pathgroup):
 			self.width = float(config['width'])
 			self.height = float(config['height'])
 			self.pos=bl
-		else:
+		elif 'tr' in config:
+			tr=config['tr']
 			d = bl-tr
 			self.width = float(abs(bl[0]-tr[0]))
 			self.height = float(abs(bl[1]-tr[1]))
@@ -432,12 +433,16 @@ class FilledRect(Pathgroup):
                 d=self.maxdist-c['cutterrad']
                 steps=math.ceil(d/c['cutterrad']/1.2)
                 step=self.maxdist/steps
-                for i in range(0,int(steps)):
+#                for i in range(0,int(steps)):
+                for i in range(0,1):
 			rad=self.rad-step*i
 			if rad<0:
 				rad=0
 			diff = step*i
-			self.add(RoundedRect(self.pos, rad=rad, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in'))
+			print "width="+str(self.width-diff*2)+" height="+str(self.height-diff*2) 
+			self.add(Rect(self.pos, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in'))
+#			self.add(RoundedRect(self.pos, rad=rad, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in'))
+
 
 
 class Chamfer(Pathgroup):
@@ -894,8 +899,12 @@ class ButtJoint(list):
 			 extra=thickness-depth
 		elif (startmode == 'on') and (joint_type=='concave') :
                          extra=0
+		if startmode == 'on':
+			self.append(PSharp(start))
 		self.append(PSharp(start+extra*perp))
 		self.append(PSharp(end+extra*perp))
+		if startmode == 'on':
+			self.append(PSharp(end))
 
 class ButtJointMid(Pathgroup):
 	def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode, **config):
@@ -940,9 +949,10 @@ class ButtJointMid(Pathgroup):
 				self.add(HoleLine(start+parallel*hole_length/2 + perp*thickness/2, end - parallel*hole_length/2 + perp*thickness/2, num_holes,  holerad))
 	
 			if depression:
-				self.add(Rect(	start-parallel*fudge - perp*fudge, 
-						tr=end+perp*(thickness+fudge)+parallel*fudge, 
-						z1=-depth, partial_fill=thickness/2))
+				self.add(FilledRect(	
+						bl = start-parallel*fudge - perp*fudge, 
+						tr = end+perp*(thickness+fudge)+parallel*fudge, 
+						z1 = -depth, partial_fill=thickness/2, side='in'))
 
 
 class FingerJointMid(Pathgroup):
@@ -1425,6 +1435,10 @@ class ArcRect(Path):
 
 class RoundedCorner(Path):
 	def __init__(self, pos, dir1, len1, dir2, len2, endrad, **config):
+		self.init(config)
+		print "Rounded Corner"
+		print config
+		print self.side
 		assert type(dir1) is Vec
 		assert type(dir2) is Vec
 		if 'innerrad' in config and 'outerrad' in config:
@@ -1443,14 +1457,13 @@ class RoundedCorner(Path):
 			len2+=width
 		dir1 = dir1.normalize()
 		dir2 = dir2.normalize()
-		self.init(config)
 		self.closed=True
-		self.add_point(PIncurve(pos, radius=outerrad))
-		self.add_point(PIncurve(pos+ dir1*len1, radius=endrad))
-		self.add_point(PIncurve(pos+ dir1*len1 + dir2*width, radius=endrad))
-		self.add_point(PIncurve(pos+ dir1*width + dir2*width, radius=outerrad - width))
-		self.add_point(PIncurve(pos+ dir2*len1 + dir1*width, radius=endrad))
 		self.add_point(PIncurve(pos+ dir2*len1, radius=endrad))
+		self.add_point(PIncurve(pos+ dir2*len1 + dir1*width, radius=endrad))
+		self.add_point(PIncurve(pos+ dir1*width + dir2*width, radius=outerrad - width))
+		self.add_point(PIncurve(pos+ dir1*len1 + dir2*width, radius=endrad))
+		self.add_point(PIncurve(pos+ dir1*len1, radius=endrad))
+		self.add_point(PIncurve(pos, radius=outerrad))
 		
 
 class CutFunction(list):
