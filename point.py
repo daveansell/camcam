@@ -259,6 +259,10 @@ class Point(object):
 		else:
 			return centre +	V( (D*d[1]+d[0]*math.sqrt(dis))/dr**2,
 				 (-D*d[0]+d[1]*math.sqrt(dis))/dr**2 )
+	def end(self):
+		return self.pos
+	def start(self):
+		return self.start
 		
 
 class PSharp(Point):
