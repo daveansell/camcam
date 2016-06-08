@@ -399,9 +399,14 @@ class FilledCircle(Pathgroup):
 	def __render__(self,config): 
 		c=self.circle.generate_config(config)
                 self.paths=[]
-		r=self.rad-c['cutterrad']
-		steps=math.ceil(r/c['cutterrad']/1.2)
-		step=r/steps
+		if 'partial_fill' in config and config['partial_fill']>0:
+			steps = math.ceil((config['partial_fill'] - c['cutterrad']) /c['cutterrad']/1.2)
+			print steps
+			step = (config['partial_fill'] - c['cutterrad'])/steps
+		else:
+			r=self.rad-c['cutterrad']
+			steps=math.ceil(r/c['cutterrad']/1.2)
+			step=r/steps
 		for i in range(0,int(steps)+1):
 			self.add(Circle(self.pos, self.rad-(steps-i)*step, side='in'))
 class FilledRect(Pathgroup):
