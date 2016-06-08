@@ -651,7 +651,7 @@ class ArbitraryBox(Part):
 			else:
 				p = Part(name = f, layer = face['layer'], zoffset=face['zoffset'])
 				self.get_border(p,  f, face, 'external')
-			if face['y'] == -face['x'].cross(face['normal']).normalize():
+#			if face['y'] == -face['x'].cross(face['normal']).normalize():
 #			if face['good_direction'] == -1:
 			# DECIDE WHICH SISDE WE ARE CUttng FROM
 			# CHECK THE DIRECTION OF THR LOOP
@@ -715,6 +715,8 @@ class ArbitraryBox(Part):
 		elif (hasattr(p, 'isback') and p.isback is True):
 			p.rotate3D([0, 180, 0],self.pos)
 			p.translate3D([0,0,-face['thickness']])
+		print p.name
+		print [xs,ys,zs,qs]
 		p.matrix3D([xs,ys,zs,qs],self.pos)
 		p.translate3D(face['origin'])
 
