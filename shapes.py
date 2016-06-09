@@ -153,6 +153,16 @@ class Ellipse(Path):
 			else:
 				self.add_point(V( width/2 * math.cos( a * float(i)), height/2 * math.sin( a * float(i)) ))
 
+class SemiCircle(Path):
+	def __init__(self, pos, rad, **config):
+		self.init(config)
+                self.closed=True
+                self.translate(pos)
+		self.add_point(V(rad,0))
+		self.add_point(PIncurve(V(rad,rad), radius=rad))
+		self.add_point(PIncurve(V(-rad,rad), radius=rad))
+		self.add_point(V(-rad,0))
+
 class RepeatEllipse(Part):
         def __init__(self, pos, ob, **config):
                 self.init(config)
