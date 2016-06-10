@@ -426,10 +426,11 @@ class Milling:
                         "kress_setting":1,
                },
                 "brass":{
-                        "vertfeed":50,
-                        "sidefeed":950,
-                        "stepdown":0.3,
+                        "vertfeed":20,
+                        "sidefeed":500,
+                        "stepdown":0.2,
                         "kress_setting":1,
+			"mill_dir":'down',
                },
                 "polypropelene":{
                         "vertfeed":100,
