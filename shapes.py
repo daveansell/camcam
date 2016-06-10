@@ -158,10 +158,10 @@ class SemiCircle(Path):
 		self.init(config)
                 self.closed=True
                 self.translate(pos)
-		self.add_point(V(rad,0))
-		self.add_point(PIncurve(V(rad,rad), radius=rad))
-		self.add_point(PIncurve(V(-rad,rad), radius=rad))
 		self.add_point(V(-rad,0))
+		self.add_point(PIncurve(V(-rad,rad), radius=rad))
+		self.add_point(PIncurve(V(rad,rad), radius=rad))
+		self.add_point(V(rad,0))
 
 class RepeatEllipse(Part):
         def __init__(self, pos, ob, **config):
