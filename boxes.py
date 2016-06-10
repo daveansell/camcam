@@ -521,6 +521,10 @@ class ArbitraryBox(Part):
 		self.side_angles={}
 		wood_direction_face = None
 		good_direction_face = None
+		if 'name' in config:
+			self.name=config['name']
+		else:
+			self.name='box'
 		for f, face in faces.iteritems():
 			self.make_sides(f,face['points'])
 			self.make_normal(f, face['points'])
@@ -646,10 +650,10 @@ class ArbitraryBox(Part):
 
 			# add points here
 
-				p = Part(name = f, layer = face['layer'], zoffset=face['zoffset'])
+				p = Part(name = self.name+'_'+f, layer = face['layer'], zoffset=face['zoffset'])
 				self.get_border(p,  f, face, 'internal')
 			else:
-				p = Part(name = f, layer = face['layer'], zoffset=face['zoffset'])
+				p = Part(name = self.name+'_'+f, layer = face['layer'], zoffset=face['zoffset'])
 				self.get_border(p,  f, face, 'external')
 #			if face['y'] == -face['x'].cross(face['normal']).normalize():
 #			if face['good_direction'] == -1:
@@ -725,7 +729,7 @@ class ArbitraryBox(Part):
 
 	def get_border(self, part, f, face, mode):
 	 	if mode == 'internal':
-                        path = Path(closed=True, side='in')
+                        path = Path(closed=True, side='out')
          	else:
                         path = Path(closed=True, side='out')
 		simplepath = Path(closed=True, side='on')
@@ -821,7 +825,7 @@ class ArbitraryBox(Part):
 			part.add(path)
 		else:
 			part.add_border(path)
-	
+		print "+++++++++++ "+str(part.border.side)	
 		for joint in face['internal_joints']:
 			if (joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal'])*face['good_direction'] <0:
 				cutside='right'
@@ -1291,6 +1295,7 @@ class PlainBox2(ArbitraryBox):
                 else:
                         facemodes = {}
 		config['pos'] = pos
+		config['name'] = name
 		self.make_box(faces, tab_length, fudge, **config)
 
 	def _pre_render(self):
