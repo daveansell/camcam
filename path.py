@@ -506,6 +506,7 @@ class Path(object):
 			reverse=-1
 		else:
 			reverse=1
+		print "REVERSE="+str(reverse)
 		self.mirrored=reverse
 		if len(self.points)==1 and hasattr(self.points[0],'direction') and self.points[0].direction in ['cw','ccw']:
 			if reverse:
@@ -523,8 +524,10 @@ class Path(object):
 					return p.direction
 			return 'cw'
 		elif(total[2]*reverse>0):
+			print "ccW"
 			return 'ccw'
 		else:
+			print "cw"
 			return 'cw'
 	
 	def cut_direction(self,side='on'):
@@ -922,7 +925,7 @@ class Path(object):
 					fillpath.add_point(p.pos-V(p.radius,0), point_type='sharp')
 # there seems to be a problem with arcs and reversing...
 			if fillpath.find_direction(c)!=config['direction']:
-				reverse=False
+				reverse=True
 #				fillpath.isreversed=True
 #				fillpath.points=fillpath.points[::-1]
 			else:
