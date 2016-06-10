@@ -59,6 +59,7 @@ class XLR(Part):
 		data={
 			'male':{'h':V(0,27/2), 'r':20/2},
 			'female':{'h':V((26.3-9.6)/2, -25.6/2), 'r':24/2},
+			'female5way':{'h':V(-19/2, 24/2), 'r':24/2},
 		}
 		if 'type' in config:
 			d=data[config['type']]
