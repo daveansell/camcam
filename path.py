@@ -467,14 +467,15 @@ class Path(object):
 					p.radius+=distance
 				newpath.points.append(p)
 				return newpath
-		mirrored=1	
+	#	mirrored=1	
+		print "self.mirrored="+str(self.mirrored)
 		if side=='in':
-			if thisdir=='cw' and mirrored>0 or thisdir=='ccw' and not mirrored>0:
+			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
 				side='right'
 			else:
 				side='left'
 		elif side=='out':
-			if thisdir=='cw' and mirrored>0 or thisdir=='ccw' and not mirrored>0:
+			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
 				side='left'
 			else:
 				side='right'
@@ -506,7 +507,6 @@ class Path(object):
 			reverse=-1
 		else:
 			reverse=1
-		print "REVERSE="+str(reverse)
 		self.mirrored=reverse
 		if len(self.points)==1 and hasattr(self.points[0],'direction') and self.points[0].direction in ['cw','ccw']:
 			if reverse:
@@ -524,10 +524,8 @@ class Path(object):
 					return p.direction
 			return 'cw'
 		elif(total[2]*reverse>0):
-			print "ccW"
 			return 'ccw'
 		else:
-			print "cw"
 			return 'cw'
 	
 	def cut_direction(self,side='on'):
@@ -850,9 +848,10 @@ class Path(object):
 			self.__render__(config)
 		finalpass=False
 		if config['side']=='in' or config['side']=='out':
+			side = config['side']				
 			c =copy.copy(config)
 			c['opacity']=0.5
-			thepath=self.offset_path(c['side'],c['cutterrad'],c)
+			thepath=self.offset_path(side,c['cutterrad'],c)
 			c['side']='on'
 			if config['hide_cuts']:
 				self.output_path(config)
@@ -925,9 +924,10 @@ class Path(object):
 					fillpath.add_point(p.pos-V(p.radius,0), point_type='sharp')
 # there seems to be a problem with arcs and reversing...
 			if fillpath.find_direction(c)!=config['direction']:
-				reverse=True
+				reverse=False
 #				fillpath.isreversed=True
 #				fillpath.points=fillpath.points[::-1]
+				
 			else:
 				reverse=False
 #				fillpath.points=fillpath.points[::-1]
