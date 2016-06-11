@@ -577,7 +577,7 @@ class ArbitraryBox(Part):
 #			face['good_direction'] *= face['cut_from']
 			if face['cut_from']<0:
 				pass
-#				face['isback']=True
+				face['isback']=True
 				face['good_direction'] *= face['cut_from']
 				face['zoffset'] += face['thickness']
 			if 'x' in face:
