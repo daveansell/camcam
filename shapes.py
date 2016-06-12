@@ -944,7 +944,12 @@ class ButtJointMid(Pathgroup):
 		if 'butt_num_holes' in config and type(config['butt_num_holes']) is not None:
 			num_holes = config['butt_num_holes']
 		else:
-			num_holes = int(math.floor((end-start).length()/hole_spacing))
+			num_holes = int(math.ceil((end-start).length()/hole_spacing))
+		if 'hole_offset' in config and type(config['hole_offset']) is not None:
+			hole_offset = config['hole_offset']
+		else:
+			hole_offset = 0
+		print "HOle offset="+str(hole_offset)
 		if num_holes>0:
 	                hole_length = (end-start).length()/num_holes
 		else:
@@ -965,7 +970,7 @@ class ButtJointMid(Pathgroup):
 				holerad = 4.2/2
 	
 			if holes:
-				self.add(HoleLine(start+parallel*hole_length/2 + perp*thickness/2, end - parallel*hole_length/2 + perp*thickness/2, num_holes,  holerad))
+				self.add(HoleLine(start+parallel*hole_length/2 + perp*(thickness/2-hole_offset), end - parallel*hole_length/2 + perp*(thickness/2-hole_offset), num_holes,  holerad))
 	
 			if depression:
 				self.add(FilledRect(	
