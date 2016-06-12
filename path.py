@@ -469,12 +469,14 @@ class Path(object):
 				return newpath
 	#	mirrored=1	
 		if side=='in':
-			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
+#			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
+			if thisdir=='cw':# and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
 				side='right'
 			else:
 				side='left'
 		elif side=='out':
-			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
+#			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
+			if thisdir=='ccw':# and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
 				side='left'
 			else:
 				side='right'
