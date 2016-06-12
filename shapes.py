@@ -898,7 +898,7 @@ class ButtJoint(list):
                         perp = rotate((end-start).normalize(),90)
                 parallel=(end-start).normalize( )
 #		if we set this to zero bad things happen. probably to do with points being on top of each other for intersections 
-		depth=0.01
+		depth=0.0
 		if 'joint_type' in config:
 			joint_type=config['joint_type']
 		else:
@@ -917,11 +917,12 @@ class ButtJoint(list):
 			extra=thickness-depth
 		elif (startmode == 'on') and (joint_type=='concave') :
                         extra=0
-		if startmode == 'on':
+		if startmode == 'on' or extra==0:
 			self.append(PSharp(start))
-		self.append(PSharp(start+extra*perp))
-		self.append(PSharp(end+extra*perp))
-		if startmode == 'on':
+		if abs(extra)>0:
+			self.append(PSharp(start+extra*perp))
+			self.append(PSharp(end+extra*perp))
+		if startmode == 'on' or extra==0:
 			self.append(PSharp(end))
 
 class ButtJointMid(Pathgroup):
