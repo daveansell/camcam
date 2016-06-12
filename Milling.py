@@ -429,7 +429,7 @@ class Milling:
                         "vertfeed":20,
                         "sidefeed":500,
                         "stepdown":0.2,
-                        "kress_setting":1,
+                        "kress_setting":3,
 			"mill_dir":'down',
                },
                 "polypropelene":{
@@ -476,7 +476,7 @@ class Milling:
 	        'M2.5':{
                         'diam':2.5,
                         'tap':2.1,
-			'clearance':2.7,
+			'clearance':3.18,
                         'allen':{
                                 'head_d':4.7,
                                 'head_l':2.5,
