@@ -451,8 +451,8 @@ class FilledRect(Pathgroup):
                 d=self.maxdist-c['cutterrad']
                 steps=math.ceil(d/c['cutterrad']/1.2)
                 step=self.maxdist/steps
-#                for i in range(0,int(steps)):
-                for i in range(0,1):
+                for i in range(0,int(steps)):
+#                for i in range(0,1):
 			rad=self.rad-step*i
 			if rad<0:
 				rad=0
