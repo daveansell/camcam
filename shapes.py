@@ -919,6 +919,8 @@ class ButtJoint(list):
                         extra=0
 		if startmode == 'on':
 			self.append(PSharp(start))
+		if startmode == 'straight':
+			extra=0
 		self.append(PSharp(start+extra*perp))
 		self.append(PSharp(end+extra*perp))
 		if startmode == 'on':
@@ -970,7 +972,7 @@ class ButtJointMid(Pathgroup):
 				self.add(FilledRect(	
 						bl = start-parallel*fudge - perp*fudge, 
 						tr = end+perp*(thickness+fudge)+parallel*fudge, 
-						z1 = -depth, partial_fill=thickness/2, side='in'))
+						z1 = -depth, side='in'))
 
 
 class FingerJointMid(Pathgroup):
