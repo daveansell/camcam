@@ -983,7 +983,7 @@ class ArbitraryBox(Part):
 
 			otherface = self.faces[otherf]
 			if scount in face['corners'] and otherscount  in otherface['corners']:
-				if face['corners'][scount]==otherface['corners'][otherscount]:
+				if face['corners'][scount]==otherface['corners'][otherscount] and face['corners'][scount]!='straight':
 					raise ValueError( "side "+str(scount)+" in face "+str(f)+" and side "+str(otherscount)+" in face "+str(otherf)+" have same corners setting, but are the same side"+str(face['corners'][scount])+" "+str(otherface['corners'][otherscount])) 
 			elif scount in face['corners']:
 				otherface['corners'][otherscount] = self.other_side_mode(face['corners'][scount])
@@ -1134,13 +1134,15 @@ class ArbitraryBox(Part):
 			internal=True
 		#	intJoint = self.faces['internal_joints'][side[1][2]]
 			svec2 = (face1['points'][ (side[0][1]-1)%len(face1['points']) ] - face1['points'][side[0][1]]).cross( face2['normal']).normalize()
+			scount2 = None #side[1][2]
 		else:
 			face2 = self.faces[side[1][0]]
 		# The edge cross the normal gives you a vector that is in the plane and perpendicular to the edge
 			svec2 = (face2['points'][ (side[1][1]-1)%len(face2['points']) ] - face2['points'][side[1][1]]).cross( face2['normal'] ).normalize()
+			scount2 = side[1][1]
 
 		svec1 = (face1['points'][ (side[0][1]-1)%len(face1['points']) ] - face1['points'][side[0][1]]).cross( face1['normal'] ).normalize()
-
+		scount1 = side[0][1]
 
 		# base angle is angle between the two svecs
 
@@ -1178,7 +1180,11 @@ class ArbitraryBox(Part):
 		elif t<0:
 			sideSign = -1
 		else:
-			raise ValueError( " Two adjoinig faces are parallel "+side[0][0]+" and "+ side[1][0]+" "+side[1][1]+" "+str(face1['normal'])+" == "+str(face2['normal']))
+			print ValueError( " Two adjoinig faces are parallel "+str(side[0][0])+" and "+ str(side[1][0])+" "+str(side[1][1])+" avSvec="+str(avSvec)+str(face1['normal'])+" == "+str(face2['normal']))
+			face1['corners'][scount1] = 'straight'	
+			if scount2 is not None:
+				face2['corners'][scount2] = 'straight'
+			sideSign = 0	
 		side[0].append(sideSign)
 		side[0].append( avSvec.dot ( face1['normal'] ) * cutsign)
 		side[0].append( angle )
