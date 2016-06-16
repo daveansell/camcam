@@ -390,10 +390,10 @@ class ArduinoUno(Part):
                 if 'insert_layer' not in config:
                         config['insert_layer'] = []
 #               self.add(Hole(V(0,0), rad=3))
-                self.add(Bolt(V(-w/2+15, -h/2+50.5), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
-                self.add(Bolt(V(-w/2+65.5, -h/2+35), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
-                self.add(Bolt(V(-w/2+65.5, -h/2+7), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
-                self.add(Bolt(V(-w/2+3.5+58-51.9, -h/2+3.3), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+                self.add(Bolt(V(-w/2+14, -h/2+2.5), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+                self.add(Bolt(V(w/2-fe, -h/2+7.6), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+                self.add(Bolt(V(w/2-fe, -h/2+35.5), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+                self.add(Bolt(V(-w/2+14+1.3, -h/2+50.7), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
         def _pre_render(self):
                 self.get_plane().add_layer('_ardlayer', 'pcb', 1, zoffset=0, colour='#808080')
 

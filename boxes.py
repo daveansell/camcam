@@ -512,7 +512,7 @@ class ArbitraryBox(Part):
 		self.tab_length = tab_length
 		self.fudge = fudge
 		self.faces = faces
-		self.auto_properties = ['tab_length', 'joint_mode', 'butt_depression', 'butt_holerad', 'butt_numholes', 'hole_spacing']
+		self.auto_properties = ['tab_length', 'joint_mode', 'butt_depression', 'butt_holerad', 'butt_numholes', 'hole_spacing', 'hole_offset']
 		for prop in self.auto_properties:
 			if prop in config:
 				setattr(self, prop, config[prop])
@@ -536,6 +536,8 @@ class ArbitraryBox(Part):
                                 face['tab_length'] = {}
 			if 'joint_mode' not in face:
                                 face['joint_mode'] = {}
+			if 'hole_offset' not in face:
+                                face['hole_offset'] = {}
 			if 'butt_depression' not in face:
                                 face['butt_depression'] = {}
 			if 'butt_holerad' not in face:
@@ -585,7 +587,6 @@ class ArbitraryBox(Part):
 					raise ValueError('face[x] in face '+str(f)+' not in plane of the rest of the face')
 				face['x'] = face['x'].normalize()
 			else: 
-#				print str(self.tuple_to_vec(face['sides'][0]
 				face['x'] = (self.tuple_to_vec(face['sides'][0][1])- self.tuple_to_vec(face['sides'][0][0])).normalize()
                         if 'y' in face:
                                 if abs(face['y'].dot(face['x'])) > 0.0000001 :
@@ -629,6 +630,7 @@ class ArbitraryBox(Part):
 				self.set_property(self.sides[s], f, scount, 'butt_numholes')
 				self.set_property(self.sides[s], f, scount, 'butt_holerad')
 				self.set_property(self.sides[s], f, scount, 'hole_spacing')
+				self.set_property(self.sides[s], f, scount, 'hole_offset')
 				scount+=1
 			if 'internal' in face and face['internal']:
 				face['intfact']=-1
@@ -719,8 +721,6 @@ class ArbitraryBox(Part):
 		elif (hasattr(p, 'isback') and p.isback is True):
 			p.rotate3D([0, 180, 0],self.pos)
 			p.translate3D([0,0,-face['thickness']])
-		print p.name
-		print [xs,ys,zs,qs]
 		p.matrix3D([xs,ys,zs,qs],self.pos)
 		p.translate3D(face['origin'])
 
@@ -742,9 +742,7 @@ class ArbitraryBox(Part):
 			cutside='left'
 		else:
 			cutside='right'
-		print "get_border "+f
          	for point in face['ppoints']:
-			print point
 			lastpoint = face['ppoints'][(p-1)%len(face['sides'])]
 			scount = (p)%len(face['sides'])
              		s = face['sides'][scount]
@@ -777,17 +775,15 @@ class ArbitraryBox(Part):
 						if angle==0:
 							if cutside=='left' and joint_type=='concave':
                                                                 cutside='right'
-								print "Conc "+f+" "+otherside[0]
                                                         if cutside=='right' and joint_type=='concave':
                                                                 cutside='left'
-								print "Conc "+f+" "+otherside[0]
-							newpoints = ButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = self.fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type)
+							newpoints = ButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = self.fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount])
 							if face['cut_from']<0:
 								if  cutside=='left':
 									cutside= 'right'
 								else:
 									cutside='left'
-							part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=self.fudge))
+							part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=self.fudge, hole_offset=face['hole_offset'][scount]))
 					else:
 
 
@@ -808,14 +804,12 @@ class ArbitraryBox(Part):
 							if cutside=='right' and joint_type=='concave':	
 								cutside='left'
 							newpoints = FingerJoint(lastpoint, point, cutside, 'external', corner, corner, face['tab_length'][scount], face['thickness'], 0, self.fudge)
-			
 			if first or len(newpoints)<2:
 				first = False
 				path.add_points(newpoints)
 			else:
 				path.add_points_intersect(newpoints)
 			p += 1
-			 
 
 		if len(newpoints) >1:
 			path.close_intersect()
@@ -825,7 +819,7 @@ class ArbitraryBox(Part):
 			part.add(path)
 		else:
 			part.add_border(path)
-		print "+++++++++++ "+str(part.border.side)	
+
 		for joint in face['internal_joints']:
 			if (joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal'])*face['good_direction'] <0:
 				cutside='right'
@@ -843,6 +837,7 @@ class ArbitraryBox(Part):
 				part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], butt_holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes'], joint_type='convex', fudge= self.fudge))
 			else:
 				part.add(FingerJointMid( joint['from'], joint['to'], cutside,'internal',  joint['corners'], joint['corners'], joint['tab_length'], joint['otherface']['thickness'], 0, prevmode, nextmode))
+
 	def set_wood_factor(self, face):
 		if face['wood_direction'].dot(face['normal'])>0:
 			face['wood_factor']=1
@@ -1103,7 +1098,6 @@ class ArbitraryBox(Part):
 			raise ValueError("more than 2 faces with the same side "+str(self.sides[sid1]))
 
 	def set_joint_type(self, s, side):
-		print side
 		face1 = self.faces[side[0][0]]
 		if len(side)==1:
 			return False
@@ -1117,7 +1111,6 @@ class ArbitraryBox(Part):
 				joint_type='concave'
 			else:
 	                        joint_type='convex'
-		print side[1]
 		side[0][6] = joint_type
 		if len(side)>1:
 			side[1][6] = joint_type
@@ -1286,12 +1279,6 @@ class PlainBox2(ArbitraryBox):
 					faces[m[0]]['corners']={}
 				if 'corners' not in faces[m[1]]:
 					faces[m[1]]['corners']={}
-				print m[0]
-				print m[1]
-				print faces[m[0]]['face2num'][m[1]]
-				print faces[m[1]]['face2num'][m[0]]
-				print config['cornermodes'][m]
-				print self.other_side_mode(config['cornermodes'][m])
 				faces[m[0]]['corners'][faces[m[0]]['face2num'][m[1]]] = config['cornermodes'][m]
 				faces[m[1]]['corners'][faces[m[1]]['face2num'][m[0]]] = self.other_side_mode(config['cornermodes'][m])
                 else:

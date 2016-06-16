@@ -468,17 +468,19 @@ class Path(object):
 				newpath.points.append(p)
 				return newpath
 	#	mirrored=1	
-		print "self.mirrored="+str(self.mirrored)
 		if side=='in':
-			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
+#			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
+			if thisdir=='cw':# and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
 				side='right'
 			else:
 				side='left'
 		elif side=='out':
-			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
+#			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
+			if thisdir=='cw':# and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
 				side='left'
 			else:
 				side='right'
+
 		for p,point in enumerate(pointlist):
 
 			t=point.offset(side, distance, thisdir)

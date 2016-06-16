@@ -898,7 +898,7 @@ class ButtJoint(list):
                         perp = rotate((end-start).normalize(),90)
                 parallel=(end-start).normalize( )
 #		if we set this to zero bad things happen. probably to do with points being on top of each other for intersections 
-		depth=0.01
+		depth=0.0
 		if 'joint_type' in config:
 			joint_type=config['joint_type']
 		else:
@@ -917,13 +917,14 @@ class ButtJoint(list):
 			extra=thickness-depth
 		elif (startmode == 'on') and (joint_type=='concave') :
                         extra=0
-		if startmode == 'on':
-			self.append(PSharp(start))
 		if startmode == 'straight':
 			extra=0
-		self.append(PSharp(start+extra*perp))
-		self.append(PSharp(end+extra*perp))
-		if startmode == 'on':
+		if startmode == 'on' or extra==0:
+			self.append(PSharp(start))
+		if abs(extra)>0:
+			self.append(PSharp(start+extra*perp))
+			self.append(PSharp(end+extra*perp))
+		if startmode == 'on' or extra==0:
 			self.append(PSharp(end))
 
 class ButtJointMid(Pathgroup):
@@ -945,7 +946,12 @@ class ButtJointMid(Pathgroup):
 		if 'butt_num_holes' in config and type(config['butt_num_holes']) is not None:
 			num_holes = config['butt_num_holes']
 		else:
-			num_holes = int(math.floor((end-start).length()/hole_spacing))
+			num_holes = int(math.ceil((end-start).length()/hole_spacing))
+		if 'hole_offset' in config and config['hole_offset'] is not None:
+			hole_offset = config['hole_offset']
+		else:
+			hole_offset = 0
+		print "HOle offset="+str(hole_offset)
 		if num_holes>0:
 	                hole_length = (end-start).length()/num_holes
 		else:
@@ -966,7 +972,7 @@ class ButtJointMid(Pathgroup):
 				holerad = 4.2/2
 	
 			if holes:
-				self.add(HoleLine(start+parallel*hole_length/2 + perp*thickness/2, end - parallel*hole_length/2 + perp*thickness/2, num_holes,  holerad))
+				self.add(HoleLine(start+parallel*hole_length/2 + perp*(thickness/2-hole_offset), end - parallel*hole_length/2 + perp*(thickness/2-hole_offset), num_holes,  holerad))
 	
 			if depression:
 				self.add(FilledRect(	
