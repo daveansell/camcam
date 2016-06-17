@@ -468,19 +468,18 @@ class Path(object):
 				newpath.points.append(p)
 				return newpath
 	#	mirrored=1
-		print "OFFSET PATH"
 		if hasattr(self.parent,'tag'):
-			print "face="+self.parent.tag
-		print "self.mirrored="+str(self.mirrored)	
 		if side=='in':
 #			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
-			if thisdir=='cw':# and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
-				side='right'
-			else:
+#			if thisdir=='cw':# and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
+			if config['direction']=='cw' and self.mirrored>0 or config['direction']=='ccw' and not self.mirrored>0:
 				side='left'
+			else:
+				side='right'
 		elif side=='out':
 #			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
-			if thisdir=='cw':# and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
+#			if thisdir=='cw':# and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
+			if config['direction']=='cw' and self.mirrored>0 or config['direction']=='ccw' and not self.mirrored>0:
 				side='left'
 			else:
 				side='right'
@@ -853,7 +852,7 @@ class Path(object):
 		if hasattr(self,'__render__') and callable(self.__render__):
 			self.__render__(config)
 		finalpass=False
-		print "RENDER"+str(config['side'])
+#		print self
 		if config['side']=='in' or config['side']=='out':
 			side = config['side']				
 			c =copy.copy(config)
