@@ -830,10 +830,11 @@ class ArbitraryBox(Part):
 			part.add_border(path)
 
 		for joint in face['internal_joints']:
-			if (joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal'])*face['good_direction'] <0:
+			if (joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']) <0:
 				cutside='right'
 			else:
 				cutside='left'
+			
 			if 'isback' in face and face['isback']:
 				if  cutside=='left':
 					cutside= 'right'
