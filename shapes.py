@@ -457,7 +457,6 @@ class FilledRect(Pathgroup):
 			if rad<0:
 				rad=0
 			diff = step*i
-			print "width="+str(self.width-diff*2)+" height="+str(self.height-diff*2) 
 			self.add(Rect(self.pos, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in'))
 #			self.add(RoundedRect(self.pos, rad=rad, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in'))
 
@@ -924,7 +923,7 @@ class ButtJoint(list):
 		if abs(extra)>0 and startmode == 'on' and lastcorner != 'off':
 			self.append(PSharp(start))
 		self.append(PSharp(start+extra*perp))
-		self.append(PSharp((start+end)/2+extra*perp))
+#		self.append(PSharp((start+end)/2+extra*perp))
 		self.append(PSharp(end+extra*perp))
 
 		if startmode == 'on' and nextcorner!='off' and  abs(extra)>0:
