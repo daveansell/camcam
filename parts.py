@@ -930,26 +930,29 @@ class Fan(Pathgroup):
 			self.add(RoundSpeakerGrill(V(0,0), d['centrerad'], holerad, spacing))
 
 		elif 'no_hole' not in config or not config['no_hole']:
+			print "FAN HOLE"
 			if 'centre_limit' in d:
+				print "CENTRE LIMIT"
 				o = math.sqrt(d['centrerad']**2 - d['centre_limit']**2)
 				cutout=self.add(Path(side='in', closed=True))
 				cutout.add_point(V(o,d['centre_limit']), 'sharp')
-				cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
+#				cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
 				cutout.add_point(V(d['centre_limit'],o), 'sharp')
 				
 				cutout.add_point(V(d['centre_limit'],-o), 'sharp')
-				cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
+#				cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
 				cutout.add_point(V(o,-d['centre_limit']), 'sharp')
 	
 				cutout.add_point(V(-o,-d['centre_limit']), 'sharp')
-				cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
+#				cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
 				cutout.add_point(V(-d['centre_limit'],-o), 'sharp')
 	
 				cutout.add_point(V(-d['centre_limit'],o), 'sharp')
-				cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
+#				cutout.add_point(V(0,0), 'aroundcurve', radius=d['centrerad'], direction='ccw')
 				cutout.add_point(V(-o,d['centre_limit']), 'sharp')
 			else:
 				self.add(Hole(V(0,0), rad=d['centrerad']))
+			print self.paths
 		if 'tapped_holes' in config and config['tapped_holes']:
 			self.add(Hole(V(d['hole_off'],d['hole_off']), d['threadRad']))
 			self.add(Hole(-V(d['hole_off'],d['hole_off']), d['threadRad']))
