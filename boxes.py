@@ -729,7 +729,7 @@ class ArbitraryBox(Part):
 
 	def get_border(self, part, f, face, mode):
 	 	if mode == 'internal':
-                        path = Path(closed=True, side='out')
+                        path = Path(closed=True, side='in')
          	else:
                         path = Path(closed=True, side='out')
 		simplepath = Path(closed=True, side='on')
@@ -791,7 +791,7 @@ class ArbitraryBox(Part):
 							part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=self.fudge, hole_offset=face['hole_offset'][scount]))
 							if not(lastcorner == 'off' and corner=='off'):
 								nointersect==True
-								if scount==0:
+								if p==0:
 									firstnointersect=True
 					else:
 
@@ -828,6 +828,7 @@ class ArbitraryBox(Part):
 			part.add(path)
 		else:
 			part.add_border(path)
+		part.tag = self.name+"_"+f
 
 		for joint in face['internal_joints']:
 			if (joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']) <0:
@@ -847,7 +848,6 @@ class ArbitraryBox(Part):
 				part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], butt_holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes'], joint_type='convex', fudge= self.fudge))
 			else:
 				part.add(FingerJointMid( joint['from'], joint['to'], cutside,'internal',  joint['corners'], joint['corners'], joint['tab_length'], joint['otherface']['thickness'], 0, prevmode, nextmode))
-
 	def set_wood_factor(self, face):
 		if face['wood_direction'].dot(face['normal'])>0:
 			face['wood_factor']=1
