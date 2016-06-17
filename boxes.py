@@ -742,7 +742,9 @@ class ArbitraryBox(Part):
 			cutside='left'
 		else:
 			cutside='right'
+		firstnointersect=False
          	for point in face['ppoints']:
+			nointersect = False
 			lastpoint = face['ppoints'][(p-1)%len(face['sides'])]
 			scount = (p)%len(face['sides'])
              		s = face['sides'][scount]
@@ -771,19 +773,26 @@ class ArbitraryBox(Part):
 						corner = self.other_side_mode(face['corners'][scount])
 					else:
 						corner = face['corners'][scount]
+					lastcorner = face['corners'][(scount-1)%len(face['corners'])]
+					nextcorner = face['corners'][(scount+1)%len(face['corners'])]
+
 					if face['joint_mode'][scount]=='butt':
 						if angle==0:
 							if cutside=='left' and joint_type=='concave':
                                                                 cutside='right'
                                                         if cutside=='right' and joint_type=='concave':
                                                                 cutside='left'
-							newpoints = ButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = self.fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount])
+							newpoints = ButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = self.fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner)
 							if face['cut_from']<0:
 								if  cutside=='left':
 									cutside= 'right'
 								else:
 									cutside='left'
 							part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=self.fudge, hole_offset=face['hole_offset'][scount]))
+							if not(lastcorner == 'off' and corner=='off'):
+								nointersect==True
+								if scount==0:
+									firstnointersect=True
 					else:
 
 
@@ -804,14 +813,14 @@ class ArbitraryBox(Part):
 							if cutside=='right' and joint_type=='concave':	
 								cutside='left'
 							newpoints = FingerJoint(lastpoint, point, cutside, 'external', corner, corner, face['tab_length'][scount], face['thickness'], 0, self.fudge)
-			if first or len(newpoints)<2:
+			if first or len(newpoints)<2 or nointersect:
 				first = False
 				path.add_points(newpoints)
 			else:
 				path.add_points_intersect(newpoints)
 			p += 1
 
-		if len(newpoints) >1:
+		if len(newpoints) >1 and not firstnointersect:
 			path.close_intersect()
 		simplepath.add_points(simplepoints)
 	 #	part.add(simplepath)

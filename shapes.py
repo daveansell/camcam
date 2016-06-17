@@ -914,17 +914,20 @@ class ButtJoint(list):
 		elif (startmode == 'on') and (joint_type=='convex') :
 			extra=depth
 		elif (startmode == 'off') and (joint_type=='concave') :
-			extra=thickness-depth
+			extra=-thickness+depth
 		elif (startmode == 'on') and (joint_type=='concave') :
                         extra=0
 		if startmode == 'straight':
 			extra=0
-		if startmode == 'on' or extra==0:
+		lastcorner = config['lastcorner']
+		nextcorner = config['nextcorner']
+		if abs(extra)>0 and startmode == 'on' and lastcorner != 'off':
 			self.append(PSharp(start))
-		if abs(extra)>0:
-			self.append(PSharp(start+extra*perp))
-			self.append(PSharp(end+extra*perp))
-		if startmode == 'on' or extra==0:
+		self.append(PSharp(start+extra*perp))
+		self.append(PSharp((start+end)/2+extra*perp))
+		self.append(PSharp(end+extra*perp))
+
+		if startmode == 'on' and nextcorner!='off' and  abs(extra)>0:
 			self.append(PSharp(end))
 
 class ButtJointMid(Pathgroup):
@@ -951,7 +954,6 @@ class ButtJointMid(Pathgroup):
 			hole_offset = config['hole_offset']
 		else:
 			hole_offset = 0
-		print "HOle offset="+str(hole_offset)
 		if num_holes>0:
 	                hole_length = (end-start).length()/num_holes
 		else:
@@ -970,14 +972,19 @@ class ButtJointMid(Pathgroup):
 	                        holerad = config['holerad']
 			else:
 				holerad = 4.2/2
-	
+			if joint_type=='convex':
+				holepos = thickness/2-hole_offset
+				deppos = 0
+			else:
+				holepos = thickness/2+hole_offset
+				deppos = 0
 			if holes:
-				self.add(HoleLine(start+parallel*hole_length/2 + perp*(thickness/2-hole_offset), end - parallel*hole_length/2 + perp*(thickness/2-hole_offset), num_holes,  holerad))
+				self.add(HoleLine(start+parallel*hole_length/2 + perp*(holepos), end - parallel*hole_length/2 + perp*(holepos), num_holes,  holerad))
 	
 			if depression:
 				self.add(FilledRect(	
-						bl = start-parallel*fudge - perp*fudge, 
-						tr = end+perp*(thickness+fudge)+parallel*fudge, 
+						bl = start-parallel*fudge - perp*(-deppos+fudge), 
+						tr = end+perp*(thickness+fudge+deppos)+parallel*fudge, 
 						z1 = -depth, side='in'))
 
 
