@@ -791,8 +791,8 @@ class ArbitraryBox(Part):
 							part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=self.fudge, hole_offset=face['hole_offset'][scount]))
 							if not(lastcorner == 'off' and corner=='off'):
 								nointersect==True
-								if p==0:
-									firstnointersect=True
+						#		if p==0:
+							#		firstnointersect=True
 					else:
 
 
