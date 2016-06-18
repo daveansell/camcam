@@ -56,6 +56,10 @@ You can calibrate these with a rectangle or a named circle of known width and he
 		if 'p_mm' in config:
 			self.scalex = config['ppm']
 			self.scaley = config['ppm']
+		if 'item_type' in config and config['item_type'] is not False:
+			item_type = config['item_type']
+		else:
+			item_type = 'path'
 
 		with open( filename, 'r') as infile: 
 			tree = etree.parse(infile) 
@@ -87,9 +91,11 @@ You can calibrate these with a rectangle or a named circle of known width and he
 				scaley = float(self.cal_height) / float(calpaths[0].attrib['height'])
 				cal_centrex = float(calpaths[0].attrib['x'])+float(calpaths[0].attrib['width'])/2
 				cal_centrey = float(calpaths[0].attrib['y'])+ float(calpaths[0].attrib['height'])/2
+				print "scalex = "+str(scalex)+" scaley = "+str(scaley)+ " cal_centrex="+str(cal_centrex)+ " cal_centrey="+str(cal_centrey)
 
-
-		if paths=='all':
+		if item_type == 'circle':
+			outpaths= tree.xpath('.//svg:circle',namespaces=nsmap)
+		elif paths=='all':
 			outpaths= tree.xpath('.//svg:path',namespaces=nsmap)
 		elif type(paths) is list:
 			for path in paths:
@@ -109,13 +115,19 @@ You can calibrate these with a rectangle or a named circle of known width and he
 			cal = V(cal_centrex, cal_centrey)
 			print p.tag
 			print p.attrib
-			pos = V(float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cx']), float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cy']))
-			pos+=off
-			pos -=cal
-			print off
-			pos = V(pos[0]*scalex, -pos[1]*scaley)			
-			print pos
-			self.append(pos)
+			pos = False
+			if('{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cx' in p.attrib):
+				pos = V(float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cx']), float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cy']))
+			elif('cx' in p.attrib):
+				pos = V(float(p.attrib['cx']), float(p.attrib['cy']))
+			if pos is not False:
+				print pos
+				pos+=off
+				pos -=cal
+				print off
+				pos = V(pos[0]*scalex, -pos[1]*scaley)			
+				print pos
+				self.append(pos)
 #V( (float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cx'])+off[0]-cal_centrex)*scalex, 
 #					(float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cy'])+off[1]-cal_centrex)*scaley))
 # at the moment this just treats everything as a line so add lots of points
