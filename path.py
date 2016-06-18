@@ -468,7 +468,6 @@ class Path(object):
 				newpath.points.append(p)
 				return newpath
 	#	mirrored=1
-		if hasattr(self.parent,'tag'):
 		if side=='in':
 #			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
 #			if thisdir=='cw':# and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
