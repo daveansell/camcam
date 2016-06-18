@@ -1728,7 +1728,7 @@ class Module(Plane):
 		else:
 			fromedge=16
 		if('holesY' in config):
-			holesY=config['holesX']
+			holesY=config['holesY']
 		else:
 			holesY=False
 		if('holesX' in config):
