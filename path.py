@@ -469,19 +469,28 @@ class Path(object):
 				return newpath
 	#	mirrored=1
 		if side=='in':
-#			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
+			#if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
 #			if thisdir=='cw':# and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
-			if config['direction']=='cw' and self.mirrored>0 or config['direction']=='ccw' and not self.mirrored>0:
-				side='left'
-			else:
+#			if config['direction']=='cw' and self.mirrored>0 or config['direction']=='ccw' and not self.mirrored>0:
+			if ((thisdir=='cw') == (self.mirrored>0))==((thisdir=='cw')):
 				side='right'
+			else:
+				side='left'
 		elif side=='out':
-#			if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
-#			if thisdir=='cw':# and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
-			if config['direction']=='cw' and self.mirrored>0 or config['direction']=='ccw' and not self.mirrored>0:
+			#if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
+#			if thisdir=='cw' and self.mirrored>0 or thisdir=='cw' and not self.mirrored>0:
+#			if config['direction']=='cw' and self.mirrored>0 or config['direction']=='ccw' and not self.mirrored>0:
+			if ((thisdir=='cw')  == (self.mirrored>0))==((thisdir=='cw')):
 				side='left'
 			else:
 				side='right'
+			if hasattr(self.parent, 'tag'):
+				print self.parent.tag
+			elif hasattr(self.parent.parent, 'tag'):
+				print "p "+str(self.parent.parent.tag)
+			elif hasattr(self.parent.parent.parent, 'tag'):
+				print "p "+str(self.parent.parent.parent.tag)
+			print "config['direction']="+str(config['direction'])+" thisdir="+str(thisdir)+" self.mirrored="+str(self.mirrored)+" side="+str(side)
 
 		for p,point in enumerate(pointlist):
 
