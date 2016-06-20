@@ -2258,7 +2258,7 @@ class Plane(Part):
 				out+='\n\n'+output[key]
 			elif self.modeconfig['mode'] in self.output_modes and self.modeconfig['group']!=False:
 				self.output_modes[self.modeconfig['mode']](self, part.name,key, output[key], part.border, config)
-
+		key = ''
 		if self.modeconfig['mode']=='svg' or self.modeconfig['mode']=='scr':	
 		#	f=open(parent.name+"_"+self.name+"_"+part.name)
 			if part.border != None:
