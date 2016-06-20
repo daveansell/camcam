@@ -920,15 +920,21 @@ class ButtJoint(list):
 			extra=0
 		lastcorner = config['lastcorner']
 		nextcorner = config['nextcorner']
-		if abs(extra)>0 and startmode == 'on' and lastcorner != 'off':
+		print " startmode="+startmode+" lastcorner="+str(lastcorner)+" nextcorner="+nextcorner
+#		if abs(extra)>0 and startmode == 'on' and lastcorner != 'off':
+		if abs(extra)>0 and not  (startmode == 'off' and lastcorner == 'off'):
 			self.append(PSharp(start))
+			print start
 		self.append(PSharp(start+extra*perp))
 #		self.append(PSharp((start+end)/2+extra*perp))
 		self.append(PSharp(end+extra*perp))
+		print start+extra*perp
+		print end+extra*perp
 
-		if startmode == 'on' and nextcorner!='off' and  abs(extra)>0:
+#		if startmode == 'on' and nextcorner!='off' and  abs(extra)>0:
+		if  abs(extra)>0 and not (startmode == 'off' and nextcorner == 'off'):
 			self.append(PSharp(end))
-
+			print end
 class ButtJointMid(Pathgroup):
 	def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode, **config):
 		self.init(config)
