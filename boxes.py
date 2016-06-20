@@ -775,7 +775,7 @@ class ArbitraryBox(Part):
 						corner = face['corners'][scount]
 					lastcorner = face['corners'][(scount-1)%len(face['corners'])]
 					nextcorner = face['corners'][(scount+1)%len(face['corners'])]
-
+					print "FACE="+str(f)
 					if face['joint_mode'][scount]=='butt':
 						if angle==0:
 							if cutside=='left' and joint_type=='concave':
