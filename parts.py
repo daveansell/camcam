@@ -37,7 +37,7 @@ class Switch(Part):
 			for l in config['layer_config'].keys():
 				task =  config['layer_config'][l]
 				if task=='clearance':
-					self.add(Hole(V(0,0), rad=21/2), layers=l)
+					self.add(Hole(V(0,0), rad=23/2), layers=l)
 				if task=='doubleflat':
 					self.add(CircleChord(V(0,0), 13.6/2, 12.9, side='in'), layers=l)
 #					self.add(DoubleFlat(V(0,0),13.6/2, 12.9/2, side='in'), layers=l)
@@ -49,6 +49,7 @@ class Switch(Part):
 					self.add(Hole(V(0,0), rad=16/2, z1=-config['counterbore_depth']), layers=l)
 					self.add(Hole(V(0,0), rad=19/2, z1=-config['counterbore_depth']), layers=l)
 					self.add(Hole(V(0,0), rad=21/2, z1=-config['counterbore_depth']), layers=l)
+					self.add(Hole(V(0,0), rad=23/2, z1=-config['counterbore_depth']), layers=l)
 					self.add(CircleChord(V(0,0), 13.6/2, 12.9, side='in'), layers=l)
 
 		if config['switch_type']== 'rocker':
