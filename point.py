@@ -1035,7 +1035,6 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 	def offset(self, side, distance, direction):
 		self.checkArc()
 		t=copy.copy(self)
-		print "side="+str(side)+" self.direction="+str(self.direction)
 		if (side=='left' and self.direction=='cw' or side=='right' and self.direction=='ccw')!=self.invert:
 			t.radius+=distance
 		else:

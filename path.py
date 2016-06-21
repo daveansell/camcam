@@ -484,13 +484,6 @@ class Path(object):
 				side='left'
 			else:
 				side='right'
-			if hasattr(self.parent, 'tag'):
-				print self.parent.tag
-			elif hasattr(self.parent.parent, 'tag'):
-				print "p "+str(self.parent.parent.tag)
-			elif hasattr(self.parent.parent.parent, 'tag'):
-				print "p "+str(self.parent.parent.parent.tag)
-			print "config['direction']="+str(config['direction'])+" thisdir="+str(thisdir)+" self.mirrored="+str(self.mirrored)+" side="+str(side)
 
 		for p,point in enumerate(pointlist):
 
