@@ -749,7 +749,14 @@ class ArbitraryBox(Part):
 			scount = (p)%len(face['sides'])
              		s = face['sides'][scount]
 			side = self.sides[s]
+			lasts = face['sides'][(scount-1)%len(face['sides'])]
+			nexts = face['sides'][(scount+1)%len(face['sides'])]
+			lastsi = self.sides[lasts]
+			nextsi = self.sides[nexts]
+			
 			(thisside, otherside) = self.get_side_parts(side, f)
+			(nextside, nextotherside) = self.get_side_parts(nextsi, f)
+			(lastside, lastotherside) = self.get_side_parts(lastsi, f)
 			if otherside!=None and otherside[0]!='_internal':
 				otherface = self.faces[otherside[0]]
 			elif  otherside!=None and otherside[0]=='_internal':
@@ -782,7 +789,22 @@ class ArbitraryBox(Part):
                                                                 cutside='right'
                                                         if cutside=='right' and joint_type=='concave':
                                                                 cutside='left'
-							newpoints = ButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = self.fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner)
+							if nextotherside is None or nextotherside[0]=='_internal':
+								next_offset = 0
+							else:
+								if nextside[6]=='concave' and nextcorner=='off':
+									next_offset = self.faces[nextotherside[0]]['thickness']
+								else:
+									next_offset = 0
+							if lastotherside is None or lastotherside[0]=='_internal':
+								last_offset = 0
+							else:
+								if lastside[6]=='concave' and lastcorner=='off':
+	                                                                last_offset = self.faces[lastotherside[0]]['thickness']
+	                                                        else:
+	                                                                last_offset = 0
+
+							newpoints = ButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = self.fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner, last_offset=last_offset, next_offset=next_offset)
 							if face['cut_from']<0:
 								if  cutside=='left':
 									cutside= 'right'

@@ -908,33 +908,42 @@ class ButtJoint(list):
                                 depth = config['butt_depression']
                         else:
                                 depression=False
+		if 'last_offset' in config and config['last_offset']!=0:
+			last_offset = parallel*config['last_offset']
+		else:
+			last_offset = parallel*0
+		if 'next_offset' in config and config['next_offset']!=0:
+                        next_offset = parallel*config['next_offset']
+                else:
+                        next_offset = parallel*0
+
 		if (startmode == 'off') and (joint_type=='convex') :
 			extra=thickness
 		elif (startmode == 'on') and (joint_type=='convex') :
 			extra=depth
 		elif (startmode == 'off') and (joint_type=='concave') :
-			extra=-thickness+depth
+			extra=thickness-depth
 		elif (startmode == 'on') and (joint_type=='concave') :
                         extra=0
 		if startmode == 'straight':
 			extra=0
 		lastcorner = config['lastcorner']
 		nextcorner = config['nextcorner']
-		print " startmode="+startmode+" lastcorner="+str(lastcorner)+" nextcorner="+nextcorner
+
 #		if abs(extra)>0 and startmode == 'on' and lastcorner != 'off':
-		if abs(extra)>0 and not  (startmode == 'off' and lastcorner == 'off'):
-			self.append(PSharp(start))
-			print start
-		self.append(PSharp(start+extra*perp))
+		if abs(extra)>0 and  (startmode == 'off') and joint_type=='concave':
+			self.append(PSharp(start+last_offset+perp*thickness))
+		elif abs(extra)>0 and not  (startmode == 'off' and lastcorner == 'off'):
+			self.append(PSharp(start+last_offset))
+		self.append(PSharp(start+last_offset+extra*perp))
 #		self.append(PSharp((start+end)/2+extra*perp))
-		self.append(PSharp(end+extra*perp))
-		print start+extra*perp
-		print end+extra*perp
+		self.append(PSharp(end-next_offset+extra*perp))
 
 #		if startmode == 'on' and nextcorner!='off' and  abs(extra)>0:
-		if  abs(extra)>0 and not (startmode == 'off' and nextcorner == 'off'):
-			self.append(PSharp(end))
-			print end
+		if  abs(extra)>0 and (startmode == 'off') and joint_type=='concave':
+			self.append(PSharp(end-next_offset+perp*thickness))
+		elif  abs(extra)>0 and not (startmode == 'off' and nextcorner == 'off'):
+			self.append(PSharp(end-next_offset))
 class ButtJointMid(Pathgroup):
 	def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode, **config):
 		self.init(config)
