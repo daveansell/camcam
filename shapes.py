@@ -929,7 +929,6 @@ class ButtJoint(list):
 			extra=0
 		lastcorner = config['lastcorner']
 		nextcorner = config['nextcorner']
-
 #		if abs(extra)>0 and startmode == 'on' and lastcorner != 'off':
 		if abs(extra)>0 and  (startmode == 'off') and joint_type=='concave':
 			self.append(PSharp(start+last_offset+perp*thickness))

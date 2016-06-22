@@ -789,6 +789,7 @@ class ArbitraryBox(Part):
                                                                 cutside='right'
                                                         if cutside=='right' and joint_type=='concave':
                                                                 cutside='left'
+
 							if nextotherside is None or nextotherside[0]=='_internal':
 								next_offset = 0
 							else:
@@ -851,18 +852,26 @@ class ArbitraryBox(Part):
 		else:
 			part.add_border(path)
 		part.tag = self.name+"_"+f
-
+	# iterate through the internal joints
 		for joint in face['internal_joints']:
-			if (joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']) <0:
+			if (joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']*face['wood_direction']) <0:
 				cutside='right'
 			else:
 				cutside='left'
 			
 			if 'isback' in face and face['isback']:
+				print "cutside->isback"
 				if  cutside=='left':
 					cutside= 'right'
 				else:
 					cutside='left'
+			if 'force_swap_internal' in face and face['force_swap_internal']:
+				print "cutside->force_swap_internal"
+				if  cutside=='left':
+					cutside= 'right'
+				else:
+					cutside='left'
+			print "f="+f+" otherf="+joint['otherf']+" cutside="+str(cutside)+" (joint['to']-joint['from'])="+str( (joint['to']-joint['from']))+" joint['otherface']['normal']*joint['otherface']['wood_direction'] "+str(joint['otherface']['normal']*joint['otherface']['wood_direction'])+" face['normal']="+str(face['cut_from'] )+ " total="+ str((joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']*face['wood_direction']))+" wood_factor="+str(face['wood_direction'])+" "+str(face['good_direction'])+" cut_from="+str(face['cut_from'])
 
 			prevmode = 'on'
 			nextmode = 'on'
