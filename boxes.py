@@ -746,6 +746,8 @@ class ArbitraryBox(Part):
          	for point in face['ppoints']:
 			nointersect = False
 			lastpoint = face['ppoints'][(p-1)%len(face['sides'])]
+			lastlastpoint = face['ppoints'][(p-2)%len(face['sides'])]
+			nextpoint = face['ppoints'][(p+1)%len(face['sides'])]
 			scount = (p)%len(face['sides'])
              		s = face['sides'][scount]
 			side = self.sides[s]
@@ -805,7 +807,7 @@ class ArbitraryBox(Part):
 	                                                        else:
 	                                                                last_offset = 0
 
-							newpoints = ButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = self.fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner, last_offset=last_offset, next_offset=next_offset)
+							newpoints = ButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = self.fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner, last_offset=last_offset, next_offset=next_offset, lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), nextparallel = self.parallel(lastpoint, point, point, nextpoint))
 							if face['cut_from']<0:
 								if  cutside=='left':
 									cutside= 'right'
@@ -860,18 +862,16 @@ class ArbitraryBox(Part):
 				cutside='left'
 			
 			if 'isback' in face and face['isback']:
-				print "cutside->isback"
 				if  cutside=='left':
 					cutside= 'right'
 				else:
 					cutside='left'
 			if 'force_swap_internal' in face and face['force_swap_internal']:
-				print "cutside->force_swap_internal"
 				if  cutside=='left':
 					cutside= 'right'
 				else:
 					cutside='left'
-			print "f="+f+" otherf="+joint['otherf']+" cutside="+str(cutside)+" (joint['to']-joint['from'])="+str( (joint['to']-joint['from']))+" joint['otherface']['normal']*joint['otherface']['wood_direction'] "+str(joint['otherface']['normal']*joint['otherface']['wood_direction'])+" face['normal']="+str(face['cut_from'] )+ " total="+ str((joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']*face['wood_direction']))+" wood_factor="+str(face['wood_direction'])+" "+str(face['good_direction'])+" cut_from="+str(face['cut_from'])
+#			print "f="+f+" otherf="+joint['otherf']+" cutside="+str(cutside)+" (joint['to']-joint['from'])="+str( (joint['to']-joint['from']))+" joint['otherface']['normal']*joint['otherface']['wood_direction'] "+str(joint['otherface']['normal']*joint['otherface']['wood_direction'])+" face['normal']="+str(face['cut_from'] )+ " total="+ str((joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']*face['wood_direction']))+" wood_factor="+str(face['wood_direction'])+" "+str(face['good_direction'])+" cut_from="+str(face['cut_from'])
 
 			prevmode = 'on'
 			nextmode = 'on'
@@ -884,6 +884,12 @@ class ArbitraryBox(Part):
 			face['wood_factor']=1
 		else:
 			face['wood_factor']=-1
+
+	def parallel(self, p0,p1, p2,p3):
+		if abs((p1-p0).normalize().dot((p3-p2).normalize())-1)<0.00001:
+			return True
+		else:
+			return False
 	
 
 	def find_direction(self, points):
