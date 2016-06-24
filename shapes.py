@@ -916,6 +916,14 @@ class ButtJoint(list):
                         next_offset = parallel*config['next_offset']
                 else:
                         next_offset = parallel*0
+		if 'nextparallel' in config:
+			nextparallel = config['nextparallel']
+		else:
+			nextparallel = False
+		if 'lastparallel' in config:
+                        lastparallel = config['lastparallel']
+                else:
+                        lastparallel = False
 
 		if (startmode == 'off') and (joint_type=='convex') :
 			extra=thickness
@@ -932,7 +940,7 @@ class ButtJoint(list):
 #		if abs(extra)>0 and startmode == 'on' and lastcorner != 'off':
 		if abs(extra)>0 and  (startmode == 'off') and joint_type=='concave':
 			self.append(PSharp(start+last_offset+perp*thickness))
-		elif abs(extra)>0 and not  (startmode == 'off' and lastcorner == 'off'):
+		elif abs(extra)>0 and not  (startmode == 'off' and lastcorner == 'off') and not lastparallel:
 			self.append(PSharp(start+last_offset))
 		self.append(PSharp(start+last_offset+extra*perp))
 #		self.append(PSharp((start+end)/2+extra*perp))
@@ -941,7 +949,7 @@ class ButtJoint(list):
 #		if startmode == 'on' and nextcorner!='off' and  abs(extra)>0:
 		if  abs(extra)>0 and (startmode == 'off') and joint_type=='concave':
 			self.append(PSharp(end-next_offset+perp*thickness))
-		elif  abs(extra)>0 and not (startmode == 'off' and nextcorner == 'off'):
+		elif  abs(extra)>0 and not (startmode == 'off' and nextcorner == 'off') and not nextparallel:
 			self.append(PSharp(end-next_offset))
 class ButtJointMid(Pathgroup):
 	def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode, **config):
