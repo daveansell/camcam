@@ -848,6 +848,7 @@ class ArbitraryBox(Part):
 		if len(newpoints) >1 and not firstnointersect:
 			path.close_intersect()
 		simplepath.add_points(simplepoints)
+		path.simplify_points()
 	 #	part.add(simplepath)
 		if mode=='internal':
 			part.add(path)
