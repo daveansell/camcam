@@ -1520,6 +1520,24 @@ class RoundedCorner(Path):
 		self.add_point(PIncurve(pos, radius=outerrad))
 		
 
+
+class RectAlong(Path):
+	def __init__(self, start, end, width, rad, **config):
+		self.init(config)
+		para = (end-start).normalize()
+                perp = rotate(para, 90)
+		w=width/2
+		self.closed=True
+		self.add_point(PIncurve(start+perp*w-para*rad, radius=rad))
+		self.add_point(start+perp*w)
+		self.add_point(end+perp*w)
+		self.add_point(PIncurve(end+perp*w+para*rad, radius=rad))
+		self.add_point(PIncurve(end-perp*w+para*rad, radius=rad))
+		self.add_point(end-perp*w)
+		self.add_point(start-perp*w)
+		self.add_point(PIncurve(start-perp*w-para*rad, radius=rad))
+
+
 class CutFunction(list):
 	def __init__(self, start, end, func, **config):
 		return cut_function(start, end, func, config)
@@ -1814,11 +1832,11 @@ class Module(Plane):
 				holesY=4
 			self.backgap =0
 		
-		self.width = width
-		self.height = height
 		if orientation!='landscape':
 			width,height = height,width
 			holesX, holesY = holesY, holesX
+		self.width = width
+		self.height = height
 
 		edge= RoundedRect(bl=V(0,0), tr=V(width, height), rad=radius, side='out')
 		if not ('no_perspex' in config and not config['no_perspex']):
