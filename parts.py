@@ -104,8 +104,8 @@ class Knob(Part):
 					stepper = self.add(Stepper(V(0,0), 'NEMA1.7', mode='justshaft', layer=l, length=43))
 		self.magnetometer_holder = self.add(Part(layer='_magnetometer_holder', name='_magnetometer_holder', border=RoundedRect(V(0,0), centred=True, width=stepper.d['width'], height=stepper.d['width'], rad=stepper.d['corner_rad'], cutter='2mm_endmill'))) 
 		bolt_spacing = 11
-		bolt_y = 6
-		solder_y = -6
+		bolt_y = 7.3-3.3/2
+		solder_y = -8
 		solder_width = 2.54*5
 		self.magnetometer_holder.add(Hole(V(0,0), rad=8/2))
 		self.magnetometer_holder.add(Hole(V(bolt_spacing/2, bolt_y), rad=2.5/2))
