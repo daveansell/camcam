@@ -559,16 +559,20 @@ class Path(object):
 				self.boundingBox['bl'][1]=min(self.boundingBox['bl'][1],p[1])
 				self.boundingBox['tr'][0]=max(self.boundingBox['tr'][0],p[0])
 				self.boundingBox['tr'][1]=max(self.boundingBox['tr'][1],p[1])
-			self.boundingBox['tr']=V(self.boundingBox['tr'][0],self.boundingBox['tr'][1])
-			self.boundingBox['bl']=V(self.boundingBox['bl'][0],self.boundingBox['bl'][1])
-			self.centre=(self.boundingBox['bl']+self.boundingBox['tr'])/2
-			self.polygon[resolution]=ret
-			self.changed[resolution]=False
+			if('tr' in self.boundingBox):
+				self.boundingBox['tr']=V(self.boundingBox['tr'][0],self.boundingBox['tr'][1])
+				self.boundingBox['bl']=V(self.boundingBox['bl'][0],self.boundingBox['bl'][1])
+				self.centre=(self.boundingBox['bl']+self.boundingBox['tr'])/2
+				self.polygon[resolution]=ret
+				self.changed[resolution]=False
+					
 			return ret
 
 	def in_bounding_box(self,point):
 		return point[0]>=self.boundingBox['bl'][0] and point[1]>=self.boundingBox['bl'][1] and point[0]<=self.boundingBox['tr'][0] and point[1]<=self.boundingBox['tr'][1]
 	def intersect_bounding_box(self,bbox):
+		if 'tr' not in bbox or 'bl' not in bbox:
+			return False
 		if self.in_bounding_box(bbox['tr']) or self.in_bounding_box(bbox['bl']) or self.in_bounding_box([bbox['tr'][0],bbox['bl'][1]]) or self.in_bounding_box([bbox['bl'][0],bbox['tr'][1]]):
 			return True
 		else:
@@ -2186,6 +2190,8 @@ class Plane(Part):
 					lastcutter=k
 			if path.obType=="Pathgroup":
 				for p in path.get_paths(config):
+					print part
+					print part.name
 					if not hasattr(part, 'border') or part.ignore_border or part.contains(p)>-1:
 						(k,pa)=p.render(config)
 						if self.modeconfig['group'] is False:
