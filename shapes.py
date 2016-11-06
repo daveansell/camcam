@@ -1473,17 +1473,19 @@ class ArcRect(Path):
 		self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a1]}))
 		self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
 		self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a2]}))
-		self.add_point(PIncurve(pos+V(minorrad, rad+w), radius=minorrad, transform={'rotate':[pos, a2]}))
-		self.add_point(PSharp(pos+V(minorrad, rad+w-minorrad), transform={'rotate':[pos, a2]}))
-		self.add_point(PSharp(pos+V(minorrad, rad-w+minorrad), transform={'rotate':[pos, a2]}))
-		self.add_point(PIncurve(pos+V(minorrad, rad-w), radius=minorrad, transform={'rotate':[pos, a2]}))
+		if(minorrad):
+			self.add_point(PIncurve(pos+V(minorrad, rad+w), radius=minorrad, transform={'rotate':[pos, a2]}))
+			self.add_point(PSharp(pos+V(minorrad, rad+w-minorrad), transform={'rotate':[pos, a2]}))
+			self.add_point(PSharp(pos+V(minorrad, rad-w+minorrad), transform={'rotate':[pos, a2]}))
+			self.add_point(PIncurve(pos+V(minorrad, rad-w), radius=minorrad, transform={'rotate':[pos, a2]}))
 
 		self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a2]}))
 		self.add_point(PArc(pos+V(0,0), radius=rad-w, direction='ccw'))
 		self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a1]}))
-		self.add_point(PIncurve(pos+V(-minorrad,rad-w), radius=minorrad, transform={'rotate':[pos, a1]}))
-		self.add_point(PSharp(pos+V(-minorrad, rad-w+minorrad), transform={'rotate':[pos, a1]}))
-		self.add_point(PIncurve(pos+V(-minorrad, rad+w), radius=minorrad, transform={'rotate':[pos, a1]}))
+		if(minorrad):
+			self.add_point(PIncurve(pos+V(-minorrad,rad-w), radius=minorrad, transform={'rotate':[pos, a1]}))
+			self.add_point(PSharp(pos+V(-minorrad, rad-w+minorrad), transform={'rotate':[pos, a1]}))
+			self.add_point(PIncurve(pos+V(-minorrad, rad+w), radius=minorrad, transform={'rotate':[pos, a1]}))
 		self.add_point(PSharp(pos+V(0, rad+w), transform={'rotate':[pos, a1]}))
 
 
