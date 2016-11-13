@@ -102,15 +102,18 @@ class Knob(Part):
 					stepper = self.add(Stepper(V(0,0), 'NEMA1.7', mode='stepper', layer=l, length=43))
 				if task=='shaft':
 					stepper = self.add(Stepper(V(0,0), 'NEMA1.7', mode='justshaft', layer=l, length=43))
-		self.magnetometer_holder = self.add(Part(layer='_magnetometer_holder', name='_magnetometer_holder', border=RoundedRect(V(0,0), centred=True, width=stepper.d['width'], height=stepper.d['width'], rad=stepper.d['corner_rad'], cutter='2mm_endmill'))) 
-		bolt_spacing = 11
+		self.magnetometer_holder = self.add(Part(layer='_magnetometer_holder', name='_magnetometer_holder', border=RoundedRect(V(0,0), centred=True, width=stepper.d['width'], height=stepper.d['width'], rad=stepper.d['corner_rad']), cutter='2mm_endmill')) 
+	#	bolt_spacing = 11
+		bolt_spacing = 8.3
 		bolt_y = 7.3-3.3/2
 		solder_y = -8
 		solder_width = 2.54*5
 		self.magnetometer_holder.add(Hole(V(0,0), rad=8/2))
 		self.magnetometer_holder.add(Hole(V(bolt_spacing/2, bolt_y), rad=2.5/2))
 		self.magnetometer_holder.add(Hole(V(-bolt_spacing/2, bolt_y), rad=2.5/2))
-		self.magnetometer_holder.add(RoundedRect(V(0, solder_y), centred=True, width = solder_width, height=3, z1=-2))
+#		self.magnetometer_holder.add(RoundedRect(V(0, solder_y), centred=True, width = solder_width, height=3, z1=-2))
+		self.magnetometer_holder.add(FourObjects(V(0, 0), Hole(V(0,0), rad=3.3/2), centred=True, width=stepper.d['bolt_sep'], height=stepper.d['bolt_sep'], layers=['_magnetometer_holder']))
+		self.magnetometer_holder.add(RoundedRect(V(0, solder_y), centred=True, width = solder_width, height=3.1, z1=-2, side='in', cutter='2mm_endmill'))
         def _pre_render(self):
                 self.get_plane().add_layer('_magnetometer_holder', 'pvc', 6, colour='#80808080', zoffset=49)
 
@@ -192,7 +195,11 @@ class PiBarn(Part):
 		else:
 			depth = 30
 		self.depth=depth
-		bolt_conf={'clearance_layers':[config['layer']], 'length':50, 'insert_layer':[], 'underinsert_layer':'base'}
+		if('insert_layer' in config):
+			insert_layer = config['insert_layer']
+		else:
+			insert_layer = 'base'
+		bolt_conf={'clearance_layers':[config['layer']], 'length':50, 'insert_layer':[], 'underinsert_layer':insert_layer}
 
 		self.add(RepeatLine(pos+V(-float(x_units)/2*spacing, -float(y_units)/2*spacing), pos+V(float(x_units)/2*spacing, -float(y_units)/2*spacing), x_units+1, Bolt, bolt_conf)).paths
 		self.add(RepeatLine(pos+V(float(x_units)/2*spacing, (-float(y_units)/2+1)*spacing), pos+V(float(x_units)/2*spacing, (float(y_units)/2-1)*spacing), y_units-1, Bolt, bolt_conf))
