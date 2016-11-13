@@ -87,7 +87,7 @@ class Text(Pathgroup):
 				char.add(o)
 				lastc=c
 
-			x+= float(face.glyph.linearHoriAdvance)/1000 + kern
+			x+= self.scale*float(face.glyph.linearHoriAdvance)/1000 + kern
 			prev_glyph = glyph_index
 			self.chars.append(char)
 	def get_length(self, text, face):
