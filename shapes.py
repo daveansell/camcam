@@ -1532,6 +1532,7 @@ class RoundedCorner(Path):
 class RectAlong(Path):
 	def __init__(self, start, end, width, rad, **config):
 		self.init(config)
+		
 		para = (end-start).normalize()
                 perp = rotate(para, 90)
 		w=width/2
