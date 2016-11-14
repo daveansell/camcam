@@ -773,6 +773,12 @@ class LineObjects(Part):
 	"""Copy object :param ob:, :param num: times, between :param a: and :param b:"""
 	def __init__(self, a, b, fromends, num, ob, **config):
 		self.init(config)
+		if 'doends' in config and not config['doends']:
+			starti = 1
+			endi = num -1
+		else:
+			starti = 0
+			endi = num
 		totlength=(b-a).length()
 		length=totlength-2*fromends
 		step=(b-a)/(num-1)
