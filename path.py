@@ -2190,8 +2190,6 @@ class Plane(Part):
 					lastcutter=k
 			if path.obType=="Pathgroup":
 				for p in path.get_paths(config):
-					print part
-					print part.name
 					if not hasattr(part, 'border') or part.ignore_border or part.contains(p)>-1:
 						(k,pa)=p.render(config)
 						if self.modeconfig['group'] is False:
