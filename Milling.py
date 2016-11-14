@@ -425,7 +425,22 @@ class Milling:
                         "stepdown":0.3,
                         "kress_setting":1,
                },
+		
+                "copper":{
+                        "vertfeed":20,
+                        "sidefeed":500,
+                        "stepdown":0.2,
+                        "kress_setting":3,
+			"mill_dir":'down',
+               },
                 "brass":{
+                        "vertfeed":20,
+                        "sidefeed":500,
+                        "stepdown":0.2,
+                        "kress_setting":3,
+			"mill_dir":'down',
+               },
+                "steel":{
                         "vertfeed":20,
                         "sidefeed":500,
                         "stepdown":0.2,
