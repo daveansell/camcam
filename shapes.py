@@ -1816,7 +1816,15 @@ class Module(Plane):
 			orientation=config['orientation']
 		else:
 			orientation='landscape'
-		if size=='A3':
+		if size=='A4':
+			width=297
+			height=210
+			if holesX==False:
+				holesX=3
+			if holesY==False:
+				holesY=2
+			self.backgap=0
+		elif size=='A3':
 			width=420
 			height=297
 			if holesX==False:
