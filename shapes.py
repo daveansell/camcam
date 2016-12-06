@@ -189,7 +189,7 @@ class RepeatEllipse(Part):
 
 class Lines(Path):
 	def __init__(self, points, **config):
-		assert type(points) is list
+#		assert type(points) is list
 		self.init(config)
 		if 'cornertype' in config:
 			cornertype=config['cornertype']
