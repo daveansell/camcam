@@ -253,10 +253,12 @@ class Point(object):
 			s=-1
 		else:
 			s=1
-		if dis<-0.0001:
-			print "Dis is less than 0 dis="+str(dis)+" dr="+str(dr)+" D="+str(D)
+		if dis<0.0001:
+			print "Dis is less than 0 dis="+str(dis)+" dr="+str(dr)+" D="+str(D)+" p1="+str(p1)+" p2="+str(p2)+" centre="+str(centre)
 			return False
 		else:
+			if dis<0:
+				dis=0
 			return centre +	V( (D*d[1]+d[0]*math.sqrt(dis))/dr**2,
 				 (-D*d[0]+d[1]*math.sqrt(dis))/dr**2 )
 	def end(self):
@@ -386,7 +388,7 @@ class PAroundcurve(PSharp):
 			if ret[0].radius>distance:
 				ret[0].radius-=distance
 			else:
-				ret= [PSharp(ret[0].pos)]
+				ret= [PClear(ret[0].pos)]
 		if ret[0].radius <=0:
 			ret[0].radius = 0
 			ret[0].point_type='sharp'
@@ -403,6 +405,9 @@ class PAroundcurve(PSharp):
 	
 
 	def makeSegment(self, config):
+		self.config=config
+		self.dosetup=True
+		self._setup()
 		self.setDirection()
 		if self.last() != None and self.next() !=None:
                         lastpoint=self.lastorigin()
@@ -425,6 +430,8 @@ class PAroundcurve(PSharp):
 
 	def start(self):
 		lastpoint=self.lastorigin()
+		if not self.setup:
+			return self.pos()
 		if not self.cp1==self.pos:
 			return self.lineArcIntersect(self.pos, lastpoint, self.cp1, self.radius)
 		else:
@@ -432,6 +439,8 @@ class PAroundcurve(PSharp):
 
 	def end(self):
 		nextpoint=self.nextorigin()
+		if not self.setup:
+			return self.next().pos
 		if not self.cp1==self.pos:
 			return self.lineArcIntersect(self.pos, nextpoint, self.cp1, self.radius)
 		else:
@@ -449,6 +458,47 @@ class PAroundcurve(PSharp):
 			return op+rotate(vecin,90)
 
 
+class PInsharp(PAroundcurve):
+        def __init__(self, pos, transform=False):
+                """Create a point which will head for point pos and then add an arc around the point centre with a radius=radius. Useful for adding ears around screw holes. if centre is not specified it is assumed it is the same as pos"""
+                self.init()
+                self.pos=Vec(pos)
+                self.point_type='aroundcurve'
+               # self.radius=radius
+                self.direction=False
+                self.transform=transform
+                self.obType="Point"
+		self.config = {'cutterrad':0}
+		self.radius = 0
+		self.cp1=pos
+		self.dosetup=False
+        def copy(self):
+                t= PInsharp( self.pos, self.transform)
+                t.reverse=self.reverse
+		t.lastpoint=self.lastpoint
+		t.nextpoint=self.nextpoint
+		t.forcelastpoint = self.lastpoint
+		t.forcenextpoint = self.nextpoint
+		t.invert = self.invert
+                return t
+	def _setup(self):
+		self.setDirection()
+#		self.direction=self.otherDir(self.direction)
+		if self.dosetup and self.config is not False and  self.last() != None and self.next() !=None:
+			self.setup=True
+                        lastpoint=self.lastorigin()
+                        if lastpoint==self.pos:
+                                lastpoint=self.last().lastorigin()
+                        nextpoint=self.nextorigin()
+                        if nextpoint==self.pos:
+                                nextpoint=self.next().nextorigin()
+                        angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
+                        if abs(angle-180)>0.00001:
+                                d=self.config['original_cutter']['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1- 1.0/math.sin(angle/2/180*math.pi))
+                                self.cp1=self.pos-(((lastpoint-self.pos).normalize()+(nextpoint-self.pos).normalize())/2).normalize()*d
+			else:
+				self.cp1 = self.pos
+			self.radius = self.config['original_cutter']['cutterrad']
 class PIncurve(PSharp):
 	def __init__(self, pos, radius=0, direction=False, transform=False):
 		"""Create a point at position=pos which is then rounded off wot a rad=raidius, as if it were a piece of wood you have sanded off"""
