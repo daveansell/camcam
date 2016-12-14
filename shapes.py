@@ -1292,7 +1292,7 @@ The line defines the
 			cra=-cra
 			crp=-crp
 		if cutterrad==0:
-			onpointmode=PSharp
+			onpointmode=PInsharp
 			offpointmode=PSharp
 		if startmode=='on':
 #			self.append(Point(start+crp-cra, onpointmode))
