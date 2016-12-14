@@ -191,6 +191,18 @@ class Path(object):
 				config['downmode']='down'
 			else:
 				config['downmode']='ramp'
+		if config['cutter'] in milling.tools:
+			tool=milling.tools[config['cutter']]
+			c={}
+			c['cutterrad']=float(tool['diameter'])/2
+                        c['endcut']=tool['endcut']
+                        c['sidecut']=tool['sidecut']
+                        if tool['sidecut']==0:
+                                c['downmode']='down'
+                        else:
+                                c['downmode']='ramp'
+			config['original_cutter']=c
+				
 	def set_material(self, config):
 		if config['material'] in milling.materials:
 			mat=milling.materials[config['material']]
