@@ -568,6 +568,7 @@ class ArbitraryBox(Part):
 		# on internal faces you define the good direction the wrong way
 		if 'internal' in self.faces[good_direction_face] and self.faces[good_direction_face]['internal']:
 			self.faces[good_direction_face]['good_direction'] *= -1
+		print "good direction face ="+good_direction_face
 		self.propagate_direction('good_direction', good_direction_face,0)
 		self.propagate_direction('wood_direction', wood_direction_face,0)
 		for s, side in self.sides.iteritems():
@@ -595,7 +596,6 @@ class ArbitraryBox(Part):
                                         raise ValueError('face[y] in face '+str(f)+' not in plane of the rest of the face')
                         else:
                                 face['y'] = face['x'].cross(face['normal']).normalize()
-
 #			face['y'] = face['x'].cross(face['normal']).normalize()
 			# if we are cutting from the back flip x
 #			if 'isback' in face and face['isback']:
@@ -683,8 +683,7 @@ class ArbitraryBox(Part):
 					for point in face['ppoints']:
 						p.add_point(point)
 					poly=p.polygonise()
-					if p.contains_point(p1p,poly)>-1 and p.contains_point(p2p, poly)>-1:
-						
+					if p.contains_point(p1p,poly) and p.contains_point(p2p, poly) and p1p[2]<0.0001 and p2p[2]<0.0001:
 						self.faces[f]['internal_joints'].append( { 'side':s, 'otherside':side[0], 'from':p1p, 'to':p2p, 'otherface':face1, 'otherf':side[0][0] } ) 	
 						side.append( [ '_internal', f, len(self.faces[f]['internal_joints'])-1 ])
 						self.find_angle(s, side)
@@ -696,22 +695,33 @@ class ArbitraryBox(Part):
 		
 	def align3d_face(self, p, f, face):
 #		config = p.get_config()
-		z = face['normal']*face['good_direction'] *-1
+		z = face['normal']*face['wood_direction']*face['cut_from'] 
 
-		x = face['x'] 
+		x =  face['x']
 		if 'y' in face:
 			y=face['y']
 		else:
 			y = x.cross(z*-1)
+		print "align3D "+f
+		print "cut_from="+str(face['cut_from'])
+		print "wood_dir+"+str(face['wood_direction'])
+		print "good_dir+"+str(face['good_direction'])
+		if face['wood_direction']==-1 and face['good_direction']==-1:
+			flip=1#-face['wood_direction']
+		else: 
+			flip = -1
 #		if 'isback' in face:
 	#		z *= -1
 	#		y *= -1
 	#		x *= -1
 	#		p.rotate3D([0,0,180])
 	#		pass
-		zs = [z[0],z[1],z[2],0]
-		xs = [x[0],x[1],x[2],0]
-		ys = [y[0],y[1],y[2],0]
+#		xs = [x[0],x[1],x[2],0]
+#		ys = [y[0],y[1],y[2],0]
+#		zs = [z[0],z[1],z[2],0]
+		xs = [x[0]*flip,y[0]*flip,z[0]*flip,0]
+		ys = [x[1],y[1],z[1],0]
+		zs = [x[2]*flip,y[2]*flip,z[2]*flip,0]
 		qs = [0,0,0,1]
 #		print "p.zdir"+str( config['zdir'])
 		if face['good_direction']==1:
@@ -722,6 +732,8 @@ class ArbitraryBox(Part):
 			p.rotate3D([0, 180, 0],self.pos)
 			p.translate3D([0,0,-face['thickness']])
 		p.matrix3D([xs,ys,zs,qs],self.pos)
+		print face['normal']
+		print [xs,ys,zs,qs]
 		p.translate3D(face['origin'])
 
 	def tuple_to_vec(self, t):
@@ -765,6 +777,7 @@ class ArbitraryBox(Part):
 				otherface = self.faces[otherside[1]]
 			else:	
 				otherface = None
+			print "make joint for "+f+" and "+str(otherside)
 			simplepoints.append(PSharp(point))
 			# need to add 2 points here so intersect_points works
               		if len(side)==1:
@@ -951,7 +964,7 @@ class ArbitraryBox(Part):
 			raise ValueError(str(f) + " cannot be cut without cavities as slopes can only be cut from one side ")
 		elif len(need_cut_from)>0:
 			face['cut_from'] = need_cut_from[need_cut_from.keys()[0]]
-		elif type(pref_cut_from) is not False:
+		elif pref_cut_from is not False:
 			face['cut_from'] = pref_cut_from 
 		else:
 			face['cut_from'] = 1
@@ -1103,11 +1116,12 @@ class ArbitraryBox(Part):
 	def make_normal(self, f, points):
 		normal = False
 		p = 0
+		print points
 		for point in points:
 			new_normal = (points[(p-1)%len(points)]-point).normalize().cross( (points[(p+1)%len(points)]-point).normalize())
 			if type(normal) is bool and normal == False:
-				normal = new_normal
-			elif abs(abs((normal.normalize().dot(new_normal.normalize()))))-1 > 0.00001: #and normal.normalize() != - new_normal.normalize():
+				normal = new_normal.normalize()
+			elif abs(abs((normal.dot(new_normal.normalize()))))-1 > 0.00001: #and normal.normalize() != - new_normal.normalize():
 				raise ValueError( "points in face "+f+" are not in a plane "+str(points) )
 			p += 1
 		if 'origin' in self.faces[f]:
@@ -1115,7 +1129,8 @@ class ArbitraryBox(Part):
 			p = points[0]
 			p2 = points[1]
 			new_normal = (p-o).normalize().cross( (p2-o).normalize() ).normalize()
-			if new_normal.length()>0.000001 and not new_normal.almost(normal) and not new_normal.almost(-normal):
+			#if new_normal.length()>0.00001:# and  
+			if (abs(new_normal.dot(normal)) < 0.99) and (new_normal.length()>0.00001):
 				raise ValueError( "origin of face "+f+" are not in a plane origin="+str(o)+ "  points="+str(points) +" normal="+str(normal) + " new_normal="+str(new_normal) )
 		self.faces[f]['normal']=normal
 			
@@ -1132,6 +1147,7 @@ class ArbitraryBox(Part):
 	def make_sides(self, f, points):
 		self.faces[f]['sides'] = []
 		p =0
+		print "make sides for face "+f
 		for point in points:
 			sval = [f, p]
 			sid = self.get_sid(point, points[(p-1)%len(points)])
@@ -1142,17 +1158,21 @@ class ArbitraryBox(Part):
 				self.sides[sid] = [sval]
 			self.faces[f]['sides'].append(sid)
 			p+=1
+		print self.faces[f]['sides']
 		if len(self.sides[sid]) > 2:
 			raise ValueError("more than 2 faces with the same side "+str(self.sides[sid1]))
 
 	def set_joint_type(self, s, side):
 		face1 = self.faces[side[0][0]]
+		print "side"+str(s)+" face="+str(face1['layer'])
 		if len(side)==1:
+			print "NOJOINT"
 			return False
 		elif side[1][0]=='_internal':
 			joint_type='convex'
 		else:
 			face2 = self.faces[side[1][0]]
+			print "face1="+str(face1['layer'])+" face2="+str(face2['layer']) 
 			svec1 = (face1['points'][ (side[0][1]-1)%len(face1['points']) ] - face1['points'][side[0][1]]).cross( face1['normal'] ).normalize()
 			svec2 = (face2['points'][ (side[1][1]-1)%len(face2['points']) ] - face2['points'][side[1][1]]).cross( face2['normal'] ).normalize()
 			if (svec1+svec2).length()*5 >   (svec1 * 5 + face1['normal']*face1['wood_direction'] + svec2 * 5 + face2['normal']*face2['wood_direction']).length():
