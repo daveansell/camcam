@@ -346,6 +346,30 @@ class Drill(Circle):
 #		self.centre=p.pos
 #		return [self.pos]	
 
+class ParametricPath3D(Path):
+	def __init__(self, pos, callback, pmin, pmax, pstep, **config):
+		self.init(config)
+		self.translate(pos)
+		self.use_point_z = True
+		self.callback = callback
+		self.pmin = pmin
+		self.pmax = pmax
+		if "closed" in config:
+			self.closed =config['closed']
+		else:
+			self.closed = False
+		self.closed = True
+		p= self.pmin
+		while p<pmax:
+			pnt = callback(p)
+			self.add_point(pnt)	
+			p+=pstep
+		p=pmax
+		pnt = callback(p)
+		self.add_point(pnt)
+		for p in self.points:
+			print p.pos
+
 class RoundSpeakerGrill(Pathgroup):
 	def __init__(self,pos, rad, holerad, spacing, **config):
 		self.init(config)
