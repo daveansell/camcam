@@ -636,6 +636,14 @@ class Path(object):
 							xinters = (y-p1y)*(p2x-p1x)/(p2y-p1y)+p1x
 						if p1x == p2x or x <= xinters:
 							inside = not inside
+# Was added for 3d stuff but causing problems
+# 					if x > min(p1x,p2x):
+# 						if x <= max(p1x,p2x):
+# 							if p1y != p2y:
+# 								xinters = (y-p1y)*(p2x-p1x)/(p2y-p1y)+p1x
+# 							if p1x == p2x or x <= xinters:
+# 								inside = not inside
+
 			p1x,p1y = p2x,p2y
 
 		return inside
@@ -869,7 +877,6 @@ class Path(object):
 		if hasattr(self,'__render__') and callable(self.__render__):
 			self.__render__(config)
 		finalpass=False
-#		print self
 		if config['side']=='in' or config['side']=='out':
 			side = config['side']				
 			c =copy.copy(config)
