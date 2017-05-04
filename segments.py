@@ -99,9 +99,9 @@ class Line(Segment):
                 self.cutfrom=cutfrom
         def gcode(self,direction=True):
                 if(direction):
-                        return [{"cmd":"G1","X":self.cutto[0],"Y":self.cutto[1]}]
+                        return [{"cmd":"G1","X":self.cutto[0],"Y":self.cutto[1], "Z":self.cutto[2]}]
                 else:
-                        return [{"cmd":"G1","X":self.cutfrom[0],"Y":self.cutfrom[1]}]
+                        return [{"cmd":"G1","X":self.cutfrom[0],"Y":self.cutfrom[1],"Z":self.cutfrom[2]}]
         def svg(self,direction=True):
                 if(direction):
                         return [{"cmd":"L","x":self.cutto[0],"y":self.cutto[1]}]
