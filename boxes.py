@@ -939,6 +939,7 @@ class ArbitraryBox(Part):
 				face['cut_from'] = -1
 			print "FACE CUT FORCED = "+str(face['cut_from'])
 			return
+		print f
 		good_direction = face['wood_direction']
 		need_cut_from={}
 		pref_cut_from = False
@@ -1061,7 +1062,8 @@ class ArbitraryBox(Part):
                 if len(side)==0:
                         raise ValueError( "Side "+str(side)+" has no values")
                 elif len(side) ==1:
-                        face[prop][scount] = 'straight'
+			if prop=="joint_mode":
+                        	face[prop][scount] = 'straight'
                 else:
                         if prop not in face:
                                 face[prop]={}
@@ -1095,6 +1097,8 @@ class ArbitraryBox(Part):
                                         raise ValueError("side "+str(scount)+" in face "+str(f)+" and side "+str(otherscount)+" in face "+str(otherf)+" have different "+prop+"s, but are the same side"+str(face[prop][scount])+" "+str(otherface[prop][otherscount]))
                         elif scount in face[prop]:
                                 otherface[prop][otherscount]=face[prop][scount]
+			elif type(otherface[prop]) is not dict:
+				raise ValueError( str(prop)+" in face "+otherf+"must be of the form {0:[value_side_0], 1:[value_side1]}" +str(type(otherface[prop])) )
                         elif otherscount in otherface[prop]:
                                 face[prop][scount]=otherface[prop][otherscount]
 			elif fprop != None:
