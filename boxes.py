@@ -781,6 +781,7 @@ class ArbitraryBox(Part):
 			simplepoints.append(PSharp(point))
 			# need to add 2 points here so intersect_points works
               		if len(side)==1:
+				print "simple side"
                 		newpoints = [PSharp(lastpoint),PSharp(point)]
            		else:
 #               	 	if mode=='internal':
@@ -797,7 +798,6 @@ class ArbitraryBox(Part):
 						corner = face['corners'][scount]
 					lastcorner = face['corners'][(scount-1)%len(face['corners'])]
 					nextcorner = face['corners'][(scount+1)%len(face['corners'])]
-					print "FACE="+str(f)
 					if face['joint_mode'][scount]=='butt':
 						if angle==0:
 							if cutside=='left' and joint_type=='concave':
@@ -850,7 +850,8 @@ class ArbitraryBox(Part):
 								cutside='right'
 							if cutside=='right' and joint_type=='concave':	
 								cutside='left'
-							newpoints = FingerJoint(lastpoint, point, cutside, 'external', corner, corner, face['tab_length'][scount], face['thickness'], 0, self.fudge)
+							newpoints = FingerJoint(lastpoint, point, cutside, 'external', corner, corner, face['tab_length'][scount], face['thickness'], 0, self.fudge, nextcorner=nextcorner, lastcorner=lastcorner)
+			
 			if first or len(newpoints)<2 or nointersect:
 				first = False
 				path.add_points(newpoints)
@@ -1037,7 +1038,6 @@ class ArbitraryBox(Part):
 			else:
 				otherf = side[0][0]
 				otherscount = side[0][1]
-
 			otherface = self.faces[otherf]
 			if scount in face['corners'] and otherscount  in otherface['corners']:
 				if face['corners'][scount]==otherface['corners'][otherscount] and face['corners'][scount]!='straight':
@@ -1049,7 +1049,6 @@ class ArbitraryBox(Part):
 			else:
 				face['corners'][scount] = 'off'
 				otherface['corners'][otherscount] = 'on'
-
 
         def set_property(self, side, f, scount, prop):
                 face = self.faces[f]
@@ -1162,7 +1161,7 @@ class ArbitraryBox(Part):
 				self.sides[sid] = [sval]
 			self.faces[f]['sides'].append(sid)
 			p+=1
-		print self.faces[f]['sides']
+
 		if len(self.sides[sid]) > 2:
 			raise ValueError("more than 2 faces with the same side "+str(self.sides[sid1]))
 

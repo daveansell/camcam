@@ -968,7 +968,7 @@ class ButtJoint(list):
 		lastcorner = config['lastcorner']
 		nextcorner = config['nextcorner']
 #		if abs(extra)>0 and startmode == 'on' and lastcorner != 'off':
-		if abs(extra)>0 and  (startmode == 'off') and joint_type=='concave':
+		if abs(extra)>0 and  (startmode == 'off') and (joint_type=='concave' or lastcorner!=startmode):
 			self.append(PSharp(start+last_offset+perp*thickness))
 		elif abs(extra)>0 and not  (startmode == 'off' and lastcorner == 'off') and not lastparallel:
 			self.append(PSharp(start+last_offset))
@@ -977,9 +977,9 @@ class ButtJoint(list):
 		self.append(PSharp(end-next_offset+extra*perp))
 
 #		if startmode == 'on' and nextcorner!='off' and  abs(extra)>0:
-		if  abs(extra)>0 and (startmode == 'off') and joint_type=='concave':
+		if  abs(extra)>0 and (startmode == 'off') and (joint_type=='concave' or nextcorner!=endmode):
 			self.append(PSharp(end-next_offset+perp*thickness))
-		elif  abs(extra)>0 and not (startmode == 'off' and nextcorner == 'off') and not nextparallel:
+		elif  abs(extra)>0 and not (endmode == 'off' and nextcorner == 'off') and not nextparallel:
 			self.append(PSharp(end-next_offset))
 class ButtJointMid(Pathgroup):
 	def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode, **config):
@@ -1280,7 +1280,7 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 				m='on'
 
 class FingerJoint(list):
-	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, fudge=0):
+	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, fudge=0, **config):
 		"""Produce points for a finger joint cut on :param side: of a line from :param start: to :param end:
 The line defines the 
 :param linemode: 'internal' - for a joint that is in a hole in a piece of wood 'external' is a side of a box
@@ -1293,6 +1293,14 @@ The line defines the
 :param thickness: thickness of the material
 :param cutterrad: radius of the cutter you are using
 :param fudge: a fudge factor that increases the gap along the finger joint when negative - it should be 1/4 of the gap you want\n"""
+		if 'lastcorner' in config:
+			lastcorner = config['lastcorner']
+		else:
+			lastcorner = endmode
+		if 'nextcorner' in config:
+			nextcorner = config['nextcorner']
+		else:
+			nextcorner = endmode
 		num_tab_pairs= math.floor((end-start).length()/tab_length/2)
 		if startmode==endmode:
 			num_tabs = num_tab_pairs*2+1
@@ -1319,11 +1327,13 @@ The line defines the
 			onpointmode=PInsharp
 			offpointmode=PSharp
 		if startmode=='on':
-#			self.append(Point(start+crp-cra, onpointmode))
+			if lastcorner != "on":
+				self.append(offpointmode(start+crp-cra))
 			self.append(PSharp(start+crp))#onpointmode))
 			m='on'
 		elif startmode=='off':
-#			self.append(Point(start+cutin+crp-cra, offpointmode))
+			if lastcorner != "off":
+				self.append(offpointmode(start+cutin+crp-cra))
 			self.append(PSharp(start+cutin+crp))#offpointmode))
 			m='off'
 		else:
@@ -1339,10 +1349,12 @@ The line defines the
 				self.append(onpointmode(start+along*i+crp+cra))
 				m='on'
 		if endmode=='on':
-#			self.append(Point(end+crp+cra, onpointmode))
+			if nextcorner != "on":
+				self.append(offpointmode(end+crp+cra))
 			self.append(PSharp(end+crp))#onpointmode))
 		elif endmode=='off':
-#			self.append(Point(end+cutin+crp+cra, offpointmode))
+			if nextcorner != "off":
+				self.append(onpointmode(end+cutin+crp+cra))
 			self.append(PSharp(end+cutin+crp))#offpointmode))
 
 class FingerJointBoxSide(Path):
