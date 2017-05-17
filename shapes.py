@@ -970,7 +970,7 @@ class ButtJoint(list):
 #		if abs(extra)>0 and startmode == 'on' and lastcorner != 'off':
 		if abs(extra)>0 and  (startmode == 'off') and (joint_type=='concave' or lastcorner!=startmode):
 			self.append(PSharp(start+last_offset+perp*thickness))
-		if abs(extra)>0 and not  (startmode == 'off' and lastcorner == 'off') and not (lastparallel and lastcorner==startmode):
+		elif abs(extra)>0 and not  (startmode == 'off' and lastcorner == 'off') and not lastparallel:
 			self.append(PSharp(start+last_offset))
 		self.append(PSharp(start+last_offset+extra*perp))
 #		self.append(PSharp((start+end)/2+extra*perp))
@@ -979,7 +979,7 @@ class ButtJoint(list):
 #		if startmode == 'on' and nextcorner!='off' and  abs(extra)>0:
 		if  abs(extra)>0 and (startmode == 'off') and (joint_type=='concave' or nextcorner!=endmode):
 			self.append(PSharp(end-next_offset+perp*thickness))
-		if  abs(extra)>0 and not (endmode == 'off' and nextcorner == 'off') and not (nextparallel and nextcorner==endmode):
+		elif  abs(extra)>0 and not (endmode == 'off' and nextcorner == 'off') and not nextparallel:
 			self.append(PSharp(end-next_offset))
 class ButtJointMid(Pathgroup):
 	def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode, **config):
@@ -1315,51 +1315,24 @@ The line defines the
 		cra=(end-start).normalize()*(cutterrad+fudge)
 		crp=perp*cutterrad
 		cutin=perp*thickness
-		if linemode=='external':
+		if linemode=='external' or linemode==False:
 			if cutterrad==0:
-				onpointmode=PInsharp
 				offpointmode=PSharp
+				onpointmode=PInsharp
 			else:
 				onpointmode = PClear
 				offpointmode = PSharp
-		if linemode=='internal':
+		elif linemode=='internal':
 			if cutterrad==0:
-				onpointmode = PSharp
-				offpointmode = PInsharp
-			else:
+                                offpointmode=PInsharp
+                                onpointmode=PSharp
+                        else:
 				onpointmode = PSharp
 				offpointmode = PClear
 			cra=-cra
 			crp=-crp
-		if startmode=='on':
-			if lastcorner != "on":
-				self.append(offpointmode(start+crp-cra))
-			self.append(PSharp(start+crp))#onpointmode))
-			m='on'
-		elif startmode=='off':
-			if lastcorner != "off":
-				self.append(offpointmode(start+cutin+crp-cra))
-			self.append(PSharp(start+cutin+crp))#offpointmode))
-			m='off'
 		else:
-			print "wrong start mode"+str(startmode)
-		for i in range(1,int(num_tabs)):
-			if m=='on':
-				self.append(onpointmode(start+along*i-cra+crp))
-			#	if(i!=num_tabs):
-				self.append(offpointmode(start+along*i+crp-cra+cutin))
-				m='off'
-			else:
-				self.append(offpointmode(start+along*i+crp+cra+cutin))
-				self.append(onpointmode(start+along*i+crp+cra))
-				m='on'
-		if endmode=='on':
-			if nextcorner != "on":
-				self.append(offpointmode(end+crp+cra))
-			self.append(PSharp(end+crp))#onpointmode))
-		elif endmode=='off':
-			cra=-cra
-			crp=-crp
+			print "NO LINEMODE"+str(linemode)
 		if startmode=='on':
 			if lastcorner != "on":
 				self.append(offpointmode(start+crp-cra))
