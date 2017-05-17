@@ -82,10 +82,17 @@ def V(x=False,y=False,z=False):
                 z=False
         return Vec(x,y,z)
 
-def rotate(pos, a):
+def rotate(pos, a, *config):
+	if len(config):
+                axis = config[0]
+        else:
+                axis = V(0,0,-1)
+	print "%%rotate pos="+str(pos)+" a="+str(a) +" axis = "+str(axis)
         if type(pos) is Vec:
-                M=Mat(1).rotateAxis(a,V(0,0,-1))
+                M=Mat(1).rotateAxis(a, axis)
+		print "%%"+str(M)
                 pos=pos.transform(M)
+		print "%%rotated pos="+str(pos)
                 return pos
         else:
                 return False
@@ -230,6 +237,7 @@ class Path(object):
 		else:
 			self.points.append(self.make_point(pos, point_type, radius,cp1, cp2, direction, transform))
 		self.has_changed()
+		self.points[-1].path=self
 		l = len(self.points)
 		if self.closed:
 			self.points[0].lastpoint = self.points[-1]
@@ -248,6 +256,7 @@ class Path(object):
 			pointlist=self.points
 		for p in range(0, len(pointlist)):
 			l = len(self.points)
+			pointlist[p].path=self
 			if self.closed==True:
 				pointlist[p].nextpoint = pointlist[(p+1)%l]
 				pointlist[p].lastpoint = pointlist[(p-1)%l]
