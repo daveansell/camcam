@@ -1335,7 +1335,7 @@ The line defines the
 			print "NO LINEMODE"+str(linemode)
 		if startmode=='on':
 			if lastcorner != "on":
-				self.append(offpointmode(start+crp-cra))
+				self.append(PSharp(start+crp-cra))
 			self.append(PSharp(start+crp))#onpointmode))
 			m='on'
 		elif startmode=='off':
@@ -1357,12 +1357,12 @@ The line defines the
 				m='on'
 		if endmode=='on':
 			if nextcorner != "on":
-				self.append(offpointmode(end+crp+cra))
+				self.append(PSharp(end+crp+cra))
 			self.append(PSharp(end+crp))#onpointmode))
 		elif endmode=='off':
+			self.append(offpointmode(end+cutin+crp+cra))
 			if nextcorner != "off":
-				self.append(onpointmode(end+cutin+crp+cra))
-			self.append(PSharp(end+cutin+crp))#offpointmode))
+				self.append(PSharp(end+cutin+crp))#offpointmode))
 
 class FingerJointBoxSide(Path):
 	def __init__(self, pos, width, height, side, corners, sidemodes, tab_length, thickness, cutter,**config):
