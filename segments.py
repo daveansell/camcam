@@ -29,14 +29,18 @@ def V(x=False,y=False,z=False):
                 z=False
         return Vec(x,y,z)
 
-def rotate(pos, a):
+def rotate(pos, a, *config):
+	if len(config):
+		axis = config[0]
+	else:
+		axis = V(0,0,-1)
+
         if type(pos) is Vec:
-                M=Mat(1).rotateAxis(a,V(0,0,-1))
+                M=Mat(1).rotateAxis(a, axis)
                 pos=pos.transform(M)
                 return pos
         else:
                 return False
-
 
 class Segment(object):
 	seg_types = {}
