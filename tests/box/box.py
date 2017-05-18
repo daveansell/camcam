@@ -35,6 +35,17 @@ box = plane.add(ArbitraryBox(
 			'layer':"two",
 			'thickness':box_thickness,
 		},
+		'three':{
+			'points':[
+				V(w,-w,w),
+				V(-w,-w,w),
+				V(-w,-w,0),
+				V(w,-w,0),
+			],
+			'x':V(-1.0,0.0,0.0),
+			'layer':"two",
+			'thickness':box_thickness,
+		},
 	},
 	fudge = fudge,
 	tab_length = 60,
