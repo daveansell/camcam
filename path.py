@@ -640,11 +640,14 @@ class Path(object):
 		p1x,p1y,p1z = poly[0]
 		for i in range(n+1):
 			p2x,p2y,p2z = poly[i % n]
-			if y > min(p1y,p2y):
+			if y >= min(p1y,p2y):
 				if y <= max(p1y,p2y):
 					if x <= max(p1x,p2x):
 						if p1y != p2y:
 							xinters = (y-p1y)*(p2x-p1x)/(p2y-p1y)+p1x
+						# if p1y==p2y and x is between the two then the point is in the shape
+						elif p1x<x and x<p2x or p1x>x and x>p2x:
+							return True
 						if p1x == p2x or x <= xinters:
 							inside = not inside
 # Was added for 3d stuff but causing problems
