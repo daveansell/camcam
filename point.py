@@ -60,6 +60,7 @@ class Point(object):
 		self.cp2=V(0,0)
 		self.radius=0
 		self.setup=False
+		self.path=False # for debug
 		if not hasattr(self,'reverse'):
 			self.reverse=False
 		self.invert = False	
@@ -69,6 +70,7 @@ class Point(object):
         def copy(self):
                 t = Point( self.pos, self.point_type, self.radius, self.cp1, self.cp2, self.direction, self.transform, self.invert)
 		t.invert = self.invert
+		t.path = self.path
 		return t		
         def point_transform(self,ext_transformations=[]):
                 p=self.copy()
@@ -402,7 +404,8 @@ class PAroundcurve(PSharp):
                 		self.direction='cw'
                     	elif tempdir[2]<0:
                            	self.direction='ccw'
-	
+			else:
+				self.direction='cw'	
 
 	def makeSegment(self, config):
 		self.config=config
@@ -420,7 +423,10 @@ class PAroundcurve(PSharp):
 			else:
 				astart = self.pos + (lastpoint-self.pos).normalize()*self.radius
 				aend   = self.pos + (nextpoint-self.pos).normalize()*self.radius
-
+			if astart is False:
+				return [Line(self.last().end(), self.pos)]
+			if aend is False:
+				return [Line(self.last().end(), self.pos)]
 			if  not self.reverse:
 				d=self.otherDir(self.direction)
 			else:
@@ -431,6 +437,8 @@ class PAroundcurve(PSharp):
 	def start(self):
 		lastpoint=self.lastorigin()
 		if not self.setup:
+			if self.next().pos==False:
+				print "ERROR: next().pos="+str(self.next().pos)
 			return self.pos()
 		if not self.cp1==self.pos:
 			return self.lineArcIntersect(self.pos, lastpoint, self.cp1, self.radius)
@@ -440,11 +448,20 @@ class PAroundcurve(PSharp):
 	def end(self):
 		nextpoint=self.nextorigin()
 		if not self.setup:
+			if self.next().pos==False:
+				print "ERROR: next().pos="+str(self.next().pos)
 			return self.next().pos
 		if not self.cp1==self.pos:
-			return self.lineArcIntersect(self.pos, nextpoint, self.cp1, self.radius)
+			a= self.lineArcIntersect(self.pos, nextpoint, self.cp1, self.radius)
+			if a is False or a is None:
+				print "ERROR:LAI nextpoint="+str(nextpoint)+" rad="+str(self.radius)+" self.pos"+str(self.pos)
+				return self.pos
 		else:
-			return self.pos+(nextpoint-self.pos).normalize()*self.radius
+			a= self.pos+(nextpoint-self.pos).normalize()*self.radius
+			if a is False or a is None:
+				print "ERROR: nextpoint="+str(nextpoint)+" rad="+str(self.radius)+" self.pos"+str(self.pos)
+				return self.pos
+		return a
 	def origin(self, forward=True):
 		return self.pos
 		if forward:
@@ -483,6 +500,9 @@ class PInsharp(PAroundcurve):
                 return t
 	def _setup(self):
 		self.setDirection()
+		# for some reason this needs reversing - probably because setDirection reverses the direction and it will happen again in Aroundcurve
+		if not self.reverse:
+			self.direction=self.otherDir(self.direction)
 #		self.direction=self.otherDir(self.direction)
 		if self.dosetup and self.config is not False and  self.last() != None and self.next() !=None:
 			self.setup=True
@@ -493,7 +513,7 @@ class PInsharp(PAroundcurve):
                         if nextpoint==self.pos:
                                 nextpoint=self.next().nextorigin()
                         angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
-                        if abs(angle-180)>0.00001:
+                        if abs(angle-180)>0.00001 and abs(angle)>0.00001:
                                 d=self.config['original_cutter']['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1- 1.0/math.sin(angle/2/180*math.pi))
                                 self.cp1=self.pos-(((lastpoint-self.pos).normalize()+(nextpoint-self.pos).normalize())/2).normalize()*d
 			else:
