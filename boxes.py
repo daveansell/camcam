@@ -779,6 +779,8 @@ class ArbitraryBox(Part):
 				otherface = None
 			print "make joint for "+f+" and "+str(otherside)
 			simplepoints.append(PSharp(point))
+			#clear newpoints
+			newpoints=[]
 			# need to add 2 points here so intersect_points works
               		if len(side)==1:
 				print "simple side"
@@ -850,7 +852,23 @@ class ArbitraryBox(Part):
 								cutside='right'
 							if cutside=='right' and joint_type=='concave':	
 								cutside='left'
-							newpoints = FingerJoint(lastpoint, point, cutside, 'external', corner, corner, face['tab_length'][scount], face['thickness'], 0, self.fudge, nextcorner=nextcorner, lastcorner=lastcorner)
+							newpoints = FingerJoint(
+								lastpoint, 
+								point, 
+								cutside, 
+								joint_type=='convave' if 'internal' else 'external', 
+								corner, 
+								corner, 
+								face['tab_length'][scount], 
+								face['thickness'], 
+								0, self.fudge, 
+								nextcorner=nextcorner, 
+								lastcorner=lastcorner)
+			if f=='topback':
+				print "%%NEWPOINTS for thisside="+str(thisside)+" otherside="+str(otherside)
+				print newpoints
+				for q in newpoints:
+					print q.pos
 			
 			if first or len(newpoints)<2 or nointersect:
 				first = False
