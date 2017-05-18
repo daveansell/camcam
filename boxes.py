@@ -833,6 +833,10 @@ class ArbitraryBox(Part):
 								nointersect==True
 						#		if p==0:
 							#		firstnointersect=True
+						else:
+							print "WARNING: angled butt joint not handled properly - needs update"
+							newpoints = [PSharp(lastpoint),PSharp(point)]
+								
 					else:
 
 
@@ -856,7 +860,7 @@ class ArbitraryBox(Part):
 								lastpoint, 
 								point, 
 								cutside, 
-								joint_type=='convave' if 'internal' else 'external', 
+								joint_type=='concave' if 'internal' else 'external', 
 								corner, 
 								corner, 
 								face['tab_length'][scount], 
@@ -864,11 +868,6 @@ class ArbitraryBox(Part):
 								0, self.fudge, 
 								nextcorner=nextcorner, 
 								lastcorner=lastcorner)
-			if f=='topback':
-				print "%%NEWPOINTS for thisside="+str(thisside)+" otherside="+str(otherside)
-				print newpoints
-				for q in newpoints:
-					print q.pos
 			
 			if first or len(newpoints)<2 or nointersect:
 				first = False
