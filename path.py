@@ -418,6 +418,7 @@ class Path(object):
 		return pout
 
 	def make_segments(self, direction,segment_array,config):
+		self.reset_points()
 		pointlist = self.transform_pointlist(self.points,config['transformations'])
 		if direction!=self.find_direction(config):
 			pointlist.reverse()
@@ -432,6 +433,7 @@ class Path(object):
 	#	else:
 	#		numpoints=len(pointlist)*2-2
 #		for p,point in enumerate(pointlist):
+
 		for p in range(0,numpoints):
 			segment_array.extend(pointlist[p].generateSegment(self.isreversed, config))
 	#	else:
@@ -2178,7 +2180,7 @@ class Plane(Part):
 		else:
 			paths=[]
 		# if we are looking at a back layer and we are in a cutting mode then mirror the image
-		if (part.layer in self.layers and self.layers[part.layer].config['isback'] is True or part.isback is True) and config['mirror_backs'] is True:
+		if (part.layer in self.layers and self.layers[part.layer].config['isback'] is True or part.isback is True) and 'mirror_backs' in config and config['mirror_backs'] is True:
 			if 'transformations' in config and config['transformations'] is list:
 				config['transformations'].insert(0,{'mirror':[V(0,0),'x']})
 			else:
