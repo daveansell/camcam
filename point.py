@@ -165,7 +165,8 @@ class Point(object):
 			return self.nextpoint
 		else:
 			self.lastpoint.reverse=0
-			self.lastpoint._setup()
+			
+			#self.lastpoint._setup()
 			return self.lastpoint
 
 	def generateSegment(self, reverse, config):
@@ -410,6 +411,9 @@ class PAroundcurve(PSharp):
 	def makeSegment(self, config):
 		self.config=config
 		self.dosetup=True
+		# we need the last point to run _setup() later so set it up to
+		self.last().dosetup=True
+		self.last().config=config
 		self._setup()
 		self.setDirection()
 		if self.last() != None and self.next() !=None:
@@ -439,6 +443,7 @@ class PAroundcurve(PSharp):
 		if not self.setup:
 			if self.next().pos==False:
 				print "ERROR: next().pos="+str(self.next().pos)
+			print "NO setup start()"
 			return self.pos()
 		if not self.cp1==self.pos:
 			return self.lineArcIntersect(self.pos, lastpoint, self.cp1, self.radius)
@@ -448,8 +453,11 @@ class PAroundcurve(PSharp):
 	def end(self):
 		nextpoint=self.nextorigin()
 		if not self.setup:
-			if self.next().pos==False:
+			self._setup()
+		if not self.setup:
+			if self.next().pos is False:
 				print "ERROR: next().pos="+str(self.next().pos)
+			print "NO setup end()"
 			return self.next().pos
 		if not self.cp1==self.pos:
 			a= self.lineArcIntersect(self.pos, nextpoint, self.cp1, self.radius)
@@ -499,26 +507,28 @@ class PInsharp(PAroundcurve):
 		t.invert = self.invert
                 return t
 	def _setup(self):
-		self.setDirection()
-		# for some reason this needs reversing - probably because setDirection reverses the direction and it will happen again in Aroundcurve
-		if not self.reverse:
-			self.direction=self.otherDir(self.direction)
-#		self.direction=self.otherDir(self.direction)
-		if self.dosetup and self.config is not False and  self.last() != None and self.next() !=None:
-			self.setup=True
-                        lastpoint=self.lastorigin()
-                        if lastpoint==self.pos:
-                                lastpoint=self.last().lastorigin()
-                        nextpoint=self.nextorigin()
-                        if nextpoint==self.pos:
-                                nextpoint=self.next().nextorigin()
-                        angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
-                        if abs(angle-180)>0.00001 and abs(angle)>0.00001:
-                                d=self.config['original_cutter']['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1- 1.0/math.sin(angle/2/180*math.pi))
-                                self.cp1=self.pos-(((lastpoint-self.pos).normalize()+(nextpoint-self.pos).normalize())/2).normalize()*d
-			else:
-				self.cp1 = self.pos
-			self.radius = self.config['original_cutter']['cutterrad']
+		if not self.setup:
+			self.setDirection()
+			# for some reason this needs reversing - probably because setDirection reverses the direction and it will happen again in Aroundcurve
+			if not self.reverse:
+				self.direction=self.otherDir(self.direction)
+#			self.direction=self.otherDir(self.direction)
+			if self.dosetup and self.config is not False and  self.last() != None and self.next() !=None:
+				self.setup=True
+        	                lastpoint=self.lastorigin()
+        	                if lastpoint==self.pos:
+        	                        lastpoint=self.last().lastorigin()
+        	                nextpoint=self.nextorigin()
+        	                if nextpoint==self.pos:
+        	                        nextpoint=self.next().nextorigin()
+        	                angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
+        	                if abs(angle-180)>0.00001 and abs(angle)>0.00001:
+        	                        d=self.config['original_cutter']['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1- 1.0/math.sin(angle/2/180*math.pi))
+        	                        self.cp1=self.pos-(((lastpoint-self.pos).normalize()+(nextpoint-self.pos).normalize())/2).normalize()*d
+				else:
+					self.cp1 = self.pos
+				self.radius = self.config['original_cutter']['cutterrad']
+
 class PIncurve(PSharp):
 	def __init__(self, pos, radius=0, direction=False, transform=False):
 		"""Create a point at position=pos which is then rounded off wot a rad=raidius, as if it were a piece of wood you have sanded off"""
