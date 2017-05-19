@@ -643,13 +643,20 @@ class Path(object):
 			if y >= min(p1y,p2y):
 				if y <= max(p1y,p2y):
 					if x <= max(p1x,p2x):
-						if p1y != p2y:
-							xinters = (y-p1y)*(p2x-p1x)/(p2y-p1y)+p1x
+#						if x>= min(p1x, p2x):
+							if p1y != p2y:
+								xinters = (y-p1y)*(p2x-p1x)/(p2y-p1y)+p1x
 						# if p1y==p2y and x is between the two then the point is in the shape
-						elif p1x<x and x<p2x or p1x>x and x>p2x:
-							return True
-						if p1x == p2x or x <= xinters:
-							inside = not inside
+							elif p1x<=x and x<=p2x or p1x>=x and x>=p2x:
+								return True
+							if p1x == p2x and p1y<=y and y<=p2y or p1y>=y and y>=p2y:
+								return True
+							if p1x == p2x:
+								if p1y==p2y:
+									if p1x == x and p1y==y:
+										return True
+								elif x <= xinters:
+									inside = not inside
 # Was added for 3d stuff but causing problems
 # 					if x > min(p1x,p2x):
 # 						if x <= max(p1x,p2x):
@@ -659,7 +666,6 @@ class Path(object):
 # 								inside = not inside
 
 			p1x,p1y = p2x,p2y
-
 		return inside
 
 	def get_side(self,a,b,c):
