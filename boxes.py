@@ -568,7 +568,6 @@ class ArbitraryBox(Part):
 		# on internal faces you define the good direction the wrong way
 		if 'internal' in self.faces[good_direction_face] and self.faces[good_direction_face]['internal']:
 			self.faces[good_direction_face]['good_direction'] *= -1
-		print "good direction face ="+good_direction_face
 		self.propagate_direction('good_direction', good_direction_face,0)
 		self.propagate_direction('wood_direction', wood_direction_face,0)
 		for s, side in self.sides.iteritems():
@@ -702,10 +701,6 @@ class ArbitraryBox(Part):
 			y=face['y']
 		else:
 			y = x.cross(z*-1)
-		print "align3D "+f
-		print "cut_from="+str(face['cut_from'])
-		print "wood_dir+"+str(face['wood_direction'])
-		print "good_dir+"+str(face['good_direction'])
 		if face['wood_direction']==-1 and face['good_direction']==-1:
 			flip=1#-face['wood_direction']
 		else: 
@@ -732,8 +727,6 @@ class ArbitraryBox(Part):
 			p.rotate3D([0, 180, 0],self.pos)
 			p.translate3D([0,0,-face['thickness']])
 		p.matrix3D([xs,ys,zs,qs],self.pos)
-		print face['normal']
-		print [xs,ys,zs,qs]
 		p.translate3D(face['origin'])
 
 	def tuple_to_vec(self, t):
@@ -777,13 +770,11 @@ class ArbitraryBox(Part):
 				otherface = self.faces[otherside[1]]
 			else:	
 				otherface = None
-			print "make joint for "+f+" and "+str(otherside)
 			simplepoints.append(PSharp(point))
 			#clear newpoints
 			newpoints=[]
 			# need to add 2 points here so intersect_points works
               		if len(side)==1:
-				print "simple side"
                 		newpoints = [PSharp(lastpoint),PSharp(point)]
            		else:
 #               	 	if mode=='internal':
@@ -955,9 +946,7 @@ class ArbitraryBox(Part):
 				face['cut_from'] = 1
 			else:
 				face['cut_from'] = -1
-			print "FACE CUT FORCED = "+str(face['cut_from'])
 			return
-		print f
 		good_direction = face['wood_direction']
 		need_cut_from={}
 		pref_cut_from = False
@@ -1136,7 +1125,6 @@ class ArbitraryBox(Part):
 	def make_normal(self, f, points):
 		normal = False
 		p = 0
-		print points
 		for point in points:
 			new_normal = (points[(p-1)%len(points)]-point).normalize().cross( (points[(p+1)%len(points)]-point).normalize())
 			if type(normal) is bool and normal == False:
@@ -1167,7 +1155,6 @@ class ArbitraryBox(Part):
 	def make_sides(self, f, points):
 		self.faces[f]['sides'] = []
 		p =0
-		print "make sides for face "+f
 		for point in points:
 			sval = [f, p]
 			sid = self.get_sid(point, points[(p-1)%len(points)])
@@ -1184,15 +1171,12 @@ class ArbitraryBox(Part):
 
 	def set_joint_type(self, s, side):
 		face1 = self.faces[side[0][0]]
-		print "side"+str(s)+" face="+str(face1['layer'])
 		if len(side)==1:
-			print "NOJOINT"
 			return False
 		elif side[1][0]=='_internal':
 			joint_type='convex'
 		else:
 			face2 = self.faces[side[1][0]]
-			print "face1="+str(face1['layer'])+" face2="+str(face2['layer']) 
 			svec1 = (face1['points'][ (side[0][1]-1)%len(face1['points']) ] - face1['points'][side[0][1]]).cross( face1['normal'] ).normalize()
 			svec2 = (face2['points'][ (side[1][1]-1)%len(face2['points']) ] - face2['points'][side[1][1]]).cross( face2['normal'] ).normalize()
 			if (svec1+svec2).length()*5 >   (svec1 * 5 + face1['normal']*face1['wood_direction'] + svec2 * 5 + face2['normal']*face2['wood_direction']).length():
