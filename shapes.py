@@ -69,10 +69,17 @@ class Rect(Path):
 			raise ValueError("Rectangle has no area")
 		self.comment("Rounded Square")
 		self.comment("bl="+str(bl)+" tr="+str(tr)+" rad="+str(rad))
-                self.add_point(bl,ct, radius=rad, **args)
-                self.add_point(V(bl[0],tr[1],0),ct,radius=rad, **args)
-                self.add_point(tr,ct,radius=rad, **args)
-                self.add_point(V(tr[0],bl[1],0),ct,radius=rad, **args)
+		if type(ct) is str:
+	                self.add_point(bl,ct, radius=rad, **args)
+	                self.add_point(V(bl[0],tr[1],0),ct,radius=rad, **args)
+	                self.add_point(tr,ct,radius=rad, **args)
+	                self.add_point(V(tr[0],bl[1],0),ct,radius=rad, **args)
+		else:
+			self.add_point(ct(bl,  **args))
+			self.add_point(ct(V(bl[0],tr[1],0),  **args))
+			self.add_point(ct(tr,  **args))
+			self.add_point(ct(V(tr[0],bl[1],0), **args))
+
 
 class RoundedRect(Rect):
 	def __init__(self, bl,  **config):
@@ -211,15 +218,16 @@ class ClearRect(Rect):
 	def __init__(self, bl,  **config):
 		self.init(config)
 		if 'side' in config and config['side'] in ['in', 'out']:
-			config['cornertype']='sharp'
-		else:
-			config['cornertype']='clear'
+			if config['side']=='out':
+				config['cornertype']='sharp'
+			else:
+				config['cornertype']=PInsharp#'clear'
 		self.cut_square(bl,config)
 		"""Cut a rectangle with sharp or clear corners depending on the side you are cutting
 		"""+self.otherargs
 	def pre_render(config):
 		if 'side' in config and config['side']=='in':
-			config['cornertype']='clear'
+			config['cornertype']=PInsharp
 		self.points=[]	
 		
 class Polygon(Path):
