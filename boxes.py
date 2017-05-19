@@ -851,7 +851,7 @@ class ArbitraryBox(Part):
 								lastpoint, 
 								point, 
 								cutside, 
-								joint_type=='concave' if 'internal' else 'external', 
+								'internal' if joint_type=='concave' else 'external', 
 								corner, 
 								corner, 
 								face['tab_length'][scount], 
@@ -947,6 +947,8 @@ class ArbitraryBox(Part):
 			else:
 				face['cut_from'] = -1
 			return
+		if 'wood_direction' not in face:
+			raise ValueError("wood_direction not in face "+f)
 		good_direction = face['wood_direction']
 		need_cut_from={}
 		pref_cut_from = False
