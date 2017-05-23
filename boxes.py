@@ -1127,13 +1127,18 @@ class ArbitraryBox(Part):
 	def make_normal(self, f, points):
 		normal = False
 		p = 0
+		normalsum = V(0,0,0)
 		for point in points:
-			new_normal = (points[(p-1)%len(points)]-point).normalize().cross( (points[(p+1)%len(points)]-point).normalize())
+			nextpoint = points[(p+1)%len(points)]
+			lastpoint = points[(p-1)%len(points)]
+			normalsum+= (lastpoint-point).cross( nextpoint-point)
+			new_normal = (lastpoint-point).normalize().cross( nextpoint-point).normalize()
 			if type(normal) is bool and normal == False:
 				normal = new_normal.normalize()
 			elif abs(abs((normal.dot(new_normal.normalize()))))-1 > 0.00001: #and normal.normalize() != - new_normal.normalize():
 				raise ValueError( "points in face "+f+" are not in a plane "+str(points) )
 			p += 1
+		normal=normalsum.normalize()
 		if 'origin' in self.faces[f]:
 			o = self.faces[f]['origin']
 			p = points[0]
@@ -1179,8 +1184,10 @@ class ArbitraryBox(Part):
 			joint_type='convex'
 		else:
 			face2 = self.faces[side[1][0]]
-			svec1 = (face1['points'][ (side[0][1]-1)%len(face1['points']) ] - face1['points'][side[0][1]]).cross( face1['normal'] ).normalize()
-			svec2 = (face2['points'][ (side[1][1]-1)%len(face2['points']) ] - face2['points'][side[1][1]]).cross( face2['normal'] ).normalize()
+			edge1 = face1['points'][ (side[0][1]-1)%len(face1['points']) ] - face1['points'][side[0][1]]
+			edge2 = face2['points'][ (side[1][1]-1)%len(face2['points']) ] - face2['points'][side[1][1]]
+			svec1 = edge1.cross( face1['normal'] ).normalize()
+			svec2 = edge2.cross( face2['normal'] ).normalize()
 			if (svec1+svec2).length()*5 >   (svec1 * 5 + face1['normal']*face1['wood_direction'] + svec2 * 5 + face2['normal']*face2['wood_direction']).length():
 				joint_type='concave'
 			else:
@@ -1251,7 +1258,7 @@ class ArbitraryBox(Part):
 			face1['corners'][scount1] = 'straight'	
 			if scount2 is not None:
 				face2['corners'][scount2] = 'straight'
-			sideSign = 0	
+			sideSign = 0
 		side[0].append(sideSign)
 		side[0].append( avSvec.dot ( face1['normal'] ) * cutsign)
 		side[0].append( angle )
