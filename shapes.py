@@ -212,7 +212,10 @@ class Lines(Path):
 		else:
 			rad = 0
 		for p in points:
-			self.add_point(p, cornertype, radius=rad)
+			if(type(cornertype) is str):
+				self.add_point(p, cornertype, radius=rad)
+			else:
+				self.add_point(cornertype(p))
 
 class ClearRect(Rect):
 	def __init__(self, bl,  **config):
@@ -1062,6 +1065,7 @@ The line defines the
 :param cutterrad: radius of the cutter you are using
 :param fudge: a fudge factor that increases the gap along the finger joint when negative - it should be 1/4 of the gap you want\n"""
 		self.init( config)
+		print "FingerJointMid "+str(start)+"->"+str(end)+" side="+str(side)
 		if 'fudge' in config:
 			fudge=config['fudge']
 		else:
@@ -1084,9 +1088,11 @@ The line defines the
 		if startmode=='on':
 			# cut a bit extra on first tab if the previous tab was off as well
 			if prevmode=='on':
-				self.add(ClearRect(bl=start-parallel*thickness+cra+crp, tr=start+along+cutin-cra-crp, direction='cw', side='in'))
+				self.add(Lines([start-parallel*thickness+cra+crp, start+cra-crp, start+along+cutin-cra-crp, start+along+cutin+cra-crp-parallel*thickness], closed=True, side='in', cornertype=PInsharp))
+#				self.add(ClearRect(bl=start-parallel*thickness+cra+crp, tr=start+along+cutin-cra-crp, direction='cw', side='in'))
 			else:
-				self.add(ClearRect(bl=start-parallel+cra+crp, tr=start+along+cutin-cra-crp, direction='cw', side='in'))
+				pass
+#				self.add(ClearRect(bl=start-parallel+cra+crp, tr=start+along+cutin-cra-crp, direction='cw', side='in'))
 			m='off'
 		else:
 			m='on'
@@ -1094,9 +1100,11 @@ The line defines the
 			if m=='on':
 				# cut a bit extra on first tab if the next tab was off as well
 				if i==num_tabs and nextmode=='off':
-					self.add(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp+parallel*thickness, direction='cw', side='in'))
+					self.add(Lines([start+along*i+cra+crp, start+along*(i+1)+cra-crp, start+along*(i+1)+cutin-cra-crp+parallel*thickness, start+along*i+cutin-cra+crp+parallel*thickness], closed=True, side='in', cornertype=PInsharp))
+#					self.add(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp+parallel*thickness, direction='cw', side='in'))
 				else:
-					self.add(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp, direction='cw', side='in'))
+					self.add(Lines([start+along*i+cra+crp, start+along*(i+1)+cra-crp, start+along*(i+1)+cutin-cra-crp, start+along*i+cutin-cra+crp], closed=True, side='in', cornertype=PInsharp))
+#					self.add(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp, direction='cw', side='in'))
 				
 				m='off'
 			else:
@@ -1491,6 +1499,51 @@ class FingerJointBoxSide(Path):
 		self.comment("FingerJointBoxSide")
 #		self.simplify_points()
 
+
+
+class BracketJoint(ButtJoint):
+	def p(self):
+		pass
+
+class BracketJointHoles(Pathgroup):
+        def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode, **config):
+#(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, **config):
+		self.init(config)
+		if 'bracket' in config:
+			bracket = config['bracket']
+		if 'args' in config:
+			args = config['args']
+
+		if 'joint_type' in config:
+                        joint_type=config['joint_type']
+                else:
+                        joint_type='convex'
+                if side=='left':
+                        perp = rotate((end-start).normalize(),-90)
+                else:
+                        perp = rotate((end-start).normalize(),90)
+                if 'butt_num_holes' in config and type(config['butt_num_holes']) is not None:
+                        num_holes = config['butt_num_holes']
+                else:
+                        num_holes = int(math.ceil((end-start).length()/hole_spacing))
+                if 'hole_offset' in config and config['hole_offset'] is not None:
+                        hole_offset = config['hole_offset']
+                else:
+                        hole_offset = 0
+                if num_holes>0:
+                        hole_length = (end-start).length()/num_holes
+                else:
+                        hole_length = 1
+                parallel=(end-start).normalize( )
+                holes=True
+		l = end - start
+		dl = l/(num_holes-1)
+		angle = -math.atan2(l[1], l[0])/math.pi*180.0 
+		print angle
+		args['side']=side
+		for i in range(0, num_holes-1):
+			t=self.add( bracket(start+dl*(0.5+i), **args))
+			t.rotate(V(0,0), angle) 		
 
 class RoundedArc(Path):
 	def __init__(self, pos, rad, width, angle,  **config):
