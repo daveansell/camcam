@@ -137,6 +137,28 @@ class Post(Part):
 		self.add(Hole(pos+s, rad=5/2),'base')
 		self.add(Hole(pos-s, rad=5/2), 'base')
 
+class Bracket(Pathgroup):
+	def __init__(self, pos, bracket_type, side, **config):
+		self.init(config)
+		self.translate(pos)
+		dat = {
+			'sabrefix60x50':{
+				'holerad':3.3/2,
+				'holes':{
+						'left':[V(20, 10), V(20,30), V(0,30), V(-20,30), V(-20,10)],
+						'right':[V(20, 10), V(20,30), V(0,25), V(-20,30), V(-20,10)],
+				},
+			},
+			
+		}
+		if bracket_type in dat:
+			d=dat[bracket_type]
+			print d
+			if side in d['holes']:
+				for p in d['holes'][side]:
+					self.add(Hole(p, rad=d['holerad']))
+		
+
 class Barn(Part):
 	def __init__(self, pos, width, height,**config):
 		self.init(config)
