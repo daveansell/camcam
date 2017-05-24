@@ -145,15 +145,14 @@ class Bracket(Pathgroup):
 			'sabrefix60x50':{
 				'holerad':3.3/2,
 				'holes':{
-						'left':[V(20, 10), V(20,30), V(0,30), V(-20,30), V(-20,10)],
-						'right':[V(20, 10), V(20,30), V(0,25), V(-20,30), V(-20,10)],
+						'on':[V(20, 10), V(20,30), V(0,30), V(-20,30), V(-20,10)],
+						'off':[V(20, 10), V(20,30), V(0,25), V(-20,30), V(-20,10)],
 				},
 			},
 			
 		}
 		if bracket_type in dat:
 			d=dat[bracket_type]
-			print d
 			if side in d['holes']:
 				for p in d['holes'][side]:
 					self.add(Hole(p, rad=d['holerad']))
