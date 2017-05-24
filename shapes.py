@@ -1504,7 +1504,7 @@ class FingerJointBoxSide(Path):
 class BracketJoint(ButtJoint):
 	def p(self):
 		pass
-
+# probably doesn't work with non-mirror symmetric hole patterns, am using rotation rather than mirror
 class BracketJointHoles(Pathgroup):
         def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode, **config):
 #(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, **config):
@@ -1518,10 +1518,10 @@ class BracketJointHoles(Pathgroup):
                         joint_type=config['joint_type']
                 else:
                         joint_type='convex'
-                if side=='left':
-                        perp = rotate((end-start).normalize(),-90)
-                else:
-                        perp = rotate((end-start).normalize(),90)
+      #          if side=='left':
+       #                 perp = rotate((end-start).normalize(),-90)
+        #        else:
+         #               perp = rotate((end-start).normalize(),90)
                 if 'butt_num_holes' in config and type(config['butt_num_holes']) is not None:
                         num_holes = config['butt_num_holes']
                 else:
@@ -1530,6 +1530,10 @@ class BracketJointHoles(Pathgroup):
                         hole_offset = config['hole_offset']
                 else:
                         hole_offset = 0
+		if 'wood_direction' in config:
+			wood_dir = config['wood_direction']
+		else:
+			wood_dir = 1
                 if num_holes>0:
                         hole_length = (end-start).length()/num_holes
                 else:
@@ -1538,11 +1542,16 @@ class BracketJointHoles(Pathgroup):
                 holes=True
 		l = end - start
 		dl = l/(num_holes-1)
-		angle = -math.atan2(l[1], l[0])/math.pi*180.0 
-		print angle
-		args['side']=side
+		angle = math.atan2(l[1], l[0])/math.pi*180.0 
+		if wood_dir<0 and side=="left":
+			angle+=180
+#			angle=-angle
+#		else:
+		angle=-angle
+		args['side']=startmode
 		for i in range(0, num_holes-1):
 			t=self.add( bracket(start+dl*(0.5+i), **args))
+	#			t.transform={'mirror':[V(0,0),'x']}
 			t.rotate(V(0,0), angle) 		
 
 class RoundedArc(Path):
