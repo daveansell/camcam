@@ -655,8 +655,8 @@ class Path(object):
 								if p1y==p2y:
 									if p1x == x and p1y==y:
 										return True
-								elif x <= xinters:
-									inside = not inside
+							elif x <= xinters:
+								inside = not inside
 # Was added for 3d stuff but causing problems
 # 					if x > min(p1x,p2x):
 # 						if x <= max(p1x,p2x):
@@ -1583,6 +1583,12 @@ class Pathgroup(object):
 		if self.transform is False or self.transform is None:
                         self.transform={}
                 self.transform['translate']=vec
+
+	def mirror(self, pos, dirvec):	
+		if self.transform==False or self.transform==None:
+			self.transform={}
+		self.transform['mirror']=[pos,dirvec]
+
 
 
 class Project(object):
