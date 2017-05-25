@@ -792,7 +792,9 @@ class ArbitraryBox(Part):
 						corner = face['corners'][scount]
 					lastcorner = face['corners'][(scount-1)%len(face['corners'])]
 					nextcorner = face['corners'][(scount+1)%len(face['corners'])]
-					if face['joint_mode'][scount]=='butt':
+					if face['joint_mode'][scount]=='straight':
+                				newpoints = [PSharp(lastpoint),PSharp(point)]
+					elif face['joint_mode'][scount]=='butt':
 						if angle==0:
 							if cutside=='left' and joint_type=='concave':
                                                                 cutside='right'
