@@ -685,7 +685,7 @@ class ArbitraryBox(Part):
 					poly=p.polygonise()
 						
 					if p.contains_point(p1p,poly) and p.contains_point(p2p, poly) and p1p[2]<0.05 and p2p[2]<0.05:
-						self.faces[f]['internal_joints'].append( { 'side':s, 'otherside':side[0], 'from':p1p, 'to':p2p, 'otherface':face1, 'otherf':side[0][0] } )
+						self.faces[f]['internal_joints'].append( { 'side':s, 'otherside':side[0], 'from':p1p, 'to':p2p, 'otherface':face1, 'otherf':side[0][0], 'sidedat':side } )
 						side.append( [ '_internal', f, len(self.faces[f]['internal_joints'])-1 ])
 						self.find_angle(s, side)
                 # The edge cross the normal gives you a vector that is in the plane and perpendicular to the edge
@@ -792,6 +792,15 @@ class ArbitraryBox(Part):
 						corner = face['corners'][scount]
 					lastcorner = face['corners'][(scount-1)%len(face['corners'])]
 					nextcorner = face['corners'][(scount+1)%len(face['corners'])]
+					if 'fudge' in face:
+						if type(face['fudge']) is dict and scount in face['fudge']:
+							fudge = face['fudge'][scount]
+						elif type(face['fudge']) in [int, float]:
+							fudge = face['fudge']
+						else:
+							fudge = self.fudge
+					else:
+						fudge = self.fudge
 					if face['joint_mode'][scount]=='straight':
                 				newpoints = [PSharp(lastpoint),PSharp(point)]
 					elif face['joint_mode'][scount]=='butt':
@@ -816,13 +825,13 @@ class ArbitraryBox(Part):
 	                                                        else:
 	                                                                last_offset = 0
 
-							newpoints = ButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = self.fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner, last_offset=last_offset, next_offset=next_offset, lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), nextparallel = self.parallel(lastpoint, point, point, nextpoint))
+							newpoints = ButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner, last_offset=last_offset, next_offset=next_offset, lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), nextparallel = self.parallel(lastpoint, point, point, nextpoint))
 							if face['cut_from']<0:
 								if  cutside=='left':
 									cutside= 'right'
 								else:
 									cutside='left'
-							part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=self.fudge, hole_offset=face['hole_offset'][scount]))
+							part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount]))
 							if not(lastcorner == 'off' and corner=='off'):
 								nointersect==True
 						#		if p==0:
@@ -852,13 +861,13 @@ class ArbitraryBox(Part):
                                                                         last_offset = self.faces[lastotherside[0]]['thickness']
                                                                 else:
                                                                         last_offset = 0
-                                                        newpoints = BracketJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = self.fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner, last_offset=last_offset, next_offset=next_offset, lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), nextparallel = self.parallel(lastpoint, point, point, nextpoint))
+                                                        newpoints = BracketJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner, last_offset=last_offset, next_offset=next_offset, lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), nextparallel = self.parallel(lastpoint, point, point, nextpoint))
                                                         if face['cut_from']<0:
                                                                 if  cutside=='left':
                                                                         cutside= 'right'
                                                                 else:
                                                                         cutside='left'
-                                                        part.add(BracketJointHoles(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=self.fudge, hole_offset=face['hole_offset'][scount], bracket=self.config['bracket'], args=self.config['bracket_args'], wood_direction=face['wood_direction']))
+                                                        part.add(BracketJointHoles(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount], bracket=self.config['bracket'], args=self.config['bracket_args'], wood_direction=face['wood_direction']))
                                                         if not(lastcorner == 'off' and corner=='off'):
                                                                 nointersect==True
                                                 #               if p==0:
@@ -877,10 +886,10 @@ class ArbitraryBox(Part):
 							if thisside[3]*face['good_direction']*face['intfact']<0:
 # THIS PUTS THE SLOPE ON THE WRONG PART OF THE JOINT
 # create a new mode in finger joints called int and have it behave properly
-								newpoints = AngledFingerJoint(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
-								part.add( AngledFingerJointSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 3.17/2, angle, lineside, self.fudge, material_thickness=face['thickness']))
+								newpoints = AngledFingerJoint(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, fudge, material_thickness=face['thickness'])
+								part.add( AngledFingerJointSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 3.17/2, angle, lineside, fudge, material_thickness=face['thickness']))
 							else:
-								newpoints = AngledFingerJointNoSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, self.fudge, material_thickness=face['thickness'])
+								newpoints = AngledFingerJointNoSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, fudge, material_thickness=face['thickness'])
 						else:
 							if cutside=='left' and joint_type=='concave':
 								cutside='right'
@@ -895,7 +904,7 @@ class ArbitraryBox(Part):
 								corner, 
 								face['tab_length'][scount], 
 								face['thickness'], 
-								0, self.fudge, 
+								0, fudge, 
 								nextcorner=nextcorner, 
 								lastcorner=lastcorner)
 			
@@ -936,11 +945,21 @@ class ArbitraryBox(Part):
 				else:
 					cutside='left'
 #			print "f="+f+" otherf="+joint['otherf']+" cutside="+str(cutside)+" (joint['to']-joint['from'])="+str( (joint['to']-joint['from']))+" joint['otherface']['normal']*joint['otherface']['wood_direction'] "+str(joint['otherface']['normal']*joint['otherface']['wood_direction'])+" face['normal']="+str(face['cut_from'] )+ " total="+ str((joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']*face['wood_direction']))+" wood_factor="+str(face['wood_direction'])+" "+str(face['good_direction'])+" cut_from="+str(face['cut_from'])
+			if('fudge' in joint['otherface']):
+				print "OTHRE FACE HAS FUDGE"+str(joint['otherface']['fudge'])+" "+str(joint['sidedat'][0])
+				if type(joint['otherface']['fudge']) is dict and joint['sidedat'][0][1] in joint['otherface']['fudge']:
+					fudge = joint['otherface']['fudge'][joint['sidedat'][0][1]]
+				elif type(joint['otherface']['fudge']) in [int, float]:
+					fudge = joint['otherface']['fudge']
+				else:
+					fudge = self.fudge
+			else:
+				fudge = self.fudge
 
 			prevmode = 'on'
 			nextmode = 'on'
 			if joint['joint_mode']=='butt':
-				part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], butt_holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes'], joint_type='convex', fudge= self.fudge))
+				part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], butt_holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes'], joint_type='convex', fudge=fudge))
 			elif joint['joint_mode']=='bracket':
 				part.add(BracketJointHoles(
 					joint['from'], 
@@ -956,12 +975,12 @@ class ArbitraryBox(Part):
 					butt_holerad=joint['butt_holerad'], 
 					butt_numholes=joint['butt_numholes'], 
 					joint_type=joint_type, 
-					fudge=self.fudge, 
+					fudge=fudge, 
 					hole_offset=joint['hole_offset'], 
 					bracket=self.config['bracket'], 
 					args=self.config['bracket_args']))
 			else:
-				part.add(FingerJointMid( joint['from'], joint['to'], cutside,'internal',  joint['corners'], joint['corners'], joint['tab_length'], joint['otherface']['thickness'], 0, prevmode, nextmode))
+				part.add(FingerJointMid( joint['from'], joint['to'], cutside,'internal',  joint['corners'], joint['corners'], joint['tab_length'], joint['otherface']['thickness'], 0, prevmode, nextmode, fudge=fudge))
 	def set_wood_factor(self, face):
 		if face['wood_direction'].dot(face['normal'])>0:
 			face['wood_factor']=1
