@@ -978,20 +978,24 @@ class ButtJoint(list):
 			extra=0
 		lastcorner = config['lastcorner']
 		nextcorner = config['nextcorner']
+		if cutterrad==0:
+			pointtype=PInsharp
+		else:
+			pointtype=PSharp
 #		if abs(extra)>0 and startmode == 'on' and lastcorner != 'off':
 		if abs(extra)>0 and  (startmode == 'off') and (joint_type=='concave' or lastcorner!=startmode):
-			self.append(PSharp(start+last_offset+perp*thickness))
+			self.append(pointtype(start+last_offset+perp*thickness))
 		elif abs(extra)>0 and not  (startmode == 'off' and lastcorner == 'off') and not lastparallel:
-			self.append(PSharp(start+last_offset))
-		self.append(PSharp(start+last_offset+extra*perp))
+			self.append(pointtype(start+last_offset))
+		self.append(pointtype(start+last_offset+extra*perp))
 #		self.append(PSharp((start+end)/2+extra*perp))
-		self.append(PSharp(end-next_offset+extra*perp))
+		self.append(pointtype(end-next_offset+extra*perp))
 
 #		if startmode == 'on' and nextcorner!='off' and  abs(extra)>0:
 		if  abs(extra)>0 and (startmode == 'off') and (joint_type=='concave' or nextcorner!=endmode):
-			self.append(PSharp(end-next_offset+perp*thickness))
+			self.append(pointtype(end-next_offset+perp*thickness))
 		elif  abs(extra)>0 and not (endmode == 'off' and nextcorner == 'off') and not nextparallel:
-			self.append(PSharp(end-next_offset))
+			self.append(pointtype(end-next_offset))
 class ButtJointMid(Pathgroup):
 	def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode, **config):
 		self.init(config)
@@ -1333,7 +1337,7 @@ The line defines the
 		cutin=perp*thickness
 		if linemode=='external' or linemode==False:
 			if cutterrad==0:
-				offpointmode=PSharp
+				offpointmode=PInsharp
 				onpointmode=PInsharp
 			else:
 				onpointmode = PClear
@@ -1341,7 +1345,7 @@ The line defines the
 		elif linemode=='internal':
 			if cutterrad==0:
                                 offpointmode=PInsharp
-                                onpointmode=PSharp
+                                onpointmode=PInsharp
                         else:
 				onpointmode = PSharp
 				offpointmode = PClear
@@ -1351,13 +1355,13 @@ The line defines the
 			print "NO LINEMODE"+str(linemode)
 		if startmode=='on':
 			if lastcorner != "on":
-				self.append(PSharp(start+crp-cra))
-			self.append(PSharp(start+crp))#onpointmode))
+				self.append(onpointmode(start+crp-cra))
+			self.append(onpointmode(start+crp))#onpointmode))
 			m='on'
 		elif startmode=='off':
 			if lastcorner != "off":
 				self.append(offpointmode(start+cutin+crp-cra))
-			self.append(PSharp(start+cutin+crp))#offpointmode))
+			self.append(onpointmode(start+cutin+crp))#offpointmode))
 			m='off'
 		else:
 			print "wrong start mode"+str(startmode)
@@ -1373,12 +1377,12 @@ The line defines the
 				m='on'
 		if endmode=='on':
 			if nextcorner != "on":
-				self.append(PSharp(end+crp+cra))
-			self.append(PSharp(end+crp))#onpointmode))
+				self.append(onpointmode(end+crp+cra))
+			self.append(onpointmode(end+crp))#onpointmode))
 		elif endmode=='off':
 			self.append(offpointmode(end+cutin+crp+cra))
 			if nextcorner != "off":
-				self.append(PSharp(end+cutin+crp))#offpointmode))
+				self.append(onpointmode(end+cutin+crp))#offpointmode))
 
 class FingerJointBoxSide(Path):
 	def __init__(self, pos, width, height, side, corners, sidemodes, tab_length, thickness, cutter,**config):

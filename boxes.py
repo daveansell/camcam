@@ -776,7 +776,7 @@ class ArbitraryBox(Part):
 			newpoints=[]
 			# need to add 2 points here so intersect_points works
               		if len(side)==1:
-                		newpoints = [PSharp(lastpoint),PSharp(point)]
+                		newpoints = [PInsharp(lastpoint),PInsharp(point)]
            		else:
 #               	 	if mode=='internal':
  #              	            	newpoints = [PSharp(point)]
@@ -802,7 +802,7 @@ class ArbitraryBox(Part):
 					else:
 						fudge = self.fudge
 					if face['joint_mode'][scount]=='straight':
-                				newpoints = [PSharp(lastpoint),PSharp(point)]
+                				newpoints = [PInsharp(lastpoint),PInsharp(point)]
 					elif face['joint_mode'][scount]=='butt':
 						if angle==0:
 							if cutside=='left' and joint_type=='concave':
@@ -839,7 +839,7 @@ class ArbitraryBox(Part):
 						
 						else:
 							print "WARNING: angled butt joint not handled properly - needs update"
-							newpoints = [PSharp(lastpoint),PSharp(point)]
+							newpoints = [PInsharp(lastpoint),PInsharp(point)]
 					elif face['joint_mode'][scount]=='bracket':
 						if angle==0:
                                                         if cutside=='left' and joint_type=='concave':
@@ -875,7 +875,7 @@ class ArbitraryBox(Part):
 
                                                 else:
                                                         print "WARNING: angled butt joint not handled properly - needs update"
-                                                        newpoints = [PSharp(lastpoint),PSharp(point)]			
+                                                        newpoints = [PInsharp(lastpoint),PInsharp(point)]			
 					else:
 
 
