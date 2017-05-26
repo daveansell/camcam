@@ -419,6 +419,8 @@ class PAroundcurve(PSharp):
 		if self.last() != None and self.next() !=None:
                         lastpoint=self.lastorigin()
                         nextpoint=self.nextorigin()
+			if self.radius ==0:
+				return [Line(self.last().end(), self.pos)]
 			if not self.cp1==self.pos:				
 				astart = self.lineArcIntersect(self.pos, lastpoint, self.cp1, self.radius)
 				aend   = self.lineArcIntersect(self.pos, nextpoint, self.cp1, self.radius)
@@ -442,9 +444,12 @@ class PAroundcurve(PSharp):
 		lastpoint=self.lastorigin()
 		if not self.setup:
 			if self.next().pos==False:
+				return self.pos
 				print "ERROR: next().pos="+str(self.next().pos)
 			print "NO setup start()"
-			return self.pos()
+			self._setup()
+		if self.radius==0:
+			return self.pos
 		if not self.cp1==self.pos:
 			return self.lineArcIntersect(self.pos, lastpoint, self.cp1, self.radius)
 		else:
@@ -459,6 +464,8 @@ class PAroundcurve(PSharp):
 				print "ERROR: next().pos="+str(self.next().pos)
 			print "NO setup end()"
 			return self.next().pos
+		if self.radius==0:
+			return self.pos
 		if not self.cp1==self.pos:
 			a= self.lineArcIntersect(self.pos, nextpoint, self.cp1, self.radius)
 			if a is False or a is None:
@@ -488,7 +495,7 @@ class PInsharp(PAroundcurve):
                 """Create a point which will head for point pos and then add an arc around the point centre with a radius=radius. Useful for adding ears around screw holes. if centre is not specified it is assumed it is the same as pos"""
                 self.init()
                 self.pos=Vec(pos)
-                self.point_type='aroundcurve'
+                self.point_type='insharp'
                # self.radius=radius
                 self.direction=False
                 self.transform=transform
@@ -527,7 +534,11 @@ class PInsharp(PAroundcurve):
         	                        self.cp1=self.pos-(((lastpoint-self.pos).normalize()+(nextpoint-self.pos).normalize())/2).normalize()*d
 				else:
 					self.cp1 = self.pos
-				self.radius = self.config['original_cutter']['cutterrad']
+				if ( self.config['cutside']=='right' and self.direction=='cw' or self.config['cutside']=='left' and self.direction=='ccw') == self.reverse or abs(angle<0.01):
+					self.radius=0
+				else:
+					self.radius = self.config['original_cutter']['cutterrad']
+#				print "self.cofig side="+self.config['cutside'] + " angle="+str(angle)+ " direction="+self.direction+ " reverse="+str(self.reverse)+" radius="+str(self.radius)
 
 class PIncurve(PSharp):
 	def __init__(self, pos, radius=0, direction=False, transform=False):
