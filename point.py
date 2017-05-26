@@ -515,6 +515,7 @@ class PInsharp(PAroundcurve):
                 return t
 	def _setup(self):
 		if not self.setup:
+			self.direction=False
 			self.setDirection()
 			# for some reason this needs reversing - probably because setDirection reverses the direction and it will happen again in Aroundcurve
 			if not self.reverse:
@@ -538,7 +539,7 @@ class PInsharp(PAroundcurve):
 					self.radius=0
 				else:
 					self.radius = self.config['original_cutter']['cutterrad']
-#				print "self.cofig side="+self.config['cutside'] + " angle="+str(angle)+ " direction="+self.direction+ " reverse="+str(self.reverse)+" radius="+str(self.radius)
+#				print str(self.pos)+"self.cofig side="+self.config['cutside'] + " angle="+str(angle)+ " direction="+self.direction+ " reverse="+str(self.reverse)+" radius="+str(self.radius)
 
 class PIncurve(PSharp):
 	def __init__(self, pos, radius=0, direction=False, transform=False):
