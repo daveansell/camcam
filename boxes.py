@@ -549,6 +549,8 @@ class ArbitraryBox(Part):
                                 face['hole_spacing'] = {}
 			if 'corners' not in face:
                                 face['corners'] = {}
+			if 'point_type' not in face:
+                                face['point_type'] = {}
 			if 'wood_direction' in face:
 				if wood_direction_face is not None or wood_direction_face !=None:
 					raise ValueError('wood direction defined more than once')
@@ -776,7 +778,18 @@ class ArbitraryBox(Part):
 			newpoints=[]
 			# need to add 2 points here so intersect_points works
               		if len(side)==1:
-                		newpoints = [PInsharp(lastpoint),PInsharp(point)]
+				newpoints=[]
+				if (lasts) in face['point_type']:
+					newpoints.append(face['point_type'][lasts])
+					newpoints[-1].setPos(lastpoint)
+				else:
+					newpoints.append(PInsharp(lastpoint))
+				if scount in face['point_type']:
+					newpoints.append(face['point_type'][scount])
+					newpoints[-1].setPos(point)
+				else:
+					newpoints.append(PInsharp(point))	
+#                		newpoints = [PInsharp(lastpoint),PInsharp(point)]
            		else:
 #               	 	if mode=='internal':
  #              	            	newpoints = [PSharp(point)]
