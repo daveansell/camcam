@@ -486,7 +486,8 @@ class Path(object):
 						self.delete_point(p)
 					elif point.pos!= point.next().pos and abs((point.pos-point.last().pos).normalize().dot((point.next().pos-point.pos).normalize())-1)<0.0001:
 						self.delete_point(p)
-
+				elif point.point_type == point.lastpoint.point_type and (point.pos-point.lastpoint.pos).length()<0.0001:
+					self.delete_point(p)
 	def offset_path(self,side,distance, config):
 		self.simplify_points()
 		newpath=copy.deepcopy(self)
