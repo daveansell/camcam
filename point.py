@@ -66,6 +66,8 @@ class Point(object):
 		self.invert = False	
 	def _setup(self):
 		self.setup=True
+	def setPos(self, pos):
+		self.pos = pos
 
         def copy(self):
                 t = Point( self.pos, self.point_type, self.radius, self.cp1, self.cp2, self.direction, self.transform, self.invert)
