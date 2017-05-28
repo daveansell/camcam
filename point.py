@@ -745,12 +745,16 @@ class POutcurve(Point):
 		else:
 			return seg[1].cutto
 	def end(self):
+		if hasattr(self, 'endpos'):
+			return self.endpos
 		lastpoint=self.lastorigin()
 		nextpoint=self.nextorigin()
 		angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
 		dl=self.radius*math.tan((angle/180)/2*math.pi)
 		return self.pos+(nextpoint-self.pos).normalize()*dl
 	def start(self):
+		if hasattr(self, 'startpos'):
+			return self.startpos
 		lastpoint=self.lastorigin()
 		nextpoint=self.nextorigin()
 		angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
@@ -859,7 +863,7 @@ class POutcurve(Point):
                         lr=self.last().radius
                 else:
                         lr=0
-		if self.last() is not None and self.last().point_type not in ['sharp', 'outcurve', 'clear', 'doubleclear', 'incurve']:
+		if self.last() is not None and self.last().point_type not in ['sharp', 'outcurve', 'clear', 'doubleclear', 'incurve', 'insharp']:
 
 			print "Outcurve must be preceeded by a sharp point or another outcurve not a "+str(self.last().point_type)
 			return []
@@ -900,6 +904,8 @@ class POutcurve(Point):
                         p2 = self.tangent_point(self.next().pos, self.pos, self.radius, self.otherDir(d2))
                         segment_array.append( Arc( p1[1],p2, self.pos, self.otherDir(d2)))
                         frompoint=p2
+		self.startpos = p1
+		self.endpos = p2
 		return segment_array	
 		
 class PClear(PSharp):
