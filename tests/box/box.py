@@ -1,9 +1,9 @@
 import cc3d
-fudge = 0.2
+fudge = 0
 box_thickness=12
 w=100
 
-plane = camcam.add_plane(Plane('xy', cutter='1/8_endmill'))
+plane = camcam.add_plane(Plane('xy', cutter='6mm_endmill'))
 
 plane.add_layer('one', 'delrin', box_thickness, colour='#005000')
 plane.add_layer('two', 'delrin', box_thickness, colour='#005000')
