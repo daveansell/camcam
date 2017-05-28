@@ -779,8 +779,8 @@ class ArbitraryBox(Part):
 			# need to add 2 points here so intersect_points works
               		if len(side)==1:
 				newpoints=[]
-				if (lasts) in face['point_type']:
-					newpoints.append(face['point_type'][lasts])
+				if ((p-1)%len(face['sides'])) in face['point_type']:
+					newpoints.append(face['point_type'][(p-1)%len(face['sides'])])
 					newpoints[-1].setPos(lastpoint)
 				else:
 					newpoints.append(PInsharp(lastpoint))
