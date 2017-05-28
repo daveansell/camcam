@@ -865,7 +865,17 @@ class Insert(Part):
 				insert=milling.inserts[insert_size][config['insert_type']]
 			else:
 				insert=milling.inserts[insert_size]
-			self.add(Hole(pos, rad=insert['diams'], z1 = insert['depths'], **config), layer)	
+			if 'z1' in config:
+				depths=[]
+				for d in insert['depths']:
+					if d is False:
+						depths.append(config['z1'])
+					else:
+						depths.append(d)
+				del(config['z1'])
+			else:
+				depths = insert['depths']
+			self.add(Hole(pos, rad=insert['diams'], z1 = depths, **config), layer)	
 
 class LoadCell(Part):
 	def __init__(self, pos, cell_type, modes,**config):
