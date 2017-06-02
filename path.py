@@ -1305,11 +1305,11 @@ class Path(object):
 							firstdepth=0
 						self.add_out(segment.out(True,mode,depth-step,depth)) 
 					else:
-						self.add_out(segment.out(True,mode))
+						self.add_out(segment.out(True,mode, depth, depth))
 					first=0
 			# if we are in ramp mode, redo the first segment
 			if downmode=='ramp' and mode=='gcode' or mode=='simplegcode':
-				self.add_out(self.Fsegments[0].out(direction,mode))
+				self.add_out(self.Fsegments[0].out(direction,mode, depth, depth))
 			self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 		else:
 			self.runin(downmode,self.side)
@@ -1331,14 +1331,14 @@ class Path(object):
 							firstdepth=0
 						self.add_out(segment.out(d,mode,depth-step,depth))
 					else:
-						self.add_out(segment.out(d,mode))
+						self.add_out(segment.out(d,mode, depth, depth))
 					first=0
 				d= not d
 			if downmode=='ramp':
 				if d:
-					self.add_out(self.Fsegments[0].out(direction,mode))
+					self.add_out(self.Fsegments[0].out(direction,mode, depth, depth))
 				else:
-					self.add_out(self.Bsegments[0].out(direction,mode))
+					self.add_out(self.Bsegments[0].out(direction,mode, depth, depth))
 			self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 		# If we are in a gcode mode, go through all the cuts and add feed rates to them
 		if self.mode=='gcode':
