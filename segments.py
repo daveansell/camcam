@@ -56,7 +56,7 @@ class Segment(object):
                         return self.svg(direction)
                 elif mode=='gcode':
                         temp=self.gcode(direction)
-                        if len(temp)>0 and zfrom!=zto:
+                        if len(temp)>0:# and zfrom!=zto:
                                 temp[0]['Z']=zto
                         return temp
                 elif mode=='simplegcode' or mode=='scr':
