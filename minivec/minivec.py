@@ -149,7 +149,8 @@ class Vec(object):
         """
         selfX, selfY, selfZ = self.__vec
         otherX, otherY, otherZ = _Triplet(vec, allowNested=True, allowNone=False)
-        epsilon = getattr(_ThreadLocal, "minivecEpsilon", _DefaultEpsilon)
+	if epsilon is None:
+	        epsilon = getattr(_ThreadLocal, "minivecEpsilon", _DefaultEpsilon)
         #return fabs(selfX - otherX) < epsilon and fabs(selfY - otherY) < epsilon and fabs(selfZ - otherZ) < epsilon
         return fabs(selfX - otherX) < epsilon > fabs(selfY - otherY) and fabs(selfZ - otherZ) < epsilon
 

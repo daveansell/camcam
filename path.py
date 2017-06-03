@@ -82,10 +82,17 @@ def V(x=False,y=False,z=False):
                 z=False
         return Vec(x,y,z)
 
-def rotate(pos, a):
+def rotate(pos, a, *config):
+	if len(config):
+                axis = config[0]
+        else:
+                axis = V(0,0,-1)
+	print "%%rotate pos="+str(pos)+" a="+str(a) +" axis = "+str(axis)
         if type(pos) is Vec:
-                M=Mat(1).rotateAxis(a,V(0,0,-1))
+                M=Mat(1).rotateAxis(a, axis)
+		print "%%"+str(M)
                 pos=pos.transform(M)
+		print "%%rotated pos="+str(pos)
                 return pos
         else:
                 return False
@@ -191,6 +198,18 @@ class Path(object):
 				config['downmode']='down'
 			else:
 				config['downmode']='ramp'
+		if config['cutter'] in milling.tools:
+			tool=milling.tools[config['cutter']]
+			c={}
+			c['cutterrad']=float(tool['diameter'])/2
+                        c['endcut']=tool['endcut']
+                        c['sidecut']=tool['sidecut']
+                        if tool['sidecut']==0:
+                                c['downmode']='down'
+                        else:
+                                c['downmode']='ramp'
+			config['original_cutter']=c
+				
 	def set_material(self, config):
 		if config['material'] in milling.materials:
 			mat=milling.materials[config['material']]
@@ -218,6 +237,7 @@ class Path(object):
 		else:
 			self.points.append(self.make_point(pos, point_type, radius,cp1, cp2, direction, transform))
 		self.has_changed()
+		self.points[-1].path=self
 		l = len(self.points)
 		if self.closed:
 			self.points[0].lastpoint = self.points[-1]
@@ -236,6 +256,7 @@ class Path(object):
 			pointlist=self.points
 		for p in range(0, len(pointlist)):
 			l = len(self.points)
+			pointlist[p].path=self
 			if self.closed==True:
 				pointlist[p].nextpoint = pointlist[(p+1)%l]
 				pointlist[p].lastpoint = pointlist[(p-1)%l]
@@ -397,6 +418,8 @@ class Path(object):
 		return pout
 
 	def make_segments(self, direction,segment_array,config):
+		self.reset_points()
+		self.simplify_points()
 		pointlist = self.transform_pointlist(self.points,config['transformations'])
 		if direction!=self.find_direction(config):
 			pointlist.reverse()
@@ -404,6 +427,13 @@ class Path(object):
 			self.isreversed=1
 		else:
 			self.isreversed=0
+		if self.side in ['left', 'right']:
+			config['side'] = self.side
+#		elif (((direction=='cw') == (self.mirrored>0))==(direction=='cw'))==(self.side=='in'):
+		elif (((direction=='cw'))==(self.mirrored))==(self.side=='in'):
+                                config['cutside']='right'
+                else:
+                                config['cutside']='left'
 		numpoints=len(pointlist)
 		self.reset_points()
 		#if(self.closed):
@@ -411,6 +441,7 @@ class Path(object):
 	#	else:
 	#		numpoints=len(pointlist)*2-2
 #		for p,point in enumerate(pointlist):
+
 		for p in range(0,numpoints):
 			segment_array.extend(pointlist[p].generateSegment(self.isreversed, config))
 	#	else:
@@ -445,12 +476,18 @@ class Path(object):
 	def simplify_points(self):
 		if len(self.points)>2:
 			for p,point in enumerate(self.points):
-				if point.point_type in ['sharp', 'clear', 'doubleclear'] and point.next().point_type in ['sharp', 'clear', 'doubleclear'] and point.last().point_type in ['sharp', 'clear', 'doubleclear']:# and p!=0 and p!=len(self.points)-1:
-					if point.lastpoint.point_type in ['sharp', 'clear', 'doubleclear'] and (point.pos-point.lastpoint.pos).length()<0.0001:
+				if (point.point_type in ['sharp', 'clear', 'doubleclear', 'insharp'] and 
+					point.next().point_type in ['sharp', 'clear', 'doubleclear', 'insharp'] and 
+					point.last().point_type in ['sharp', 'clear', 'doubleclear', 'insharp'] ):
+#				  or (point.point_type == 'insharp' and 
+#					point.next().point_type=='insharp' and 
+#					point.last().point_type=='insharp') ):# and p!=0 and p!=len(self.points)-1:
+					if (point.pos-point.lastpoint.pos).length()<0.0001:
 						self.delete_point(p)
 					elif point.pos!= point.next().pos and abs((point.pos-point.last().pos).normalize().dot((point.next().pos-point.pos).normalize())-1)<0.0001:
 						self.delete_point(p)
-
+				elif point.point_type == point.lastpoint.point_type and (point.pos-point.lastpoint.pos).length()<0.0001:
+					self.delete_point(p)
 	def offset_path(self,side,distance, config):
 		self.simplify_points()
 		newpath=copy.deepcopy(self)
@@ -617,15 +654,32 @@ class Path(object):
 		p1x,p1y,p1z = poly[0]
 		for i in range(n+1):
 			p2x,p2y,p2z = poly[i % n]
-			if y > min(p1y,p2y):
+			if y >= min(p1y,p2y):
 				if y <= max(p1y,p2y):
 					if x <= max(p1x,p2x):
-						if p1y != p2y:
-							xinters = (y-p1y)*(p2x-p1x)/(p2y-p1y)+p1x
-						if p1x == p2x or x <= xinters:
-							inside = not inside
-			p1x,p1y = p2x,p2y
+#						if x>= min(p1x, p2x):
+							if p1y != p2y:
+								xinters = (y-p1y)*(p2x-p1x)/(p2y-p1y)+p1x
+						# if p1y==p2y and x is between the two then the point is in the shape
+							elif p1x<=x and x<=p2x or p1x>=x and x>=p2x:
+								return True
+							if p1x == p2x and p1y<=y and y<=p2y or p1y>=y and y>=p2y:
+								return True
+							if p1x == p2x:
+								if p1y==p2y:
+									if p1x == x and p1y==y:
+										return True
+							elif x <= xinters:
+								inside = not inside
+# Was added for 3d stuff but causing problems
+# 					if x > min(p1x,p2x):
+# 						if x <= max(p1x,p2x):
+# 							if p1y != p2y:
+# 								xinters = (y-p1y)*(p2x-p1x)/(p2y-p1y)+p1x
+# 							if p1x == p2x or x <= xinters:
+# 								inside = not inside
 
+			p1x,p1y = p2x,p2y
 		return inside
 
 	def get_side(self,a,b,c):
@@ -857,7 +911,6 @@ class Path(object):
 		if hasattr(self,'__render__') and callable(self.__render__):
 			self.__render__(config)
 		finalpass=False
-#		print self
 		if config['side']=='in' or config['side']=='out':
 			side = config['side']				
 			c =copy.copy(config)
@@ -1252,11 +1305,11 @@ class Path(object):
 							firstdepth=0
 						self.add_out(segment.out(True,mode,depth-step,depth)) 
 					else:
-						self.add_out(segment.out(True,mode))
+						self.add_out(segment.out(True,mode, depth, depth))
 					first=0
 			# if we are in ramp mode, redo the first segment
 			if downmode=='ramp' and mode=='gcode' or mode=='simplegcode':
-				self.add_out(self.Fsegments[0].out(direction,mode))
+				self.add_out(self.Fsegments[0].out(direction,mode, depth, depth))
 			self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 		else:
 			self.runin(downmode,self.side)
@@ -1278,14 +1331,14 @@ class Path(object):
 							firstdepth=0
 						self.add_out(segment.out(d,mode,depth-step,depth))
 					else:
-						self.add_out(segment.out(d,mode))
+						self.add_out(segment.out(d,mode, depth, depth))
 					first=0
 				d= not d
 			if downmode=='ramp':
 				if d:
-					self.add_out(self.Fsegments[0].out(direction,mode))
+					self.add_out(self.Fsegments[0].out(direction,mode, depth, depth))
 				else:
-					self.add_out(self.Bsegments[0].out(direction,mode))
+					self.add_out(self.Bsegments[0].out(direction,mode, depth, depth))
 			self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 		# If we are in a gcode mode, go through all the cuts and add feed rates to them
 		if self.mode=='gcode':
@@ -1544,6 +1597,12 @@ class Pathgroup(object):
 		if self.transform is False or self.transform is None:
                         self.transform={}
                 self.transform['translate']=vec
+
+	def mirror(self, pos, dirvec):	
+		if self.transform==False or self.transform==None:
+			self.transform={}
+		self.transform['mirror']=[pos,dirvec]
+
 
 
 class Project(object):
@@ -2150,7 +2209,7 @@ class Plane(Part):
 		else:
 			paths=[]
 		# if we are looking at a back layer and we are in a cutting mode then mirror the image
-		if (part.layer in self.layers and self.layers[part.layer].config['isback'] is True or part.isback is True) and config['mirror_backs'] is True:
+		if (part.layer in self.layers and self.layers[part.layer].config['isback'] is True or part.isback is True) and 'mirror_backs' in config and config['mirror_backs'] is True:
 			if 'transformations' in config and config['transformations'] is list:
 				config['transformations'].insert(0,{'mirror':[V(0,0),'x']})
 			else:

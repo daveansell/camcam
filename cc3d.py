@@ -26,7 +26,7 @@ from types import MethodType
 
 
 SEGMENTS = 120
-RESOLUTION = 0.3
+RESOLUTION = 4
 _delta = 0
 SCALEUP = 1
 PRECISION = 3

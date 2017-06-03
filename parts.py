@@ -137,6 +137,27 @@ class Post(Part):
 		self.add(Hole(pos+s, rad=5/2),'base')
 		self.add(Hole(pos-s, rad=5/2), 'base')
 
+class Bracket(Pathgroup):
+	def __init__(self, pos, bracket_type, side, **config):
+		self.init(config)
+		self.translate(pos)
+		dat = {
+			'bpc60x40':{
+				'holerad':3.3/2,
+				'holes':{
+						'on':[V(25.0, 27.5), V(12.5,42.5), V(25,55), V( 0,55), V(-25,55), V(-12.5, 42.5), V(-25.0, 27.5)],
+						'off':[V(12.5, 17.5), V(25,34), V(0,34), V(-25,34), V(-12.5,17.5)],
+				},
+			},
+			
+		}
+		if bracket_type in dat:
+			d=dat[bracket_type]
+			if side in d['holes']:
+				for p in d['holes'][side]:
+					self.add(Hole(p, rad=d['holerad']))
+		
+
 class Barn(Part):
 	def __init__(self, pos, width, height,**config):
 		self.init(config)
@@ -844,7 +865,17 @@ class Insert(Part):
 				insert=milling.inserts[insert_size][config['insert_type']]
 			else:
 				insert=milling.inserts[insert_size]
-			self.add(Hole(pos, rad=insert['diams'], z1 = insert['depths'], **config), layer)	
+			if 'z1' in config:
+				depths=[]
+				for d in insert['depths']:
+					if d is False:
+						depths.append(config['z1'])
+					else:
+						depths.append(d)
+				del(config['z1'])
+			else:
+				depths = insert['depths']
+			self.add(Hole(pos, rad=insert['diams'], z1 = depths, **config), layer)	
 
 class LoadCell(Part):
 	def __init__(self, pos, cell_type, modes,**config):

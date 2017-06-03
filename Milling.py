@@ -127,6 +127,20 @@ class Milling:
 				'zero':False,
 				'file_suffix':'.svg',
                         },
+			'cutdxf':{
+				'forcestepdown':1000,
+				'toolchange':'none',
+				'mirror_backs':True,
+				'z_overshoot':0,
+				'group':False,
+				'overview':False,
+                                'hide_cuts':False,
+				'label':False,
+				'zero':False,
+				'file_suffix':'.dxf',
+				'mode':'dxf',
+				'render_string':False,
+			},
 			'laserdxf':{
 				'forcestepdown':1000,
                                 'forcecutter':'laser',
@@ -199,6 +213,7 @@ class Milling:
 				'z_overshoot':0,
 				'label':False,
 				'zero':False,
+				'file_suffix':'.svg',
                         },
                         'svg':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -275,6 +290,12 @@ class Milling:
                 "2mm_endmill":{
                         "id":8,
                         "diameter":2.0,
+                        "endcut":1,
+                        "sidecut":1,
+                },
+                "9.4mm_endmill":{
+                        "id":21,
+                        "diameter":9.4,
                         "endcut":1,
                         "sidecut":1,
                 },

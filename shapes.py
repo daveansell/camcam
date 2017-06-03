@@ -69,10 +69,17 @@ class Rect(Path):
 			raise ValueError("Rectangle has no area")
 		self.comment("Rounded Square")
 		self.comment("bl="+str(bl)+" tr="+str(tr)+" rad="+str(rad))
-                self.add_point(bl,ct, radius=rad, **args)
-                self.add_point(V(bl[0],tr[1],0),ct,radius=rad, **args)
-                self.add_point(tr,ct,radius=rad, **args)
-                self.add_point(V(tr[0],bl[1],0),ct,radius=rad, **args)
+		if type(ct) is str:
+	                self.add_point(bl,ct, radius=rad, **args)
+	                self.add_point(V(bl[0],tr[1],0),ct,radius=rad, **args)
+	                self.add_point(tr,ct,radius=rad, **args)
+	                self.add_point(V(tr[0],bl[1],0),ct,radius=rad, **args)
+		else:
+			self.add_point(ct(bl,  **args))
+			self.add_point(ct(V(bl[0],tr[1],0),  **args))
+			self.add_point(ct(tr,  **args))
+			self.add_point(ct(V(tr[0],bl[1],0), **args))
+
 
 class RoundedRect(Rect):
 	def __init__(self, bl,  **config):
@@ -189,7 +196,7 @@ class RepeatEllipse(Part):
 
 class Lines(Path):
 	def __init__(self, points, **config):
-	#	assert type(points) is list
+#		assert type(points) is list
 		self.init(config)
 		if 'cornertype' in config:
 			cornertype=config['cornertype']
@@ -205,21 +212,25 @@ class Lines(Path):
 		else:
 			rad = 0
 		for p in points:
-			self.add_point(p, cornertype, radius=rad)
+			if(type(cornertype) is str):
+				self.add_point(p, cornertype, radius=rad)
+			else:
+				self.add_point(cornertype(p))
 
 class ClearRect(Rect):
 	def __init__(self, bl,  **config):
 		self.init(config)
 		if 'side' in config and config['side'] in ['in', 'out']:
-			config['cornertype']='sharp'
-		else:
-			config['cornertype']='clear'
+			if config['side']=='out':
+				config['cornertype']='sharp'
+			else:
+				config['cornertype']=PInsharp#'clear'
 		self.cut_square(bl,config)
 		"""Cut a rectangle with sharp or clear corners depending on the side you are cutting
 		"""+self.otherargs
 	def pre_render(config):
 		if 'side' in config and config['side']=='in':
-			config['cornertype']='clear'
+			config['cornertype']=PInsharp
 		self.points=[]	
 		
 class Polygon(Path):
@@ -345,6 +356,30 @@ class Drill(Circle):
 #		self.boundingBox={'bl':p.pos, 'tr':p.pos}
 #		self.centre=p.pos
 #		return [self.pos]	
+
+class ParametricPath3D(Path):
+	def __init__(self, pos, callback, pmin, pmax, pstep, **config):
+		self.init(config)
+		self.translate(pos)
+		self.use_point_z = True
+		self.callback = callback
+		self.pmin = float(pmin)
+		self.pmax = float(pmax)
+		self.stepdown = 1000
+		if "closed" in config:
+			self.closed =config['closed']
+		else:
+			self.closed = False
+		p= self.pmin
+		while p<pmax:
+			pnt = callback(p)
+			self.add_point(pnt)	
+			p+=pstep
+		p=pmax
+		pnt = callback(p)
+		self.add_point(pnt)
+#		for p in self.points:
+#			print p.pos
 
 class RoundSpeakerGrill(Pathgroup):
 	def __init__(self,pos, rad, holerad, spacing, **config):
@@ -943,20 +978,24 @@ class ButtJoint(list):
 			extra=0
 		lastcorner = config['lastcorner']
 		nextcorner = config['nextcorner']
+		if cutterrad==0:
+			pointtype=PInsharp
+		else:
+			pointtype=PSharp
 #		if abs(extra)>0 and startmode == 'on' and lastcorner != 'off':
-		if abs(extra)>0 and  (startmode == 'off') and joint_type=='concave':
-			self.append(PSharp(start+last_offset+perp*thickness))
+		if abs(extra)>0 and  (startmode == 'off') and (joint_type=='concave' or lastcorner!=startmode):
+			self.append(pointtype(start+last_offset+perp*thickness))
 		elif abs(extra)>0 and not  (startmode == 'off' and lastcorner == 'off') and not lastparallel:
-			self.append(PSharp(start+last_offset))
-		self.append(PSharp(start+last_offset+extra*perp))
+			self.append(pointtype(start+last_offset))
+		self.append(pointtype(start+last_offset+extra*perp))
 #		self.append(PSharp((start+end)/2+extra*perp))
-		self.append(PSharp(end-next_offset+extra*perp))
+		self.append(pointtype(end-next_offset+extra*perp))
 
 #		if startmode == 'on' and nextcorner!='off' and  abs(extra)>0:
-		if  abs(extra)>0 and (startmode == 'off') and joint_type=='concave':
-			self.append(PSharp(end-next_offset+perp*thickness))
-		elif  abs(extra)>0 and not (startmode == 'off' and nextcorner == 'off') and not nextparallel:
-			self.append(PSharp(end-next_offset))
+		if  abs(extra)>0 and (startmode == 'off') and (joint_type=='concave' or nextcorner!=endmode):
+			self.append(pointtype(end-next_offset+perp*thickness))
+		elif  abs(extra)>0 and not (endmode == 'off' and nextcorner == 'off') and not nextparallel:
+			self.append(pointtype(end-next_offset))
 class ButtJointMid(Pathgroup):
 	def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode, **config):
 		self.init(config)
@@ -1030,6 +1069,7 @@ The line defines the
 :param cutterrad: radius of the cutter you are using
 :param fudge: a fudge factor that increases the gap along the finger joint when negative - it should be 1/4 of the gap you want\n"""
 		self.init( config)
+		print "FingerJointMid "+str(start)+"->"+str(end)+" side="+str(side)
 		if 'fudge' in config:
 			fudge=config['fudge']
 		else:
@@ -1047,14 +1087,16 @@ The line defines the
 		parallel=(end-start).normalize( )
 		along=parallel*tab_length
 		cra=(end-start).normalize()*(cutterrad+fudge)
-		crp=perp*cutterrad
+		crp=perp*(cutterrad+fudge)
 		cutin=perp*thickness
 		if startmode=='on':
 			# cut a bit extra on first tab if the previous tab was off as well
 			if prevmode=='on':
-				self.add(ClearRect(bl=start-parallel*thickness+cra+crp, tr=start+along+cutin-cra-crp, direction='cw', side='in'))
+				self.add(Lines([start-parallel*thickness+cra+crp, start+cra-crp, start+along+cutin-cra-crp, start+along+cutin+cra-crp-parallel*thickness], closed=True, side='in', cornertype=PInsharp))
+#				self.add(ClearRect(bl=start-parallel*thickness+cra+crp, tr=start+along+cutin-cra-crp, direction='cw', side='in'))
 			else:
-				self.add(ClearRect(bl=start-parallel+cra+crp, tr=start+along+cutin-cra-crp, direction='cw', side='in'))
+				pass
+#				self.add(ClearRect(bl=start-parallel+cra+crp, tr=start+along+cutin-cra-crp, direction='cw', side='in'))
 			m='off'
 		else:
 			m='on'
@@ -1062,9 +1104,11 @@ The line defines the
 			if m=='on':
 				# cut a bit extra on first tab if the next tab was off as well
 				if i==num_tabs and nextmode=='off':
-					self.add(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp+parallel*thickness, direction='cw', side='in'))
+					self.add(Lines([start+along*i+-cra-crp, start+along*(i+1)+cra-crp, start+along*(i+1)+cutin+cra+crp+parallel*thickness, start+along*i+cutin-cra+crp+parallel*thickness], closed=True, side='in', cornertype=PInsharp))
+#					self.add(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp+parallel*thickness, direction='cw', side='in'))
 				else:
-					self.add(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp, direction='cw', side='in'))
+					self.add(Lines([start+along*i-cra-crp, start+along*(i+1)+cra-crp, start+along*(i+1)+cutin+cra+crp, start+along*i+cutin-cra+crp], closed=True, side='in', cornertype=PInsharp))
+#					self.add(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp, direction='cw', side='in'))
 				
 				m='off'
 			else:
@@ -1256,7 +1300,7 @@ fudge - fudge factor which just affects the sides of the fingers not their lengt
 				m='on'
 
 class FingerJoint(list):
-	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, fudge=0):
+	def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, fudge=0, **config):
 		"""Produce points for a finger joint cut on :param side: of a line from :param start: to :param end:
 The line defines the 
 :param linemode: 'internal' - for a joint that is in a hole in a piece of wood 'external' is a side of a box
@@ -1269,6 +1313,14 @@ The line defines the
 :param thickness: thickness of the material
 :param cutterrad: radius of the cutter you are using
 :param fudge: a fudge factor that increases the gap along the finger joint when negative - it should be 1/4 of the gap you want\n"""
+		if 'lastcorner' in config:
+			lastcorner = config['lastcorner']
+		else:
+			lastcorner = endmode
+		if 'nextcorner' in config:
+			nextcorner = config['nextcorner']
+		else:
+			nextcorner = endmode
 		num_tab_pairs= math.floor((end-start).length()/tab_length/2)
 		if startmode==endmode:
 			num_tabs = num_tab_pairs*2+1
@@ -1283,24 +1335,33 @@ The line defines the
 		cra=(end-start).normalize()*(cutterrad+fudge)
 		crp=perp*cutterrad
 		cutin=perp*thickness
-		if linemode=='external':
-			onpointmode = PClear
-			offpointmode = PSharp
-		if linemode=='internal':
-			onpointmode = PSharp
-			offpointmode = PClear
+		if linemode=='external' or linemode==False:
+			if cutterrad==0:
+				offpointmode=PInsharp
+				onpointmode=PInsharp
+			else:
+				onpointmode = PClear
+				offpointmode = PSharp
+		elif linemode=='internal':
+			if cutterrad==0:
+                                offpointmode=PInsharp
+                                onpointmode=PInsharp
+                        else:
+				onpointmode = PSharp
+				offpointmode = PClear
 			cra=-cra
 			crp=-crp
-		if cutterrad==0:
-			onpointmode=PSharp
-			offpointmode=PSharp
+		else:
+			print "NO LINEMODE"+str(linemode)
 		if startmode=='on':
-#			self.append(Point(start+crp-cra, onpointmode))
-			self.append(PSharp(start+crp))#onpointmode))
+			if lastcorner != "on":
+				self.append(onpointmode(start+crp-cra))
+			self.append(onpointmode(start+crp))#onpointmode))
 			m='on'
 		elif startmode=='off':
-#			self.append(Point(start+cutin+crp-cra, offpointmode))
-			self.append(PSharp(start+cutin+crp))#offpointmode))
+			if lastcorner != "off":
+				self.append(offpointmode(start+cutin+crp-cra))
+			self.append(onpointmode(start+cutin+crp))#offpointmode))
 			m='off'
 		else:
 			print "wrong start mode"+str(startmode)
@@ -1315,11 +1376,13 @@ The line defines the
 				self.append(onpointmode(start+along*i+crp+cra))
 				m='on'
 		if endmode=='on':
-#			self.append(Point(end+crp+cra, onpointmode))
-			self.append(PSharp(end+crp))#onpointmode))
+			if nextcorner != "on":
+				self.append(onpointmode(end+crp+cra))
+			self.append(onpointmode(end+crp))#onpointmode))
 		elif endmode=='off':
-#			self.append(Point(end+cutin+crp+cra, offpointmode))
-			self.append(PSharp(end+cutin+crp))#offpointmode))
+			self.append(offpointmode(end+cutin+crp+cra))
+			if nextcorner != "off":
+				self.append(onpointmode(end+cutin+crp))#offpointmode))
 
 class FingerJointBoxSide(Path):
 	def __init__(self, pos, width, height, side, corners, sidemodes, tab_length, thickness, cutter,**config):
@@ -1440,6 +1503,60 @@ class FingerJointBoxSide(Path):
 		self.comment("FingerJointBoxSide")
 #		self.simplify_points()
 
+
+
+class BracketJoint(ButtJoint):
+	def p(self):
+		pass
+# probably doesn't work with non-mirror symmetric hole patterns, am using rotation rather than mirror
+class BracketJointHoles(Pathgroup):
+        def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode, **config):
+#(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, **config):
+		self.init(config)
+		if 'bracket' in config:
+			bracket = config['bracket']
+		if 'args' in config:
+			args = config['args']
+
+		if 'joint_type' in config:
+                        joint_type=config['joint_type']
+                else:
+                        joint_type='convex'
+      #          if side=='left':
+       #                 perp = rotate((end-start).normalize(),-90)
+        #        else:
+         #               perp = rotate((end-start).normalize(),90)
+                if 'butt_num_holes' in config and type(config['butt_num_holes']) is not None:
+                        num_holes = config['butt_num_holes']
+                else:
+                        num_holes = int(math.ceil((end-start).length()/hole_spacing))
+                if 'hole_offset' in config and config['hole_offset'] is not None:
+                        hole_offset = config['hole_offset']
+                else:
+                        hole_offset = 0
+		if 'wood_direction' in config:
+			wood_dir = config['wood_direction']
+		else:
+			wood_dir = 1
+                if num_holes>0:
+                        hole_length = (end-start).length()/num_holes
+                else:
+                        hole_length = 1
+                parallel=(end-start).normalize( )
+                holes=True
+		l = end - start
+		dl = l/(num_holes-1)
+		angle = math.atan2(l[1], l[0])/math.pi*180.0 
+		if wood_dir<0 and side=="left":
+			angle+=180
+#			angle=-angle
+#		else:
+		angle=-angle
+		args['side']=startmode
+		for i in range(0, num_holes-1):
+			t=self.add( bracket(start+dl*(0.5+i), **args))
+	#			t.transform={'mirror':[V(0,0),'x']}
+			t.rotate(V(0,0), angle) 		
 
 class RoundedArc(Path):
 	def __init__(self, pos, rad, width, angle,  **config):
