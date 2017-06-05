@@ -587,7 +587,7 @@ class ArbitraryBox(Part):
 				face['zoffset'] += face['thickness']
 			if 'x' in face:
 				if abs(face['x'].dot(face['normal'])) > 0.0000001 :
-					raise ValueError('face[x] in face '+str(f)+' not in plane of the rest of the face')
+					raise ValueError('face[x] direction in face "'+str(f)+'" not in plane of the rest of the face')
 				face['x'] = face['x'].normalize()
 			else: 
 				face['x'] = (self.tuple_to_vec(face['sides'][0][1])- self.tuple_to_vec(face['sides'][0][0])).normalize()
@@ -686,7 +686,8 @@ class ArbitraryBox(Part):
 						p.add_point(point)
 					poly=p.polygonise()
 						
-					if p.contains_point(p1p,poly) and p.contains_point(p2p, poly) and p1p[2]<0.05 and p2p[2]<0.05:
+					if p.contains_point(p1p,poly) and p.contains_point(p2p, poly) and abs(p1p[2])<0.05 and abs(p2p[2])<0.05:
+						print "face1="+str(side[0][0])+" s="+str(side[0][1])+" is in f="+str(f)
 						self.faces[f]['internal_joints'].append( { 'side':s, 'otherside':side[0], 'from':p1p, 'to':p2p, 'otherface':face1, 'otherf':side[0][0], 'sidedat':side } )
 						side.append( [ '_internal', f, len(self.faces[f]['internal_joints'])-1 ])
 						self.find_angle(s, side)
@@ -971,7 +972,9 @@ class ArbitraryBox(Part):
 
 			prevmode = 'on'
 			nextmode = 'on'
-			if joint['joint_mode']=='butt':
+			if joint['joint_mode']=='straight':
+				pass
+			elif joint['joint_mode']=='butt':
 				part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], butt_holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes'], joint_type='convex', fudge=fudge))
 			elif joint['joint_mode']=='bracket':
 				part.add(BracketJointHoles(
@@ -1341,6 +1344,7 @@ class ArbitraryBox(Part):
 		# Is the normal of both faces in the same directions vs inside and outside 
 		# will only break with zero if  if planes are parallel
 		t = face1['normal'].dot(avSvec) * avSvec.dot(face2['normal'] )
+		print str(side[0][0])+"->"+str(side[1][0])+" sideSign="+str(side)
 		if t>0:
 			sideSign = 1
 		elif t<0:
@@ -1351,7 +1355,6 @@ class ArbitraryBox(Part):
 			if scount2 is not None:
 				face2['corners'][scount2] = 'straight'
 			sideSign = 0
-		print str(side[0][0])+"->"+str(side[1][0])+" sideSign="+str(sideSign)
 		side[0].append(sideSign)
 		side[0].append( avSvec.dot ( face1['normal'] ) * cutsign)
 		side[0].append( angle )
