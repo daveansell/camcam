@@ -414,6 +414,9 @@ class Path(object):
 		pout=[]
 		
 		for p in pointlist:
+			# reset the pointlist
+			p.invert=False
+			
 			pout.append(p.point_transform(transformations))
 		self.reset_points(pout)
 		return pout

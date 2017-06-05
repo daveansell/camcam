@@ -747,10 +747,10 @@ class POutcurve(Point):
 	def end(self):
 		if hasattr(self, 'endpos'):
 			return self.endpos
-		lastpoint=self.lastorigin()
-		nextpoint=self.nextorigin()
-		angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
-		dl=self.radius*math.tan((angle/180)/2*math.pi)
+		lastpoint = self.lastorigin()
+		nextpoint = self.nextorigin()
+		angle = (self.pos-lastpoint).angle(nextpoint-self.pos)
+		dl = self.radius*math.tan((angle/180)/2*math.pi)
 		return self.pos+(nextpoint-self.pos).normalize()*dl
 	def start(self):
 		if hasattr(self, 'startpos'):
@@ -845,7 +845,7 @@ class POutcurve(Point):
                 return point+rvec
 	def getDirection(self):
 		if self.direction:
-			if self.reverse:
+			if self.reverse !=self.invert:
 				if self.direction=='cw':
 					return 'ccw'
 				else:
@@ -858,7 +858,6 @@ class POutcurve(Point):
 	def makeSegment(self, config):
 		segment_array=[]
 		sd = self.direction
-
 		if self.last().point_type=='outcurve':
                         lr=self.last().radius
                 else:
