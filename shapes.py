@@ -906,7 +906,13 @@ class Bolt(Part):
 					insert=milling.inserts[thread]
 				self.add_bom("Wood insert", 1, str(thread)+"insert",'')
 				for i,diam in enumerate(insert['diams']):
-					self.add(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),insert_layer)
+#					self.add(Insert(pos, config['insert_type'], **config))
+					if 'z1' in config and insert['depths'][i] is False:
+						print "z1="+str(config['z1'])
+						depth=config['z1']
+					else:
+						depth = insert['depths'][i]
+					self.add(Hole(pos, insert['diams'][i],  side='in' , z1 = depth ),insert_layer)
 			if underinsert_layer is not False:
 				if 'insert_type' in config and config['insert_type'] in milling.inserts[thread]:
                                         insert=milling.inserts[thread][config['insert_type']]
@@ -1363,6 +1369,8 @@ The line defines the
 				self.append(offpointmode(start+cutin+crp-cra))
 			self.append(onpointmode(start+cutin+crp))#offpointmode))
 			m='off'
+		elif startmode =='straight':
+			m='on'
 		else:
 			print "wrong start mode"+str(startmode)
 		for i in range(1,int(num_tabs)):
