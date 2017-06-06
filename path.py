@@ -652,10 +652,20 @@ class Path(object):
 
 	def contains_point(self,point, poly):
 		points = []
+		print "point"+str(point)+" poly="+str(poly)
 		for p in poly:
 			points.append((p[0],p[1]))
+			
 		sPoly = shapely.geometry.Polygon(points)
-		return sPoly.contains(shapely.geometry.Point(point[0],point[1]))
+		sPoint = shapely.geometry.Point(point[0],point[1])
+		ret = sPoly.contains(sPoint)
+		if ret:	
+			return ret
+		sLine = shapely.geometry.LineString(points)
+		if(sPoint.distance(sLine)<0.01):
+			return True
+		else:
+			return False
 
 	def get_side(self,a,b,c):
 	    """ Returns a position of the point c relative to the line going through a and b
