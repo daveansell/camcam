@@ -1470,6 +1470,13 @@ class Pathgroup(object):
 			p.parent=ret
 		return ret
 
+	def _pre_render(self, config):
+		print "%%%^^^^"
+		for path in self.paths:
+			if getattr(path, "_pre_render", None) and callable(path._pre_render):
+                                print "PRERENDER"
+                                path._pre_render()		
+
 	def get_config(self):
 		if self.parent is not False:
 			pconfig = self.parent.get_config()
@@ -1890,14 +1897,24 @@ class Part(object):
 		return False
  
 
-	def getParts(self, overview=True):
+	def getParts(self, overview=True, first=True):
 		ret=[]
+		print "QQQQQQ"+str(self)
 		if self.isCopy and not overview:
 			return []
+		if first and  getattr(self, "_pre_render", None) and callable(self._pre_render):
+			self._pre_render()
 		for part in self.parts:
 			if getattr(part, "_pre_render", None) and callable(part._pre_render):
+				print "PRERENDER"
 				part._pre_render()
-			ret.extend(part.getParts(overview))
+			ret.extend(part.getParts(overview,False))
+		print self.paths
+		for path in self.paths:
+			print path
+			if getattr(self.paths[path], "_pre_render", None) and callable(self.paths[path]._pre_render):
+                                print "PRERENDER"
+                                self.paths[path]._pre_render()
 		if self.renderable():
 			ret.append(self)
 		return ret
