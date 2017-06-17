@@ -24,7 +24,7 @@ box = plane.add(ArbitraryBox(
 			'wood_direction':V(0.0,0.0,-1.0),
 			'good_direction':V(0.0,0.0,-1.0),
 			'thickness':box_thickness,
-			'point_type':{0:PIncurve(V(0,0), radius=15)},
+#			'point_type':{0:POutcurve(V(0,0), radius=15)},
 		},
 		'two':{
 			'points':[
@@ -37,6 +37,7 @@ box = plane.add(ArbitraryBox(
 			'thickness':box_thickness,
 			'alt_wood_direction':V(0.0,0.0,-1.0),
 			'alt_good_direction':V(0.0,0.0,-1.0),
+#			'point_type':{3:POutcurve(V(0,0), radius=15)},
 		},
 		'three':{
 			'points':[
@@ -49,6 +50,7 @@ box = plane.add(ArbitraryBox(
 			'thickness':box_thickness,
 			'alt_wood_direction':V(0.0,0.0,-1.0),
 			'alt_good_direction':V(0.0,0.0,-1.0),
+#			'point_type':{3:POutcurve(V(0,0), radius=15)},
 		},
 	},
 	fudge = fudge,
