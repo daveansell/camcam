@@ -502,10 +502,21 @@ class Path(object):
 			if pointlist[0].point_type=='circle':
 				p = copy.copy(pointlist[0])
 				p.transform=None
+				if side=='left':
+					if ((thisdir=='cw') == (self.mirrored>0))==((thisdir=='cw')):
+						side='in'
+					else:
+						side='out'
+				elif side=='right':
+					if ((thisdir=='cw')  == (self.mirrored>0))==((thisdir=='cw')):
+						side='out'
+					else:
+						side='in'
 				if side=='in':
 					p.radius-=distance
 				elif side=='out':
 					p.radius+=distance
+				
 				newpath.points.append(p)
 				return newpath
 	#	mirrored=1
@@ -652,7 +663,6 @@ class Path(object):
 
 	def contains_point(self,point, poly):
 		points = []
-		print "point"+str(point)+" poly="+str(poly)
 		for p in poly:
 			points.append((p[0],p[1]))
 			
@@ -662,6 +672,7 @@ class Path(object):
 		if ret:	
 			return ret
 		sLine = shapely.geometry.LineString(points)
+		print "sPoint.distance(sLine)"+str(sPoint.distance(sLine))
 		if(sPoint.distance(sLine)<0.01):
 			return True
 		else:
