@@ -73,6 +73,7 @@ arg_meanings = {'order':'A field to sort paths by',
 		'isback':'is a back',
 		'no_mirror':'don\'t mirror',
 		'part_thickness':'thickness of part',
+		'use_point_z':'use point z  for 3D cuts',
 }
 def V(x=False,y=False,z=False):
         if x==False:
@@ -112,7 +113,7 @@ class Path(object):
 		self.Bsegments = []
 		self.transform={}
 		self.otherargs=''
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z']
 		for v in self.varlist:
 			if v in config:
 				setattr(self,v, config[v])
@@ -769,7 +770,7 @@ class Path(object):
 		if self.transform!=None:
 			config['transformations'].append(self.transform)
 		#	self.transform=None
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'forcecutter', 'mode','partial_fill','finishing','fill_direction','precut_z', 'layer', 'no_mirror', 'part_thickness']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'forcecutter', 'mode','partial_fill','finishing','fill_direction','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z']
                 for v in self.varlist:
 			# we want to be able to know if we are on the front or the back
 			if v !='transform' and v !='transformations':
@@ -1299,13 +1300,13 @@ class Path(object):
 						if firstdepth and (mode=='gcode' or mode=='simplegcode'):
 							self.add_out(self.quickdown(depth-step+config['precut_z']))
 							firstdepth=0
-						self.add_out(segment.out(True,mode,depth-step,depth)) 
+						self.add_out(segment.out(True,mode,depth-step,depth, config['use_point_z'])) 
 					else:
-						self.add_out(segment.out(True,mode, depth, depth))
+						self.add_out(segment.out(True,mode, depth, depth, config['use_point_z']))
 					first=0
 			# if we are in ramp mode, redo the first segment
 			if downmode=='ramp' and mode=='gcode' or mode=='simplegcode':
-				self.add_out(self.Fsegments[0].out(direction,mode, depth, depth))
+				self.add_out(self.Fsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
 			self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 		else:
 			self.runin(downmode,self.side)
@@ -1325,16 +1326,16 @@ class Path(object):
 						if firstdepth and (mode=='gcode' or mode=='simplemode'):
 							self.add_out(self.quickdown(depth-step+config['precut_z']))
 							firstdepth=0
-						self.add_out(segment.out(d,mode,depth-step,depth))
+						self.add_out(segment.out(d,mode,depth-step,depth, config['use_point_z']))
 					else:
-						self.add_out(segment.out(d,mode, depth, depth))
+						self.add_out(segment.out(d,mode, depth, depth, config['use_point_z']))
 					first=0
 				d= not d
 			if downmode=='ramp':
 				if d:
-					self.add_out(self.Fsegments[0].out(direction,mode, depth, depth))
+					self.add_out(self.Fsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
 				else:
-					self.add_out(self.Bsegments[0].out(direction,mode, depth, depth))
+					self.add_out(self.Bsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
 			self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 		# If we are in a gcode mode, go through all the cuts and add feed rates to them
 		if self.mode=='gcode':
@@ -1437,7 +1438,7 @@ class Pathgroup(object):
 		self.obType = "Pathgroup"
 		self.paths=[]
 		self.trace = traceback.extract_stack()
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in args:
@@ -1484,7 +1485,7 @@ class Pathgroup(object):
 			#raise Warning( "PATHGROUP has no parent Created:"+str(self.trace))
 			pconfig = False
 		config = {}
-		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour','rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'layer', 'no_mirror', 'part_thickness']
+		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour','rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z']
 		if pconfig is False or  'transformations' not in pconfig or pconfig['transformations'] is False or pconfig['transformations'] is None:
 			config['transformations']=[]
 		else:
@@ -1702,7 +1703,7 @@ class Part(object):
 		self.internal_borders=[]
 		self.ignore_border=False
 		self.transform={}
-		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback']
+		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in config:
