@@ -51,13 +51,15 @@ class Segment(object):
                 return {}
         def start(self):
                 return {} 
-        def out(self,direction, mode='svg', zfrom=False, zto=False):
+        def out(self,direction, mode='svg', zfrom=False, zto=False, use_point_z=False):
 		if mode=='svg':
                         return self.svg(direction)
                 elif mode=='gcode':
                         temp=self.gcode(direction)
-                        if len(temp)>0 and 'Z' not in temp[0]:# and zfrom!=zto:
+                        if len(temp)>0 and ('Z' not in temp[0] or not use_point_z):# and zfrom!=zto:
                                 temp[0]['Z']=zto
+			else:
+				print temp[0]['Z']
                         return temp
                 elif mode=='simplegcode' or mode=='scr':
                         temp=self.simplegcode(zfrom, zto, direction)
