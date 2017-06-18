@@ -823,7 +823,9 @@ class Path(object):
 		inherited = self.get_config()
 #		if('transformations' in config):
 		config=self.overwrite(config, inherited)
-		
+		if getattr(self, "_pre_render", None) and callable(self._pre_render):
+			print ""
+			self._pre_render(config)	
 #		if('transformations' in config):
 #		for k in inherited.keys():
  #                       if (config[k] is None or config[k] is False) and k in pconfig:
@@ -904,8 +906,6 @@ class Path(object):
 		out=[]
 # Do something about offsets manually so as not to rely on linuxcnc
 		config=self.generate_config(pconfig)
-		if hasattr(self,'__render__') and callable(self.__render__):
-			self.__render__(config)
 		finalpass=False
 		if config['side']=='in' or config['side']=='out':
 			side = config['side']				
@@ -1475,7 +1475,7 @@ class Pathgroup(object):
 		for path in self.paths:
 			if getattr(path, "_pre_render", None) and callable(path._pre_render):
                                 print "PRERENDER"
-                                path._pre_render()		
+                                path._pre_render(config)		
 
 	def get_config(self):
 		if self.parent is not False:
@@ -1897,24 +1897,23 @@ class Part(object):
 		return False
  
 
-	def getParts(self, overview=True, first=True):
+	def getParts(self, overview=True, first=True, config={}):
 		ret=[]
 		print "QQQQQQ"+str(self)
 		if self.isCopy and not overview:
 			return []
 		if first and  getattr(self, "_pre_render", None) and callable(self._pre_render):
-			self._pre_render()
+			self._pre_render(config)
 		for part in self.parts:
 			if getattr(part, "_pre_render", None) and callable(part._pre_render):
 				print "PRERENDER"
-				part._pre_render()
-			ret.extend(part.getParts(overview,False))
-		print self.paths
-		for path in self.paths:
-			print path
-			if getattr(self.paths[path], "_pre_render", None) and callable(self.paths[path]._pre_render):
-                                print "PRERENDER"
-                                self.paths[path]._pre_render()
+				part._pre_render(config)
+			ret.extend(part.getParts(overview,False, config))
+	#	for path in self.paths:
+	#		print path
+	#		if getattr(self.paths[path], "_pre_render", None) and callable(self.paths[path]._pre_render):
+         #                       print "PRERENDER"
+          #                      self.paths[path]._pre_render(config)
 		if self.renderable():
 			ret.append(self)
 		return ret
@@ -2183,7 +2182,7 @@ class Plane(Part):
 		"""Render all parts in the Plane"""
 		self.make_copies()
 
-		for part in self.getParts(milling.mode_config[mode]['overview']):
+		for part in self.getParts(milling.mode_config[mode]['overview'],config):
 
 			self.render_part(part, mode,config)
 	def list_all(self):
@@ -2239,6 +2238,9 @@ class Plane(Part):
 			
 		# iterate through all the paths in the part's layer
 		for path in paths:
+			if getattr(path, "_pre_render", None) and callable(path._pre_render):
+	                        print "DO PEW RENDER"
+        	                path._pre_render(config)
 		# if the path is within the bounds of the part then render it
 			if path.obType=="Path" or path.obType=="Part":
 				if not hasattr(part, 'border') or part.border is None or part.ignore_border or  part.contains(path)>-1 or hasattr(path,'is_border') and path.is_border:
