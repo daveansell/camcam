@@ -195,8 +195,8 @@ class Path(object):
 			config['endcut']=tool['endcut']
 			config['sidecut']=tool['sidecut']
 			if tool['sidecut']==0:
-				config['downmode']='down'
-			else:
+				config['downmode']='cutdown'
+			elif 'downmode' not in config:
 				config['downmode']='ramp'
 		if config['cutter'] in milling.tools:
 			tool=milling.tools[config['cutter']]
@@ -205,8 +205,10 @@ class Path(object):
                         c['endcut']=tool['endcut']
                         c['sidecut']=tool['sidecut']
                         if tool['sidecut']==0:
-                                c['downmode']='down'
-                        else:
+                                c['downmode']='cutdown'
+                        elif 'downmode' in config:
+				c['downmode']=config['downmode']
+			else:
                                 c['downmode']='ramp'
 			config['original_cutter']=c
 				
@@ -1267,7 +1269,8 @@ class Path(object):
 		self.config=config
 		mode=pconfig['mode']
 		if self.use_point_z:
-			downmode=''
+			downmode='down'
+			config['stepdown']=1000
 		else:
 			downmode=config['downmode']
 		direction=config['direction']
@@ -1304,7 +1307,7 @@ class Path(object):
 						self.add_out(segment.out(True,mode, depth, depth, config['use_point_z']))
 					first=0
 			# if we are in ramp mode, redo the first segment
-			if downmode=='ramp' and mode=='gcode' or mode=='simplegcode':
+			if downmode=='ramp' and (mode=='gcode' or mode=='simplegcode'):
 				self.add_out(self.Fsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
 			self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 		else:
@@ -1398,7 +1401,7 @@ class Path(object):
 		cutfrom=segments[seg].cutfrom
 		if side=='on':
 			self.start=cutfrom
-			self.add_out(self.move(cutfrom))
+			self.add_out(self.move(cutto))
 		else:
 			if(segments[seg].seg_type=='line'):
 				diff = (cutto-cutfrom).normalize()
@@ -1418,7 +1421,6 @@ class Path(object):
 			#		diff=-diff
 
 			self.start=cutfrom - diff * cutterrad
-
 			self.add_out(self.move(cutfrom - diff * cutterrad))
 			self.add_out(self.setside(side,direction))
 			self.add_out(self.move(cutfrom))
@@ -2222,10 +2224,11 @@ class Plane(Part):
 				config['transformations'].insert(0,{'mirror':[V(0,0),'x']})
 			else:
 				config['transformations']=[{'mirror':[V(0,0),'x']}]
-		part_config = part.get_config()
+		part_config = copy.deepcopy(config)
+		part_config=self.overwrite(part_config, part.get_config())
                 if 'part_thickness' in part_config:
                         config['thickness'] = part_config['thickness']
-
+		
 		# if it has been set to layer 'all' it should be in here
 		if 'all' in layers:
 			paths.extend(layers['all'])
@@ -2317,7 +2320,7 @@ class Plane(Part):
 					output['__border']=[b]
 		for key in sorted(output.iterkeys()):
 			if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
-				self.writeGcodeFile(part.name,key, output[key], part.border, config)
+				self.writeGcodeFile(part.name,key, output[key], part.border, part_config)
 			elif self.modeconfig['mode']=='svg':
 				out+="<!-- "+str(part.name)+" - "+str(key)+" -->\n"+output[key]
 			elif self.modeconfig['mode']=='scr':
@@ -2406,7 +2409,7 @@ class Plane(Part):
 		#	output2+='\nG10 L2 P1 X0 Y0\n'
 			filename+='_'+str(config['repeatx'])+'x_'+str(config['repeaty'])+'y'
 			output=output2
-
+		config['prefix']=config['prefix'].replace("%zclear%", str(config['clear_height']))
 		# if we are making gcode we we should have tool changes in there
 		if config['mode']=='gcode':
 			toolid=str(milling.tools[config['cutter']]['id'])
