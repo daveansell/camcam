@@ -58,8 +58,6 @@ class Segment(object):
                         temp=self.gcode(direction)
                         if len(temp)>0 and ('Z' not in temp[0] or not use_point_z):# and zfrom!=zto:
                                 temp[0]['Z']=zto
-			else:
-				print temp[0]['Z']
                         return temp
                 elif mode=='simplegcode' or mode=='scr':
                         temp=self.simplegcode(zfrom, zto, direction)
