@@ -381,6 +381,84 @@ class ParametricPath3D(Path):
 #		for p in self.points:
 #			print p.pos
 
+class CutSlope3D(Pathgroup):
+        def __init__(self, path, direction, **config):
+                self.init(config)
+                self.use_point_z = True
+                self.downmode='down'
+                self.stepdown =1000
+                if 'angle' in config:
+                        self.angle = config['angle']
+                else:
+                        self.angle = None
+                if 'step' in config:
+                        self.step = config['step']
+                else:
+                        self.step = None
+                if 'side' in config:
+                        self.side = config['side']
+                else:
+                        self.side = None
+                self.direction = direction
+                self.distance = direction.length()
+                self.path = path
+                self.flatpath = self.flatten_path(path)
+
+        def flatten_path(self, path):
+                ret = copy.deepcopy(path)
+                for i in range(0,len(path.points)):
+
+                        ret.points[i].pos=V(path.points[i].pos[0], path.points[i].pos[1])
+                return ret
+
+        def unflatten_path(self, path, sourcepath, zoffset):
+                ret = copy.deepcopy(path)
+                for i in range(0,len(path.points)):
+                        ret.points[i].pos=V(path.points[i].pos[0], path.points[i].pos[1], sourcepath.points[i].pos[2]+zoffset)
+                return ret
+
+        def _pre_render(self, config):
+                #assert 'side' in config
+
+                cutter = milling.tools[config['cutter']]
+                if self.step is None:
+                        if 'min_diameter' in cutter:
+                                self.step = (cutter['diameter'] - cutter['min_diameter'])/2 *0.8
+                        else:
+                                self.step = cutter['diameter']/2 *0.8
+                if self.angle is None:
+                        if 'angle' in cutter:
+                                self.angle = cutter['angle']
+                        else:
+                                self.angle = 45
+                num_steps = int(math.ceil(self.distance / self.step))
+                thestep = self.distance/num_steps
+                self.add(self.path)
+                ystep = math.tan(float(self.angle)/180*math.pi)*thestep
+                # use a flattened path in case any of the point stuff get confused if the path is not in a plane
+                opath = copy.deepcopy(self.flatpath)
+                opath2 = copy.deepcopy(self.flatpath)
+                if self.side:
+                        side=self.side
+                elif config['side']:
+                        side=config['side']
+                perp = self.direction.normalize()
+                for i in range(1, num_steps):
+                        if side == 'on':
+                                npath = copy.deepcopy(opath)
+                                npath2 = copy.deepcopy(opath)
+                                for p in range(0,len(npath.points)):
+                                        npath.points[p].pos +=  i*perp*thestep
+                                        npath2.points[p].pos += - i*perp*thestep
+                                self.add(self.unflatten_path(npath, self.path, i*ystep))
+                                self.add(self.unflatten_path(npath2, self.path, i*ystep))
+                        else:
+                                npath = copy.deepcopy(opath)
+                                for p in range(0,len(npath.points)):
+                                        npath.points[p].pos +=  i*perp*thestep
+                                self.add(self.unflatten_path(npath, self.path, i*ystep))
+
+
 class RoundSpeakerGrill(Pathgroup):
 	def __init__(self,pos, rad, holerad, spacing, **config):
 		self.init(config)
