@@ -74,6 +74,7 @@ arg_meanings = {'order':'A field to sort paths by',
 		'no_mirror':'don\'t mirror',
 		'part_thickness':'thickness of part',
 		'use_point_z':'use point z  for 3D cuts',
+		'clear_height':'how far up the cutter should go to clear things',
 }
 def V(x=False,y=False,z=False):
         if x==False:
@@ -89,12 +90,9 @@ def rotate(pos, a, *config):
                 axis = config[0]
         else:
                 axis = V(0,0,-1)
-	print "%%rotate pos="+str(pos)+" a="+str(a) +" axis = "+str(axis)
         if type(pos) is Vec:
                 M=Mat(1).rotateAxis(a, axis)
-		print "%%"+str(M)
                 pos=pos.transform(M)
-		print "%%rotated pos="+str(pos)
                 return pos
         else:
                 return False
@@ -113,7 +111,7 @@ class Path(object):
 		self.Bsegments = []
 		self.transform={}
 		self.otherargs=''
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height']
 		for v in self.varlist:
 			if v in config:
 				setattr(self,v, config[v])
@@ -135,7 +133,7 @@ class Path(object):
 		obj_copy = object.__new__(type(self))
 	#	obj_copy.__dict__ = self.__dict__.copy()
 		for v in self.__dict__:
-			if v=='parent' or v=='points':
+			if v=='parent':# or v=='points':
 				obj_copy.__dict__[v]=copy.copy(self.__dict__[v])
 			else:
 				obj_copy.__dict__[v]=copy.deepcopy(self.__dict__[v],memo)
@@ -673,7 +671,6 @@ class Path(object):
 		if ret:	
 			return ret
 		sLine = shapely.geometry.LineString(points)
-		print "sPoint.distance(sLine)"+str(sPoint.distance(sLine))
 		if(sPoint.distance(sLine)<0.01):
 			return True
 		else:
@@ -770,7 +767,7 @@ class Path(object):
 		if self.transform!=None:
 			config['transformations'].append(self.transform)
 		#	self.transform=None
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'forcecutter', 'mode','partial_fill','finishing','fill_direction','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'forcecutter', 'mode','partial_fill','finishing','fill_direction','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z','clear_height']
                 for v in self.varlist:
 			# we want to be able to know if we are on the front or the back
 			if v !='transform' and v !='transformations':
@@ -825,7 +822,6 @@ class Path(object):
 #		if('transformations' in config):
 		config=self.overwrite(config, inherited)
 		if getattr(self, "_pre_render", None) and callable(self._pre_render):
-			print ""
 			self._pre_render(config)	
 #		if('transformations' in config):
 #		for k in inherited.keys():
@@ -1270,7 +1266,10 @@ class Path(object):
 		config=pconfig #self.generate_config(pconfig)
 		self.config=config
 		mode=pconfig['mode']
-		downmode=config['downmode']
+		if self.use_point_z:
+			downmode=''
+		else:
+			downmode=config['downmode']
 		direction=config['direction']
 		self.mode=mode
 		self.Fsegments=[]
@@ -1438,7 +1437,7 @@ class Pathgroup(object):
 		self.obType = "Pathgroup"
 		self.paths=[]
 		self.trace = traceback.extract_stack()
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in args:
@@ -1472,10 +1471,8 @@ class Pathgroup(object):
 		return ret
 
 	def _pre_render(self, config):
-		print "%%%^^^^"
 		for path in self.paths:
 			if getattr(path, "_pre_render", None) and callable(path._pre_render):
-                                print "PRERENDER"
                                 path._pre_render(config)		
 
 	def get_config(self):
@@ -1485,7 +1482,7 @@ class Pathgroup(object):
 			#raise Warning( "PATHGROUP has no parent Created:"+str(self.trace))
 			pconfig = False
 		config = {}
-		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour','rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z']
+		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour','rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z','clear_height']
 		if pconfig is False or  'transformations' not in pconfig or pconfig['transformations'] is False or pconfig['transformations'] is None:
 			config['transformations']=[]
 		else:
@@ -1703,7 +1700,7 @@ class Part(object):
 		self.internal_borders=[]
 		self.ignore_border=False
 		self.transform={}
-		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z']
+		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in config:
@@ -1900,14 +1897,12 @@ class Part(object):
 
 	def getParts(self, overview=True, first=True, config={}):
 		ret=[]
-		print "QQQQQQ"+str(self)
 		if self.isCopy and not overview:
 			return []
 		if first and  getattr(self, "_pre_render", None) and callable(self._pre_render):
 			self._pre_render(config)
 		for part in self.parts:
 			if getattr(part, "_pre_render", None) and callable(part._pre_render):
-				print "PRERENDER"
 				part._pre_render(config)
 			ret.extend(part.getParts(overview,False, config))
 	#	for path in self.paths:
@@ -2240,7 +2235,6 @@ class Plane(Part):
 		# iterate through all the paths in the part's layer
 		for path in paths:
 			if getattr(path, "_pre_render", None) and callable(path._pre_render):
-	                        print "DO PEW RENDER"
         	                path._pre_render(config)
 		# if the path is within the bounds of the part then render it
 			if path.obType=="Path" or path.obType=="Part":
