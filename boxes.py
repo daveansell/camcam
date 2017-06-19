@@ -687,7 +687,6 @@ class ArbitraryBox(Part):
 					poly=p.polygonise()
 						
 					if p.contains_point(p1p,poly) and p.contains_point(p2p, poly) and abs(p1p[2])<0.05 and abs(p2p[2])<0.05:
-						print "face1="+str(side[0][0])+" s="+str(side[0][1])+" is in f="+str(f)
 						self.faces[f]['internal_joints'].append( { 'side':s, 'otherside':side[0], 'from':p1p, 'to':p2p, 'otherface':face1, 'otherf':side[0][0], 'sidedat':side } )
 						side.append( [ '_internal', f, len(self.faces[f]['internal_joints'])-1 ])
 						self.find_angle(s, side)
@@ -941,8 +940,6 @@ class ArbitraryBox(Part):
 		part.tag = self.name+"_"+f
 	# iterate through the internal joints
 		for joint in face['internal_joints']:
-			print f+"  line="+str((joint['to']-joint['from']))+" othernormal="+str(joint['otherface']['normal'])+" otherwood="+str(joint['otherface']['wood_direction'])+" normal="+str(face['normal'])+" thiswood="+str(face['wood_direction'])
-			print (joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction'])
 			if (joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal'])<0:#*face['wood_direction']) <0:
 				cutside='right'
 			else:
@@ -960,7 +957,6 @@ class ArbitraryBox(Part):
 					cutside='left'
 #			print "f="+f+" otherf="+joint['otherf']+" cutside="+str(cutside)+" (joint['to']-joint['from'])="+str( (joint['to']-joint['from']))+" joint['otherface']['normal']*joint['otherface']['wood_direction'] "+str(joint['otherface']['normal']*joint['otherface']['wood_direction'])+" face['normal']="+str(face['cut_from'] )+ " total="+ str((joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']*face['wood_direction']))+" wood_factor="+str(face['wood_direction'])+" "+str(face['good_direction'])+" cut_from="+str(face['cut_from'])
 			if('fudge' in joint['otherface']):
-				print "OTHRE FACE HAS FUDGE"+str(joint['otherface']['fudge'])+" "+str(joint['sidedat'][0])
 				if type(joint['otherface']['fudge']) is dict and joint['sidedat'][0][1] in joint['otherface']['fudge']:
 					fudge = joint['otherface']['fudge'][joint['sidedat'][0][1]]
 				elif type(joint['otherface']['fudge']) in [int, float]:
@@ -1344,7 +1340,6 @@ class ArbitraryBox(Part):
 		# Is the normal of both faces in the same directions vs inside and outside 
 		# will only break with zero if  if planes are parallel
 		t = face1['normal'].dot(avSvec) * avSvec.dot(face2['normal'] )
-		print str(side[0][0])+"->"+str(side[1][0])+" sideSign="+str(side)
 		if t>0:
 			sideSign = 1
 		elif t<0:
