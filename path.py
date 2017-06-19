@@ -1400,8 +1400,12 @@ class Path(object):
 		cutto=segments[seg].cutto
 		cutfrom=segments[seg].cutfrom
 		if side=='on':
-			self.start=cutfrom
-			self.add_out(self.move(cutto))
+			if mode=='down':
+				self.start=cutto
+				self.move(cutto)
+			else:
+				self.start=cutfrom
+				self.add_out(self.move(cutfrom))
 		else:
 			if(segments[seg].seg_type=='line'):
 				diff = (cutto-cutfrom).normalize()
