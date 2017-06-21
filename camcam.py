@@ -30,7 +30,7 @@ from dxf import *
 from optparse import OptionParser
 import sys
 import Milling
-import pickle
+import json
 
 
 class CamCam:
@@ -68,7 +68,7 @@ class CamCam:
 			for part in plane.getParts():
 				parts[part.name] = [plane, part]
 		l = open(layout_file, 'r')
-		sheets = pickle.load(l)
+		sheets = json.loads(l.file_read())#pickle.load(l)
 		print sheets
 		for sheet in sheets['sheets']:
 			out = {}
@@ -84,6 +84,7 @@ class CamCam:
 						out[i] += plane.lay_out[i]
 				else:
 					print "plane.lay_out is not a dict"
+			modeconfig['prefix']=modeconfig['prefix'].replace("%zclear%", str(10))
 			if 'suffix' not in modeconfig:
 				modeconfig['suffix'] = ''
 			for i in out:

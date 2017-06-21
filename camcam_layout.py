@@ -30,7 +30,7 @@ import sys
 import Milling
 import kivy
 kivy.require('1.0.6')
-import pickle
+import json
 import transformations
 import numpy
 
@@ -250,8 +250,9 @@ class CamCam(App):
 					if p.deleted ==0:
 						data['sheets'][s].append(rec)
 #				print p.get_window_matrix(0,0)
-		h = open( 'layout_file', 'w') 
-		pickle.dump(data, h)
+		h = open( 'layout_file', 'w')
+		json.dump(data,h) 
+#		pickle.dump(data, h)
 
 	def set_sheet(self, sheet, *largs):
 		for s in self.sheet_widgets:
