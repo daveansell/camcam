@@ -1307,7 +1307,8 @@ class Path(object):
 						self.add_out(segment.out(True,mode, depth, depth, config['use_point_z']))
 					first=0
 			# if we are in ramp mode, redo the first segment
-			if downmode=='ramp' and (mode=='gcode' or mode=='simplegcode'):
+#			if downmode=='ramp' and (mode=='gcode' or mode=='simplegcode'):
+			if  (mode=='gcode' or mode=='simplegcode'):
 				self.add_out(self.Fsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
 			self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 		else:
@@ -1333,11 +1334,11 @@ class Path(object):
 						self.add_out(segment.out(d,mode, depth, depth, config['use_point_z']))
 					first=0
 				d= not d
-			if 1==1:
-				if d:
-					self.add_out(self.Fsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
-				else:
-					self.add_out(self.Bsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
+#			if downmode='ramp':
+			if d:
+				self.add_out(self.Fsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
+			else:
+				self.add_out(self.Bsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
 			self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
 		# If we are in a gcode mode, go through all the cuts and add feed rates to them
 		if self.mode=='gcode':
@@ -2224,14 +2225,15 @@ class Plane(Part):
 			paths=[]
 		# if we are looking at a back layer and we are in a cutting mode then mirror the image
 		if (part.layer in self.layers and self.layers[part.layer].config['isback'] is True or part.isback is True) and 'mirror_backs' in config and config['mirror_backs'] is True:
-			if 'transformations' in config and config['transformations'] is list:
-				config['transformations'].insert(0,{'mirror':[V(0,0),'x']})
+			if 'transformations' in config and type(config['transformations']) is list:
+				config['transformations'].append({'mirror':[V(0,0),'x']})
 			else:
 				config['transformations']=[{'mirror':[V(0,0),'x']}]
 		part_config = copy.deepcopy(config)
 		part_config=self.overwrite(part_config, part.get_config())
                 if 'part_thickness' in part_config:
                         config['thickness'] = part_config['thickness']
+		print "partconfig="+str(part_config['transformations'])
 		
 		# if it has been set to layer 'all' it should be in here
 		if 'all' in layers:
