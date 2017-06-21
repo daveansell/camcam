@@ -1333,7 +1333,7 @@ class Path(object):
 						self.add_out(segment.out(d,mode, depth, depth, config['use_point_z']))
 					first=0
 				d= not d
-			if downmode=='ramp':
+			if 1==1:
 				if d:
 					self.add_out(self.Fsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
 				else:
