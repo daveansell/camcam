@@ -77,6 +77,7 @@ class KvSheet(Scatter):
 
 class KvPart(Scatter):
 	deleted = False
+	back_colour = Color(0,0,0)
 	def draw(self, part):
 		self.part = part
 		self.startcentre = (0,0)
