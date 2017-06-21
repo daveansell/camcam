@@ -2425,6 +2425,7 @@ class Plane(Part):
 				if key not in self.lay_out:
 					self.lay_out[key]=''
 				self.lay_out[key]+=output
+				print "$$$$$"
 		else:
 			output = config['prefix']+"\n"+output+"\n"+config['postfix']
 			f=open(self.sanitise_filename(filename+config['file_suffix']),'w')

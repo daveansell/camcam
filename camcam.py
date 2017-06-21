@@ -68,11 +68,12 @@ class CamCam:
 			for part in plane.getParts():
 				parts[part.name] = [plane, part]
 		l = open(layout_file, 'r')
-		sheets = json.loads(l.file_read())#pickle.load(l)
+		sheets = json.loads(l.read())#pickle.load(l)
 		print sheets
 		for sheet in sheets['sheets']:
 			out = {}
 			for p in sheets['sheets'][sheet]:
+				print p['name']+"&&->"+str(p['translate'])
 				(plane, part) = parts[p['name']]
 				tconfig = config
 				tconfig['transformations'] = [{'rotate':[ V(p['startcentre'][0],p['startcentre'][1]), p['rotate']], 'translate':V(p['translate'][0], p['translate'][1] ) }]
