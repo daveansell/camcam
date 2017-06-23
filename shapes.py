@@ -416,11 +416,14 @@ class CutSlope3D(Pathgroup):
                 for i in range(0,len(path.points)):
                         ret.points[i].pos=V(path.points[i].pos[0], path.points[i].pos[1], sourcepath.points[i].pos[2]+zoffset)
                 return ret
+	def reverse(self, path):
+		path.points.reverse()
+		path.reset_points()
 
         def _pre_render(self, config):
                 #assert 'side' in config
-
-                cutter = milling.tools[config['cutter']]
+		pconfig=self.get_config()
+                cutter = milling.tools[pconfig['cutter']]
                 if self.step is None:
                         if 'min_diameter' in cutter:
                                 self.step = (cutter['diameter'] - cutter['min_diameter'])/2 *0.8
@@ -431,9 +434,9 @@ class CutSlope3D(Pathgroup):
                                 self.angle = cutter['angle']
                         else:
                                 self.angle = 45
-                num_steps = int(math.ceil(self.distance / self.step))
-                thestep = self.distance/num_steps
-                self.add(self.path)
+		dist = self.distance - cutter['diameter']/2
+                num_steps = int(math.ceil(dist / self.step))
+                thestep = dist/num_steps
                 ystep = math.tan(float(self.angle)/180*math.pi)*thestep
                 # use a flattened path in case any of the point stuff get confused if the path is not in a plane
                 opath = copy.deepcopy(self.flatpath)
@@ -443,7 +446,7 @@ class CutSlope3D(Pathgroup):
                 elif config['side']:
                         side=config['side']
                 perp = self.direction.normalize()
-                for i in range(1, num_steps):
+                for i in reversed(range(1, num_steps)):
                         if side == 'on':
                                 npath = copy.deepcopy(opath)
                                 npath2 = copy.deepcopy(opath)
@@ -451,12 +454,14 @@ class CutSlope3D(Pathgroup):
                                         npath.points[p].pos +=  i*perp*thestep
                                         npath2.points[p].pos += - i*perp*thestep
                                 self.add(self.unflatten_path(npath, self.path, i*ystep))
-                                self.add(self.unflatten_path(npath2, self.path, i*ystep))
+                                t=self.add(self.unflatten_path(npath2, self.path, i*ystep))
+				self.reverse(t)
                         else:
                                 npath = copy.deepcopy(opath)
                                 for p in range(0,len(npath.points)):
                                         npath.points[p].pos +=  i*perp*thestep
                                 self.add(self.unflatten_path(npath, self.path, i*ystep))
+                self.add(self.path)
 
 
 class RoundSpeakerGrill(Pathgroup):

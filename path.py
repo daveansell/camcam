@@ -1403,7 +1403,7 @@ class Path(object):
 		if side=='on':
 			if mode=='down':
 				self.start=cutto
-				self.move(cutto)
+				self.add_out(self.move(cutto))
 			else:
 				self.start=cutfrom
 				self.add_out(self.move(cutfrom))
@@ -2227,6 +2227,7 @@ class Plane(Part):
 		if (part.layer in self.layers and self.layers[part.layer].config['isback'] is True or part.isback is True) and 'mirror_backs' in config and config['mirror_backs'] is True:
 			if 'transformations' in config and type(config['transformations']) is list:
 				config['transformations'].append({'mirror':[V(0,0),'x']})
+#				config['transformations'].insert(0,{'mirror':[V(0,0),'x']})
 			else:
 				config['transformations']=[{'mirror':[V(0,0),'x']}]
 		part_config = copy.deepcopy(config)
