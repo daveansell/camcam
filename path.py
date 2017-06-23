@@ -135,6 +135,10 @@ class Path(object):
 		for v in self.__dict__:
 			if v=='parent':# or v=='points':
 				obj_copy.__dict__[v]=copy.copy(self.__dict__[v])
+			elif v=='points':
+				obj_copy.__dict__[v]=[]
+				for k in self.__dict__[v]:
+					obj_copy.__dict__[v].append(copy.copy(k))
 			else:
 				obj_copy.__dict__[v]=copy.deepcopy(self.__dict__[v],memo)
 		return obj_copy
