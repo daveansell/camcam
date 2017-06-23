@@ -79,28 +79,48 @@ class KvPart(Scatter):
 	deleted = False
 	back_colour = Color(0,0,0)
 	def draw(self, part):
+		xoffset = 200
+		mirror = 1
 		self.part = part
 		self.startcentre = (0,0)
 		if part.border:
 			config= part.border.generate_config({})
+			if(hasattr(part, 'isback') and part.isback):
+				print "part "+part.name+" is mirrored %%"
+				mirror=-1
+			else:
+				mirror = 1
 			ccpoints = part.border.polygonise()
 			self.back_colour = Color(1,0,0,0.05)
 			self.canvas.add( self.back_colour)
 			width = part.border.boundingBox['tr'][0]-part.border.boundingBox['bl'][0]
 			height = part.border.boundingBox['tr'][1]-part.border.boundingBox['bl'][1]
-			centrex = part.border.centre[0]
-			centrey = part.border.centre[1]
-			self.canvas.add(Rectangle(pos=(0,0), size=(width, height)))
-			print part.name+" self.center"+str(self.center)+" pos="+str(self.pos)
+			if mirror>0:
+				centrex = part.border.centre[0]
+				centrey = part.border.centre[1]
+			else:
+				centrex = -part.border.centre[0]
+				centrey = part.border.centre[1]
+			if(mirror==-1):
+				
+				self.canvas.add(Rectangle(pos=(0,0), size=(width, height)))
+			else:
+				self.canvas.add(Rectangle(pos=(0,0), size=(width, height)))
 			
 			self.startcentre = (centrex, centrey)
 			self.size = (part.border.boundingBox['tr'][0]-part.border.boundingBox['bl'][0],part.border.boundingBox['tr'][1]-part.border.boundingBox['bl'][1])
 			kvpoints=[]
 			for p in ccpoints:
-				kvpoints.append(p[0] - centrex + width/2)
+				if mirror==-1:
+					kvpoints.append((p[0] - centrex + width/2)*mirror+xoffset)
+				else:
+					kvpoints.append((p[0] - centrex + width/2)*mirror)
 				kvpoints.append(p[1] - centrey + height/2)
 			if part.border.closed:
-				kvpoints.append(ccpoints[0][0] -centrex+width/2)
+				if mirror==-1:
+	                                kvpoints.append((ccpoints[0][0] -centrex+width/2)*mirror+xoffset)
+				else:
+					kvpoints.append((ccpoints[0][0] -centrex+width/2)*mirror)
 				kvpoints.append(ccpoints[0][1] -centrey+height/2)
 			if 'cutterrad' in config:
 				self.canvas.add(Color(1,0,0,0.5))
@@ -109,8 +129,11 @@ class KvPart(Scatter):
 			self.canvas.add(self.linecolour)
 			self.canvas.add(kivy.graphics.Line(points=kvpoints, width=1))
 			self.canvas.add(Color(0,1,0,1))
-			self.canvas.add(Ellipse(pos=(ccpoints[0][0] -centrex+width/2, ccpoints[0][1] -centrey+height/2), size=(3,3)))
-			self.center = ( centrex +100, centrey+100)
+			self.canvas.add(Ellipse(pos=((ccpoints[0][0] -centrex+width/2*mirror), ccpoints[0][1] -centrey+height/2), size=(3,3)))
+			if mirror==-1:
+				self.center = ( centrex+xoffset, centrey)
+			else:
+				self.center = ( centrex+xoffset, centrey)
 #			kvpoints=[]
 #			indices = []
 #			for p in ccpoints:
@@ -122,6 +145,8 @@ class KvPart(Scatter):
 			self.add_widget(Label(text=part.name, x=0, y=0, halign='center'))
 			print part.name+" sself.center"+str(self.center)+" pos="+str(self.pos)
 		self.startpos = self.pos
+#		if mirror==-1:
+#			self.startpos=(self.pos[0]-400, self.pos[1])
 		self.do_rotation = True
 		self.do_scale = False
 		self.do_translation = True
