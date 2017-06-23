@@ -1406,7 +1406,7 @@ class Path(object):
 				self.add_out(self.move(cutto))
 			else:
 				self.start=cutfrom
-				self.add_out(self.move(cutfrom)))
+				self.add_out(self.move(cutfrom))
 		else:
 			if(segments[seg].seg_type=='line'):
 				diff = (cutto-cutfrom).normalize()
