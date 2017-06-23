@@ -330,6 +330,14 @@ class Milling:
                         "endcut":1,
                         "sidecut":1,
                 },
+                "countersink25":{
+                        "id":20,
+                        "diameter":20,
+                        "endcut":1,
+                        "sidecut":1,
+			"min_diameter":2.0,
+			"angle":45,
+                },
                 "countersink":{
                         "id":6,
                         "diameter":13.0,
