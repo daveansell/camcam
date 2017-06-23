@@ -423,23 +423,20 @@ class CutSlope3D(Pathgroup):
         def _pre_render(self, config):
                 #assert 'side' in config
 		pconfig=self.get_config()
-		print pconfig['cutter']
                 cutter = milling.tools[pconfig['cutter']]
-		print cutter
                 if self.step is None:
                         if 'min_diameter' in cutter:
                                 self.step = (cutter['diameter'] - cutter['min_diameter'])/2 *0.8
                         else:
                                 self.step = cutter['diameter']/2 *0.8
-		print cutter
-		print "STEP$$="+str(self.step)
                 if self.angle is None:
                         if 'angle' in cutter:
                                 self.angle = cutter['angle']
                         else:
                                 self.angle = 45
-                num_steps = int(math.ceil(self.distance / self.step))
-                thestep = self.distance/num_steps
+		dist = self.distance - cutter['diameter']/2
+                num_steps = int(math.ceil(dist / self.step))
+                thestep = dist/num_steps
                 ystep = math.tan(float(self.angle)/180*math.pi)*thestep
                 # use a flattened path in case any of the point stuff get confused if the path is not in a plane
                 opath = copy.deepcopy(self.flatpath)
