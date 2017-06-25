@@ -1,6 +1,6 @@
 required packages
 
-apt-get install python-lxml tofrodos python python-shapely
+apt-get install python-lxml tofrodos python python-shapely python-pip
 pip install solidpython
 pip install freetype-py
 pip install dxfwrite
