@@ -318,10 +318,11 @@ def plane_render_all3D(self,callmode,config):
 			if not (hasattr(thepart, 'subpart') and thepart.subpart):
 
 				self.make_part3D(thepart, config)
-				if scene==False:
-					scene = solid.part()(thepart.border3D)
-				else:
-					scene += solid.part()(thepart.border3D)
+				if hasattr(thepart,"border3D"):
+					if scene==False:
+						scene = solid.part()(thepart.border3D)
+					else:
+						scene += solid.part()(thepart.border3D)
 		solid.scad_render_to_file(scene, 'Overview.scad', include_orig_code=False)
 
 Plane.generate_part3D = plane_generate_part3D# MethodType(plane_generate_part3D, Plane)
