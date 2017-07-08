@@ -305,6 +305,7 @@ class PSharp(Point):
 		return self.start
 
 	def offset(self, side, distance, direction):
+		print "offset_PSharp reversed="+str(self.reverse)+" invert="+str(self.invert)+" direction="+str(direction)+" side="+side
 		return self.offsetSharp( side, distance, direction, self.sharp)
 
 	def offsetSharp(self, side, distance, direction, sharp=True):
@@ -1134,9 +1135,12 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 	def offset(self, side, distance, direction):
 		self.checkArc()
 		t=copy.copy(self)
-		if (side=='left' and self.direction=='cw' or side=='right' and self.direction=='ccw')!=self.invert:
+		print "offset_PArc self.direction ="+str(self.direction)+" reversed="+str(self.reverse)+" invert="+str(self.invert)+" direction="+str(direction)+" side="+side
+		if (side=='left' and self.direction=='cw' or side=='right' and self.direction=='ccw')==self.invert:
+			print "INCREASE"
 			t.radius+=distance
 		else:
+			print "decrease"
 			if t.radius>=distance:
 				t.radius-=distance
 			else:
