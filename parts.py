@@ -114,7 +114,7 @@ class Knob(Part):
 #		self.magnetometer_holder.add(RoundedRect(V(0, solder_y), centred=True, width = solder_width, height=3, z1=-2))
 		self.magnetometer_holder.add(FourObjects(V(0, 0), Hole(V(0,0), rad=3.3/2), centred=True, width=stepper.d['bolt_sep'], height=stepper.d['bolt_sep'], layers=['_magnetometer_holder']))
 		self.magnetometer_holder.add(RoundedRect(V(0, solder_y), centred=True, width = solder_width, height=3.1, z1=-2, side='in', cutter='2mm_endmill'))
-        def _pre_render(self):
+        def _pre_render(self, config):
                 self.get_plane().add_layer('_magnetometer_holder', 'pvc', 6, colour='#80808080', zoffset=49)
 
 class Post(Part):
@@ -229,7 +229,7 @@ class PiBarn(Part):
 		self.add_border(RoundedRect(pos, centred=True, width=x_units*spacing+15, height=y_units*spacing+15, side='out', rad=8))
 		self.add_bom('standoff'+str(depth),4, description=str(depth)+'mm standoff')
 		self.zoffset=depth+6
-        def _pre_render(self):
+        def _pre_render(self,config):
                 self.get_plane().add_layer('pibarn', 'perspex', 6, colour='#80808080')
 
 
@@ -294,7 +294,7 @@ class Pi3(Part):
 		self.add(Bolt(V(-w/2+3.5, -49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
 		self.add(Bolt(V(-w/2+3.5+58, 49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
 		self.add(Bolt(V(-w/2+3.5+58, -49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
-	def _pre_render(self):
+	def _pre_render(self,config):
 		self.get_plane().add_layer('_pilayer', 'pcb', 1, zoffset=0, colour='#808080')
 
 class PiCompute(Part):
@@ -319,7 +319,7 @@ class PiCompute(Part):
 		self.add_border(RoundedRect(V(0,h/2), width=w, height=h, centred=True, rad=0, thickness=1.5,  colour="#008030"))	
 		self.CPU = self.add(Part(subpart=True, layer='_piclayer', border=Rect(V(-w/2+44, -h/2+22), centred=True, width=13.8, height=13.8, zoffset=1, thickness=1, colour='#101010')))
 		self.MEM = self.add(Part(subpart=True, layer='_piclayer', border=Rect(V(-w/2+18, -h/2+22), centred=True, width=13.8, height=13.8, zoffset=1, thickness=1, colour='#101010')))
-	def _pre_render(self):
+	def _pre_render(self,config):
 		self.get_plane().add_layer('_piclayer', 'pcb', 1, zoffset=0, colour='#808080')
 class PiComputeIO(Part):
 	def __init__(self, pos, **config):
@@ -364,7 +364,7 @@ class PiComputeIO(Part):
                 self.DSI = self.add(Part(subpart=True, layer='_piciolayer', border=Rect(V( w/2-35, -h/2+2.5), centred=True, width=16, height=3, zoffset=2, thickness=2, colour='#dddddd')))
                 self.DSI = self.add(Part(subpart=True, layer='_piciolayer', border=Rect(V( w/2-17, -h/2+2.5), centred=True, width=16, height=3, zoffset=2, thickness=2, colour='#dddddd')))
 		self.add(PiCompute(V(46-w/2, 20-w/2), clearance_layers='_piciolayer'))	
-	def _pre_render(self):
+	def _pre_render(self, config):
 		self.get_plane().add_layer('_piciolayer', 'pcb', 1, zoffset=0, colour='#808080')
 
 
@@ -423,7 +423,7 @@ class ArduinoUno(Part):
                 self.add(Bolt(V(w/2-fe, -h/2+7.6), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
                 self.add(Bolt(V(w/2-fe, -h/2+35.5), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
                 self.add(Bolt(V(-w/2+14+1.3, -h/2+50.7), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
-        def _pre_render(self):
+        def _pre_render(self,config):
                 self.get_plane().add_layer('_ardlayer', 'pcb', 1, zoffset=0, colour='#808080')
 
 class WashingBowl(Part):
@@ -469,7 +469,7 @@ class WashingBowl(Part):
 		support = self.add(Part(name='washing_bowl_support', layer='_washing_bowl_support', border = RoundedArc(V(0,0), (self.d['top_outer_rad']+self.d['top_rad'])/2, 8, 360.0/self.d['num_bolts']*2-5, startangle=360.0/self.d['num_bolts']/2-22.5)))
 		for i in range(0, int(self.d['num_bolts']/2)):
 			support.add_copy({'rotate':[V(0,0), i*360.0/self.d['num_bolts']*2]})
-        def _pre_render(self):
+        def _pre_render(self,config):
                 self.get_plane().add_layer('_washing_bowl', 'delrin', 1, colour='#80808040')
                 self.get_plane().add_layer('_washing_bowl_support', 'pvc', self.d['lip_depth']-2, colour='#808080')
 
@@ -700,7 +700,7 @@ class Stepper(Part):
 		self.shaft = self.add(Part(name='shaft', layer='_stepper_layer', border = Circle(pos, rad=d['shaft_diam']/2, thickness=self.shaft_length, zoffset=0)))
 		self.pilot = self.add(Part(name='pilot', layer='_stepper_layer', border = Circle(pos, rad=d['pilot_diam']/2), thickness=d['pilot_depth'], zoffset=0)) 
 
-        def _pre_render(self):
+        def _pre_render(self,config):
                 self.stepper_layer = '_stepper_layer'
 		l= self.get_plane().get_layer_config(self.cutlayer)
 		zoffset=l['zoffset']
@@ -788,7 +788,7 @@ class ProfileBearing(Part):
 		self.add_border(Rect(V(0,0), centred=True, width = self.d['W'], height=self.d['L']))
 		self.name=self.bearing_type+"_carriage"
 		self.zoffset=self.d['H']
-	def _pre_render(self):
+	def _pre_render(self,config):
 		if self.create_layer:
 			self.carriage_layer = 'carriage_layer'
 			self.get_plane().add_layer(self.carriage_layer, 'aluminium', self.d['H']-self.d['H1'],  colour='#808080')
@@ -850,7 +850,7 @@ class LinearRail(Part):
 					self.add(Bolt(start+parallel*(offsetx+ d['holespacing_x']*i) + perp * d['holespacing_y'] , d['bolt_type'], **config))
 					self.add(Bolt(start+parallel*(offsetx+ d['holespacing_x']*i) - perp * d['holespacing_y'] , d['bolt_type'], **config))
 			self.add(Lines([start+perp*d['width']/2, start-perp*d['width']/2, end-perp*d['width']/2, end+perp*d['width']/2], closed=True), 'paper')
-	def _pre_render(self):
+	def _pre_render(self,config):
 		self.carriage_layer = '_rail_layer'
 		self.get_plane().add_layer(self.carriage_layer, 'aluminium', self.d['height'], colour='#808080')
 
@@ -1400,7 +1400,7 @@ class PipeClamp(Part):
 		hole.translate3D(V(0,0,-d['H']/2))
 		self.add(Bolt(V(d['L2']/2,0), d['bolt'], clearance_layers=clearance_layers, head_layer=head_layer, insert_layer=insert_layer, thread_layer=thread_layer))
 		self.add(Bolt(V(-d['L2']/2,0), d['bolt'], clearance_layers=clearance_layers, head_layer=head_layer, insert_layer=insert_layer, thread_layer=thread_layer))
-        def _pre_render(self):
+        def _pre_render(self,config):
                 self.get_plane().add_layer('_pipeclamp', 'polyethene', 6, colour='#80ff80')
 		
 	
