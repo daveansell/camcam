@@ -235,6 +235,7 @@ class SprocketBorder(Path):
 		gap = float(roller_spacing)-2*roller_rad
 		step_angle = 360/float(number_teeth)
 		radius = roller_spacing/2/math.tan(float(step_angle)/2/180*math.pi)
+		self.radius = radius
 		radius2 = radius #math.sqrt(radius**2-roller_rad**2)
 #		point_length=math.sqrt(gap*roller_rad+3*gap*gap/4)
 		point_length=math.sqrt((gap+roller_rad)**2-(roller_rad+gap/2)**2)
@@ -242,11 +243,11 @@ class SprocketBorder(Path):
 		for i in range(0, number_teeth):
 			theta = step_angle * i
 #			self.add_point(V(-gap/2,radius),'sharp',1,transform={'rotate':[V(0,0),i*step_angle]})
-			self.add_point(V(0,radius2+point_length*0.7),'sharp',1, transform={'rotate':[V(0,0),-theta]})
-			self.add_point(V(-gap/2*0.7,radius2+point_length2),'arcend',1, transform={'rotate':[V(0,0),-theta]})
-			self.add_point(V(0,radius2), 'arc',roller_spacing, direction='cw', transform={'rotate':[V(0,0),-theta]})
-			self.add_point(V(-gap/2,radius2), 'arcend', 0,  transform={'rotate':[V(0,0),-theta]})
-			self.add_point(V(0,radius2), 'arc',roller_rad, direction='ccw', transform={'rotate':[V(0,0),-theta]})
-			self.add_point(V(gap/2,radius2), 'arcend',0, transform={'rotate':[V(0,0),-theta-step_angle]})
-			self.add_point(V(0,radius), 'arc',roller_spacing, direction='cw', transform={'rotate':[V(0,0),-theta]})
-			self.add_point(V(gap/2*0.7,radius2+point_length2),'arcend',1, transform={'rotate':[V(0,0),-theta-step_angle]})
+			self.add_point(PIncurve(V(0,radius2+point_length*0.7), transform={'rotate':[V(0,0),-theta]}, radius=(roller_spacing-2*roller_rad)/6))
+			self.add_point(PSharp(V(-gap/2*0.7,radius2+point_length2), transform={'rotate':[V(0,0),-theta]}))
+			self.add_point(PArc(length='short', radius=roller_spacing, direction='cw', transform={'rotate':[V(0,0),-theta]}))
+			self.add_point(PSharp(V(-gap/2,radius2),  transform={'rotate':[V(0,0),-theta]}))
+			self.add_point(PArc( length='short', radius=roller_rad, direction='cw', transform={'rotate':[V(0,0),-theta]}))
+			self.add_point(PSharp(V(gap/2,radius2),transform={'rotate':[V(0,0),-theta-step_angle]}))
+			self.add_point(PArc(length='short', radius=roller_spacing, direction='cw', transform={'rotate':[V(0,0),-theta]}))
+			self.add_point(PSharp(V(gap/2*0.7,radius2+point_length2), transform={'rotate':[V(0,0),-theta-step_angle]}))
