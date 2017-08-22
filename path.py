@@ -1555,9 +1555,9 @@ class Pathgroup(object):
 			for comment in self.comments:
 				ret+="<!-- "+comment+" -->\n"
 		return ret
-	def add(self,path):
-		return self.add_path(path)
-	def add_path(self,path):
+	def add(self,path, prepend=False):
+		return self.add_path(path, prepend)
+	def add_path(self,path, prepend=False):
 		try:
 			path.obType
 		except NameError:
@@ -1565,7 +1565,10 @@ class Pathgroup(object):
 		else:
 			if (path.obType=='Path' or path.obType=="Pathgroup"):
 				path.parent=self
-				self.paths.append(path)
+				if prepend:
+					self.paths.insert(0, path)
+				else:
+					self.paths.append(path)
 			else:
 				raise TypeError("Attempting to add "+str(path.obType)+" to Pathgroup. Should be Path or Pathgroup")
 		return path	
@@ -1973,7 +1976,7 @@ class Part(object):
 	def add(self, path, layers=False):
 		return self.add_path( path, layers)
 
-	def add_path(self,path,layers = False):
+	def add_path(self,path,layers = False, prepend=False):
 		try:
 			path.obType
 		except NameError:
@@ -1981,7 +1984,10 @@ class Part(object):
 		else:
 			if path.obType=='Part':
 				path.parent = self
-				self.parts.append(path)
+				if prepend:
+					self.parts.insert(0,path)
+				else:
+					self.parts.append(path)
 				return path		
 			elif (path.obType=='Path' or path.obType=="Pathgroup"):
 				if layers is False:
@@ -2005,7 +2011,7 @@ class Part(object):
 					p=copy.deepcopy(path)
 					p.parent=self.paths[layer]
 					path.parent=self.paths[layer]
-					self.paths[layer].add_path(p)
+					self.paths[layer].add_path(p, prepend)
 				return p
 
 			else:
