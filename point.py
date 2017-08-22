@@ -1066,11 +1066,12 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 			
 			if l.length()>2*self.radius:
 				print "Can't make an arc longer than twice its radius"
-			if (self.direction=='cw' and self.reverse or self.direction=='ccw' and not self.reverse) !=self.reverse:
+			if (self.direction=='cw' and self.reverse or self.direction=='ccw' and not self.reverse) !=self.invert:
 				perp=rotate(l.normalize(),-90)
 			else:
 				perp=rotate(l.normalize(),90)
 			self.pos = self.last().pos + l/2 + perp * b
+#			self.pos = self.last().pos + l/2 - perp * b
 		elif self.pos is not None:
 			self.radius=min((self.next().pos-self.pos).length(), (self.pos- self.last().pos).length())
 	def makeSegment(self, config):
