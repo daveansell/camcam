@@ -195,7 +195,9 @@ class InvoluteGearBorder(Path):
 		if 'pitch' in config:
 			Pd=math.pi/float(config['pitch'])
 		elif 'rad' in config:
-			Pd=1.0/(float(config['rad'])/number_teeth)
+			print "rad = "+str(config['rad'])
+			Pd=float(number_teeth)/(float(config['rad']*2))
+			print "Pd="+str(Pd)
 		if 'ignore_teeth' in config:
                         ignore_teeth = config['ignore_teeth']
                 else:
@@ -235,7 +237,7 @@ class SprocketBorder(Path):
 		gap = float(roller_spacing)-2*roller_rad
 		step_angle = 360/float(number_teeth)
 		radius = roller_spacing/2/math.tan(float(step_angle)/2/180*math.pi)
-		self.radius = radius
+		self.effective_rad = roller_spacing/2/math.sin(step_angle/2/180*math.pi)
 		radius2 = radius #math.sqrt(radius**2-roller_rad**2)
 #		point_length=math.sqrt(gap*roller_rad+3*gap*gap/4)
 		point_length=math.sqrt((gap+roller_rad)**2-(roller_rad+gap/2)**2)
