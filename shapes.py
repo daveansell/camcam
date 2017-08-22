@@ -68,7 +68,6 @@ class Rect(Path):
 		if bl[0]-tr[0] ==0 or bl[1]-tr[1] ==0:
 			raise ValueError("Rectangle has no area")
 		self.comment("Rounded Square")
-		self.comment("bl="+str(bl)+" tr="+str(tr)+" rad="+str(rad))
 		if type(ct) is str:
 	                self.add_point(bl,ct, radius=rad, **args)
 	                self.add_point(V(bl[0],tr[1],0),ct,radius=rad, **args)
