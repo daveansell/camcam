@@ -170,6 +170,18 @@ class SemiCircle(Path):
 		self.add_point(PIncurve(V(rad,rad), radius=rad))
 		self.add_point(V(rad,0))
 
+class SubCircle(Path):
+        def __init__(self, centre, rad, yoff, **config):
+                self.init(config)
+                self.closed=True
+                xoff = math.sqrt(rad*rad - yoff*yoff)
+                self.add_point(PSharp(centre + V(-xoff, yoff)))
+                self.add_point(PSharp(centre + V( xoff, yoff)))
+                self.add_point(PArc(centre, radius=rad))
+                self.add_point(PSharp(centre + V( 0, rad)))
+                self.add_point(PArc(centre, radius=rad))
+
+
 class RepeatEllipse(Part):
         def __init__(self, pos, ob, **config):
                 self.init(config)
@@ -357,7 +369,7 @@ class Drill(Circle):
 #		self.centre=p.pos
 #		return [self.pos]	
 
-class ParametricPath3D(Path):
+class ParametricPath3D(Pathgroup):
 	def __init__(self, pos, callback, pmin, pmax, pstep, **config):
 		self.init(config)
 		self.translate(pos)
@@ -370,14 +382,39 @@ class ParametricPath3D(Path):
 			self.closed =config['closed']
 		else:
 			self.closed = False
-		p= self.pmin
-		while p<pmax:
+		if "do_cutdown" in config:
+			self.cutdown = config['do_cutdown']
+		else:
+			self.cutdown = False
+		wholecut = False
+		zoff = 0
+		while not wholecut:
+			zmin = 1000
+			wholecut = True
+			p= self.pmin
+			pa = Path(closed = self.closed, prepend=True)
+			print str(pa)+" "+str(zoff)
+			pa.use_point_z = True
+			print len(pa.points)
+
+			while p<pmax:
+				pnt = callback(p)
+				pnt = V(pnt[0], pnt[1], pnt[2]+zoff)
+				zmin = min(pnt[2], zmin)
+				print len(pa.points)
+				if pnt[2] <0:
+					pa.add_point(pnt)	
+				p+=pstep
+			p=pmax
 			pnt = callback(p)
-			self.add_point(pnt)	
-			p+=pstep
-		p=pmax
-		pnt = callback(p)
-		self.add_point(pnt)
+			pnt = V(pnt[0], pnt[1], pnt[2]+zoff)
+			if pnt[2] <0:
+				pa.add_point(pnt)
+			print len(pa.points)
+			if len(pa.points)>0 and self.cutdown!=False:
+				self.add(pa,  True)
+				wholecut=False
+				zoff+=self.cutdown
 #		for p in self.points:
 #			print p.pos
 
