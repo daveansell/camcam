@@ -508,12 +508,12 @@ class Path(object):
 				p = copy.copy(pointlist[0])
 				p.transform=None
 				if side=='left':
-					if ((thisdir=='cw') == (self.mirrored>0))==((thisdir=='cw')):
+					if ((thisdir=='cw') == (self.mirrored>0)):#==((thisdir=='cw')):
 						side='in'
 					else:
 						side='out'
 				elif side=='right':
-					if ((thisdir=='cw')  == (self.mirrored>0))==((thisdir=='cw')):
+					if ((thisdir=='cw')  == (self.mirrored>0)):#==((thisdir=='cw')):
 						side='out'
 					else:
 						side='in'
@@ -529,7 +529,7 @@ class Path(object):
 			#if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
 #			if thisdir=='cw':# and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
 #			if config['direction']=='cw' and self.mirrored>0 or config['direction']=='ccw' and not self.mirrored>0:
-			if ((thisdir=='cw') == (self.mirrored>0))==((thisdir=='cw')):
+			if ((thisdir=='cw') == (self.mirrored>0)):#==((thisdir=='cw')):
 				side='right'
 			else:
 				side='left'
@@ -537,7 +537,7 @@ class Path(object):
 			#if thisdir=='cw' and self.mirrored>0 or thisdir=='ccw' and not self.mirrored>0:
 #			if thisdir=='cw' and self.mirrored>0 or thisdir=='cw' and not self.mirrored>0:
 #			if config['direction']=='cw' and self.mirrored>0 or config['direction']=='ccw' and not self.mirrored>0:
-			if ((thisdir=='cw')  == (self.mirrored>0))==((thisdir=='cw')):
+			if ((thisdir=='cw')  == (self.mirrored>0)):#==((thisdir=='cw')):
 				side='left'
 			else:
 				side='right'
@@ -570,6 +570,11 @@ class Path(object):
 			reverse=-1
 		else:
 			reverse=1
+# create a list of points ignoring the ones we should ignore
+		pointlist=[]
+		for p in self.points:
+			if p.pos is not None and p.dirpoint:
+				pointlist.append(p)
 		self.mirrored=reverse
 		if len(self.points)==1 and hasattr(self.points[0],'direction') and self.points[0].direction in ['cw','ccw']:
 			if reverse:
@@ -577,10 +582,15 @@ class Path(object):
 			else:
 				return self.points[0].direction
 			
-		for p,q in enumerate(self.points):
-			if self.points[p].pos is not None and self.points[(p-1)%len(self.points)].pos is not None and self.points[(p+1)%len(self.points)].pos is not None:
-				total+=(self.points[p].pos-self.points[(p-1)%len(self.points)].pos).normalize().cross((self.points[(p+1)%len(self.points)].pos-self.points[p].pos).normalize())
+		for p,q in enumerate(pointlist):
+			if pointlist[p].pos is not None and pointlist[(p-1)%len(pointlist)].pos is not None and pointlist[(p+1)%len(pointlist)].pos is not None and pointlist[p].dirpoint:
+				total+=(pointlist[p].pos-pointlist[(p-1)%len(pointlist)].pos).normalize().cross((pointlist[(p+1)%len(pointlist)].pos-pointlist[p].pos).normalize())
+		#for p,q in enumerate(self.points):
+		#	if self.points[p].pos is not None and self.points[(p-1)%len(self.points)].pos is not None and self.points[(p+1)%len(self.points)].pos is not None and self.points[p].dirpoint:
+		#		print "findDir pnt="+str(self.points[p].pos)+" reverse="+str(reverse)
+		#		total+=(self.points[p].pos-self.points[(p-1)%len(self.points)].pos).normalize().cross((self.points[(p+1)%len(self.points)].pos-self.points[p].pos).normalize())
 		# if it is a circle
+		print total[2]
 		if total[2]==0:
 			for p in self.points:
 				if hasattr(p,'direction') and p.direction in ['cw','ccw']:
