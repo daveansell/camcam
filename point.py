@@ -1110,7 +1110,6 @@ If it can't reach either point with the arc, it will join up to them perpendicul
                         op=self.last().pos
                 else:
                         op=self.next().pos
-		print "origin: self.pos"+str(self.pos)+" op="+str(op)+" self.direction"+str(self.direction)+" self.reverse="+str(self.reverse)+" self.invert="+str(self.invert)+" forward"+str(forward)
 		if abs(op.length()-self.radius)>-0.001:
 	                vecin=(op-self.pos).normalize()*20
 	                if (self.direction=='cw' and self.reverse==self.invert or self.direction=='ccw' and self.reverse!=self.invert)==forward:
@@ -1146,12 +1145,9 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 	def offset(self, side, distance, direction):
 		self.checkArc()
 		t=copy.copy(self)
-		print "offset_PArc self.direction ="+str(self.direction)+" reversed="+str(self.reverse)+" invert="+str(self.invert)+" direction="+str(direction)+" side="+side
 		if (side=='left' and self.direction=='cw' or side=='right' and self.direction=='ccw')!=self.invert:
-			print "INCREASE"
 			t.radius+=distance
 		else:
-			print "decrease"
 			if t.radius>=distance:
 				t.radius-=distance
 			else:

@@ -590,7 +590,6 @@ class Path(object):
 		#		print "findDir pnt="+str(self.points[p].pos)+" reverse="+str(reverse)
 		#		total+=(self.points[p].pos-self.points[(p-1)%len(self.points)].pos).normalize().cross((self.points[(p+1)%len(self.points)].pos-self.points[p].pos).normalize())
 		# if it is a circle
-		print total[2]
 		if total[2]==0:
 			for p in self.points:
 				if hasattr(p,'direction') and p.direction in ['cw','ccw']:
