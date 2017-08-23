@@ -1127,7 +1127,7 @@ class Path(object):
 			if 'ry' in point:
 				ret+=",%0.2f"%point['ry']
 			if '_rot' in point:
-				ret+=",%0.0f"%point['_rot']
+				ret+=" %0.0f"%point['_rot']
 			if '_lf' in point:
 				ret+=" %s"%point['_lf']
 			if '_dir' in point:
@@ -1159,6 +1159,7 @@ class Path(object):
 			else:
 				z=''
 		ret+=z
+
 		return comments+"<path d=\""+ret+"\"  style='stroke-width:0.1px;"+opacity+"' fill='none' stroke='"+colour+"'/>\n"
 
 	def render_path_gcode(self,path,config):
