@@ -1063,9 +1063,9 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 			if(self.direction is None):
 				self.setangle()
 				if self.angle>0:
-					self.direction='ccw'+str(self.reverse)
+					self.direction='ccw'
 				else:
-					self.direction='cw'+str(self.reverse)
+					self.direction='cw'
 			if (self.pos-self.last().pos).length()-self.radius>000.1 or (self.next().pos-self.pos).length()-self.radius>0.001:
 							
 				print "Arc's radius should be <= distance to the centre"+str(self.next().pos)+"->"+str(self.pos)+"->"+str(self.last().pos)+" radius="+str(self.radius)+" AC-radius="+str((self.pos-self.last().pos).length()-self.radius)+" BC-raiuds="+str((self.next().pos-self.pos).length()-self.radius)
