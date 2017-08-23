@@ -64,6 +64,7 @@ class Point(object):
 		if not hasattr(self,'reverse'):
 			self.reverse=False
 		self.invert = False	
+		self.dirpoint = True
 	def _setup(self):
 		self.setup=True
 	def setPos(self, pos):
@@ -195,11 +196,13 @@ class Point(object):
 		self.angle0=math.atan2(a[1], a[0])
 #		self.angle2=(b1.angle(-b2)-90)*math.pi/180
 
+# side - side we are cutting on, direction overall direction of cut (cw/ccw)
 	def corner_side(self, side, direction):
 		cross=(self.pos-self.lastorigin()).cross(self.nextorigin()-self.pos)[2]
 		if abs(cross)<0.0000001:
 			return 'external'
-		if (cross<=-0.0000001 and side=='left' or cross>=0.00000001 and side=='right') == (direction=='cw'):
+# Am changing this which may be wrong, but 
+		if (cross<=-0.0000001 and side=='left' or cross>=0.00000001 and side=='right'):# == (direction=='cw'):
 			corner='external'
 		else:
 			corner='internal'
@@ -305,7 +308,6 @@ class PSharp(Point):
 		return self.start
 
 	def offset(self, side, distance, direction):
-		print "offset_PSharp reversed="+str(self.reverse)+" invert="+str(self.invert)+" direction="+str(direction)+" side="+side
 		return self.offsetSharp( side, distance, direction, self.sharp)
 
 	def offsetSharp(self, side, distance, direction, sharp=True):
@@ -1044,6 +1046,7 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 		self.transform=transform
 		self.point_type='arc'
 		self.control = False#True
+		self.dirpoint = False
 		self.obType='Point'
 	def copy(self):
                 t = PArc( self.pos, self.radius, self.direction,self.length, self.transform)
@@ -1057,7 +1060,14 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 
 	def checkArc(self):
 		if self.pos is not None and self.radius is not False:
+			if(self.direction is None):
+				self.setangle()
+				if self.angle>0:
+					self.direction='ccw'+str(self.reverse)
+				else:
+					self.direction='cw'+str(self.reverse)
 			if (self.pos-self.last().pos).length()-self.radius>000.1 or (self.next().pos-self.pos).length()-self.radius>0.001:
+							
 				print "Arc's radius should be <= distance to the centre"+str(self.next().pos)+"->"+str(self.pos)+"->"+str(self.last().pos)+" radius="+str(self.radius)+" AC-radius="+str((self.pos-self.last().pos).length()-self.radius)+" BC-raiuds="+str((self.next().pos-self.pos).length()-self.radius)
 		elif self.radius is not False and self.length is not False and self.pos is None:
 			
@@ -1100,9 +1110,9 @@ If it can't reach either point with the arc, it will join up to them perpendicul
                         op=self.last().pos
                 else:
                         op=self.next().pos
-
+		print "origin: self.pos"+str(self.pos)+" op="+str(op)+" self.direction"+str(self.direction)+" self.reverse="+str(self.reverse)+" self.invert="+str(self.invert)+" forward"+str(forward)
 		if abs(op.length()-self.radius)>-0.001:
-	                vecin=(op-self.pos).normalize()
+	                vecin=(op-self.pos).normalize()*20
 	                if (self.direction=='cw' and self.reverse==self.invert or self.direction=='ccw' and self.reverse!=self.invert)==forward:
 	                        return op+rotate(vecin,90)
 	                else:
@@ -1137,7 +1147,7 @@ If it can't reach either point with the arc, it will join up to them perpendicul
 		self.checkArc()
 		t=copy.copy(self)
 		print "offset_PArc self.direction ="+str(self.direction)+" reversed="+str(self.reverse)+" invert="+str(self.invert)+" direction="+str(direction)+" side="+side
-		if (side=='left' and self.direction=='cw' or side=='right' and self.direction=='ccw')==self.invert:
+		if (side=='left' and self.direction=='cw' or side=='right' and self.direction=='ccw')!=self.invert:
 			print "INCREASE"
 			t.radius+=distance
 		else:
