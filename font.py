@@ -226,7 +226,7 @@ class CurvedText(Text):
                         outline = slot.outline
                         lastc=-1
                         for c in outline.contours:
-				o = self.import_outline(outline,lastc+1, c, side, V(-float(face.glyph.linearHoriAdvance)/1000/2*self.scale, rad))
+				o = self.import_outline(outline,lastc+1, c, side, V(-float(face.glyph.linearHoriAdvance)/1000/2*self.scale, direction*rad))
 				if o.orig_direction=='cw':
 					o.side = side
 				else:
@@ -242,7 +242,10 @@ class CurvedText(Text):
 			
 			move = float(face.glyph.linearHoriAdvance)/1000+kern
                         x+= move/2 + lastmove/2
-			char.rotate( V(0,0), x * spacing_angle * self.scale + start_angle)
+			if(direction>0):
+				char.rotate( V(0,0), x * spacing_angle * self.scale + start_angle)
+			else:
+				char.rotate( V(0,0), x * spacing_angle * self.scale + start_angle+180)
 			lastmove = move
                         prev_glyph = glyph_index
                         self.chars.append(char)
