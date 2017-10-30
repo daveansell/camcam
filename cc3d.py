@@ -134,12 +134,13 @@ def path_render3D(self, pconfig, border=False):
 		else:
 			extruded=solid.multmatrix(m=self.transform['matrix3D'])(extruded)
 	if hasattr(self, 'transform') and self.transform is not None and self.transform is not False and 'rotate3D' in self.transform:
-		if type(self.transform['rotate3D'][0]) is list:
+		if type(self.transform['rotate3D'][0]) is list or type(self.transform['rotate3D'][0]) is Vec:
 			print [-self.transform['rotate3D'][1][0], - self.transform['rotate3D'][1][1], - self.transform['rotate3D'][1][2]- zoffset]
 			extruded=solid.translate([-self.transform['rotate3D'][1][0], - self.transform['rotate3D'][1][1], - self.transform['rotate3D'][1][2]- zoffset])(extruded)
 			extruded=solid.rotate([self.transform['rotate3D'][0][0], self.transform['rotate3D'][0][1],self.transform['rotate3D'][0][2] ])(extruded)
 			extruded=solid.translate([self.transform['rotate3D'][1][0], self.transform['rotate3D'][1][1], self.transform['rotate3D'][1][1] + zoffset])(extruded)
 		else:
+			print "qq"+str(self.transform['rotate3D'])
 			extruded=solid.rotate([self.transform['rotate3D'][0], self.transform['rotate3D'][1],self.transform['rotate3D'][2] ])(extruded)
 	if hasattr(self, 'transform') and self.transform is not None and self.transform is not False and 'translate3D' in self.transform:
 		extruded=solid.translate([self.transform['translate3D'][0], self.transform['translate3D'][1],self.transform['translate3D'][2] ])(extruded)
