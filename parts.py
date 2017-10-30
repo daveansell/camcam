@@ -1598,4 +1598,37 @@ class ScreenHolderRemovable(Part):
                 self.add(Bolt( V( width/2-edge/2,height-3*edge/2), clearance_layers=layers['top'], thread_layer = layers['mid'], insert_layer = []))
                 self.add(Bolt( V(-width/2+edge/2,height-3*edge/2-10), clearance_layers=layers['top'], thread_layer = layers['mid'], insert_layer = []))
                 self.add(Bolt( V( width/2-edge/2,height-3*edge/2-10), clearance_layers=layers['top'], thread_layer = layers['mid'], insert_layer = []))
-	
+
+class LightSwitch(Part):
+	def __init__(self, pos, switch_type, layers, **config):
+		self.init(config)
+                self.translate(pos)
+		data={
+			'single':{'box_width':79, 'box_height': 79, 'screw_sep':60.3, 'toungue_edge':6, 'width':86, "height":86},
+			'double':{'box_width':140, 'box_height': 79, 'screw_sep':120.6, 'toungue_edge':6, 'width':146, "height":86},
+		}
+		assert( switch_type in data)
+		d=data[switch_type]
+		
+		if('cutout' in layers):
+			cutout=Path(closed=True, side='in')
+			cutout.add_point(PIncurve(V(-d['box_width']/2, d['box_height']/2), radius = 2))
+			cutout.add_point(PIncurve(V( d['box_width']/2, d['box_height']/2), radius = 2))
+			cutout.add_point(PIncurve(V( d['box_width']/2, d['toungue_edge']), radius = 2))
+			cutout.add_point(POutcurve(V( d['screw_sep']/2, 0), radius = d['toungue_edge']))
+			cutout.add_point(PIncurve(V( d['box_width']/2, -d['toungue_edge']), radius = 2))
+			
+			cutout.add_point(PIncurve(V( d['box_width']/2, -d['box_height']/2), radius = 2))
+			cutout.add_point(PIncurve(V(-d['box_width']/2, -d['box_height']/2), radius = 2))
+
+			cutout.add_point(PIncurve(V( -d['box_width']/2, -d['toungue_edge']), radius = 2))
+			cutout.add_point(POutcurve(V( -d['screw_sep']/2, 0), radius = d['toungue_edge']))
+			cutout.add_point(PIncurve(V( -d['box_width']/2, d['toungue_edge']), radius = 2))
+			self.add(cutout, layers['cutout'])
+			self.add(Insert(V(-d['screw_sep']/2,0), 'M3.5', layers['cutout']))
+			self.add(Insert(V(d['screw_sep']/2,0), 'M3.5', layers['cutout']))
+		if('clearance' in layers):
+			self.add(Rect(V(0,0), width = d['box_width'], height = d['box_height'], centred=True), layers['clearance'])
+		if('part' in layers):
+			self.add(Part(subpart=True, layer=layers['part'], border=Rect(V(0,0), width=d['width'], height=d['height'], centred=True)))
+		
