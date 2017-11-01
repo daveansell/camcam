@@ -1630,5 +1630,15 @@ class LightSwitch(Part):
 		if('clearance' in layers):
 			self.add(Rect(V(0,0), width = d['box_width'], height = d['box_height'], centred=True), layers['clearance'])
 		if('part' in layers):
-			self.add(Part(subpart=True, layer=layers['part'], border=Rect(V(0,0), width=d['width'], height=d['height'], centred=True)))
-		
+			self.switch=self.add(Part(name="switch", layer=layers['part'], border=Rect(V(0,0), width=d['width'], height=d['height'], centred=True)))
+			self.switch.add(Hole(V(-d['screw_sep']/2,0),rad=4/2))
+			self.switch.add(Hole(V( d['screw_sep']/2,0),rad=4/2))
+			if('num_switches' in config):
+				num_switches = config['num_switches']
+			else:
+				num_switches = 1
+			switch_spacing = d['screw_sep']/(num_switches+1)
+			but_width = 18
+			but_height = 36
+			for i in range(0,num_switches):
+				self.add(Part(subpart=True, layer=layers['part'], border=Rect(V(switch_spacing*(-float(num_switches)/2+i),0), width=but_width, height = but_height, centred=True), zoffset=3, colour="#808080"))
