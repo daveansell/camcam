@@ -1811,7 +1811,7 @@ class RectAlong(Path):
 
 class CutFunction(list):
 	def __init__(self, start, end, func, **config):
-		return cut_function(start, end, func, config)
+		return self.cut_function(start, end, func, config)
 
 	def cut_function(self, start, end, func, config):
 		length = (end-start).length()
@@ -1834,7 +1834,8 @@ class CutFunction(list):
 			y = func(x, **config)
 			self.append( PSharp(start+ (x+y*skew) *para + y*perp))
 			x+=step
-		self.append(PSharp(end))
+		y = func(length, **config)
+		self.append(PSharp(start+ (length+y*skew) *para + y*perp))
 
 		
 		
