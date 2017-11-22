@@ -1021,21 +1021,25 @@ class Bolt(Part):
 			if insert_layer is not False:
 				if 'insert_type' in config and config['insert_type'] in milling.inserts[thread]:
 					insert=milling.inserts[thread][config['insert_type']]
-				else:
+				elif thread in milling.inserts:
 					insert=milling.inserts[thread]
-				self.add_bom("Wood insert", 1, str(thread)+"insert",'')
-				for i,diam in enumerate(insert['diams']):
-#					self.add(Insert(pos, config['insert_type'], **config))
-					if 'z1' in config and insert['depths'][i] is False:
-						print "z1="+str(config['z1'])
-						depth=config['z1']
-					else:
-						depth = insert['depths'][i]
-					self.add(Hole(pos, insert['diams'][i],  side='in' , z1 = depth ),insert_layer)
+				else:
+					print thread+" is not in milling.inserts"
+					insert=False
+				if insert:
+					self.add_bom("Wood insert", 1, str(thread)+"insert",'')
+					for i,diam in enumerate(insert['diams']):
+	#					self.add(Insert(pos, config['insert_type'], **config))
+						if 'z1' in config and insert['depths'][i] is False:
+							print "z1="+str(config['z1'])
+							depth=config['z1']
+						else:
+							depth = insert['depths'][i]
+						self.add(Hole(pos, insert['diams'][i],  side='in' , z1 = depth ),insert_layer)
 			if underinsert_layer is not False:
 				if 'insert_type' in config and config['insert_type'] in milling.inserts[thread]:
-                                        insert=milling.inserts[thread][config['insert_type']]
-                                else:
+                	         	insert=milling.inserts[thread][config['insert_type']]
+                        	else:
                                         insert=milling.inserts[thread]
 				i = insert['depths'].index(False)
 				self.add(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),underinsert_layer)		
