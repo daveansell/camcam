@@ -610,7 +610,7 @@ class Milling:
                 },
                 'M12':{
                         'diam':12.0,
-                        'tap':10.0,
+                        'tap':10.3,
 			'clearance':13.0,
                         'hex':{
                                 'head_d':18.0,
