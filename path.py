@@ -581,7 +581,6 @@ class Path(object):
 				return self.otherDir(self.points[0].direction)
 			else:
 				return self.points[0].direction
-			
 		for p,q in enumerate(pointlist):
 			if pointlist[p].pos is not None and pointlist[(p-1)%len(pointlist)].pos is not None and pointlist[(p+1)%len(pointlist)].pos is not None and pointlist[p].dirpoint:
 				total+=(pointlist[p].pos-pointlist[(p-1)%len(pointlist)].pos).normalize().cross((pointlist[(p+1)%len(pointlist)].pos-pointlist[p].pos).normalize())
@@ -2254,7 +2253,6 @@ class Plane(Part):
 		part_config=self.overwrite(part_config, part.get_config())
                 if 'part_thickness' in part_config:
                         config['thickness'] = part_config['thickness']
-		print "partconfig="+str(part_config['transformations'])
 		
 		# if it has been set to layer 'all' it should be in here
 		if 'all' in layers:

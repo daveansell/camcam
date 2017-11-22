@@ -117,6 +117,40 @@ class Knob(Part):
         def _pre_render(self, config):
                 self.get_plane().add_layer('_magnetometer_holder', 'pvc', 6, colour='#80808080', zoffset=49)
 
+class TightHole(Pathgroup):
+	def __init__(self, pos, rad, **config):
+		self.init(config)
+		self.pos=pos
+                self.rad = rad
+		self.materials={
+			'plywood':0.97,
+			'delrin':0.98,
+			'pvc':0.99,
+			'perspex':0.99,
+		}
+	def _pre_render(self, config):
+		self.add(Circle(self.pos, self.rad*self.materials[config['material']]))
+
+class Dowel(Part):
+	def __init__(self, pos, rad, dowel_type, layers, **config):
+		self.init(config)
+		offsets={
+			'steel':{'loose':1.0, 'tight':1.0},
+			'wood_ribbed':{'loose':1.05, 'tight':1.0},
+			'wood':{'loose':1.05, 'tight':1.0},
+		}
+		self.pos=pos
+		self.layers=layers
+		self.dowel_type = dowel_type
+		self.rad = rad
+		self.tightrad = rad*offsets[dowel_type]['tight']
+		if 'tight' in layers:
+			self.add(TightHole(self.pos, rad=self.tightrad), layers['tight'])
+		if 'loose' in layers:
+			self.add(Hole(self.pos, rad=self.rad), layers['loose'])
+			self.add(Hole(self.pos, rad=self.rad), layers['loose'])
+
+
 class Post(Part):
 	def __init__(self, pos, **config):
 		self.init(config)
@@ -1598,4 +1632,47 @@ class ScreenHolderRemovable(Part):
                 self.add(Bolt( V( width/2-edge/2,height-3*edge/2), clearance_layers=layers['top'], thread_layer = layers['mid'], insert_layer = []))
                 self.add(Bolt( V(-width/2+edge/2,height-3*edge/2-10), clearance_layers=layers['top'], thread_layer = layers['mid'], insert_layer = []))
                 self.add(Bolt( V( width/2-edge/2,height-3*edge/2-10), clearance_layers=layers['top'], thread_layer = layers['mid'], insert_layer = []))
-	
+
+class LightSwitch(Part):
+	def __init__(self, pos, switch_type, layers, **config):
+		self.init(config)
+                self.translate(pos)
+		data={
+			'single':{'box_width':79, 'box_height': 79, 'screw_sep':60.3, 'toungue_edge':6, 'width':86, "height":86},
+			'double':{'box_width':140, 'box_height': 79, 'screw_sep':120.6, 'toungue_edge':6, 'width':146, "height":86},
+		}
+		assert( switch_type in data)
+		d=data[switch_type]
+		
+		if('cutout' in layers):
+			cutout=Path(closed=True, side='in')
+			cutout.add_point(PIncurve(V(-d['box_width']/2, d['box_height']/2), radius = 2))
+			cutout.add_point(PIncurve(V( d['box_width']/2, d['box_height']/2), radius = 2))
+			cutout.add_point(PIncurve(V( d['box_width']/2, d['toungue_edge']), radius = 2))
+			cutout.add_point(POutcurve(V( d['screw_sep']/2, 0), radius = d['toungue_edge']))
+			cutout.add_point(PIncurve(V( d['box_width']/2, -d['toungue_edge']), radius = 2))
+			
+			cutout.add_point(PIncurve(V( d['box_width']/2, -d['box_height']/2), radius = 2))
+			cutout.add_point(PIncurve(V(-d['box_width']/2, -d['box_height']/2), radius = 2))
+
+			cutout.add_point(PIncurve(V( -d['box_width']/2, -d['toungue_edge']), radius = 2))
+			cutout.add_point(POutcurve(V( -d['screw_sep']/2, 0), radius = d['toungue_edge']))
+			cutout.add_point(PIncurve(V( -d['box_width']/2, d['toungue_edge']), radius = 2))
+			self.add(cutout, layers['cutout'])
+			self.add(Insert(V(-d['screw_sep']/2,0), 'M3.5', layers['cutout']))
+			self.add(Insert(V(d['screw_sep']/2,0), 'M3.5', layers['cutout']))
+		if('clearance' in layers):
+			self.add(Rect(V(0,0), width = d['box_width'], height = d['box_height'], centred=True), layers['clearance'])
+		if('part' in layers):
+			self.switch=self.add(Part(name="switch", layer=layers['part'], border=Rect(V(0,0), width=d['width'], height=d['height'], centred=True)))
+			self.switch.add(Hole(V(-d['screw_sep']/2,0),rad=4/2))
+			self.switch.add(Hole(V( d['screw_sep']/2,0),rad=4/2))
+			if('num_switches' in config):
+				num_switches = config['num_switches']
+			else:
+				num_switches = 1
+			switch_spacing = d['screw_sep']/(num_switches+1)
+			but_width = 18
+			but_height = 36
+			for i in range(0,num_switches):
+				self.add(Part(subpart=True, layer=layers['part'], border=Rect(V(switch_spacing*(-float(num_switches)/2+i),0), width=but_width, height = but_height, centred=True), zoffset=3, colour="#808080"))

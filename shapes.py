@@ -203,7 +203,25 @@ class RepeatEllipse(Part):
                         t.transform['translate'] = V( width/2 * math.cos( a * float(i)), height/2 * math.sin( a * float(i)) )
                         self.add(t)
 
-
+class Spiral(Path):
+	def __init__(self, pos, r1, r2, **config):
+		self.init(config)
+		if 'closed' in config:
+			self.closed=config['closed']
+		else:
+			self.closed=True
+		if "turns" in config:
+			turns=config["turns"]
+		else:
+			turns = 1.0
+		if "steps" in config:
+			steps = config["steps"]
+		else:
+			steps = int(50 * turns)
+		astep = 360.0*turns/steps
+		rstep = float(r2-r1)/steps
+		for i in range(0, int(steps)+1):
+			self.add_point(PSharp(pos+V(r1+rstep*i,0), transform={'rotate':[pos, astep*i]}))
 
 class Lines(Path):
 	def __init__(self, points, **config):
@@ -1797,7 +1815,7 @@ class RectAlong(Path):
 
 class CutFunction(list):
 	def __init__(self, start, end, func, **config):
-		return cut_function(start, end, func, config)
+		return self.cut_function(start, end, func, config)
 
 	def cut_function(self, start, end, func, config):
 		length = (end-start).length()
@@ -1820,7 +1838,8 @@ class CutFunction(list):
 			y = func(x, **config)
 			self.append( PSharp(start+ (x+y*skew) *para + y*perp))
 			x+=step
-		self.append(PSharp(end))
+		y = func(length, **config)
+		self.append(PSharp(start+ (length+y*skew) *para + y*perp))
 
 		
 		
