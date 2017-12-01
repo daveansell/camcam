@@ -1839,6 +1839,17 @@ class RectAlong(Path):
 		self.add_point(start-perp*w)
 		self.add_point(PIncurve(start-perp*w-para*rad, radius=rad))
 
+class ParametricFunction(list):
+	def __init__(self, pos, pstart, pend, func, **config):
+		if 'step' in config:
+			step=config['step']
+		else:
+			step = (float(pend)-float(pstart))/100
+		p = pstart
+		while p<pend:
+			self.append(func(p))
+			p+=step
+		self.append(func(pend))
 
 class CutFunction(list):
 	def __init__(self, start, end, func, **config):
