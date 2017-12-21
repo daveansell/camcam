@@ -73,6 +73,22 @@ class Rect(Path):
 	                self.add_point(V(bl[0],tr[1],0),ct,radius=rad, **args)
 	                self.add_point(tr,ct,radius=rad, **args)
 	                self.add_point(V(tr[0],bl[1],0),ct,radius=rad, **args)
+		elif type(ct) is list:
+			args['radius']=rad
+			if type(args['radius']) is list:
+				args['radius']=rad[0]
+				self.add_point(ct[0](bl, **args))
+				args['radius']=rad[1]
+				self.add_point(ct[1](V(bl[0],tr[1],0), **args))
+				args['radius']=rad[2]
+				self.add_point(ct[2](tr, **args))
+				args['radius']=rad[3]
+				self.add_point(ct[3](V(tr[0],bl[1],0), **args))	
+			else:	
+				self.add_point(ct[0](bl, **args))
+				self.add_point(ct[1](V(bl[0],tr[1],0), **args))
+				self.add_point(ct[2](tr, **args))
+				self.add_point(ct[3](V(tr[0],bl[1],0), **args)) 
 		else:
 			self.add_point(ct(bl,  **args))
 			self.add_point(ct(V(bl[0],tr[1],0),  **args))
