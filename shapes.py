@@ -1051,6 +1051,11 @@ class Bolt(Part):
 			underinsert_layer = config['underinsert_layer']
 		else:
 			underinsert_layer = False#['underbase']
+		if 'underinsert_depth' in config:
+			underinsert_depth = config['underinsert_depth']
+		else:
+			underinsert_depth = False
+
 		if thread in milling.bolts:
 			if insert_layer is not False:
 				if 'insert_type' in config and config['insert_type'] in milling.inserts[thread]:
@@ -1076,7 +1081,10 @@ class Bolt(Part):
                         	else:
                                         insert=milling.inserts[thread]
 				i = insert['depths'].index(False)
-				self.add(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),underinsert_layer)		
+				if underinsert_depth:
+					self.add(FilledCircle(pos, rad=insert['diams'][i], z1=-underinsert_depth), underinsert_layer)
+				else:
+					self.add(Hole(pos, insert['diams'][i],  side='in' , z1=insert['depths'][i]),underinsert_layer)		
 
 			self.add(Hole(pos, (milling.bolts[thread]['clearance'])/2, side='in'),clearance_layers)
 			if(head=='countersunk'):
