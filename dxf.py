@@ -22,24 +22,44 @@ from segments import *
 from path import *
 
 Segment.seg_types['dxf']='dxf'
+colours = {None:1, False:1}
+colourcount = 2
+def colour_from_z(z):
+	global colourcount, colours
+	if z not in colours:
+		colours[z]=colourcount
+		print "z="+str(z)+" to colour="+str(colours[z])
+		colourcount+=1
+	return colours[z]
+
+
 def line_dxf(self, direction=True):
-	if(direction):
-		return [dxf.line((self.cutfrom[0], self.cutfrom[1]), (self.cutto[0], self.cutto[1]))]
+	if(hasattr(self, "parent") and hasattr(self.parent, 'z1')):
+		colour = colour_from_z(self.parent.z1)
 	else:
-		return [dxf.line( (self.cutto[0], self.cutto[1]), (self.cutfrom[0], self.cutfrom[1]))]
+		colour = 1
+	
+	if(direction):
+		return [dxf.line((self.cutfrom[0], self.cutfrom[1]), (self.cutto[0], self.cutto[1]), color=colour)]
+	else:
+		return [dxf.line( (self.cutto[0], self.cutto[1]), (self.cutfrom[0], self.cutfrom[1]), color=colour)]
 
 setattr(Line, 'dxf', line_dxf)
 
 def arc_dxf(self, direction=True):
+	if(hasattr(self, "parent") and hasattr(self.parent, 'z1')):
+		colour = colour_from_z(self.parent.z1)
+	else:
+		colour = 1
 	radius = (self.centre - self.cutto).length()
 	a = self.centre - self.cutto
 	b = self.centre - self.cutfrom
 	angle0 = math.atan2(a[1], a[0])/math.pi *180+180
 	angle1 = math.atan2(b[1], b[0])/math.pi *180+180
         if(self.direction=='ccw'):
-                return [dxf.arc(radius, self.centre, angle0, angle1)]
+                return [dxf.arc(radius, self.centre, angle0, angle1, color=colour)]
         else:
-                return [dxf.arc(radius, self.centre, angle1, angle0)]
+                return [dxf.arc(radius, self.centre, angle1, angle0, color=colour)]
 
 setattr(Arc, 'dxf', arc_dxf)
 
