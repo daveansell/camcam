@@ -453,6 +453,9 @@ class Path(object):
 
 		for p in range(0,numpoints):
 			segment_array.extend(pointlist[p].generateSegment(self.isreversed, config))
+		for s in segment_array:
+			s.config=config
+			s.parent=self
 	#	else:
 	#		for p in range(1, numpoints):
 	#			segment_array.extend(pointlist[p].generateSegment(self.isreversed, config))
