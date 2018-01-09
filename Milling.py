@@ -420,7 +420,7 @@ class Milling:
                         "sidefeed":600,
                         "stepdown":1.5,
                         "kress_setting":2.0,
-			"mill_dir":'down',
+		#	"mill_dir":'down',
                 },
                 "polycarbonate":{
                         "vertfeed":120,
