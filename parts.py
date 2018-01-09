@@ -129,13 +129,13 @@ class TightHole(Pathgroup):
 			'perspex':0.99,
 		}
 	def _pre_render(self, config):
-		self.add(Circle(self.pos, self.rad*self.materials[config['material']]))
+		self.add(Hole(self.pos, self.rad*self.materials[config['material']]))
 
 class Dowel(Part):
 	def __init__(self, pos, rad, dowel_type, layers, **config):
 		self.init(config)
 		offsets={
-			'steel':{'loose':1.0, 'tight':1.0},
+			'steel':{'loose':1.05, 'tight':1.05},
 			'wood_ribbed':{'loose':1.05, 'tight':1.0},
 			'wood':{'loose':1.05, 'tight':1.0},
 		}
@@ -144,11 +144,12 @@ class Dowel(Part):
 		self.dowel_type = dowel_type
 		self.rad = rad
 		self.tightrad = rad*offsets[dowel_type]['tight']
+		self.looserad = rad*offsets[dowel_type]['loose']
 		if 'tight' in layers:
 			self.add(TightHole(self.pos, rad=self.tightrad), layers['tight'])
 		if 'loose' in layers:
-			self.add(Hole(self.pos, rad=self.rad), layers['loose'])
-			self.add(Hole(self.pos, rad=self.rad), layers['loose'])
+			self.add(Hole(self.pos, rad=self.looserad), layers['loose'])
+			self.add(Hole(self.pos, rad=self.looserad), layers['loose'])
 
 
 class Post(Part):
