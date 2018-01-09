@@ -158,7 +158,7 @@ class Milling:
 			},
 			'dxf':{
 				'forcestepdown':1000,
-                                'forcecutter':'laser',
+                                'forcecutter':'on',
 				'toolchange':'none',
 				'group':False,
 				'overview':False,
@@ -396,6 +396,12 @@ class Milling:
                         "endcut":1,
                         "sidecut":1,
                 },
+                "on":{
+                        "id":101,
+                        "diameter":0,
+                        "endcut":1,
+                        "sidecut":1,
+                },
 		}
 		self.materials = {
                 "plywood":{
@@ -477,6 +483,13 @@ class Milling:
 			"mill_dir":'down',
                },
                 "polypropelene":{
+                        "vertfeed":100,
+                        "sidefeed":700,
+                        "stepdown":2.0,
+                        "kress_setting":1.5,
+			"mill_dir":'up',
+               },
+                "polythene":{
                         "vertfeed":100,
                         "sidefeed":700,
                         "stepdown":2.0,
