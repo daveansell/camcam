@@ -92,7 +92,7 @@ class Milling:
                         },
                         'makespacerouter':{
 #                                'prefix':'T1M6\nG17\nG0Z10S11000M3\n',
-				'prefix':'T1M6\nG17\nG0Z30S11000M3\n',
+				'prefix':'T1M6\nG17\nG0Z15S11000M3\n',
 				'postfix':'M30\n',
                                 'mode':'simplegcode',
                                 'group':'cutter',
@@ -107,7 +107,8 @@ class Milling:
 				'dosfile':True,
 				'z_overshoot':0.2,
 				'label':False,
-				'zero':'bottom_left',
+		#		'downmode':'down',
+		#		'zero':'bottom_left',
                         },
                         'laser':{
                               #  'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',

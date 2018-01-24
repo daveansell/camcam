@@ -1289,6 +1289,8 @@ class Path(object):
 			config['stepdown']=1000
 		else:
 			downmode=config['downmode']
+		if downmode==None:
+			downmode='ramp'
 		direction=config['direction']
 		self.mode=mode
 		self.Fsegments=[]
@@ -1362,11 +1364,12 @@ class Path(object):
 		if self.mode=='gcode' or self.mode=='simplegcode':
 			self.add_out([{'cmd':'G0','Z':config['clear_height']}])
 			self.add_feedrates(config)
+			self.comment("test")
 		elif self.mode=='svg' or self.mode=='scr':
 			self.add_colour(config)	
 	def quickdown(self,z):
 		if self.mode=='gcode' or self.mode=='simplegcode':
-			return [{"cmd":"G0", "Z":z}]
+			return [{"cmd":"G0", "Z":z}] 
 		else:
 			return[]
 		
@@ -1418,9 +1421,10 @@ class Path(object):
 		cutfrom=segments[seg].cutfrom
 		if side=='on':
 			if mode=='down':
+				self.comment("runin0")
 				self.start=cutto
-				self.add_out(self.move(cutto))
 			else:
+				self.comment("runin1")
 				self.start=cutfrom
 				self.add_out(self.move(cutfrom))
 		else:
@@ -2449,7 +2453,6 @@ class Plane(Part):
 				if key not in self.lay_out:
 					self.lay_out[key]=''
 				self.lay_out[key]+=output
-				print "$$$$$"
 		else:
 			output = config['prefix']+"\n"+output+"\n"+config['postfix']
 			f=open(self.sanitise_filename(filename+config['file_suffix']),'w')
