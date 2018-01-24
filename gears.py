@@ -168,8 +168,8 @@ class InvoluteGearBorder(Path):
 	    y = []
 	    for i in range( 0, N ):
 		if ignore_teeth and N-i<=ignore_teeth:
-                        rx=[self.gears_outer_diameter( pa, N, P)/2*math.cos( float(i)*2.0*math.pi/float(N))]
-                        ry=[self.gears_outer_diameter( pa, N, P)/2*math.sin( float(i)*2.0*math.pi/float(N))]
+                        rx=[self.gears_root_diameter( pa, N, P)/2*math.cos( float(i)*2.0*math.pi/float(N))]
+                        ry=[self.gears_root_diameter( pa, N, P)/2*math.sin( float(i)*2.0*math.pi/float(N))]
                 else:
 	        	rx, ry = self.gears_rotate( float(i)*2.0*math.pi/float(N), tx, ty )
 	        x.extend( rx )
