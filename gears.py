@@ -153,11 +153,25 @@ class InvoluteGearBorder(Path):
 	    ix.insert( 0, min( self.gears_base_diameter( pa, N, P )/2.0, self.gears_root_diameter( pa, N, P )/2.0 ) )
 	    iy.insert( 0, 0.0 )
 	    itheta.insert( 0, 0.0 )
+	    if self.round_corners:
+		cx=ix[-1]
+		cy=iy[-1]
+		for i in range(1,5):
+			iy.append(cy+(1-math.cos(i*math.pi/8)*self.round_corners/P))	
+			ix.append(cx+(math.sin(i*math.pi/8)*self.round_corners/P))
+			itheta.append(math.atan2(iy[-1], ix[-1]))
+		cx=ix[0]
+		cy=iy[0]
+		for i in range(1,5):
+			iy.insert(0,cy-(1-math.cos(i*math.pi/8)*self.round_corners/P))	
+			ix.insert(0,cx-(math.sin(i*math.pi/8)*self.round_corners/P))
+			itheta.insert(0,math.atan2(iy[0], ix[0]))
 	    ix, iy = self.gears_align_involute( self.gears_pitch_diameter(pa, N, P), ix, iy, itheta )
 	    mx, my = self.gears_mirror_involute( ix, iy )
 	    mx, my = self.gears_rotate( self.gears_circular_tooth_angle( pa, N, P ), mx, my )
 	    ix.extend( mx )
 	    iy.extend( my )
+	
 	    return ix, iy
 	
 	# generates a spur gear with a given pressure angle (pa),
@@ -202,6 +216,10 @@ class InvoluteGearBorder(Path):
                         ignore_teeth = config['ignore_teeth']
                 else:
                         ignore_teeth = False
+		if 'round_corners' in config:
+			self.round_corners=config['round_corners']
+		else:
+			self.round_corners=False
 		print config
 		x, y = self.gears_make_gear(pressure_angle, number_teeth, Pd, ignore_teeth)
 		self.gears_camcam(x,y)
@@ -225,6 +243,8 @@ class InvoluteGear(Part):
 			c['rad'] = config['rad']
 		if 'ignore_teeth' in config:
                         c['ignore_teeth'] = config['ignore_teeth']
+		if 'round_corners' in config:
+			c['round_corners']= config['round_corners']
 		self.add_border(InvoluteGearBorder(V(0,0), pressure_angle, number_teeth, **c))
 		if 'holerad' in config:
 			self.add(Hole(V(0,0), rad=config['holerad']))
