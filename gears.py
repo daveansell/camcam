@@ -228,6 +228,86 @@ class InvoluteGearBorder(Path):
 		self.outer_diameter=self.gears_outer_diameter(pressure_angle, number_teeth, Pd)
 		self.root_diameter=self.gears_root_diameter(pressure_angle, number_teeth, Pd)
 
+class GearRack(list):
+	def __init__(self, pos, pressure_angle, number_teeth, **config):
+                c={}
+		rnumber_teeth = number_teeth
+		number_teeth = 1000
+                if 'layer' in config:
+                        self.layer= config['layer']
+                if 'name' in config:
+                        self.layer=config['layer']
+                if 'pitch' in config:
+                        c['pitch'] = config['pitch']
+                elif 'rad' in config:
+                        c['rad'] = config['rad']
+                if 'ignore_teeth' in config:
+                        c['ignore_teeth'] = config['ignore_teeth']
+                if 'round_corners' in config:
+                        c['round_corners']= config['round_corners']
+		self.gear = InvoluteGearBorder(V(0,0), pressure_angle, number_teeth, **c)
+		print "qqqq"
+		x,y = self.rack_make_tooth( pressure_angle, number_teeth, config['pitch'])
+		print "WWW"+str(number_teeth)
+		ox=[]
+		oy=[]
+		for i in range(0,rnumber_teeth):
+			ix, iy = self.gear.gears_translate(0,i*c['pitch'], x, y )
+			ox.extend( ix)
+			oy.extend( iy)
+		ox,oy = self.gear.gears_translate(pos[0], pos[1], ox, oy)
+		for i in range(0, len(ox)):
+                        self.append( PSharp(V(ox[i], oy[i])))
+
+	def rack_make_tooth( self, pa, N, pitch):
+	    # make tooth for very large diameter
+	    N=10
+	    P=math.pi/float(pitch)
+	    print P	
+            ix, iy, itheta = self.gear.gears_generate_involute( self.gear.gears_base_diameter( pa, N, P )/2.0, self.gear.gears_outer_diameter( pa, N, P )/2.0, math.pi/2.1 )
+            ix.insert( 0, min( self.gear.gears_base_diameter( pa, N, P )/2.0, self.gear.gears_root_diameter( pa, N, P )/2.0 ) )
+            iy.insert( 0, 0.0 )
+            itheta.insert( 0, 0.0 )
+            if self.gear.round_corners:
+                cx=ix[-1]
+                cy=iy[-1]
+                for i in range(1,5):
+                        iy.append(cy+(1-math.cos(i*math.pi/8)*self.gear.round_corners/P))
+                        ix.append(cx+(math.sin(i*math.pi/8)*self.gear.round_corners/P))
+                        itheta.append(math.atan2(iy[-1], ix[-1]))
+                cx=ix[0]
+                cy=iy[0]
+                for i in range(1,5):
+                        iy.insert(0,cy-(1-math.cos(i*math.pi/8)*self.gear.round_corners/P))
+                        ix.insert(0,cx-(math.sin(i*math.pi/8)*self.gear.round_corners/P))
+                        itheta.insert(0,math.atan2(iy[0], ix[0]))
+            ix, iy = self.rack_align_involute( P, ix, iy, itheta )
+	    ix, iy = self.gear.gears_translate(0, -self.gear.gears_pitch_diameter(pa, N, P), ix, iy )
+	    for i in range(0,len(ix)):
+		print str(ix[i])+","+str(iy[i])
+            mx, my = self.gear.gears_mirror_involute( ix, iy )
+#            mx, my = self.gears_rotate( self.gears_circular_tooth_angle( pa, N, P ), mx, my )
+            ix.extend( mx )
+            iy.extend( my )
+
+            return ix, iy
+# returns the angle where an involute curve crosses a circle with a given radius
+        # or -1 on failure
+        def rack_locate_involute_cross_x_for_radius( self, r, ix, iy, itheta ):
+            for i in range( 0, len(ix)-1 ):
+                r2 = ix[i+1]*ix[i+1] + iy[i+1]*iy[i+1]
+                if r2 > r*r:
+                    r1 = math.sqrt( ix[i]*ix[i] + iy[i]*iy[i] )
+                    r2 = math.sqrt( r2 )
+		    if r1==r2:
+			return ix[i]
+                    a = (r-r1)/(r2-r1)
+                    return ix[i]*(1.0-a) + ix[i+1]*a
+            return -1.0
+        def rack_align_involute( self, Dp, ix, iy, itheta ):
+            x = -self.rack_locate_involute_cross_x_for_radius( Dp/2.0, ix, iy, itheta )
+	    ix, iy = self.gear.gears_translate(x, 0, ix, iy )
+            return ix, iy
 
 class InvoluteGear(Part):
 	def __init__(self, pos, pressure_angle, number_teeth, **config):
