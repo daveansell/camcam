@@ -209,9 +209,7 @@ class InvoluteGearBorder(Path):
 		if 'pitch' in config:
 			Pd=math.pi/float(config['pitch'])
 		elif 'rad' in config:
-			print "rad = "+str(config['rad'])
 			Pd=float(number_teeth)/(float(config['rad']*2))
-			print "Pd="+str(Pd)
 		if 'ignore_teeth' in config:
                         ignore_teeth = config['ignore_teeth']
                 else:
@@ -220,7 +218,6 @@ class InvoluteGearBorder(Path):
 			self.round_corners=config['round_corners']
 		else:
 			self.round_corners=False
-		print config
 		x, y = self.gears_make_gear(pressure_angle, number_teeth, Pd, ignore_teeth)
 		self.gears_camcam(x,y)
 		self.translate(pos)
@@ -229,9 +226,8 @@ class InvoluteGearBorder(Path):
 		self.root_diameter=self.gears_root_diameter(pressure_angle, number_teeth, Pd)
 
 class GearRack(list):
-	def __init__(self, pos, pressure_angle, number_teeth, **config):
+	def __init__(self, start, end, pressure_angle, **config):
                 c={}
-		rnumber_teeth = number_teeth
 		number_teeth = 1000
                 if 'layer' in config:
                         self.layer= config['layer']
@@ -245,24 +241,38 @@ class GearRack(list):
                         c['ignore_teeth'] = config['ignore_teeth']
                 if 'round_corners' in config:
                         c['round_corners']= config['round_corners']
+		length = (end-start).length()
+		para = (end-start).normalize()
+		if 'tooth_side' in config and config['tooth_side']=='left':
+			perp = rotate(para, -90)
+		else:
+			perp = rotate(para, 90)
+		rnumber_teeth = int(math.floor(length/config['pitch']))
+		dstart = (length -(rnumber_teeth-1) * config['pitch'])/2
 		self.gear = InvoluteGearBorder(V(0,0), pressure_angle, number_teeth, **c)
-		print "qqqq"
 		x,y = self.rack_make_tooth( pressure_angle, number_teeth, config['pitch'])
-		print "WWW"+str(number_teeth)
 		ox=[]
 		oy=[]
 		for i in range(0,rnumber_teeth):
 			ix, iy = self.gear.gears_translate(0,i*c['pitch'], x, y )
 			ox.extend( ix)
 			oy.extend( iy)
-		ox,oy = self.gear.gears_translate(pos[0], pos[1], ox, oy)
+#		ox,oy = self.gear.gears_translate(pos[0], pos[1], ox, oy)
+	    	if 'align' in config:
+		    if config['align']=='root':
+			dx=-self.rootx
+		    elif config['align']=='outer':
+			dx=-self.outerx
+		    elif config['align']=='Pd':
+			dx=0
+	    	else:
+		    dx =0
 		for i in range(0, len(ox)):
-                        self.append( PSharp(V(ox[i], oy[i])))
+                        self.append( PSharp(start+para*dstart+para*oy[i] + perp* ox[i] + perp*dx))
 	def rack_make_tooth( self, pa, N, pitch):
 	    # make tooth for very large diameter
 	    N=50
 	    P=math.pi/float(pitch)
-	    print "rack make tooth"	
             ix, iy, itheta = self.gear.gears_generate_involute( self.gear.gears_base_diameter( pa, N, P )/2.0, self.gear.gears_outer_diameter( pa, N, P )/2.0, math.pi/2.1 )
             ix.insert( 0, min( self.gear.gears_base_diameter( pa, N, P )/2.0, self.gear.gears_root_diameter( pa, N, P )/2.0 ) )
             iy.insert( 0, 0.0 )
@@ -280,12 +290,8 @@ class GearRack(list):
                         iy.insert(0,cy-(1-math.cos(i*math.pi/8)*self.gear.round_corners/P))
                         ix.insert(0,cx-(math.sin(i*math.pi/8)*self.gear.round_corners/P))
                         itheta.insert(0,math.atan2(iy[0], ix[0]))
-	    for i in range(0, len(ix)): 
-		print str(ix[i])+"."+str(iy[i])
             ix, iy = self.rack_align_involute( self.gear.gears_pitch_diameter(pa, N, P), ix, iy, itheta )
 	    ix, iy = self.gear.gears_translate(0, -pitch/4, ix, iy )
-	    for i in range(0, len(ix)): 
-		print str(ix[i])+"-"+str(iy[i])
             mx, my = self.gear.gears_mirror_involute( ix, iy )
 #            mx, my = self.gears_rotate( self.gears_circular_tooth_angle( pa, N, P ), mx, my )
             ix.extend( mx )
@@ -310,7 +316,6 @@ class GearRack(list):
             return -1.0
         def rack_align_involute( self, Dp, ix, iy, itheta ):
             y = -self.rack_locate_involute_cross_y_for_radius( Dp/2.0, ix, iy, itheta )
-	    print "align x="+str(y)+"Dp="+str(Dp)
 	    ix, iy = self.gear.gears_translate(y, 0, ix, iy )
             return ix, iy
 
