@@ -258,12 +258,11 @@ class GearRack(list):
 		ox,oy = self.gear.gears_translate(pos[0], pos[1], ox, oy)
 		for i in range(0, len(ox)):
                         self.append( PSharp(V(ox[i], oy[i])))
-
 	def rack_make_tooth( self, pa, N, pitch):
 	    # make tooth for very large diameter
-	    N=10
+	    N=50
 	    P=math.pi/float(pitch)
-	    print P	
+	    print "rack make tooth"	
             ix, iy, itheta = self.gear.gears_generate_involute( self.gear.gears_base_diameter( pa, N, P )/2.0, self.gear.gears_outer_diameter( pa, N, P )/2.0, math.pi/2.1 )
             ix.insert( 0, min( self.gear.gears_base_diameter( pa, N, P )/2.0, self.gear.gears_root_diameter( pa, N, P )/2.0 ) )
             iy.insert( 0, 0.0 )
@@ -281,32 +280,38 @@ class GearRack(list):
                         iy.insert(0,cy-(1-math.cos(i*math.pi/8)*self.gear.round_corners/P))
                         ix.insert(0,cx-(math.sin(i*math.pi/8)*self.gear.round_corners/P))
                         itheta.insert(0,math.atan2(iy[0], ix[0]))
-            ix, iy = self.rack_align_involute( P, ix, iy, itheta )
-	    ix, iy = self.gear.gears_translate(0, -self.gear.gears_pitch_diameter(pa, N, P), ix, iy )
-	    for i in range(0,len(ix)):
-		print str(ix[i])+","+str(iy[i])
+	    for i in range(0, len(ix)): 
+		print str(ix[i])+"."+str(iy[i])
+            ix, iy = self.rack_align_involute( self.gear.gears_pitch_diameter(pa, N, P), ix, iy, itheta )
+	    ix, iy = self.gear.gears_translate(0, -pitch/4, ix, iy )
+	    for i in range(0, len(ix)): 
+		print str(ix[i])+"-"+str(iy[i])
             mx, my = self.gear.gears_mirror_involute( ix, iy )
 #            mx, my = self.gears_rotate( self.gears_circular_tooth_angle( pa, N, P ), mx, my )
             ix.extend( mx )
             iy.extend( my )
+	    ix, iy = self.gear.gears_translate(-self.gear.gears_pitch_diameter(pa, N, P)/2, 0, ix, iy )
+	    self.rootx=(self.gear.gears_root_diameter(pa, N, P)-self.gear.gears_pitch_diameter(pa, N, P))/2
+	    self.outerx=(self.gear.gears_outer_diameter(pa, N, P)-self.gear.gears_pitch_diameter(pa, N, P))/2
 
             return ix, iy
 # returns the angle where an involute curve crosses a circle with a given radius
         # or -1 on failure
-        def rack_locate_involute_cross_x_for_radius( self, r, ix, iy, itheta ):
+        def rack_locate_involute_cross_y_for_radius( self, r, ix, iy, itheta ):
             for i in range( 0, len(ix)-1 ):
                 r2 = ix[i+1]*ix[i+1] + iy[i+1]*iy[i+1]
                 if r2 > r*r:
                     r1 = math.sqrt( ix[i]*ix[i] + iy[i]*iy[i] )
                     r2 = math.sqrt( r2 )
 		    if r1==r2:
-			return ix[i]
+			return iy[i]
                     a = (r-r1)/(r2-r1)
-                    return ix[i]*(1.0-a) + ix[i+1]*a
+                    return iy[i]*(1.0-a) + iy[i+1]*a
             return -1.0
         def rack_align_involute( self, Dp, ix, iy, itheta ):
-            x = -self.rack_locate_involute_cross_x_for_radius( Dp/2.0, ix, iy, itheta )
-	    ix, iy = self.gear.gears_translate(x, 0, ix, iy )
+            y = -self.rack_locate_involute_cross_y_for_radius( Dp/2.0, ix, iy, itheta )
+	    print "align x="+str(y)+"Dp="+str(Dp)
+	    ix, iy = self.gear.gears_translate(y, 0, ix, iy )
             return ix, iy
 
 class InvoluteGear(Part):
