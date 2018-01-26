@@ -604,12 +604,16 @@ class FilledCircle(Pathgroup):
 			step = (c['partial_fill'] - c['cutterrad'])/steps
 		else:
 			r=self.rad-c['cutterrad']
-			steps=math.ceil(r/c['cutterrad']/1.2)
+			if c['cutterrad']==0:
+				steps=1
+			else:
+				steps=math.ceil(r/c['cutterrad']/1.2)
 			if 'overview' in config and config['overview'] or c['cutterrad']<0.1:
 				steps=1
 			step=r/steps
 		for i in range(0,int(steps)+1):
-			t=self.add(Circle(self.pos, self.rad-(steps-i)*step, side='in'))
+			if(self.rad-(steps-i)*step!=0):
+				t=self.add(Circle(self.pos, self.rad-(steps-i)*step, side='in'))
 class FilledRect(Pathgroup):
 
         def __init__(self, bl,  **config):
@@ -1811,6 +1815,40 @@ class ArcRect(Path):
 			self.add_point(PIncurve(pos+V(-minorrad, rad+w), radius=minorrad, transform={'rotate':[pos, a1]}))
 		self.add_point(PSharp(pos+V(0, rad+w), transform={'rotate':[pos, a1]}))
 
+# The bit you cut out to make a spoke
+class AntiSpoke(Path):
+	def __init__(self, pos, outerrad, innerrad, spokewidth, minorrad, angle,  **config):
+		""" A curved rounded rect with length angle around rad and a minorrad around the corners"""
+		self.init(config)
+		if 'startangle' in config:
+			startangle = config['startangle']
+		else:
+			startangle = 0
+		
+		self.closed=True
+		iedgeangle = (spokewidth/2+minorrad) /(math.pi *2 *innerrad) * 360
+		oedgeangle = (spokewidth/2+minorrad) /(math.pi *2 *outerrad) * 360 
+		ia1 = -float(angle)/2+startangle+iedgeangle
+		ia2 = float(angle)/2+startangle-iedgeangle
+		oa1 = -float(angle)/2+startangle+oedgeangle
+		oa2 = float(angle)/2+startangle-oedgeangle
+		self.add_point(PSharp(pos+V(0,outerrad), transform={'rotate':[pos, oa1]}))
+		self.add_point(PArc(pos+V(0,0), radius=outerrad, direction='cw'))
+		self.add_point(PSharp(pos+V(0,outerrad), transform={'rotate':[pos, oa2]}))
+		if(minorrad):
+			self.add_point(PIncurve(pos+V(minorrad, outerrad), radius=minorrad, transform={'rotate':[pos, oa2]}))
+			self.add_point(PSharp(pos+V(minorrad, outerrad-minorrad), transform={'rotate':[pos, oa2]}))
+			self.add_point(PSharp(pos+V(minorrad, innerrad+minorrad), transform={'rotate':[pos, ia2]}))
+			self.add_point(PIncurve(pos+V(minorrad, innerrad), radius=minorrad, transform={'rotate':[pos, ia2]}))
+
+		self.add_point(PSharp(pos+V(0,innerrad), transform={'rotate':[pos, ia2]}))
+		self.add_point(PArc(pos+V(0,0), radius=innerrad, direction='ccw'))
+		self.add_point(PSharp(pos+V(0,innerrad), transform={'rotate':[pos, ia1]}))
+		if(minorrad):
+			self.add_point(PIncurve(pos+V(-minorrad,innerrad), radius=minorrad, transform={'rotate':[pos, ia1]}))
+			self.add_point(PSharp(pos+V(-minorrad, innerrad+minorrad), transform={'rotate':[pos, ia1]}))
+			self.add_point(PIncurve(pos+V(-minorrad, outerrad), radius=minorrad, transform={'rotate':[pos, oa1]}))
+		self.add_point(PSharp(pos+V(0, outerrad), transform={'rotate':[pos, oa1]}))
 
 class RoundedCorner(Path):
 	def __init__(self, pos, dir1, len1, dir2, len2, endrad, **config):

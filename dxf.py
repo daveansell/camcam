@@ -79,11 +79,14 @@ def write_dxf(self,partName, key, output, border, config):
 	                                        for q in p:
 							if type(q) is list:
 								for r in q:
-	                                                        	drawing.add(r)
+									if type(r) is not dict:
+		                                                        	drawing.add(r)
 							else:
-	                                                	drawing.add(q)
+								if type(q) is not dict:
+	                                                		drawing.add(q)
 	                                else:
-	                                        drawing.add(p)
+						if type(p) is not dict:
+	                                        	drawing.add(p)
 	                else:
 				drawing.add(0)
 	else:	
