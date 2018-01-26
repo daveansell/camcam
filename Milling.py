@@ -493,7 +493,7 @@ class Milling:
                 "polythene":{
                         "vertfeed":100,
                         "sidefeed":700,
-                        "stepdown":2.0,
+                        "stepdown":4.0,
                         "kress_setting":1.5,
 			"mill_dir":'up',
                },
