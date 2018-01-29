@@ -191,7 +191,6 @@ class InvoluteGearBorder(Path):
                         	rx=[self.gears_root_diameter( pa, N, P)/2*math.cos( float(i)*2.0*math.pi/float(N))]
                         	ry=[self.gears_root_diameter( pa, N, P)/2*math.sin( float(i)*2.0*math.pi/float(N))]
                 else:
-			print i
 	        	rx, ry = self.gears_rotate( float(i)*2.0*math.pi/float(N), tx, ty )
 	        x.extend( rx )
 	        y.extend( ry )
@@ -236,7 +235,6 @@ class InvoluteGearBorder(Path):
 		if 'no_gear' not in config:
 			x, y = self.gears_make_gear(pressure_angle, number_teeth, Pd, ignore_teeth)
 		if 'rotate_gear' in config:
-			print 'rotate_gear '+str(config['rotate_gear'])
 			x,y = self.gears_rotate(-float(config['rotate_gear'])*math.pi/180, x, y)
 		if 'no_gear' not in config:
 			self.gears_camcam(x,y)
