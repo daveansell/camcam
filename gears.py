@@ -162,10 +162,13 @@ class InvoluteGearBorder(Path):
 			itheta.append(math.atan2(iy[-1], ix[-1]))
 		cx=ix[0]
 		cy=iy[0]
-		for i in range(1,5):
-			iy.insert(0,cy-(1-math.cos(i*math.pi/8)*self.round_corners/P))	
-			ix.insert(0,cx-(math.sin(i*math.pi/8)*self.round_corners/P))
-			itheta.insert(0,math.atan2(iy[0], ix[0]))
+#		for i in range(1,5):
+#			iy.insert(0,cy-(1-math.cos(i*math.pi/8)*self.round_corners/P))	
+#			ix.insert(0,cx-(math.sin(i*math.pi/8)*self.round_corners/P))
+#			itheta.insert(0,math.atan2(iy[0], ix[0]))
+		iy.insert(0,cy-self.round_corners/P)
+		ix.insert(0,cx)
+		itheta.insert(0,math.atan2(iy[0], ix[0]))
 	    ix, iy = self.gears_align_involute( self.gears_pitch_diameter(pa, N, P), ix, iy, itheta )
 	    mx, my = self.gears_mirror_involute( ix, iy )
 	    mx, my = self.gears_rotate( self.gears_circular_tooth_angle( pa, N, P ), mx, my )
