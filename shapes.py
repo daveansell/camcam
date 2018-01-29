@@ -1824,14 +1824,19 @@ class AntiSpoke(Path):
 			startangle = config['startangle']
 		else:
 			startangle = 0
-		
+		if 'spokewidth2' in config:
+			spokewidth2 = config['spokewidth2']
+		else:
+			spokewidth2 = spokewidth
 		self.closed=True
-		iedgeangle = (spokewidth/2+minorrad) /(math.pi *2 *innerrad) * 360
-		oedgeangle = (spokewidth/2+minorrad) /(math.pi *2 *outerrad) * 360 
-		ia1 = -float(angle)/2+startangle+iedgeangle
-		ia2 = float(angle)/2+startangle-iedgeangle
-		oa1 = -float(angle)/2+startangle+oedgeangle
-		oa2 = float(angle)/2+startangle-oedgeangle
+		iedgeangle1 = (spokewidth/2+minorrad) /(math.pi *2 *innerrad) * 360
+		oedgeangle1 = (spokewidth/2+minorrad) /(math.pi *2 *outerrad) * 360 
+		iedgeangle2 = (spokewidth2/2+minorrad) /(math.pi *2 *innerrad) * 360
+		oedgeangle2 = (spokewidth2/2+minorrad) /(math.pi *2 *outerrad) * 360 
+		ia1 = -float(angle)/2+startangle+iedgeangle1
+		ia2 = float(angle)/2+startangle-iedgeangle2
+		oa1 = -float(angle)/2+startangle+oedgeangle1
+		oa2 = float(angle)/2+startangle-oedgeangle2
 		self.add_point(PSharp(pos+V(0,outerrad), transform={'rotate':[pos, oa1]}))
 		self.add_point(PArc(pos+V(0,0), radius=outerrad, direction='cw'))
 		self.add_point(PSharp(pos+V(0,outerrad), transform={'rotate':[pos, oa2]}))
