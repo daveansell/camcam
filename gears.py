@@ -180,11 +180,15 @@ class InvoluteGearBorder(Path):
 	    tx, ty = self.gears_make_tooth( pa, N, P )
 	    x = []
 	    y = []
-	    for i in range( 0, N ):
-		if ignore_teeth and N-i<=ignore_teeth:
-                        rx=[self.gears_root_diameter( pa, N, P)/2*math.cos( float(i)*2.0*math.pi/float(N))]
-                        ry=[self.gears_root_diameter( pa, N, P)/2*math.sin( float(i)*2.0*math.pi/float(N))]
+	    for i in range( self.first_tooth, self.first_tooth+N ):
+		rx=[]
+		ry=[]
+		if ignore_teeth and N-i<=ignore_teeth-self.first_tooth:
+			if not self.just_teeth:
+                        	rx=[self.gears_root_diameter( pa, N, P)/2*math.cos( float(i)*2.0*math.pi/float(N))]
+                        	ry=[self.gears_root_diameter( pa, N, P)/2*math.sin( float(i)*2.0*math.pi/float(N))]
                 else:
+			print i
 	        	rx, ry = self.gears_rotate( float(i)*2.0*math.pi/float(N), tx, ty )
 	        x.extend( rx )
 	        y.extend( ry )
@@ -214,16 +218,50 @@ class InvoluteGearBorder(Path):
                         ignore_teeth = config['ignore_teeth']
                 else:
                         ignore_teeth = False
+		if 'first_tooth' in config:
+			self.first_tooth=config['first_tooth']
+		else:
+			self.first_tooth=0
 		if 'round_corners' in config:
 			self.round_corners=config['round_corners']
 		else:
 			self.round_corners=False
-		x, y = self.gears_make_gear(pressure_angle, number_teeth, Pd, ignore_teeth)
-		self.gears_camcam(x,y)
-		self.translate(pos)
-		self.base_diameter=self.gears_base_diameter(pressure_angle, number_teeth, Pd)
-		self.outer_diameter=self.gears_outer_diameter(pressure_angle, number_teeth, Pd)
-		self.root_diameter=self.gears_root_diameter(pressure_angle, number_teeth, Pd)
+		if 'just_teeth' in config:
+			self.just_teeth=config['just_teeth']
+		else:
+			self.just_teeth=False
+		if 'no_gear' not in config:
+			x, y = self.gears_make_gear(pressure_angle, number_teeth, Pd, ignore_teeth)
+		if 'rotate_gear' in config:
+			print 'rotate_gear '+str(config['rotate_gear'])
+			x,y = self.gears_rotate(-float(config['rotate_gear'])*math.pi/180, x, y)
+		if 'no_gear' not in config:
+			self.gears_camcam(x,y)
+			self.translate(pos)
+			self.base_diameter=self.gears_base_diameter(pressure_angle, number_teeth, Pd)
+			self.outer_diameter=self.gears_outer_diameter(pressure_angle, number_teeth, Pd)
+			self.root_diameter=self.gears_root_diameter(pressure_angle, number_teeth, Pd)
+
+class GearPoints(list):
+	def __init__(self, pos, pressure_angle, number_teeth, **config):
+		if 'pitch' in config:
+                        Pd=math.pi/float(config['pitch'])
+                elif 'rad' in config:
+                        Pd=float(number_teeth)/(float(config['rad']*2))
+                if 'ignore_teeth' in config:
+                        ignore_teeth = config['ignore_teeth']
+                else:
+                        ignore_teeth = False
+                if 'round_corners' in config:
+                        self.round_corners=config['round_corners']
+                else:
+                        self.round_corners=False
+		config['just_teeth']=True
+		self.gear = InvoluteGearBorder(V(0,0), pressure_angle, number_teeth, **config)
+		self.extend(self.gear.points)
+		self.base_diameter=self.gear.base_diameter
+		self.outer_diameter=self.gear.outer_diameter
+		self.root_diameter=self.gear.root_diameter
 
 class GearRack(list):
 	def __init__(self, start, end, pressure_angle, **config):
@@ -241,6 +279,7 @@ class GearRack(list):
                         c['ignore_teeth'] = config['ignore_teeth']
                 if 'round_corners' in config:
                         c['round_corners']= config['round_corners']
+		c['no_gear']=True
 		length = (end-start).length()
 		para = (end-start).normalize()
 		if 'tooth_side' in config and config['tooth_side']=='left':
