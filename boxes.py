@@ -587,7 +587,7 @@ class ArbitraryBox(Part):
 				face['zoffset'] += face['thickness']
 			if 'x' in face:
 				if abs(face['x'].dot(face['normal'])) > 0.0000001 :
-					raise ValueError('face[x] direction in face "'+str(f)+'" not in plane of the rest of the face')
+					raise ValueError('face[x] direction in face "'+str(f)+'" not in plane of the rest of the face'+str(face['normal']))
 				face['x'] = face['x'].normalize()
 			else: 
 				face['x'] = (self.tuple_to_vec(face['sides'][0][1])- self.tuple_to_vec(face['sides'][0][0])).normalize()
@@ -697,7 +697,7 @@ class ArbitraryBox(Part):
 		
 	def align3d_face(self, p, f, face):
 #		config = p.get_config()
-		z = face['normal']*face['wood_direction']*face['cut_from'] 
+		z = -face['normal']*face['wood_direction']*face['cut_from'] 
 
 		x =  face['x']
 		if 'y' in face:
@@ -1310,8 +1310,8 @@ class ArbitraryBox(Part):
 		scount1 = side[0][1]
 
 		# base angle is angle between the two svecs
-
-		baseAngle = math.acos(svec1.normalize().dot(svec2.normalize())) / math.pi *180
+		ac = min(1,max(-1,svec1.normalize().dot(svec2.normalize())))
+		baseAngle = math.acos(ac)#svec1.normalize().dot(svec2.normalize())) / math.pi *180
 		if baseAngle < 45:
 			cutsign = -1
 			altside = -1
