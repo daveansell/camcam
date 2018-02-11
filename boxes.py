@@ -613,7 +613,7 @@ class ArbitraryBox(Part):
 			for p in face['points']:
 				p2 = p-face['origin']
 				face['ppoints'].append(V(p2.dot(face['x']), p2.dot(face['y'])))
-
+			face['wdir']=self.find_direction(face['ppoints'])
 		# go through unconnected sides and see if they are in the middle of any faces
 		for s,side in self.sides.iteritems():
 			if len(side)==1:
@@ -697,7 +697,7 @@ class ArbitraryBox(Part):
 		
 	def align3d_face(self, p, f, face):
 #		config = p.get_config()
-		z = -face['normal']*face['wood_direction']*face['cut_from'] 
+		z = -face['normal'] * face['cut_from'] 
 
 		x =  face['x']
 		if 'y' in face:
@@ -708,6 +708,8 @@ class ArbitraryBox(Part):
 			flip=1#-face['wood_direction']
 		else: 
 			flip = -1
+		if face['wdir']=='cw':
+			flip *=-1
 #		if 'isback' in face:
 	#		z *= -1
 	#		y *= -1
@@ -955,7 +957,6 @@ class ArbitraryBox(Part):
 					cutside= 'right'
 				else:
 					cutside='left'
-#			print "f="+f+" otherf="+joint['otherf']+" cutside="+str(cutside)+" (joint['to']-joint['from'])="+str( (joint['to']-joint['from']))+" joint['otherface']['normal']*joint['otherface']['wood_direction'] "+str(joint['otherface']['normal']*joint['otherface']['wood_direction'])+" face['normal']="+str(face['cut_from'] )+ " total="+ str((joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']*face['wood_direction']))+" wood_factor="+str(face['wood_direction'])+" "+str(face['good_direction'])+" cut_from="+str(face['cut_from'])
 			if('fudge' in joint['otherface']):
 				if type(joint['otherface']['fudge']) is dict and joint['sidedat'][0][1] in joint['otherface']['fudge']:
 					fudge = joint['otherface']['fudge'][joint['sidedat'][0][1]]
