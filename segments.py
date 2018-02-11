@@ -222,11 +222,7 @@ class Quad(Segment):
                 p1=self.cp
                 p2=self.cutto
                 ret=[]
-#		print str(p0)+"->"+str(p1)+"->"+str(p2)
-#		print (p2-p1).length()
-#		print (p1-p0).length()
                 numsteps = int(((p2-p1).length()+(p1-p0).length())/float(resolution))
-#		print ((p2-p1).length()+(p1-p0).length())
 		if numsteps<3:
 			numsteps=3
                 step = 1.0/float(numsteps)
