@@ -697,7 +697,7 @@ class ArbitraryBox(Part):
 		
 	def align3d_face(self, p, f, face):
 #		config = p.get_config()
-		z = -face['normal'] * face['cut_from'] 
+		z = face['normal'] * face['cut_from'] 
 
 		x =  face['x']
 		if 'y' in face:
@@ -723,7 +723,6 @@ class ArbitraryBox(Part):
 		ys = [x[1],y[1],z[1],0]
 		zs = [x[2]*flip,y[2]*flip,z[2]*flip,0]
 		qs = [0,0,0,1]
-#		print "p.zdir"+str( config['zdir'])
 		if face['good_direction']==1:
 			p.isback=True
 			p.border.translate3D([0,0,face['thickness']])
@@ -1237,7 +1236,7 @@ class ArbitraryBox(Part):
 			p2 = points[1]
 			new_normal = (p-o).normalize().cross( (p2-o).normalize() ).normalize()
 			#if new_normal.length()>0.00001:# and  
-			if (abs(new_normal.dot(normal)) < 0.99) and (new_normal.length()>0.00001):
+			if (abs(new_normal.dot(normal)) < 0.99999) and (new_normal.length()>0.00001):
 				raise ValueError( "origin of face "+f+" are not in a plane origin="+str(o)+ "  points="+str(points) +" normal="+str(normal) + " new_normal="+str(new_normal) )
 		self.faces[f]['normal']=normal
 			
