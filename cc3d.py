@@ -97,6 +97,7 @@ def path_render3D(self, pconfig, border=False):
 	z1-=_delta
 	_delta+=0.00001
 	outline = []
+	self.reset_points()
 	points = self.polygonise(RESOLUTION)
 #	extrude_path = [ Point3(0,0,zoffset + float(z0)), Point3(0,0, zoffset + float(z1)) ]
 	for p in points:
