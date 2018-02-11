@@ -41,7 +41,6 @@ def rotations_to_3D(self):
 #					p.transform['rotate3D'] = [ p.transform['rotate'][0], [0,0, p.transform['rotate'][1]] ]
 					p.transform['rotate3D'] = [ [p.transform['rotate'][0][0], p.transform['rotate'][0][1], p.transform['rotate'][0][2]],[0,0, p.transform['rotate'][1]] ]
 					del(p.transform['rotate'])
-					print "ww"+str(p.transform)+" "+str(p)
 				else:
 					print "OVERWRITING rotate3D with rotate which is unstable"+str(p.transform['rotate3D'])
 #			if 'translate' in p.transform:
@@ -141,7 +140,6 @@ def path_render3D(self, pconfig, border=False):
 
 		if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and 'rotate3D' in p.transform:
                                 if type(p.transform['rotate3D'][0]) is list or type(p.transform['rotate3D'][0]) is Vec:
-					print "ROTATE3D="+str(p.transform['rotate3D'])
 					if p.transform['rotate3D'][0]!=[0,0,0]:
 	                                        extruded=solid.translate([-p.transform['rotate3D'][0][0], -p.transform['rotate3D'][0][1],-p.transform['rotate3D'][0][2]])(extruded)
                                         extruded=solid.rotate([p.transform['rotate3D'][1][0], p.transform['rotate3D'][1][1],p.transform['rotate3D'][1][2] ])(extruded)
@@ -303,11 +301,9 @@ def plane_make_part3D(self, thepart, pconfig):
 	# 3D transformations can only be applied to parts, so we can just go up the tree
 	p = thepart
 	c=0
-	print p
 	while(p and type(p) is not Plane):# and (c==0 or not p.renderable() )):
 		p.rotations_to_3D()
 		if hasattr(p, 'transform') and p.transform is not None and p.transform is not False:
-			print p.transform
 			if 'matrix3D' in p.transform:
 				if type(p.transform['matrix3D'][0]) is list or type(p.transform['matrix3D'][0]) is Vec:
                                         thepart.border3D=solid.translate([-p.transform['matrix3D'][0][0], -p.transform['matrix3D'][0][1],-p.transform['matrix3D'][0][2]])(thepart.border3D)
