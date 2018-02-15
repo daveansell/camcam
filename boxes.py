@@ -584,7 +584,7 @@ class ArbitraryBox(Part):
 				pass
 				face['isback']=True
 				face['good_direction'] *= face['cut_from']
-				face['zoffset'] += face['thickness']
+		#		face['zoffset'] += face['thickness']
 			if 'x' in face:
 				if abs(face['x'].dot(face['normal'])) > 0.0000001 :
 					raise ValueError('face[x] direction in face "'+str(f)+'" not in plane of the rest of the face'+str(face['normal']))
@@ -687,7 +687,7 @@ class ArbitraryBox(Part):
 					poly=p.polygonise()
 						
 					if p.contains_point(p1p,poly) and p.contains_point(p2p, poly) and abs(p1p[2])<0.05 and abs(p2p[2])<0.05:
-						self.faces[f]['internal_joints'].append( { 'side':s, 'otherside':side[0], 'from':p1p, 'to':p2p, 'otherface':face1, 'otherf':side[0][0], 'sidedat':side } )
+						self.faces[f]['internal_joints'].append( { 'side':s, 'otherside':side[0], 'from':p1p, 'to':p2p, 'otherface':face1, 'otherf':side[0][0], 'sidedat':side, 'from3D':p1, 'to3D':p2 } )
 						side.append( [ '_internal', f, len(self.faces[f]['internal_joints'])-1 ])
 						self.find_angle(s, side)
                 # The edge cross the normal gives you a vector that is in the plane and perpendicular to the edge
@@ -764,17 +764,19 @@ class ArbitraryBox(Part):
 			nexts = face['sides'][(scount+1)%len(face['sides'])]
 			lastsi = self.sides[lasts]
 			nextsi = self.sides[nexts]
-			
 			(thisside, otherside) = self.get_side_parts(side, f)
 			(nextside, nextotherside) = self.get_side_parts(nextsi, f)
 			(lastside, lastotherside) = self.get_side_parts(lastsi, f)
 			if otherside!=None and otherside[0]!='_internal':
 				otherface = self.faces[otherside[0]]
+				otherf = otherside[0]
 			elif  otherside!=None and otherside[0]=='_internal':
 				otherface = self.faces[otherside[1]]
+				otherf = otherside[1]
 			else:	
 				otherface = None
 			simplepoints.append(PSharp(point))
+			print "f="+str(f)+"-"+str(otherside)+"s="+str(s)
 			#clear newpoints
 			newpoints=[]
 			# need to add 2 points here so intersect_points works
@@ -852,7 +854,7 @@ class ArbitraryBox(Part):
 							#		firstnointersect=True
 						
 						else:
-							print "WARNING: angled butt joint not handled properly - needs update"
+							print "WARNING: angled butt joint not handled properly - needs update angle="+str(angle)
 							newpoints = [PInsharp(lastpoint),PInsharp(point)]
 					elif face['joint_mode'][scount]=='bracket':
 						if angle==0:
@@ -941,11 +943,19 @@ class ArbitraryBox(Part):
 		part.tag = self.name+"_"+f
 	# iterate through the internal joints
 		for joint in face['internal_joints']:
-			if (joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal'])<0:#*face['wood_direction']) <0:
+			print str(f)+" "+joint['otherf']
+			print "to"+str(joint['to3D'])+" - "+str(joint['from3D'])+" -> "+str(joint['to3D']-joint['from3D'])
+			print "normal="+str(face['normal'])+" wood="+str(face['wood_direction'])
+			print "othernormal="+str(joint['otherface']['normal'])+" wood="+str(joint['otherface']['wood_direction'])
+			print "cutfrom="+str(face['cut_from'])+" total="+str( (joint['to3D']-joint['from3D']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']))
+			print face['normal'].dot(face['x'].cross(face['y']))
+			print 'zoff='+str(face['zoffset'])+" ozoff="+str(joint['otherface']['zoffset'])
+#			print "(joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal'])<0:"
+			if (joint['to3D']-joint['from3D']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']) >0:
 				cutside='right'
 			else:
 				cutside='left'
-			
+			print cutside
 			if 'isback' in face and face['isback']:
 				if  cutside=='left':
 					cutside= 'right'
@@ -956,6 +966,7 @@ class ArbitraryBox(Part):
 					cutside= 'right'
 				else:
 					cutside='left'
+			print cutside
 			if('fudge' in joint['otherface']):
 				if type(joint['otherface']['fudge']) is dict and joint['sidedat'][0][1] in joint['otherface']['fudge']:
 					fudge = joint['otherface']['fudge'][joint['sidedat'][0][1]]
@@ -1196,6 +1207,7 @@ class ArbitraryBox(Part):
                         elif scount in face[prop]:
                                 otherface[prop][otherscount]=face[prop][scount]
 			elif type(otherface[prop]) is not dict:
+				print otherface[prop]
 				raise ValueError( str(prop)+" in face "+otherf+"must be of the form {0:[value_side_0], 1:[value_side1]}" +str(type(otherface[prop])) )
                         elif otherscount in otherface[prop]:
                                 face[prop][scount]=otherface[prop][otherscount]
@@ -1311,7 +1323,7 @@ class ArbitraryBox(Part):
 
 		# base angle is angle between the two svecs
 		ac = min(1,max(-1,svec1.normalize().dot(svec2.normalize())))
-		baseAngle = math.acos(ac)#svec1.normalize().dot(svec2.normalize())) / math.pi *180
+		baseAngle = math.acos(ac) / math.pi *180#svec1.normalize().dot(svec2.normalize())) / math.pi *180
 		if baseAngle < 45:
 			cutsign = -1
 			altside = -1
@@ -1332,7 +1344,7 @@ class ArbitraryBox(Part):
 			altside = 1
 			cutsign = 1
                         angle = abs(180-baseAngle)
-		
+		print "ANGLE="+str(angle)+str(svec1)+" "+str(svec2)+" ac="+str(ac)+" baseAngle="+str(baseAngle)
 		# if this is +ve cut on same side as positive normal otherwse opposite direction to normal
 		avSvec = (svec1 + svec2).normalize()
 		
