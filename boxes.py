@@ -700,16 +700,22 @@ class ArbitraryBox(Part):
 		z = face['normal'] * face['cut_from'] 
 
 		x =  face['x']
-		if 'y' in face:
-			y=face['y']
-		else:
-			y = x.cross(z*-1)
 		if face['wood_direction']==-1 and face['good_direction']==-1:
 			flip=1#-face['wood_direction']
 		else: 
 			flip = -1
 		if face['wdir']=='cw':
 			flip *=-1
+		if 'y' in face:
+			y=face['y']
+		else:
+			y = x.cross(z*-1)
+
+		#if y has been defined the other way around it all gets a little confused so unconfuse it:
+		flipxy = y.dot(x.cross(z))
+		x*=flipxy
+		y*=flipxy
+
 #		if 'isback' in face:
 	#		z *= -1
 	#		y *= -1
@@ -776,7 +782,6 @@ class ArbitraryBox(Part):
 			else:	
 				otherface = None
 			simplepoints.append(PSharp(point))
-			print "f="+str(f)+"-"+str(otherside)+"s="+str(s)
 			#clear newpoints
 			newpoints=[]
 			# need to add 2 points here so intersect_points works
@@ -943,19 +948,10 @@ class ArbitraryBox(Part):
 		part.tag = self.name+"_"+f
 	# iterate through the internal joints
 		for joint in face['internal_joints']:
-			print str(f)+" "+joint['otherf']
-			print "to"+str(joint['to3D'])+" - "+str(joint['from3D'])+" -> "+str(joint['to3D']-joint['from3D'])
-			print "normal="+str(face['normal'])+" wood="+str(face['wood_direction'])
-			print "othernormal="+str(joint['otherface']['normal'])+" wood="+str(joint['otherface']['wood_direction'])
-			print "cutfrom="+str(face['cut_from'])+" total="+str( (joint['to3D']-joint['from3D']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']))
-			print face['normal'].dot(face['x'].cross(face['y']))
-			print 'zoff='+str(face['zoffset'])+" ozoff="+str(joint['otherface']['zoffset'])
-#			print "(joint['to']-joint['from']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal'])<0:"
 			if (joint['to3D']-joint['from3D']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']) >0:
 				cutside='right'
 			else:
 				cutside='left'
-			print cutside
 			if 'isback' in face and face['isback']:
 				if  cutside=='left':
 					cutside= 'right'
@@ -966,7 +962,6 @@ class ArbitraryBox(Part):
 					cutside= 'right'
 				else:
 					cutside='left'
-			print cutside
 			if('fudge' in joint['otherface']):
 				if type(joint['otherface']['fudge']) is dict and joint['sidedat'][0][1] in joint['otherface']['fudge']:
 					fudge = joint['otherface']['fudge'][joint['sidedat'][0][1]]
@@ -1344,7 +1339,6 @@ class ArbitraryBox(Part):
 			altside = 1
 			cutsign = 1
                         angle = abs(180-baseAngle)
-		print "ANGLE="+str(angle)+str(svec1)+" "+str(svec2)+" ac="+str(ac)+" baseAngle="+str(baseAngle)
 		# if this is +ve cut on same side as positive normal otherwse opposite direction to normal
 		avSvec = (svec1 + svec2).normalize()
 		
