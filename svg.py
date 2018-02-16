@@ -69,7 +69,6 @@ class SVGimport(Pathgroup):
 		pos=V(0,0)
 		firstpath=True
 		i=0
-		print transform
 		while i<len(items):
 			if items[i]=='M':
 				i+=1
