@@ -239,6 +239,35 @@ class Spiral(Path):
 		for i in range(0, int(steps)+1):
 			self.add_point(PSharp(pos+V(r1+rstep*i,0), transform={'rotate':[pos, astep*i]}))
 
+class LineLoop(Path):
+	def __init__(self, points, width, **config):
+#		assert type(points) is list
+		self.init(config)
+		if 'cornertype' in config:
+			cornertype=config['cornertype']
+		else:
+			cornertype=PSharp
+		if 'closed' in config:
+			self.closed = config['closed']
+		else:
+			self.closed = False
+
+		if 'rad' in config:
+			rad = config['rad']
+		else:
+			rad = 0
+		out = Path()
+		back = Path()
+		print points
+		for p in range(0,len(points)):
+			out.add_point(cornertype(points[p]))
+			back.add_point(cornertype(points[len(points)-1-p]))
+		out=out.offset_path('left', width/2, {})
+		back=back.offset_path('left', width/2, {})
+		for p in out.points:
+			self.add_point(p)
+		for p in back.points:
+			self.add_point(p)
 class Lines(Path):
 	def __init__(self, points, **config):
 #		assert type(points) is list
