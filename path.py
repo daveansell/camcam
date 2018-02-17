@@ -546,8 +546,25 @@ class Path(object):
 				side='right'
 
 		for p,point in enumerate(pointlist):
-
-			t=point.offset(side, distance, thisdir)
+# Offsetting a point at the end of an open path is a special case. If there is the special case for the point type use that, otherwise move it perpendicularly to the vector from neighbouring point
+			if not self.closed and p==0 or p==len(pointlist)-1:
+				if hasattr(pointlist[p], 'offset_end'):
+					t=point.offset_end(side, distance, thisdir)
+				else:
+					if p==0:
+						para = (pointlist[1].pos-pointlist[0].pos).normalize()
+					else:
+						para = (pointlist[-1].pos-pointlist[-2].pos).normalize()
+					if side=='right':
+						perp = rotate(para,90)
+					else:
+						perp = rotate(para,-90)
+					t=[]
+					tp = copy.deepcopy(point)
+					tp.pos+=perp*distance
+					t.append(copy.deepcopy(tp))
+			else:
+				t=point.offset(side, distance, thisdir)
 			if t:
 				newpath.points.extend(t)
 		newpath.reset_points()
