@@ -247,10 +247,7 @@ class LineLoop(Path):
 			cornertype=config['cornertype']
 		else:
 			cornertype=PSharp
-		if 'closed' in config:
-			self.closed = config['closed']
-		else:
-			self.closed = False
+		self.closed = True
 
 		if 'rad' in config:
 			rad = config['rad']
@@ -258,7 +255,6 @@ class LineLoop(Path):
 			rad = 0
 		out = Path()
 		back = Path()
-		print points
 		for p in range(0,len(points)):
 			out.add_point(cornertype(points[p]))
 			back.add_point(cornertype(points[len(points)-1-p]))
