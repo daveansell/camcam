@@ -547,7 +547,7 @@ class Path(object):
 
 		for p,point in enumerate(pointlist):
 # Offsetting a point at the end of an open path is a special case. If there is the special case for the point type use that, otherwise move it perpendicularly to the vector from neighbouring point
-			if not self.closed and p==0 or p==len(pointlist)-1:
+			if not self.closed and (p==0 or p==len(pointlist)-1):
 				if hasattr(pointlist[p], 'offset_end'):
 					t=point.offset_end(side, distance, thisdir)
 				else:
