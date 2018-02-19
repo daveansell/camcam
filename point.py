@@ -619,7 +619,10 @@ class PIncurve(PSharp):
                         else:
                                 d = math.sqrt(dl*dl+self.radius*self.radius)/((startcurve + endcurve)/2-self.pos).length()
                                 centre = self.pos + ((startcurve + endcurve)/2-self.pos)*d
-                                tempdir=(self.pos-self.last().end()).cross(nextpoint-self.pos)
+
+# this may break insharps
+#                                tempdir=(self.pos-self.last().end()).cross(nextpoint-self.pos)
+                                tempdir=(self.pos-lastpoint).cross(nextpoint-self.pos)
                                 if tempdir[2]>0:
                                         tempd='cw'
                                 elif tempdir[2]<0:
