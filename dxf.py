@@ -64,7 +64,7 @@ def arc_dxf(self, direction=True):
 setattr(Arc, 'dxf', arc_dxf)
 
 def write_dxf(self,partName, key, output, border, config):
-	drawing = dxf.drawing(self.sanitise_filename(str(partName)+"_"+str(key)+config['file_suffix']))
+	drawing = dxf.drawing(self.sanitise_filename(str(partName)+"-"+str(config['thickness'])+"_"+str(key)+config['file_suffix']))
 	drawing.header['$LUNITS']=1
 	drawing.header['$AUNITS']=0
 	drawing.header['$ANGBASE']=0
