@@ -666,16 +666,17 @@ class FilledRect(Pathgroup):
                 c=self.rect.generate_config(config)
                 self.paths=[]
                 d=self.maxdist-c['cutterrad']
-                steps=math.ceil(d/c['cutterrad']/1.2)
-                step=(self.maxdist+c['cutterrad']/2)/steps
-                for i in range(1,int(steps)):
+		if c['cutterrad']>0:
+	                steps=math.ceil(d/c['cutterrad']/1.2)
+	                step=(self.maxdist+c['cutterrad']/2)/steps
+	                for i in range(1,int(steps)):
 #                for i in range(0,1):
-			rad=self.rad-step*i
-			if rad<0:
-				rad=0
-			diff = step*i
+				rad=self.rad-step*i
+				if rad<0:
+					rad=0
+				diff = step*i
 		#	self.add(Rect(self.pos, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in'))
-			self.add(RoundedRect(self.pos, rad=rad, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in'))
+				self.add(RoundedRect(self.pos, rad=rad, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in'))
                 self.add(RoundedRect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in'))
 
 
