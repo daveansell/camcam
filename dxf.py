@@ -34,7 +34,12 @@ def colour_from_z(z):
 
 
 def line_dxf(self, direction=True):
-	if(hasattr(self, "parent") and hasattr(self.parent, 'z1')):
+	c=self.parent.get_config()
+	if 'z1' in c and c['z1'] is not None and c['z1'] is not False:
+		colour = colour_from_z(c['z1'])
+	elif hasattr(self, 'z1'):
+		colour = colour_from_z(self.z1)
+	elif(hasattr(self, "parent") and hasattr(self.parent, 'z1')):
 		colour = colour_from_z(self.parent.z1)
 	else:
 		colour = 1
