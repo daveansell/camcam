@@ -570,19 +570,22 @@ class PIncurve(PSharp):
 		self._setup()
 		return self.pos
 	def end(self):
-		lastpoint=self.last().origin()
-		nextpoint=self.next().origin()
+		self._setup()
+		lastpoint=self.lastorigin()
+		nextpoint=self.nextorigin()
 		angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
 		dl=self.radius*math.tan((angle/180)/2*math.pi)
 		if angle==180 or angle==0:
+			print "STRAIGHT LINE"
 			return self.pos
 		return self.pos+(nextpoint-self.pos).normalize()*dl
 	def start(self):
-		lastpoint=self.last().origin()
-		nextpoint=self.next().origin()
+		lastpoint=self.lastorigin()
+		nextpoint=self.nextorigin()
 		angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
 		dl=self.radius*math.tan((angle/180)/2*math.pi)
 		if angle==180 or angle==0:
+			print "STRAIGHT LINE"
 			return self.pos
 		return self.pos+(lastpoint-self.pos).normalize()*dl
 	def offset(self, side, distance, direction):
@@ -745,7 +748,7 @@ class POutcurve(Point):
 		t.invert = self.invert
 		return t
 	def origin(self, forward=True):
-		seg=self.makeSegment({})
+		seg=self.makeSegment({'findOrigin':True})
 		if forward:
 			return seg[1].cutfrom
 		else:
@@ -753,11 +756,9 @@ class POutcurve(Point):
 	def end(self):
 		if hasattr(self, 'endpos'):
 			return self.endpos
-		lastpoint = self.lastorigin()
-		nextpoint = self.nextorigin()
-		angle = (self.pos-lastpoint).angle(nextpoint-self.pos)
-		dl = self.radius*math.tan((angle/180)/2*math.pi)
-		return self.pos+(nextpoint-self.pos).normalize()*dl
+		else:
+			seg=self.makeSegment({'findOrigin':True})
+			return seg[1].cutto
 	def start(self):
 		if hasattr(self, 'startpos'):
 			return self.startpos
@@ -829,7 +830,6 @@ class POutcurve(Point):
 #                       t=d
 #                       d=r
 #                       r=t
-#                       print d<r
 			l=0
 			return centre
 		else:
@@ -891,7 +891,12 @@ class POutcurve(Point):
                 else:
                         d2='ccw'
                 p1=self.tangent_points( self.last().pos, lr, d1, self.pos, self.radius, d2)
-                segment_array.append( Line(p1[0], p1[1]))
+	#        segment_array.append( Line(p1[0], p1[1]))
+		if 'findOrigin' in config and config['findOrigin']:
+	                segment_array.append( Line(p1[0], p1[1]))
+		else:
+	                #segment_array.append( Line(p1[0], p1[1]))
+        	        segment_array.append( Line(self.last().end(), p1[1]))
                 d3=''
                 if self.next().point_type=="outcurve":
 #                        if (self.nextorigin()-self.pos).cross(self.next().nextorigin()-self.nextorigin())[2] <0:
@@ -903,14 +908,13 @@ class POutcurve(Point):
                                 d3='ccw'
                         p2=self.tangent_points( self.pos, self.radius, d2, self.next().pos, self.next().radius, d3)
                         segment_array.append( Arc( p1[1],p2[0], self.pos, self.otherDir(d2)))
-                        frompoint=p2
+                        self.endpos=p2[0]
                 else:
 
                         p2 = self.tangent_point(self.next().pos, self.pos, self.radius, self.otherDir(d2))
                         segment_array.append( Arc( p1[1],p2, self.pos, self.otherDir(d2)))
-                        frompoint=p2
+                        self.endpos=p2
 		self.startpos = p1
-		self.endpos = p2
 		return segment_array	
 		
 class PClear(PSharp):
