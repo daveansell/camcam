@@ -20,6 +20,7 @@
 from dxfwrite import DXFEngine as dxf
 from segments import *
 from path import *
+import types 
 
 Segment.seg_types['dxf']='dxf'
 colours = {None:1, False:1}
@@ -43,9 +44,8 @@ def line_dxf(self, direction=True):
 		colour = colour_from_z(self.parent.z1)
 	else:
 		colour = 1
-	
 	if(direction):
-		return [dxf.line((self.cutfrom[0], self.cutfrom[1]), (self.cutto[0], self.cutto[1]), color=colour)]
+		return [dxf.line( (self.cutfrom[0], self.cutfrom[1]), (self.cutto[0], self.cutto[1]), color=colour)]
 	else:
 		return [dxf.line( (self.cutto[0], self.cutto[1]), (self.cutfrom[0], self.cutfrom[1]), color=colour)]
 
