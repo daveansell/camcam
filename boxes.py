@@ -845,14 +845,18 @@ class ArbitraryBox(Part):
 	                                                                last_offset = self.faces[lastotherside[0]]['thickness']
 	                                                        else:
 	                                                                last_offset = 0
-
+							
 							newpoints = ButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner, last_offset=last_offset, next_offset=next_offset, lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), nextparallel = self.parallel(lastpoint, point, point, nextpoint))
+							if corner=='off':
+								newpoints.insert(0, PInsharp(lastpoint))
+#							if corner=='off':
+                                                                newpoints.append( PInsharp(point))
 							if face['cut_from']<0:
 								if  cutside=='left':
 									cutside= 'right'
 								else:
 									cutside='left'
-							part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount]))
+							part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount]))
 							if not(lastcorner == 'off' and corner=='off'):
 								nointersect==True
 						#		if p==0:
@@ -977,7 +981,7 @@ class ArbitraryBox(Part):
 			if joint['joint_mode']=='straight':
 				pass
 			elif joint['joint_mode']=='butt':
-				part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], butt_holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes'], joint_type='convex', fudge=fudge))
+				part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes'], joint_type='convex', fudge=fudge))
 			elif joint['joint_mode']=='bracket':
 				part.add(BracketJointHoles(
 					joint['from'], 

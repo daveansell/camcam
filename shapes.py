@@ -418,7 +418,6 @@ class Drill(Circle):
 				ret+='G0Z%0.2f\n'% config['z0']+0.5
 			ret += 'G0Z%0.2f\n'%config['clear_height']
 			return [config['cutter'], ret]
-	#	print "NO MODE="+str(config['mode'])
 
 #	def polygonise(self, resolution=0):
 #		config=self.generate_config({'cutterrad':0})
@@ -658,6 +657,10 @@ class FilledRect(Pathgroup):
 			self.rad=config['rad']
 		else:
 			self.rad=0
+		if 'cornertype' in config:
+			self.cornertype=config['cornertype']
+		else:
+			self.cornertype=PSharp
 #               sides=int(max(8, rad))
 
 #               self.add(Polygon(pos, rad, sides, partial_fill=rad-0.5, fill_direction='in', side='in'))
@@ -676,8 +679,8 @@ class FilledRect(Pathgroup):
 					rad=0
 				diff = step*i
 		#	self.add(Rect(self.pos, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in'))
-				self.add(RoundedRect(self.pos, rad=rad, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in'))
-                self.add(RoundedRect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in'))
+				self.add(RoundedRect(self.pos, rad=rad, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in', z1=self.z1))
+                self.add(Rect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in', cornertype=self.cornertype, z1=self.z1))
 
 
 
@@ -1250,10 +1253,12 @@ class ButtJointMid(Pathgroup):
 				self.add(HoleLine(start+parallel*hole_length/2 + perp*(holepos), end - parallel*hole_length/2 + perp*(holepos), num_holes,  holerad))
 	
 			if depression:
+				print "depression="+str(depth)
 				self.add(FilledRect(	
 						bl = start-parallel*fudge - perp*(-deppos+fudge), 
 						tr = end+perp*(thickness+fudge+deppos)+parallel*fudge, 
-						z1 = -depth, side='in'))
+						z1 = -depth, side='in',
+						cornertype = PInsharp))
 
 
 class FingerJointMid(Pathgroup):
