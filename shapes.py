@@ -1,4 +1,4 @@
-# This file is part of CamCam.
+
 
 #    CamCam is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -381,7 +381,7 @@ class Drill(Circle):
 					if milling.tools[m]['diameter']/2==self.drillrad:
 						self.cutter=m
 			else:
-				self.drillrad=milling.tools[m]['diameter']/2
+				self.drillrad=milling.tools[self.cutter]['diameter']/2
 
 			if self.cutter is False or self.cutter is None:
 				print "drill of "+str(self.drillrad)+"mm not found in tools"
