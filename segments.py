@@ -30,10 +30,10 @@ def V(x=False,y=False,z=False):
         return Vec(x,y,z)
 
 def rotate(pos, a, *config):
-	if len(config):
-		axis = config[0]
-	else:
-		axis = V(0,0,-1)
+        if len(config):
+                axis = config[0]
+        else:
+                axis = V(0,0,-1)
 
         if type(pos) is Vec:
                 M=Mat(1).rotateAxis(a, axis)
@@ -43,7 +43,7 @@ def rotate(pos, a, *config):
                 return False
 
 class Segment(object):
-	seg_types = {}
+        seg_types = {}
         def __init__(self):
 # segment type can be line, arc, bezier
                 self.seg_type=False
@@ -52,7 +52,7 @@ class Segment(object):
         def start(self):
                 return {} 
         def out(self,direction, mode='svg', zfrom=False, zto=False, use_point_z=False):
-		if mode=='svg':
+                if mode=='svg':
                         return self.svg(direction)
                 elif mode=='gcode':
                         temp=self.gcode(direction)
@@ -62,8 +62,8 @@ class Segment(object):
                 elif mode=='simplegcode' or mode=='scr':
                         temp=self.simplegcode(zfrom, zto, direction)
                         return temp
-		else:
-			return getattr(self, self.seg_types[mode])(direction)
+                else:
+                        return getattr(self, self.seg_types[mode])(direction)
 #                if mode=='gcode':
  #                       temp=self.gcode(direction)
   #                      if len(temp)>0 and zfrom!=zto:
@@ -167,8 +167,8 @@ class Arc(Segment):
                         cutto=self.cutfrom
                 r1 = cutfrom-self.centre
                 r2 = cutto-self.centre
-		if r1.length()==0 or r2.length()==0:
-			return []
+                if r1.length()==0 or r2.length()==0:
+                        return []
                 dtheta = math.atan(resolution/r1.length())/math.pi*180
                 if dtheta>45:
                         dtheta=45
@@ -223,8 +223,8 @@ class Quad(Segment):
                 p2=self.cutto
                 ret=[]
                 numsteps = int(((p2-p1).length()+(p1-p0).length())/float(resolution))
-		if numsteps<3:
-			numsteps=3
+                if numsteps<3:
+                        numsteps=3
                 step = 1.0/float(numsteps)
                 for i in range(1,numsteps-1):
                         t=float(i)*step

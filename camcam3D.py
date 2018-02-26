@@ -35,18 +35,18 @@ import pickle
 
 
 class CamCam:
-	def __init__(self):
-		self.planes=[]
-	def add_plane(self,plane):
-	#	print plane.obType
-		if hasattr(plane,'obType') and plane.obType=='Plane':#type(plane) is Plane:
-			self.planes.append(plane)
-			return plane
-		else:
-			print "Tring to add a non-plane to camcam"
+        def __init__(self):
+                self.planes=[]
+        def add_plane(self,plane):
+        #	print plane.obType
+                if hasattr(plane,'obType') and plane.obType=='Plane':#type(plane) is Plane:
+                        self.planes.append(plane)
+                        return plane
+                else:
+                        print "Tring to add a non-plane to camcam"
 
-	def render(self, mode,config):
-	#	modeconfig=milling.mode_config[mode]
+        def render(self, mode,config):
+        #	modeconfig=milling.mode_config[mode]
 #		if modeconfig['overview']:
 #			out=''
 #			for plane in self.planes:
@@ -57,37 +57,37 @@ class CamCam:
 #			f.close()
 #
 #		else:
-		config['mode'] = 'dave-emc'
-		for plane in self.planes:
-			plane.render_all3D(mode,config)
+                config['mode'] = 'dave-emc'
+                for plane in self.planes:
+                        plane.render_all3D(mode,config)
 
 
-	def sanitise_filename(self,filename):
+        def sanitise_filename(self,filename):
                 return "".join(x for x in filename if x.isalnum() or x in '-._')
 
-	def listparts(self):
-		 for plane in self.planes:
+        def listparts(self):
+                 for plane in self.planes:
                                 plane.list_all()
-	def get_bom(self):
-		ret=[]
-		for plane in self.planes:
-			ret.extend(plane.get_bom())
-		lookup={}
-		ret2=[]
-		c=0
-		for l in ret:
-			if type(l) is BOM_part:
-				if str(l.part_number)+str(l.length) in lookup:
-					ret2[lookup[str(l.part_number)+str(l.length)]].number+=l.number
-				else:
-					ret2.append(l)
-					lookup[str(l.part_number)+str(l.length)]=c
-					c+=1
-			else:
-				ret2.append(l)
-				c+=1
-		for l in ret2:
-			print l
+        def get_bom(self):
+                ret=[]
+                for plane in self.planes:
+                        ret.extend(plane.get_bom())
+                lookup={}
+                ret2=[]
+                c=0
+                for l in ret:
+                        if type(l) is BOM_part:
+                                if str(l.part_number)+str(l.length) in lookup:
+                                        ret2[lookup[str(l.part_number)+str(l.length)]].number+=l.number
+                                else:
+                                        ret2.append(l)
+                                        lookup[str(l.part_number)+str(l.length)]=c
+                                        c+=1
+                        else:
+                                ret2.append(l)
+                                c+=1
+                for l in ret2:
+                        print l
 camcam = CamCam()
 milling = Milling.Milling()
 parser = OptionParser()
@@ -107,15 +107,15 @@ parser.add_option("-B", "--bom",
 parser.add_option("-r", "--repeatmode", dest="repeatmode",
                   help="Repeat mode - can be origin - move the origin, regexp - replace all the X and Y coordinates")
 parser.add_option('-o', '--options', dest='options',
-		  help='options for the code - format var=value;var=value')
+                  help='options for the code - format var=value;var=value')
 parser.add_option('-R', '--rotate', dest='rotate',
-		  help='Rotate by angle')
+                  help='Rotate by angle')
 parser.add_option('-M', '--mirror', dest='mirror',
-		  action='store_true', help='Mirror in x')
+                  action='store_true', help='Mirror in x')
 parser.add_option('-Z', '--zbase', dest='zbase',
-		  action='store_true', help='set z=0 to bottom of material')
+                  action='store_true', help='set z=0 to bottom of material')
 parser.add_option('-z', '--nozbase', dest='zbase',
-		  action='store_false', help='set z=0 to top of material (default)')
+                  action='store_false', help='set z=0 to top of material (default)')
 parser.add_option("-L", "--layout-file", dest="layout_file",
                   help="file for layout")
 (options, args) = parser.parse_args()
@@ -123,27 +123,27 @@ config={}
 
 camcam.command_args={}
 if options.options:
-	for pair in options.options.split(';'):
-		a=pair.split('=')
-		if len(a)>1:
-			camcam.command_args[a[0]]=a[1]
+        for pair in options.options.split(';'):
+                a=pair.split('=')
+                if len(a)>1:
+                        camcam.command_args[a[0]]=a[1]
 config['command_args']=camcam.command_args
 config['transformations']=[{}]
 if options.rotate:
-	config['transformations'][0]['rotate'] = [V(0,0), float(options.rotate)]
+        config['transformations'][0]['rotate'] = [V(0,0), float(options.rotate)]
 if options.mirror:
-	config['transformations'][0]['mirror'] = [V(0,0),'x']
+        config['transformations'][0]['mirror'] = [V(0,0),'x']
 
 if options.zbase:
-	config['zbase'] = True
+        config['zbase'] = True
 # load all the requested files	
 for arg in args:
-	execfile(arg)
+        execfile(arg)
 
 if options.listparts:
-	camcam.listparts()
+        camcam.listparts()
 if options.bom:
-	camcam.get_bom()
+        camcam.get_bom()
 
 camcam.render(options.mode,config)
 

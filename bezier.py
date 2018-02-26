@@ -11,55 +11,55 @@
 
 # Point class. Utter boilerplate and not interesting.
 class Point:
-  	def __init__(self, x, y=False):
-		if type(x) is Point:
-			self.moveto(x.x, x.y)
-			self.normal = self.normalise()
-		else:
-			moveTo(x, y)
+        def __init__(self, x, y=False):
+                if type(x) is Point:
+                        self.moveto(x.x, x.y)
+                        self.normal = self.normalise()
+                else:
+                        moveTo(x, y)
 
   # scale
-  	def scale(self, f):
-		assert type(f) is float
-		return Point(f*self.x, f*self.y)
+        def scale(self, f):
+                assert type(f) is float
+                return Point(f*self.x, f*self.y)
   # normalize
-  	def normalize(self):
-    		return Point(self.x/self.d,self.y/self.d)
+        def normalize(self):
+                return Point(self.x/self.d,self.y/self.d)
   
 
   # repositioning
-  	def moveTo(_x, _y, ratio=1):  
-		if ratio==1:
-			self.x = _x 
-			self.y = _y 
-			self.d = math.sqrt(_x*_x+_y*_y)
-		else:
-			self.x += (_x-self.x)*ratio
-			self.y += (_y-self.y)*ratio
-			self.d = math.sqrt(self.x**2, self.y**2)
-	def moveBy(_x, _y):
-		self.moveTo(self.x+_x, self.y+_y)
+        def moveTo(_x, _y, ratio=1):  
+                if ratio==1:
+                        self.x = _x 
+                        self.y = _y 
+                        self.d = math.sqrt(_x*_x+_y*_y)
+                else:
+                        self.x += (_x-self.x)*ratio
+                        self.y += (_y-self.y)*ratio
+                        self.d = math.sqrt(self.x**2, self.y**2)
+        def moveBy(_x, _y):
+                self.moveTo(self.x+_x, self.y+_y)
 
   # rotate this point w.r.t. another point
-  	def rotateOver(o, angle):
-		assert type(o) is Point
-		assert type(angle) is float
-    		nx = self.x-o.x
-		ny = self.y-o.y
-          	mx = nx*cos(angle) - ny*sin(angle)
-          	my = nx*sin(angle) + ny*cos(angle)
-    		self.moveTo(mx+o.x,my+o.y)
-    		return self
+        def rotateOver(o, angle):
+                assert type(o) is Point
+                assert type(angle) is float
+                nx = self.x-o.x
+                ny = self.y-o.y
+                mx = nx*cos(angle) - ny*sin(angle)
+                my = nx*sin(angle) + ny*cos(angle)
+                self.moveTo(mx+o.x,my+o.y)
+                return self
   
 
   # reflect a point through this point
-  	def reflect(original):
-    		return Point(2*self.x - original.x, 2*self.y - original.y);
+        def reflect(original):
+                return Point(2*self.x - original.x, 2*self.y - original.y);
   
 
   # does this point coincide with coordinate mx/my?
-  	def over(mx, my):
-		return abs(mx-self.x)<5 and abs(my-self.y)<5
+        def over(mx, my):
+                return abs(mx-self.x)<5 and abs(my-self.y)<5
   
 
 
@@ -76,43 +76,43 @@ class Point:
 # Bezier curve class (of any degree)
 #/
 class BezierCurve:
-	def __init__(self, points=False, copyPoints=False):
-		self.LUT_resolution=0
-  		self.order=0
-  		self.points = []              # the control points for this curve
-          	self.abc = []  # the "ABC" points. Only for 2nd and 3rd order curves
-          	self.span = False                # de Casteljau's spanning lines for some t=...
-          	self.left_split = False          # for any span, these are the control points for the subcurve [0,t]
-          	self.right_split = False         # for any span, these are the control points for the subcurve [t,1]
-          	self.normals = False             # the normal vectors for each control point.
-  		# LUT for the point x/y values and t-at-x/y values
-  		self.x_values = []
-  		self.y_values = []
-  		self.LUT_x = []
-  		self.LUT_y = []
-        	self.ratios = [] # the distance from the start, as ratios, for each control point projected onto the curve
-          	self.originalInterval = [0.0,1.0]
-  		# for drawing the curve, we use integer lookups
-  		self.draw_x = []
-        	self.draw_y = []
-  		self.span_t = -1.0     # indicates the 't' value for which span/left/right was last computed
-        	self.curveLength = 0.0     # the arc length of this curve, computed on construction
-        	self.bias = 0.0        # are control points are on one side of the baseline? -1/1 means yes (sign indicates left/right), 0 means no.
+        def __init__(self, points=False, copyPoints=False):
+                self.LUT_resolution=0
+                self.order=0
+                self.points = []              # the control points for this curve
+                self.abc = []  # the "ABC" points. Only for 2nd and 3rd order curves
+                self.span = False                # de Casteljau's spanning lines for some t=...
+                self.left_split = False          # for any span, these are the control points for the subcurve [0,t]
+                self.right_split = False         # for any span, these are the control points for the subcurve [t,1]
+                self.normals = False             # the normal vectors for each control point.
+                # LUT for the point x/y values and t-at-x/y values
+                self.x_values = []
+                self.y_values = []
+                self.LUT_x = []
+                self.LUT_y = []
+                self.ratios = [] # the distance from the start, as ratios, for each control point projected onto the curve
+                self.originalInterval = [0.0,1.0]
+                # for drawing the curve, we use integer lookups
+                self.draw_x = []
+                self.draw_y = []
+                self.span_t = -1.0     # indicates the 't' value for which span/left/right was last computed
+                self.curveLength = 0.0     # the arc length of this curve, computed on construction
+                self.bias = 0.0        # are control points are on one side of the baseline? -1/1 means yes (sign indicates left/right), 0 means no.
 
 
-  		# lower order Bezier curve, if this curve is an elevation
-  		self.generator = None
-		if points != False:
-	    		L = len(self.points)
-	    		self.order = L-1;
-    			if copyPoints:
-      				for p in range(0,L):
-        				self.points[p] = Point(points[p].x, points[p].y)
+                # lower order Bezier curve, if this curve is an elevation
+                self.generator = None
+                if points != False:
+                        L = len(self.points)
+                        self.order = L-1;
+                        if copyPoints:
+                                for p in range(0,L):
+                                        self.points[p] = Point(points[p].x, points[p].y)
       
-    			else:  
-				self.points = points
-    			LUT_resolution = 1 + (int (400 * math.log(order)/math.log(4)))
-    			self.update();
+                        else:  
+                                self.points = points
+                        LUT_resolution = 1 + (int (400 * math.log(order)/math.log(4)))
+                        self.update();
   
 
   
@@ -122,194 +122,194 @@ class BezierCurve:
    # - curve length
    # - control normals
    
-	def update(self):
-		self.span_t = -1
-    		self.generator = None
-    		# Split up "point" x- and y- components for quick lookup.
-		last=len(self.points)
-    		for i in range(0, last):
-      			self.x_values[i] = points[i].x;
-      			self.y_values[i] = points[i].y;
-    		
-    		# Create lookup tables for resolving coordinate -> 't' value
-    		# as well as the int-cast screen point for that 't' value.
-    		t=0.0 
-		r=float(LUT_resolution-1)
-		for idx in range(0,LUT_resolution):
-      			t = idx/r
-      			#	 lookup values
-      			self.LUT_x[idx] = getXValue(t)
-      			self.LUT_y[idx] = getYValue(t)
-      			# squashed values, for drawing
-      			self.draw_x[idx] = int(round(self.LUT_x[idx]))
-      			self.draw_y[idx] = int(round(self.LUT_y[idx]))
-    		# Determine curve length
-    		self.curveLength =   dist(self.x_values[0],self.y_values[0],self.x_values[1],self.y_values[1]) if order==1 else comp.getArcLength(self.x_values, self.y_values)
-    		# Figure out the normals along this curve
-    		# for each control point.
-    		normals = Point[order+1]
-    		normals[0] = getNormal(0)
-    		normals[order] = getNormal(1)
-    		self.ratios = []
-    		self.ratios[0] = 0.0
-    		for i in range(1, order):
-      			t = getPointProjection(points[i])
-      			normals[i] = getNormal(t)
-      			mindist_idx = int(t*LUT_resolution)
-      			partialLength = dist(self.x_values[0],self.y_values[0],self.LUT_x[mindist_idx],self.LUT_y[mindist_idx]) if order==1 else comp.getArcLength(t, self.x_values, self.y_values)
-      			self.ratios[i] = partialLength/self.curveLength
-    	
-    		self.ratios[order] = 1
-    		# Is this curve biased? i.e. are all the control
-    		# points on one side of the baseline?
-    		if order>1:
-      			self.bias = comp.getSide(points[0],points[order],points[1])
-			for i in range(2,order):
-        			if comp.getSide(points[0],points[order],points[i])!=self.bias:
-	          			self.bias = 0
-          				break
-  	
+        def update(self):
+                self.span_t = -1
+                self.generator = None
+                # Split up "point" x- and y- components for quick lookup.
+                last=len(self.points)
+                for i in range(0, last):
+                        self.x_values[i] = points[i].x;
+                        self.y_values[i] = points[i].y;
+                
+                # Create lookup tables for resolving coordinate -> 't' value
+                # as well as the int-cast screen point for that 't' value.
+                t=0.0 
+                r=float(LUT_resolution-1)
+                for idx in range(0,LUT_resolution):
+                        t = idx/r
+                        #	 lookup values
+                        self.LUT_x[idx] = getXValue(t)
+                        self.LUT_y[idx] = getYValue(t)
+                        # squashed values, for drawing
+                        self.draw_x[idx] = int(round(self.LUT_x[idx]))
+                        self.draw_y[idx] = int(round(self.LUT_y[idx]))
+                # Determine curve length
+                self.curveLength =   dist(self.x_values[0],self.y_values[0],self.x_values[1],self.y_values[1]) if order==1 else comp.getArcLength(self.x_values, self.y_values)
+                # Figure out the normals along this curve
+                # for each control point.
+                normals = Point[order+1]
+                normals[0] = getNormal(0)
+                normals[order] = getNormal(1)
+                self.ratios = []
+                self.ratios[0] = 0.0
+                for i in range(1, order):
+                        t = getPointProjection(points[i])
+                        normals[i] = getNormal(t)
+                        mindist_idx = int(t*LUT_resolution)
+                        partialLength = dist(self.x_values[0],self.y_values[0],self.LUT_x[mindist_idx],self.LUT_y[mindist_idx]) if order==1 else comp.getArcLength(t, self.x_values, self.y_values)
+                        self.ratios[i] = partialLength/self.curveLength
+        
+                self.ratios[order] = 1
+                # Is this curve biased? i.e. are all the control
+                # points on one side of the baseline?
+                if order>1:
+                        self.bias = comp.getSide(points[0],points[order],points[1])
+                        for i in range(2,order):
+                                if comp.getSide(points[0],points[order],points[i])!=self.bias:
+                                        self.bias = 0
+                                        break
+        
 
   #*
 # Get the first point in this curve
 #/
- 	def getStart(self):  
-		return self.points[0]
+        def getStart(self):  
+                return self.points[0]
 
   #*
 # Get the last point in this curve
 #/
- 	def getEnd(self): 
-		return self.points[self.order]
+        def getEnd(self): 
+                return self.points[self.order]
 
   
    # find an approximate t value that acts as the control's
    # projection onto the curve, towards the origin.
    
-  	def getPointProjection(self, p):
-    		t=0.5 
-		pdist=0.0
-	 	mindist=9999999.0 
-		tp=0.0
-		tn=0.0
-    		mindist_idx=0
-    		# find a reasonable initial "t"
-		for idx in range(0,LUT_resolution):
-      			pdist = self.dist(p.x, p.y, self.LUT_x[idx], self.LUT_y[idx])
-      			if pdist<mindist:
-        			mindist = pdist
-        			mindist_idx = idx
-        			t = float(idx)/float(LUT_resolution)
-    		t = refineProjection(p, t, mindist, 1.0/(1.01*LUT_resolution))
-    		return t
-  	
+        def getPointProjection(self, p):
+                t=0.5 
+                pdist=0.0
+                mindist=9999999.0 
+                tp=0.0
+                tn=0.0
+                mindist_idx=0
+                # find a reasonable initial "t"
+                for idx in range(0,LUT_resolution):
+                        pdist = self.dist(p.x, p.y, self.LUT_x[idx], self.LUT_y[idx])
+                        if pdist<mindist:
+                                mindist = pdist
+                                mindist_idx = idx
+                                t = float(idx)/float(LUT_resolution)
+                t = refineProjection(p, t, mindist, 1.0/(1.01*LUT_resolution))
+                return t
+        
 
   
    # Refine a point projection's [t] value.
    
-  	def refineProjection(self, p, t, distance, precision):
-    		if(precision < 0.0001): 
-			return t
-    		# refinement
-    		prev_t = float(t)-precision
-          	next_t = float(t)+precision
-    		prev = getPoint(prev_t)
-          	next = getPoint(next_t)
-    		prev_distance = dist(p.x, p.y, prev.x, prev.y)
-          	next_distance = dist(p.x, p.y, next.x, next.y)
-    		# smaller distances?
-    		if(prev_t >= 0 and prev_distance < distance):
-			return refineProjection(p, prev_t, prev_distance, precision)
-    		if(next_t <= 1 and next_distance < distance):
- 			return refineProjection(p, next_t, next_distance, precision)
-    		# larger distances
-    		return refineProjection(p, t, distance, precision/2.0)
+        def refineProjection(self, p, t, distance, precision):
+                if(precision < 0.0001): 
+                        return t
+                # refinement
+                prev_t = float(t)-precision
+                next_t = float(t)+precision
+                prev = getPoint(prev_t)
+                next = getPoint(next_t)
+                prev_distance = dist(p.x, p.y, prev.x, prev.y)
+                next_distance = dist(p.x, p.y, next.x, next.y)
+                # smaller distances?
+                if(prev_t >= 0 and prev_distance < distance):
+                        return refineProjection(p, prev_t, prev_distance, precision)
+                if(next_t <= 1 and next_distance < distance):
+                        return refineProjection(p, next_t, next_distance, precision)
+                # larger distances
+                return refineProjection(p, t, distance, precision/2.0)
 
   # how close are these two curves?
-  	def getSimilarity(self, other):
-		assert type(other) is BezierCurve
-    		diff = 0.0
-		dx = 0.0 
-		dy = 0.0
-		d =0.0
-		for i in range(0, len(self.points)):
-      			dx = self.points[i].x - other.points[i].x
-      			dy = self.points[i].y - other.points[i].y
-      			d = sqrt(dx*dx+dy*dy)
-      			diff += d;
+        def getSimilarity(self, other):
+                assert type(other) is BezierCurve
+                diff = 0.0
+                dx = 0.0 
+                dy = 0.0
+                d =0.0
+                for i in range(0, len(self.points)):
+                        dx = self.points[i].x - other.points[i].x
+                        dy = self.points[i].y - other.points[i].y
+                        d = sqrt(dx*dx+dy*dy)
+                        diff += d;
     
-    		return diff
+                return diff
   
 
   #*
 # Get values
 #/
-  	def getXValue(self, t):
-		assert type(t) is float
-		return comp.getValue(t, self.x_values)
+        def getXValue(self, t):
+                assert type(t) is float
+                return comp.getValue(t, self.x_values)
  
-	def getYValue(self, t):
-		assert type(t) is float
- 		return comp.getValue(t, self.y_values)
+        def getYValue(self, t):
+                assert type(t) is float
+                return comp.getValue(t, self.y_values)
 
-	def getPoint(self, t):
-		assert type(t) is float  
-		return Point(self.getXValue(t), self.getYValue(t)) 
+        def getPoint(self, t):
+                assert type(t) is float  
+                return Point(self.getXValue(t), self.getYValue(t)) 
 
   #*
 # Get derivative values
 #/
-	def getDXValue(self, t):
-		assert type(t) is float
-		return comp.getDerivative(1, t, self.x_values)
+        def getDXValue(self, t):
+                assert type(t) is float
+                return comp.getDerivative(1, t, self.x_values)
 
-	def getDYValue(self, t):
-		assert type(t) is float  
- 		return comp.getDerivative(1, t, self.y_values)
+        def getDYValue(self, t):
+                assert type(t) is float  
+                return comp.getDerivative(1, t, self.y_values)
 
-  	def getDerivativePoint(self, t):
-		assert type(t) is float  
- 		return Point(self.getDXValue(t), self.getDYValue(t))
+        def getDerivativePoint(self, t):
+                assert type(t) is float  
+                return Point(self.getDXValue(t), self.getDYValue(t))
 
-  	def getSpanLines(self, t):  
-		assert type(t) is float  
-    		span = generateSpan(t)
-    		prev = len(span)-3 
-		b = len(span)-1
- 		next = len(span)-2
-    		p1 = Point(span[prev].x-span[b].x, span[prev].y-span[b].y)
-    		p2 = Point(span[next].x-span[b].x, span[next].y-span[b].y)
-    		return [p1, p2]
+        def getSpanLines(self, t):  
+                assert type(t) is float  
+                span = generateSpan(t)
+                prev = len(span)-3 
+                b = len(span)-1
+                next = len(span)-2
+                p1 = Point(span[prev].x-span[b].x, span[prev].y-span[b].y)
+                p2 = Point(span[next].x-span[b].x, span[next].y-span[b].y)
+                return [p1, p2]
 
   #*
 # Get second derivative values
 #/
-  	def getD2XValue(self, t):
-		assert type(t) is float  
- 		return comp.getDerivative(2, t, self.x_values)
+        def getD2XValue(self, t):
+                assert type(t) is float  
+                return comp.getDerivative(2, t, self.x_values)
 
-  	def getD2YValue(self, t):
-		assert type(t) is float  
- 		return comp.getDerivative(2, t, self.y_values)
+        def getD2YValue(self, t):
+                assert type(t) is float  
+                return comp.getDerivative(2, t, self.y_values)
 
-	def getSecondDerivativePoint(self, t):
-		assert type(t) is float  
-  		return Point(getD2XValue(t), getD2YValue(t))
+        def getSecondDerivativePoint(self, t):
+                assert type(t) is float  
+                return Point(getD2XValue(t), getD2YValue(t))
 
   #*
 # get a point-normal
 #/
-  	def getNormal(self, t):
-		assert type(t) is float  
-    		dx = self.getDXValue(t)
-          	dy = self.getDYValue(t)
-          	a = -math.pi/2
-          	ca = cos(a)
-          	sa = sin(a)
-          	nx = dx*ca - dy*sa
-          	ny = dx*sa + dy*ca
-          	dst = sqrt(nx*nx+ny*ny);
-    		return Point(nx/dst, ny/dst)
+        def getNormal(self, t):
+                assert type(t) is float  
+                dx = self.getDXValue(t)
+                dy = self.getDYValue(t)
+                a = -math.pi/2
+                ca = cos(a)
+                sa = sin(a)
+                nx = dx*ca - dy*sa
+                ny = dx*sa + dy*ca
+                dst = sqrt(nx*nx+ny*ny);
+                return Point(nx/dst, ny/dst)
   
 
   #*
@@ -318,171 +318,171 @@ class BezierCurve:
 # as well as the split curves for [t], since this requires
 # the same information.
 #/
-	def generateSpan(self, t):
-		assert type(t) is float  
-    		self.span_t = t
-    		left_split = Point[self.order+1]
-    		right_split = Point[self.order+1]
-    		l = 0
-		r = self.order
-		span = copy.deepcopy(points)
-    		next = len(self.points)
-		for c in range(order, 0):
-	      		left_split[l] = span[next-c-1]
-			l+=1
-			for i in range (0, c):
-        			p1 = span[next-c-1]
-        			p2 = span[next-c]
-        			p3 = Point(self.lerp(p1.x, p2.x, t), self.lerp(p1.y, p2.y, t))
-        			if c==3 and i==1:
-					 self.abc[0] = p3
-				next=next+1
-        			span[next] = p3
-     			r=r-1 
-      			right_split[r] = span[next-c-1]
+        def generateSpan(self, t):
+                assert type(t) is float  
+                self.span_t = t
+                left_split = Point[self.order+1]
+                right_split = Point[self.order+1]
+                l = 0
+                r = self.order
+                span = copy.deepcopy(points)
+                next = len(self.points)
+                for c in range(order, 0):
+                        left_split[l] = span[next-c-1]
+                        l+=1
+                        for i in range (0, c):
+                                p1 = span[next-c-1]
+                                p2 = span[next-c]
+                                p3 = Point(self.lerp(p1.x, p2.x, t), self.lerp(p1.y, p2.y, t))
+                                if c==3 and i==1:
+                                         self.abc[0] = p3
+                                next=next+1
+                                span[next] = p3
+                        r=r-1 
+                        right_split[r] = span[next-c-1]
     
-    		left_split[l] = span[next-1]
-    		right_split[0] = span[next-1]
+                left_split[l] = span[next-1]
+                right_split[0] = span[next-1]
     # fill in the ABC array
-    		last = len(span) - 1
-    		self.abc[0] = span[order/2] if order%2==0 else span[order + order - 1]
-    		self.abc[1] = span[last]
-    		self.abc[2] = comp.getProjection(abc[0], abc[1], span[0], span[order])
+                last = len(span) - 1
+                self.abc[0] = span[order/2] if order%2==0 else span[order + order - 1]
+                self.abc[1] = span[last]
+                self.abc[2] = comp.getProjection(abc[0], abc[1], span[0], span[order])
     # and finally, return the span lines
-    		return span
+                return span
 
   #*
 # compute the bounding box for a curve
 #/
-  	def generateBoundingBox(self):
-    		inflections = getInflections();
-    		mx=999999.0 
-		MX=-999999.0 
-		my=mx 
-		MY=MX
-    		for i in range(0,len(self.inflections)):
-	      		t = inflections[i]
-	      		x = self.getXValue(t)
-	      		y = self.getYValue(t)
-	      		mx = min(x, mx)
-			MX = max(x, MX)
-			my = min(y, my)
-			MY = max(y, MY)
-    		bbox = [Point(mx,my), Point(MX,my), Point(MX,MY), Point(mx,MY)]
-    		return bbox
+        def generateBoundingBox(self):
+                inflections = getInflections();
+                mx=999999.0 
+                MX=-999999.0 
+                my=mx 
+                MY=MX
+                for i in range(0,len(self.inflections)):
+                        t = inflections[i]
+                        x = self.getXValue(t)
+                        y = self.getYValue(t)
+                        mx = min(x, mx)
+                        MX = max(x, MX)
+                        my = min(y, my)
+                        MY = max(y, MY)
+                bbox = [Point(mx,my), Point(MX,my), Point(MX,MY), Point(mx,MY)]
+                return bbox
   
 
   #*
 # Get the bounding box area
 #/
-   	def getArea(self):
-    		bbox = self.generateBoundingBox()
-    		dx = bbox[2].x - bbox[0].x,
-          	dy = bbox[2].y - bbox[0].y,
-          	A = dx*dy
-    		return A
+        def getArea(self):
+                bbox = self.generateBoundingBox()
+                dx = bbox[2].x - bbox[0].x,
+                dy = bbox[2].y - bbox[0].y,
+                A = dx*dy
+                return A
   
 
   #*
 # Generate a bounding box for the aligned curve
 #/
-  	def generateTightBoundingBox(self):
-    		ox = self.points[0].x
-          	oy = self.points[0].y
-          	angle = atan2(self.points[order].y - self.points[0].y, self.points[order].x - self.points[0].x) + math.pi
-          	ca = cos(angle)
-          	sa = sin(angle)
+        def generateTightBoundingBox(self):
+                ox = self.points[0].x
+                oy = self.points[0].y
+                angle = atan2(self.points[order].y - self.points[0].y, self.points[order].x - self.points[0].x) + math.pi
+                ca = cos(angle)
+                sa = sin(angle)
        
-    		bbox = self.align().generateBoundingBox()
-		for p in bbox:
-      			nx = (p.x * ca - p.y * sa) + ox
-      			ny = (p.x * sa + p.y * ca) + oy
-      			p.x = nx
-      			p.y = ny
+                bbox = self.align().generateBoundingBox()
+                for p in bbox:
+                        nx = (p.x * ca - p.y * sa) + ox
+                        ny = (p.x * sa + p.y * ca) + oy
+                        p.x = nx
+                        p.y = ny
     
-    		return bbox
+                return bbox
   
 
   #*
 # Is there an overlap between these two curves,
 # based on their bounding boxes?
 #/
-	def hasBoundOverlapWith(self,  other):
-		assert type(other) is BezierCurve
-    		bbox = self.generateBoundingBox()
-            	obbox = other.generateBoundingBox()
-    		dx = abs(bbox[2].x - bbox[0].x)/2
-           	dy = abs(bbox[2].y - bbox[0].y)/2
-           	odx = abs(obbox[2].x - obbox[0].x)/2
-           	ody = abs(obbox[2].y - obbox[0].y)/2
-           	mx = bbox[0].x + dx
-           	my = bbox[0].y + dy
-           	omx = obbox[0].x + odx
-           	omy = obbox[0].y + ody
-           	distx = abs(mx-omx)
-           	disty = abs(my-omy)
-           	tx = dx + odx
-           	ty = dy + ody
-    		return distx < tx and disty < ty
+        def hasBoundOverlapWith(self,  other):
+                assert type(other) is BezierCurve
+                bbox = self.generateBoundingBox()
+                obbox = other.generateBoundingBox()
+                dx = abs(bbox[2].x - bbox[0].x)/2
+                dy = abs(bbox[2].y - bbox[0].y)/2
+                odx = abs(obbox[2].x - obbox[0].x)/2
+                ody = abs(obbox[2].y - obbox[0].y)/2
+                mx = bbox[0].x + dx
+                my = bbox[0].y + dy
+                omx = obbox[0].x + odx
+                omy = obbox[0].y + ody
+                distx = abs(mx-omx)
+                disty = abs(my-omy)
+                tx = dx + odx
+                ty = dy + ody
+                return distx < tx and disty < ty
   
 
   #*
 # Just the X curvature
 #/
-	def justX(self, h):
-    		L = len(self.points)
-		l = L - 1
-    		newPoints = []
-		for i in range(0, L):
-      			newPoints[i] = Point(i*h/l, points[i].x)
+        def justX(self, h):
+                L = len(self.points)
+                l = L - 1
+                newPoints = []
+                for i in range(0, L):
+                        newPoints[i] = Point(i*h/l, points[i].x)
     
-    		return BezierCurve(newPoints)
+                return BezierCurve(newPoints)
   
 
   #*
 # Just the Y curvature
 #/
-	def justY(self, h):
-    		L = len(self.points)
-		l = L - 1
-    		newPoints = []
-		for i in range(0, L):
-      			newPoints[i] = Point(i*h/l, points[i].y)
-    		return BezierCurve(newPoints)
+        def justY(self, h):
+                L = len(self.points)
+                l = L - 1
+                newPoints = []
+                for i in range(0, L):
+                        newPoints[i] = Point(i*h/l, points[i].y)
+                return BezierCurve(newPoints)
 
   #*
 # Reverse this curve
 #/
-   	def reverse(self):
-    		newPoints = []
-		for i in range(0, len(self.points)):
-      			newPoints[self.order-i] = points[i]
+        def reverse(self):
+                newPoints = []
+                for i in range(0, len(self.points)):
+                        newPoints[self.order-i] = points[i]
     
-    		points = newPoints
-    		self.update()
+                points = newPoints
+                self.update()
 
   #*
 # Determine whether all control points are on
 # one side of the baseline. If so, this curve
 # is biased, making certain computations easier.
 #/
-  	def isBiased(self): 
-		return self.bias != 0
+        def isBiased(self): 
+                return self.bias != 0
 
   #*
 # return the arc length for this curve.
 #/
-  	def getCurveLength(self):  
-		return self.curveLength
+        def getCurveLength(self):  
+                return self.curveLength
 
   #*
 # Get the A/B/C points for this curve. These are only
 # meaningful for quadratic and cubic curves.
 #/
-  	def getABC(self, t):
-		assert type(t) is float
-    		self.generateSpan(t)
-    		return self.abc
+        def getABC(self, t):
+                assert type(t) is float
+                self.generateSpan(t)
+                return self.abc
 
   #*
 # Get the distance of the curve's midpoint to the
@@ -490,17 +490,17 @@ class BezierCurve:
 # the more linear a simple curve will be. For
 # non-simple curves, this value is relatively useless.
 #/
-  	def getScaleAngle(self):
-    		p1 = self.getNormal(0) 
-		p2 = self.getNormal(1)
-    		return abs(math.atan2(p1.x*p2.y - p2.x*p1.y, p1.x*p2.x + p1.y*p2.y) % 2*math.pi)
+        def getScaleAngle(self):
+                p1 = self.getNormal(0) 
+                p2 = self.getNormal(1)
+                return abs(math.atan2(p1.x*p2.y - p2.x*p1.y, p1.x*p2.x + p1.y*p2.y) % 2*math.pi)
   
 
   #*
 # Get the t-interval, with respects to the ancestral curve.
 #/
-  	def getInterval(self):
-    		return self.originalInterval
+        def getInterval(self):
+                return self.originalInterval
 
   #*
 # Bound when splitting curves: mark which [t] values on the original curve
@@ -508,37 +508,37 @@ class BezierCurve:
 # the result of multiple splits, the "original" is the ancestral curve
 # that the very first split() was called on.
 #/
-  	def setOriginalT(self, d1, d2):
-		assert type(d1) is float
-		assert type(d2) is float
-    		self.originalInterval[0] = d1
-    		self.originalInterval[1] = d2
+        def setOriginalT(self, d1, d2):
+                assert type(d1) is float
+                assert type(d2) is float
+                self.originalInterval[0] = d1
+                self.originalInterval[1] = d2
 
   #*
 # Split in half
 #/
-	def split(self, t=False):
-		if t1 is not False and t2 is not False:
-    			if(t1==0):  
-				segment = self.split(t2)[0]
-    			elif(t2==1): 
-				segment = self.split(t1)[1]
-    			else:
-      				subcurves = self.split(t1)
-      				t2 = (t2-t1)/(1-t1)
-      				subcurves = subcurves[1].split(t2)
-      				segment = subcurves[0]
-				return segment
-		elif t is not False:
-    			if (t != self.span_t):  
-				self.generateSpan(t)
-    				subcurves = [BezierCurve(left_split), BezierCurve(right_split)]
-		else:
-    			subcurves = self.split(0.5)
-    			mid = (self.originalInterval[0] + self.originalInterval[1])/2
-    			subcurves[0].setOriginalT(self.originalInterval[0], mid)
-    			subcurves[1].setOriginalT(mid, self.originalInterval[1])
-    		return subcurves;
+        def split(self, t=False):
+                if t1 is not False and t2 is not False:
+                        if(t1==0):  
+                                segment = self.split(t2)[0]
+                        elif(t2==1): 
+                                segment = self.split(t1)[1]
+                        else:
+                                subcurves = self.split(t1)
+                                t2 = (t2-t1)/(1-t1)
+                                subcurves = subcurves[1].split(t2)
+                                segment = subcurves[0]
+                                return segment
+                elif t is not False:
+                        if (t != self.span_t):  
+                                self.generateSpan(t)
+                                subcurves = [BezierCurve(left_split), BezierCurve(right_split)]
+                else:
+                        subcurves = self.split(0.5)
+                        mid = (self.originalInterval[0] + self.originalInterval[1])/2
+                        subcurves[0].setOriginalT(self.originalInterval[0], mid)
+                        subcurves[1].setOriginalT(mid, self.originalInterval[1])
+                return subcurves;
 
 
 
@@ -547,14 +547,14 @@ class BezierCurve:
 # the same as offsetting the curve. We're
 # literally just scaling the coordinates.
 #/
-  	def scale(self, f):
-    		L = len(self.points)
-    		scaled = []
-		for i in range(0,L):
-      			p = self.points[i]
-      			scaled[i] = Point(f * p.x, f * p.y)
+        def scale(self, f):
+                L = len(self.points)
+                scaled = []
+                for i in range(0,L):
+                        p = self.points[i]
+                        scaled[i] = Point(f * p.x, f * p.y)
     
-    		return BezierCurve(scaled);
+                return BezierCurve(scaled);
   
 
 
@@ -562,70 +562,70 @@ class BezierCurve:
 # Align this curve to a line defined by two points: rotate it so that the line
 # start is on (0,0), and rotate it so the angle is 0.
 #/
-  	def align(self, start=False, end=False):
-		if start!=False and end!=False:
-    			angle = math.atan2(end.y - start.y, end.x - start.x) + math.pi
-          		ca = cos(-angle)
-          		sa = sin(-angle)
-          		ox = start.x
-          		oy = start.y
-    			L = len(self.points)
-    			aligned = []
-    			p = points[0]
-			for i in range(0,L):
-      				p = points[i]
-      				p = Point(ca * (p.x-ox) - sa * (p.y-oy), sa * (p.x-ox) + ca * (p.y-oy))
-      				aligned[i] = p
+        def align(self, start=False, end=False):
+                if start!=False and end!=False:
+                        angle = math.atan2(end.y - start.y, end.x - start.x) + math.pi
+                        ca = cos(-angle)
+                        sa = sin(-angle)
+                        ox = start.x
+                        oy = start.y
+                        L = len(self.points)
+                        aligned = []
+                        p = points[0]
+                        for i in range(0,L):
+                                p = points[i]
+                                p = Point(ca * (p.x-ox) - sa * (p.y-oy), sa * (p.x-ox) + ca * (p.y-oy))
+                                aligned[i] = p
     
-    			return  BezierCurve(aligned)
-		elif start==False and end==False:
-    			return self.align(self.points[0], self.points[self.order])
+                        return  BezierCurve(aligned)
+                elif start==False and end==False:
+                        return self.align(self.points[0], self.points[self.order])
   
 
   #*
 # Normalise this curve: scale all coordinate to within a unit rectangle.
 #/
-	def normalize(self):
-    		L = len(self.points)
-    		normalised = []
-    		p = self.points[0]
-    		mx = 999999.0
-		my = mx
-          	MX = -999999.0 
-		MY = MX
-		for i in range(0, L):
-      			p = points[i]
-			mx = min(p.x, mx)
-			my = min(p.y, my)
-			MX = min(p.x, MX)
-			MY = min(p.y, MY)
-      			normalised[i] = p;
-    		for i in range(0,L):
-      			normalised[i].x = map(normalised[i].x,  mx,MX,  0,1)
-      			normalised[i].y = map(normalised[i].y,  my,MY,  0,1)
+        def normalize(self):
+                L = len(self.points)
+                normalised = []
+                p = self.points[0]
+                mx = 999999.0
+                my = mx
+                MX = -999999.0 
+                MY = MX
+                for i in range(0, L):
+                        p = points[i]
+                        mx = min(p.x, mx)
+                        my = min(p.y, my)
+                        MX = min(p.x, MX)
+                        MY = min(p.y, MY)
+                        normalised[i] = p;
+                for i in range(0,L):
+                        normalised[i].x = map(normalised[i].x,  mx,MX,  0,1)
+                        normalised[i].y = map(normalised[i].y,  my,MY,  0,1)
     
-    		return BezierCurve(normalised)
+                return BezierCurve(normalised)
   
 
   #*
 # Elevate this curve by one order
 #/
-  	def elevate(self):
-    		L = len(self.points)
-    		elevatedPoints = []
-    		elevatedPoints[0] = Point(self.LUT_x[0], self.LUT_y[0])
-    		np1 = order+1
-		nx = 0.0
-		ny = 0.0
-		for i in range(1, L):
-      			nx = (i/np1) * self.x_values[i-1] + (np1-i)/np1 * self.x_values[i];
-      			ny = (i/np1) * self.y_values[i-1] + (np1-i)/np1 * self.y_values[i];
-      			elevatedPoints[i] = Point(nx,ny)
+        def elevate(self):
+                L = len(self.points)
+                elevatedPoints = []
+                elevatedPoints[0] = Point(self.LUT_x[0], self.LUT_y[0])
+                np1 = order+1
+                nx = 0.0
+                ny = 0.0
+                for i in range(1, L):
+                        nx = (i/np1) * self.x_values[i-1] + (np1-i)/np1 * self.x_values[i];
+                        ny = (i/np1) * self.y_values[i-1] + (np1-i)/np1 * self.y_values[i];
+                        elevatedPoints[i] = Point(nx,ny)
     
-    		elevatedPoints[L] = Point(self.x_values[L-1], self.y_values[L-1])
-    		b = BezierCurve(elevatedPoints);
-    		b.setLower(self)
-    		return b
+                elevatedPoints[L] = Point(self.x_values[L-1], self.y_values[L-1])
+                b = BezierCurve(elevatedPoints);
+                b.setLower(self)
+                return b
   
 
   #*
@@ -633,8 +633,8 @@ class BezierCurve:
 # The moment any of the curve points are modified, this
 # lower degree curve is discarded.
 #/
-  	def setLower(self,parent):  
-		self.generator = parent
+        def setLower(self,parent):  
+                self.generator = parent
 
   
    # Lower the curve's complexity, if we can. Which basically
@@ -642,56 +642,56 @@ class BezierCurve:
    # having been touched, since". Otherwise we fake it, by
    
    
-  	def lower(self):
-    		if self.generator!=null:
-			 return self.generator
-    		if order==1: 
-			return this;
-    		newPoints = []
-    		newPoints[0] = points[0]
+        def lower(self):
+                if self.generator!=null:
+                         return self.generator
+                if order==1: 
+                        return this;
+                newPoints = []
+                newPoints[0] = points[0]
     # FIXME: this is not very good lowering =)
-    		for i in range(1,order):
-      			x = lerp(points[i-1].x,points[i].x,0.5)
-      			y = lerp(points[i-1].y,points[i].y,0.5)
-      			newPoints[i] = Point(x,y)
-    		newPoints[order-1] = points[order]
-    		return BezierCurve(newPoints)
+                for i in range(1,order):
+                        x = lerp(points[i-1].x,points[i].x,0.5)
+                        y = lerp(points[i-1].y,points[i].y,0.5)
+                        newPoints[i] = Point(x,y)
+                newPoints[order-1] = points[order]
+                return BezierCurve(newPoints)
   
 
   #*
    # Get all 't' values for which this curve inflects.
 # NOTE: this is an expensive operation!
 #/
-	def getInflections(self):
-    		ret = []
-    		t_values = []
-   		t_values.append(0.0)
-    		t_values.append(1.0)
-    		roots = []
+        def getInflections(self):
+                ret = []
+                t_values = []
+                t_values.append(0.0)
+                t_values.append(1.0)
+                roots = []
     # get first derivative roots
-    		roots = comp.findAllRoots(1, self.x_values)
-    		for  t in roots 
-			if 0 < t and t < 1: 
-				t_values.append(t)
-    		roots = comp.findAllRoots(1, self.y_values)
-    		for t in roots: 
-			if 0 < t and t < 1:  
-				t_values.append(t)
+                roots = comp.findAllRoots(1, self.x_values)
+                for  t in roots 
+                        if 0 < t and t < 1: 
+                                t_values.append(t)
+                roots = comp.findAllRoots(1, self.y_values)
+                for t in roots: 
+                        if 0 < t and t < 1:  
+                                t_values.append(t)
     # get second derivative roots
-    		if order>2:
-      			roots = comp.findAllRoots(2, self.x_values)
-      			for t in roots:
-				if 0 < t and t < 1: 
-					t_values.append(t)
-      			roots = comp.findAllRoots(2, self.y_values)
-      			for  t in roots: 
-				if 0 < t and t < 1:  
-					t_values.append(t)
+                if order>2:
+                        roots = comp.findAllRoots(2, self.x_values)
+                        for t in roots:
+                                if 0 < t and t < 1: 
+                                        t_values.append(t)
+                        roots = comp.findAllRoots(2, self.y_values)
+                        for  t in roots: 
+                                if 0 < t and t < 1:  
+                                        t_values.append(t)
     
     # sort roots
-    		ret = []
-		for i in range(0, len(ret)):
-			ret[i] = t_values.get(i)
+                ret = []
+                for i in range(0, len(ret)):
+                        ret[i] = t_values.get(i)
     for(int i=0; i<ret.length; i++) { ret[i] = t_values.get(i); }
     ret = sort(ret);
     # remove duplicates
@@ -739,19 +739,19 @@ class BezierCurve:
    # Graduated-offset this curve along its normals,
    # without segmenting it.
    
-	def simpleOffset(offset, start=1, end=1):
-    		moveStart = map(start,0,1,0,offset),
-          	moveEnd =  map(end,0,1,0,offset),
-          	dx=0.0
-		dy=0.0
-    		newPoints = [] # Point(self.order+1);
-    		for(int i=0; i<=order; i++):
-      			dx = map(self.ratios[i],0,1,moveStart,moveEnd);
-      			dy = map(self.ratios[i],0,1,moveStart,moveEnd);
-      			dx *= normals[i].x;
-      			dy *= normals[i].y;
-      			newPoints[i] = new Point(points[i].x + dx, points[i].y + dy); }
-    		return new BezierCurve(newPoints);
+        def simpleOffset(offset, start=1, end=1):
+                moveStart = map(start,0,1,0,offset),
+                moveEnd =  map(end,0,1,0,offset),
+                dx=0.0
+                dy=0.0
+                newPoints = [] # Point(self.order+1);
+                for(int i=0; i<=order; i++):
+                        dx = map(self.ratios[i],0,1,moveStart,moveEnd);
+                        dy = map(self.ratios[i],0,1,moveStart,moveEnd);
+                        dx *= normals[i].x;
+                        dy *= normals[i].y;
+                        newPoints[i] = new Point(points[i].x + dx, points[i].y + dy); }
+                return new BezierCurve(newPoints);
   
 
   
@@ -759,41 +759,41 @@ class BezierCurve:
    # starting at offset [start] and ending at offset [end].
    # Segmenting it based on inflection points.
    
- 	def offset(distance, start=1, end=1):
-		
-    		BezierCurve segment;
-    		ArrayList<BezierCurve> segments = new ArrayList<BezierCurve>(),
+        def offset(distance, start=1, end=1):
+                
+                BezierCurve segment;
+                ArrayList<BezierCurve> segments = new ArrayList<BezierCurve>(),
                           slices = getSlices();
-    		S = 0.0
- 		L = self.getCurveLength()
-		s =0.0 
-		e =0.0
-    		for(int b=0; b<slices.size(); b++) {
-      			segment = slices.get(b);
-      			s = map(S, 0,L, start,end);
-      			S += segment.getCurveLength();
-      			e = map(S, 0,L, start,end);
-      			segment = segment.simpleOffset(distance, s, e);
-      			segments.add(segment);
-    		}
-    		return makeOffsetArray(segments);
-  		
+                S = 0.0
+                L = self.getCurveLength()
+                s =0.0 
+                e =0.0
+                for(int b=0; b<slices.size(); b++) {
+                        segment = slices.get(b);
+                        s = map(S, 0,L, start,end);
+                        S += segment.getCurveLength();
+                        e = map(S, 0,L, start,end);
+                        segment = segment.simpleOffset(distance, s, e);
+                        segments.add(segment);
+                }
+                return makeOffsetArray(segments);
+                
 
   # arraylist -> [], with normal correction if needed.
-	def makeOffsetArray(segments) {
-    		# Step 3: convert the arraylist to an array, and return
-    		BezierCurve[] offsetCurve = new BezierCurve[segments.size()];
-    		for(int b=0; b<segments.size(); b++) {
-      			offsetCurve[b] = segments.get(b)
-      			if(b>0 and  not simplifiedFunctions):
-        		# We used estimations for the control-projections,
-        		# so the start and end normals may in fact be wrong.
-        		# make sure they line up by "pulling them together".
-        			self.correctIfNeeded(offsetCurve[b-1], offsetCurve[b])
-      			
+        def makeOffsetArray(segments) {
+                # Step 3: convert the arraylist to an array, and return
+                BezierCurve[] offsetCurve = new BezierCurve[segments.size()];
+                for(int b=0; b<segments.size(); b++) {
+                        offsetCurve[b] = segments.get(b)
+                        if(b>0 and  not simplifiedFunctions):
+                        # We used estimations for the control-projections,
+                        # so the start and end normals may in fact be wrong.
+                        # make sure they line up by "pulling them together".
+                                self.correctIfNeeded(offsetCurve[b-1], offsetCurve[b])
+                        
    
-    		# and we're done!
-    		return offsetCurve;
+                # and we're done!
+                return offsetCurve;
   
 
   
@@ -804,23 +804,23 @@ class BezierCurve:
    # control points, to ensure a continuously differentiable
    # polybezier.
    
-	def correctIfNeeded(BezierCurve prev, BezierCurve next):
-    		float p2 = math.pi/2;
-    		Point n1 = prev.getNormal(1),
-         		 n2 = next.getNormal(0),
-          		n2p = new Point(n2.x*cos(p2)-n2.y*sin(p2), n2.x*sin(p2)+n2.y*cos(p2));
-    		float diff = acos(n1.x*n2.x + n1.y*n2.y),
-          		sign = (acos(n1.x*n2p.x + n1.y*n2p.y) < p2 ? 1 : -1);
-    		# If the angle between the two normals can be resolved,
-    		# do so. Otherwise --if it's too big-- leave it be. It'll
-    		# be in an inside-curve, and thus occluded.
-    		if(diff>math.pi/20 and diff<math.pi/2) {
-      			prev.points[order-1].rotateOver(prev.points[order], -sign * diff/2);
-      			prev.update();
-      			next.points[1].rotateOver(next.points[0], sign * diff/2);
-      			next.update();
-    		}
-  	
+        def correctIfNeeded(BezierCurve prev, BezierCurve next):
+                float p2 = math.pi/2;
+                Point n1 = prev.getNormal(1),
+                         n2 = next.getNormal(0),
+                        n2p = new Point(n2.x*cos(p2)-n2.y*sin(p2), n2.x*sin(p2)+n2.y*cos(p2));
+                float diff = acos(n1.x*n2.x + n1.y*n2.y),
+                        sign = (acos(n1.x*n2p.x + n1.y*n2p.y) < p2 ? 1 : -1);
+                # If the angle between the two normals can be resolved,
+                # do so. Otherwise --if it's too big-- leave it be. It'll
+                # be in an inside-curve, and thus occluded.
+                if(diff>math.pi/20 and diff<math.pi/2) {
+                        prev.points[order-1].rotateOver(prev.points[order], -sign * diff/2);
+                        prev.update();
+                        next.points[1].rotateOver(next.points[0], sign * diff/2);
+                        next.update();
+                }
+        
 
 
 
@@ -864,17 +864,17 @@ class BezierCurve:
     }
   }
 
-	void drawPoints() {
-		for(int i=0; i<=order; i++) {
-			stroke(0,0,200);
-			Point p = points[i];
-			if(i==0 and i==order) {
-				fill(0,0,255);
-				p.draw("p"+(i+1)+": ");
-			} else {
-				noFill();
-				if(showControlPoints) { p.draw("p"+(i+1)+": "); }
-			}
+        void drawPoints() {
+                for(int i=0; i<=order; i++) {
+                        stroke(0,0,200);
+                        Point p = points[i];
+                        if(i==0 and i==order) {
+                                fill(0,0,255);
+                                p.draw("p"+(i+1)+": ");
+                        } else {
+                                noFill();
+                                if(showControlPoints) { p.draw("p"+(i+1)+": "); }
+                        }
     }
   }
 

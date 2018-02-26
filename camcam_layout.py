@@ -33,6 +33,7 @@ kivy.require('1.0.6')
 import json
 import transformations
 import numpy
+import copy
 
 from glob import glob
 from random import randint
@@ -43,7 +44,8 @@ from kivy.uix.scatter import Scatter
 from kivy.properties import StringProperty
 # FIXME this shouldn't be necessary
 from kivy.core.window import Window
-from kivy.graphics import *# Color, Rectangle, Canvas
+#from kivy.graphics import *# Color, Rectangle, Canvas
+import kivy.graphics
 from  kivy.uix.label import *
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
@@ -57,17 +59,17 @@ class KvSheet(Scatter):
 		self.bl = bl
 		self.tr = tr
 		self.part = None
-		self.linecolour = Color(0,0,1)
-		self.back_colour = Color(0,0,1,0.05)
+		self.linecolour = kivy.graphics.Color(0,0,1)
+		self.back_colour = kivy.graphics.Color(0,0,1,0.05)
 		self.canvas.add(self.linecolour)
 		self.canvas.add(kivy.graphics.Line(rectangle=(bl[0], bl[1], tr[0], tr[1]), width=2))
                 self.canvas.add( self.back_colour)
-		self.canvas.add(Rectangle(pos=(0,0), size=( (tr[0]- bl[0]),  (tr[1]- bl[1])) ))
+		self.canvas.add(kivy.graphics.Rectangle(pos=(0,0), size=( (tr[0]- bl[0]),  (tr[1]- bl[1])) ))
 		self.startpos = self.pos
                 self.do_rotation = False
                 self.do_scale = True
                 self.do_translation = True
-        def on_bring_to_front(self, touch):
+        def on_touch_down(self, touch):
                 print "shhet"
 
                 self.camcam.do_touch()
@@ -77,7 +79,7 @@ class KvSheet(Scatter):
 
 class KvPart(Scatter):
 	deleted = False
-	back_colour = Color(0,0,0)
+	back_colour = kivy.graphics.Color(0,0,0)
 	def draw(self, part):
 		xoffset = 200
 		mirror = 1
@@ -91,7 +93,7 @@ class KvPart(Scatter):
 			else:
 				mirror = 1
 			ccpoints = part.border.polygonise()
-			self.back_colour = Color(1,0,0,0.05)
+			self.back_colour = kivy.graphics.Color(1,0,0,0.05)
 			self.canvas.add( self.back_colour)
 			width = part.border.boundingBox['tr'][0]-part.border.boundingBox['bl'][0]
 			height = part.border.boundingBox['tr'][1]-part.border.boundingBox['bl'][1]
@@ -103,9 +105,9 @@ class KvPart(Scatter):
 				centrey = part.border.centre[1]
 			if(mirror==-1):
 				
-				self.canvas.add(Rectangle(pos=(0,0), size=(width, height)))
+				self.canvas.add(kivy.graphics.Rectangle(pos=(0,0), size=(width, height)))
 			else:
-				self.canvas.add(Rectangle(pos=(0,0), size=(width, height)))
+				self.canvas.add(kivy.graphics.Rectangle(pos=(0,0), size=(width, height)))
 			
 			self.startcentre = (centrex, centrey)
 			self.size = (part.border.boundingBox['tr'][0]-part.border.boundingBox['bl'][0],part.border.boundingBox['tr'][1]-part.border.boundingBox['bl'][1])
@@ -123,13 +125,13 @@ class KvPart(Scatter):
 					kvpoints.append((ccpoints[0][0] -centrex+width/2)*mirror)
 				kvpoints.append(ccpoints[0][1] -centrey+height/2)
 			if 'cutterrad' in config:
-				self.canvas.add(Color(1,0,0,0.5))
+				self.canvas.add(kivy.graphics.Color(1,0,0,0.5))
 				self.canvas.add(kivy.graphics.Line(points=kvpoints, width=config['cutterrad']*2))
-			self.linecolour = Color(1,1,0)
+			self.linecolour = kivy.graphics.Color(1,1,0)
 			self.canvas.add(self.linecolour)
 			self.canvas.add(kivy.graphics.Line(points=kvpoints, width=1))
-			self.canvas.add(Color(0,1,0,1))
-			self.canvas.add(Ellipse(pos=((ccpoints[0][0] -centrex+width/2*mirror), ccpoints[0][1] -centrey+height/2), size=(3,3)))
+			self.canvas.add(kivy.graphics.Color(0,1,0,1))
+#			self.canvas.add(Label(pos=((ccpoints[0][0] -centrex+width/2*mirror), ccpoints[0][1] -centrey+height/2), size=(3,3)))
 			if mirror==-1:
 				self.center = ( centrex+xoffset, centrey)
 			else:
@@ -141,7 +143,7 @@ class KvPart(Scatter):
 #				indices.append(p)
 #			print kvpoints
 #			self.canvas.add(Mesh(verticies=kvpoints, indices=indices, mode='line_loop'))
-			self.canvas.add(Color(0,0,0))
+			self.canvas.add(kivy.graphics.Color(0,0,0))
 			self.add_widget(Label(text=part.name, x=0, y=0, halign='center'))
 			print part.name+" sself.center"+str(self.center)+" pos="+str(self.pos)
 		self.startpos = self.pos
@@ -208,6 +210,9 @@ class CamCam(App):
 		button = Button(text = 'Delete')
 		button.bind(on_press = self.delete)
 		layout.add_widget(button)
+		button = Button(text = 'Duplicate')
+		button.bind(on_press = self.duplicate)
+		layout.add_widget(button)
 		button = Button(text = 'Save')
 		button.bind(on_press = self.save)
 		layout.add_widget(button)
@@ -222,14 +227,30 @@ class CamCam(App):
 					picture = KvPart()#rotation=randint(-30,30))
 					picture.draw(part)
 					picture.camcam=self
+					picture.part = part
 					self.sheet_widgets[sheet].append(picture)
 #				root.add_widget(picture)
+		
     		root.add_widget(layout)
 		
 	def do_touch(self):
 		for s in self.sheet_widgets:
 			for p in self.sheet_widgets[s]:
 				p.back_colour.g = 0
+
+	def duplicate(self, *largs):
+		print "DUPLICATE"
+		if not self.selected:
+			return
+		picture = KvPart()#rotation=randint(-30,30))
+                picture.draw(self.selected.part)
+                picture.camcam=self
+                picture.part = self.selected.part
+                self.sheet_widgets[self.current_sheet].append(picture)
+
+#		new = copy.copy(self.selected)
+#		new.name+='_'
+#		self.sheet_widgets[self.current_sheet].append(new)
 
 	def delete(self, *largs):
 		print "DELETE"
@@ -281,6 +302,8 @@ class CamCam(App):
 #		pickle.dump(data, h)
 
 	def set_sheet(self, sheet, *largs):
+		print sheet
+		self.current_sheet = sheet
 		for s in self.sheet_widgets:
 			for p in self.sheet_widgets[s]:
 				if s==sheet:
