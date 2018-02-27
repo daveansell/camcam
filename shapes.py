@@ -1861,6 +1861,8 @@ class AntiSpoke(Path):
                 else:
                         spokewidth2 = spokewidth
                 self.closed=True
+		minorrad_in_angle = minorrad/(2*math.pi*innerrad)*360
+		minorrad_out_angle = minorrad/(2*math.pi*outerrad)*360
                 iedgeangle1 = (spokewidth/2+minorrad) /(math.pi *2 *innerrad) * 360
                 oedgeangle1 = (spokewidth/2+minorrad) /(math.pi *2 *outerrad) * 360 
                 iedgeangle2 = (spokewidth2/2+minorrad) /(math.pi *2 *innerrad) * 360
@@ -1884,6 +1886,7 @@ class AntiSpoke(Path):
                 if(minorrad):
                         self.add_point(PIncurve(pos+V(-minorrad,innerrad), radius=minorrad, transform={'rotate':[pos, ia1]}))
                         self.add_point(PSharp(pos+V(-minorrad, innerrad+minorrad), transform={'rotate':[pos, ia1]}))
+                        self.add_point(PSharp(pos+V(-minorrad, outerrad-minorrad), transform={'rotate':[pos, oa1]}))
                         self.add_point(PIncurve(pos+V(-minorrad, outerrad), radius=minorrad, transform={'rotate':[pos, oa1]}))
                 self.add_point(PSharp(pos+V(0, outerrad), transform={'rotate':[pos, oa1]}))
 
