@@ -156,18 +156,18 @@ class InvoluteGearBorder(Path):
             if self.round_corners:
                 cx=ix[-1]
                 cy=iy[-1]
-                for i in range(1,5):
-                        iy.append(cy+(1-math.cos(i*math.pi/8)*self.round_corners/P))	
-                        ix.append(cx+(math.sin(i*math.pi/8)*self.round_corners/P))
+                for i in range(2,5):
+                        iy.append(cy+(1.0-math.cos(float(i)*math.pi/8))*self.round_corners/P)	
+                        ix.append(cx+(math.sin(float(i)*math.pi/8))*self.round_corners/P)
                         itheta.append(math.atan2(iy[-1], ix[-1]))
                 cx=ix[0]
                 cy=iy[0]
 #		for i in range(1,5):
-#			iy.insert(0,cy-(1-math.cos(i*math.pi/8)*self.round_corners/P))	
-#			ix.insert(0,cx-(math.sin(i*math.pi/8)*self.round_corners/P))
+#			iy.insert(0,cy-(1-math.cos(i*math.pi/8))*self.round_corners/P*2)	
+#			ix.insert(0,cx-(math.sin(i*math.pi/8))*self.round_corners/P*2)
 #			itheta.insert(0,math.atan2(iy[0], ix[0]))
-                iy.insert(0,cy-self.round_corners/P)
-                ix.insert(0,cx)
+                iy.insert(0,cy-self.round_corners/P*2)
+                ix.insert(0,cx-self.round_corners/P*2)
                 itheta.insert(0,math.atan2(iy[0], ix[0]))
             ix, iy = self.gears_align_involute( self.gears_pitch_diameter(pa, N, P), ix, iy, itheta )
             mx, my = self.gears_mirror_involute( ix, iy )
@@ -320,18 +320,23 @@ class GearRack(list):
             if self.gear.round_corners:
                 cx=ix[-1]
                 cy=iy[-1]
-                for i in range(1,5):
-                        print str(P) + " "+str(V(cx,cy))
-                        print V( (math.sin(i*math.pi/8)*self.gear.round_corners/P) , (1-math.cos(i*math.pi/8)*self.gear.round_corners/P))
-                        ix.append(cx+(1+math.sin(i*math.pi/8)*self.gear.round_corners/P))
-                        iy.append(cy+(1-math.cos(i*math.pi/8)*self.gear.round_corners/P))
+                for i in range(2,5):
+#                        print "QQ"+str(P) + " "+str(V(cx,cy))
+#                        print "QQ"+str( V( (math.sin(i*math.pi/8)*self.gear.round_corners/P) , (1-math.cos(i*math.pi/8)*self.gear.round_corners/P)))
+			print "QQ"+str(V((1.0+math.sin(math.pi/8*i))*self.gear.round_corners/P, (1.0-math.cos(math.pi/8*i))*self.gear.round_corners/P))+str(math.pi/8*i)
+                        ix.append(cx+(math.sin(math.pi/8*i))*self.gear.round_corners/P)
+                        iy.append(cy+(1.0-math.cos(math.pi/8*i))*self.gear.round_corners/P)
                         itheta.append(math.atan2(iy[-1], ix[-1]))
                 cx=ix[0]
                 cy=iy[0]
-                for i in range(1,5):
-                        ix.insert(0,cx-(1+math.sin(i*math.pi/8)*self.gear.round_corners/P))
-                        iy.insert(0,cy-(1-math.cos(i*math.pi/8)*self.gear.round_corners/P))
-                        itheta.insert(0,math.atan2(iy[0], ix[0]))
+#                for i in range(1,5):
+ #                       ix.insert(0,float(cx)-(1.0+math.sin(math.pi/8*i))*self.gear.round_corners/P*2)
+  #                      iy.insert(0,float(cy)-(1.0-math.cos(math.pi/8*i))*self.gear.round_corners/P*2)
+   #                     itheta.insert(0,math.atan2(iy[0], ix[0]))
+	    ix.insert(0,float(cx)-(self.gear.round_corners/P*2))
+            iy.insert(0,float(cy)-(self.gear.round_corners/P*2))
+   	    itheta.insert(0,math.atan2(iy[0], ix[0]))
+
             ix, iy = self.rack_align_involute( self.gear.gears_pitch_diameter(pa, N, P), ix, iy, itheta )
             ix, iy = self.gear.gears_translate(0, -pitch/4, ix, iy )
             mx, my = self.gear.gears_mirror_involute( ix, iy )
