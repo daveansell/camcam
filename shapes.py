@@ -1,4 +1,4 @@
-# This file is part of CamCam.
+
 
 #    CamCam is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -363,30 +363,30 @@ class Circle(Path):
                         self.comment("Circle")
                         self.comment("pos="+str(pos)+" rad="+str(rad))
 class Drill(Circle):
-        def __init__(self, pos, **config):
-                self.init(config)
-                self.pos=pos
-                if 'chipbreak' in config and config['chipbreak']:
-                        self.chipbreak = config['chipbreak']
-                else:
-                        self.chipbreak = False
-                if 'peck' in config and config['peck']:
-                        self.peck = config['peck']
-                else:
-                        self.peck = False
-                if 'rad' in config and config['rad']:
-                        if self.cutter is False or self.cutter is None:
-                                self.drillrad=config['rad']
-                                for m in milling.tools:
-                                        if milling.tools[m]['diameter']/2==self.drillrad:
-                                                self.cutter=m
-                        else:
-                                self.drillrad=milling.tools[m]['diameter']/2
+	def __init__(self, pos, **config):
+		self.init(config)
+		self.pos=pos
+		if 'chipbreak' in config and config['chipbreak']:
+			self.chipbreak = config['chipbreak']
+		else:
+			self.chipbreak = False
+		if 'peck' in config and config['peck']:
+			self.peck = config['peck']
+		else:
+			self.peck = False
+		if 'rad' in config and config['rad']:
+			if self.cutter is False or self.cutter is None:
+				self.drillrad=config['rad']
+				for m in milling.tools:
+					if milling.tools[m]['diameter']/2==self.drillrad:
+						self.cutter=m
+			else:
+				self.drillrad=milling.tools[self.cutter]['diameter']/2
 
-                        if self.cutter is False or self.cutter is None:
-                                print "drill of "+str(self.drillrad)+"mm not found in tools"
-                self.closed=True
-                self.add_point(pos,'circle',self.drillrad)
+			if self.cutter is False or self.cutter is None:
+				print "drill of "+str(self.drillrad)+"mm not found in tools"
+		self.closed=True
+		self.add_point(pos,'circle',self.drillrad)
 #		self.add_point(PSharp(self.pos))
 
         def render(self, pconfig):

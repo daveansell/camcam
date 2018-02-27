@@ -30,51 +30,52 @@ from segments import *
 
 milling=Milling.Milling()
 arg_meanings = {'order':'A field to sort paths by',
-               'transform':"""Transformations you can apply to the object this is a dict, and can include:
-                :param rotate: - a list with two members
-                :param 0: - a position to rotate about
-                :param 1: - an angle to rotate""",
-                'side':'side to cut on, can be "on", "in", "out"',
-                'z0':'z value to start cutting at', 
-                'z1':'z value to end cutting at (less than z0)', 
-                'thickness':'thickeness of the material - leads to default z1', 
-                'material':'the type of material you are using - defined in Milling.py', 
-                'colour':'colour to make svg lines as', 
-                'cutter':'the cutter you are using - defined in Milling.py',
-                'downmode':'how to move down in z can be "ramp" or "cutdown"',
-                'mode':'code production mode - can be gcode, svg, or simplegcode - automatically set',
-                'prefix':'prefix for code',
-                'postfix':'add to end of code',
-                'settool_prefix':'prefix before you set a tool',
-                'settool_postfix':'add after setting a tool',
-                'rendermode':'original mode defined in Milling.py',
-                'sort':'what to sort by', 
-                'toolchange':'how to deal with a toolchange', 
-                'linewidth':'svg line width', 
-                'stepdown':'maximum stepdown - defined by cutter and material', 
-                'forcestepdown':'force the stepdown - normally set to large so svgs only go around once', 
-                'forcecutter':'force the cutter - normally for laser cutting around once', 
-                'forcecolour':'mode where colour is forced by depth etc',
-                'border':'A path to act as the border of the part',
-                'layer':'The layer the part exists in - it can add things to other layers',
-                'name':'The name of the object - str',
-                'partial_fill':'cut a step into the path',
-                'finishing':'add a roughing pass this far out ',
-                'fill_direction':'direction to fill towards',
-                'precut_z':'the z position the router can move dow quickly to',
-                'ignore_border':'Do not just accept paths inside border',
-                'material_shape':'shape the raw material is - flat, rod, tube, square_rod, square_tube',
-                'material_length':'length of raw material needed', 
-                'material_diameter':'diameter of raw material',
-                'input_direction':'force the direction it thinks you inputted the points in',
-                'extrude_scale': ' If shape is not same size at bottom as top this is the scaling factor',
-                'extrude_centre':'centre of extrusion',
-                'zoffset':'offset z=0 in 3D modes',
-                'isback':'is a back',
-                'no_mirror':'don\'t mirror',
-                'part_thickness':'thickness of part',
-                'use_point_z':'use point z  for 3D cuts',
-                'clear_height':'how far up the cutter should go to clear things',
+	       'transform':"""Transformations you can apply to the object this is a dict, and can include:
+		:param rotate: - a list with two members
+    		:param 0: - a position to rotate about
+    		:param 1: - an angle to rotate""",
+    		'side':'side to cut on, can be "on", "in", "out"',
+		'z0':'z value to start cutting at', 
+		'z1':'z value to end cutting at (less than z0)', 
+		'thickness':'thickeness of the material - leads to default z1', 
+		'material':'the type of material you are using - defined in Milling.py', 
+		'colour':'colour to make svg lines as', 
+		'cutter':'the cutter you are using - defined in Milling.py',
+		'downmode':'how to move down in z can be "ramp" or "cutdown"',
+		'mode':'code production mode - can be gcode, svg, or simplegcode - automatically set',
+		'prefix':'prefix for code',
+		'postfix':'add to end of code',
+		'settool_prefix':'prefix before you set a tool',
+		'settool_postfix':'add after setting a tool',
+		'rendermode':'original mode defined in Milling.py',
+ 		'sort':'what to sort by', 
+		'toolchange':'how to deal with a toolchange', 
+		'linewidth':'svg line width', 
+		'stepdown':'maximum stepdown - defined by cutter and material', 
+		'forcestepdown':'force the stepdown - normally set to large so svgs only go around once', 
+		'forcecutter':'force the cutter - normally for laser cutting around once', 
+		'forcecolour':'mode where colour is forced by depth etc',
+		'border':'A path to act as the border of the part',
+		'layer':'The layer the part exists in - it can add things to other layers',
+		'name':'The name of the object - str',
+		'partial_fill':'cut a step into the path',
+		'finishing':'add a roughing pass this far out ',
+		'fill_direction':'direction to fill towards',
+		'precut_z':'the z position the router can move dow quickly to',
+		'ignore_border':'Do not just accept paths inside border',
+		'material_shape':'shape the raw material is - flat, rod, tube, square_rod, square_tube',
+		'material_length':'length of raw material needed', 
+		'material_diameter':'diameter of raw material',
+		'input_direction':'force the direction it thinks you inputted the points in',
+		'extrude_scale': ' If shape is not same size at bottom as top this is the scaling factor',
+		'extrude_centre':'centre of extrusion',
+		'zoffset':'offset z=0 in 3D modes',
+		'isback':'is a back',
+		'no_mirror':'don\'t mirror',
+		'part_thickness':'thickness of part',
+		'use_point_z':'use point z  for 3D cuts',
+		'clear_height':'how far up the cutter should go to clear things',
+		'finishdepth':'last cut thickness',
 }
 def V(x=False,y=False,z=False):
         if x==False:
@@ -773,35 +774,35 @@ class Path(object):
 
 
 # find depths you should cut at
-        def get_depths(self,mode, z0, z1, stepdown):
-                if z0==z1:
-                        return [1,[]]
-                if self.mode=='svg' or mode=='laser':
-                        return [stepdown,[0]]
-                if self.mode=='gcode' or self.mode=='simplegcode':
-                        minsteps=math.ceil(float(abs(z0-z1))/stepdown)
-                        step=(z1-z0)/minsteps
-                        ret=[]
-                        i=1
-                        while i<=minsteps:
-                                ret.append(z0+i*step)
-                                i+=1
-                        return [step,ret]
-                return [stepdown,[0]]
-        def get_config(self):
-                if self.parent is not False:
-                        pconfig = self.parent.get_config()
-                else:
-                        pconfig = False
-                config = {}
-                if pconfig is False or  pconfig['transformations']==False or pconfig['transformations'] is None:
-                        config['transformations']=[]
-                else:
-                        config['transformations']=pconfig['transformations'][:]
-                if self.transform!=None:
-                        config['transformations'].append(self.transform)
-                #	self.transform=None
-                self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','forcestepdown', 'forcecutter', 'mode','partial_fill','finishing','fill_direction','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z','clear_height']
+	def get_depths(self,mode, z0, z1, stepdown):
+		if z0==z1:
+			return [1,[]]
+		if self.mode=='svg' or mode=='laser':
+			return [stepdown,[0]]
+		if self.mode=='gcode' or self.mode=='simplegcode':
+			minsteps=math.ceil(float(abs(z0-z1))/stepdown)
+			step=(z1-z0)/minsteps
+			ret=[]
+			i=1
+			while i<=minsteps:
+				ret.append(z0+i*step)
+				i+=1
+			return [step,ret]
+		return [stepdown,[0]]
+	def get_config(self):
+		if self.parent is not False:
+			pconfig = self.parent.get_config()
+		else:
+			pconfig = False
+		config = {}
+		if pconfig is False or  pconfig['transformations']==False or pconfig['transformations'] is None:
+			config['transformations']=[]
+		else:
+			config['transformations']=pconfig['transformations'][:]
+		if self.transform!=None:
+			config['transformations'].append(self.transform)
+		#	self.transform=None
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','finishdepth','forcestepdown', 'forcecutter', 'mode','partial_fill','finishing','fill_direction','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z','clear_height']
                 for v in self.varlist:
                         # we want to be able to know if we are on the front or the back
                         if v !='transform' and v !='transformations':
@@ -1315,7 +1316,14 @@ class Path(object):
                 self.make_segments(direction,self.Fsegments,config)
                 self.make_segments(self.otherDir(direction),self.Bsegments,config)
 # Runin/ ramp
-                step,depths=self.get_depths(config['mode'], config['z0'], config['z1'], config['stepdown'])
+		if 'finishdepth' in config and config['finishdepth']>0:
+			z1=config['z1']+config['finishdepth']
+		else:
+			z1=config['z1']
+		print str(config['stepdown'])+" "+str(config['finishdepth'])
+		step,depths=self.get_depths(config['mode'], config['z0'], z1, config['stepdown'])
+		if 'finishdepth' in config and config['finishdepth']>0:
+			depths.append(config['z1'])
 # dodgy fudge to stop things crashing
                 if step == None:
                         step=1
@@ -1473,26 +1481,26 @@ class Path(object):
                         return [{'cmd':'G40'}]
 
 class Pathgroup(object):
-        def __init__(self, **args):
-                self.init( args)
-                # List of paths and pathgroups
-        def init(self,  args):
-                global arg_meanings
-                self.obType = "Pathgroup"
-                self.paths=[]
-                self.trace = traceback.extract_stack()
-                self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height']
-                self.otherargs=''
-                for v in self.varlist:
-                        if v in args:
-                                setattr(self,v, args[v])
-                        else:
-                                setattr(self,v,None)
-                        self.otherargs+=':param v: '+arg_meanings[v]+"\n"
-                self.output=[]
-                self.parent=False
-                self.comments=[]
-                self.transform={}
+	def __init__(self, **args):
+		self.init( args)
+		# List of paths and pathgroups
+	def init(self,  args):
+		global arg_meanings
+		self.obType = "Pathgroup"
+		self.paths=[]
+		self.trace = traceback.extract_stack()
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height']
+		self.otherargs=''
+		for v in self.varlist:
+			if v in args:
+				setattr(self,v, args[v])
+			else:
+				setattr(self,v,None)
+			self.otherargs+=':param v: '+arg_meanings[v]+"\n"
+		self.output=[]
+		self.parent=False
+		self.comments=[]
+		self.transform={}
 
         def get_plane(self):
                 if self.parent:
@@ -1519,21 +1527,21 @@ class Pathgroup(object):
                         if getattr(path, "_pre_render", None) and callable(path._pre_render):
                                 path._pre_render(config)		
 
-        def get_config(self):
-                if self.parent is not False:
-                        pconfig = self.parent.get_config()
-                else:
-                        #raise Warning( "PATHGROUP has no parent Created:"+str(self.trace))
-                        pconfig = False
-                config = {}
-                varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour','rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z','clear_height']
-                if pconfig is False or  'transformations' not in pconfig or pconfig['transformations'] is False or pconfig['transformations'] is None:
-                        config['transformations']=[]
-                else:
-                        config['transformations']=pconfig['transformations'][:]
-                if self.transform!=None:
-                        config['transformations'].append(self.transform)
-                #	self.transform=None
+	def get_config(self):
+		if self.parent is not False:
+			pconfig = self.parent.get_config()
+		else:
+			#raise Warning( "PATHGROUP has no parent Created:"+str(self.trace))
+			pconfig = False
+		config = {}
+		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour','rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z','clear_height']
+		if pconfig is False or  'transformations' not in pconfig or pconfig['transformations'] is False or pconfig['transformations'] is None:
+			config['transformations']=[]
+		else:
+			config['transformations']=pconfig['transformations'][:]
+		if self.transform!=None:
+			config['transformations'].append(self.transform)
+		#	self.transform=None
                 for v in varslist:
                         if v !='transform' and v !='transformations':
                                 if getattr(self,v) is not None:
@@ -1729,76 +1737,76 @@ class BOM_pcb(BOM):
                 return "PCB "+str(number)+" of "+str(name)+" in "+str(folder)+" "+str(description)
 
 class Part(object):
-        """This a part, if it is given a boudary and a layer it can be independantly rendered, if not it is just a collection of pathgroups, which can exist on specific layers
-        """
-        def __init__(self,  **config):
-                self.init(config)
-        def init(self, config):
-                self.obType = "Part"
-                self.trace = traceback.extract_stack()
-                self.paths = {}
-                self.parts = []
-                self.copies = []
-                self.copied = False
-                self.isCopy = False
-                self.layer = False
-                self.comments = []
-                self.parent=False
-                self.internal_borders=[]
-                self.ignore_border=False
-                self.transform={}
-                self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height']
-                self.otherargs=''
-                for v in self.varlist:
-                        if v in config:
-                                setattr(self,v, config[v])
-                        else:
-                                setattr(self,v,None)
-        #		self.otherargs+=':param v: '+arg_meanings[v]+"\n"
-                self.output=[]
-                self.number=1
-                if 'transform' in config:
-                        self.transform=copy.copy(config['transform'])
-                if 'border' in config:
-                        self.add_border(config['border'])
-                if not hasattr(self, 'cutoutside'):
-                        self.cutoutside = 'front'
-                self.bom=[]
-                if 'layers' in config:
-                        self.layers = config['layers']
-                else:
-                        self.layers = {}
-                if  hasattr(self, 'layer_config') and  'plane' in config and config['plane'].obType=='Plane':
-                        for l, ldat in self.layer_config.iteritems():
-                                if l in self.layers:
-                                        lname = self.layers[l]
-                                else:
-                                        lname = ldat
-                                if type(lname) is dict:
-                                        for k, val in lname.iteritems():
-                                                ldat[k] = val
-                                        
-                                if  (type(lname) is list or type(lname) is str and  lname[0] != '_' or l in self.layers):
-                                        if l not in self.layers:
-                                                if type(lname) is dict:
-                                                        self.layers[l] = lname['name']
-                                                else:
-                                                        self.layers[l] = lname
-                                elif l not in self.layers and type(ldat) is dict:
-                                        assert 'material' in ldat # creating new layer should have material in dict
-                                        assert 'name' in ldat # creating new layer should have name in dict
-                                        assert 'thickness' in ldat # creating new layer should have thickness in dict
-                                        ltemp = ldat
-                                        ltemp['name'] = config['name'] + ltemp['name']
-                                        config['plane'].add_layer(**ltemp)
-                                        self.layers[l] = ltemp['name']
-                                elif l not in self.layers:
-                                        raise ValueError('Creating new layer "'+str(l)+'". config not sent as dict with name, thickness and material elements so can not create it.')
-        def __deepcopy__(self,memo):
-                conf={}
-                for v in self.varlist:
-                #	pass
-                        conf[v]=copy.deepcopy(getattr(self,v),memo)
+	"""This a part, if it is given a boudary and a layer it can be independantly rendered, if not it is just a collection of pathgroups, which can exist on specific layers
+	"""
+	def __init__(self,  **config):
+		self.init(config)
+	def init(self, config):
+		self.obType = "Part"
+		self.trace = traceback.extract_stack()
+		self.paths = {}
+		self.parts = []
+		self.copies = []
+		self.copied = False
+		self.isCopy = False
+		self.layer = False
+		self.comments = []
+		self.parent=False
+		self.internal_borders=[]
+		self.ignore_border=False
+		self.transform={}
+		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height']
+		self.otherargs=''
+		for v in self.varlist:
+			if v in config:
+				setattr(self,v, config[v])
+			else:
+				setattr(self,v,None)
+	#		self.otherargs+=':param v: '+arg_meanings[v]+"\n"
+		self.output=[]
+		self.number=1
+		if 'transform' in config:
+			self.transform=copy.copy(config['transform'])
+		if 'border' in config:
+			self.add_border(config['border'])
+		if not hasattr(self, 'cutoutside'):
+			self.cutoutside = 'front'
+		self.bom=[]
+		if 'layers' in config:
+			self.layers = config['layers']
+		else:
+			self.layers = {}
+		if  hasattr(self, 'layer_config') and  'plane' in config and config['plane'].obType=='Plane':
+			for l, ldat in self.layer_config.iteritems():
+				if l in self.layers:
+					lname = self.layers[l]
+				else:
+					lname = ldat
+				if type(lname) is dict:
+					for k, val in lname.iteritems():
+						ldat[k] = val
+					
+	                        if  (type(lname) is list or type(lname) is str and  lname[0] != '_' or l in self.layers):
+	                                if l not in self.layers:
+						if type(lname) is dict:
+							self.layers[l] = lname['name']
+						else:
+	                                        	self.layers[l] = lname
+				elif l not in self.layers and type(ldat) is dict:
+					assert 'material' in ldat # creating new layer should have material in dict
+					assert 'name' in ldat # creating new layer should have name in dict
+					assert 'thickness' in ldat # creating new layer should have thickness in dict
+					ltemp = ldat
+					ltemp['name'] = config['name'] + ltemp['name']
+					config['plane'].add_layer(**ltemp)
+	                                self.layers[l] = ltemp['name']
+	                        elif l not in self.layers:
+					raise ValueError('Creating new layer "'+str(l)+'". config not sent as dict with name, thickness and material elements so can not create it.')
+	def __deepcopy__(self,memo):
+		conf={}
+		for v in self.varlist:
+		#	pass
+			conf[v]=copy.deepcopy(getattr(self,v),memo)
 #		ret=type(self)( **conf)
                 ret=copy.copy(self)
                 ret.parent=copy.copy(self.parent)
@@ -2168,39 +2176,39 @@ class Part(object):
 
 # stores a series of parts which can overlap in layers
 class Plane(Part):
-        output_modes={}
-        def __init__(self,name, **config):
-                if 'plane' not in config:
-                        plane=V(0,0,1)
-                else:
-                        plane=config['plane']
-                if 'origin' not in config:
-                        origin=V(0,0,1)
-                else:
-                        origin=config['origin']
-                self.init(name,origin,plane, config)
+	output_modes={}
+	def __init__(self,name, **config):
+		if 'plane' not in config:
+			plane=V(0,0,1)
+		else:
+			plane=config['plane']
+		if 'origin' not in config:
+			origin=V(0,0,1)
+		else:
+			origin=config['origin']
+		self.init(name,origin,plane, config)
 
-        def init(self,name,origin=V(0,0,0), plane=V(0,0,1), config=False):
-                self.layers={}
-                self.origin=origin
-                self.plane='Plane'
-                self.parts=[]
-                self.config={}
-                self.paths={}
-                self.obType='Plane'
-                self.name=name
-                self.transform=False
-                self.parent=False
-                self.varlist = ['order','transform','side', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown', 'forcecutter', 'stepdown', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z', 'cutter']
-                self.out=''
-                self.isCopy=False
-                self.copied=False
-                self.copies=[]
-                self.bom=[]
-                self.number=1
-        #	self.output_modes={}
-                self.ignore_border=False
-                for v in self.varlist:
+	def init(self,name,origin=V(0,0,0), plane=V(0,0,1), config=False):
+		self.layers={}
+		self.origin=origin
+		self.plane='Plane'
+		self.parts=[]
+		self.config={}
+		self.paths={}
+		self.obType='Plane'
+		self.name=name
+		self.transform=False
+		self.parent=False
+		self.varlist = ['order','transform','side', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown', 'forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z', 'cutter']
+		self.out=''
+		self.isCopy=False
+		self.copied=False
+		self.copies=[]
+		self.bom=[]
+		self.number=1
+	#	self.output_modes={}
+		self.ignore_border=False
+		for v in self.varlist:
                         if v in config:
                                 self.config[v]=config[v]
                         else:

@@ -506,17 +506,18 @@ class Milling:
                },
                 "polythene":{
                         "vertfeed":100,
-                        "sidefeed":700,
-                        "stepdown":4.0,
+                        "sidefeed":1000,
+                        "stepdown":13.0,
+			"finishdepth":1.5,
                         "kress_setting":1.5,
                         "mill_dir":'up',
                },
                 "polyethene":{
                         "vertfeed":100,
-                        "sidefeed":700,
+                        "sidefeed":1000,
                         "stepdown":2.0,
                         "kress_setting":1.5,
-                        "mill_dir":'up',
+			"mill_dir":'down',
                },
                 "pvc":{
                         "vertfeed":100,
