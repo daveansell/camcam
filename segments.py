@@ -82,20 +82,25 @@ class Segment(object):
         def simplegcode(self, zfrom, zto, direction):
                 ret=[]
                 polygon=self.polygon(1,direction)
-                if zfrom!=zto:
-                        step=(zto-zfrom)/len(polygon)
-                        z=zfrom
-                else:
-                        z=0
-                        step=0
-                for p in polygon:
-                        if step!=0:
-                                z+=step
-                                ret.append({"cmd":"G1","X":p[0],"Y":p[1],"Z":z})
-                        else:
-                                ret.append({"cmd":"G1","X":p[0],"Y":p[1]})
-                return ret
-
+		if len(polygon)>0:
+	                if zfrom!=zto:
+	                        step=(zto-zfrom)/len(polygon)
+	                        z=zfrom
+	                else:
+	                        z=0
+	                        step=0
+	                for p in polygon:
+	                        if step!=0:
+	                                z+=step
+	                                ret.append({"cmd":"G1","X":p[0],"Y":p[1],"Z":z})
+	                        else:
+	                                ret.append({"cmd":"G1","X":p[0],"Y":p[1]})
+	                return ret
+		else:
+			if zfrom==zto:
+				return []
+			else:
+				return([{"cmd":"G1", "Z":zto}])
 class Line(Segment):
         def __init__(self, cutfrom, cutto):
                 self.seg_type='line'
