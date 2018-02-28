@@ -1320,7 +1320,6 @@ class Path(object):
 			z1=config['z1']+config['finishdepth']
 		else:
 			z1=config['z1']
-		print str(config['stepdown'])+" "+str(config['finishdepth'])
 		step,depths=self.get_depths(config['mode'], config['z0'], z1, config['stepdown'])
 		if 'finishdepth' in config and config['finishdepth']>0:
 			depths.append(config['z1'])
@@ -2422,10 +2421,14 @@ class Plane(Part):
                 else:
                         repeatmode='regexp'
                 if 'zero' in config and config['zero']=='bottom_left' and border!=None:
-                        if not hasattr(border,'boundingBox') or 'bl' not in border.boundingBox.keys():
+			if 'layout' in config and config['layout']:
+				offset = V(0,0)
+				if 'offset' in config:
+					offset = config['offset']
+                        elif not hasattr(border,'boundingBox') or 'bl' not in border.boundingBox.keys():
                                 border.polygonise() 
-                        offset=-border.boundingBox['bl']
-                        output = self.offset_gcode( output, offset)
+                        	offset=-border.boundingBox['bl']
+                        	output = self.offset_gcode( output, offset)
                 else:
                         offset = V(0,0)
                 if 'repeatx' in config and 'repeaty' in config and 'xspacing' in config and 'yspacing' in config:
