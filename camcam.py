@@ -161,6 +161,8 @@ parser.add_option("-Y", "--yspacing", dest="yspacing",
                   help="spacing in x direction")
 parser.add_option("-r", "--repeatmode", dest="repeatmode",
                   help="Repeat mode - can be origin - move the origin, regexp - replace all the X and Y coordinates")
+parser.add_option("-p", "--repeatpattern", dest="repeatpattern",
+                  help="Repeat pattern - bcc, fcc_int, fcc_ext")
 parser.add_option('-o', '--options', dest='options',
 		  help='options for the code - format var=value;var=value')
 parser.add_option('-R', '--rotate', dest='rotate',
@@ -202,6 +204,8 @@ elif options.yspacing and options.repeaty:
 	config['repeatx']=1
 if options.repeatmode:
 	config['repeatmode']=options.repeatmode	
+if options.repeatpattern:
+	config['repeatpattern']=options.repeatpattern
 if options.sep_border:
 	config['sep_border']=True
 else:

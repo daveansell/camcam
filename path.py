@@ -2420,6 +2420,11 @@ class Plane(Part):
                         repeatmode=config['repeatmode']
                 else:
                         repeatmode='regexp'
+                if 'repeatpattern' in config:
+                        repeatpattern=config['repeatpattern']
+                else:
+                        repeatpattern='rect'
+		print "repeatpattern="+str(repeatpattern)
                 if 'zero' in config and config['zero']=='bottom_left' and border!=None:
 			if 'layout' in config and config['layout']:
 				offset = V(0,0)
@@ -2465,7 +2470,20 @@ class Plane(Part):
 #                                                                val+=y*float(config['yspacing'])
 #                                                                tempoutput=tempoutput.replace(match,'Y'+str(val))
 #						output2+=tempoutput
-                                                output2+= "(copy x="+str(x*float(config['xspacing']))+" y="+str(y*float(config['yspacing']))+")\n"+self.offset_gcode(output, V(x*float(config['xspacing']), y*float(config['yspacing'])))
+						docut=True
+						if repeatpattern=='cp_ext' or repeatpattern=='cp_int':
+							xoff=float(x)*float(config['xspacing'])*math.sin(math.pi/3)
+							if x%2:
+								yoff=float(y)*float(config['yspacing'])
+							else:
+								yoff=(0.5+float(y))*float(config['yspacing'])															
+							if repeatpattern=='cp_int' and y==int(config['repeaty'])-1:
+								docut=False
+						else:
+							xoff=x*float(config['xspacing'])
+							yoff=y*float(config['yspacing'])
+						if docut:
+                                                	output2+= "(copy x="+str(xoff)+" y="+str(yoff)+")\n"+self.offset_gcode(output, V(xoff, yoff))
                 #	output2+='\nG10 L2 P1 X0 Y0\n'
                         filename+='_'+str(config['repeatx'])+'x_'+str(config['repeaty'])+'y'
                         output=output2
