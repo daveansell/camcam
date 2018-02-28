@@ -71,11 +71,20 @@ class CamCam:
 		sheets = json.loads(l.read())#pickle.load(l)
 		for sheet in sheets['sheets']:
 			out = {}
+			minx=10000
+			maxx=-10000
+			miny=10000
+			maxy=-10000
 			for p in sheets['sheets'][sheet]:
 				(plane, part) = parts[p['name']]
 				tconfig = config
 				tconfig['transformations'] = [{'rotate':[ V(p['startcentre'][0],p['startcentre'][1]), p['rotate']], 'translate':V(p['translate'][0], p['translate'][1] ) }]
 				plane.render_part(part, mode, tconfig)
+				if hasattr(part, 'border') and part.border:
+					minx=min(minx, part.border.boundingBox['bl'][0]+p['translate'][0])
+					miny=min(miny, part.border.boundingBox['bl'][1]+p['translate'][1])
+					maxx=max(maxx, part.border.boundingBox['tr'][0]+p['translate'][0])
+					maxy=max(maxy, part.border.boundingBox['tr'][1]+p['translate'][1])
 				if type(plane.lay_out) is dict:
 					for i in plane.lay_out:
 						if i not in out:
@@ -87,6 +96,14 @@ class CamCam:
 			if 'suffix' not in modeconfig:
 				modeconfig['suffix'] = ''
 			for i in out:
+				if 'zero' in config:
+					if config['zero']=='bottom_left':
+						print "offset_gcode="+str(V(-minx,-miny))
+						out[i]=plane.offset_gcode( out[i], V(-minx,-miny))
+					elif config['zero']=='top_right':
+						out[i]= plane.offset_gcode( out[i], V(-maxx,-maxy))
+					elif config['zero']=='centre':
+						out[i]=plane.offset_gcode( out[i], V(-(maxx+minny)/2,-(miny+maxy)/2))
 				f=open(self.sanitise_filename(sheet+ i + modeconfig['file_suffix']), 'w')
 				f.write(modeconfig['prefix'] + out[i] + modeconfig['postfix'])
 		
@@ -154,6 +171,8 @@ parser.add_option('-Z', '--zbase', dest='zbase',
 		  action='store_true', help='set z=0 to bottom of material')
 parser.add_option('-z', '--nozbase', dest='zbase',
 		  action='store_false', help='set z=0 to top of material (default)')
+parser.add_option('-e', '--reposition', dest='zero',
+		  help='reposition the origin to bottom_left, top_right or centre')
 parser.add_option("-L", "--layout-file", dest="layout_file",
                   help="file for layout")
 (options, args) = parser.parse_args()
@@ -187,6 +206,10 @@ if options.sep_border:
 	config['sep_border']=True
 else:
 	config['sep_border']=False
+if options.zero:
+	config['zero']=options.zero
+else:
+	config['zero']=False
 config['transformations']=[{}]
 if options.rotate:
 	config['transformations'][0]['rotate'] = [V(0,0), float(options.rotate)]
