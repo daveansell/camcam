@@ -1876,8 +1876,8 @@ class AntiSpoke(Path):
                 self.add_point(PSharp(pos+V(0,outerrad), transform={'rotate':[pos, oa2]}))
                 if(minorrad):
                         self.add_point(PIncurve(pos+V(minorrad, outerrad), radius=minorrad, transform={'rotate':[pos, oa2]}))
-                        self.add_point(PSharp(pos+V(minorrad, outerrad-minorrad), transform={'rotate':[pos, oa2]}))
-                        self.add_point(PSharp(pos+V(minorrad, innerrad+minorrad), transform={'rotate':[pos, ia2]}))
+      #                  self.add_point(PSharp(pos+V(minorrad, outerrad-minorrad), transform={'rotate':[pos, oa2]}))
+       #                 self.add_point(PSharp(pos+V(minorrad, innerrad+minorrad), transform={'rotate':[pos, ia2]}))
                         self.add_point(PIncurve(pos+V(minorrad, innerrad), radius=minorrad, transform={'rotate':[pos, ia2]}))
 
                 self.add_point(PSharp(pos+V(0,innerrad), transform={'rotate':[pos, ia2]}))
@@ -1885,8 +1885,8 @@ class AntiSpoke(Path):
                 self.add_point(PSharp(pos+V(0,innerrad), transform={'rotate':[pos, ia1]}))
                 if(minorrad):
                         self.add_point(PIncurve(pos+V(-minorrad,innerrad), radius=minorrad, transform={'rotate':[pos, ia1]}))
-                        self.add_point(PSharp(pos+V(-minorrad, innerrad+minorrad), transform={'rotate':[pos, ia1]}))
-                        self.add_point(PSharp(pos+V(-minorrad, outerrad-minorrad), transform={'rotate':[pos, oa1]}))
+        #                self.add_point(PSharp(pos+V(-minorrad, innerrad+minorrad), transform={'rotate':[pos, ia1]}))
+         #               self.add_point(PSharp(pos+V(-minorrad, outerrad-minorrad), transform={'rotate':[pos, oa1]}))
                         self.add_point(PIncurve(pos+V(-minorrad, outerrad), radius=minorrad, transform={'rotate':[pos, oa1]}))
                 self.add_point(PSharp(pos+V(0, outerrad), transform={'rotate':[pos, oa1]}))
 
