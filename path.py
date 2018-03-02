@@ -1190,22 +1190,22 @@ class Path(object):
                         if 'cmd' in point:
                                 ret+=point['cmd']
                         if 'X' in point:
-                                ret+="X%0.4f"%point['X']
+                                ret+="X%0.2f"%point['X']
                         if 'Y' in point:
-                                ret+="Y%0.4f"%point['Y']
+                                ret+="Y%0.2f"%point['Y']
                         if 'Z' in point:
-                                ret+="Z%0.4f"%point['Z']
+                                ret+="Z%0.2f"%point['Z']
                         if 'I' in point:
-                                ret+="I%0.4f"%point['I']
+                                ret+="I%0.2f"%point['I']
                         if 'J' in point:
-                                ret+="J%0.4f"%point['J']
+                                ret+="J%0.2f"%point['J']
                         if 'K' in point:
-                                ret+="K%0.4f"%point['K']
+                                ret+="K%0.2f"%point['K']
                         if 'L' in point:
-                                ret+="L%0.4f"%point['L']
+                                ret+="L%0.2f"%point['L']
                         # the x, y, and z are not accurate as it could be an arc, or bezier, but will probably be conservative
                         if 'F' in point:
-                                ret+="F%0.4f"%point['F']
+                                ret+="F%0.2f"%point['F']
                         ret+="\n"
                 return ret
  
@@ -1337,7 +1337,8 @@ class Path(object):
 #				self.add_out(self.Fsegments[-1].out(self.mode, depths[0]))
                         for depth in depths:
                                 if downmode=='down':
-                                        self.cutdown(depth)
+                                        self.add_out(self.quickdown(depth-step+config['precut_z']))
+                                        self.add_out(self.cutdown(depth))
                                 first=1
                                 for segment in segments:
                                         if first==1 and downmode=='ramp' and (mode=='gcode' or mode=='simplegcode'):
@@ -1352,7 +1353,7 @@ class Path(object):
 #			if downmode=='ramp' and (mode=='gcode' or mode=='simplegcode'):
                         if  (mode=='gcode' or mode=='simplegcode'):
                                 self.add_out(self.Fsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
-                        self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
+                        self.add_out(self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side']))
                 else:
                         self.runin(downmode,self.side)
                         d=True
@@ -1362,7 +1363,7 @@ class Path(object):
                                 else:
                                         segments=self.Bsegments
                                 if downmode=='down':
-                                        self.cutdown(depth)
+                                        self.add_out(self.cutdown(depth))
                                 first=1
                                 s=len(segments)
                                 for s in range(0,s):
@@ -1381,7 +1382,7 @@ class Path(object):
                                 self.add_out(self.Fsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
                         else:
                                 self.add_out(self.Bsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
-                        self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side'])
+                        self.add_out(self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side']))
                 # If we are in a gcode mode, go through all the cuts and add feed rates to them
                 if self.mode=='gcode':
                         self.add_out( [{"cmd":'G40'}])
@@ -1476,7 +1477,7 @@ class Path(object):
 
 
         def runout(self, cutterrad, direction, mode='down', side='on', ):
-                if self.mode=='gcode':
+                if self.mode=='gcode' or self.mode=='simplegcode':
                         return [{'cmd':'G40'}]
 
 class Pathgroup(object):
@@ -1754,7 +1755,7 @@ class Part(object):
 		self.internal_borders=[]
 		self.ignore_border=False
 		self.transform={}
-		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height']
+		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height', 'offset']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in config:
@@ -2198,7 +2199,7 @@ class Plane(Part):
 		self.name=name
 		self.transform=False
 		self.parent=False
-		self.varlist = ['order','transform','side', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown', 'forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z', 'cutter']
+		self.varlist = ['order','transform','side', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown', 'forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z', 'cutter', 'offset']
 		self.out=''
 		self.isCopy=False
 		self.copied=False
@@ -2487,6 +2488,8 @@ class Plane(Part):
                 #	output2+='\nG10 L2 P1 X0 Y0\n'
                         filename+='_'+str(config['repeatx'])+'x_'+str(config['repeaty'])+'y'
                         output=output2
+		output=self.offset_gcode(output, config['offset'])
+
                 config['prefix']=config['prefix'].replace("%zclear%", str(config['clear_height']))
                 # if we are making gcode we we should have tool changes in there
                 if config['mode']=='gcode':
@@ -2513,7 +2516,7 @@ class Plane(Part):
                                 axismap={'X':0, 'Y':1, 'Z':2}
                                 val=float(m.group(2))
                                 val += offset[axismap[m.group(1)]]
-                                return m.group(1)+str(val)
+                                return m.group(1)+str(round(val,2))
                         else:
                                 return m.group(0)
                                 
