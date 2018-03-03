@@ -1335,9 +1335,10 @@ class Path(object):
                         segments=self.Fsegments
 #			if downmode=='ramp'
 #				self.add_out(self.Fsegments[-1].out(self.mode, depths[0]))
+                        if downmode=='down':
+                                self.add_out(self.quickdown(depths[0]-step+config['precut_z']))
                         for depth in depths:
                                 if downmode=='down':
-                                        self.add_out(self.quickdown(depth-step+config['precut_z']))
                                         self.add_out(self.cutdown(depth))
                                 first=1
                                 for segment in segments:
@@ -1369,7 +1370,7 @@ class Path(object):
                                 for s in range(0,s):
                                         segment=segments[s]
                                         if first==1 and downmode=='ramp':
-                                                if firstdepth and (mode=='gcode' or mode=='simplemode'):
+                                                if firstdepth and (mode=='gcode' or mode=='simplegcode'):
                                                         self.add_out(self.quickdown(depth-step+config['precut_z']))
                                                         firstdepth=0
                                                 self.add_out(segment.out(d,mode,depth-step,depth, config['use_point_z']))
@@ -1400,6 +1401,7 @@ class Path(object):
                 
         def cutdown(self,z):
                 if self.mode=='gcode' or self.mode=='simplegcode':
+			print "cutdown"+str(z)
                         return [{"cmd":"G1", "Z":z}]
                 else:
                         return[]
@@ -1448,6 +1450,7 @@ class Path(object):
                         if mode=='down':
                                 self.comment("runin0")
                                 self.start=cutto
+                                self.add_out(self.move(cutfrom))
                         else:
                                 self.comment("runin1")
                                 self.start=cutfrom
@@ -1477,7 +1480,7 @@ class Path(object):
 
 
         def runout(self, cutterrad, direction, mode='down', side='on', ):
-                if self.mode=='gcode' or self.mode=='simplegcode':
+                if self.mode=='gcode':
                         return [{'cmd':'G40'}]
 
 class Pathgroup(object):
