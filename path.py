@@ -112,7 +112,7 @@ class Path(object):
                 self.Bsegments = []
                 self.transform={}
                 self.otherargs=''
-                self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height']
+                self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth']
                 for v in self.varlist:
                         if v in config:
                                 setattr(self,v, config[v])
@@ -1316,8 +1316,13 @@ class Path(object):
                 self.make_segments(direction,self.Fsegments,config)
                 self.make_segments(self.otherDir(direction),self.Bsegments,config)
 # Runin/ ramp
-		if 'finishdepth' in config and config['finishdepth']>0:
-			z1=config['z1']+config['finishdepth']
+		if hasattr(self,'finishdepth') and self.finishdepth is not None:
+			finishdepth = self.finishdepth
+		else:
+			finishdepth = config['finishdepth']
+		print "finishdepth="+str(finishdepth)
+		if finishdepth>0:
+			z1=config['z1']+finishdepth
 		else:
 			z1=config['z1']
 		step,depths=self.get_depths(config['mode'], config['z0'], z1, config['stepdown'])
