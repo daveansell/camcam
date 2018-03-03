@@ -454,6 +454,19 @@ class ArduinoUno(Part):
                 if 'insert_layer' not in config:
                         config['insert_layer'] = []
 #               self.add(Hole(V(0,0), rad=3))
+		if 'pocket_layer' in config:
+                        pocket_layer = config['pocket_layer']
+                else:
+                        pocket_layer = []
+                if 'pocket_depth' in config:
+                        pocket_depth = config['pocket_depth']
+                else:
+                        pocket_depth = 0
+
+		print "pocket_layer="+str(pocket_layer)+" pocket_depth="+str(pocket_depth)
+                self.add(FilledRect(V(0,0), centred=True, width=w, height = h, z1=-pocket_depth), pocket_layer)
+		self.add(Hole(V(0,0), rad=10), pocket_layer)
+
                 self.add(Bolt(V(-w/2+14, -h/2+2.5), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
                 self.add(Bolt(V(w/2-fe, -h/2+7.6), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
                 self.add(Bolt(V(w/2-fe, -h/2+35.5), 'M3', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
