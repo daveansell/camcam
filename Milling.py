@@ -107,8 +107,8 @@ class Milling:
                                 'dosfile':True,
                                 'z_overshoot':0.2,
                                 'label':False,
-                #		'downmode':'down',
-                #		'zero':'bottom_left',
+                		'downmode':'down',
+                		#'zero':'bottom_left',
                         },
                         'laser':{
                               #  'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -291,6 +291,13 @@ class Milling:
                 "16mm_endmill":{
                         "id":5,
                         "diameter":16.0,
+                        "endcut":1,
+
+                        "sidecut":1,
+                },
+                "22mm_endmill":{
+                        "id":22,
+                        "diameter":22.0,
                         "endcut":1,
 
                         "sidecut":1,

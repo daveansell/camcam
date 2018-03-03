@@ -323,7 +323,6 @@ class GearRack(list):
                 for i in range(2,5):
 #                        print "QQ"+str(P) + " "+str(V(cx,cy))
 #                        print "QQ"+str( V( (math.sin(i*math.pi/8)*self.gear.round_corners/P) , (1-math.cos(i*math.pi/8)*self.gear.round_corners/P)))
-			print "QQ"+str(V((1.0+math.sin(math.pi/8*i))*self.gear.round_corners/P, (1.0-math.cos(math.pi/8*i))*self.gear.round_corners/P))+str(math.pi/8*i)
                         ix.append(cx+(math.sin(math.pi/8*i))*self.gear.round_corners/P)
                         iy.append(cy+(1.0-math.cos(math.pi/8*i))*self.gear.round_corners/P)
                         itheta.append(math.atan2(iy[-1], ix[-1]))

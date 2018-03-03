@@ -64,7 +64,7 @@ class KvSheet(Scatter):
 		self.canvas.add(self.linecolour)
 		self.canvas.add(kivy.graphics.Line(rectangle=(bl[0], bl[1], tr[0], tr[1]), width=2))
                 self.canvas.add( self.back_colour)
-		self.canvas.add(kivy.graphics.Rectangle(pos=(0,0), size=( (tr[0]- bl[0]),  (tr[1]- bl[1])) ))
+		self.canvas.add(kivy.graphics.Rectangle(pos=(bl[0], bl[1]), size=( (tr[0]- bl[0]),  (tr[1]- bl[1])) ))
 		self.startpos = self.pos
                 self.do_rotation = False
                 self.do_scale = True
@@ -219,7 +219,7 @@ class CamCam(App):
 		for sheet in sheets:
 			print sheet
 			material = KvSheet()
-			material.draw([0,0], [600,500])
+			material.draw([0,50], [1200,650])
 			material.camcam = self
 			self.sheet_widgets[sheet].append(material)
 			for part in sheets[sheet]:

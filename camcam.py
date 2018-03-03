@@ -177,6 +177,10 @@ parser.add_option('-e', '--reposition', dest='zero',
 		  help='reposition the origin to bottom_left, top_right or centre')
 parser.add_option("-L", "--layout-file", dest="layout_file",
                   help="file for layout")
+parser.add_option("-q", "--offsetx", dest="offsetx",
+                  help="offset x")
+parser.add_option("-Q", "--offsety", dest="offsety",
+                  help="offset y")
 (options, args) = parser.parse_args()
 config={}
 
@@ -214,6 +218,15 @@ if options.zero:
 	config['zero']=options.zero
 else:
 	config['zero']=False
+if options.offsetx:
+	offsetx = float(options.offsetx)
+else:
+	offsetx = 0
+if options.offsety:
+	offsety = float(options.offsety)
+else:
+	offsety =0
+config['offset']=V(offsetx,offsety)
 config['transformations']=[{}]
 if options.rotate:
 	config['transformations'][0]['rotate'] = [V(0,0), float(options.rotate)]
