@@ -1406,7 +1406,6 @@ class Path(object):
                 
         def cutdown(self,z):
                 if self.mode=='gcode' or self.mode=='simplegcode':
-			print "cutdown"+str(z)
                         return [{"cmd":"G1", "Z":z}]
                 else:
                         return[]
@@ -2435,14 +2434,17 @@ class Plane(Part):
                         repeatpattern='rect'
 		print "repeatpattern="+str(repeatpattern)
                 if 'zero' in config and config['zero']=='bottom_left' and border!=None:
+			print "ZEROOO"+str(border)
 			if 'layout' in config and config['layout']:
+				print "layout"
 				offset = V(0,0)
 				if 'offset' in config:
 					offset = config['offset']
                         elif not hasattr(border,'boundingBox') or 'bl' not in border.boundingBox.keys():
+				print "bbox"
                                 border.polygonise() 
-                        	offset=-border.boundingBox['bl']
-                        	output = self.offset_gcode( output, offset)
+                        offset=-border.boundingBox['bl']
+                        output = self.offset_gcode( output, offset)
                 else:
                         offset = V(0,0)
                 if 'repeatx' in config and 'repeaty' in config and 'xspacing' in config and 'yspacing' in config:

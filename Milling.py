@@ -107,7 +107,7 @@ class Milling:
                                 'dosfile':True,
                                 'z_overshoot':0.2,
                                 'label':False,
-                		'downmode':'down',
+                	#	'downmode':'down',
                 		#'zero':'bottom_left',
                         },
                         'laser':{
