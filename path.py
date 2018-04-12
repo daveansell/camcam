@@ -222,7 +222,7 @@ class Path(object):
                         mat=milling.materials[config['material']]
                         config['vertfeed']=mat['vertfeed']
                         config['sidefeed']=mat['sidefeed']
-                        if 'stepdown' not in config or type(config['stepdown']) is not int or type(config['stepdown']) is not float:
+                        if 'stepdown' not in config or type(config['stepdown']) is not int and type(config['stepdown']) is not float:
                                 config['stepdown']=mat['stepdown']
                         config['kress_setting']=mat['kress_setting']
                         if 'mill_dir' in mat:
@@ -856,6 +856,7 @@ class Path(object):
                 inherited = self.get_config()
 #		if('transformations' in config):
                 config=self.overwrite(config, inherited)
+		
                 if getattr(self, "_pre_render", None) and callable(self._pre_render):
                         self._pre_render(config)	
 #		if('transformations' in config):
@@ -2427,16 +2428,12 @@ class Plane(Part):
                         repeatpattern=config['repeatpattern']
                 else:
                         repeatpattern='rect'
-		print "repeatpattern="+str(repeatpattern)
                 if 'zero' in config and config['zero']=='bottom_left' and border!=None:
-			print "ZEROOO"+str(border)
 			if 'layout' in config and config['layout']:
-				print "layout"
 				offset = V(0,0)
 				if 'offset' in config:
 					offset = config['offset']
                         elif not hasattr(border,'boundingBox') or 'bl' not in border.boundingBox.keys():
-				print "bbox"
                                 border.polygonise() 
                         offset=-border.boundingBox['bl']
                         output = self.offset_gcode( output, offset)
