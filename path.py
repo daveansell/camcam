@@ -142,6 +142,7 @@ class Path(object):
                                         obj_copy.__dict__[v].append(copy.copy(k))
                         else:
                                 obj_copy.__dict__[v]=copy.deepcopy(self.__dict__[v],memo)
+
                 return obj_copy
 
 
@@ -264,6 +265,7 @@ class Path(object):
                 for p in range(0, len(pointlist)):
                         l = len(self.points)
                         pointlist[p].path=self
+			pointlist[p].i = p
                         if self.closed==True:
                                 pointlist[p].nextpoint = pointlist[(p+1)%l]
                                 pointlist[p].lastpoint = pointlist[(p-1)%l]
@@ -545,7 +547,7 @@ class Path(object):
                                 side='left'
                         else:
                                 side='right'
-
+		lookup=[]
                 for p,point in enumerate(pointlist):
 # Offsetting a point at the end of an open path is a special case. If there is the special case for the point type use that, otherwise move it perpendicularly to the vector from neighbouring point
                         if not self.closed and (p==0 or p==len(pointlist)-1):
@@ -568,6 +570,7 @@ class Path(object):
                                 t=point.offset(side, distance, thisdir)
                         if t:
                                 newpath.points.extend(t)
+			lookup.append(len(newpath.points))
                 newpath.reset_points()
                 return newpath
 
@@ -951,15 +954,10 @@ class Path(object):
                                 return [config['cutter'],self.render_path(self,config)]
                         elif config['overview']:
                                 self.output_path(config)
-                                #out = thepath.render_path(thepath,c) + self.render_path(self,config)
                                 out = [self.render_path(self,config)]
-#			else:
-#				out = thepath.render_path(thepath,config)
                 else:
                         thepath=self
                         c=config
-        #		thepath.output_path(config)
-        #		out = thepath.render_path(self,config)
                 if 'finishing' in config and config['finishing']>0:
                         if 'partial_fill' not in config or config['partial_fill']==None or config['partial_fill']==False:
                                 config['partial_fill']=config['finishing']
@@ -967,7 +965,6 @@ class Path(object):
                                         config['fill_direction']='out'
                                 else:
                                         config['fill_direction']='in'
-                                #if c['side']=='out':
                                 c['z1']=c['z1']+1
                                 finalpass=True
                                 finishing=config['finishing']
@@ -1002,69 +999,56 @@ class Path(object):
 # need to break circles into 2 arcs
 
                         fillpath=copy.deepcopy(thepath)
-#			fillpath.points[0].forcelastpoint = fillpath.points[len(fillpath.points)-1]
- #                       fillpath.points[len(fillpath.points)-1].forcenextpoint = fillpath.points[0]
                         if(numpasses>0 and fillpath.points[0].point_type=='circle'):
                                         
                                         p=fillpath.points[0]
                                         fillpath.points=[]
                                         fillpath.add_point(p.pos-V(p.radius,0), point_type='sharp')
-                                        fillpath.add_point(p.pos, point_type='aroundcurve',  radius=p.radius, direction='cw')
+                                        fillpath.add_point(PArc(p.pos,  radius=p.radius, direction='cw'))
                                         fillpath.add_point(p.pos+V(0,p.radius), point_type='sharp')
-                                        fillpath.add_point(p.pos, point_type='aroundcurve',  radius=p.radius, direction='cw')
+                                        fillpath.add_point(PArc(p.pos,  radius=p.radius, direction='cw'))
                                         fillpath.add_point(p.pos+V(p.radius,0), point_type='sharp')
-                                        fillpath.add_point(p.pos, point_type='aroundcurve',radius=p.radius, direction='cw')
-                                        fillpath.add_point(p.pos-V(p.radius,0), point_type='sharp')
+                                        fillpath.add_point(PArc(p.pos,  radius=p.radius, direction='cw'))
+                                        fillpath.add_point(p.pos-V(p.radius,0.001), point_type='sharp')
 # there seems to be a problem with arcs and reversing...
                         if fillpath.find_direction(c)!=config['direction']:
                                 reverse=False
-#				fillpath.isreversed=True
-#				fillpath.points=fillpath.points[::-1]
                                 
                         else:
                                 reverse=False
-#				fillpath.points=fillpath.points[::-1]
+
                         if numpasses>0:
-#(pointlist, p+1, self.closed)
-#				frompoint=self.segment_point(lastpoint, beforelastpoint, thispoint,beforebeforelastpoint,nextpoint, segment_array, False, False, config)
                         # if it is a circle we need to split it into 2 arcs to be able to fill properly
                                 fillpath.output_path(config)
-#				frompos=self.get_frompos(fillpath.points, fillpath.Fsegments, -1, c)
                                 frompos = fillpath.points[-1].end()
                                 if frompos!=fillpath.points[-1].pos:
                                         fillpath.add_point(frompos,'sharp')
                                 else:
+					print "pass"
                                         pass
-#					fillpath.points[-1].point_type='sharp'
                                 fillpath.prepend_point(frompos,'sharp')
+
                         
-                        tpath=thepath
+                      #  tpath=thepath
+                        tpath=fillpath
                         for d in range(0,int(numpasses+1)):
+				print "loop"
                 #		temppath.output_path(config)
                                 temppath=copy.deepcopy(tpath)
-                                #tpath.output_path(config)
-#				temppath=thepath.offset_path(ns, step*(d+1), c)
                                 tpath=temppath.offset_path(ns, step, c)
-#				temppath.points[0].forcelastpoint = temppath.points[len(temppath.points)-1]
-#/				temppath.points[len(temppath.points)-1].forcenextpoint = temppath.points[0]
                                 
-#				frompos=self.get_frompos(temppath.points, temppath.Fsegments, -1, c)
                                 frompos = temppath.points[-1].end()
                                 if frompos!=temppath.points[-1].pos:
                                         temppath.add_point(frompos,'sharp')
                                 else:
                                         temppath.points[-1].point_type='sharp'
                                 temppath.prepend_point(frompos,'sharp')
-#				if temppath.find_direction(c)==fillpath.find_direction(c):
+
                                 if reverse:
                                         fillpath.add_points(temppath.points,'start')
                                 else:
                                         fillpath.add_points(temppath.points[::-1],'start')
 
-#				else:
-#					fillpath.add_points(temppath.points[::-1],'start')
-#			if reverse:
-#				fillpath.points = fillpath.points[::-1]
                         offpath=thepath
                         thepath=fillpath
                 thepath.output_path(c)
