@@ -1004,7 +1004,6 @@ class Path(object):
 #			fillpath.points[0].forcelastpoint = fillpath.points[len(fillpath.points)-1]
  #                       fillpath.points[len(fillpath.points)-1].forcenextpoint = fillpath.points[0]
                         if(numpasses>0 and fillpath.points[0].point_type=='circle'):
-                                        
                                         p=fillpath.points[0]
                                         fillpath.points=[]
                                         fillpath.add_point(p.pos-V(p.radius,0), point_type='sharp')
@@ -1133,7 +1132,7 @@ class Path(object):
                 else:
                         return self.output	
 # 		elif config['mode']=='simplegcode':
-#			ret+=self.render_path_gcode(self.output,config)+'G0Z%0.2f\n'%config['clear_height']
+#			ret+=self.render_path_gcode(self.output,config)+'G0Z%0.4f\n'%config['clear_height']
                 return ret
 
         def render_path_svg(self,path,config):
@@ -1143,9 +1142,9 @@ class Path(object):
                         if 'cmd' in point:
                                 ret+=" "+point['cmd']
                         if 'rx' in point:
-                                ret+=" %0.2f"%point['rx']
+                                ret+=" %0.4f"%point['rx']
                         if 'ry' in point:
-                                ret+=",%0.2f"%point['ry']
+                                ret+=",%0.4f"%point['ry']
                         if '_rot' in point:
                                 ret+=" %0.0f"%point['_rot']
                         if '_lf' in point:
@@ -1153,17 +1152,17 @@ class Path(object):
                         if '_dir' in point:
                                 ret+=" %s"%point['_dir']
                         if 'x' in point:
-                                ret+=" %0.2f"%point['x']
+                                ret+=" %0.4f"%point['x']
                         if 'y' in point:
-                                ret+=",%0.2f"%point['y']
+                                ret+=",%0.4f"%point['y']
                         if 'x2' in point:
-                                ret+=" %0.2f"%point['x2']
+                                ret+=" %0.4f"%point['x2']
                         if 'y2' in point:
-                                ret+=",%0.2f"%point['y2']
+                                ret+=",%0.4f"%point['y2']
                         if 'x3' in point:
-                                ret+=" %0.2f"%point['x3']
+                                ret+=" %0.4f"%point['x3']
                         if 'y3' in point:
-                                ret+=",%0.2f"%point['y3']
+                                ret+=",%0.4f"%point['y3']
                         if '_comment' in point :
                                 comments+="<!--"+point['_comment']+"-->\n"
                         if '_colour' in point and point['_colour'] is not None:
@@ -1190,22 +1189,22 @@ class Path(object):
                         if 'cmd' in point:
                                 ret+=point['cmd']
                         if 'X' in point:
-                                ret+="X%0.2f"%point['X']
+                                ret+="X%0.4f"%point['X']
                         if 'Y' in point:
-                                ret+="Y%0.2f"%point['Y']
+                                ret+="Y%0.4f"%point['Y']
                         if 'Z' in point:
-                                ret+="Z%0.2f"%point['Z']
+                                ret+="Z%0.4f"%point['Z']
                         if 'I' in point:
-                                ret+="I%0.2f"%point['I']
+                                ret+="I%0.4f"%point['I']
                         if 'J' in point:
-                                ret+="J%0.2f"%point['J']
+                                ret+="J%0.4f"%point['J']
                         if 'K' in point:
-                                ret+="K%0.2f"%point['K']
+                                ret+="K%0.4f"%point['K']
                         if 'L' in point:
-                                ret+="L%0.2f"%point['L']
+                                ret+="L%0.4f"%point['L']
                         # the x, y, and z are not accurate as it could be an arc, or bezier, but will probably be conservative
                         if 'F' in point:
-                                ret+="F%0.2f"%point['F']
+                                ret+="F%0.4f"%point['F']
                         ret+="\n"
                 return ret
  
@@ -2526,7 +2525,7 @@ class Plane(Part):
                                 axismap={'X':0, 'Y':1, 'Z':2}
                                 val=float(m.group(2))
                                 val += offset[axismap[m.group(1)]]
-                                return m.group(1)+str(round(val,2))
+                                return m.group(1)+str(round(val,4))
                         else:
                                 return m.group(0)
                                 
