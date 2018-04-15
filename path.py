@@ -112,7 +112,7 @@ class Path(object):
                 self.Bsegments = []
                 self.transform={}
                 self.otherargs=''
-                self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth']
+                self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth']
                 for v in self.varlist:
                         if v in config:
                                 setattr(self,v, config[v])
@@ -142,6 +142,7 @@ class Path(object):
                                         obj_copy.__dict__[v].append(copy.copy(k))
                         else:
                                 obj_copy.__dict__[v]=copy.deepcopy(self.__dict__[v],memo)
+
                 return obj_copy
 
 
@@ -222,7 +223,7 @@ class Path(object):
                         mat=milling.materials[config['material']]
                         config['vertfeed']=mat['vertfeed']
                         config['sidefeed']=mat['sidefeed']
-                        if 'stepdown' not in config or type(config['stepdown']) is not int or type(config['stepdown']) is not float:
+                        if 'stepdown' not in config or type(config['stepdown']) is not int and type(config['stepdown']) is not float:
                                 config['stepdown']=mat['stepdown']
                         config['kress_setting']=mat['kress_setting']
                         if 'mill_dir' in mat:
@@ -264,6 +265,7 @@ class Path(object):
                 for p in range(0, len(pointlist)):
                         l = len(self.points)
                         pointlist[p].path=self
+			pointlist[p].i = p
                         if self.closed==True:
                                 pointlist[p].nextpoint = pointlist[(p+1)%l]
                                 pointlist[p].lastpoint = pointlist[(p-1)%l]
@@ -545,7 +547,7 @@ class Path(object):
                                 side='left'
                         else:
                                 side='right'
-
+		lookup=[]
                 for p,point in enumerate(pointlist):
 # Offsetting a point at the end of an open path is a special case. If there is the special case for the point type use that, otherwise move it perpendicularly to the vector from neighbouring point
                         if not self.closed and (p==0 or p==len(pointlist)-1):
@@ -568,6 +570,7 @@ class Path(object):
                                 t=point.offset(side, distance, thisdir)
                         if t:
                                 newpath.points.extend(t)
+			lookup.append(len(newpath.points))
                 newpath.reset_points()
                 return newpath
 
@@ -856,6 +859,7 @@ class Path(object):
                 inherited = self.get_config()
 #		if('transformations' in config):
                 config=self.overwrite(config, inherited)
+		
                 if getattr(self, "_pre_render", None) and callable(self._pre_render):
                         self._pre_render(config)	
 #		if('transformations' in config):
@@ -939,6 +943,7 @@ class Path(object):
 # Do something about offsets manually so as not to rely on linuxcnc
                 config=self.generate_config(pconfig)
                 finalpass=False
+		outpaths=[]
                 if config['side']=='in' or config['side']=='out':
                         side = config['side']				
                         c =copy.copy(config)
@@ -950,15 +955,10 @@ class Path(object):
                                 return [config['cutter'],self.render_path(self,config)]
                         elif config['overview']:
                                 self.output_path(config)
-                                #out = thepath.render_path(thepath,c) + self.render_path(self,config)
                                 out = [self.render_path(self,config)]
-#			else:
-#				out = thepath.render_path(thepath,config)
                 else:
                         thepath=self
                         c=config
-        #		thepath.output_path(config)
-        #		out = thepath.render_path(self,config)
                 if 'finishing' in config and config['finishing']>0:
                         if 'partial_fill' not in config or config['partial_fill']==None or config['partial_fill']==False:
                                 config['partial_fill']=config['finishing']
@@ -966,7 +966,6 @@ class Path(object):
                                         config['fill_direction']='out'
                                 else:
                                         config['fill_direction']='in'
-                                #if c['side']=='out':
                                 c['z1']=c['z1']+1
                                 finalpass=True
                                 finishing=config['finishing']
@@ -983,6 +982,7 @@ class Path(object):
                         else:
                                 numpasses = int(math.ceil(abs(float(dist)/ float(config['cutterrad'])/1.4)))
                                 step = config['partial_fill']/numpasses
+			print self.fill_direction
                         if 'fill_direction' in config:
                                 ns=config['fill_direction']
                         else:
@@ -1001,71 +1001,64 @@ class Path(object):
 # need to break circles into 2 arcs
 
                         fillpath=copy.deepcopy(thepath)
-#			fillpath.points[0].forcelastpoint = fillpath.points[len(fillpath.points)-1]
- #                       fillpath.points[len(fillpath.points)-1].forcenextpoint = fillpath.points[0]
                         if(numpasses>0 and fillpath.points[0].point_type=='circle'):
                                         p=fillpath.points[0]
                                         fillpath.points=[]
                                         fillpath.add_point(p.pos-V(p.radius,0), point_type='sharp')
-                                        fillpath.add_point(p.pos, point_type='aroundcurve',  radius=p.radius, direction='cw')
+                                        fillpath.add_point(PArc(p.pos,  radius=p.radius, direction='cw'))
                                         fillpath.add_point(p.pos+V(0,p.radius), point_type='sharp')
-                                        fillpath.add_point(p.pos, point_type='aroundcurve',  radius=p.radius, direction='cw')
+                                        fillpath.add_point(PArc(p.pos,  radius=p.radius, direction='cw'))
                                         fillpath.add_point(p.pos+V(p.radius,0), point_type='sharp')
-                                        fillpath.add_point(p.pos, point_type='aroundcurve',radius=p.radius, direction='cw')
-                                        fillpath.add_point(p.pos-V(p.radius,0), point_type='sharp')
+                                        fillpath.add_point(PArc(p.pos,  radius=p.radius, direction='cw'))
+                                        #fillpath.add_point(p.pos-V(p.radius,0.001), point_type='sharp')
 # there seems to be a problem with arcs and reversing...
                         if fillpath.find_direction(c)!=config['direction']:
                                 reverse=False
-#				fillpath.isreversed=True
-#				fillpath.points=fillpath.points[::-1]
                                 
                         else:
                                 reverse=False
-#				fillpath.points=fillpath.points[::-1]
+
                         if numpasses>0:
-#(pointlist, p+1, self.closed)
-#				frompoint=self.segment_point(lastpoint, beforelastpoint, thispoint,beforebeforelastpoint,nextpoint, segment_array, False, False, config)
                         # if it is a circle we need to split it into 2 arcs to be able to fill properly
                                 fillpath.output_path(config)
-#				frompos=self.get_frompos(fillpath.points, fillpath.Fsegments, -1, c)
                                 frompos = fillpath.points[-1].end()
                                 if frompos!=fillpath.points[-1].pos:
                                         fillpath.add_point(frompos,'sharp')
                                 else:
+					print "pass"
                                         pass
-#					fillpath.points[-1].point_type='sharp'
                                 fillpath.prepend_point(frompos,'sharp')
+
                         
                         tpath=thepath
+                      #  tpath=fillpath
                         for d in range(0,int(numpasses+1)):
                 #		temppath.output_path(config)
                                 temppath=copy.deepcopy(tpath)
-                                #tpath.output_path(config)
-#				temppath=thepath.offset_path(ns, step*(d+1), c)
                                 tpath=temppath.offset_path(ns, step, c)
-#				temppath.points[0].forcelastpoint = temppath.points[len(temppath.points)-1]
-#/				temppath.points[len(temppath.points)-1].forcenextpoint = temppath.points[0]
                                 
-#				frompos=self.get_frompos(temppath.points, temppath.Fsegments, -1, c)
                                 frompos = temppath.points[-1].end()
                                 if frompos!=temppath.points[-1].pos:
                                         temppath.add_point(frompos,'sharp')
                                 else:
                                         temppath.points[-1].point_type='sharp'
                                 temppath.prepend_point(frompos,'sharp')
-#				if temppath.find_direction(c)==fillpath.find_direction(c):
+
+				outpaths.insert(0,temppath)
+
                                 if reverse:
                                         fillpath.add_points(temppath.points,'start')
                                 else:
                                         fillpath.add_points(temppath.points[::-1],'start')
 
-#				else:
-#					fillpath.add_points(temppath.points[::-1],'start')
-#			if reverse:
-#				fillpath.points = fillpath.points[::-1]
                         offpath=thepath
                         thepath=fillpath
-                thepath.output_path(c)
+		thepath.output=[]
+		if len(outpaths)>1:
+			pass
+			thepath.output_paths(c,outpaths)
+		else:	
+                	thepath.output_path(c)
                 out.append( thepath.render_path(thepath,c))
                 if finalpass:
                         c['z0']=c['z1']
@@ -1294,6 +1287,89 @@ class Path(object):
                                 return config['colour']
                         else:
                                 return 'black'
+	# Runs output_path for an array of paths all of which will be cut before dropping a stepdown.
+	def output_paths(self, pconfig, paths):
+		output=[]
+		config=pconfig #self.generate_config(pconfig)
+                self.config=config
+                mode=pconfig['mode']
+                if self.use_point_z:
+                        downmode='down'
+                        config['stepdown']=1000
+                else:
+                        downmode=config['downmode']
+                if downmode==None:
+                        downmode='ramp'
+                direction=config['direction']
+                self.mode=mode
+		segments=[]
+		start=True
+		for path in paths:
+			path.make_path_segments(config)
+			if not start:
+				segments.append(Line(segments[-1].cutto, path.Fsegments[0].cutfrom))
+			segments.extend(path.Fsegments)	
+			start=False
+		segments.insert(0,Line(segments[-1].cutto, segments[0].cutfrom))
+
+# Runin/ ramp
+                if 'finishdepth' in config and config['finishdepth']>0:
+                        z1=config['z1']+config['finishdepth']
+                else:
+                        z1=config['z1']
+                step,depths=self.get_depths(config['mode'], config['z0'], z1, config['stepdown'])
+                if 'finishdepth' in config and config['finishdepth']>0:
+                        depths.append(config['z1'])
+# dodgy fudge to stop things crashing
+                if step == None:
+                        step=1
+                if len(depths)==0:
+                        return False
+# if closed go around and around, if open go back and forth
+                firstdepth=1
+                if self.closed:
+                        self.runin(config['cutterrad'],config['direction'],config['downmode'],config['side'])
+#                       if downmode=='ramp'
+#                               self.add_out(self.Fsegments[-1].out(self.mode, depths[0]))
+                       # if downmode=='down':
+                        self.add_out(self.quickdown(depths[0]-step+config['precut_z']))
+                        for depth in depths:
+                                if downmode=='down':
+                                        self.add_out(self.cutdown(depth))
+                                first=1
+                                for segment in segments:
+                                        if first==1 and downmode=='ramp' and (mode=='gcode' or mode=='simplegcode'):
+                                                if firstdepth and (mode=='gcode' or mode=='simplegcode'):
+                                                        self.add_out(self.quickdown(depth-step+config['precut_z']))
+                                                        firstdepth=0
+                                                self.add_out(segment.out(True,mode,depth-step,depth, config['use_point_z']))
+                                        else:
+                                                self.add_out(segment.out(True,mode, depth, depth, config['use_point_z']))
+                                        first=0
+                        # if we are in ramp mode, redo the first segment
+#                       if downmode=='ramp' and (mode=='gcode' or mode=='simplegcode'):
+                        if  (mode=='gcode' or mode=='simplegcode'):
+                                self.add_out(self.Fsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
+                        self.add_out(self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side']))
+                if self.mode=='gcode':
+                        self.add_out( [{"cmd":'G40'}])
+                if self.mode=='gcode' or self.mode=='simplegcode':
+                        self.add_out([{'cmd':'G0','Z':config['clear_height']}])
+                        self.add_feedrates(config)
+                        self.comment("test")
+                elif self.mode=='svg' or self.mode=='scr':
+                        self.add_colour(config)
+
+# extract the bits of output_path to produce a series of segments with no Z
+# this is called by output_path and output_paths
+	def make_path_segments(self, pconfig):
+                config=pconfig #self.generate_config(pconfig)
+                self.config=config
+                direction=config['direction']
+                self.Fsegments=[]
+                self.Bsegments=[]
+                self.make_segments(direction,self.Fsegments,config)
+                self.make_segments(self.otherDir(direction),self.Bsegments,config)
         def output_path(self, pconfig):#z0=False,z1=False,side='on',direction=False, stepdown=False, downmode='down', transformations=False):
                 """ output a path in whatever the config tells it - pconfig will be inherited from """
                 # we want a new list for each call, to make it properly recusive
@@ -2431,16 +2507,12 @@ class Plane(Part):
                         repeatpattern=config['repeatpattern']
                 else:
                         repeatpattern='rect'
-		print "repeatpattern="+str(repeatpattern)
                 if 'zero' in config and config['zero']=='bottom_left' and border!=None:
-			print "ZEROOO"+str(border)
 			if 'layout' in config and config['layout']:
-				print "layout"
 				offset = V(0,0)
 				if 'offset' in config:
 					offset = config['offset']
                         elif not hasattr(border,'boundingBox') or 'bl' not in border.boundingBox.keys():
-				print "bbox"
                                 border.polygonise() 
                         offset=-border.boundingBox['bl']
                         output = self.offset_gcode( output, offset)
