@@ -162,7 +162,7 @@ parser.add_option("-Y", "--yspacing", dest="yspacing",
 parser.add_option("-r", "--repeatmode", dest="repeatmode",
                   help="Repeat mode - can be origin - move the origin, regexp - replace all the X and Y coordinates")
 parser.add_option("-p", "--repeatpattern", dest="repeatpattern",
-                  help="Repeat pattern - bcc, fcc_int, fcc_ext")
+                  help="Repeat pattern - bcc, cp_int, cp_ext")
 parser.add_option('-o', '--options', dest='options',
 		  help='options for the code - format var=value;var=value')
 parser.add_option('-R', '--rotate', dest='rotate',
