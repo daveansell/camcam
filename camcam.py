@@ -66,6 +66,7 @@ class CamCam:
 		config['layout'] = True
 		for plane in self.planes:
 			for part in plane.getParts():
+				part.make_copies()
 				parts[part.name] = [plane, part]
 		l = open(layout_file, 'r')
 		sheets = json.loads(l.read())#pickle.load(l)
@@ -98,7 +99,6 @@ class CamCam:
 			for i in out:
 				if 'zero' in config:
 					if config['zero']=='bottom_left':
-						print "offset_gcode="+str(V(-minx,-miny))
 						out[i]=plane.offset_gcode( out[i], V(-minx,-miny))
 					elif config['zero']=='top_right':
 						out[i]= plane.offset_gcode( out[i], V(-maxx,-maxy))
