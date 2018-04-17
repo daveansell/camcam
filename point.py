@@ -1165,7 +1165,7 @@ class PCircle(Point):
         def __init__(self, pos=False, radius=False, transform = False):
                 self.init()
                 self.pos=pos
-                self.radius=radius
+                self.radius=float(radius)
                 self.transform=transform
                 self.point_type='circle'
                 self.obType='Point'
@@ -1179,10 +1179,25 @@ class PCircle(Point):
         def makeSegment(self, config):
                 r1 = V(self.radius, 0)
                 r2 = V(0, self.radius)
+		print "cpos="+str(self.pos)
+		print "r1="+str(r1)
+		print "r2="+str(r2)
+		print "receers"+str(self.reverse)
                 if self.reverse:
-                        return [ Arc(self.pos-r1, self.pos-r2, self.pos, 'cw'), Arc(self.pos-r2, self.pos+r1, self.pos, 'cw'), Arc(self.pos+r1, self.pos+r2, self.pos, 'cw'), Arc(self.pos+r2, self.pos-r1, self.pos, 'cw') ]
+                        return [ 
+			Arc(self.pos-r1, self.pos-r2, self.pos, 'cw'),
+			Arc(self.pos-r2, self.pos+r1, self.pos, 'cw'), 
+			Arc(self.pos+r1, self.pos+r2, self.pos, 'cw'), 
+			Arc(self.pos+r2, self.pos-r1, self.pos, 'cw') ]
                 else:
-                        return [ Arc(self.pos-r1, self.pos+r2, self.pos, 'ccw'), Arc(self.pos+r2, self.pos+r1, self.pos, 'ccw'), Arc(self.pos+r1, self.pos-r2, self.pos, 'ccw'), Arc(self.pos-r2, self.pos-r1, self.pos, 'ccw') ]
+                        ret = [ 
+			Arc(self.pos-r1, self.pos+r2, self.pos, 'ccw'), 
+			Arc(self.pos+r2, self.pos+r1, self.pos, 'ccw'), 
+			Arc(self.pos+r1, self.pos-r2, self.pos, 'ccw'), 
+			Arc(self.pos-r2, self.pos-r1, self.pos, 'ccw') ]
+			for i in ret:
+				print str(i.cutfrom) + "->"+str(i.cutto)+ " - "+str(i.centre)
+			return ret
         def offset(self, side, distance, direction):
                 t=copy.copy(self)
                 if side=='left' and self.direction=='cw' or side=='right' and self.direction=='ccw':
