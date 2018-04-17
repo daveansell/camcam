@@ -2562,7 +2562,7 @@ class Plane(Part):
 								yoff=float(y)*float(config['yspacing'])
 							else:
 								yoff=(0.5+float(y))*float(config['yspacing'])															
-							if repeatpattern=='cp_int' and y==int(config['repeaty'])-1:
+							if repeatpattern=='cp_int' and y==int(config['repeaty'])-1 and x%2:
 								docut=False
 						else:
 							xoff=x*float(config['xspacing'])
