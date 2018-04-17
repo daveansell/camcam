@@ -1031,6 +1031,7 @@ class Path(object):
 
                         
                         tpath=thepath
+	#		outpaths.append(tpath)
                       #  tpath=fillpath
                         for d in range(0,int(numpasses+1)):
                 #		temppath.output_path(config)
@@ -1053,10 +1054,12 @@ class Path(object):
 
                         offpath=thepath
                         thepath=fillpath
+		tempout = thepath.output
 		thepath.output=[]
 		if len(outpaths)>1:
 			pass
 			thepath.output_paths(c,outpaths)
+			thepath.add_out(tempout)
 		else:	
                 	thepath.output_path(c)
                 out.append( thepath.render_path(thepath,c))
