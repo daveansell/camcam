@@ -869,6 +869,7 @@ class Path(object):
                 self.set_cutter(config)
                 self.set_material(config)
                 thisdir=self.find_direction(config)
+		
                 if 'direction' not in config or config['direction'] is False:
                         if hasattr(self,'direction') and  self.direction!=False:
                                 config['direction']=self.direction
@@ -1013,7 +1014,7 @@ class Path(object):
                                         #fillpath.add_point(p.pos-V(p.radius,0.001), point_type='sharp')
 # there seems to be a problem with arcs and reversing...
                         if fillpath.find_direction(c)!=config['direction']:
-                                reverse=False
+                                reverse=True
                                 
                         else:
                                 reverse=False
