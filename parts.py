@@ -1690,3 +1690,48 @@ class LightSwitch(Part):
                         but_height = 36
                         for i in range(0,num_switches):
                                 self.add(Part(subpart=True, layer=layers['part'], border=Rect(V(switch_spacing*(-float(num_switches)/2+i),0), width=but_width, height = but_height, centred=True), zoffset=3, colour="#808080"))
+
+class LED5050(Pathgroup):
+        def __init__(self, pos, thickness, **config):
+                self.init(config)
+                self.translate(pos)
+		self.add(Hole(V(0,0), rad=11.0/2, z1=-thickness+1.0))
+                self.add(Hole(V(0,0), rad=10.0/2))
+#                self.add(Hole(V(0,0), rad=15.0/2, z1=-thickness+6.4))
+ #               self.add(Hole(V(0,0), rad=21.0/2, z1=-thickness+6.4))
+  #              self.add(Hole(V(0,0), rad=25.0/2, z1=-thickness+6.4))
+
+class Magnetometer(Part):
+	def __init__(self, pos, mag_type, layer, **config):
+		self.init(config)
+		self.translate(pos)
+		data={
+			'HMC5883L':{
+				'bolt_spacing':8.3,
+                		'bolt_y':7.3-3.3/2,
+                		'solder_y': -8,
+                		'solder_width' :2.54*5,
+				'width':14.5,
+				'height':20,
+				'cutoutCentre':V(0,-1.5),
+				'countersink_depth':3,
+			}
+		}
+		assert( mag_type in data)
+		d= data[mag_type]
+		if 'countersink_depth' in config:
+			if config['countersink_depth'] is True:
+				countersink_depth = d['countersink_depth']
+			else:
+				countersink_depth = config['countersink_depth']
+		else:
+			countersink_depth = False
+		if 'hole_depth' in config:
+			hole_depth=-config['hole_depth'] - countersink_depth
+		else:
+			hole_depth=False
+                self.add(Hole(V(d['bolt_spacing']/2, d['bolt_y']), rad=2.5/2, z1=hole_depth), layer)
+                self.add(Hole(V(-d['bolt_spacing']/2, d['bolt_y']), rad=2.5/2, z1=hole_depth), layer)
+                self.add(RoundedRect(V(0, d['solder_y']), centred=True, width = d['solder_width'], height=3.3, z1=-2, side='in'), layer)
+		if countersink_depth:
+			self.add(Rect(d['cutoutCentre'], centred=True, width = d['width'], height=d['height'], z1=-countersink_depth, partial_fill = min(d['width'], d['height'])/2)) 
