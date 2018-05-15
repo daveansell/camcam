@@ -68,32 +68,28 @@ class Rect(Path):
                 if bl[0]-tr[0] ==0 or bl[1]-tr[1] ==0:
                         raise ValueError("Rectangle has no area")
                 self.comment("Rounded Square")
+# attempt to start cut on longest side to reduce loosing small parts
+		if(abs(bl[0]-tr[0]) < abs(bl[1]-tr[1])):
+			points=[bl, V(tr[0],bl[1],0), tr, V(bl[0],tr[1],0)]
+		else:
+			points=[bl, V(bl[0],tr[1],0), tr, V(tr[0],bl[1],0)]
                 if type(ct) is str:
-                        self.add_point(bl,ct, radius=rad, **args)
-                        self.add_point(V(bl[0],tr[1],0),ct,radius=rad, **args)
-                        self.add_point(tr,ct,radius=rad, **args)
-                        self.add_point(V(tr[0],bl[1],0),ct,radius=rad, **args)
+			for p in points:
+				self.add_point(p,ct, radius=rad, **args)
                 elif type(ct) is list:
                         args['radius']=rad
                         if type(args['radius']) is list:
-                                args['radius']=rad[0]
-                                self.add_point(ct[0](bl, **args))
-                                args['radius']=rad[1]
-                                self.add_point(ct[1](V(bl[0],tr[1],0), **args))
-                                args['radius']=rad[2]
-                                self.add_point(ct[2](tr, **args))
-                                args['radius']=rad[3]
-                                self.add_point(ct[3](V(tr[0],bl[1],0), **args))	
+				for i in range(0,4):
+					args['radius']=rad[i]
+					self.add_point(ct[i](points[i], **args))
                         else:	
-                                self.add_point(ct[0](bl, **args))
-                                self.add_point(ct[1](V(bl[0],tr[1],0), **args))
-                                self.add_point(ct[2](tr, **args))
-                                self.add_point(ct[3](V(tr[0],bl[1],0), **args)) 
+				args['radius']=rad
+				for i in range(0,4):
+					
+					self.add_point(ct[i](points[i], **args))
                 else:
-                        self.add_point(ct(bl,  **args))
-                        self.add_point(ct(V(bl[0],tr[1],0),  **args))
-                        self.add_point(ct(tr,  **args))
-                        self.add_point(ct(V(tr[0],bl[1],0), **args))
+			for p in points:
+				self.add_point(ct(p, **args))
 
 
 class RoundedRect(Rect):
@@ -580,17 +576,35 @@ class RectSpeakerGrill(Pathgroup):
                 yspacing=spacing*math.cos(math.pi/6)
                 numholesx = int(math.ceil(width/spacing)+1)
                 numholesy = float(math.floor(height/yspacing)+1)
+		self.miny=100000
+		self.maxy=-100000
+		self.minx=100000
+		self.maxx=-100000
                 for x in range(-numholesx,numholesx):
                         count =0;
                         for y0 in range(-int(numholesy),int(numholesy),2):
+				holes=[]
                                 y=float(y0)/2
                                 if count%2:
                                         p=V(x*spacing, y*yspacing)
                                 else:
                                         p=V((x+0.5)*spacing, y*yspacing)
                                 if abs(p[0])<width/2-holerad and abs(p[1])<height/2-holerad:
-                                        self.add(Hole(pos+p, rad=holerad))
+                                        holes.append(Hole(pos+p, rad=holerad))
+					self.maxx=max(self.maxx, (pos+p)[0])
+					self.maxy=max(self.maxy, (pos+p)[1])
+					self.minx=min(self.minx, (pos+p)[0])
+					self.miny=min(self.miny, (pos+p)[1])
                                 count+=1
+				if x%2:
+					print "NORMAL"
+					for h in holes:
+						self.add(h)
+				else:
+					print "REVERWSED"
+					for h in reversed(holes):
+						self.add(h)
+		
 class LobedCircle(Path):
         def __init__(self,pos, rad, lobe_angle, loberad, num_lobes, lobe_length, **config):
                 self.init(config)
