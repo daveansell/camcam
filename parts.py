@@ -1695,8 +1695,8 @@ class LED5050(Pathgroup):
         def __init__(self, pos, thickness, **config):
                 self.init(config)
                 self.translate(pos)
-		self.add(Hole(V(0,0), rad=11.0/2, z1=-thickness+1.0))
-                self.add(Hole(V(0,0), rad=10.0/2))
+		self.add(Hole(V(0,0), rad=11.0/2, z1=-thickness+6.4))
+                self.add(Hole(V(0,0), rad=10.2/2))
 #                self.add(Hole(V(0,0), rad=15.0/2, z1=-thickness+6.4))
  #               self.add(Hole(V(0,0), rad=21.0/2, z1=-thickness+6.4))
   #              self.add(Hole(V(0,0), rad=25.0/2, z1=-thickness+6.4))
@@ -1732,6 +1732,6 @@ class Magnetometer(Part):
 			hole_depth=False
                 self.add(Hole(V(d['bolt_spacing']/2, d['bolt_y']), rad=2.5/2, z1=hole_depth), layer)
                 self.add(Hole(V(-d['bolt_spacing']/2, d['bolt_y']), rad=2.5/2, z1=hole_depth), layer)
-                self.add(RoundedRect(V(0, d['solder_y']), centred=True, width = d['solder_width'], height=3.3, z1=-2, side='in'), layer)
+                self.add(RoundedRect(V(0, d['solder_y']), centred=True, width = d['solder_width'], height=3.3, z1=- countersink_depth-2, side='in'), layer)
 		if countersink_depth:
 			self.add(Rect(d['cutoutCentre'], centred=True, width = d['width'], height=d['height'], z1=-countersink_depth, partial_fill = min(d['width'], d['height'])/2)) 
