@@ -1,19 +1,20 @@
+import math
+
+from path import *
+from  shapes import *
+
 class Gray(Pathgroup):
 	def generateCode(self, bits):
 		code = [[0], [1]]
 		for i in range(0,bits-1):
 			newcode=[]
-			print code
 			for c in code:
-				print c
-				print copy.deepcopy(c)
 				t = copy.deepcopy(c)
 				t.insert(0,0)
 				newcode.append(t)
 				t = copy.deepcopy(c)
 				t.insert(0,1)
 				newcode.insert(0, t)
-			print "newcode"+str(newcode)
 			code = newcode
 		return code
 
