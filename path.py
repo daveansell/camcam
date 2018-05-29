@@ -328,17 +328,22 @@ class Path(object):
                         self.points[1%l].lastpoint = self.points[0]
 
 
-        def add_points(self,points, end='end'):
+        def add_points(self,points, end='end', transform={}):
                 for p in points:
                         if hasattr(p,'obType') and p.obType=='Point':
+				q = copy.deepcopy(p)
+				q.transform=transform
+				print str(transform)+"  "+str(q.pos)
+
                                 if end=='end':
-                                        self.points.append(p)
+                                        self.points.append(q)
                                 else:
-                                        self.points.insert(0,p)
+                                        self.points.insert(0,q)
                         else:
                                 raise TypeError( "add_points - adding a non-point "+str(type(p)))
                 self.has_changed()
                 self.reset_points()
+
         def get_last_vec(self,points=False):
                 if points==False:
                         points=self.points
@@ -488,6 +493,7 @@ class Path(object):
                         self.points[p-1].nextpoint = self.points[p+1]
                         self.points[p+1].lastpoint = self.points[p-1]
                 self.points.pop(p)
+
         def simplify_points(self):
                 if len(self.points)>2:
                         for p,point in enumerate(self.points):
@@ -497,11 +503,11 @@ class Path(object):
 #				  or (point.point_type == 'insharp' and 
 #					point.next().point_type=='insharp' and 
 #					point.last().point_type=='insharp') ):# and p!=0 and p!=len(self.points)-1:
-                                        if (point.pos-point.lastpoint.pos).length()<0.0001:
+                                        if (point.point_transform({}).pos-point.lastpoint.point_transform({}).pos).length()<0.0001:
                                                 self.delete_point(p)
-                                        elif point.pos!= point.next().pos and abs((point.pos-point.last().pos).normalize().dot((point.next().pos-point.pos).normalize())-1)<0.0001:
+                                        elif point.point_transform({}).pos!= point.next().point_transform({}).pos and abs((point.point_transform({}).pos-point.last().point_transform({}).pos).normalize().dot((point.next().point_transform({}).pos-point.point_transform({}).pos).normalize())-1)<0.0001:
                                                 self.delete_point(p)
-                                elif point.point_type == point.lastpoint.point_type and (point.pos-point.lastpoint.pos).length()<0.0001:
+                                elif point.point_type == point.lastpoint.point_type and (point.point_transform({}).pos-point.lastpoint.point_transform({}).pos).length()<0.0001:
                                         self.delete_point(p)
         def offset_path(self,side,distance, config):
                 self.simplify_points()
