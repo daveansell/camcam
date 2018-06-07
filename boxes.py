@@ -1378,7 +1378,7 @@ class ArbitraryBox(Part):
 
 	def preparsePoints(self, face):
 		p=0
-		if 'point_types' not in face:
+		if 'point_type' not in face:
 			face['point_type']={}
 		for pnt in face['points']:
 			if type(pnt) is not Vec:
