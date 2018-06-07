@@ -527,6 +527,7 @@ class ArbitraryBox(Part):
                 else:
                         self.name='box'
                 for f, face in faces.iteritems():
+			self.preparsePoints(face)
                         self.make_sides(f,face['points'])
                         self.make_normal(f, face['points'])
                         face['internal_joints'] = []
@@ -790,6 +791,8 @@ class ArbitraryBox(Part):
                                 if ((p-1)%len(face['sides'])) in face['point_type']:
                                         newpoints.append(face['point_type'][(p-1)%len(face['sides'])])
                                         newpoints[-1].setPos(lastpoint)
+					if face['point_type'] not in ['sharp', 'insharp', 'clear', 'doubleclear']:
+						nointersect=True
                                 else:
                                         newpoints.append(PInsharp(lastpoint))
                                 if scount in face['point_type']:
@@ -932,16 +935,16 @@ class ArbitraryBox(Part):
                                                                 0, fudge, 
                                                                 nextcorner=nextcorner, 
                                                                 lastcorner=lastcorner)
-                        
                         if first or len(newpoints)<2 or nointersect:
                                 first = False
                                 path.add_points(newpoints)
                         else:
                                 path.add_points_intersect(newpoints)
                         p += 1
-
                 if len(newpoints) >1 and not firstnointersect:
                         path.close_intersect()
+		for q in path.points:
+			print f+str(q)+" "+str(q.pos)
                 simplepath.add_points(simplepoints)
                 path.simplify_points()
          #	part.add(simplepath)
@@ -1276,7 +1279,8 @@ class ArbitraryBox(Part):
                         p+=1
 
                 if len(self.sides[sid]) > 2:
-                        raise ValueError("more than 2 faces with the same side "+str(self.sides[sid1]))
+			print self.sides[sid]
+                        raise ValueError("more than 2 faces with the same side "+str(self.sides[sid]))
 
         def set_joint_type(self, s, side):
                 face1 = self.faces[side[0][0]]
@@ -1355,7 +1359,7 @@ class ArbitraryBox(Part):
                 elif t<0:
                         sideSign = -1
                 else:
-                        print ValueError( " Two adjoinig faces are parallel "+str(side[0][0])+" and "+ str(side[1][0])+" "+str(side[1][1])+" avSvec="+str(avSvec)+str(face1['normal'])+" == "+str(face2['normal']))
+                        print ValueError( " Two adjoinig faces are parallel "+str(side[0][0])+" "+str(side[0][1])+" and "+ str(side[1][0])+" "+str(side[1][1])+" avSvec="+str(avSvec)+str(face1['normal'])+" == "+str(face2['normal']))
                         face1['corners'][scount1] = 'straight'	
                         if scount2 is not None:
                                 face2['corners'][scount2] = 'straight'
@@ -1372,6 +1376,15 @@ class ArbitraryBox(Part):
                 side[1].append(altside)
                 side[1].append('convex')
 
+	def preparsePoints(self, face):
+		p=0
+		if 'point_types' not in face:
+			face['point_type']={}
+		for pnt in face['points']:
+			if type(pnt) is not Vec:
+				face['point_type'][p]=pnt
+				face['points'][p]=pnt.pos
+			p+=1
 
 class PlainBox2(ArbitraryBox):
         def __init__(self, pos, name, layers, width, height, depth, thickness, tab_length, **config):
