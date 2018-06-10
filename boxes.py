@@ -668,12 +668,12 @@ class ArbitraryBox(Part):
                         setattr(self, 'face_' + f, t)
 #		def _pre_render(self):
                         self.align3d_face(t, f, face)
-                
+               
+# find any edges in the middle of other faces
         def find_in_face(self,s,side):
                 face1 = self.faces[side[0][0]]
                 p1 = face1['points'][ (side[0][1]-1)%len(face1['points']) ]
                 p2 = face1['points'][side[0][1]]
-
                 for f, face in self.faces.iteritems():
                         if f!= side[0][0]:
                                 p1a = p1-face['origin']
@@ -686,7 +686,7 @@ class ArbitraryBox(Part):
                                         for point in face['ppoints']:
                                                 p.add_point(point)
                                         poly=p.polygonise()
-                                                
+					
                                         if p.contains_point(p1p,poly) and p.contains_point(p2p, poly) and abs(p1p[2])<0.05 and abs(p2p[2])<0.05:
                                                 self.faces[f]['internal_joints'].append( { 'side':s, 'otherside':side[0], 'from':p1p, 'to':p2p, 'otherface':face1, 'otherf':side[0][0], 'sidedat':side, 'from3D':p1, 'to3D':p2 } )
                                                 side.append( [ '_internal', f, len(self.faces[f]['internal_joints'])-1 ])
@@ -943,8 +943,6 @@ class ArbitraryBox(Part):
                         p += 1
                 if len(newpoints) >1 and not firstnointersect:
                         path.close_intersect()
-		for q in path.points:
-			print f+str(q)+" "+str(q.pos)
                 simplepath.add_points(simplepoints)
                 path.simplify_points()
          #	part.add(simplepath)

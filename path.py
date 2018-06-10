@@ -714,6 +714,7 @@ class Path(object):
                 ret = sPoly.contains(sPoint)
                 if ret:	
                         return ret
+		points.append((poly[0][0], poly[0][1]))
                 sLine = shapely.geometry.LineString(points)
                 if(sPoint.distance(sLine)<0.01):
                         return True
@@ -1172,6 +1173,10 @@ class Path(object):
                                 colour=point['_colour']
                         else:
                                 colour='black'
+			if '_fill' in point and point['_fill'] is not None:
+				fill = point['_fill']
+			else:
+				fill = 'none'
                         if '_opacity' in point:
                                 opacity = "opacity:"+str(point['_opacity'])
                         else:
@@ -1181,8 +1186,7 @@ class Path(object):
                         else:
                                 z=''
                 ret+=z
-
-                return comments+"<path d=\""+ret+"\"  style='stroke-width:0.1px;"+opacity+"' fill='none' stroke='"+colour+"'/>\n"
+                return comments+"<path d=\""+ret+"\"  style='stroke-width:0.1px;"+opacity+"' fill='"+fill+"' stroke='"+colour+"'/>\n"
 
         def render_path_gcode(self,path,config):
                 ret=""
@@ -1265,8 +1269,14 @@ class Path(object):
                                 cut['F']=self.get_feedrate(x,y,z,config)
 
         def add_colour(self, config):
+		colour = self.get_colour(config)
+		if 'fill_colour' in config:
+			fill = config['fill_colour']
+		else:
+			fill = 'none'
                 for cut in self.output:
-                        cut['_colour']=self.get_colour(config)
+                        cut['_colour']=colour
+			cut['_fill']=fill
                         if 'opacity' in config:
                                 cut['_opacity'] = config['opacity']
                         if self.closed:
@@ -1405,7 +1415,6 @@ class Path(object):
 			finishdepth = self.finishdepth
 		else:
 			finishdepth = config['finishdepth']
-		print "finishdepth="+str(finishdepth)
 		if finishdepth>0:
 			z1=config['z1']+finishdepth
 		else:
