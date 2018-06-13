@@ -348,6 +348,7 @@ class Circle(Path):
         def __init__(self, pos, rad, **config):
                 self.init( config)
                 self.rad = rad
+                self.pos = pos
                 """Cut a circle centre at :param pos: with radius :param rad:"""+self.otherargs
                 if rad==0:
                         raise ValueError("circle of zero radius")
@@ -1148,6 +1149,12 @@ class Bolt(Part):
                                 else:
                                         self.add(Hole(pos, milling.bolts[thread]['tap']/2, side='in'),thread_layer)
 
+class AngledButtJoint(list):
+        def __init__(self, start, end, side, linemode, startmode, endmode, hole_spacing, thickness, cutterrad,  angle, lineside='back', **config):
+		newThickness = thickness / math.sin(float(angle)/math.pi*180)
+			
+		for p in ButtJoint(start, end, side, linemode, startmode, endmode, hole_spacing, newThickness, cutterrad,**config):
+			self.append(p) 
 class ButtJoint(list):
         def __init__(self, start, end, side, linemode, startmode, endmode, hole_spacing, thickness, cutterrad, **config):
                 assert startmode==endmode, "ButtJoint - startmode and endmode should be the same"
@@ -1274,6 +1281,11 @@ class ButtJointMid(Pathgroup):
                                                 z1 = -depth, side='in',
                                                 cornertype = PInsharp))
 
+class AngledButtJointMid(ButtJointMid):
+	def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode,  angle, lineside='back', **config):
+		
+		newThickness = thickness / math.sin(float(angle)/math.pi*180)
+		super(AngledButtJointMid, self).__init__(start, end, side,linemode, startmode, endmode, hole_spacing, newThickness, cutterrad, prevmode, nextmode, **config)
 
 class FingerJointMid(Pathgroup):
         def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, prevmode, nextmode, **config):
