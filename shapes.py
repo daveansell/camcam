@@ -1285,6 +1285,10 @@ class AngledButtJointMid(ButtJointMid):
 	def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode,  angle, lineside='back', **config):
 		
 		newThickness = thickness / math.sin(float(angle)/math.pi*180)
+		if 'hole_offset' in config and config['hole_offset'] is not None:
+			config['hole_offset']-=newThickness
+		else:
+			config['hole_offset']=-newThickness
 		super(AngledButtJointMid, self).__init__(start, end, side,linemode, startmode, endmode, hole_spacing, newThickness, cutterrad, prevmode, nextmode, **config)
 
 class FingerJointMid(Pathgroup):
