@@ -333,7 +333,6 @@ class Path(object):
                         if hasattr(p,'obType') and p.obType=='Point':
 				q = copy.deepcopy(p)
 				q.transform=transform
-				print str(transform)+"  "+str(q.pos)
 
                                 if end=='end':
                                         self.points.append(q)
@@ -373,7 +372,7 @@ class Path(object):
                         if joint is not False:
 #		joint=self.intersect_lines(self.points[len(self.points)-2].pos, self.points[len(self.points)-1].pos, points[0].pos, points[1].pos)
                                 del(self.points[len(self.points)-1])
-                                self.points.append(PSharp(joint))
+                                self.points.append(PInsharp(joint))
 #			del(self.points[len(self.points)-1])
                 for i in range(1, len(points)):
                         self.points.append(points[i])
@@ -438,6 +437,7 @@ class Path(object):
                 self.reset_points()
                 self.simplify_points()
                 pointlist = self.transform_pointlist(self.points,config['transformations'])
+                self.reset_points(pointlist)
                 if direction!=self.find_direction(config):
                         pointlist.reverse()
                         # this is in the wrong sense as it will be run second in the reversed sense
@@ -452,13 +452,12 @@ class Path(object):
                 else:
                                 config['cutside']='left'
                 numpoints=len(pointlist)
-                self.reset_points()
+#                self.reset_points(pointlist)
                 #if(self.closed):
         #		numpoints=len(pointlist)
         #	else:
         #		numpoints=len(pointlist)*2-2
 #		for p,point in enumerate(pointlist):
-
                 for p in range(0,numpoints):
                         segment_array.extend(pointlist[p].generateSegment(self.isreversed, config))
                 for s in segment_array:
