@@ -850,9 +850,9 @@ class ArbitraryBox(Part):
                                                                         last_offset = 0
                                                         
                                                         newpoints = ButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner, last_offset=last_offset, next_offset=next_offset, lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), nextparallel = self.parallel(lastpoint, point, point, nextpoint))
-                                                        if corner=='off':
-                                                                newpoints.insert(0, PInsharp(lastpoint))
-#							if corner=='off':
+#                                                        if corner=='off':
+ #                                                               newpoints.insert(0, PInsharp(lastpoint))
+							if corner=='off' and otherside[0]=='_internal':
                                                                 newpoints.append( PInsharp(point))
                                                         if face['cut_from']<0:
                                                                 if  cutside=='left':
