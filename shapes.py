@@ -1243,7 +1243,7 @@ class MitreJoint(ButtJoint):
 			startmode='off'
 		else:
 			startmode='on'
-		newThickness = thickness * ( math.tan(float(angle)/180*math.pi))
+		newThickness = thickness * ( math.tan(float(angle)/2/180*math.pi))
 		super(MitreJoint, self).__init__(start, end, side, linemode, startmode, startmode, hole_spacing, newThickness, cutterrad,**config)
 
 class ButtJointMid(Pathgroup):
