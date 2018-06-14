@@ -823,17 +823,17 @@ class DoubleFlat(Path):
                 self.closed=True
                 y=math.sqrt(rad**2 - flat_rad**2)
                 self.add_point(pos+V(-flat_rad,0))
-                self.add_point(pos+V(-flat_rad,-y), point_type='sharp')
+                self.add_point(pos+V(-flat_rad,-y), point_type='clear')
 #		self.add_point(pos, radius=rad, direction='cw', point_type='arc')
 #		self.add_point(pos, radius=rad, direction='cw', point_type='aroundcurve')
                 self.add_point(pos, direction='ccw', radius=rad, point_type='arc')
-                self.add_point(pos+V(flat_rad, -y), point_type='sharp')
+                self.add_point(pos+V(flat_rad, -y), point_type='clear')
                 self.add_point(pos+V(flat_rad, 0), point_type='sharp')
-                self.add_point(pos+V(flat_rad, y),  point_type='sharp')
+                self.add_point(pos+V(flat_rad, y),  point_type='clear')
 #		self.add_point(pos, radius=rad, point_type='arc', direction='cw')
 #		self.add_point(pos, radius=rad, point_type='aroundcurve', direction='cw')
                 self.add_point(pos,  point_type='arc', radius=rad, direction='ccw')
-                self.add_point(pos+V(-flat_rad,y), point_type='sharp')
+                self.add_point(pos+V(-flat_rad,y), point_type='clear')
 
 class Cross(Pathgroup):
         def __init__(self, pos, rad, **config):
