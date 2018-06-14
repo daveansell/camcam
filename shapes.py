@@ -309,8 +309,9 @@ class Polygon(Path):
                         cornerdir=config['cornerdir']
                 else:
                         cornerdir=False
+		print "ISES="+str(sides)
                 for i in range(0,int(sides)):
-                        self.add_point(pos+V(rad,0),cornertype,cornerrad,direction=cornerdir, transform={'rotate':[pos,i*step]})
+                        self.add_point(pos+rotate(V(rad,0), i*step),cornertype,cornerrad,direction=cornerdir)
                 self.comment("Polygon")
                 self.comment("pos="+str(pos)+" rad="+str(rad)+" sides="+str(sides)+" cornertype="+cornertype)
 
