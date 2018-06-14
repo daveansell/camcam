@@ -348,6 +348,7 @@ class Circle(Path):
         def __init__(self, pos, rad, **config):
                 self.init( config)
                 self.rad = rad
+                self.pos = pos
                 """Cut a circle centre at :param pos: with radius :param rad:"""+self.otherargs
                 if rad==0:
                         raise ValueError("circle of zero radius")
@@ -946,9 +947,14 @@ class Hole(Pathgroup):
 class HoleLine(Pathgroup):
         def __init__(self, start, end, number, rad, **config):
                 self.init(config)
+		if 'hole_depth' in config and config['hole_depth'] is not False:
+			z1=-config['hole_depth']
+		else:
+			z1=False
+		
                 step=(end-start)/(number-1)
                 for i in range(0,number):
-                        self.add(Hole(start+step*i, rad)) #self.add(Hole(start+step*i, rad, 'in'))
+                        self.add(Hole(start+step*i, rad=rad, z1=z1)) #self.add(Hole(start+step*i, rad, 'in'))
                 self.comment("HoleLine")
                 self.comment("start="+str(start)+" end="+str(end)+" number="+str(number)+" rad="+str(rad))
 
@@ -1148,6 +1154,12 @@ class Bolt(Part):
                                 else:
                                         self.add(Hole(pos, milling.bolts[thread]['tap']/2, side='in'),thread_layer)
 
+class AngledButtJoint(list):
+        def __init__(self, start, end, side, linemode, startmode, endmode, hole_spacing, thickness, cutterrad,  angle, lineside='back', **config):
+		newThickness = thickness / math.sin(float(angle)/math.pi*180)
+			
+		for p in ButtJoint(start, end, side, linemode, startmode, endmode, hole_spacing, newThickness, cutterrad,**config):
+			self.append(p) 
 class ButtJoint(list):
         def __init__(self, start, end, side, linemode, startmode, endmode, hole_spacing, thickness, cutterrad, **config):
                 assert startmode==endmode, "ButtJoint - startmode and endmode should be the same"
@@ -1215,6 +1227,25 @@ class ButtJoint(list):
                         self.append(pointtype(end-next_offset+perp*thickness))
                 elif  abs(extra)>0 and not (endmode == 'off' and nextcorner == 'off') and not nextparallel:
                         self.append(pointtype(end-next_offset))
+
+class AngledButtJoint(ButtJoint):
+        def __init__(self, start, end, side, linemode, startmode, endmode, hole_spacing, thickness, cutterrad,  angle, lineside='back', **config):
+		newThickness = thickness / math.sin(float(angle)/math.pi*180)
+		super(AngledButtJoint, self).__init__(start, end, side, linemode, startmode, endmode, hole_spacing, newThickness, cutterrad,**config)
+
+class MitreJoint(ButtJoint):
+	def __init__(self, start, end, side, linemode, startmode, endmode, hole_spacing, thickness, cutterrad,  angle, lineside='back', **config):
+		if 'joint_type' in config:
+			joint_type = config['joint_type']
+		else:
+			joint_type = 'convex'
+		if joint_type=='convex':
+			startmode='off'
+		else:
+			startmode='on'
+		newThickness = thickness * ( math.tan(float(angle)/2/180*math.pi))
+		super(MitreJoint, self).__init__(start, end, side, linemode, startmode, startmode, hole_spacing, newThickness, cutterrad,**config)
+
 class ButtJointMid(Pathgroup):
         def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode, **config):
                 self.init(config)
@@ -1264,7 +1295,11 @@ class ButtJointMid(Pathgroup):
                                 holepos = thickness/2+hole_offset
                                 deppos = 0
                         if holes:
-                                self.add(HoleLine(start+parallel*hole_length/2 + perp*(holepos), end - parallel*hole_length/2 + perp*(holepos), num_holes,  holerad))
+				if 'hole_depth' in config:
+					hole_depth = config['hole_depth']
+				else:
+					hole_depth = False
+                                self.add(HoleLine(start+parallel*hole_length/2 + perp*(holepos), end - parallel*hole_length/2 + perp*(holepos), num_holes,  holerad, hole_depth=hole_depth))
         
                         if depression:
                                 print "depression="+str(depth)
@@ -1274,6 +1309,15 @@ class ButtJointMid(Pathgroup):
                                                 z1 = -depth, side='in',
                                                 cornertype = PInsharp))
 
+class AngledButtJointMid(ButtJointMid):
+	def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode,  angle, lineside='back', **config):
+		config['hole_depth']=2
+		newThickness = thickness / math.sin(float(angle)/math.pi*180)
+		if 'hole_offset' in config and config['hole_offset'] is not None:
+			config['hole_offset']+=newThickness
+		else:
+			config['hole_offset']=newThickness
+		super(AngledButtJointMid, self).__init__(start, end, side,linemode, startmode, endmode, hole_spacing, newThickness, cutterrad, prevmode, nextmode, **config)
 
 class FingerJointMid(Pathgroup):
         def __init__(self, start, end, side,linemode, startmode, endmode, tab_length, thickness, cutterrad, prevmode, nextmode, **config):

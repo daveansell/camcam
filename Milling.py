@@ -199,6 +199,7 @@ class Milling:
 #				'transformations':[{'scale':1/2.54}]
                                 'label':False,
                                 'zero':False,
+				'file_suffix':'.svg'
                         },
                         'paper':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -242,6 +243,7 @@ class Milling:
                                 'z_overshoot':0,
                                 'label':False,
                                 'zero':False,
+				'file_suffix':'.svg'
                         },
                         'diagram':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n <svg width="594mm" height="420mm"\n   xmlns:dc="http://purl.org/dc/elements/1.1/" \n   xmlns:cc="http://creativecommons.org/ns#"\n   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n   xmlns:svg="http://www.w3.org/2000/svg"\n   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"\n   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"\n   xmlns="http://www.w3.org/2000/svg"\n version="1.1" viewBox="0 0 594 420">\n<sodipodi:namedview      id="base"      pagecolor="#ffffff"      bordercolor="#666666"      borderopacity="1.0"      inkscape:pageopacity="0.0"      inkscape:pageshadow="2"     inkscape:zoom="0.35"     inkscape:cx="375"     inkscape:cy="520"     inkscape:document-units="mm"     inkscape:current-layer="layer1"     showgrid="false"     units="mm"     inkscape:window-width="504"     inkscape:window-height="441"     inkscape:window-x="320"     inkscape:window-y="25"     inkscape:window-maximized="0" />\n<g transform="scale(1, -1) translate(0,-420)">',

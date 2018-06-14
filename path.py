@@ -328,17 +328,21 @@ class Path(object):
                         self.points[1%l].lastpoint = self.points[0]
 
 
-        def add_points(self,points, end='end'):
+        def add_points(self,points, end='end', transform={}):
                 for p in points:
                         if hasattr(p,'obType') and p.obType=='Point':
+				q = copy.deepcopy(p)
+				q.transform=transform
+
                                 if end=='end':
-                                        self.points.append(p)
+                                        self.points.append(q)
                                 else:
-                                        self.points.insert(0,p)
+                                        self.points.insert(0,q)
                         else:
                                 raise TypeError( "add_points - adding a non-point "+str(type(p)))
                 self.has_changed()
                 self.reset_points()
+
         def get_last_vec(self,points=False):
                 if points==False:
                         points=self.points
@@ -368,7 +372,7 @@ class Path(object):
                         if joint is not False:
 #		joint=self.intersect_lines(self.points[len(self.points)-2].pos, self.points[len(self.points)-1].pos, points[0].pos, points[1].pos)
                                 del(self.points[len(self.points)-1])
-                                self.points.append(PSharp(joint))
+                                self.points.append(PInsharp(joint))
 #			del(self.points[len(self.points)-1])
                 for i in range(1, len(points)):
                         self.points.append(points[i])
@@ -433,6 +437,7 @@ class Path(object):
                 self.reset_points()
                 self.simplify_points()
                 pointlist = self.transform_pointlist(self.points,config['transformations'])
+                self.reset_points(pointlist)
                 if direction!=self.find_direction(config):
                         pointlist.reverse()
                         # this is in the wrong sense as it will be run second in the reversed sense
@@ -447,13 +452,12 @@ class Path(object):
                 else:
                                 config['cutside']='left'
                 numpoints=len(pointlist)
-                self.reset_points()
+#                self.reset_points(pointlist)
                 #if(self.closed):
         #		numpoints=len(pointlist)
         #	else:
         #		numpoints=len(pointlist)*2-2
 #		for p,point in enumerate(pointlist):
-
                 for p in range(0,numpoints):
                         segment_array.extend(pointlist[p].generateSegment(self.isreversed, config))
                 for s in segment_array:
@@ -488,6 +492,7 @@ class Path(object):
                         self.points[p-1].nextpoint = self.points[p+1]
                         self.points[p+1].lastpoint = self.points[p-1]
                 self.points.pop(p)
+
         def simplify_points(self):
                 if len(self.points)>2:
                         for p,point in enumerate(self.points):
@@ -497,11 +502,11 @@ class Path(object):
 #				  or (point.point_type == 'insharp' and 
 #					point.next().point_type=='insharp' and 
 #					point.last().point_type=='insharp') ):# and p!=0 and p!=len(self.points)-1:
-                                        if (point.pos-point.lastpoint.pos).length()<0.0001:
+                                        if (point.point_transform({}).pos-point.lastpoint.point_transform({}).pos).length()<0.0001:
                                                 self.delete_point(p)
-                                        elif point.pos!= point.next().pos and abs((point.pos-point.last().pos).normalize().dot((point.next().pos-point.pos).normalize())-1)<0.0001:
+                                        elif point.point_transform({}).pos!= point.next().point_transform({}).pos and abs((point.point_transform({}).pos-point.last().point_transform({}).pos).normalize().dot((point.next().point_transform({}).pos-point.point_transform({}).pos).normalize())-1)<0.0001:
                                                 self.delete_point(p)
-                                elif point.point_type == point.lastpoint.point_type and (point.pos-point.lastpoint.pos).length()<0.0001:
+                                elif point.point_type == point.lastpoint.point_type and (point.point_transform({}).pos-point.lastpoint.point_transform({}).pos).length()<0.0001:
                                         self.delete_point(p)
         def offset_path(self,side,distance, config):
                 self.simplify_points()
@@ -708,6 +713,7 @@ class Path(object):
                 ret = sPoly.contains(sPoint)
                 if ret:	
                         return ret
+		points.append((poly[0][0], poly[0][1]))
                 sLine = shapely.geometry.LineString(points)
                 if(sPoint.distance(sLine)<0.01):
                         return True
@@ -1166,6 +1172,10 @@ class Path(object):
                                 colour=point['_colour']
                         else:
                                 colour='black'
+			if '_fill' in point and point['_fill'] is not None:
+				fill = point['_fill']
+			else:
+				fill = 'none'
                         if '_opacity' in point:
                                 opacity = "opacity:"+str(point['_opacity'])
                         else:
@@ -1175,8 +1185,7 @@ class Path(object):
                         else:
                                 z=''
                 ret+=z
-
-                return comments+"<path d=\""+ret+"\"  style='stroke-width:0.1px;"+opacity+"' fill='none' stroke='"+colour+"'/>\n"
+                return comments+"<path d=\""+ret+"\"  style='stroke-width:0.1px;"+opacity+"' fill='"+fill+"' stroke='"+colour+"'/>\n"
 
         def render_path_gcode(self,path,config):
                 ret=""
@@ -1259,8 +1268,14 @@ class Path(object):
                                 cut['F']=self.get_feedrate(x,y,z,config)
 
         def add_colour(self, config):
+		colour = self.get_colour(config)
+		if 'fill_colour' in config:
+			fill = config['fill_colour']
+		else:
+			fill = 'none'
                 for cut in self.output:
-                        cut['_colour']=self.get_colour(config)
+                        cut['_colour']=colour
+			cut['_fill']=fill
                         if 'opacity' in config:
                                 cut['_opacity'] = config['opacity']
                         if self.closed:
@@ -1399,7 +1414,6 @@ class Path(object):
 			finishdepth = self.finishdepth
 		else:
 			finishdepth = config['finishdepth']
-		print "finishdepth="+str(finishdepth)
 		if finishdepth>0:
 			z1=config['z1']+finishdepth
 		else:
