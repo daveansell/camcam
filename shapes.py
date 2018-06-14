@@ -1227,6 +1227,25 @@ class ButtJoint(list):
                         self.append(pointtype(end-next_offset+perp*thickness))
                 elif  abs(extra)>0 and not (endmode == 'off' and nextcorner == 'off') and not nextparallel:
                         self.append(pointtype(end-next_offset))
+
+class AngledButtJoint(ButtJoint):
+        def __init__(self, start, end, side, linemode, startmode, endmode, hole_spacing, thickness, cutterrad,  angle, lineside='back', **config):
+		newThickness = thickness / math.sin(float(angle)/math.pi*180)
+		super(AngledButtJoint, self).__init__(start, end, side, linemode, startmode, endmode, hole_spacing, newThickness, cutterrad,**config)
+
+class MitreJoint(ButtJoint):
+	def __init__(self, start, end, side, linemode, startmode, endmode, hole_spacing, thickness, cutterrad,  angle, lineside='back', **config):
+		if 'joint_type' in config:
+			joint_type = config['joint_type']
+		else:
+			joint_type = 'convex'
+		if joint_type=='convex':
+			startmode='off'
+		else:
+			startmode='on'
+		newThickness = thickness * ( math.tan(float(angle)/180*math.pi))
+		super(MitreJoint, self).__init__(start, end, side, linemode, startmode, startmode, hole_spacing, newThickness, cutterrad,**config)
+
 class ButtJointMid(Pathgroup):
         def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode, **config):
                 self.init(config)

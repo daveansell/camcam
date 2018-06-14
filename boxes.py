@@ -827,6 +827,31 @@ class ArbitraryBox(Part):
                                                 fudge = self.fudge
                                         if face['joint_mode'][scount]=='straight':
                                                 newpoints = [PInsharp(lastpoint),PInsharp(point)]
+					elif face['joint_mode'][scount]=='mitre':
+                                                        if cutside=='left' and joint_type=='concave':
+                                                                cutside='right'
+                                                        if cutside=='right' and joint_type=='concave':
+                                                                cutside='left'
+
+                                                        if nextotherside is None or nextotherside[0]=='_internal':
+                                                                next_offset = 0
+                                                        else:
+                                                                if nextside[6]=='concave' and nextcorner=='off':
+                                                                        next_offset = self.faces[nextotherside[0]]['thickness']
+                                                                else:
+                                                                        next_offset = 0
+                                                        if lastotherside is None or lastotherside[0]=='_internal':
+                                                                last_offset = 0
+                                                        else:
+                                                                if lastside[6]=='concave' and lastcorner=='off':
+                                                                        last_offset = self.faces[lastotherside[0]]['thickness']
+                                                                else:
+                                                                        last_offset = 0
+							newpoints = MitreJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0,angle, fudge = fudge, joint_type=joint_type, nextcorner=nextcorner, lastcorner=lastcorner, last_offset=last_offset, next_offset=next_offset, lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), nextparallel = self.parallel(lastpoint, point, point, nextpoint))
+#                                                        if corner=='off':
+ #                                                               newpoints.insert(0, PInsharp(lastpoint))
+                                                        if corner=='off' and otherside[0]=='_internal':
+                                                                newpoints.append( PInsharp(point))
                                         elif face['joint_mode'][scount]=='butt':
                                                 if angle==0:
                                                         if cutside=='left' and joint_type=='concave':
@@ -877,6 +902,7 @@ class ArbitraryBox(Part):
                                                                         cutside= 'right'
                                                                 else:
                                                                         cutside='left'
+
                                                         part.add(AngledButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on', angle, lineside,  butt_depression=face['butt_depression'][scount], holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount]))
                                                         if not(lastcorner == 'off' and corner=='off'):
                                                                 nointersect==True
@@ -998,6 +1024,7 @@ class ArbitraryBox(Part):
                         if joint['joint_mode']=='straight':
                                 pass
                         elif joint['joint_mode']=='butt':
+				pass
                                 part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes'], joint_type='convex', fudge=fudge))
                         elif joint['joint_mode']=='bracket':
                                 part.add(BracketJointHoles(
