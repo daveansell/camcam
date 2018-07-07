@@ -104,7 +104,9 @@ class Network(list):
 		next_connection = otherNode.connections[ (connection.brother.order + 1)%len(otherNode.connections)]
 		if next_connection !=first:
 			loop.extend(self.get_loop(next_connection, first=first))
-		self.connections.remove(connection)
+		print connection
+		if connection in self.connections:
+			self.connections.remove(connection)
 		print loop
 		return loop
 
@@ -116,18 +118,18 @@ class Network(list):
 		while(len(self.connections)):
 			self.loops.append(self.get_loop(self.connections.pop()))
 		print "loops"+str(self.loops)	
-	def get_width(self,connection, part):
+	def get_width(self,connection, node):
 		if connection.width is not None:
 			return connection.width
-		if connection[part].width is not None:
+		if node.width is not None:
 			return connection[part].width
 		return self.defaultWidth
 
 	def corner_pos(self, connection1, connection2):
-		d1=(connection1[0].pos - connection1[1].pos).normalize()
-		d2=(connection2[1].pos - connection1[1].pos).normalize()
-		w1=self.get_width(connection1,1)/2
-		w2=self.get_width(connection2,0)/2
+		d1=(connection1.this.pos - connection1.other.pos).normalize()
+		d2=(connection2.this.pos - connection1.other.pos).normalize()
+		w1=self.get_width(connection1,connection1.other)/2
+		w2=self.get_width(connection2,connection2.this)/2
 		b = (d1[0]*d2[0]*w2 + w1*d1[0]**2 - w1*d1[1]**2 - w2*d1[1]*d2[1]) / (d1[1]*d2[0]-d1[0]*d2[1])
 # rotate direction can be correct if connection1 &2 are always in same rotational order
 		return connection1[1].pos + b*d2 + w2*rotate(d2,90)
@@ -137,13 +139,13 @@ class Network(list):
 		for c in range(0,len(loop)):
 			connection=loop[c]
 			nextConnection = loop[(c+1)%len(loop)]
-			path.add_point(PSharp(connection[1].pos + self.corner_pos(connection, nextConnection)))
+			path.add_point(PSharp(connection.other.pos + self.corner_pos(connection, nextConnection)))
 		return Path
 
 	def make_paths(self):
 		self.make_loops()
 		for loop in self.loops:
-			self.append(make_path(loop))
+			self.append(self.make_path(loop))
 		self.find_border()
 
 	def find_border(self):
