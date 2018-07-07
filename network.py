@@ -18,7 +18,7 @@ class Node:
 		i=0
 		for conn in self.connections:
 			conn.order=i
-			i++
+			i+=1
 		
 	def sort_func(self, connection):
 		p1=self.pos
@@ -27,7 +27,7 @@ class Node:
 		return atan2(v[0], v[1])
 	
 	def add(self, connection):
-		brother = Connection(self, connection.width, connection))
+		brother = Connection(self, connection.width, connection)
 		connection.other.add(brother)
 		connection.brother=brother
 		self.connections.append(connection)
@@ -43,7 +43,7 @@ class Connection(list):
 		self.append(this)
 		self.append(other)
 
-class Network(List):
+class Network(list):
 	def __init__(self, defaultWidth, **config):
 		self.init(config)
 		self.defaultWidth=defaultWidth
@@ -54,7 +54,7 @@ class Network(List):
 	def add(self,node):
 		self.nodes.append(node)
 # gather all connections from all nodes
-	def gather_connections:
+	def gather_connections(self):
 		self.connections=[]
 		for node in nodes:
 			node.sort_connections()
@@ -69,7 +69,7 @@ class Network(List):
 		otherpos = connection(other)
 		next_connection = otherpos.connections[ connection.brother.order + 1]
 		if next_connection !=first:
-			loop.extend(self.get_loop(next_connection, first=first)
+			loop.extend(self.get_loop(next_connection, first=first))
 		self.connections.remove(connection)
 		return loop
 
