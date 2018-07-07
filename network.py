@@ -63,6 +63,7 @@ class NetworkPart(Part):
 	def __init__(self, netlist, **config):
 		self.init(config)
 		for path in netlist:
+			print path
 			if path==netlist.border:
 				self.add_border(path)
 			else:
@@ -141,7 +142,7 @@ class Network(list):
 			connection=loop[c]
 			nextConnection = loop[(c+1)%len(loop)]
 			path.add_point(PSharp(connection.other.pos + self.corner_pos(connection, nextConnection)))
-		return Path
+		return path
 
 	def make_paths(self):
 		self.make_loops()
