@@ -1,4 +1,5 @@
 from path import *
+from math import *
 
 class Node:
 	def __init__(self, pos, **config):
@@ -11,7 +12,7 @@ class Node:
 			self.width=config['width']
 		else:
 			self.width=None
-		connections=[]
+		self.connections=[]
 
 	def sort_connections(self):
 		self.connections.sort(key=self.sort_func)
@@ -22,13 +23,16 @@ class Node:
 		
 	def sort_func(self, connection):
 		p1=self.pos
-		p2=connection.pos
+		p2=connection.other.pos
 		v = p2-p1
-		return atan2(v[0], v[1])
+		return math.atan2(v[0], v[1])
 	
-	def add(self, connection):
-		brother = Connection(self, connection.width, connection)
-		connection.other.add(brother)
+	def add(self, connection, rev=False):
+		brother = Connection(self, connection.this, connection.width, connection)
+		print connection
+			
+		if not rev:
+			connection.other.add(brother, True)
 		connection.brother=brother
 		self.connections.append(connection)
 	
@@ -45,16 +49,16 @@ class Connection(list):
 
 class NetworkPart(Part):
 	def __init__(self, netlist, **config):
-		self.init(**config)
+		self.init(config)
 		for path in netlist:
 			if path==netlist.border:
 				self.add_border(path)
 			else:
 				self.add(path)
 
-class NetworkList(list):
+class Network(list):
 	def __init__(self, defaultWidth, **config):
-		self.init(config)
+		#self.init(config)
 		self.defaultWidth=defaultWidth
 		self.nodes = []
 		self.loops = []
@@ -62,10 +66,11 @@ class NetworkList(list):
 
 	def add(self,node):
 		self.nodes.append(node)
+		return node
 # gather all connections from all nodes
 	def gather_connections(self):
 		self.connections=[]
-		for node in nodes:
+		for node in self.nodes:
 			node.sort_connections()
 			self.connections.extend(node.connections)
 
@@ -75,8 +80,12 @@ class NetworkList(list):
 		if first==None:
 			first = connection
 		loop.append(connection)	
-		otherpos = connection(other)
-		next_connection = otherpos.connections[ connection.brother.order + 1]
+		otherNode = connection.other
+		print connection.order
+		print connection.brother
+		print connection.brother.order
+		print otherpos
+		next_connection = otherNode.connections[ connection.brother.order + 1]
 		if next_connection !=first:
 			loop.extend(self.get_loop(next_connection, first=first))
 		self.connections.remove(connection)
@@ -113,6 +122,7 @@ class NetworkList(list):
 		return Path
 
 	def make_paths(self):
+		self.make_loops()
 		for loop in self.loops:
 			self.append(make_path(loop))
 		self.find_border()
