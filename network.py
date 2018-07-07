@@ -43,7 +43,16 @@ class Connection(list):
 		self.append(this)
 		self.append(other)
 
-class Network(list):
+class NetworkPart(Part):
+	def __init__(self, netlist, **config):
+		self.init(**config)
+		for path in netlist:
+			if path==netlist.border:
+				self.add_border(path)
+			else:
+				self.add(path)
+
+class NetworkList(list):
 	def __init__(self, defaultWidth, **config):
 		self.init(config)
 		self.defaultWidth=defaultWidth
