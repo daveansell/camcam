@@ -20,7 +20,15 @@ class Node:
 		for conn in self.connections:
 			conn.order=i
 			i+=1
-		
+		for conn in self.connections:
+			print "sort="+str(conn)+"order="+str( conn.order)
+
+	def has_connection(self, node):
+		for conn in self.connections:	
+			if conn.other == node:
+				return conn
+		return False
+	
 	def sort_func(self, connection):
 		p1=self.pos
 		p2=connection.other.pos
@@ -28,24 +36,28 @@ class Node:
 		return math.atan2(v[0], v[1])
 	
 	def add(self, connection, rev=False):
-		brother = Connection(self, connection.this, connection.width, connection)
-		print connection
+		brother = Connection(connection.other, self, connection.width, connection)
+		print "add connection "+str(connection)+" "+str(rev)+" this "+str(connection.this)+" other="+str(connection.other)
 			
-		if not rev:
+		if not rev and not connection.other.has_connection(self):
 			connection.other.add(brother, True)
-		connection.brother=brother
-		self.connections.append(connection)
-	
-class Connection(list):
+			connection.brother=brother
+		if not self.has_connection(connection.other):
+			self.connections.append(connection)
+		else:
+			self.has_connection(connection.other).brother = self		
+class Connection:
 
 	def __init__(self, this, other, width=None, brother=None):
 		self.other=other
+		print str(self)+'this='+str(this)+"other="+str(other)+" self.other="+str(self.other)
 		self.this=this
 		self.width=width
 		self.brother = brother
 		self.order = None
-		self.append(this)
-		self.append(other)
+#		self.append(this)
+#		self.append(other)
+		assert other is not None
 
 class NetworkPart(Part):
 	def __init__(self, netlist, **config):
@@ -71,9 +83,10 @@ class Network(list):
 	def gather_connections(self):
 		self.connections=[]
 		for node in self.nodes:
+			print "NODE="+str(node)
 			node.sort_connections()
+			print node.connections
 			self.connections.extend(node.connections)
-
 # Work one place around a loop
 	def get_loop(self, connection, first=None):
 		loop=[]
@@ -81,22 +94,28 @@ class Network(list):
 			first = connection
 		loop.append(connection)	
 		otherNode = connection.other
-		print connection.order
-		print connection.brother
-		print connection.brother.order
-		print otherpos
-		next_connection = otherNode.connections[ connection.brother.order + 1]
+		print
+		print "GET_LOOP"
+		print str(connection)+" "+str(connection.order)
+		print "br "+str(connection.brother)+str( connection.brother.order)
+		print connection.this
+		print connection.other
+		print otherNode
+		next_connection = otherNode.connections[ (connection.brother.order + 1)%len(otherNode.connections)]
 		if next_connection !=first:
 			loop.extend(self.get_loop(next_connection, first=first))
 		self.connections.remove(connection)
+		print loop
 		return loop
 
 # Work along all connections in self.connections forming loops. As all connections exist in two directions they should all appear twice 
 	def make_loops(self):
-		self.gather_connections()					
+		self.gather_connections()
+		print "MAkr loops"
+		print self.connections					
 		while(len(self.connections)):
 			self.loops.append(self.get_loop(self.connections.pop()))
-			
+		print "loops"+str(self.loops)	
 	def get_width(self,connection, part):
 		if connection.width is not None:
 			return connection.width
