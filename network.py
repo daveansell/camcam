@@ -127,12 +127,13 @@ class Network(list):
 
 	def corner_pos(self, connection1, connection2):
 		d1=(connection1.this.pos - connection1.other.pos).normalize()
-		d2=(connection2.this.pos - connection1.other.pos).normalize()
+		d2=(connection2.other.pos - connection1.other.pos).normalize()
 		w1=self.get_width(connection1,connection1.other)/2
 		w2=self.get_width(connection2,connection2.this)/2
+		print "d1="+str(d1)+" d2="+str(d2)
 		b = (d1[0]*d2[0]*w2 + w1*d1[0]**2 - w1*d1[1]**2 - w2*d1[1]*d2[1]) / (d1[1]*d2[0]-d1[0]*d2[1])
 # rotate direction can be correct if connection1 &2 are always in same rotational order
-		return connection1[1].pos + b*d2 + w2*rotate(d2,90)
+		return connection1.other.pos + b*d2 + w2*rotate(d2,90)
 
 	def make_path(self, loop):
 		path=Path(closed=True)
@@ -152,6 +153,8 @@ class Network(list):
 		for p in range(0,len(self)):
 			path = self[p]
 			nextPath = self[(p+1)%len(self)]
+			print path
+			print nextPath
 			if path.contains(nextPath):
 				path.side='out'
 				self.border = path
