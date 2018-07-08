@@ -171,8 +171,12 @@ class Network(list):
 			else:
 				path.add_point(PSharp(connection.other.pos + self.corner_pos(connection, nextConnection)))
 			if connection.other.holeRad is not None:
-				print "add holerad"+str(connection.other.holeRad)
-				self.otherpaths.append(Circle(connection.other.pos, rad=connection.other.holeRad, side='in'))
+				if type(connection.other.holeRad) is int or type(connection.other.holeRad) is float:
+					self.otherpaths.append(Circle(connection.other.pos, rad=connection.other.holeRad, side='in'))
+				else:
+					t=copy.deepcopy(connection.other.holeRad)
+					t.translate(connection.other.pos)
+					self.otherpaths.append(t)
 		return path
 
 	def make_paths(self):
