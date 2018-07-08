@@ -152,7 +152,15 @@ class Network(list):
 		d2=(connection2.other.pos - connection1.other.pos).normalize()
 		w1=self.get_width(connection1,connection1.other)/2
 		w2=self.get_width(connection2,connection2.this)/2
-		b = (d2[0]*d1[0]*w2 + w1*d1[0]**2 + w1*d1[1]**2 + w2*d1[1]*d2[1]) / (d1[1]*d2[0]-d1[0]*d2[1])
+
+		if abs(d1.dot(d2) +1) < 0.0001:
+			b=0
+		else:
+			if (d1[1]*d2[0]-d1[0]*d2[1])==0:
+				print d1
+				print d2
+				raise ValueError("connections in the same place"+str(connection1.this.pos )+" "+str(connection1.other.pos)+" "+str(connection2.other.pos))
+			b = (d2[0]*d1[0]*w2 + w1*d1[0]**2 + w1*d1[1]**2 + w2*d1[1]*d2[1]) / (d1[1]*d2[0]-d1[0]*d2[1])
 # rotate direction can be correct if connection1 &2 are always in same rotational order
 		return ( b*d1 + w2*rotate(d1,90))
 
