@@ -12,6 +12,10 @@ class Node:
 			self.width=config['width']
 		else:
 			self.width=None
+		if 'radius' in config:
+			self.radius=config['radius']
+		else:
+			self.radius=None
 		self.connections=[]
 
 	def sort_connections(self):
@@ -130,7 +134,7 @@ class Network(list):
 		w2=self.get_width(connection2,connection2.this)/2
 		b = (d2[0]*d1[0]*w2 + w1*d1[0]**2 + w1*d1[1]**2 + w2*d1[1]*d2[1]) / (d1[1]*d2[0]-d1[0]*d2[1])
 # rotate direction can be correct if connection1 &2 are always in same rotational order
-		return connection1.other.pos + ( b*d1 + w2*rotate(d1,90))
+		return ( b*d1 + w2*rotate(d1,90))
 
 	def make_path(self, loop):
 		"""Create a path from a single loop"""
@@ -139,7 +143,11 @@ class Network(list):
 		for c in range(0,len(loop)):
 			connection=loop[c]
 			nextConnection = loop[(c+1)%len(loop)]
-			path.add_point(PSharp(connection.other.pos + self.corner_pos(connection, nextConnection)))
+			if connection.other.radius is not None and self.corner_pos(connection, nextConnection).length() < connection.other.radius:
+				print "AROUNGCURVE"
+				path.add_point(PAroundcurve(connection.other.pos + self.corner_pos(connection, nextConnection), centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
+			else:
+				path.add_point(PSharp(connection.other.pos + self.corner_pos(connection, nextConnection)))
 		return path
 
 	def make_paths(self):
