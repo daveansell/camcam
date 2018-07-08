@@ -62,9 +62,14 @@ class Connection:
 class NetworkPart(Part):
 	def __init__(self, netlist, **config):
 		self.init(config)
+		self.ignore_border=True
 		for path in netlist:
 			print path
+			print "PATH"
+			for pnt in path.points:
+				print pnt.pos
 			if path==netlist.border:
+				print "border"
 				self.add_border(path)
 			else:
 				self.add(path)
@@ -95,20 +100,11 @@ class Network(list):
 			first = connection
 		loop.append(connection)	
 		otherNode = connection.other
-		print
-		print "GET_LOOP"
-		print str(connection)+" "+str(connection.order)
-		print "br "+str(connection.brother)+str( connection.brother.order)
-		print connection.this
-		print connection.other
-		print otherNode
 		next_connection = otherNode.connections[ (connection.brother.order + 1)%len(otherNode.connections)]
 		if next_connection !=first:
 			loop.extend(self.get_loop(next_connection, first=first))
-		print connection
 		if connection in self.connections:
 			self.connections.remove(connection)
-		print loop
 		return loop
 
 # Work along all connections in self.connections forming loops. As all connections exist in two directions they should all appear twice 
@@ -131,13 +127,16 @@ class Network(list):
 		d2=(connection2.other.pos - connection1.other.pos).normalize()
 		w1=self.get_width(connection1,connection1.other)/2
 		w2=self.get_width(connection2,connection2.this)/2
-		print "d1="+str(d1)+" d2="+str(d2)
+#		print " 1.this="+str(connection1.this.pos)+" 1.other="+str(connection1.other.pos)+" 2.this="+str(connection2.this.pos)+" 2.other="+str(connection2.other.pos)
+		print "d1="+str(d1)+" d2="+str(d2) + " w1="+str(w1)+ " w2="+str(w2)
 		b = (d1[0]*d2[0]*w2 + w1*d1[0]**2 - w1*d1[1]**2 - w2*d1[1]*d2[1]) / (d1[1]*d2[0]-d1[0]*d2[1])
 # rotate direction can be correct if connection1 &2 are always in same rotational order
-		return connection1.other.pos + b*d2 + w2*rotate(d2,90)
+		print "b="+str(b)+" offset="+str(b*d2 + w2*rotate(d2,-90))
+		return connection1.other.pos - b*d1 + w2*rotate(d1,90)
 
 	def make_path(self, loop):
 		path=Path(closed=True)
+		print
 		for c in range(0,len(loop)):
 			connection=loop[c]
 			nextConnection = loop[(c+1)%len(loop)]
