@@ -1,5 +1,6 @@
-from path import *
 from math import *
+from path import *
+from shapes import *
 
 class Node:
 	def __init__(self, pos, **config):
@@ -20,6 +21,10 @@ class Node:
 			self.intRadius=config['intRadius']
 		else:
 			self.intRadius=None
+		if 'holeRad' in config:
+			self.holeRad=config['holeRad']
+		else:
+			self.holeRad=None
 		self.connections=[]
 
 	def sort_connections(self):
@@ -45,7 +50,6 @@ class Node:
 	
 	def add(self, connection, rev=False):
 		brother = Connection(connection.other, self, connection.width, connection)
-		print "add connection "+str(connection)+" "+str(rev)+" this "+str(connection.this)+" other="+str(connection.other)
 			
 		if not rev and not connection.other.has_connection(self):
 			connection.other.add(brother, True)
@@ -167,7 +171,6 @@ class Network(list):
 	def make_path(self, loop):
 		"""Create a path from a single loop"""
 		path=Path(closed=True)
-		print
 		for c in range(0,len(loop)):
 			connection=loop[c]
 			nextConnection = loop[(c+1)%len(loop)]
@@ -178,6 +181,8 @@ class Network(list):
 				
 			else:
 				path.add_point(PSharp(connection.other.pos + self.corner_pos(connection, nextConnection)))
+			if connection.other.holeRad is not None:
+				self.append(Circle(connection.other.pos, rad=connection.other.holeRad, side='in'))
 		return path
 
 	def make_paths(self):
@@ -190,8 +195,6 @@ class Network(list):
 		for p in range(0,len(self)):
 			path = self[p]
 			nextPath = self[(p+1)%len(self)]
-			print path
-			print nextPath
 			if path.contains(nextPath):
 				path.side='out'
 				self.border = path
