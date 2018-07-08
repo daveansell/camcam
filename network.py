@@ -16,6 +16,10 @@ class Node:
 			self.radius=config['radius']
 		else:
 			self.radius=None
+		if 'intRadius' in config:
+			self.intRadius=config['intRadius']
+		else:
+			self.intRadius=None
 		self.connections=[]
 
 	def sort_connections(self):
@@ -52,13 +56,17 @@ class Node:
 			self.has_connection(connection.other).brother = self		
 class Connection:
 
-	def __init__(self, this, other, width=None, brother=None):
+	def __init__(self, this, other, width=None, brother=None, **config):
 		self.other=other
 		print str(self)+'this='+str(this)+"other="+str(other)+" self.other="+str(self.other)
 		self.this=this
 		self.width=width
 		self.brother = brother
 		self.order = None
+		if 'intRadius' in config:
+			self.intRadius=config['intRadius']
+		else:
+			self.intRadius=None
 #		self.append(this)
 #		self.append(other)
 		assert other is not None
@@ -85,6 +93,10 @@ class Network(list):
 		self.nodes = []
 		self.loops = []
 		self.connections = []
+		if 'intRadius' in config:
+			self.intRadius=config['intRadius']
+		else:
+			self.intRadius=None
 
 	def add(self,node):
 		self.nodes.append(node)
@@ -119,12 +131,20 @@ class Network(list):
 		while(len(self.connections)):
 			self.loops.append(self.get_loop(self.connections.pop()))
 		print "loops"+str(self.loops)	
+
 	def get_width(self,connection, node):
 		if connection.width is not None:
 			return connection.width
 		if node.width is not None:
 			return node.width
 		return self.defaultWidth
+
+	def get_intRadius(self,connection, node):
+		if connection.intRadius is not None:
+			return connection.intRadius
+		if node.intRadius is not None:
+			return node.intRadius
+		return self.intRadius
 
 	def corner_pos(self, connection1, connection2):
 		"""Will work out where the corner of the cut edge should go between two adjacent connections"""
@@ -144,8 +164,10 @@ class Network(list):
 			connection=loop[c]
 			nextConnection = loop[(c+1)%len(loop)]
 			if connection.other.radius is not None and self.corner_pos(connection, nextConnection).length() < connection.other.radius:
-				print "AROUNGCURVE"
 				path.add_point(PAroundcurve(connection.other.pos + self.corner_pos(connection, nextConnection), centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
+			elif self.get_intRadius(connection, connection.other) is not None:
+				path.add_point(PIncurve(connection.other.pos + self.corner_pos(connection, nextConnection), radius=self.get_intRadius(connection, connection.other)))
+				
 			else:
 				path.add_point(PSharp(connection.other.pos + self.corner_pos(connection, nextConnection)))
 		return path
