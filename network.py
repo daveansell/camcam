@@ -45,8 +45,11 @@ class Node:
 		p2=connection.other.pos
 		v = p2-p1
 		return math.atan2(v[0], v[1])
+	def add_conn( self, othernode, **config):
+		self.add(Connection(self, othernode, **config))
 	
 	def add(self, connection, rev=False):
+		assert(connection.this.pos != connection.other.pos)
 		brother = Connection(connection.other, self, connection.width, connection)
 			
 		if not rev and not connection.other.has_connection(self):
@@ -124,7 +127,6 @@ class Network(list):
 		self.gather_connections()
 		while(len(self.connections)):
 			self.loops.append(self.get_loop(self.connections.pop()))
-
 	def get_width(self,connection, node):
 		if connection.width is not None:
 			return connection.width
@@ -139,7 +141,7 @@ class Network(list):
 			return node.intRadius
 		return self.intRadius
 
-	def corner_pos(self, connection1, connection2):
+	def corner_pos(self, connection1, connection2, lastConnection):
 		"""Will work out where the corner of the cut edge should go between two adjacent connections"""
 		d1=(connection1.this.pos - connection1.other.pos).normalize()
 		d2=(connection2.other.pos - connection1.other.pos).normalize()
@@ -148,6 +150,10 @@ class Network(list):
 
 		if abs(d1.dot(d2) +1) < 0.0001:
 			b=0
+	# catch case when it is the end of a single rod
+		elif abs(d1.dot(d2) -1) < 0.0001:
+			b=0
+			return [w2*rotate(d1,90), -d1, w2*rotate(d1,-90)]
 		else:
 			if (d1[1]*d2[0]-d1[0]*d2[1])==0:
 				print d1
@@ -163,10 +169,26 @@ class Network(list):
 		for c in range(0,len(loop)):
 			connection=loop[c]
 			nextConnection = loop[(c+1)%len(loop)]
-			if connection.other.radius is not None and self.corner_pos(connection, nextConnection).length() < connection.other.radius:
-				path.add_point(PAroundcurve(connection.other.pos + self.corner_pos(connection, nextConnection), centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
+			lastConnection = loop[(c-1)%len(loop)]
+			corner_offset = self.corner_pos(connection, nextConnection, lastConnection)
+	# catch case when it is the end of a single rod
+			if type(corner_offset) is list:
+				endpoints = corner_offset
+				corner_offset = endpoints[0]
+			else:
+				endpoints = False
+
+			if connection.other.radius is not None and corner_offset.length() < connection.other.radius:
+	# catch case when it is the end of a single rod
+				if endpoints:
+					path.add_point(PAroundcurve(connection.other.pos + corner_offset, centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
+					path.add_point(PSharp(connection.other.pos+endpoints[1]*connection.other.radius))
+					path.add_point(PAroundcurve(connection.other.pos + endpoints[2], centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
+						
+				else:
+					path.add_point(PAroundcurve(connection.other.pos + corner_offset, centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
 			elif self.get_intRadius(connection, connection.other) is not None:
-				path.add_point(PIncurve(connection.other.pos + self.corner_pos(connection, nextConnection), radius=self.get_intRadius(connection, connection.other)))
+				path.add_point(PIncurve(connection.other.pos + corner_offset, radius=self.get_intRadius(connection, connection.other)))
 				
 			else:
 				path.add_point(PSharp(connection.other.pos + self.corner_pos(connection, nextConnection)))
