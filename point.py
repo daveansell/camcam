@@ -451,7 +451,6 @@ class PAroundcurve(PSharp):
                                 d=self.otherDir(self.direction)
                         else:
                                 d=self.direction
-			print "Aroundcurve direction="+str(self.direction)+" reverse="+str(self.reverse) + " "+str(d)
                        # d=self.direction
                         return [Line(self.last().end(), astart),
                                 Arc(astart, aend, self.cp1, d)]
