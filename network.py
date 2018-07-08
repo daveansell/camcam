@@ -33,8 +33,6 @@ class Node:
 		for conn in self.connections:
 			conn.order=i
 			i+=1
-		for conn in self.connections:
-			print "sort="+str(conn)+"order="+str( conn.order)
 
 	def has_connection(self, node):
 		for conn in self.connections:	
@@ -62,7 +60,6 @@ class Connection:
 
 	def __init__(self, this, other, width=None, brother=None, **config):
 		self.other=other
-		print str(self)+'this='+str(this)+"other="+str(other)+" self.other="+str(self.other)
 		self.this=this
 		self.width=width
 		self.brother = brother
@@ -80,16 +77,12 @@ class NetworkPart(Part):
 		self.init(config)
 		self.ignore_border=True
 		for path in netlist:
-			print path
-			print "PATH"
-			for pnt in path.points:
-				print pnt.pos
 			if path==netlist.border:
-				print "border"
 				self.add_border(path)
 			else:
 				self.add(path)
-
+		for path in netlist.otherpaths:
+			self.add(path)
 class Network(list):
 	def __init__(self, defaultWidth, **config):
 		#self.init(config)
@@ -101,7 +94,8 @@ class Network(list):
 			self.intRadius=config['intRadius']
 		else:
 			self.intRadius=None
-
+		self.otherpaths = []
+		self.border = None
 	def add(self,node):
 		self.nodes.append(node)
 		return node
@@ -109,9 +103,7 @@ class Network(list):
 	def gather_connections(self):
 		self.connections=[]
 		for node in self.nodes:
-			print "NODE="+str(node)
 			node.sort_connections()
-			print node.connections
 			self.connections.extend(node.connections)
 # Work one place around a loop
 	def get_loop(self, connection, first=None):
@@ -130,11 +122,8 @@ class Network(list):
 # Work along all connections in self.connections forming loops. As all connections exist in two directions they should all appear twice 
 	def make_loops(self):
 		self.gather_connections()
-		print "MAkr loops"
-		print self.connections					
 		while(len(self.connections)):
 			self.loops.append(self.get_loop(self.connections.pop()))
-		print "loops"+str(self.loops)	
 
 	def get_width(self,connection, node):
 		if connection.width is not None:
@@ -182,7 +171,8 @@ class Network(list):
 			else:
 				path.add_point(PSharp(connection.other.pos + self.corner_pos(connection, nextConnection)))
 			if connection.other.holeRad is not None:
-				self.append(Circle(connection.other.pos, rad=connection.other.holeRad, side='in'))
+				print "add holerad"+str(connection.other.holeRad)
+				self.otherpaths.append(Circle(connection.other.pos, rad=connection.other.holeRad, side='in'))
 		return path
 
 	def make_paths(self):
@@ -195,9 +185,8 @@ class Network(list):
 		for p in range(0,len(self)):
 			path = self[p]
 			nextPath = self[(p+1)%len(self)]
-			if path.contains(nextPath):
+			if path.contains(nextPath)>0:
 				path.side='out'
 				self.border = path
 			else:
 				path.side='in'
-			
