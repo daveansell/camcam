@@ -356,9 +356,14 @@ class PSharp(Point):
                 return [t]
 
         def makeSegment(self, config):
-                if self.last() != None and self.last().end()!=self.pos:
+		l= self.last()
+                if type(l) is not None and l.end()!=self.pos:
                         return [Line(self.last().end(), self.pos)]
                 else:
+			print "No segnmet" + str(l.end())+"&&"
+			print "No segnmet" + str(self.last())+"&&"
+			if l is not None:
+				print "&&"+str(l.end())+" self.pos="+str(self.pos)
                         return []
 
 class PAroundcurve(PSharp):
@@ -392,6 +397,10 @@ class PAroundcurve(PSharp):
                 ret = [self.copy()]
                 if (self.direction=='cw' and side=='left' or self.direction=='ccw' and side=='right') !=self.reverse:
                         ret[0].radius+=distance
+# There is a case where for small angles offsetting can move the convergence point outside the radius
+			if (t[0].pos - self.cp1).length()> ret[0].radius:
+				ret= [PSharp(t[0].pos)]
+			
                 else:
                         if ret[0].radius>distance:
                                 ret[0].radius-=distance
@@ -438,10 +447,12 @@ class PAroundcurve(PSharp):
                                 return [Line(self.last().end(), self.pos)]
                         if aend is False:
                                 return [Line(self.last().end(), self.pos)]
-                        if  not self.reverse:
+                        if  self.reverse == self.invert:
                                 d=self.otherDir(self.direction)
                         else:
                                 d=self.direction
+			print "Aroundcurve direction="+str(self.direction)+" reverse="+str(self.reverse) + " "+str(d)
+                       # d=self.direction
                         return [Line(self.last().end(), astart),
                                 Arc(astart, aend, self.cp1, d)]
 
@@ -467,7 +478,7 @@ class PAroundcurve(PSharp):
                 if not self.setup:
                         if self.next().pos is False:
                                 print "ERROR: next().pos="+str(self.next().pos)
-                        print "NO setup end()"
+                        print "NO setup end()"+str(self)
                         return self.next().pos
                 if self.radius==0:
                         return self.pos
@@ -1074,8 +1085,8 @@ If it can't reach either point with the arc, it will join up to them perpendicul
                                 else:
                                         self.direction='cw'
                         if (self.pos-self.last().pos).length()-self.radius>000.1 or (self.next().pos-self.pos).length()-self.radius>0.001:
-                                                        
-                                print "Arc's radius should be <= distance to the centre"+str(self.next().pos)+"->"+str(self.pos)+"->"+str(self.last().pos)+" radius="+str(self.radius)+" AC-radius="+str((self.pos-self.last().pos).length()-self.radius)+" BC-raiuds="+str((self.next().pos-self.pos).length()-self.radius)
+                           pass                             
+                          #      print "Arc's radius should be <= distance to the centre"+str(self.next().pos)+"->"+str(self.pos)+"->"+str(self.last().pos)+" radius="+str(self.radius)+" AC-radius="+str((self.pos-self.last().pos).length()-self.radius)+" BC-raiuds="+str((self.next().pos-self.pos).length()-self.radius)
                 elif self.radius is not False and self.length is not False and self.pos is None:
                         
                         l=self.nextorigin() - self.lastorigin()
@@ -1093,8 +1104,8 @@ If it can't reach either point with the arc, it will join up to them perpendicul
                         self.radius=min((self.next().pos-self.pos).length(), (self.pos- self.last().pos).length())
         def makeSegment(self, config):
                 self.checkArc()
-                if self.last().point_type not in ['sharp', 'clear', 'doubleclear'] or self.next().point_type not in ['sharp', 'clear', 'doubleclear']:
-                        print "points either side of an Arc should be sharp"
+                if self.last().point_type not in ['sharp', 'clear', 'doubleclear', 'insharp'] or self.next().point_type not in ['sharp', 'clear', 'doubleclear', 'insharp']:
+                        print "points either side of an Arc should be sharp"+str(self.next().point_type)+" "+str(self.last().point_type)
                         return []
                 else:
                         l=self.next().pos - self.last().pos
@@ -1179,10 +1190,6 @@ class PCircle(Point):
         def makeSegment(self, config):
                 r1 = V(self.radius, 0)
                 r2 = V(0, self.radius)
-		print "cpos="+str(self.pos)
-		print "r1="+str(r1)
-		print "r2="+str(r2)
-		print "receers"+str(self.reverse)
                 if self.reverse:
                         return [ 
 			Arc(self.pos-r1, self.pos-r2, self.pos, 'cw'),
@@ -1195,8 +1202,6 @@ class PCircle(Point):
 			Arc(self.pos+r2, self.pos+r1, self.pos, 'ccw'), 
 			Arc(self.pos+r1, self.pos-r2, self.pos, 'ccw'), 
 			Arc(self.pos-r2, self.pos-r1, self.pos, 'ccw') ]
-			for i in ret:
-				print str(i.cutfrom) + "->"+str(i.cutto)+ " - "+str(i.centre)
 			return ret
         def offset(self, side, distance, direction):
                 t=copy.copy(self)
