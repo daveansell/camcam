@@ -119,22 +119,21 @@ class Network(list):
 		if connection.width is not None:
 			return connection.width
 		if node.width is not None:
-			return connection[part].width
+			return node.width
 		return self.defaultWidth
 
 	def corner_pos(self, connection1, connection2):
+		"""Will work out where the corner of the cut edge should go between two adjacent connections"""
 		d1=(connection1.this.pos - connection1.other.pos).normalize()
 		d2=(connection2.other.pos - connection1.other.pos).normalize()
 		w1=self.get_width(connection1,connection1.other)/2
 		w2=self.get_width(connection2,connection2.this)/2
-#		print " 1.this="+str(connection1.this.pos)+" 1.other="+str(connection1.other.pos)+" 2.this="+str(connection2.this.pos)+" 2.other="+str(connection2.other.pos)
-		print "d1="+str(d1)+" d2="+str(d2) + " w1="+str(w1)+ " w2="+str(w2)
-		b = (d1[0]*d2[0]*w2 + w1*d1[0]**2 - w1*d1[1]**2 - w2*d1[1]*d2[1]) / (d1[1]*d2[0]-d1[0]*d2[1])
+		b = (d2[0]*d1[0]*w2 + w1*d1[0]**2 + w1*d1[1]**2 + w2*d1[1]*d2[1]) / (d1[1]*d2[0]-d1[0]*d2[1])
 # rotate direction can be correct if connection1 &2 are always in same rotational order
-		print "b="+str(b)+" offset="+str(b*d2 + w2*rotate(d2,-90))
-		return connection1.other.pos - b*d1 + w2*rotate(d1,90)
+		return connection1.other.pos + ( b*d1 + w2*rotate(d1,90))
 
 	def make_path(self, loop):
+		"""Create a path from a single loop"""
 		path=Path(closed=True)
 		print
 		for c in range(0,len(loop)):
