@@ -315,6 +315,26 @@ class Polygon(Path):
                 self.comment("Polygon")
                 self.comment("pos="+str(pos)+" rad="+str(rad)+" sides="+str(sides)+" cornertype="+cornertype)
 
+
+class Star(Path):
+        def __init__(self, pos, outerRad, innerRad, sides, **config):
+                self.init( config)
+                """Cut a regular polygon with radius to the points :param rad: centred at :param pos:, with :param sides: sides with corners of type :param cornertype:\n"""+self.otherargs
+                self.closed=True
+                step=360.0/float(sides)
+                if 'cornerPoint' in config:
+                        cornerPoint=config['cornerPoint']
+                else:
+                        cornerPoint=PSharp(V(0,0))
+		print "ISES="+str(sides)
+                for i in range(0,int(sides)):
+			t = copy.deepcopy(cornerPoint)
+			t.pos = pos+rotate(V(innerRad,0), i*step)
+			self.add_point(t)
+			t = copy.deepcopy(cornerPoint)
+			t.pos = pos+rotate(V(outerRad,0), (0.5+i)*step)
+			self.add_point(t)
+
 class CountersinkHole(Pathgroup):
         def __init__(pos, holerad, countersinkrad,  **config):
                 if 'cutter' in config:
