@@ -1529,5 +1529,11 @@ class PlainBox2(ArbitraryBox):
 
         def _pre_render(self):
                 for l in self.new_layers:
-                        self.get_plane().add_layer(l, self.material, self.thickness)
+                        self.get_plane().add_layer(l, self.get_layer_attrib('material',l), self.get_layer_attrib('thickness',l), colour=self.get_layer_attrib('colour',l), self.get_layer_attrib('colour',l))
 
+	def get_layer_attrib(self, attrib, face):
+		if attrib in self.faces[face]:
+			return self.faces[face]
+		elif hasattr( self, attrib):
+			return getattr(self, attrib)
+		else return False
