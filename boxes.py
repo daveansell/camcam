@@ -522,11 +522,15 @@ class ArbitraryBox(Part):
                 self.config = config
                 wood_direction_face = None
                 good_direction_face = None
+                self.new_layers = []
                 if 'name' in config:
                         self.name=config['name']
                 else:
                         self.name='box'
                 for f, face in faces.iteritems():
+			if 'layer' not in face:
+				face['layer']='layer_'+f
+				self.new_layers.append(f)
 			self.preparsePoints(face)
                         self.make_sides(f,face['points'])
                         self.make_normal(f, face['points'])
@@ -1426,6 +1430,19 @@ class ArbitraryBox(Part):
 				face['point_type'][p]=pnt
 				face['points'][p]=pnt.pos
 			p+=1
+        def _pre_render(self, config):
+		print "arbitrary box pre_render"
+                for f in self.new_layers:
+			print "add _layer "+f;
+                        self.get_plane().add_layer(self.faces[f]['layer'], self.get_layer_attrib('material',f), self.get_layer_attrib('thickness',f), colour=self.get_layer_attrib('colour',f))
+
+	def get_layer_attrib(self, attrib, face):
+		if attrib in self.faces[face]:
+			return self.faces[face][attrib]
+		elif hasattr( self, attrib):
+			return getattr(self, attrib)
+		else:
+			 return False
 
 class PlainBox2(ArbitraryBox):
         def __init__(self, pos, name, layers, width, height, depth, thickness, tab_length, **config):
@@ -1527,14 +1544,3 @@ class PlainBox2(ArbitraryBox):
                 config['name'] = name
                 self.make_box(faces, tab_length, fudge, **config)
 
-        def _pre_render(self):
-                for l in self.new_layers:
-                        self.get_plane().add_layer(l, self.get_layer_attrib('material',l), self.get_layer_attrib('thickness',l), colour=self.get_layer_attrib('colour',l), self.get_layer_attrib('colour',l))
-
-	def get_layer_attrib(self, attrib, face):
-		if attrib in self.faces[face]:
-			return self.faces[face]
-		elif hasattr( self, attrib):
-			return getattr(self, attrib)
-		else:
-			 return False
