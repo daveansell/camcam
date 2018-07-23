@@ -1536,4 +1536,5 @@ class PlainBox2(ArbitraryBox):
 			return self.faces[face]
 		elif hasattr( self, attrib):
 			return getattr(self, attrib)
-		else return False
+		else:
+			 return False
