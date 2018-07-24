@@ -790,7 +790,7 @@ class ArbitraryBox(Part):
                         #clear newpoints
                         newpoints=[]
                         # need to add 2 points here so intersect_points works
-                        if len(side)==1:
+                        if len(side)==1 or scount in face['point_type'] and face['point_type'][scount].point_type not in  ['sharp', 'insharp', 'clear', 'doubleclear'] :
                                 newpoints=[]
                                 if ((p-1)%len(face['sides'])) in face['point_type']:
                                         newpoints.append(face['point_type'][(p-1)%len(face['sides'])])
@@ -800,6 +800,7 @@ class ArbitraryBox(Part):
                                 else:
                                         newpoints.append(PInsharp(lastpoint))
                                 if scount in face['point_type']:
+					print"%%%%%%"+str( face['point_type'][scount])
                                         newpoints.append(face['point_type'][scount])
                                         newpoints[-1].setPos(point)
                                 else:
