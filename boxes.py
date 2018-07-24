@@ -896,6 +896,20 @@ class ArbitraryBox(Part):
                                                         #		firstnointersect=True
                                                 
                                                 else:
+                                                        if nextotherside is None or nextotherside[0]=='_internal':
+                                                                next_offset = 0
+                                                        else:
+                                                                if nextside[6]=='concave' and nextcorner=='off':
+                                                                        next_offset = self.faces[nextotherside[0]]['thickness']
+                                                                else:
+                                                                        next_offset = 0
+                                                        if lastotherside is None or lastotherside[0]=='_internal':
+                                                                last_offset = 0
+                                                        else:
+                                                                if lastside[6]=='concave' and lastcorner=='off':
+                                                                        last_offset = self.faces[lastotherside[0]]['thickness']
+                                                                else:
+                                                                        last_offset = 0
 							lineside=face['lineside']
 							newpoints = AngledButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner, last_offset=last_offset, next_offset=next_offset, lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), nextparallel = self.parallel(lastpoint, point, point, nextpoint), angle=angle, lineside=lineside)
 #                                                        if corner=='off':
