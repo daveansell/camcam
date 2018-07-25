@@ -107,6 +107,9 @@ def path_render3D(self, pconfig, border=False):
 #	outline.append( Point3(points[0][0], points[0][1], points[0][2] ))
         h = round(abs(z1-z0),PRECISION)*SCALEUP
         bottom = round((min(z1,z0)+zoffset),PRECISION) *SCALEUP
+# dodgy but working atm
+	if not border and 'isback' in config and config['isback']:
+		h = 2*h
 #	extruded = extrude_along_path(shape_pts=outline, path_pts=extrude_path)
         
         if self.extrude_scale is not None:
@@ -124,8 +127,8 @@ def path_render3D(self, pconfig, border=False):
                 scale = 1
                 extruded = solid.translate([0,0,bottom])(solid.linear_extrude(height=h, center=False)(solid.polygon(points=outline)))
         #extruded = translate([0,0,bottom])(linear_extrude(height=h, center=False)(solid.polygon(points=outline)))
-#	if 'isback' in config and config['isback'] and border==False:
-#		extruded = mirror([1,0,0])(extruded )
+#	if not border and 'isback' in config and config['isback'] and border==False:
+#		extruded = solid.mirror([1,0,0])(extruded )
         if 'colour' in config and config['colour']:
                 extruded = solid.color(self.scad_colour(config['colour']))(extruded)
         p=self

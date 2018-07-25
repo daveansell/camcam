@@ -522,11 +522,15 @@ class ArbitraryBox(Part):
                 self.config = config
                 wood_direction_face = None
                 good_direction_face = None
+                self.new_layers = []
                 if 'name' in config:
                         self.name=config['name']
                 else:
                         self.name='box'
                 for f, face in faces.iteritems():
+			if 'layer' not in face:
+				face['layer']='layer_'+f
+				self.new_layers.append(f)
 			self.preparsePoints(face)
                         self.make_sides(f,face['points'])
                         self.make_normal(f, face['points'])
@@ -786,7 +790,7 @@ class ArbitraryBox(Part):
                         #clear newpoints
                         newpoints=[]
                         # need to add 2 points here so intersect_points works
-                        if len(side)==1:
+                        if len(side)==1 or scount in face['point_type'] and face['point_type'][scount].point_type not in  ['sharp', 'insharp', 'clear', 'doubleclear'] :
                                 newpoints=[]
                                 if ((p-1)%len(face['sides'])) in face['point_type']:
                                         newpoints.append(face['point_type'][(p-1)%len(face['sides'])])
@@ -796,6 +800,7 @@ class ArbitraryBox(Part):
                                 else:
                                         newpoints.append(PInsharp(lastpoint))
                                 if scount in face['point_type']:
+					print"%%%%%%"+str( face['point_type'][scount])
                                         newpoints.append(face['point_type'][scount])
                                         newpoints[-1].setPos(point)
                                 else:
@@ -891,6 +896,20 @@ class ArbitraryBox(Part):
                                                         #		firstnointersect=True
                                                 
                                                 else:
+                                                        if nextotherside is None or nextotherside[0]=='_internal':
+                                                                next_offset = 0
+                                                        else:
+                                                                if nextside[6]=='concave' and nextcorner=='off':
+                                                                        next_offset = self.faces[nextotherside[0]]['thickness']
+                                                                else:
+                                                                        next_offset = 0
+                                                        if lastotherside is None or lastotherside[0]=='_internal':
+                                                                last_offset = 0
+                                                        else:
+                                                                if lastside[6]=='concave' and lastcorner=='off':
+                                                                        last_offset = self.faces[lastotherside[0]]['thickness']
+                                                                else:
+                                                                        last_offset = 0
 							lineside=face['lineside']
 							newpoints = AngledButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner, last_offset=last_offset, next_offset=next_offset, lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), nextparallel = self.parallel(lastpoint, point, point, nextpoint), angle=angle, lineside=lineside)
 #                                                        if corner=='off':
@@ -1426,6 +1445,19 @@ class ArbitraryBox(Part):
 				face['point_type'][p]=pnt
 				face['points'][p]=pnt.pos
 			p+=1
+        def _pre_render(self, config):
+		print "arbitrary box pre_render"
+                for f in self.new_layers:
+			print "add _layer "+f;
+                        self.get_plane().add_layer(self.faces[f]['layer'], self.get_layer_attrib('material',f), self.get_layer_attrib('thickness',f), colour=self.get_layer_attrib('colour',f))
+
+	def get_layer_attrib(self, attrib, face):
+		if attrib in self.faces[face]:
+			return self.faces[face][attrib]
+		elif hasattr( self, attrib):
+			return getattr(self, attrib)
+		else:
+			 return False
 
 class PlainBox2(ArbitraryBox):
         def __init__(self, pos, name, layers, width, height, depth, thickness, tab_length, **config):
@@ -1526,8 +1558,4 @@ class PlainBox2(ArbitraryBox):
                 config['pos'] = pos
                 config['name'] = name
                 self.make_box(faces, tab_length, fudge, **config)
-
-        def _pre_render(self):
-                for l in self.new_layers:
-                        self.get_plane().add_layer(l, self.material, self.thickness)
 
