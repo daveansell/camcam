@@ -21,7 +21,7 @@ class Milling:
 
                 self.mode_config={
                         "dave-emc":{
-                                'prefix':'M03\nG21\nG0Z%zclear%',
+                                'prefix':'M03\nG21\nG0Z%zclear%\nG64 p.001 q.001\n',
                                 'postfix':'M05\nM02\n',
                                 'settool_prefix':'T',
                                 'settool_postfix':' M6\nS100\nM03',
@@ -427,6 +427,7 @@ class Milling:
                         "sidecut":1,
                 },
                 }
+# feeds and stepdown are definined for 4mm cutter, and scaled linearly by cutterrad
                 self.materials = {
                 "plywood":{
                         "vertfeed":200,

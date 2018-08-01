@@ -217,6 +217,10 @@ class Path(object):
                         else:
                                 c['downmode']='ramp'
                         config['original_cutter']=c
+		if 'stepdown' in config and config['stepdown']:
+			config['stepdown'] *= tool['diameter']/4.0
+			config['vertfeed'] *= tool['diameter']/4.0
+			config['sidefeed'] *= tool['diameter']/4.0
                                 
         def set_material(self, config):
                 if config['material'] in milling.materials:
@@ -872,8 +876,8 @@ class Path(object):
 #		for k in inherited.keys():
  #                       if (config[k] is None or config[k] is False) and k in pconfig:
   #                              config[k]=pconfig[k]
-                self.set_cutter(config)
                 self.set_material(config)
+                self.set_cutter(config)
                 thisdir=self.find_direction(config)
 		
                 if 'direction' not in config or config['direction'] is False:
