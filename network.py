@@ -181,9 +181,14 @@ class Network(list):
 			if connection.other.radius is not None and corner_offset.length() < connection.other.radius:
 	# catch case when it is the end of a single rod
 				if endpoints:
-					path.add_point(PAroundcurve(connection.other.pos + corner_offset, centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
-					path.add_point(PSharp(connection.other.pos+endpoints[1]*connection.other.radius))
-					path.add_point(PAroundcurve(connection.other.pos + endpoints[2], centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
+					para=(connection.this.pos-connection.other.pos).normalize()
+					d = math.sqrt(connection.other.radius**2 - corner_offset.length()**2)
+					path.add_point(PSharp(connection.other.pos + corner_offset + d*para))
+					path.add_point(PArc(connection.other.pos, radius=connection.other.radius, direction='cw'))
+					path.add_point(PSharp(connection.other.pos - corner_offset+d*para))
+#					path.add_point(PAroundcurve(connection.other.pos + corner_offset, centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
+#					path.add_point(PSharp(connection.other.pos+endpoints[1]*connection.other.radius))
+#					path.add_point(PAroundcurve(connection.other.pos + endpoints[2], centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
 						
 				else:
 					path.add_point(PAroundcurve(connection.other.pos + corner_offset, centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
