@@ -207,8 +207,7 @@ class Network(list):
 			self.append(self.make_path(loop))
 		self.find_border()
 
-	def find_border(self)
-		print "********"+str(self)
+	def find_border(self):
 		if len(self)==1:
 			self[0].side='out'
 			self.border = self[0]
