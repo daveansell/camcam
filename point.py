@@ -324,11 +324,10 @@ class PSharp(Point):
                 if self.corner_side(side, direction)=='external':# and side=='out' or corner=='internal' and side=='in':
                         t = copy.copy(self)
         #		t=POutcurve(self.pos, radius=distance, transform=self.transform)
-                        if (self.angle==0 or self.angle==math.pi and self.dot<0) and self.last().point_type in ['sharp', 'clear', 'doubleclear'] and self.next().point_type in ['sharp', 'clear', 'doubleclear']:
+                        if (self.angle==0 or self.angle==math.pi and self.dot<0) and self.last().point_type in ['sharp', 'clear', 'doubleclear'] and self.next().point_type in ['sharp', 'clear', 'doubleclear'] and self.point_type in ['sharp', 'clear', 'doubleclear']:
                                 pass
                         elif self.angle==0  and self.point_type in ['sharp', 'clear', 'doubleclear'] and self.next().point_type in ['sharp', 'clear', 'doubleclear']:
-                                        return []
-                                
+                                return []
                         else:
                                 if abs(self.dot-1)<=0.00000001 or abs(self.dot+1) <=0.00000001:
                                         t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, -distance)
