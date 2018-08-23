@@ -320,7 +320,6 @@ class PSharp(Point):
 
         def offsetSharp(self, side, distance, direction, sharp=True):
                 self.setangle()
-
                 if self.corner_side(side, direction)=='external':# and side=='out' or corner=='internal' and side=='in':
                         t = copy.copy(self)
         #		t=POutcurve(self.pos, radius=distance, transform=self.transform)
@@ -1131,11 +1130,13 @@ If it can't reach either point with the arc, it will join up to them perpendicul
         def origin(self, forward=True):
                 self.checkArc()
                 if forward:
-                        op=self.last().pos
+			op=self.last().pos
+                        r=-self.pos+self.last().pos
                 else:
-                        op=self.next().pos
-                if abs(op.length()-self.radius)>-0.001:
-                        vecin=(op-self.pos).normalize()*20
+			op=self.next().pos
+                        r=-self.pos+self.next().pos
+                if abs(r.length()-self.radius)<0.001:
+                        vecin=r.normalize()*20
                         if (self.direction=='cw' and self.reverse==self.invert or self.direction=='ccw' and self.reverse!=self.invert)==forward:
                                 return op+rotate(vecin,90)
                         else:
