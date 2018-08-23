@@ -449,7 +449,7 @@ class Milling:
                 "perspex":{
                         "vertfeed":120,
                         "sidefeed":600,
-                        "stepdown":1.5,
+                        "stepdown":2.0,
                         "kress_setting":2.0,
                 #	"mill_dir":'down',
                 },
@@ -532,7 +532,7 @@ class Milling:
                 "pvc":{
                         "vertfeed":100,
                         "sidefeed":700,
-                        "stepdown":2.0,
+                        "stepdown":3.0,
                         "kress_setting":1.5,
                         "mill_dir":'up',
                },
@@ -553,6 +553,13 @@ class Milling:
                         "sidefeed":300,
                         "stepdown":2.0,
                         "kress_setting":3.0,
+               },
+                "piezo":{
+                        "vertfeed":20,
+                        "sidefeed":12,
+                        "stepdown":0.2,
+                        "kress_setting":3,
+                        "mill_dir":'down',
                },
         }
                 self.bolts={
