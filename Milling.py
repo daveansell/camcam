@@ -156,6 +156,7 @@ class Milling:
                                 'file_suffix':'.dxf',
                                 'mode':'dxf',
                                 'render_string':False,
+                                'precut_z':0,
                         },
                         'exportdxf':{
                                 'forcestepdown':1000,
