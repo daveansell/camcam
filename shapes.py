@@ -1327,14 +1327,12 @@ class ButtJointMid(Pathgroup):
                                 self.add(HoleLine(start+parallel*hole_length/2 + perp*(holepos), end - parallel*hole_length/2 + perp*(holepos), num_holes,  holerad, hole_depth=hole_depth))
         
                         if depression:
-                                print "depression="+str(depth)
                                 self.add(FilledRect(	
                                                 bl = start-parallel*fudge - perp*(-deppos+fudge), 
                                                 tr = end+perp*(thickness+fudge+deppos)+parallel*fudge, 
                                                 z1 = -depth, side='in',
                                                 cornertype = PInsharp))
 			if outline:
-				print "OUTLINE"
 				self.add(Rect(
 					bl = start-parallel*fudge - perp*(-deppos+fudge),
                                                 tr = end+perp*(thickness+fudge+deppos)+parallel*fudge,
