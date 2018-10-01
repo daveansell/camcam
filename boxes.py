@@ -512,7 +512,7 @@ class ArbitraryBox(Part):
                 self.tab_length = tab_length
                 self.fudge = fudge
                 self.faces = faces
-                self.auto_properties = ['tab_length', 'joint_mode', 'butt_depression', 'butt_holerad', 'butt_numholes', 'hole_spacing', 'hole_offset']
+                self.auto_properties = ['tab_length', 'joint_mode', 'butt_depression', 'butt_holerad', 'butt_numholes', 'hole_spacing', 'hole_offset', 'butt_outline']
                 for prop in self.auto_properties:
                         if prop in config:
                                 setattr(self, prop, config[prop])
@@ -561,6 +561,8 @@ class ArbitraryBox(Part):
                                 face['butt_depression'] = {}
                         if 'butt_holerad' not in face:
                                 face['butt_holerad'] = {}
+                        if 'butt_outline' not in face:
+                                face['butt_outline'] = {}
                         if 'butt_numholes' not in face:
                                 face['butt_numholes'] = {}
                         if 'hole_spacing' not in face:
@@ -654,6 +656,7 @@ class ArbitraryBox(Part):
                                 self.set_property(self.sides[s], f, scount, 'butt_holrad')
                                 self.set_property(self.sides[s], f, scount, 'butt_numholes')
                                 self.set_property(self.sides[s], f, scount, 'butt_holerad')
+                                self.set_property(self.sides[s], f, scount, 'butt_outline')
                                 self.set_property(self.sides[s], f, scount, 'hole_spacing')
                                 self.set_property(self.sides[s], f, scount, 'hole_offset')
                                 scount+=1
@@ -914,7 +917,7 @@ class ArbitraryBox(Part):
                                                                         cutside= 'right'
                                                                 else:
                                                                         cutside='left'
-                                                        part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount]))
+                                                        part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount], butt_outline=face['butt_outline']))
                                                         if not(lastcorner == 'off' and corner=='off'):
                                                                 nointersect==True
                                                 #		if p==0:
@@ -1069,7 +1072,7 @@ class ArbitraryBox(Part):
                                 pass
                         elif joint['joint_mode']=='butt':
 				pass
-                                part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes'], joint_type='convex', fudge=fudge))
+                                part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes'], joint_type='convex', fudge=fudge, butt_outline=joint['butt_outline']))
                         elif joint['joint_mode']=='bracket':
                                 part.add(BracketJointHoles(
                                         joint['from'], 
