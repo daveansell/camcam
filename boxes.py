@@ -536,6 +536,10 @@ class ArbitraryBox(Part):
 					face['points'][p]=rotate(face['points'][p]-face['rotate'][0], face['rotate'][1])+ face['rotate'][0]
 				face['origin'] = rotate(face['origin']-face['rotate'][0], face['rotate'][1])+ face['rotate'][0]
 				face['x'] = rotate(face['x'], face['rotate'][1])
+				if 'good_direction' in face:
+					face['good_direction'] = rotate(face['good_direction'], face['rotate'][1])
+				if 'wood_direction' in face:
+					face['wood_direction'] = rotate(face['wood_direction'], face['rotate'][1])
 				print str(face['x']) + str(face['rotate'][0])
 			if 'layer' not in face:
 				face['layer']='layer_'+f
