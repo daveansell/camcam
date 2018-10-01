@@ -521,6 +521,8 @@ class ArbitraryBox(Part):
                 self.side_angles={}
                 self.config = config
                 wood_direction_face = None
+                wood_direction_faces = []
+                good_direction_faces = []
                 good_direction_face = None
                 self.new_layers = []
                 if 'name' in config:
@@ -528,6 +530,13 @@ class ArbitraryBox(Part):
                 else:
                         self.name='box'
                 for f, face in faces.iteritems():
+			if 'rotate' in face:
+				#print face['layer']+" x="+str( face['x'])+" dx="+str(face['x']-face['rotate'][0])
+				for p in range(0, len(face['points'])):
+					face['points'][p]=rotate(face['points'][p]-face['rotate'][0], face['rotate'][1])+ face['rotate'][0]
+				face['origin'] = rotate(face['origin']-face['rotate'][0], face['rotate'][1])+ face['rotate'][0]
+				face['x'] = rotate(face['x'], face['rotate'][1])
+				print str(face['x']) + str(face['rotate'][0])
 			if 'layer' not in face:
 				face['layer']='layer_'+f
 				self.new_layers.append(f)
@@ -557,16 +566,18 @@ class ArbitraryBox(Part):
                         if 'point_type' not in face:
                                 face['point_type'] = {}
                         if 'wood_direction' in face:
-                                if wood_direction_face is not None or wood_direction_face !=None:
-                                        raise ValueError('wood direction defined more than once')
-                                wood_direction_face = f
+  #                              if wood_direction_face is not None or wood_direction_face !=None:
+ #                                       raise ValueError('wood direction defined more than once')
+#                                wood_direction_face = f
+				wood_direction_faces.append(f)
                         if 'good_direction' in face:
-                                if good_direction_face is not None or good_direction_face !=None:
-                                        raise ValueError('good direction defined more than once')
-                                good_direction_face = f
-                if wood_direction_face is None:
+                               # if good_direction_face is not None or good_direction_face !=None:
+                                #        raise ValueError('good direction defined more than once')
+                               # good_direction_face = f
+				good_direction_faces.append(f)
+                if len(wood_direction_faces) == 0:
                         raise ValueError("No face with wood_direction set")
-                if good_direction_face is None:
+                if len(good_direction_faces) == 0:
                         raise ValueError("No face with good_direction set")
 
                 scount=0
@@ -574,10 +585,12 @@ class ArbitraryBox(Part):
                         self.find_angle(s, side)
                         scount+=1
                 # on internal faces you define the good direction the wrong way
-                if 'internal' in self.faces[good_direction_face] and self.faces[good_direction_face]['internal']:
-                        self.faces[good_direction_face]['good_direction'] *= -1
-                self.propagate_direction('good_direction', good_direction_face,0)
-                self.propagate_direction('wood_direction', wood_direction_face,0)
+		for good_direction_face in good_direction_faces:
+                	if 'internal' in self.faces[good_direction_face] and self.faces[good_direction_face]['internal']:
+                	        self.faces[good_direction_face]['good_direction'] *= -1
+	                self.propagate_direction('good_direction', good_direction_face,0)
+		for wood_direction_face in wood_direction_faces:
+                	self.propagate_direction('wood_direction', wood_direction_face,0)
                 for s, side in self.sides.iteritems():
                         self.set_joint_type(s, side)
 
@@ -596,6 +609,7 @@ class ArbitraryBox(Part):
                                 face['x'] = face['x'].normalize()
                         else: 
                                 face['x'] = (self.tuple_to_vec(face['sides'][0][1])- self.tuple_to_vec(face['sides'][0][0])).normalize()
+#			print "x="+str(face['x'])
                         if 'y' in face:
                                 if abs(face['y'].dot(face['x'])) > 0.0000001 :
                                         raise ValueError('face[y] in face '+str(f)+' not perpendicular to x')
@@ -702,9 +716,9 @@ class ArbitraryBox(Part):
                 
         def align3d_face(self, p, f, face):
 #		config = p.get_config()
-                z = face['normal'] * face['cut_from'] 
+                z = (face['normal'] * face['cut_from'] ).normalize()
 
-                x =  face['x']
+                x =  face['x'].normalize()
                 if face['wood_direction']==-1 and face['good_direction']==-1:
                         flip=1#-face['wood_direction']
                 else: 
@@ -712,7 +726,7 @@ class ArbitraryBox(Part):
                 if face['wdir']=='cw':
                         flip *=-1
                 if 'y' in face:
-                        y=face['y']
+                        y=face['y'].normalize()
                 else:
                         y = x.cross(z*-1)
 
@@ -1458,6 +1472,38 @@ class ArbitraryBox(Part):
 			return getattr(self, attrib)
 		else:
 			 return False
+
+# functions for finding plane intersections
+	def plane_intersection_line(self, o1, n1, o2,n2):
+		intersection_normal = n1.cross(n2)
+		det = intersection_normal.length()**2
+		if det < 0.001:
+			return False, False
+		intersection_origin = (intersection_normal.cross(n2)*o1.length() + n1.cross(intersection_normal)*o2.length())/det
+		return intersection_origin, intersection_normal
+
+	def face_intersection_line(self, face1, face2):
+		return plane_intersection_line(face1.origin, face1.normal, face2, face2.normal )
+
+	def face_intersection(self, f1, f2):
+		face1 = self.faces[f1]
+		face2 = self.faces[f2]
+		intersection_origin, intersection_normal = self.face_intersection_line(face1, face2)
+		if intersection_origin is False:
+			return False
+		# resolve intersection onto 2 faces
+		intersection_origin_f1 = V((intersection_origin-face1.origin).dot(face1.x), (intersection_origin-face1.origin).dot(face1.y))
+		intersection_line_f1 = V(intersection_normal.dot(face1.x), intersection_normal.dot(face1.y))
+		t1 = Path()
+		t1.add_points(intersection_origin_f1-1000*intersection_line_f1, intersection_origin_f1+1000*intersection_line_f1)
+		if(face1.border.contains(t1)>-1):
+
+			intersection_origin_f2 = V((intersection_origin-face1.origin).dot(face2.x), (intersection_origin-face1.origin)).dot(face2.y)
+                	intersection_line_f2 = V(intersection_normal.dot(face2.x), intersection_normal.dot(face2.y))
+			t2 = Path()
+			t2.add_points(intersection_origin_f2-1000*intersection_line_f2, intersection_origin_f2+1000*intersection_line_f2)
+			if(face2.border.contains(t2)>-1):
+				return True
 
 class PlainBox2(ArbitraryBox):
         def __init__(self, pos, name, layers, width, height, depth, thickness, tab_length, **config):
