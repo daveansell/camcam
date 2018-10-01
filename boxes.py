@@ -705,10 +705,17 @@ class ArbitraryBox(Part):
                                 if abs(p1p[2])<0.05 and abs(p2p[2])<0.05:
                                         # we are in plane are we in the face
                                         p=Path(closed=True)
+					c=0
                                         for point in face['ppoints']:
-                                                p.add_point(point)
-                                        poly=p.polygonise()
-					
+						if c in face['point_type']:
+							t=face['point_type'][c]
+							t.pos = point
+						else:
+							t=PSharp(point)
+                                                p.add_point(t)
+						c+=1
+                                        poly=p.polygonise(5)
+						
                                         if p.contains_point(p1p,poly) and p.contains_point(p2p, poly) and abs(p1p[2])<0.05 and abs(p2p[2])<0.05:
                                                 self.faces[f]['internal_joints'].append( { 'side':s, 'otherside':side[0], 'from':p1p, 'to':p2p, 'otherface':face1, 'otherf':side[0][0], 'sidedat':side, 'from3D':p1, 'to3D':p2 } )
                                                 side.append( [ '_internal', f, len(self.faces[f]['internal_joints'])-1 ])
