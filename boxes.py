@@ -540,6 +540,10 @@ class ArbitraryBox(Part):
 					face['good_direction'] = rotate(face['good_direction'], face['rotate'][1])
 				if 'wood_direction' in face:
 					face['wood_direction'] = rotate(face['wood_direction'], face['rotate'][1])
+				if 'alt_good_direction' in face:
+					face['alt_good_direction'] = rotate(face['alt_good_direction'], face['rotate'][1])
+				if 'alt_wood_direction' in face:
+					face['alt_wood_direction'] = rotate(face['alt_wood_direction'], face['rotate'][1])
 				print str(face['x']) + str(face['rotate'][0])
 			if 'layer' not in face:
 				face['layer']='layer_'+f
@@ -917,7 +921,7 @@ class ArbitraryBox(Part):
                                                                         cutside= 'right'
                                                                 else:
                                                                         cutside='left'
-                                                        part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount], butt_outline=face['butt_outline']))
+                                                        part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount], butt_outline=face['butt_outline'][scount]))
                                                         if not(lastcorner == 'off' and corner=='off'):
                                                                 nointersect==True
                                                 #		if p==0:
@@ -1189,7 +1193,7 @@ class ArbitraryBox(Part):
                         elif face[t].dot(face['normal'])<0:
                                 face[t]=-1
                         else:
-                                raise ValueError(t+" is perpendicular to the normal")
+                                raise ValueError(t+" in "+f+"is perpendicular to the normal")
                 recursion += 1
                 for s in face['sides']:
                         side = self.sides[s]
