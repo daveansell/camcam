@@ -76,6 +76,7 @@ arg_meanings = {'order':'A field to sort paths by',
 		'use_point_z':'use point z  for 3D cuts',
 		'clear_height':'how far up the cutter should go to clear things',
 		'finishdepth':'last cut thickness',
+		'sidefeed':'sidefeed',
 }
 def V(x=False,y=False,z=False):
         if x==False:
@@ -112,7 +113,7 @@ class Path(object):
                 self.Bsegments = []
                 self.transform={}
                 self.otherargs=''
-                self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth']
+                self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed']
                 for v in self.varlist:
                         if v in config:
                                 setattr(self,v, config[v])
@@ -226,7 +227,8 @@ class Path(object):
                 if config['material'] in milling.materials:
                         mat=milling.materials[config['material']]
                         config['vertfeed']=mat['vertfeed']
-                        config['sidefeed']=mat['sidefeed']
+			if 'sidefeed' not in config or config['sidefeed'] is None:
+	                        config['sidefeed']=mat['sidefeed']
                         if 'stepdown' not in config or type(config['stepdown']) is not int and type(config['stepdown']) is not float:
                                 config['stepdown']=mat['stepdown']
                         config['kress_setting']=mat['kress_setting']
@@ -815,7 +817,7 @@ class Path(object):
 		if self.transform!=None:
 			config['transformations'].append(self.transform)
 		#	self.transform=None
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','finishdepth','forcestepdown', 'forcecutter', 'mode','partial_fill','finishing','fill_direction','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z','clear_height']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','finishdepth','forcestepdown', 'forcecutter', 'mode','partial_fill','finishing','fill_direction','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z','clear_height', 'sidefeed']
                 for v in self.varlist:
                         # we want to be able to know if we are on the front or the back
                         if v !='transform' and v !='transformations':
@@ -993,7 +995,6 @@ class Path(object):
                         else:
                                 numpasses = int(math.ceil(abs(float(dist)/ float(config['cutterrad'])/1.4)))
                                 step = config['partial_fill']/numpasses
-			print self.fill_direction
                         if 'fill_direction' in config:
                                 ns=config['fill_direction']
                         else:
@@ -1551,7 +1552,7 @@ class Path(object):
                         if mode=='down':
                                 self.comment("runin0")
                                 self.start=cutto
-                                self.add_out(self.move(cutfrom))
+                                self.add_out(self.move(cutto))
                         else:
                                 self.comment("runin1")
                                 self.start=cutfrom
