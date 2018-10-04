@@ -177,7 +177,7 @@ class Network(list):
 				corner_offset = endpoints[0]
 			else:
 				endpoints = False
-
+			print corner_offset
 			if connection.other.radius is not None and corner_offset.length() < connection.other.radius:
 	# catch case when it is the end of a single rod
 				if endpoints:

@@ -218,7 +218,7 @@ class Path(object):
                         else:
                                 c['downmode']='ramp'
                         config['original_cutter']=c
-		if 'stepdown' in config and config['stepdown']:
+		if 'vertfeed' in config and config['stepdown']:
 			config['stepdown'] *= tool['diameter']/4.0
 			config['vertfeed'] *= tool['diameter']/4.0
 			config['sidefeed'] *= tool['diameter']/4.0
@@ -1362,6 +1362,7 @@ class Path(object):
                                         self.add_out(self.cutdown(depth))
                                 first=1
                                 for segment in segments:
+					segment.parent = path
                                         if first==1 and downmode=='ramp' and (mode=='gcode' or mode=='simplegcode'):
                                                 if firstdepth and (mode=='gcode' or mode=='simplegcode'):
                                                         self.add_out(self.quickdown(depth-step+config['precut_z']))
