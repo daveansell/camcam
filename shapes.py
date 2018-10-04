@@ -861,12 +861,15 @@ class Cross(Pathgroup):
         def __init__(self, pos, rad, **config):
                 self.init(config)
                 """Cut a cross with radius :param rad: at :param pos: oriented NS EW"""+self.otherargs
-                a=self.add(Path(closed=False,**config))
-                b=self.add(Path(closed=False,**config))
+                a=Path(closed=False)
+                b=Path(closed=False)
                 a.add_point(V(pos[0]+rad, pos[1]))
                 a.add_point(V(pos[0]-rad, pos[1]))
                 b.add_point(V(pos[0], pos[1]+rad))
                 b.add_point(V(pos[0], pos[1]-rad))
+		self.add(a)
+		self.add(b)
+		print "cross os="+str(pos)+" rad="+str(rad)
                 self.comment("Cross")
                 self.comment("pos="+str(pos)+" rad="+str(rad))
         
@@ -1333,11 +1336,19 @@ class ButtJointMid(Pathgroup):
                                                 z1 = -depth, side='in',
                                                 cornertype = PInsharp))
 			if outline:
-				self.add(Rect(
-					bl = start-parallel*fudge - perp*(-deppos+fudge),
-                                                tr = end+perp*(thickness+fudge+deppos)+parallel*fudge,
-                                                z1 = -outline, side='out',
-                                                cornertype = PInsharp))
+				print outline
+#				self.add(Rect(
+#					bl = start-parallel*fudge - perp*(-deppos+fudge),
+ #                                               tr = end+perp*(thickness+fudge+deppos)+parallel*fudge,
+  #                                              z1 = -outline, side='out',
+   #                                             cornertype = PInsharp))
+				self.add(Lines([ start - parallel*fudge - perp*(-deppos+fudge), 
+						start - parallel*fudge + perp*(thickness+fudge+deppos),
+						end + perp*(thickness+fudge+deppos) + parallel*fudge,
+						end - perp*(-deppos+fudge) + parallel*fudge,
+					],
+					closed=True, 
+					z1 = -outline, side='out', cornertype = PInsharp))
 
 class AngledButtJointMid(ButtJointMid):
 	def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode,  angle, lineside='back', **config):
