@@ -400,8 +400,14 @@ class Milling:
                         "endcut":1,
                         "sidecut":0,
                 },
+                "2.5mm_drill":{
+                        "id":19,
+                        "diameter":2.5,
+                        "endcut":1,
+                        "sidecut":0,
+                },
                 "ovolo":{
-                        "id":16,
+                        "id":18,
                         "diameter":10.0,
                         "endcut":1,
                         "sidecut":1,
@@ -455,7 +461,7 @@ class Milling:
                 },
                 "polycarbonate":{
                         "vertfeed":120,
-                        "sidefeed":400,
+                        "sidefeed":700,
                         "stepdown":2.0,
                         "kress_setting":2.0,
 
