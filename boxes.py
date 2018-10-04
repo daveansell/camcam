@@ -800,7 +800,6 @@ class ArbitraryBox(Part):
                                 else:
                                         newpoints.append(PInsharp(lastpoint))
                                 if scount in face['point_type']:
-					print"%%%%%%"+str( face['point_type'][scount])
                                         newpoints.append(face['point_type'][scount])
                                         newpoints[-1].setPos(point)
                                 else:
@@ -1448,9 +1447,7 @@ class ArbitraryBox(Part):
         def _pre_render(self, config):
 		print "arbitrary box pre_render"
                 for f in self.new_layers:
-			print "add _layer "+f;
-                        self.get_plane().add_layer(self.faces[f]['layer'], self.get_layer_attrib('material',f), self.get_layer_attrib('thickness',f), colour=self.get_layer_attrib('colour',f))
-
+                        self.get_plane().add_layer(self.faces[f]['layer'], material=self.get_layer_attrib('material',f), thickness=self.get_layer_attrib('thickness',f), colour=self.get_layer_attrib('colour',f))
 	def get_layer_attrib(self, attrib, face):
 		if attrib in self.faces[face]:
 			return self.faces[face][attrib]
