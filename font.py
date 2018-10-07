@@ -61,9 +61,14 @@ class Text(Pathgroup):
 		
 		if 'centred' in config and config['centred']:
 			offset = self.get_length(text, face)/2 *self.scale
+			if 'YcentreMode' in config and config['YcentreMode']:
+				offsety = float(self.getVoffset(face, config['YcentreMode'])) *self.scale
+			else:
+				offsety = float(self.getVoffset(face, 'aCentre')) *self.scale
 		else:
 			offset = 0
-		self.translate(pos-V(offset,0))
+			offsety = 0
+		self.translate(pos-V(offset,offsety))
 		for ch in text :
 			char = self.add(Pathgroup())
 			char.translate(V(x,0))
@@ -104,6 +109,31 @@ class Text(Pathgroup):
 			x+= float(face.glyph.linearHoriAdvance)/1000 + kern
 	
 		return x
+	def getVoffset(self, face, alignOn):
+		if alignOn=='line':
+			return 0
+		elif alignOn=='ACentre':
+			face.load_char('A')
+			bbox = self.getBBox(face.glyph)
+			return (float(bbox['maxy']) + float(bbox['miny']))/2
+		elif alignOn=='aCentre':
+			face.load_char('a')
+			bbox = self.getBBox(face.glyph)
+			return (float(bbox['maxy']) + float(bbox['miny']))/2
+
+	def getBBox(self, slot):
+		outline = slot.outline
+		minx = 1000000
+		maxx = -1000000
+		miny = 1000000
+		maxy = -1000000
+		
+		for p in outline.points:
+			minx = min(minx, p[0])
+			maxx = max(maxx, p[0])
+			miny = min(miny, p[1])
+			maxy = max(maxy, p[1])	
+		return {'minx':minx, 'maxx':maxx, 'miny':miny, 'maxy':maxy}
 
 	def import_outline(self, outline, start, end, side, offset=False):
 		out=Path(closed=True, side=side)
