@@ -2256,6 +2256,27 @@ class Clamp(Path):
                 self.add_point(V(hold_out_x, -hold_length))
                 self.add_point(V(-inner_rad-hold_width, -hold_length))
 
+class ClockHand(Path):
+	def __init__(self, pos, length, width, rad, **config):
+		self.init(config)
+		self.translate(pos)
+		w=width/2
+		if 'pointlen' in config:
+			pointlen = config['pointlen']
+		else:
+			pointlen = 2*w
+		if 'cornerrad' in config:
+			cornerrad = config['cornerrad']
+		else:
+			cornerrad = 1.0
+	        self.closed=True
+        	self.add_point(PIncurve(V(-w,rad*1.2), radius=2*cornerrad))
+        	self.add_point(PIncurve(V(-w,length-pointlen), radius=cornerrad))
+        	self.add_point(PIncurve(V(0,length), radius=cornerrad))
+        	self.add_point(PIncurve(V(w,length-pointlen), radius=cornerrad))
+        	self.add_point(PIncurve(V(w,rad*1.2), radius=2*cornerrad))
+        	self.add_point(POutcurve(V(0,0), radius=rad))
+
 
 class Module(Plane):
         def __init__(self, size,  **config):#holesX=False, holesY=False, fromedge=15, fromends=40):
