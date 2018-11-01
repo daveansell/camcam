@@ -627,6 +627,11 @@ class ArbitraryBox(Part):
                                         raise ValueError('face[y] in face '+str(f)+' not in plane of the rest of the face')
                         else:
                                 face['y'] = face['x'].cross(face['normal']).normalize()
+			assert face['wood_direction'] in [-1,1]
+			assert face['good_direction'] in [-1,1]
+			if face['wood_direction'] == face['good_direction']:
+				face['x'] *=-1
+				print "QQQ "+str(f)
 #			face['y'] = face['x'].cross(face['normal']).normalize()
                         # if we are cutting from the back flip x
 #			if 'isback' in face and face['isback']:
@@ -643,6 +648,7 @@ class ArbitraryBox(Part):
                                 p2 = p-face['origin']
                                 face['ppoints'].append(V(p2.dot(face['x']), p2.dot(face['y'])))
                         face['wdir']=self.find_direction(face['ppoints'])
+
                 # go through unconnected sides and see if they are in the middle of any faces
                 for s,side in self.sides.iteritems():
                         if len(side)==1:
@@ -734,24 +740,27 @@ class ArbitraryBox(Part):
                 
         def align3d_face(self, p, f, face):
 #		config = p.get_config()
-                z = (face['normal'] * face['cut_from'] ).normalize()
-
-                x =  face['x'].normalize()
-                if face['wood_direction']==-1 and face['good_direction']==-1:
+                if face['wood_direction'] == face['good_direction']:
                         flip=1#-face['wood_direction']
                 else: 
                         flip = -1
-                if face['wdir']=='cw':
-                        flip *=-1
+                z = (face['normal'] * flip).normalize()
+
+                x =  face['x'].normalize()
+           #     if face['wdir']=='cw':
+            #            flip *=-1
+		flip=1
+		flipped = 1
                 if 'y' in face:
                         y=face['y'].normalize()
+			if (y-x.cross(z*-1)).length()>0.0001:
+				flipped=-1
                 else:
                         y = x.cross(z*-1)
-
                 #if y has been defined the other way around it all gets a little confused so unconfuse it:
-                flipxy = y.dot(x.cross(z))
-                x*=flipxy
-                y*=flipxy
+           #     flipxy = y.dot(x.cross(z))
+            #    x*=flipxy
+             #   y*=flipxy
 
 #		if 'isback' in face:
         #		z *= -1
@@ -762,17 +771,20 @@ class ArbitraryBox(Part):
 #		xs = [x[0],x[1],x[2],0]
 #		ys = [y[0],y[1],y[2],0]
 #		zs = [z[0],z[1],z[2],0]
+		print "QQQ "+str((face['wdir']=='cw')==face['good_direction']==face['wood_direction'] and flipped==-1)+" wd="+str(face['wdir']=='cw')+" "+f+" wood="+str(face['wood_direction'])+ " good="+str(face['good_direction'])+ " flipped="+str(flipped) 
                 xs = [x[0]*flip,y[0]*flip,z[0]*flip,0]
                 ys = [x[1],y[1],z[1],0]
                 zs = [x[2]*flip,y[2]*flip,z[2]*flip,0]
                 qs = [0,0,0,1]
-                if face['good_direction']==1:
-                        p.isback=True
+                if face['good_direction']==face['wood_direction'] and face['wood_direction']==1 or p.isback==True:
+#                if face['good_direction']==face['wood_direction'] and face['wood_direction']==1:
+#		if not ((face['wdir']=='cw')==face['good_direction']==face['wood_direction'] and flipped==-1):
+              #          p.isback=True
                         p.border.translate3D([0,0,face['thickness']])
-                        p.rotate3D([0, 180, 0], self.pos)
-                elif (hasattr(p, 'isback') and p.isback is True):
-                        p.rotate3D([0, 180, 0],self.pos)
-                        p.translate3D([0,0,-face['thickness']])
+                #        p.rotate3D([0, 180, 0], self.pos)
+              #  elif (hasattr(p, 'isback') and p.isback is True):
+               #         p.rotate3D([0, 180, 0],self.pos)
+                #        p.translate3D([0,0,-face['thickness']])
                 p.matrix3D([xs,ys,zs,qs],self.pos)
                 p.translate3D(face['origin'])
 
@@ -1072,6 +1084,10 @@ class ArbitraryBox(Part):
 
                         prevmode = 'on'
                         nextmode = 'on'
+			if 'joint_mode' not in joint:
+				print "f="+str(f)
+				print joint
+				joint['joint_mode']='straight'
                         if joint['joint_mode']=='straight':
                                 pass
                         elif joint['joint_mode']=='butt':
