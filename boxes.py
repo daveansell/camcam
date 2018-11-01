@@ -631,7 +631,6 @@ class ArbitraryBox(Part):
 			assert face['good_direction'] in [-1,1]
 			if face['wood_direction'] == face['good_direction']:
 				face['x'] *=-1
-				print "QQQ "+str(f)
 #			face['y'] = face['x'].cross(face['normal']).normalize()
                         # if we are cutting from the back flip x
 #			if 'isback' in face and face['isback']:
@@ -771,7 +770,6 @@ class ArbitraryBox(Part):
 #		xs = [x[0],x[1],x[2],0]
 #		ys = [y[0],y[1],y[2],0]
 #		zs = [z[0],z[1],z[2],0]
-		print "QQQ "+str((face['wdir']=='cw')==face['good_direction']==face['wood_direction'] and flipped==-1)+" wd="+str(face['wdir']=='cw')+" "+f+" wood="+str(face['wood_direction'])+ " good="+str(face['good_direction'])+ " flipped="+str(flipped) 
                 xs = [x[0]*flip,y[0]*flip,z[0]*flip,0]
                 ys = [x[1],y[1],z[1],0]
                 zs = [x[2]*flip,y[2]*flip,z[2]*flip,0]
@@ -803,9 +801,9 @@ class ArbitraryBox(Part):
                 lastpoly = False
                 simplepoints = []
                 if self.find_direction(face['ppoints'])=='cw':
-                        cutside='left'
+                        cutside0='left'
                 else:
-                        cutside='right'
+                        cutside0='right'
                 firstnointersect=False
                 for point in face['ppoints']:
                         nointersect = False
@@ -877,11 +875,12 @@ class ArbitraryBox(Part):
                                         if face['joint_mode'][scount]=='straight':
                                                 newpoints = [PInsharp(lastpoint),PInsharp(point)]
 					elif face['joint_mode'][scount]=='mitre':
-                                                        if cutside=='left' and joint_type=='concave':
+                                                        if cutside0=='left' and joint_type=='concave':
                                                                 cutside='right'
-                                                        if cutside=='right' and joint_type=='concave':
+                                                        elif cutside0=='right' and joint_type=='concave':
                                                                 cutside='left'
-
+							else:
+			 					cutside=cutside0
                                                         if nextotherside is None or nextotherside[0]=='_internal':
                                                                 next_offset = 0
                                                         else:
@@ -903,10 +902,12 @@ class ArbitraryBox(Part):
                                                                 newpoints.append( PInsharp(point))
                                         elif face['joint_mode'][scount]=='butt':
                                                 if angle==0:
-                                                        if cutside=='left' and joint_type=='concave':
+                                                        if cutside0=='left' and joint_type=='concave':
                                                                 cutside='right'
-                                                        if cutside=='right' and joint_type=='concave':
+                                                        elif cutside0=='right' and joint_type=='concave':
                                                                 cutside='left'
+							else: 
+								cutside = cutside0
 
                                                         if nextotherside is None or nextotherside[0]=='_internal':
                                                                 next_offset = 0
@@ -929,10 +930,12 @@ class ArbitraryBox(Part):
 							if corner=='off' and otherside[0]=='_internal':
                                                                 newpoints.append( PInsharp(point))
                                                         if face['cut_from']<0:
-                                                                if  cutside=='left':
+                                                                if  cutside0=='left':
                                                                         cutside= 'right'
                                                                 else:
                                                                         cutside='left'
+							else:
+								cutside=cutside0
                                                         part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount], butt_outline=face['butt_outline'][scount]))
                                                         if not(lastcorner == 'off' and corner=='off'):
                                                                 nointersect==True
@@ -940,6 +943,13 @@ class ArbitraryBox(Part):
                                                         #		firstnointersect=True
                                                 
                                                 else:
+                                                        if face['cut_from']<0:
+                                                                if  cutside0=='left':
+                                                                        cutside= 'right'
+                                                                else:
+                                                                        cutside='left'
+							else:
+								cutside=cutside0
                                                         if nextotherside is None or nextotherside[0]=='_internal':
                                                                 next_offset = 0
                                                         else:
@@ -961,10 +971,12 @@ class ArbitraryBox(Part):
                                                         if corner=='off' and otherside[0]=='_internal':
                                                                 newpoints.append( PInsharp(point))
                                                         if face['cut_from']<0:
-                                                                if  cutside=='left':
+                                                                if  cutside0=='left':
                                                                         cutside= 'right'
                                                                 else:
                                                                         cutside='left'
+							else:
+								cutside = cutside0
 
                                                         part.add(AngledButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on', angle, lineside,  butt_depression=face['butt_depression'][scount], holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount]))
                                                         if not(lastcorner == 'off' and corner=='off'):
@@ -974,10 +986,12 @@ class ArbitraryBox(Part):
  #                                                       newpoints = [PInsharp(lastpoint),PInsharp(point)]
                                         elif face['joint_mode'][scount]=='bracket':
                                                 if angle==0:
-                                                        if cutside=='left' and joint_type=='concave':
+                                                        if cutside0=='left' and joint_type=='concave':
                                                                 cutside='right'
-                                                        if cutside=='right' and joint_type=='concave':
+                                                        elif cutside0=='right' and joint_type=='concave':
                                                                 cutside='left'
+							else:
+								cutside=cutside0
 
                                                         if nextotherside is None or nextotherside[0]=='_internal':
                                                                 next_offset = 0
@@ -995,10 +1009,12 @@ class ArbitraryBox(Part):
                                                                         last_offset = 0
                                                         newpoints = BracketJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner, last_offset=last_offset, next_offset=next_offset, lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), nextparallel = self.parallel(lastpoint, point, point, nextpoint))
                                                         if face['cut_from']<0:
-                                                                if  cutside=='left':
+                                                                if  cutside0=='left':
                                                                         cutside= 'right'
                                                                 else:
                                                                         cutside='left'
+							else:
+								cutside = cutside0
                                                         part.add(BracketJointHoles(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount], bracket=self.config['bracket'], args=self.config['bracket_args'], wood_direction=face['wood_direction']))
                                                         if not(lastcorner == 'off' and corner=='off'):
                                                                 nointersect==True
@@ -1023,10 +1039,12 @@ class ArbitraryBox(Part):
                                                         else:
                                                                 newpoints = AngledFingerJointNoSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, fudge, material_thickness=face['thickness'])
                                                 else:
-                                                        if cutside=='left' and joint_type=='concave':
+                                                        if cutside0=='left' and joint_type=='concave':
                                                                 cutside='right'
-                                                        if cutside=='right' and joint_type=='concave':	
+                                                        elif cutside0=='right' and joint_type=='concave':	
                                                                 cutside='left'
+							else:
+								cutside=cutside0
                                                         newpoints = FingerJoint(
                                                                 lastpoint, 
                                                                 point, 
