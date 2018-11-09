@@ -491,6 +491,7 @@ class Milling:
                         "sidefeed":950,
                         "stepdown":0.3,
                         "kress_setting":1,
+                        "mill_dir":'down',
                },
                 
                 "copper":{
