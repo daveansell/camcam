@@ -569,6 +569,13 @@ class Milling:
                         "kress_setting":3,
                         "mill_dir":'down',
                },
+                "glass":{
+                        "vertfeed":100,
+                        "sidefeed":200,
+                        "stepdown":0.2,
+                        "kress_setting":3,
+                        "mill_dir":'down',
+               },
         }
                 self.bolts={
                 'M2.5':{
@@ -717,6 +724,11 @@ class Milling:
                                 'diam':18,
                                 'length':1.8,
                         },
+                },
+                '#10-32':{
+                        'diam':4.915,
+                        'tap':4.04,
+                        'clearance':5.3,
                 },
                 'RMS':{
                         'diam':20.32,
