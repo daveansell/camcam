@@ -707,11 +707,11 @@ class Stepper(Part):
                                 'corner_rad':4,
                         },
                         'NEMA3.4':{
-                                'bolt_size':'M5',
+                                'bolt_size':'M6',
                                 'bolt_sep':69.7,
-                                'shaft_diam':9,
-                                'pilot_diam':22,
-                                'pilot_depth':2,
+                                'shaft_diam':14.0,
+                                'pilot_diam':73.2,
+                                'pilot_depth':2.5,
                                 'width':86.5,
                                 'flange_thickness':9.3,
                                 'shaft_len':30,
@@ -723,6 +723,13 @@ class Stepper(Part):
                         self.length=config['length']
                 else:
                         self.length=50
+		if 'thread_corners' in config and config['thread_corners']:
+			thread_layer=layer
+			clearance_layers='_stepper_layer'
+		else:
+			thread_layer='_stepper_layer'
+			clearance_layers=layer
+		
         #	self.add(Hole(pos, rad=10))
                 d=dat[stepper_type]
                 self.d=d
@@ -735,12 +742,12 @@ class Stepper(Part):
                 if 'mode' in config and config['mode']=='justshaft':
                         self.add(Hole(pos, rad=d['shaft_diam']/2+1),layer)
                 else:	
-                        self.add(Bolt(pos+V(d['bolt_sep']/2,d['bolt_sep']/2), d['bolt_size'], clearance_layers=layer, thread_layer='_stepper_layer', insert_layer=[]))
-                        self.add(Bolt(pos+V(d['bolt_sep']/2,-d['bolt_sep']/2), d['bolt_size'], clearance_layers=layer, thread_layer='_stepper_layer', insert_layer=[]))
-                        self.add(Bolt(pos+V(-d['bolt_sep']/2,-d['bolt_sep']/2), d['bolt_size'], clearance_layers=layer, thread_layer='_stepper_layer', insert_layer=[]))
-                        self.add(Bolt(pos+V(-d['bolt_sep']/2,d['bolt_sep']/2), d['bolt_size'], clearance_layers=layer, thread_layer='_stepper_layer', insert_layer=[]))
+                        #self.add(Bolt(pos+V( d['bolt_sep']/2, d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=[]))
+                        #self.add(Bolt(pos+V(-d['bolt_sep']/2, d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=[]))
+                        #self.add(Bolt(pos+V(-d['bolt_sep']/2,-d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=[]))
+                        #self.add(Bolt(pos+V(d['bolt_sep']/2,-d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=[]))
                 
-                        self.add(Hole(pos, rad=d['shaft_diam']/2+1),layer)
+                        #self.add(Hole(pos, rad=d['shaft_diam']/2+1),layer)
                         self.add(FilledCircle(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5),layer)
                 self.layer = '_stepper_layer'
                 self.add_border( RoundedRect(pos, centred=True, width=d['width'], height=d['width'], rad=d['corner_rad'], zoffset=self.length, thickness=self.length))
