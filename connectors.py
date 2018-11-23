@@ -22,7 +22,7 @@ from shapes import *
 class Dconnector(Part):
         def __init__(self, pos, **config):
                 self.init(config)
-                self.translate(pos)
+          #      self.translate(pos)
                 data={
                         9:{'A':20.5, 'B':10.25, 'C':25, 'D':12.5},
                         15:{'A':28.8, 'B':14.4, 'C':33.3, 'D':16.65},
@@ -45,12 +45,12 @@ class Dconnector(Part):
                         pins=9
                 cutout = self.add(Path(side='in', closed=True))
                 d=data[pins]
-                cutout.add_point(V(-d['B']-ex,top),'incurve',r)
-                cutout.add_point(V(d['B']+ex,top),'incurve',r)
-                cutout.add_point(V(d['B']+ex-dw,top-h),'incurve',r)
-                cutout.add_point(V(-d['B']-ex+dw,top-h),'incurve',r)
-                self.add(Hole(V(d['D'],0),hole_rad))
-                self.add(Hole(V(-d['D'],0),hole_rad))
+                cutout.add_point(pos+V(-d['B']-ex,top),'incurve',r)
+                cutout.add_point(pos+V(d['B']+ex,top),'incurve',r)
+                cutout.add_point(pos+V(d['B']+ex-dw,top-h),'incurve',r)
+                cutout.add_point(pos+V(-d['B']-ex+dw,top-h),'incurve',r)
+                self.add(Hole(pos+V(d['D'],0),hole_rad))
+                self.add(Hole(pos+V(-d['D'],0),hole_rad))
                 self.add_bom('D connector -'+str(config['pins'])+' pin',1,'D-'+str(config['pins']))
 class XLR(Part):
         def __init__(self, pos, **config):
