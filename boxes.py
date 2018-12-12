@@ -533,7 +533,10 @@ class ArbitraryBox(Part):
 			if 'rotate' in face:
 				#print face['layer']+" x="+str( face['x'])+" dx="+str(face['x']-face['rotate'][0])
 				for p in range(0, len(face['points'])):
-					face['points'][p]=rotate(face['points'][p]-face['rotate'][0], face['rotate'][1])+ face['rotate'][0]
+					if type(face['points'][p]) is Vec:
+						face['points'][p]=rotate(face['points'][p]-face['rotate'][0], face['rotate'][1])+ face['rotate'][0]
+					else:
+						face['points'][p].pos = rotate(face['points'][p].pos-face['rotate'][0], face['rotate'][1])+ face['rotate'][0]
 				face['origin'] = rotate(face['origin']-face['rotate'][0], face['rotate'][1])+ face['rotate'][0]
 				face['x'] = rotate(face['x'], face['rotate'][1])
 				if 'good_direction' in face:
@@ -842,7 +845,6 @@ class ArbitraryBox(Part):
                                 else:
                                         newpoints.append(PInsharp(lastpoint))
                                 if scount in face['point_type']:
-					print"%%%%%%"+str( face['point_type'][scount])
                                         newpoints.append(face['point_type'][scount])
                                         newpoints[-1].setPos(point)
                                 else:
