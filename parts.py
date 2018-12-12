@@ -741,12 +741,23 @@ class Stepper(Part):
                         self.add(Bolt(pos+V(-d['bolt_sep']/2,d['bolt_sep']/2), d['bolt_size'], clearance_layers=layer, thread_layer='_stepper_layer', insert_layer=[]))
                 
                         self.add(Hole(pos, rad=d['shaft_diam']/2+1),layer)
-                        self.add(FilledCircle(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5),layer)
+			if 'throughPilot' in config and config['throughPilot']=='through':
+				self.add(Hole(pos, rad=d['pilot_diam']/2+0.1), layer)
+			else:
+                        	self.add(FilledCircle(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5),layer)
                 self.layer = '_stepper_layer'
-                self.add_border( RoundedRect(pos, centred=True, width=d['width'], height=d['width'], rad=d['corner_rad'], zoffset=self.length, thickness=self.length))
+		if 'motorDir' in config:
+			motorDir = config['motorDir']
+		else:
+			motorDir = 1;
+		if 'motorOffset' in config:
+			motorOffset = config['motorOffset']
+		else:
+			motorOffset = 0;
+                self.add_border( RoundedRect(pos, centred=True, width=d['width'], height=d['width'], rad=d['corner_rad'], zoffset=self.length*motorDir+motorOffset, thickness=self.length*motorDir))
                 
-                self.shaft = self.add(Part(name='shaft', layer='_stepper_layer', border = Circle(pos, rad=d['shaft_diam']/2, thickness=self.shaft_length, zoffset=0)))
-                self.pilot = self.add(Part(name='pilot', layer='_stepper_layer', border = Circle(pos, rad=d['pilot_diam']/2), thickness=d['pilot_depth'], zoffset=0)) 
+                self.shaft = self.add(Part(name='shaft', layer='_stepper_layer', border = Circle(pos, rad=d['shaft_diam']/2, thickness=self.shaft_length*motorDir, zoffset=motorOffset)))
+                self.pilot = self.add(Part(name='pilot', layer='_stepper_layer', border = Circle(pos, rad=d['pilot_diam']/2), thickness=d['pilot_depth']*motorDir, zoffset=motorOffset)) 
 
         def _pre_render(self,config):
                 self.stepper_layer = '_stepper_layer'
