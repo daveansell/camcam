@@ -401,8 +401,14 @@ class Milling:
                         "endcut":1,
                         "sidecut":0,
                 },
+                "2.5mm_drill":{
+                        "id":19,
+                        "diameter":2.5,
+                        "endcut":1,
+                        "sidecut":0,
+                },
                 "ovolo":{
-                        "id":16,
+                        "id":18,
                         "diameter":10.0,
                         "endcut":1,
                         "sidecut":1,
@@ -456,7 +462,7 @@ class Milling:
                 },
                 "polycarbonate":{
                         "vertfeed":120,
-                        "sidefeed":400,
+                        "sidefeed":700,
                         "stepdown":2.0,
                         "kress_setting":2.0,
 
@@ -485,6 +491,7 @@ class Milling:
                         "sidefeed":950,
                         "stepdown":0.3,
                         "kress_setting":1,
+                        "mill_dir":'down',
                },
                 
                 "copper":{
@@ -558,6 +565,13 @@ class Milling:
                 "piezo":{
                         "vertfeed":20,
                         "sidefeed":12,
+                        "stepdown":0.2,
+                        "kress_setting":3,
+                        "mill_dir":'down',
+               },
+                "glass":{
+                        "vertfeed":100,
+                        "sidefeed":200,
                         "stepdown":0.2,
                         "kress_setting":3,
                         "mill_dir":'down',
@@ -710,6 +724,11 @@ class Milling:
                                 'diam':18,
                                 'length':1.8,
                         },
+                },
+                '#10-32':{
+                        'diam':4.915,
+                        'tap':4.04,
+                        'clearance':5.3,
                 },
                 'RMS':{
                         'diam':20.32,

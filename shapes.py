@@ -416,12 +416,16 @@ class Drill(Circle):
         #		print '<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>\n'%(p.pos[0], p.pos[1], self.drillrad)
                         return [config['cutter'], '<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>\n'%(p.pos[0], p.pos[1], self.drillrad)]
                 elif config['mode']=='gcode':
+			if hasattr(self, 'clear_height') and self.clear_height is not None:
+				clearanceHeight = self.clear_height
+			else:
+				clearanceHeight = config['clear_height']
                         if self.peck:
-                                return [config['cutter'], 'G83X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.peck, config['vertfeed'],config['clear_height'])]
+                                return [config['cutter'], 'G0X%0.2fY%0.2f\nG0Z1\n'%(p.pos[0], p.pos[1])+'G83X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.peck, config['vertfeed'],clearanceHeight)]
                         elif self.chipbreak:
-                                return [config['cutter'], 'G73X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.chipbreak, config['vertfeed'],config['clear_height'])]
+                                return [config['cutter'], 'G73X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.chipbreak, config['vertfeed'],clearanceHeight)]
                         else:
-                                return [config['cutter'], 'G81X%0.2fY%0.2fZ%0.2fR%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3,config['vertfeed'],config['clear_height'])]
+                                return [config['cutter'], 'G81X%0.2fY%0.2fZ%0.2fR%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+clearanceHeight,config['vertfeed'],clearanceHeight)]
                 elif config['mode']=='simplegcode':
                         dist= config['z1']-config['z0']
                         if self.peck:
@@ -468,15 +472,12 @@ class ParametricPath3D(Pathgroup):
                         wholecut = True
                         p= self.pmin
                         pa = Path(closed = self.closed, prepend=True)
-                        print str(pa)+" "+str(zoff)
                         pa.use_point_z = True
-                        print len(pa.points)
 
                         while p<pmax:
                                 pnt = callback(p)
                                 pnt = V(pnt[0], pnt[1], pnt[2]+zoff)
                                 zmin = min(pnt[2], zmin)
-                                print len(pa.points)
                                 if pnt[2] <0:
                                         pa.add_point(pnt)	
                                 p+=pstep
@@ -485,7 +486,6 @@ class ParametricPath3D(Pathgroup):
                         pnt = V(pnt[0], pnt[1], pnt[2]+zoff)
                         if pnt[2] <0:
                                 pa.add_point(pnt)
-                        print len(pa.points)
                         if len(pa.points)>0 and self.cutdown!=False:
                                 self.add(pa,  True)
                                 wholecut=False
