@@ -421,6 +421,19 @@ class Milling:
                         "angle":17.0/2,
                         "sidestep":0.5,
                 },
+                "3mm_ballmill":{
+                        "id":21,
+                        "diameter":3.0,
+                        "endcut":1,
+                        "sidecut":1,
+                },
+                "6mm_ballmill":{
+                        "id":21,
+                        "diameter":6.0,
+                        "endcut":1,
+                        "sidecut":1,
+                },
+
                 "laser":{
                         "id":100,
                         "diameter":0.05,
