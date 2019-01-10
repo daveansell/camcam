@@ -655,6 +655,10 @@ class Milling:
                                 'head_d':10.5,
                                 'head_l':3.3,
                         },
+                        'hex':{
+                                'head_d':10.0,
+                                'head_l':4.3,
+                        },
                 },
                 'M8':{
                         'diam':8.0,
@@ -667,6 +671,10 @@ class Milling:
                         'button':{
                                 'head_d':14,
                                 'head_l':4.4,
+                        },
+                        'hex':{
+                                'head_d':13.0,
+                                'head_l':5.6,
                         },
                 },
                 'M10':{
@@ -693,6 +701,10 @@ class Milling:
                         'button':{
                                 'head_d':21.0,
                                 'head_l':6.6,
+                        },
+                        'hex':{
+                                'head_d':19.0,
+                                'head_l':8.0,
                         },
                 },
                 'M14':{
