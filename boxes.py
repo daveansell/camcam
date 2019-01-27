@@ -1510,6 +1510,11 @@ class ArbitraryBox(Part):
 			face['point_type']={}
 		for pnt in face['points']:
 			if type(pnt) is not Vec:
+				try: 
+					pnt.pos
+				except ValueError:
+					raise ValueError("Point "+str(pnt)+" in face "+str(face)+" must be either a Vec or a Point type")
+				print type(pnt)
 				face['point_type'][p]=pnt
 				face['points'][p]=pnt.pos
 			p+=1
