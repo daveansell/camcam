@@ -602,6 +602,7 @@ class ArbitraryBox(Part):
                 	if 'internal' in self.faces[good_direction_face] and self.faces[good_direction_face]['internal']:
                 	        self.faces[good_direction_face]['good_direction'] *= -1
 	                self.propagate_direction('good_direction', good_direction_face,0)
+
 		for wood_direction_face in wood_direction_faces:
                 	self.propagate_direction('wood_direction', wood_direction_face,0)
                 for s, side in self.sides.iteritems():
@@ -1200,7 +1201,8 @@ class ArbitraryBox(Part):
                                 if cutside * good_direction>0.0001:
                                         need_cut_from[self.sign(cutside)]=True
                                 elif cutside!=0:
-                                        pref_cut_from = cutside
+					pref_cut_from = self.sign(cutside)
+						
                                 # this means we should be cutting from this side
                 if len(need_cut_from)>1:
                         raise ValueError(str(f) + " cannot be cut without cavities as slopes can only be cut from one side ")
@@ -1210,7 +1212,7 @@ class ArbitraryBox(Part):
                         face['cut_from'] = pref_cut_from 
                 else:
                         face['cut_from'] = 1
-        
+
         def sign(self, val):
                 if val>0: 
                         return 1
