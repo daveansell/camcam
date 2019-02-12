@@ -904,7 +904,7 @@ class ArbitraryBox(Part):
                                                         if corner=='off' and otherside[0]=='_internal':
                                                                 newpoints.append( PInsharp(point))
                                         elif face['joint_mode'][scount]=='butt':
-                                                if angle==0:
+                                                if angle<0.0001:
                                                         if cutside0=='left' and joint_type=='concave':
                                                                 cutside='right'
                                                         elif cutside0=='right' and joint_type=='concave':
@@ -968,6 +968,7 @@ class ArbitraryBox(Part):
                                                                 else:
                                                                         last_offset = 0
 							lineside=face['lineside']
+							print f+" - Angled Butt Joint"+str(angle)
 							newpoints = AngledButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner, last_offset=last_offset, next_offset=next_offset, lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), nextparallel = self.parallel(lastpoint, point, point, nextpoint), angle=angle, lineside=lineside)
 #                                                        if corner=='off':
  #                                                               newpoints.insert(0, PInsharp(lastpoint))
