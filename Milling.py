@@ -451,7 +451,7 @@ class Milling:
                 self.materials = {
                 "plywood":{
                         "vertfeed":200,
-                        "sidefeed":1800,
+                        "sidefeed":2200,
                         "stepdown":5.0,
                         "kress_setting":4.0,
                         "spring":0.3,
