@@ -1180,7 +1180,7 @@ class Bolt(Part):
 
 class AngledButtJoint(list):
         def __init__(self, start, end, side, linemode, startmode, endmode, hole_spacing, thickness, cutterrad,  angle, lineside='back', **config):
-		newThickness = thickness / math.sin(float(angle)/math.pi*180)
+		newThickness = abs(thickness / math.sin(float(angle)/math.pi*180))
 			
 		for p in ButtJoint(start, end, side, linemode, startmode, endmode, hole_spacing, newThickness, cutterrad,**config):
 			self.append(p) 
