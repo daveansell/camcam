@@ -25,6 +25,14 @@ class Node:
 			self.holeRad=config['holeRad']
 		else:
 			self.holeRad=None
+		if 'endType' in config:
+			self.endType=config['endType']
+		else:
+			self.endType=None
+		if 'note' in config:
+			self.note=config['note']
+		else:
+			self.note=""
 		self.connections=[]
 
 	def sort_connections(self):
@@ -177,7 +185,8 @@ class Network(list):
 				corner_offset = endpoints[0]
 			else:
 				endpoints = False
-			print corner_offset
+		#	print corner_offset
+			print "ENDTYPE "+str(connection.this.note)+"->"+str(connection.other.note)+"Q="+str(connection.this.endType)+" "+str(connection.other.endType)+" "+str(endpoints)
 			if connection.other.radius is not None and corner_offset.length() < connection.other.radius:
 	# catch case when it is the end of a single rod
 				if endpoints:
@@ -189,14 +198,20 @@ class Network(list):
 #					path.add_point(PAroundcurve(connection.other.pos + corner_offset, centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
 #					path.add_point(PSharp(connection.other.pos+endpoints[1]*connection.other.radius))
 #					path.add_point(PAroundcurve(connection.other.pos + endpoints[2], centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
-						
+					print "a"	
 				else:
+#					if connection.this.endType=='incurve':
+#						PIncurve(connection.
 					path.add_point(PAroundcurve(connection.other.pos + corner_offset, centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
+					print "b"
 			elif self.get_intRadius(connection, connection.other) is not None:
 				path.add_point(PIncurve(connection.other.pos + corner_offset, radius=self.get_intRadius(connection, connection.other)))
-				
+				path.add_point(PIncurve(connection.other.pos - corner_offset, radius=self.get_intRadius(connection, connection.other)))
+				print "c"
 			else:
+				print "d"
 				path.add_point(PSharp(connection.other.pos + self.corner_pos(connection, nextConnection)))
+				path.add_point(PSharp(connection.other.pos - self.corner_pos(connection, nextConnection)))
 			if connection.other.holeRad is not None:
 				if type(connection.other.holeRad) is int or type(connection.other.holeRad) is float:
 					self.otherpaths.append(Circle(connection.other.pos, rad=connection.other.holeRad, side='in'))
