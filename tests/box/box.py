@@ -7,6 +7,7 @@ plane = camcam.add_plane(Plane('xy', cutter='6mm_endmill'))
 
 plane.add_layer('one', 'plywood', box_thickness, colour='#005000')
 plane.add_layer('two', 'plywood', box_thickness, colour='#005000')
+plane.add_layer('three', 'plywood', box_thickness, colour='#005000')
 
 box = plane.add(ArbitraryBox(
         faces = {
@@ -43,7 +44,7 @@ box = plane.add(ArbitraryBox(
 				V(w,-w,0),
 			],
 			'x':V(-1.0,0.0,0.0),
-			'layer':"two",
+			'layer':"three",
 			'thickness':box_thickness,
 		},
 	},

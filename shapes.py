@@ -1183,7 +1183,7 @@ class Bolt(Part):
 
 class AngledButtJoint(list):
         def __init__(self, start, end, side, linemode, startmode, endmode, hole_spacing, thickness, cutterrad,  angle, lineside='back', **config):
-		newThickness = thickness / math.sin(float(angle)/math.pi*180)
+		newThickness = abs(thickness / math.sin(float(angle)/math.pi*180))
 			
 		for p in ButtJoint(start, end, side, linemode, startmode, endmode, hole_spacing, newThickness, cutterrad,**config):
 			self.append(p) 
@@ -1257,7 +1257,8 @@ class ButtJoint(list):
 
 class AngledButtJoint(ButtJoint):
         def __init__(self, start, end, side, linemode, startmode, endmode, hole_spacing, thickness, cutterrad,  angle, lineside='back', **config):
-		newThickness = thickness / math.sin(float(angle)/math.pi*180)
+		newThickness = thickness / math.cos(float(angle)/math.pi*180)
+		print "newThickness"+str(newThickness)
 		super(AngledButtJoint, self).__init__(start, end, side, linemode, startmode, endmode, hole_spacing, newThickness, cutterrad,**config)
 
 class MitreJoint(ButtJoint):

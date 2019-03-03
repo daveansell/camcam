@@ -602,6 +602,7 @@ class ArbitraryBox(Part):
                 	if 'internal' in self.faces[good_direction_face] and self.faces[good_direction_face]['internal']:
                 	        self.faces[good_direction_face]['good_direction'] *= -1
 	                self.propagate_direction('good_direction', good_direction_face,0)
+
 		for wood_direction_face in wood_direction_faces:
                 	self.propagate_direction('wood_direction', wood_direction_face,0)
                 for s, side in self.sides.iteritems():
@@ -903,7 +904,7 @@ class ArbitraryBox(Part):
                                                         if corner=='off' and otherside[0]=='_internal':
                                                                 newpoints.append( PInsharp(point))
                                         elif face['joint_mode'][scount]=='butt':
-                                                if angle==0:
+                                                if angle<0.0001:
                                                         if cutside0=='left' and joint_type=='concave':
                                                                 cutside='right'
                                                         elif cutside0=='right' and joint_type=='concave':
@@ -967,6 +968,7 @@ class ArbitraryBox(Part):
                                                                 else:
                                                                         last_offset = 0
 							lineside=face['lineside']
+							print f+" - Angled Butt Joint"+str(angle)
 							newpoints = AngledButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner, last_offset=last_offset, next_offset=next_offset, lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), nextparallel = self.parallel(lastpoint, point, point, nextpoint), angle=angle, lineside=lineside)
 #                                                        if corner=='off':
  #                                                               newpoints.insert(0, PInsharp(lastpoint))
@@ -1200,7 +1202,8 @@ class ArbitraryBox(Part):
                                 if cutside * good_direction>0.0001:
                                         need_cut_from[self.sign(cutside)]=True
                                 elif cutside!=0:
-                                        pref_cut_from = cutside
+					pref_cut_from = self.sign(cutside)
+						
                                 # this means we should be cutting from this side
                 if len(need_cut_from)>1:
                         raise ValueError(str(f) + " cannot be cut without cavities as slopes can only be cut from one side ")
@@ -1210,7 +1213,7 @@ class ArbitraryBox(Part):
                         face['cut_from'] = pref_cut_from 
                 else:
                         face['cut_from'] = 1
-        
+
         def sign(self, val):
                 if val>0: 
                         return 1
@@ -1510,6 +1513,11 @@ class ArbitraryBox(Part):
 			face['point_type']={}
 		for pnt in face['points']:
 			if type(pnt) is not Vec:
+				try: 
+					pnt.pos
+				except ValueError:
+					raise ValueError("Point "+str(pnt)+" in face "+str(face)+" must be either a Vec or a Point type")
+				print type(pnt)
 				face['point_type'][p]=pnt
 				face['points'][p]=pnt.pos
 			p+=1
