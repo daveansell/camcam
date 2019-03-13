@@ -311,10 +311,13 @@ class Polygon(Path):
                         cornerdir=False
 		if 'radMode' in config and config['radMode']=='flat':
 			rad/=math.cos(math.pi/sides)
-			
+		if 'startAngle' in config:
+			startAngle= config['startAngle']
+		else:
+			startAngle=0			
 		print "ISES="+str(sides)+" rad="+str(rad)
                 for i in range(0,int(sides)):
-                        self.add_point(pos+rotate(V(rad,0), i*step),cornertype,cornerrad,direction=cornerdir)
+                        self.add_point(pos+rotate(V(rad,0), i*step+startAngle),cornertype,cornerrad,direction=cornerdir)
                 self.comment("Polygon")
                 self.comment("pos="+str(pos)+" rad="+str(rad)+" sides="+str(sides)+" cornertype="+cornertype)
 
