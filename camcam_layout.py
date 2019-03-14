@@ -144,8 +144,8 @@ class KvPart(Scatter):
 #			print kvpoints
 #			self.canvas.add(Mesh(verticies=kvpoints, indices=indices, mode='line_loop'))
 			self.canvas.add(kivy.graphics.Color(0,0,0))
-			self.add_widget(Label(text=part.name, x=0, y=0, halign='center'))
-			print part.name+" sself.center"+str(self.center)+" pos="+str(self.pos)
+			self.add_widget(Label(text=str(part.name), x=0, y=0, halign='center'))
+			print str(part.name)+" sself.center"+str(self.center)+" pos="+str(self.pos)
 		self.startpos = self.pos
 #		if mirror==-1:
 #			self.startpos=(self.pos[0]-400, self.pos[1])
