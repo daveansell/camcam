@@ -2512,37 +2512,15 @@ class Plane(Part):
                 elif self.modeconfig['mode'] in self.output_modes and self.modeconfig['group'] == False:
                         self.output_modes[self.modeconfig['mode']](self, part.name,key, output, part.border, config)
 
-        def writeGcodeFile(self,partName, key, output, border, config):
-                filename=str(partName)+"_"+str(self.name)+"_"+str(key)
-                if len(config['command_args']):
-                        for k in config['command_args'].keys():
-                                filename=k+"_"+filename+"-"+config['command_args'][k]	
-                if 'cutter' in config:
-                        filename+="_cutter-"+str(config['cutter'])
-                if 'material' in config:
-                        filename+='_'+str(config['material'])
-                if 'thickness' in config:
-                        filename+="_thickness-"+str(config['thickness'])
-                if 'repeatmode' in config:
-                        repeatmode=config['repeatmode']
-                else:
-                        repeatmode='regexp'
-                if 'repeatpattern' in config:
-                        repeatpattern=config['repeatpattern']
-                else:
-                        repeatpattern='rect'
-                if 'zero' in config and config['zero']=='bottom_left' and border!=None:
-			if 'layout' in config and config['layout']:
-				offset = V(0,0)
-				if 'offset' in config:
-					offset = config['offset']
-                        elif not hasattr(border,'boundingBox') or 'bl' not in border.boundingBox.keys():
-                                border.polygonise() 
-                        offset=-border.boundingBox['bl']
-                        output = self.offset_gcode( output, offset)
-                else:
-                        offset = V(0,0)
-                if 'repeatx' in config and 'repeaty' in config and 'xspacing' in config and 'yspacing' in config:
+	def repeatGcode(self, output, config):
+                	if 'repeatmode' in config:
+                	        repeatmode=config['repeatmode']
+                	else:
+                	        repeatmode='regexp'
+                	if 'repeatpattern' in config:
+                	        repeatpattern=config['repeatpattern']
+                	else:
+                	        repeatpattern='rect'
                         output2=''
                         if repeatmode=='gcode':
                                 for y in range(0,int(config['repeaty'])):
@@ -2560,22 +2538,9 @@ class Plane(Part):
                                 # one approach is to just grep through for all Xnumber or Ynumbers and add an offset. This works as I and J are relative unless we do something cunning
 #				xreg=re.compile('X[\d\.-]+')
 #				yreg=re.compile('Y[\d\.-]+')
+				outputs=[]
                                 for y in range(0,int(config['repeaty'])):
                                         for x in range(0,int(config['repeatx'])):
-#						tempoutput=output
-#						matches = xreg.findall(tempoutput)
-#						for match in matches:
-#							if len(match):
-#								val=float(match[1::])
-#								val+=x*float(config['xspacing'])
-#								tempoutput=tempoutput.replace(match,'X'+str(val))
-#						matches=yreg.findall( tempoutput)
-#                                                for match in matches:
-#                                                        if len(match):
-#                                                                val=float(match[1::])
-#                                                                val+=y*float(config['yspacing'])
-#                                                                tempoutput=tempoutput.replace(match,'Y'+str(val))
-#						output2+=tempoutput
 						docut=True
 						if repeatpattern=='cp_ext' or repeatpattern=='cp_int':
 							xoff=float(x)*float(config['xspacing'])*math.sin(math.pi/3)
@@ -2589,10 +2554,37 @@ class Plane(Part):
 							xoff=x*float(config['xspacing'])
 							yoff=y*float(config['yspacing'])
 						if docut:
-                                                	output2+= "(copy x="+str(xoff)+" y="+str(yoff)+")\n"+self.offset_gcode(output, V(xoff, yoff))
+                                                	outputs.append( "(copy x="+str(xoff)+" y="+str(yoff)+")\n"+self.offset_gcode(output, V(xoff, yoff)))
+				output2="\n".join(outputs)
+			return output2
+
+        def writeGcodeFile(self,partName, key, output, border, config):
+                filename=str(partName)+"_"+str(self.name)+"_"+str(key)
+                if len(config['command_args']):
+                        for k in config['command_args'].keys():
+                                filename=k+"_"+filename+"-"+config['command_args'][k]	
+                if 'cutter' in config:
+                        filename+="_cutter-"+str(config['cutter'])
+                if 'material' in config:
+                        filename+='_'+str(config['material'])
+                if 'thickness' in config:
+                        filename+="_thickness-"+str(config['thickness'])
+                if 'zero' in config and config['zero']=='bottom_left' and border!=None:
+			if 'layout' in config and config['layout']:
+				offset = V(0,0)
+				if 'offset' in config:
+					offset = config['offset']
+                        elif not hasattr(border,'boundingBox') or 'bl' not in border.boundingBox.keys():
+                                border.polygonise() 
+                        offset=-border.boundingBox['bl']
+                        output = self.offset_gcode( output, offset)
+                else:
+                        offset = V(0,0)
+                if 'repeatx' in config and 'repeaty' in config and 'xspacing' in config and 'yspacing' in config and ('layout' not in config or not config['layout']):
                 #	output2+='\nG10 L2 P1 X0 Y0\n'
+			output = self.repeatGcode(output, config)
                         filename+='_'+str(config['repeatx'])+'x_'+str(config['repeaty'])+'y'
-                        output=output2
+                        #output=output2
 		output=self.offset_gcode(output, config['offset'])
 
                 config['prefix']=config['prefix'].replace("%zclear%", str(config['clear_height']))

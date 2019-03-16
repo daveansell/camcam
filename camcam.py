@@ -97,6 +97,7 @@ class CamCam:
 			if 'suffix' not in modeconfig:
 				modeconfig['suffix'] = ''
 			for i in out:
+				
 				if 'zero' in config:
 					if config['zero']=='bottom_left':
 						out[i]=plane.offset_gcode( out[i], V(-minx,-miny))
@@ -104,7 +105,13 @@ class CamCam:
 						out[i]= plane.offset_gcode( out[i], V(-maxx,-maxy))
 					elif config['zero']=='centre':
 						out[i]=plane.offset_gcode( out[i], V(-(maxx+minny)/2,-(miny+maxy)/2))
-				f=open(self.sanitise_filename(sheet+ i + modeconfig['file_suffix']), 'w')
+				if 'repeatx' in config and 'repeaty' in config and 'xspacing' in config and 'yspacing' in config:
+               	#       output2+='\nG10 L2 P1 X0 Y0\n'
+                        		out[i] = plane.repeatGcode(out[i], config)
+                        		fileextra='_'+str(config['repeatx'])+'x_'+str(config['repeaty'])+'y'
+				else:
+					fileextra = ''
+				f=open(self.sanitise_filename(sheet+ i + fileextra + modeconfig['file_suffix']), 'w')
 				f.write(modeconfig['prefix'] + out[i] + modeconfig['postfix'])
 		
 
