@@ -264,7 +264,9 @@ class Path(object):
                         self.points[-1].nextpoint = self.points[-2%l]
                         self.points[-2%l].nextpoint = self.points[-1]
                         self.points[-2%l].lastpoint = self.points[-3%l]
-
+	def insert_point(self,  pos, point):
+		self.points.insert(pos, point)
+		self.reset_points()
         def reset_points(self, pointlist=False):
                 if pointlist==False:
                         pointlist=self.points
