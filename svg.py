@@ -34,7 +34,8 @@ class SVGimport(Pathgroup):
                 }
 
                 self.init(config)
-                self.translate(pos)
+                #self.translate(pos)
+		config['pos']=pos
                 with open( filename, 'r') as infile: 
                         tree = etree.parse(infile) 
                         root = tree.getroot()
@@ -78,7 +79,7 @@ class SVGimport(Pathgroup):
                                                 outpath.points.pop()
                                         outpaths.append(outpath)
                                                 
-                                outpath = Path()
+                                outpath = Path(transform={'translate':config['pos']})
                                 pos=V(float(items[i]), -float(items[i+1]))
                                 startpos = pos
                                 outpath.add_point(self.svgtransform(pos, transform))
@@ -141,7 +142,7 @@ class SVGimport(Pathgroup):
                                                 outpath.closed=True
                                                 outpath.points.pop()
                                         outpaths.append(outpath)
-                                outpath = Path()
+                                outpath = Path(transform={'translate':config['pos']})
                                 i+=1
                                 pos+=V(float(items[i]), -float(items[i+1]))
                                 startpos = pos
