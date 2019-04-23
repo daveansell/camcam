@@ -1053,8 +1053,13 @@ class LineObjects(Part):
                         endi = num
                 totlength=(b-a).length()
                 length=totlength-2*fromends
-                step=(b-a)/(num-1)
-                step=length/(num-1)*(b-a).normalize()
+		if('stepLength' in config):
+			step=(b-a).normalize() * config['stepLength']
+			if num is None or num is False:
+				num = int((b-a).length() / config['stepLength'])
+		else:
+                	step=(b-a)/(num-1)
+                	step=length/(num-1)*(b-a).normalize()
                 start=a+fromends*(b-a).normalize()
                 points=[]
                 for i in range(0, num):
