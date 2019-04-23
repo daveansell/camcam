@@ -251,11 +251,11 @@ class NetLine(Pathgroup):
 	def __init__(self, points, width, **config):
 		self.init(config)
 		if 'rad' not in config:
-			config['rad']=width/2+0.01
-		self.network = Network(width)
+			config['radius']=width/2+1
+		self.network = Network(width, radius=width/2+0.1)
 		lastnode = False
 		for p in points:
-			node=self.network.add(Node(p))
+			node=self.network.add(Node(p, radius=width/2+0.1))
 			if lastnode is not False:
 				node.add_conn(lastnode)
 			lastnode=node
