@@ -703,6 +703,10 @@ class FilledRect(Pathgroup):
                         self.cornertype=config['cornertype']
                 else:
                         self.cornertype=PSharp
+		if 'noFinal' in config:
+			self.noFinal=config['noFinal']
+		else:
+			self.noFinal=False
 #               sides=int(max(8, rad))
 
 #               self.add(Polygon(pos, rad, sides, partial_fill=rad-0.5, fill_direction='in', side='in'))
@@ -722,7 +726,8 @@ class FilledRect(Pathgroup):
                                 diff = step*i
                 #	self.add(Rect(self.pos, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in'))
                                 self.add(RoundedRect(self.pos, rad=rad, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in', z1=self.z1))
-                self.add(Rect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in', cornertype=self.cornertype, z1=self.z1))
+		if not self.noFinal:
+	                self.add(Rect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in', cornertype=self.cornertype, z1=self.z1))
 
 
 
