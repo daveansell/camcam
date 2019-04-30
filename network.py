@@ -161,7 +161,7 @@ class Network(list):
 	# catch case when it is the end of a single rod
 		elif abs(d1.dot(d2) -1) < 0.0001:
 			b=0
-			return [w2*rotate(d1,90), -d1, w2*rotate(d1,-90)]
+			return [w2*rotate(d1,90), w2*rotate(d1,-90)]
 		else:
 			if (d1[1]*d2[0]-d1[0]*d2[1])==0:
 				print d1
@@ -210,8 +210,14 @@ class Network(list):
 				print "c"
 			else:
 				print "d"
-				path.add_point(PSharp(connection.other.pos + self.corner_pos(connection, nextConnection)))
-				path.add_point(PSharp(connection.other.pos - self.corner_pos(connection, nextConnection)))
+				cornerpos = self.corner_pos(connection, nextConnection, lastConnection)
+				print "cornerpos="+str(cornerpos)
+				if type(cornerpos) is list:
+					path.add_point(PSharp(connection.other.pos + cornerpos[0]))
+					path.add_point(PSharp(connection.other.pos + cornerpos[1]))
+				else:
+					path.add_point(PSharp(connection.other.pos + self.corner_pos(connection, nextConnection, lastConnection)))
+					path.add_point(PSharp(connection.other.pos - self.corner_pos(connection, nextConnection, lastConnection)))
 			if connection.other.holeRad is not None:
 				if type(connection.other.holeRad) is int or type(connection.other.holeRad) is float:
 					self.otherpaths.append(Circle(connection.other.pos, rad=connection.other.holeRad, side='in'))
@@ -240,3 +246,19 @@ class Network(list):
 				self.border = path
 			else:
 				path.side='in'
+
+class NetLine(Pathgroup):
+	def __init__(self, points, width, **config):
+		self.init(config)
+		if 'rad' not in config:
+			config['rad']=width/2+0.01
+		self.network = Network(width)
+		lastnode = False
+		for p in points:
+			node=self.network.add(Node(p))
+			if lastnode is not False:
+				node.add_conn(lastnode)
+			lastnode=node
+		self.network.make_paths()	
+		for path in self.network:
+			self.add(path)
