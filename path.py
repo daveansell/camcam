@@ -113,13 +113,17 @@ class Path(object):
                 self.Bsegments = []
                 self.transform={}
                 self.otherargs=''
-                self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed']
+                varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed']
+		if hasattr(self, 'varlist') and type(self.varlist) is list:
+			self.varlist+=varlist
+		else:
+			self.varlist=varlist
                 for v in self.varlist:
                         if v in config:
                                 setattr(self,v, config[v])
                         else:
                                 setattr(self,v, None)
-                        self.otherargs+=':param v: '+arg_meanings[v]+"\n"
+#                        self.otherargs+=':param v: '+arg_meanings[v]+"\n"
                 self.start=False
                 self.extents= {}	
                 self.output=[]
@@ -819,7 +823,7 @@ class Path(object):
 		if self.transform!=None:
 			config['transformations'].append(self.transform)
 		#	self.transform=None
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','finishdepth','forcestepdown', 'forcecutter', 'mode','partial_fill','finishing','fill_direction','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z','clear_height', 'sidefeed']
+	#	self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','finishdepth','forcestepdown', 'forcecutter', 'mode','partial_fill','finishing','fill_direction','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z','clear_height', 'sidefeed']
                 for v in self.varlist:
                         # we want to be able to know if we are on the front or the back
                         if v !='transform' and v !='transformations':
@@ -873,9 +877,8 @@ class Path(object):
                 inherited = self.get_config()
 #		if('transformations' in config):
                 config=self.overwrite(config, inherited)
-		
-                if getattr(self, "_pre_render", None) and callable(self._pre_render):
-                        self._pre_render(config)	
+#                if getattr(self, "_pre_render", None) and callable(self._pre_render):
+ #                       self._pre_render(config)	
 #		if('transformations' in config):
 #		for k in inherited.keys():
  #                       if (config[k] is None or config[k] is False) and k in pconfig:
@@ -1632,6 +1635,7 @@ class Pathgroup(object):
 
         def _pre_render(self, config):
                 for path in self.paths:
+			print "_pre_render Pathgroup"
                         if getattr(path, "_pre_render", None) and callable(path._pre_render):
                                 path._pre_render(config)		
 
@@ -2068,11 +2072,11 @@ class Part(object):
                         if getattr(part, "_pre_render", None) and callable(part._pre_render):
                                 part._pre_render(config)
                         ret.extend(part.getParts(overview,False, config))
-        #	for path in self.paths:
-        #		print path
-        #		if getattr(self.paths[path], "_pre_render", None) and callable(self.paths[path]._pre_render):
-         #                       print "PRERENDER"
-          #                      self.paths[path]._pre_render(config)
+        	for path in self.paths:
+        		print path
+        		if getattr(self.paths[path], "_pre_render", None) and callable(self.paths[path]._pre_render):
+                                print "PRERENDER"
+                                self.paths[path]._pre_render(config)
                 if self.renderable():
                         ret.append(self)
                 return ret
