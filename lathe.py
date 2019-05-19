@@ -32,7 +32,7 @@ class LathePart(Part):
 
 class LathePath(Path):
 	def __init__(self, **config):
-		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step']
+		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear']
 		self.init(config)
 		self.closed=False
 		self.side='on'
@@ -41,11 +41,16 @@ class LathePath(Path):
 		self.shapelyPolygon=False
 		super(LathePath, self).init(config)
 		self.cuts=[]
-
+		if 'doRoughing' in config and config['doRoughing'] is not None:
+			self.doRoughing= config['doRoughing']
+		else:
+			self.doRoughing=True
 	def _pre_render(self, pconfig):
 		out=[]
 		config=self.generate_config(pconfig)
-		config['step']=1.0
+		if 'step' not in config or not config['step']:
+			config['step']=1.0
+			
 		if 'roughClearance' not in config or not config['roughClearance']==0:
 			config['roughClearance'] = config['step']/2
 		if( not self.shapelyPolygon):
@@ -56,44 +61,100 @@ class LathePath(Path):
 			self.shapelyPolygon = shapely.geometry.LineString(points)
 			self.rawPolygon = polygonised
 		self.maxValues()
-		self.generateRouging(config)
-		print "*******************"
-		print self.cuts
-		for cut in self.cuts.reverse():
-			self.add_points(cut, 'start')
+		print "min="+str(self.min)
+		print "max="+str(self.max)
+		if self.doRoughing:
+			self.generateRouging(config)
+			for cut in self.cuts[::-1]:
+				self.add_points(cut, 'start')
 		
 
 	def generateRouging(self,  config):
 		if config['latheMode']=='face':
 			stepDir = V(-1,0)
 			cutDir = V(0,-1)
+			endRad = 0
 			startRad = config['matRad']
+			
 			startZ = config['matEnd']	
 			endZ = self.minY+config['roughClearance']
-			self.cuts.append(self.findRoughingCuts( stepDir, cutDir, startZ, endZ, startRad, config))
+			self.cuts.append(self.findRoughingCuts( stepDir, cutDir, startZ, endZ, startRad, endRad, config))
 		elif config['latheMode']=='bore':
 			stepDir = V(0,1)
 			cutDir = V(0,1)
 			startRad = 0
 			endRad = self.max[0] - config['roughClearance']	
-			startZ = config['matEnd']	
-			self.cuts.append(self.findRoughingCuts( stepDir, cutDir, startRad, endRad, startZ, config))
+			startZ = self.max[1] + config['matEnd']
+			endZ = self.min[1] + config['roughClearance']	
+			self.cuts.append(self.findRoughingCuts( stepDir, cutDir, startRad, endRad, startZ, endZ, config))
 		elif config['latheMode']=='turn':
 			stepDir=V(0,-1)
 			cutDir = V(-1,0)
 			startRad = config['matRad']
 			endRad = self.min[0] + config['roughClearance']
-			startZ = config['matEnd']	
-			print config
-			self.cuts.append(self.findRoughingCuts( stepDir, cutDir, startRad, endRad, startZ, config))
+			startZ = self.max[1] + config['matEnd']	
+			endZ = self.min[1] + config['roughClearance']	
+			self.cuts.append(self.findRoughingCuts( stepDir, cutDir, startRad, endRad, startZ, endZ, config))
 		elif config['latheMode']=='backTurn':
 			stepDir=V(0,-1)
 			cutDir = V(1,0)
 			startRad = config['matRad']	
 			endRad = self.min[0] + config['roughClearance']
-			startZ = config['matEnd']	
-			self.cuts.append(self.findRoughingCuts( stepDir, cutDir, startRad, endRad, startZ, config))
-	
+			endZ = config['matEnd']	- config['roughClearance']
+			startZ = self.min[1] 
+			self.cuts.append(self.findRoughingCuts( stepDir, cutDir, startRad, endRad, startZ, endZ, config))
+
+	def findRoughingCuts(self, stepDir, cutDir, startStep, endStep, startCut, endCut, config):
+		cuts=[]
+		print "find ROUGHING CUTS"
+		print startCut
+		print endCut
+		numSteps = int(math.ceil(abs((endStep - startStep)/config['step'])))
+		step = (endStep - startStep)/numSteps
+		for i in range(1, numSteps+1):
+		#	print startStep+i*step
+			cuts+=self.findRoughingCut(startStep+i*step, cutDir, stepDir,startStep, startCut, endCut, config)
+		return cuts
+	def sign(self, x):
+		if x<0:
+			return -1
+		if x>0:
+			return 1
+		return 0
+
+	def findRoughingCut(self, val, direction, stepDir, startStep, startCut, endCut, config):
+		if abs(stepDir.dot(V(0,1))>0.0001):	
+			alongCut = V(1,0) * self.sign(endCut-startCut)
+			line = shapely.geometry.LineString([ [startCut, val], [ endCut, val] ])
+			intersection = self.shapelyPolygon.intersection(line)
+			
+			if not intersection:
+				intersection = V( endCut,val)
+			else:
+				intersection = V(intersection.x, intersection.y)
+			return [
+				PSharp(V(startCut, val)),
+				PSharp(intersection - alongCut*config['cutClear']), 
+				PSharp(intersection-stepDir*config['cutClear'] - alongCut*config['cutClear']), 
+				PSharp(V(startCut, val)-stepDir*config['cutClear'])
+			]
+		else:
+			alongCut = V(0,1) * self.sign(endCut-startCut)
+			off = val
+			line = shapely.geometry.LineString([ [val, startCut], [ val, endCut] ])
+			intersection = self.shapelyPolygon.intersection(line)
+			if not intersection:
+				intersection = V(val, endCut)
+			else:
+				intersection = V(intersection.x, intersection.y)
+				print "Intersection = "+str(intersection)
+			return [
+				PSharp(V(val, startCut)), 
+				PSharp(intersection - alongCut*config['cutClear']), 
+				PSharp(intersection - stepDir*config['cutClear'] - alongCut*config['cutClear']), 
+				PSharp(V(val, startCut) - stepDir*config['cutClear'])
+			]			
+		
 	def maxValues(self):
 		maxX = -100000
 		maxY = -100000
@@ -112,32 +173,6 @@ class LathePath(Path):
 		self.min=V(minX, minY)
 		self.max=V(maxX, maxY)
 
-	def findRoughingCuts(self, stepDir, cutDir, startStep, endStep, startCut, config):
-		cuts=[]
-		print startStep
-		print endStep
-		numSteps = int(math.ceil((endStep - startStep)/config['step']))
-		step = (endStep - startStep)/numSteps
-		for i in range(1, numSteps+1):
-			cuts+=findRoughingCut(startStep+i*step, cutDir, stepDir, config)
-		return cuts
-
-	def findRoughingCut(self, val, direction, stepDir, config):
-		zstart = config['z0']
-		xstart = config['x0']
-		xend = config['xEnd']
-		
-		if abs(stepDir.dot(V(0,1))>0.0001):	
-			off = val*stepDir.dot(V(0,1))	
-			line = shapely.geometry.LineString([ [xstart, zstart+off], [ xstart+direction*10000, zstart+off] ])
-			intersection = self.shapelyPolygon.intersection(line)
-			return [V(xstart, zstart+off), intersection, V(xstart, zstart+off)]
-		else:
-			off = val*stepDir.dot(V(1,0))
-			line = shapely.geometry.LineString([ [xstart+off, zstart], [ xstart+off, zstart*10000] ])
-			intersection = self.shapelyPolygon.intersection(line)
-			return [PSharp(V(xstart+off, zstart)), PSharp(intersection), PSharp(intersection - stepDir*config['cutClear']), PSharp(V(xstart+off, zstart) - stepDir*config['cutClear'])]			
-		
 
 #class LatheFace(Path):
 #	def __init__(self, pos):
