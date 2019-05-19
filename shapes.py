@@ -2093,7 +2093,7 @@ class RadialParametricFunction(list):
                 p = pstart
                 while p<pend:
 			r=func(p)
-                        self.append(V(sin(float(p)/180*math.pi)*r, cos(float(p)/180*math.pi)*r))
+                        self.append(V(math.sin(float(p)/180*math.pi)*r, math.cos(float(p)/180*math.pi)*r))
                         p+=step
                 self.append(func(pend))
 	
