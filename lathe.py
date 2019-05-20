@@ -70,6 +70,7 @@ class LathePath(Path):
 		
 
 	def generateRouging(self,  config):
+		print config['latheMode']
 		if config['latheMode']=='face':
 			stepDir = V(-1,0)
 			cutDir = V(0,-1)
@@ -80,13 +81,24 @@ class LathePath(Path):
 			endZ = self.minY+config['roughClearance']
 			self.cuts.append(self.findRoughingCuts( stepDir, cutDir, startZ, endZ, startRad, endRad, config))
 		elif config['latheMode']=='bore':
-			stepDir = V(0,1)
-			cutDir = V(0,1)
-			startRad = 0
+			stepDir = V(1,0)
+			cutDir = V(0,-1)
+			startRad = config['roughClearance']
 			endRad = self.max[0] - config['roughClearance']	
 			startZ = self.max[1] + config['matEnd']
 			endZ = self.min[1] + config['roughClearance']	
-			self.cuts.append(self.findRoughingCuts( stepDir, cutDir, startRad, endRad, startZ, endZ, config))
+			self.cuts.append(self.findRoughingCuts( stepDir, cutDir, startZ, endZ, startRad, endRad, config))
+		elif config['latheMode']=='backBore':
+			stepDir = V(1,0)
+			cutDir = V(0,1)
+			startRad = 0 + config['roughClearance']
+			endRad = self.max[0] - config['roughClearance']	
+			startZ = self.min[1] - config['matEnd']
+			endZ = self.max[1] - config['roughClearance']
+			print self.min[1]
+			print config['matEnd']
+			print "startxz="+str(startZ)+" endZ="+str(endZ)	
+			self.cuts.append(self.findRoughingCuts( stepDir, cutDir, startZ, endZ, startRad, endRad, config))
 		elif config['latheMode']=='turn':
 			stepDir=V(0,-1)
 			cutDir = V(-1,0)
@@ -96,11 +108,17 @@ class LathePath(Path):
 			endZ = self.min[1] + config['roughClearance']	
 			self.cuts.append(self.findRoughingCuts( stepDir, cutDir, startRad, endRad, startZ, endZ, config))
 		elif config['latheMode']=='backTurn':
-			stepDir=V(0,-1)
 			cutDir = V(1,0)
-			startRad = config['matRad']	
-			endRad = self.min[0] + config['roughClearance']
-			endZ = config['matEnd']	- config['roughClearance']
+			if(self.min[0]<0 and self.max[0]<0):
+				startRad = -config['matRad']	
+				stepDir=V(0,1)
+				endRad = self.max[0] - config['roughClearance']
+			else:
+				startRad = config['matRad']	
+				stepDir=V(0,-1)
+				endRad = self.min[0] + config['roughClearance']
+
+			endZ = self.max[1] + config['roughClearance']
 			startZ = self.min[1] 
 			self.cuts.append(self.findRoughingCuts( stepDir, cutDir, startRad, endRad, startZ, endZ, config))
 
@@ -123,11 +141,13 @@ class LathePath(Path):
 		return 0
 
 	def findRoughingCut(self, val, direction, stepDir, startStep, startCut, endCut, config):
-		if abs(stepDir.dot(V(0,1))>0.0001):	
+		print "stepdir="+str(stepDir)
+		if abs(stepDir.dot(V(1,0))>0.0001):
+			print "BORING"	
 			alongCut = V(1,0) * self.sign(endCut-startCut)
 			line = shapely.geometry.LineString([ [startCut, val], [ endCut, val] ])
 			intersection = self.shapelyPolygon.intersection(line)
-			
+			print intersection	
 			if not intersection:
 				intersection = V( endCut,val)
 			else:
@@ -147,7 +167,6 @@ class LathePath(Path):
 				intersection = V(val, endCut)
 			else:
 				intersection = V(intersection.x, intersection.y)
-				print "Intersection = "+str(intersection)
 			return [
 				PSharp(V(val, startCut)), 
 				PSharp(intersection - alongCut*config['cutClear']), 
