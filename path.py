@@ -113,13 +113,13 @@ class Path(object):
                 self.Bsegments = []
                 self.transform={}
                 self.otherargs=''
-                self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed']
+                self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance']
                 for v in self.varlist:
                         if v in config:
                                 setattr(self,v, config[v])
                         else:
                                 setattr(self,v, None)
-                        self.otherargs+=':param v: '+arg_meanings[v]+"\n"
+#                        self.otherargs+=':param v: '+arg_meanings[v]+"\n"
                 self.start=False
                 self.extents= {}	
                 self.output=[]
@@ -129,6 +129,7 @@ class Path(object):
                 self.changed={}
                 self.input_direction=False
                 self.parent=False
+		self.blendTolerance=0
                 self.comment("start:"+str(type(self)))
         
         def __deepcopy__(self,memo):
@@ -175,6 +176,9 @@ class Path(object):
 #				a[i] = b[i]
 #			if (b[i] is False or b[i] is None ) and i not in a:
 #				a[i] = None
+
+	def blendTolerance(self, tolerance):
+		self.blendTolerance=tolerance
 
         def rotate(self,pos, angle):
                 if self.transform==False or self.transform==None:
@@ -982,7 +986,10 @@ class Path(object):
                                 else:
                                         config['fill_direction']='in'
                                 c['z1']=c['z1']+1
-                                finalpass=True
+				if 'finalpass' in config:
+					finalpass=config['finalpass']
+				else:
+                                	finalpass=True
                                 finishing=config['finishing']
                         else:
                                 finishing=0
