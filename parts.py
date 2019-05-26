@@ -747,11 +747,11 @@ class Stepper(Part):
                         self.add(Bolt(pos+V(-d['bolt_sep']/2,-d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=[]))
                         self.add(Bolt(pos+V(d['bolt_sep']/2,-d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=[]))
                 
-                        self.add(Hole(pos, rad=d['shaft_diam']/2+1),layer)
 			if 'throughPilot' in config and config['throughPilot']=='through':
 				self.add(Hole(pos, rad=d['pilot_diam']/2+0.1), layer)
 			else:
                         	self.add(FilledCircle(pos, rad=d['pilot_diam']/2+0.1, z1=-d['pilot_depth']-0.5),layer)
+                        	self.add(Hole(pos, rad=d['shaft_diam']/2+1),layer)
                         #self.add(Hole(pos, rad=d['shaft_diam']/2+1),layer)
                 self.layer = '_stepper_layer'
 		if 'motorDir' in config:

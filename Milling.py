@@ -452,7 +452,7 @@ class Milling:
                 "plywood":{
                         "vertfeed":200,
                         "sidefeed":2200,
-                        "stepdown":5.0,
+                        "stepdown":8.0,
                         "kress_setting":4.0,
                         "spring":0.3,
 
@@ -482,7 +482,7 @@ class Milling:
                 },
                 "delrin":{
                         "vertfeed":120,
-                        "sidefeed":700,
+                        "sidefeed":1000,
                         "stepdown":3.0,
                         "kress_setting":2.0,
                         "mill_dir":'down',
@@ -538,7 +538,7 @@ class Milling:
                 "polythene":{
                         "vertfeed":100,
                         "sidefeed":1000,
-                        "stepdown":13.0,
+                        "stepdown":15.0,
 			"finishdepth":1.5,
                         "kress_setting":1.5,
                         "mill_dir":'up',

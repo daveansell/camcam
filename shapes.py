@@ -1945,22 +1945,29 @@ class ArcRect(Path):
                 a1 = -float(angle)/2+startangle
                 a2 = float(angle)/2+startangle
                 w = float(width)/2
+		if not minorrad:
+			pass
+		if not type(minorrad) is list:
+			minorrad=[minorrad, minorrad, minorrad, minorrad]
+		elif len(minorrad)<4:
+			print "if minorrad is a list it should have 4 values"
                 self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a1]}))
                 self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
                 self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a2]}))
                 if(minorrad):
-                        self.add_point(PIncurve(pos+V(minorrad, rad+w), radius=minorrad, transform={'rotate':[pos, a2]}))
-                        self.add_point(PSharp(pos+V(minorrad, rad+w-minorrad), transform={'rotate':[pos, a2]}))
-                        self.add_point(PSharp(pos+V(minorrad, rad-w+minorrad), transform={'rotate':[pos, a2]}))
-                        self.add_point(PIncurve(pos+V(minorrad, rad-w), radius=minorrad, transform={'rotate':[pos, a2]}))
+                        self.add_point(PIncurve(pos+V(minorrad[0], rad+w), radius=minorrad[0], transform={'rotate':[pos, a2]}))
+                        self.add_point(PSharp(pos+V(minorrad[0], rad+w-minorrad[0]), transform={'rotate':[pos, a2]}))
+                        self.add_point(PSharp(pos+V(minorrad[1], rad-w+minorrad[1]), transform={'rotate':[pos, a2]}))
+                        self.add_point(PIncurve(pos+V(minorrad[1], rad-w), radius=minorrad[1], transform={'rotate':[pos, a2]}))
 
                 self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a2]}))
                 self.add_point(PArc(pos+V(0,0), radius=rad-w, direction='ccw'))
                 self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a1]}))
                 if(minorrad):
-                        self.add_point(PIncurve(pos+V(-minorrad,rad-w), radius=minorrad, transform={'rotate':[pos, a1]}))
-                        self.add_point(PSharp(pos+V(-minorrad, rad-w+minorrad), transform={'rotate':[pos, a1]}))
-                        self.add_point(PIncurve(pos+V(-minorrad, rad+w), radius=minorrad, transform={'rotate':[pos, a1]}))
+                        self.add_point(PIncurve(pos+V(-minorrad[2],rad-w), radius=minorrad[2], transform={'rotate':[pos, a1]}))
+                        self.add_point(PSharp(pos+V(-minorrad[2], rad-w+minorrad[2]), transform={'rotate':[pos, a1]}))
+                        self.add_point(PSharp(pos+V(-minorrad[3], rad+w-minorrad[3]), transform={'rotate':[pos, a1]}))
+                        self.add_point(PIncurve(pos+V(-minorrad[3], rad+w), radius=minorrad[3], transform={'rotate':[pos, a1]}))
                 self.add_point(PSharp(pos+V(0, rad+w), transform={'rotate':[pos, a1]}))
 
 # The bit you cut out to make a spoke
@@ -2068,6 +2075,28 @@ class ParametricFunction(list):
                         self.append(func(p))
                         p+=step
                 self.append(func(pend))
+class RadialParametricFunction(list):
+        def __init__(self, pos, func, **config):
+		if 'pstart' in config:
+			pstart=	config['pstart']
+		else:
+			pstart=0
+		if 'pend' in config:
+			pend=config['pend']
+		else:
+			pend=360
+		
+                if 'step' in config:
+                        step=config['step']
+                else:
+                        step = (float(pend)-float(pstart))/100
+                p = pstart
+                while p<pend:
+			r=func(p)
+                        self.append(V(math.sin(float(p)/180*math.pi)*r, math.cos(float(p)/180*math.pi)*r))
+                        p+=step
+                self.append(func(pend))
+	
 
 class CutFunction(list):
         def __init__(self, start, end, func, **config):
