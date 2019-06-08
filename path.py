@@ -113,7 +113,7 @@ class Path(object):
                 self.Bsegments = []
                 self.transform={}
                 self.otherargs=''
-                varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed']
+                varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance']
 		if hasattr(self, 'varlist') and type(self.varlist) is list:
 			self.varlist+=varlist
 		else:
@@ -133,6 +133,7 @@ class Path(object):
                 self.changed={}
                 self.input_direction=False
                 self.parent=False
+		self.blendTolerance=0
                 self.comment("start:"+str(type(self)))
         
         def __deepcopy__(self,memo):
@@ -179,6 +180,9 @@ class Path(object):
 #				a[i] = b[i]
 #			if (b[i] is False or b[i] is None ) and i not in a:
 #				a[i] = None
+
+	def blendTolerance(self, tolerance):
+		self.blendTolerance=tolerance
 
         def rotate(self,pos, angle):
                 if self.transform==False or self.transform==None:
@@ -985,7 +989,10 @@ class Path(object):
                                 else:
                                         config['fill_direction']='in'
                                 c['z1']=c['z1']+1
-                                finalpass=True
+				if 'finalpass' in config:
+					finalpass=config['finalpass']
+				else:
+                                	finalpass=True
                                 finishing=config['finishing']
                         else:
                                 finishing=0
@@ -1199,6 +1206,12 @@ class Path(object):
 
         def render_path_gcode(self,path,config):
                 ret=""
+		if config['mode']=='gcode':
+			if 'blendTolerance' in config:
+				if config['blendTolerance']>0:
+					ret+="G64P"+str(config['blendTolerance'])+"\n"
+				else:
+					ret+="G64\n"
                 for point in path:
                         if '_comment' in point and config['comments']:
                                 ret+="("+point['_comment']+")"
@@ -1222,6 +1235,8 @@ class Path(object):
                         if 'F' in point:
                                 ret+="F%0.4f"%point['F']
                         ret+="\n"
+		if config['mode']=='gcode':
+			ret+="G64\n"
                 return ret
  
         def render_path_scr(self, path, config):
@@ -1600,14 +1615,14 @@ class Pathgroup(object):
 		self.obType = "Pathgroup"
 		self.paths=[]
 		self.trace = traceback.extract_stack()
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height']
+		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height', 'blendTolerance']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in args:
 				setattr(self,v, args[v])
 			else:
 				setattr(self,v,None)
-			self.otherargs+=':param v: '+arg_meanings[v]+"\n"
+			#self.otherargs+=':param v: '+arg_meanings[v]+"\n"
 		self.output=[]
 		self.parent=False
 		self.comments=[]
@@ -1635,7 +1650,6 @@ class Pathgroup(object):
 
         def _pre_render(self, config):
                 for path in self.paths:
-			print "_pre_render Pathgroup"
                         if getattr(path, "_pre_render", None) and callable(path._pre_render):
                                 path._pre_render(config)		
 
@@ -1867,7 +1881,7 @@ class Part(object):
 		self.internal_borders=[]
 		self.ignore_border=False
 		self.transform={}
-		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height', 'offset']
+		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height', 'offset', 'blendTolerance']
 		self.otherargs=''
 		for v in self.varlist:
 			if v in config:
@@ -2073,9 +2087,7 @@ class Part(object):
                                 part._pre_render(config)
                         ret.extend(part.getParts(overview,False, config))
         	for path in self.paths:
-        		print path
         		if getattr(self.paths[path], "_pre_render", None) and callable(self.paths[path]._pre_render):
-                                print "PRERENDER"
                                 self.paths[path]._pre_render(config)
                 if self.renderable():
                         ret.append(self)
