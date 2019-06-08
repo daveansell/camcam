@@ -53,6 +53,7 @@ class Node:
 		p2=connection.other.pos
 		v = p2-p1
 		return math.atan2(v[0], v[1])
+
 	def add_conn( self, othernode, **config):
 		self.add(Connection(self, othernode, **config))
 	
@@ -67,14 +68,15 @@ class Node:
 			self.connections.append(connection)
 		else:
 			self.has_connection(connection.other).brother = self		
-class Connection:
 
+class Connection:
 	def __init__(self, this, other, width=None, brother=None, **config):
 		self.other=other
 		self.this=this
 		self.width=width
 		self.brother = brother
 		self.order = None
+		self.noCutout= {'left':False, 'right':False}
 		if 'intRadius' in config:
 			self.intRadius=config['intRadius']
 		else:
@@ -82,6 +84,18 @@ class Connection:
 #		self.append(this)
 #		self.append(other)
 		assert other is not None
+		if 'noCutout' in config:
+			if config['noCutout'] == 'left':
+				self.noCutout['left']=True
+			elif config['noCutout'] == 'right':
+				self.noCutout['right']=True
+			elif config['noCutout'] == 'both':
+				self.noCutout = {'left':True, 'right':True}
+	def hasNode(self, node):
+		if self.this==node or self.other==node:
+			return True
+		else:
+			return False
 
 class NetworkPart(Part):
 	def __init__(self, netlist, **config):
@@ -116,6 +130,7 @@ class Network(list):
 		for node in self.nodes:
 			node.sort_connections()
 			self.connections.extend(node.connections)
+
 # Work one place around a loop
 	def get_loop(self, connection, first=None):
 		loop=[]
@@ -155,7 +170,6 @@ class Network(list):
 		d2=(connection2.other.pos - connection1.other.pos).normalize()
 		w1=self.get_width(connection1,connection1.other)/2
 		w2=self.get_width(connection2,connection2.this)/2
-
 		if abs(d1.dot(d2) +1) < 0.0001:
 			b=0
 	# catch case when it is the end of a single rod
@@ -164,20 +178,32 @@ class Network(list):
 			return [w2*rotate(d1,90), w2*rotate(d1,-90)]
 		else:
 			if (d1[1]*d2[0]-d1[0]*d2[1])==0:
-				print d1
-				print d2
 				raise ValueError("connections in the same place"+str(connection1.this.pos )+" "+str(connection1.other.pos)+" "+str(connection2.other.pos))
 			b = (d2[0]*d1[0]*w2 + w1*d1[0]**2 + w1*d1[1]**2 + w2*d1[1]*d2[1]) / (d1[1]*d2[0]-d1[0]*d2[1])
 # rotate direction can be correct if connection1 &2 are always in same rotational order
 		return ( b*d1 + w2*rotate(d1,90))
 
+	def dontFill(self, connection, nextConnection, lastConnection):
+		if connection.noCutout['left'] or  connection.noCutout['right']:
+			print "noCutout"
+		if connection.noCutout['left']:
+			print "FFF"
+			return True 
+		elif connection.brother.noCutout['right']:
+			print "III"
+			return True 
+		return False
+
 	def make_path(self, loop):
 		"""Create a path from a single loop"""
 		path=Path(closed=True)
+		print "Path"
 		for c in range(0,len(loop)):
 			connection=loop[c]
 			nextConnection = loop[(c+1)%len(loop)]
 			lastConnection = loop[(c-1)%len(loop)]
+			if self.dontFill(connection, nextConnection, lastConnection):
+				return False
 			corner_offset = self.corner_pos(connection, nextConnection, lastConnection)
 	# catch case when it is the end of a single rod
 			if type(corner_offset) is list:
@@ -185,8 +211,6 @@ class Network(list):
 				corner_offset = endpoints[0]
 			else:
 				endpoints = False
-		#	print corner_offset
-			print "ENDTYPE "+str(connection.this.note)+"->"+str(connection.other.note)+"Q="+str(connection.this.endType)+" "+str(connection.other.endType)+" "+str(endpoints)
 			if connection.other.radius is not None and corner_offset.length() < connection.other.radius:
 	# catch case when it is the end of a single rod
 				if endpoints:
@@ -195,29 +219,22 @@ class Network(list):
 					path.add_point(PSharp(connection.other.pos + corner_offset + d*para))
 					path.add_point(PArc(connection.other.pos, radius=connection.other.radius, direction='cw'))
 					path.add_point(PSharp(connection.other.pos - corner_offset+d*para))
-#					path.add_point(PAroundcurve(connection.other.pos + corner_offset, centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
-#					path.add_point(PSharp(connection.other.pos+endpoints[1]*connection.other.radius))
-#					path.add_point(PAroundcurve(connection.other.pos + endpoints[2], centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
-					print "a"	
 				else:
-#					if connection.this.endType=='incurve':
-#						PIncurve(connection.
 					path.add_point(PAroundcurve(connection.other.pos + corner_offset, centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
-					print "b"
+
 			elif self.get_intRadius(connection, connection.other) is not None:
+			#	path.add_point(PIncurve(connection.other.pos + corner_offset, radius=self.get_intRadius(connection, connection.other)))
+			#	path.add_point(PIncurve(connection.other.pos - corner_offset, radius=self.get_intRadius(connection, connection.other)))
+			#	path.add_point(PIncurve(connection.other.pos - corner_offset, radius=self.get_intRadius(connection, connection.other)))
 				path.add_point(PIncurve(connection.other.pos + corner_offset, radius=self.get_intRadius(connection, connection.other)))
-				path.add_point(PIncurve(connection.other.pos - corner_offset, radius=self.get_intRadius(connection, connection.other)))
-				print "c"
 			else:
-				print "d"
 				cornerpos = self.corner_pos(connection, nextConnection, lastConnection)
-				print "cornerpos="+str(cornerpos)
 				if type(cornerpos) is list:
 					path.add_point(PSharp(connection.other.pos + cornerpos[0]))
 					path.add_point(PSharp(connection.other.pos + cornerpos[1]))
 				else:
-					path.add_point(PSharp(connection.other.pos + self.corner_pos(connection, nextConnection, lastConnection)))
-					path.add_point(PSharp(connection.other.pos - self.corner_pos(connection, nextConnection, lastConnection)))
+					path.add_point(PSharp(connection.other.pos + cornerpos))#self.corner_pos(connection, nextConnection, lastConnection)))
+			#		path.add_point(PSharp(connection.other.pos - cornerpos))#self.corner_pos(connection, nextConnection, lastConnection)))
 			if connection.other.holeRad is not None:
 				if type(connection.other.holeRad) is int or type(connection.other.holeRad) is float:
 					self.otherpaths.append(Circle(connection.other.pos, rad=connection.other.holeRad, side='in'))
@@ -230,7 +247,9 @@ class Network(list):
 	def make_paths(self):
 		self.make_loops()
 		for loop in self.loops:
-			self.append(self.make_path(loop))
+			t=self.make_path(loop)
+			if t:
+				self.append(t)
 		self.find_border()
 
 	def find_border(self):
