@@ -175,13 +175,13 @@ class Network(list):
 	# catch case when it is the end of a single rod
 		elif abs(d1.dot(d2) -1) < 0.0001:
 			b=0
-			return [w2*rotate(d1,90), w2*rotate(d1,-90)]
+			return [[w2*rotate(d1,90), w2*rotate(d1,-90)], d1.cross(d2)[2]]
 		else:
 			if (d1[1]*d2[0]-d1[0]*d2[1])==0:
 				raise ValueError("connections in the same place"+str(connection1.this.pos )+" "+str(connection1.other.pos)+" "+str(connection2.other.pos))
 			b = (d2[0]*d1[0]*w2 + w1*d1[0]**2 + w1*d1[1]**2 + w2*d1[1]*d2[1]) / (d1[1]*d2[0]-d1[0]*d2[1])
 # rotate direction can be correct if connection1 &2 are always in same rotational order
-		return ( b*d1 + w2*rotate(d1,90))
+		return [ (b*d1 + w2*rotate(d1,90)), d1.cross(d2)[2] ]
 
 	def dontFill(self, connection, nextConnection, lastConnection):
 		if connection.noCutout['left'] or  connection.noCutout['right']:
@@ -204,14 +204,18 @@ class Network(list):
 			lastConnection = loop[(c-1)%len(loop)]
 			if self.dontFill(connection, nextConnection, lastConnection):
 				return False
-			corner_offset = self.corner_pos(connection, nextConnection, lastConnection)
+			cp = self.corner_pos(connection, nextConnection, lastConnection)
+			corner_offset = cp[0]
+			corner_dir = cp[1]
 	# catch case when it is the end of a single rod
 			if type(corner_offset) is list:
 				endpoints = corner_offset
 				corner_offset = endpoints[0]
 			else:
 				endpoints = False
-			if connection.other.radius is not None and corner_offset.length() < connection.other.radius:
+			print str(corner_offset.length())+" "+str(connection.other.radius)
+			if connection.other.radius is not None and ( corner_offset.length() < connection.other.radius or corner_dir >0):
+				print "A"
 	# catch case when it is the end of a single rod
 				if endpoints:
 					para=(connection.this.pos-connection.other.pos).normalize()
@@ -223,11 +227,13 @@ class Network(list):
 					path.add_point(PAroundcurve(connection.other.pos + corner_offset, centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
 
 			elif self.get_intRadius(connection, connection.other) is not None:
+				print "B"
 			#	path.add_point(PIncurve(connection.other.pos + corner_offset, radius=self.get_intRadius(connection, connection.other)))
 			#	path.add_point(PIncurve(connection.other.pos - corner_offset, radius=self.get_intRadius(connection, connection.other)))
 			#	path.add_point(PIncurve(connection.other.pos - corner_offset, radius=self.get_intRadius(connection, connection.other)))
 				path.add_point(PIncurve(connection.other.pos + corner_offset, radius=self.get_intRadius(connection, connection.other)))
 			else:
+				print "C"
 				cornerpos = self.corner_pos(connection, nextConnection, lastConnection)
 				if type(cornerpos) is list:
 					path.add_point(PSharp(connection.other.pos + cornerpos[0]))
