@@ -244,11 +244,6 @@ class LathePath(Path):
 				intersection = V( endCut,val)
 			else:
 				intersection = V(intersection.x, intersection.y)
-                                (V(val, startCut)), 
-                                (intersection - alongCut*config['roughClearance']), 
-                                (intersection - stepDir*config['cutClear'] - alongCut*config['roughClearance']), 
-                                (V(val, startCut) - stepDir*config['cutClear'])
-                        ])
 			return [
 				PSharp(V(startCut, val)),
 				PSharp(intersection - alongCut*config['roughClearance']), 
@@ -264,11 +259,6 @@ class LathePath(Path):
 				intersection = V(val, endCut)
 			else:
 				intersection = V(intersection.x, intersection.y)
-                                (V(val, startCut)), 
-                                (intersection - alongCut*config['roughClearance']), 
-                                (intersection - stepDir*config['cutClear'] - alongCut*config['roughClearance']), 
-                                (V(val, startCut) - stepDir*config['cutClear'])
-                        ])
 			return [
 				PSharp(V(val, startCut)), 
 				PSharp(intersection - alongCut*config['roughClearance']), 
