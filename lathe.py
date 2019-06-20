@@ -26,7 +26,7 @@ class LathePart(Part):
 		self.ignore_border=True
 
 	def init(self, config):
-		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness']
+		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack']
 		super(LathePart, self).init(config)
 
 	def _pre_render(self, config):
@@ -42,7 +42,7 @@ class LathePath(Path):
 		self.side='on'	
 	
 	def init(self, config):
-		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness']
+		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack']
 		self.shapelyPolygon=False
 		self.stepdown = 1000
 		self.direction= 'this'	
@@ -53,7 +53,7 @@ class LathePath(Path):
 		else:
 			self.doRoughing=True
 		self.doneRoughing = False
-
+		self.donePreRender = False
 	def render_path_gcode(self,path,config):
                 ret=""
                 if config['mode']=='gcode':
@@ -101,9 +101,18 @@ class LathePath(Path):
 
 
 	def _pre_render(self, pconfig):
-		print "_pre_render"+str(self)
 		out=[]
 		config=self.generate_config(pconfig)
+		if not self.donePreRender and config['cutFromBack'] and (not 'mode' in config or config['mode']=='gcode'):
+#			print "MODE="+str(config['mode'])
+			self.donePreRender=True
+			c=0	
+			for p in self.points:
+		#		print p.pos
+				self.points[c].pos=V(p.pos[0],-p.pos[1])
+				if hasattr(p, 'direction') and p.direction in ['cw','ccw']:
+					self.points[c].direction=p.otherDir(p.direction)
+				c+=1
 		if 'step' not in config or not config['step']:
 			config['step']=1.0
 			
@@ -120,13 +129,12 @@ class LathePath(Path):
 #		self.thePath = self.points
 		if self.doRoughing and not self.doneRoughing:
 			self.generateRouging(config)
-			
 			if self.clearFirst == 'z':
-				self.insert_point(0, PSharp(V(self.points[0].pos[0] * self.flipSide, self.clearZ)))
-				self.insert_point(0, PSharp(V(self.cuts[-1][0].pos[0] * self.flipSide, self.clearZ)))
+				self.insert_point(0, PSharp(V(self.points[0].pos[0] * self.flipSide, self.clearZ), isRapid=True))
+				self.insert_point(0, PSharp(V(self.cuts[-1][0].pos[0] * self.flipSide, self.clearZ), isRapid=True))
 			elif self.clearFirst == 'x':
-				self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.points[0].pos[1] )))
-				self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.cuts[-1][0].pos[1] )))
+				self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.points[0].pos[1] ), isRapid=True))
+				self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.cuts[-1][0].pos[1] ), isRapid=True))
 
 			for cut in self.cuts:#[::-1]:
 				self.add_points(cut, 'prepend')
@@ -137,7 +145,6 @@ class LathePath(Path):
 		self.spindleDir = direction
 
 	def generateRouging(self,  config):
-		print "generateRougin"
 		if config['latheMode']=='face':
 			stepDir = V(-1,0)
 			cutDir = V(0,-1)
@@ -212,13 +219,10 @@ class LathePath(Path):
 			for cut in self.points:
 				cut.pos= V(-cut.pos[0], cut.pos[1])
 			self.flipSide=-1	
-		#		if 'X' in roughing:
-		#			roughing['X']*=-1
 			self.cuts.append(roughing)
 				
 	def findRoughingCuts(self, stepDir, cutDir, startStep, endStep, startCut, endCut, config):
 		cuts=[]
-		print "findEouhgin"
 		numSteps = int(math.ceil(abs((endStep - startStep)/config['step'])))
 		step = (endStep - startStep)/numSteps
 		for i in range(1, numSteps+1):
@@ -240,11 +244,16 @@ class LathePath(Path):
 				intersection = V( endCut,val)
 			else:
 				intersection = V(intersection.x, intersection.y)
+                                (V(val, startCut)), 
+                                (intersection - alongCut*config['roughClearance']), 
+                                (intersection - stepDir*config['cutClear'] - alongCut*config['roughClearance']), 
+                                (V(val, startCut) - stepDir*config['cutClear'])
+                        ])
 			return [
 				PSharp(V(startCut, val)),
 				PSharp(intersection - alongCut*config['roughClearance']), 
-				PSharp(intersection-stepDir*config['cutClear'] - alongCut*config['roughClearance']), 
-				PSharp(V(startCut, val)-stepDir*config['cutClear'])
+				PSharp(intersection-stepDir*config['cutClear'] - alongCut*config['roughClearance'], isRapid=True), 
+				PSharp(V(startCut, val)-stepDir*config['cutClear'], isRapid=True)
 			]
 		else:
 			alongCut = V(0,1) * self.sign(endCut-startCut)
@@ -255,7 +264,6 @@ class LathePath(Path):
 				intersection = V(val, endCut)
 			else:
 				intersection = V(intersection.x, intersection.y)
-			print "EEEEEEE"+str(stepDir*config['cutClear'])+"   "+str(alongCut)+"...."+str([
                                 (V(val, startCut)), 
                                 (intersection - alongCut*config['roughClearance']), 
                                 (intersection - stepDir*config['cutClear'] - alongCut*config['roughClearance']), 
@@ -264,8 +272,8 @@ class LathePath(Path):
 			return [
 				PSharp(V(val, startCut)), 
 				PSharp(intersection - alongCut*config['roughClearance']), 
-				PSharp(intersection - stepDir*config['cutClear'] - alongCut*config['roughClearance']), 
-				PSharp(V(val, startCut) - stepDir*config['cutClear'])
+				PSharp(intersection - stepDir*config['cutClear'] - alongCut*config['roughClearance'], isRapid=True), 
+				PSharp(V(val, startCut) - stepDir*config['cutClear'], isRapid=True)
 			]			
 		
 	def maxValues(self):
