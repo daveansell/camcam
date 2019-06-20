@@ -102,15 +102,19 @@ class Segment(object):
 			else:
 				return([{"cmd":"G1", "Z":zto}])
 class Line(Segment):
-        def __init__(self, cutfrom, cutto):
+        def __init__(self, cutfrom, cutto, rapid=False):
                 self.seg_type='line'
                 self.cutto=cutto
                 self.cutfrom=cutfrom
+		if rapid:
+			self.cmd="G0"
+		else:
+			self.cmd="G1"
         def gcode(self,direction=True):
                 if(direction):
-                        return [{"cmd":"G1","X":self.cutto[0],"Y":self.cutto[1], "Z":self.cutto[2]}]
+                        return [{"cmd":self.cmd,"X":self.cutto[0],"Y":self.cutto[1], "Z":self.cutto[2]}]
                 else:
-                        return [{"cmd":"G1","X":self.cutfrom[0],"Y":self.cutfrom[1],"Z":self.cutfrom[2]}]
+                        return [{"cmd":self.cmd,"X":self.cutfrom[0],"Y":self.cutfrom[1],"Z":self.cutfrom[2]}]
         def svg(self,direction=True):
                 if(direction):
                         return [{"cmd":"L","x":self.cutto[0],"y":self.cutto[1]}]

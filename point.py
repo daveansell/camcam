@@ -65,6 +65,7 @@ class Point(object):
                         self.reverse=False
                 self.invert = False	
                 self.dirpoint = True
+		self.isRapid = False
         def _setup(self):
                 self.setup=True
         def setPos(self, pos):
@@ -284,7 +285,7 @@ class Point(object):
                 
 
 class PSharp(Point):
-        def __init__(self, pos, radius=0, cp1=False, cp2=False, direction=False, transform=False, sharp=True):
+        def __init__(self, pos, radius=0, cp1=False, cp2=False, direction=False, transform=False, sharp=True, isRapid=False):
                 """Create a sharp point at position=pos"""
                 self.init()
                 self.pos=Vec(pos)
@@ -296,7 +297,8 @@ class PSharp(Point):
                 self.transform=transform
                 self.obType="Point"
                 self.sharp=sharp
-
+		self.isRapid=isRapid
+		
         def copy(self):
                 t=PSharp( self.pos, self.radius, self.cp1, self.cp2, self.direction, self.transform)
                 t.forcelastpoint = self.lastpoint
@@ -306,6 +308,7 @@ class PSharp(Point):
                 t.reverse = self.reverse
                 t.sharp = self.sharp
                 t.invert = self.invert
+		t.isRapid = self.isRapid
                 return t
 
         def origin(self, forward=True):
@@ -364,7 +367,10 @@ class PSharp(Point):
         def makeSegment(self, config):
 		l= self.last()
                 if type(l) is not None and l.end()!=self.pos:
-                        return [Line(self.last().end(), self.pos)]
+			if self.isRapid==True:
+				return [Line(self.last().end(), self.pos, rapid=True)]
+			else:
+                        	return [Line(self.last().end(), self.pos)]
                 else:
 			print "No segnmet" + str(l.end())+"&&"
 			print "No segnmet" + str(self.last())+"&&"
