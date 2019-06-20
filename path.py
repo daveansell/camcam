@@ -213,6 +213,8 @@ class Path(object):
                                 config['downmode']='cutdown'
                         elif 'downmode' not in config:
                                 config['downmode']='ramp'
+			if 'forcestepdown' in tool:
+				config['forcestepdown'] = tool['forcestepdown']
                 if config['cutter'] in milling.tools:
                         tool=milling.tools[config['cutter']]
                         c={}
@@ -345,6 +347,7 @@ class Path(object):
 
 
         def add_points(self,points, end='end', transform={}):
+		c=0
                 for p in points:
                         if hasattr(p,'obType') and p.obType=='Point':
 				q = copy.deepcopy(p)
@@ -352,6 +355,9 @@ class Path(object):
 
                                 if end=='end':
                                         self.points.append(q)
+				elif end=='prepend':
+					self.points.insert(c,q)
+					c+=1
                                 else:
                                         self.points.insert(0,q)
                         else:
@@ -892,7 +898,11 @@ class Path(object):
                 thisdir=self.find_direction(config)
 		
                 if 'direction' not in config or config['direction'] is False:
-                        if hasattr(self,'direction') and  self.direction!=False:
+			
+                        if hasattr(self,'direction') and  self.direction=='this':
+				config['direction'] = thisdir
+                        elif hasattr(self,'direction') and  self.direction!=False:
+				print "SELF DIRECTION"
                                 config['direction']=self.direction
                         elif(config['side'] =='in' and  config['mill_dir']=='up' or config['side'] =='out' and  config['mill_dir']=='down' ):
                                 config['direction']='cw'
@@ -1344,6 +1354,11 @@ class Path(object):
                         downmode=config['downmode']
                 if downmode==None:
                         downmode='ramp'
+		if 'forcestepdown' in pconfig and pconfig['forcestepdown'] is not None:
+			stepdown = pconfig['forcestepdown']
+		else:
+			stepdown = config['stepdown']
+
                 direction=config['direction']
                 self.mode=mode
 		segments=[]
@@ -1361,7 +1376,7 @@ class Path(object):
                         z1=config['z1']+config['finishdepth']
                 else:
                         z1=config['z1']
-                step,depths=self.get_depths(config['mode'], config['z0'], z1, config['stepdown'])
+                step,depths=self.get_depths(config['mode'], config['z0'], z1, stepdown)
                 if 'finishdepth' in config and config['finishdepth']>0:
                         depths.append(config['z1'])
 # dodgy fudge to stop things crashing
@@ -1444,7 +1459,11 @@ class Path(object):
 			z1=config['z1']+finishdepth
 		else:
 			z1=config['z1']
-		step,depths=self.get_depths(config['mode'], config['z0'], z1, config['stepdown'])
+		if 'forcestepdown' in config and config['forcestepdown'] is not None:
+			stepdown = config['forcestepdown']
+		else:
+			stepdown = config['stepdown']
+		step,depths=self.get_depths(config['mode'], config['z0'], z1, stepdown)
 		if 'finishdepth' in config and config['finishdepth']>0:
 			depths.append(config['z1'])
 # dodgy fudge to stop things crashing
