@@ -187,17 +187,14 @@ class Network(list):
 		if connection.noCutout['left'] or  connection.noCutout['right']:
 			print "noCutout"
 		if connection.noCutout['left']:
-			print "FFF"
 			return True 
 		elif connection.brother.noCutout['right']:
-			print "III"
 			return True 
 		return False
 
 	def make_path(self, loop):
 		"""Create a path from a single loop"""
 		path=Path(closed=True)
-		print "Path"
 		for c in range(0,len(loop)):
 			connection=loop[c]
 			nextConnection = loop[(c+1)%len(loop)]
@@ -213,9 +210,7 @@ class Network(list):
 				corner_offset = endpoints[0]
 			else:
 				endpoints = False
-			print str(corner_offset.length())+" "+str(connection.other.radius)
 			if connection.other.radius is not None and ( corner_offset.length() < connection.other.radius or corner_dir >0):
-				print "A"
 	# catch case when it is the end of a single rod
 				if endpoints:
 					para=(connection.this.pos-connection.other.pos).normalize()
@@ -227,13 +222,11 @@ class Network(list):
 					path.add_point(PAroundcurve(connection.other.pos + corner_offset, centre=connection.other.pos, radius=connection.other.radius, direction='cw'))
 
 			elif self.get_intRadius(connection, connection.other) is not None:
-				print "B"
 			#	path.add_point(PIncurve(connection.other.pos + corner_offset, radius=self.get_intRadius(connection, connection.other)))
 			#	path.add_point(PIncurve(connection.other.pos - corner_offset, radius=self.get_intRadius(connection, connection.other)))
 			#	path.add_point(PIncurve(connection.other.pos - corner_offset, radius=self.get_intRadius(connection, connection.other)))
 				path.add_point(PIncurve(connection.other.pos + corner_offset, radius=self.get_intRadius(connection, connection.other)))
 			else:
-				print "C"
 				cornerpos = self.corner_pos(connection, nextConnection, lastConnection)
 				if type(cornerpos) is list:
 					path.add_point(PSharp(connection.other.pos + cornerpos[0]))
