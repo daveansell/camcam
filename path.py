@@ -1634,7 +1634,11 @@ class Pathgroup(object):
 		self.obType = "Pathgroup"
 		self.paths=[]
 		self.trace = traceback.extract_stack()
-		self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height', 'blendTolerance']
+		varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height', 'blendTolerance', 'roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack']
+		if hasattr(self, 'varlist') and type(self.varlist) is list:
+			self.varlist+=varlist
+		else:
+			self.varlist=varlist
 		self.otherargs=''
 		for v in self.varlist:
 			if v in args:
@@ -1679,7 +1683,7 @@ class Pathgroup(object):
 			#raise Warning( "PATHGROUP has no parent Created:"+str(self.trace))
 			pconfig = False
 		config = {}
-		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour','rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z','clear_height']
+#		varslist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour','rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z','clear_height']
 		if pconfig is False or  'transformations' not in pconfig or pconfig['transformations'] is False or pconfig['transformations'] is None:
 			config['transformations']=[]
 		else:
@@ -1687,7 +1691,7 @@ class Pathgroup(object):
 		if self.transform!=None:
 			config['transformations'].append(self.transform)
 		#	self.transform=None
-                for v in varslist:
+                for v in self.varlist:
                         if v !='transform' and v !='transformations':
                                 if getattr(self,v) is not None:
                                         config[v]=getattr(self,v)
@@ -1900,8 +1904,12 @@ class Part(object):
 		self.internal_borders=[]
 		self.ignore_border=False
 		self.transform={}
-		self.varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height', 'offset', 'blendTolerance']
+		varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height', 'offset', 'blendTolerance']
 		self.otherargs=''
+		if hasattr(self, 'varlist') and type(self.varlist) is list:
+			self.varlist+=varlist
+		else:
+			self.varlist=varlist
 		for v in self.varlist:
 			if v in config:
 				setattr(self,v, config[v])
