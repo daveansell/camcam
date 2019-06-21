@@ -43,7 +43,7 @@ class LathePath(Path):
 		self.side='on'	
 	
 	def init(self, config):
-		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', "spindleDir"]
+		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', "spindleDir", "chipBreak"]
 		self.shapelyPolygon=False
 		self.stepdown = 1000
 		self.direction= 'this'	
@@ -257,12 +257,25 @@ class LathePath(Path):
 			else:
 				intersection = V(intersection.x, intersection.y)
 			return [
-				PSharp(V(val, startCut)), 
-				PSharp(intersection - alongCut*config['roughClearance']), 
+				PSharp(V(val, startCut))
+				] + self.cutChipBreak ( V(val, startCut), intersection - alongCut*config['roughClearance'] ) + [ 
+#				PSharp(intersection - alongCut*config['roughClearance']), 
 				PSharp(intersection - stepDir*config['cutClear'] - alongCut*config['roughClearance'], isRapid=True), 
 				PSharp(V(val, startCut) - stepDir*config['cutClear'], isRapid=True)
 			]			
-		
+	def cutChipBreak(self, cutFrom, cutTo):
+		if hasattr(self, 'chipBreak') and self.chipBreak:
+			chipBreak = self.chipBreak
+		else:
+			return [PSharp(cutFrom)]
+		numCuts= int(math.ceil((cutTo-cutFrom).length() / chipBreak))
+		step = (cutTo-cutFrom).length() / numCuts
+		along = (cutTo-cutFrom).normalize()
+		points=[]
+		for i in range(1, numCuts+1):
+			points.append(PSharp(cutFrom + along * (i * step) ) )
+			points.append(PSharp(cutFrom + along * (i * step - 0.1) , isRapid=True) )
+		return points
 	def maxValues(self):
 		maxX = -100000
 		maxY = -100000
