@@ -26,7 +26,7 @@ class LathePart(Part):
 		self.ignore_border=True
 
 	def init(self, config):
-		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack']
+		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', 'chipBreak']
 		super(LathePart, self).init(config)
 		self.ignore_border = True
 
@@ -54,6 +54,9 @@ class LathePath(Path):
 			self.doRoughing= config['doRoughing']
 		else:
 			self.doRoughing=True
+		if 'chipBreak' in config:
+			self.chipBreak = config['chipBreak']
+			print "initCHipbreak"
 		self.doneRoughing = False
 		self.donePreRender = False
 
@@ -152,7 +155,7 @@ class LathePath(Path):
 			self.clearFirst = "z"
 			self.clearZ = self.max[1] + config['matEnd']
 			startZ = config['matEnd']	
-			endZ = self.minY+config['roughClearance']
+			endZ = self.minY#+config['roughClearance']
 			roughing = self.findRoughingCuts( stepDir, cutDir, startZ, endZ, startRad, endRad, config)
 		elif config['latheMode']=='bore':
 			stepDir = V(1,0)
@@ -161,10 +164,10 @@ class LathePath(Path):
 			self.cutHandedness = -1			
 			self.clearFirst = "z"
 			self.clearZ = self.max[1] + config['matEnd']
-			endRad = self.max[0] - config['roughClearance']	
+			endRad = self.max[0]# - config['roughClearance']	
 			startZ = self.max[1] + config['matEnd']
 
-			endZ = self.min[1] + config['roughClearance']	
+			endZ = self.min[1]# + config['roughClearance']	
 			roughing = self.findRoughingCuts( stepDir, cutDir, startZ, endZ, startRad, endRad, config)
 		elif config['latheMode']=='backBore':
 			stepDir = V(1,0)
@@ -172,18 +175,18 @@ class LathePath(Path):
 			self.cutHandedness = -1			
 			self.clearFirst = "z"
 			self.clearZ = self.max[1] + config['matEnd']
-			startRad = 0 + config['roughClearance']
-			endRad = self.max[0] - config['roughClearance']	
-			startZ = self.min[1] - config['matEnd']
-			endZ = self.max[1] - config['roughClearance']
+			startRad = 0 #+ config['roughClearance']
+			endRad = self.max[0]# - config['roughClearance']	
+			startZ = self.min[1]# - config['matEnd']
+			endZ = self.max[1] #- config['roughClearance']
 			roughing = self.findRoughingCuts( stepDir, cutDir, startZ, endZ, startRad, endRad, config)
 		elif config['latheMode']=='turn':
 			cutDir=V(0,-1)
 			stepDir = V(-1,0)
 			startRad = config['matRad']
-			endRad = self.min[0] + config['roughClearance']
-			startZ = self.max[1] + config['matEnd']	
-			endZ = self.min[1] + config['roughClearance']	
+			endRad = self.min[0]# + config['roughClearance']
+			startZ = self.max[1]# + config['matEnd']	
+			endZ = self.min[1]# + config['roughClearance']	
 			self.cutHandedness = 1			
 			self.clearFirst = "x"
 			self.clearX = config['matRad'] + 2.0
@@ -195,14 +198,14 @@ class LathePath(Path):
 			if(self.min[0]<0 and self.max[0]<0):
 				startRad = -config['matRad']	
 				stepDir=V(0,1)
-				endRad = self.max[0] - config['roughClearance']
+				endRad = self.max[0]# - config['roughClearance']
 			else:
 				startRad = config['matRad']	
 				stepDir=V(0,-1)
-				endRad = self.min[0] + config['roughClearance']
+				endRad = self.min[0]# + config['roughClearance']
 			self.cutHandedness = 1			
 
-			endZ = self.max[1] + config['roughClearance']
+			endZ = self.max[1]# + config['roughClearance']
 			startZ = self.min[1] 
 			roughing = self.findRoughingCuts( stepDir, cutDir, startRad, endRad, startZ, endZ, config)
 		if self.cutHandedness == config['handedness']:
@@ -237,9 +240,18 @@ class LathePath(Path):
 			alongCut = V(1,0) * self.sign(endCut-startCut)
 			line = shapely.geometry.LineString([ [startCut, val], [ endCut, val] ])
 			intersection = self.shapelyPolygon.intersection(line)
+			print type(intersection)
 			if not intersection:
 				intersection = V( endCut,val)
+			elif type(intersection) is shapely.geometry.collection.GeometryCollection:
+				print "lineintersection"+str(intersection[0])
+				intersection = V(intersection[0].x, intersection[0].y)
+			elif type(intersection) is shapely.geometry.linestring.LineString:
+				intersection = V(list(intersection.coords)[0][0],list(intersection.coords)[0][1] )
+			elif type(intersection) is Vec:
+				intersection = intersection
 			else:
+				print intersection
 				intersection = V(intersection.x, intersection.y)
 			return [
 				PSharp(V(startCut, val)),
@@ -264,6 +276,8 @@ class LathePath(Path):
 				PSharp(V(val, startCut) - stepDir*config['cutClear'], isRapid=True)
 			]			
 	def cutChipBreak(self, cutFrom, cutTo):
+		print "chipbrea="+str(self.chipBreak)
+		
 		if hasattr(self, 'chipBreak') and self.chipBreak:
 			chipBreak = self.chipBreak
 		else:
