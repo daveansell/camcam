@@ -41,10 +41,10 @@ class Milling:
                                 'zero':False,
                         },
                         "dave-lathe":{
-                                'prefix':'M03\nG21\nG64 p.001 q.001\nG18\n',
+                                'prefix':'G21\nG64 p.001 q.001\nG18\n',
                                 'postfix':'M05\nM02\n',
                                 'settool_prefix':'T',
-                                'settool_postfix':' M6\nS2000\nM03',
+                                'settool_postfix':' M6\nS2000\n',
                                 'mode':'gcode',
                                 'group':'cutter',
                                 'toolchange':'newfile',
