@@ -42,10 +42,11 @@ class LathePath(Path):
 		self.side='on'	
 	
 	def init(self, config):
-		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack']
+		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', "spindleDir"]
 		self.shapelyPolygon=False
 		self.stepdown = 1000
 		self.direction= 'this'	
+		self.spindleDir = 'ccw'
 		super(LathePath, self).init(config)
 		self.cuts=[]
 		if 'doRoughing' in config and config['doRoughing'] is not None:
@@ -54,6 +55,7 @@ class LathePath(Path):
 			self.doRoughing=True
 		self.doneRoughing = False
 		self.donePreRender = False
+
 	def render_path_gcode(self,path,config):
                 ret=""
                 if config['mode']=='gcode':
@@ -62,11 +64,15 @@ class LathePath(Path):
                                         ret+="G64P"+str(config['blendTolerance'])+"\n"
                                 else:
                                         ret+="G64\n"
-		if hasattr(path, "spindleDir"):
-			if path.spindleDir == 'cw':
-				ret+="M3"
-			elif path.spindleDir =='ccw':
-				ret+="M4"
+		print config
+		if "spindleDir" in config and config['spindleDir']:
+			print "SPINDLEDIR"+str(config['spindleDir'])
+			if config['spindleDir'] == 'cw':
+				print "M03 - clockwise"
+				ret+="M03\n"
+			elif config['spindleDir'] =='ccw':
+				print "M04 - anticlockwise"
+				ret+="M04\n"
                 for point in path:
 			if 'cmd' in point:
 				if point['cmd']=="G2":
@@ -97,6 +103,7 @@ class LathePath(Path):
                         ret+="\n"
                 if config['mode']=='gcode':
                         ret+="G64\n"
+		print ret
                 return ret
 
 
@@ -142,6 +149,7 @@ class LathePath(Path):
 			self.doneRoughing=True
 		
 	def spindle(self, direction):
+		print "set spindleDir="+str(direction)
 		self.spindleDir = direction
 
 	def generateRouging(self,  config):
@@ -207,7 +215,7 @@ class LathePath(Path):
 			endZ = self.max[1] + config['roughClearance']
 			startZ = self.min[1] 
 			roughing = self.findRoughingCuts( stepDir, cutDir, startRad, endRad, startZ, endZ, config)
-
+		print "handedness="+str(config['handedness'])+"  "+str(self.cutHandedness)
 		if self.cutHandedness == config['handedness']:
 			self.spindle('ccw')
 			self.cuts.append(roughing)

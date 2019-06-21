@@ -1,4 +1,4 @@
-# This file is part of CamCam.
+#This file is part of CamCam.
 
 #    CamCam is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ class Milling:
                                 'prefix':'M03\nG21\nG64 p.001 q.001\nG18\n',
                                 'postfix':'M05\nM02\n',
                                 'settool_prefix':'T',
-                                'settool_postfix':' M6\nS100\nM03',
+                                'settool_postfix':' M6\nS2000\nM03',
                                 'mode':'gcode',
                                 'group':'cutter',
                                 'toolchange':'newfile',
@@ -466,7 +466,7 @@ class Milling:
                         "endcut":1,
                         "sidecut":1,
 			"forcestepdown":1000,
-			"handedNess":-1,
+			"handedness":-1,
                 },
                 "latheTurning":{
                         "id":51,
@@ -474,7 +474,7 @@ class Milling:
                         "endcut":1,
                         "sidecut":1,
 			"forcestepdown":1000,
-			"handedNess":1,
+			"handedness":1,
                 },
                 "on":{
                         "id":101,

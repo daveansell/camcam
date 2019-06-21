@@ -215,6 +215,8 @@ class Path(object):
                                 config['downmode']='ramp'
 			if 'forcestepdown' in tool:
 				config['forcestepdown'] = tool['forcestepdown']
+			if 'handedness' in tool:
+				config['handedness'] = tool['handedness']
                 if config['cutter'] in milling.tools:
                         tool=milling.tools[config['cutter']]
                         c={}
