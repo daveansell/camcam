@@ -976,6 +976,11 @@ class Path(object):
                 out=[]
 # Do something about offsets manually so as not to rely on linuxcnc
                 config=self.generate_config(pconfig)
+		if config['mode']=='gcode' and hasattr(self, 'spindleDir') and self.spindleDir:
+			if self.spindleDir=='cw':
+				out.append('M03\nG04p10\n')
+			elif self.spindleDir=='ccw':
+				out.append('M04\nG04p10\n')
                 finalpass=False
 		outpaths=[]
                 if config['side']=='in' or config['side']=='out':
@@ -989,7 +994,7 @@ class Path(object):
                                 return [config['cutter'],self.render_path(self,config)]
                         elif config['overview']:
                                 self.output_path(config)
-                                out = [self.render_path(self,config)]
+                                out.append( self.render_path(self,config) )
                 else:
                         thepath=self
                         c=config
