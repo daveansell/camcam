@@ -28,6 +28,7 @@ class LathePart(Part):
 	def init(self, config):
 		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack']
 		super(LathePart, self).init(config)
+		self.ignore_border = True
 
 	def _pre_render(self, config):
 		if('matEnd' not in config):
@@ -64,15 +65,6 @@ class LathePath(Path):
                                         ret+="G64P"+str(config['blendTolerance'])+"\n"
                                 else:
                                         ret+="G64\n"
-		print config
-		if "spindleDir" in config and config['spindleDir']:
-			print "SPINDLEDIR"+str(config['spindleDir'])
-			if config['spindleDir'] == 'cw':
-				print "M03 - clockwise"
-				ret+="M03\n"
-			elif config['spindleDir'] =='ccw':
-				print "M04 - anticlockwise"
-				ret+="M04\n"
                 for point in path:
 			if 'cmd' in point:
 				if point['cmd']=="G2":
@@ -103,7 +95,6 @@ class LathePath(Path):
                         ret+="\n"
                 if config['mode']=='gcode':
                         ret+="G64\n"
-		print ret
                 return ret
 
 
@@ -149,7 +140,6 @@ class LathePath(Path):
 			self.doneRoughing=True
 		
 	def spindle(self, direction):
-		print "set spindleDir="+str(direction)
 		self.spindleDir = direction
 
 	def generateRouging(self,  config):
@@ -215,7 +205,6 @@ class LathePath(Path):
 			endZ = self.max[1] + config['roughClearance']
 			startZ = self.min[1] 
 			roughing = self.findRoughingCuts( stepDir, cutDir, startRad, endRad, startZ, endZ, config)
-		print "handedness="+str(config['handedness'])+"  "+str(self.cutHandedness)
 		if self.cutHandedness == config['handedness']:
 			self.spindle('ccw')
 			self.cuts.append(roughing)
