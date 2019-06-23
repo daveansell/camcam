@@ -977,9 +977,9 @@ class Path(object):
 # Do something about offsets manually so as not to rely on linuxcnc
                 config=self.generate_config(pconfig)
 		if config['mode']=='gcode' and hasattr(self, 'spindleDir') and self.spindleDir:
-			if self.spindleDir=='cw':
+			if self.spindleDir=='ccw':
 				out.append('M03\nG04p10\n')
-			elif self.spindleDir=='ccw':
+			elif self.spindleDir=='cw':
 				out.append('M04\nG04p10\n')
                 finalpass=False
 		outpaths=[]
@@ -1641,7 +1641,7 @@ class Pathgroup(object):
 		self.obType = "Pathgroup"
 		self.paths=[]
 		self.trace = traceback.extract_stack()
-		varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height', 'blendTolerance', 'roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack']
+		varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height', 'blendTolerance', 'roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', 'chipBreak', 'justRoughing']
 		if hasattr(self, 'varlist') and type(self.varlist) is list:
 			self.varlist+=varlist
 		else:

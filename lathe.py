@@ -26,7 +26,7 @@ class LathePart(Part):
 		self.ignore_border=True
 
 	def init(self, config):
-		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', 'chipBreak']
+		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', 'chipBreak', 'justRoughing']
 		super(LathePart, self).init(config)
 		self.ignore_border = True
 
@@ -40,10 +40,10 @@ class LathePath(Path):
 	def __init__(self, **config):
 		self.init(config)
 		self.closed=False
-		self.side='on'	
+		self.side='on'
 	
 	def init(self, config):
-		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', "spindleDir", "chipBreak"]
+		self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', "spindleDir", "chipBreak", "justRouging"]
 		self.shapelyPolygon=False
 		self.stepdown = 1000
 		self.direction= 'this'	
@@ -57,6 +57,10 @@ class LathePath(Path):
 		if 'chipBreak' in config:
 			self.chipBreak = config['chipBreak']
 			print "initCHipbreak"
+		if 'justRoughing' in config and config['justRoughing'] is not None:
+			self.justRoughing= config['justRoughing']
+		else:
+			self.justRoughing=False
 		self.doneRoughing = False
 		self.donePreRender = False
 
@@ -124,6 +128,7 @@ class LathePath(Path):
 			points = []
 			for p in polygonised:
 				points.append(p)
+			print points
 			self.shapelyPolygon = shapely.geometry.LineString(points)
 			self.rawPolygon = polygonised
 		self.maxValues()
@@ -136,7 +141,8 @@ class LathePath(Path):
 			elif self.clearFirst == 'x':
 				self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.points[0].pos[1] ), isRapid=True))
 				self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.cuts[-1][0].pos[1] ), isRapid=True))
-
+			if self.justRoughing:
+				self.points=[]
 			for cut in self.cuts:#[::-1]:
 				self.add_points(cut, 'prepend')
 			
@@ -154,7 +160,7 @@ class LathePath(Path):
 			self.cutHandedness = 1			
 			self.clearFirst = "z"
 			self.clearZ = self.max[1] + config['matEnd']
-			startZ = config['matEnd']	
+			startZ = self.max[1] + config['matEnd']	
 			endZ = self.minY#+config['roughClearance']
 			roughing = self.findRoughingCuts( stepDir, cutDir, startZ, endZ, startRad, endRad, config)
 		elif config['latheMode']=='bore':
@@ -185,7 +191,7 @@ class LathePath(Path):
 			stepDir = V(-1,0)
 			startRad = config['matRad']
 			endRad = self.min[0]# + config['roughClearance']
-			startZ = self.max[1]# + config['matEnd']	
+			startZ = self.max[1] + config['matEnd']	
 			endZ = self.min[1]# + config['roughClearance']	
 			self.cutHandedness = 1			
 			self.clearFirst = "x"
@@ -196,7 +202,7 @@ class LathePath(Path):
 			stepDir = V(1,0)
 			startRad = self.min[0]
 			endRad = self.max[0]# + config['roughClearance']
-			startZ = self.max[1]# + config['matEnd']	
+			startZ = self.max[1] + config['matEnd']	
 			endZ = self.min[1]# + config['roughClearance']	
 			self.cutHandedness = -1			
 			self.clearFirst = "z"
