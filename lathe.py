@@ -161,7 +161,7 @@ class LathePath(Path):
 			self.clearFirst = "z"
 			self.clearZ = self.max[1] + config['matEnd']
 			startZ = self.max[1] + config['matEnd']	
-			endZ = self.minY#+config['roughClearance']
+			endZ = self.min[1]#+config['roughClearance']
 			roughing = self.findRoughingCuts( stepDir, cutDir, startZ, endZ, startRad, endRad, config)
 		elif config['latheMode']=='bore':
 			stepDir = V(1,0)
@@ -309,7 +309,7 @@ class LathePath(Path):
 		points=[]
 		for i in range(1, numCuts+1):
 			points.append(PSharp(cutFrom + along * (i * step) ) )
-			points.append(PSharp(cutFrom + along * (i * step - 0.1) , isRapid=True) )
+			points.append(PSharp(cutFrom + along * (i * step - 0.2) , isRapid=True) )
 		return points
 	def maxValues(self):
 		maxX = -100000
