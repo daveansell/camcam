@@ -904,7 +904,6 @@ class Path(object):
                         if hasattr(self,'direction') and  self.direction=='this':
 				config['direction'] = thisdir
                         elif hasattr(self,'direction') and  self.direction!=False:
-				print "SELF DIRECTION"
                                 config['direction']=self.direction
                         elif(config['side'] =='in' and  config['mill_dir']=='up' or config['side'] =='out' and  config['mill_dir']=='down' ):
                                 config['direction']='cw'
@@ -2392,9 +2391,9 @@ class Plane(Part):
         
         def render_all(self,mode,config):
                 """Render all parts in the Plane"""
+		config['mode']=milling.mode_config[mode]['mode']
                 self.make_copies()
-
-                for part in self.getParts(milling.mode_config[mode]['overview'],config):
+                for part in self.getParts(milling.mode_config[mode]['overview'],config=config):
 
                         self.render_part(part, mode,config)
         def list_all(self):
