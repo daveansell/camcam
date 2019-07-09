@@ -65,7 +65,7 @@ class CamCam:
 		out = []
 		config['layout'] = True
 		for plane in self.planes:
-			for part in plane.getParts():
+			for part in plane.getParts(config=modeconfig):
 				part.make_copies()
 				parts[part.name] = [plane, part]
 		l = open(layout_file, 'r')
