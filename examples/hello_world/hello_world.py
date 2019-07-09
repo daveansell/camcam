@@ -36,3 +36,4 @@ plate = plane.add(Part(name='ring', layer= 'layer_name', border = plate_border))
 
 
 plate.add(Hole(V(width/4, height/4), rad=4))
+plate.rotate(V(0,0), 45)

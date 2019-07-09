@@ -274,9 +274,9 @@ class CamCam(App):
 			for p in self.sheet_widgets[s]:
 				print p
 				if p.part is not None:
-					print p.part.name+" self.center"+str(p.center)+" startcentre"+str(p.startcentre)+" pos="+str(p.pos)+" startpos="+str(p.startpos)
+					print str(p.part.name)+" self.center"+str(p.center)+" startcentre"+str(p.startcentre)+" pos="+str(p.pos)+" startpos="+str(p.startpos)
 					rec = {}
-					rec['name']=p.part.name
+					rec['name']=str(p.part.name)
 					rec['translate'] = (p.pos[0] - p.startpos[0], p.pos[1] - p.startpos[1])
 				
 					m= p.get_window_matrix(x = p.center[0], y = p.center[1])

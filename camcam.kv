@@ -50,20 +50,20 @@ FloatLayout:
     # each time a picture is created, the image can delay the loading
     # as soon as the image is loaded, ensure that the center is changed
     # to the center of the screen.
-    on_size: self.center = win.Window.center
+#    on_size: self.center = win.Window.center
     size: canvas.size
     size_hint: None, None
     
 
     canvas:
 	id: canvas
-	size: 100,200
-
+	size: 1000,1000
 <KvSheet>:
+#    size: canvas2.size
     on_size: self.center = win.Window.center
 #    size: canvas.size
-    size_hint: None, None
-#    canvas:
-#        id: canvas2
-#        size: 100,200
+#    size_hint: None, None
+ #   canvas:
+#	id:canvas2
+ #       size: 100,100
 
