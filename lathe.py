@@ -56,7 +56,6 @@ class LathePath(Path):
 			self.doRoughing=True
 		if 'chipBreak' in config:
 			self.chipBreak = config['chipBreak']
-			print "initCHipbreak"
 		self.doneRoughing = False
 		self.donePreRender = False
 
@@ -105,7 +104,6 @@ class LathePath(Path):
 		out=[]
 		config=self.generate_config(pconfig)
 		if not self.donePreRender and config['cutFromBack'] and (not 'mode' in config or config['mode']=='gcode'):
-#			print "MODE="+str(config['mode'])
 			self.donePreRender=True
 			c=0	
 			for p in self.points:
@@ -246,15 +244,9 @@ class LathePath(Path):
 		if x>0:
 			return 1
 		return 0
-
-	def findRoughingCut(self, val, direction, stepDir, startStep, startCut, endCut, config):
-		if abs(stepDir.dot(V(1,0))>0.0001):
-			print "stepX"+str(stepDir)
-			alongCut = V(1,0) * self.sign(endCut-startCut)
-			line = shapely.geometry.LineString([ [startCut, val], [ endCut, val] ])
-			intersection = self.shapelyPolygon.intersection(line)
+	def convertIntersection(self, intersection, default):
 			if not intersection:
-				intersection = V( endCut,val)
+				intersection = default#V( endCut,val)
 			elif type(intersection) is shapely.geometry.collection.GeometryCollection:
 				intersection = V(intersection[0].x, intersection[0].y)
 			elif type(intersection) is shapely.geometry.linestring.LineString:
@@ -264,8 +256,16 @@ class LathePath(Path):
 			elif type(intersection) is Vec:
 				intersection = intersection
 			else:
-				
 				intersection = V(intersection.x, intersection.y)
+			return intersection
+
+	def findRoughingCut(self, val, direction, stepDir, startStep, startCut, endCut, config):
+		if abs(stepDir.dot(V(1,0))>0.0001):
+			print "stepX"+str(stepDir)+"  "+str(val)+"  dir="+str(direction)
+			alongCut = V(1,0) * self.sign(endCut-startCut)
+			line = shapely.geometry.LineString([ [startCut, val], [ endCut, val] ])
+			intersection = self.shapelyPolygon.intersection(line)
+			intersection = self.convertIntersection(intersection, V( endCut,val))
 			print "firstpoint"+str(V(startCut, val))+"->"+str(intersection - alongCut*config['roughClearance'])
 			return [ PSharp(V(startCut, val)) 
 				] + self.cutChipBreak( V(startCut, val), intersection - alongCut*config['roughClearance']) + [
@@ -279,10 +279,12 @@ class LathePath(Path):
 			off = val
 			line = shapely.geometry.LineString([ [val, startCut], [ val, endCut] ])
 			intersection = self.shapelyPolygon.intersection(line)
-			if not intersection:
-				intersection = V(val, endCut)
-			else:
-				intersection = V(intersection.x, intersection.y)
+			intersection = self.convertIntersection(intersection, V( val, endCut))
+			print "INTERSECTION="+str(intersection)
+#			if not intersection:
+#				intersection = V(val, endCut)
+#			else:
+#				intersection = V(intersection.x, intersection.y)
 			return [
 				PSharp(V(val, startCut))
 				] + self.cutChipBreak ( V(val, startCut), intersection - alongCut*config['roughClearance'] ) + [ 
