@@ -51,6 +51,7 @@ class SVGimport(Pathgroup):
                 for p in outpaths:
                         transform = p.get('transform')
                         self.parse_d(p.get('d'),transform, config)
+
         def svgtransform(self, pos, transform):
                 if transform is None:
                         return pos
@@ -67,7 +68,7 @@ class SVGimport(Pathgroup):
                 outpaths=[]
                 outpath=False
                 items = re.split('[, ]+', d)
-                pos=V(0,0)
+                pos = config['pos']#V(0,0)
                 firstpath=True
                 i=0
                 while i<len(items):
@@ -79,61 +80,61 @@ class SVGimport(Pathgroup):
                                                 outpath.points.pop()
                                         outpaths.append(outpath)
                                                 
-                                outpath = Path(transform={'translate':config['pos']})
+                                outpath = Path()#transform={'translate':config['pos']})
                                 pos=V(float(items[i]), -float(items[i+1]))
                                 startpos = pos
                                 outpath.add_point(self.svgtransform(pos, transform))
                                 i+=2
                                 while i<len(items) and self.is_number(items[i]):
-                                        pos=V(float(items[i]), -float(items[i+1]))
+                                        pos=config['pos']+V(float(items[i]), -float(items[i+1]))
                                         outpath.add_point(self.svgtransform(pos, transform))
                                         i+=2
                         elif items[i]=='L':
                                 i+=1
                                 while i<len(items) and self.is_number(items[i]):
-                                        pos=V(float(items[i]), -float(items[i+1]))
+                                        pos=config['pos'] + V(float(items[i]), -float(items[i+1]))
                                         outpath.add_point(self.svgtransform(pos, transform))
                                         i+=2
                         elif items[i]=='A':
                                 i+=1
                                 while i<len(items) and self.is_number(items[i]):
-                                        pos=V(float(items[i+5]), -float(items[i+6]))
+                                        pos=config['pos'] + V(float(items[i+5]), -float(items[i+6]))
                                         outpath.add_point(self.svgtransform(pos, transform))
                                         i+=7
                         elif items[i]=='C':
                                 i+=1
                                 while i<len(items) and self.is_number(items[i]):
-                                        pos=V(float(items[i+4]), -float(items[i+5]))
+                                        pos = config['pos'] + V(float(items[i+4]), -float(items[i+5]))
                                         outpath.add_point(self.svgtransform(pos, transform))
                                         i+=6	
                         elif items[i]=='S':
                                 i+=1
                                 while i<len(items) and self.is_number(items[i]):
-                                        pos=V(float(items[i+2]), -float(items[i+3]))
+                                        pos = config['pos'] + V(float(items[i+2]), -float(items[i+3]))
                                         outpath.add_point(self.svgtransform(pos, transform))
                                         i+=4	
                         elif items[i]=='Q':
                                 i+=1
                                 while i<len(items) and self.is_number(items[i]):
-                                        pos=V(float(items[i+2]), -float(items[i+3]))
+                                        pos = config['pos'] + V(float(items[i+2]), -float(items[i+3]))
                                         outpath.add_point(self.svgtransform(pos, transform))
                                         i+=4	
                         elif items[i]=='T':
                                 i+=1
                                 while i<len(items) and self.is_number(items[i]):
-                                        pos=V(float(items[i]), -float(items[i+1]))
+                                        pos = config['pos'] + V(float(items[i]), -float(items[i+1]))
                                         outpath.add_point(self.svgtransform(pos, transform))
                                         i+=2	
                         elif items[i]=='H':
                                 i+=1
                                 while i<len(items) and self.is_number(items[i]):
-                                        pos=V(float(items[i]), pos[1])
+                                        pos = config['pos'] + V(float(items[i]), pos[1])
                                         outpath.add_point(self.svgtransform(pos, transform))
                                         i+=1
                         elif items[i]=='V':
                                 i+=1
                                 while i<len(items) and self.is_number(items[i]):
-                                        pos=V(pos[0],float(items[i]))
+                                        pos = config['pos'] + V(pos[0],float(items[i]))
                                         outpath.add_point(self.svgtransform(pos, transform))
                                         i+=1
                         if items[i]=='m':
@@ -142,7 +143,7 @@ class SVGimport(Pathgroup):
                                                 outpath.closed=True
                                                 outpath.points.pop()
                                         outpaths.append(outpath)
-                                outpath = Path(transform={'translate':config['pos']})
+                                outpath = Path()#transform={'translate':config['pos']})
                                 i+=1
                                 pos+=V(float(items[i]), -float(items[i+1]))
                                 startpos = pos
