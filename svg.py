@@ -36,6 +36,11 @@ class SVGimport(Pathgroup):
                 self.init(config)
                 #self.translate(pos)
 		config['pos']=pos
+		
+                if 'match_type' in config:
+                        match_type = config['match_type']
+                else:
+                        match_type = 'exact'
                 with open( filename, 'r') as infile: 
                         tree = etree.parse(infile) 
                         root = tree.getroot()
@@ -44,7 +49,11 @@ class SVGimport(Pathgroup):
                         outpaths= tree.xpath('.//svg:path',namespaces=nsmap)
                 elif type(paths) is list:
                         for path in paths:
-                                outpaths= tree.xpath('.//svg:path[@id="'+path+'"]', namespaces=nsmap)
+				if match_type == 'exact':
+                            		outpaths += tree.xpath('.//svg:path[@id="'+path+'"]', namespaces=nsmap)
+                          	else:
+                                  	outpaths += tree.xpath('.//svg:path[starts-with(@id, "'+path+'")]', namespaces=nsmap)
+#                                outpaths= tree.xpath('.//svg:path[@id="'+path+'"]', namespaces=nsmap)
                 elif type(paths) is dict:
                         for p in paths.keys():
                                 outpaths= tree.xpath(".//n:path[@"+path[p]['attrib']+"='"+path[p]['value']+"']", namespaces={'n': "http://www.w3.org/2000/svg"})
@@ -58,7 +67,6 @@ class SVGimport(Pathgroup):
                 commands=transform.split(';')
                 for command in commands:
                         m= re.search('(.*?)\((.*?),(.*?)\)', command)
-                        print m.groups(1)
 #			m = re.search('(.*?)\(([-,\d]+),\s*([-,\d]+)\)', command)
                         if m.groups(1)[0] == 'scale':
                                 pos=V(pos[0]*float(m.groups(1)[1]), pos[1]*float(m.groups(1)[2]))
@@ -210,7 +218,7 @@ class SVGimport(Pathgroup):
                 if outpath!=False and len(outpath.points)>0:
                         if (startpos-pos).length()<0.04:
                                 outpath.closed=True
-                                outpath.points.pop()
+                               # outpath.points.pop()
                         outpaths.append(outpath)
                 for i in range(0, len(outpaths)):
                         if len(outpaths[i].points):

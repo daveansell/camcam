@@ -59,8 +59,11 @@ You can calibrate these with a rectangle or a named circle of known width and he
 		if 'item_type' in config and config['item_type'] is not False:
 			item_type = config['item_type']
 		else:
-			item_type = 'path'
-
+			item_type = 'path'		
+		if 'match_type' in config:
+			match_type = config['match_type']
+		else:
+			match_type = 'exact'
 		with open( filename, 'r') as infile: 
 			tree = etree.parse(infile) 
 			root = tree.getroot()
@@ -102,10 +105,17 @@ You can calibrate these with a rectangle or a named circle of known width and he
 		elif type(paths) is list:
 			outpaths = []
 			for path in paths:
+				#print path
 				if item_type == 'circle':
-					 outpaths += tree.xpath('.//svg:circle[@id="'+path+'"]', namespaces=nsmap)
+					if match_type == 'exact':
+					 	outpaths += tree.xpath('.//svg:circle[@id="'+path+'"]', namespaces=nsmap)
+					else:
+						outpaths += tree.xpath('.//svg:circle[starts-with(@id, "'+path+'")]', namespaces=nsmap)#@id="'+path+'"]', namespaces=nsmap)
 				else:
-					outpaths += tree.xpath('.//svg:path[@id="'+path+'"]', namespaces=nsmap)
+					if match_type == 'exact':
+						outpaths += tree.xpath('.//svg:path[@id="'+path+'"]', namespaces=nsmap)
+					else:
+						outpaths += tree.xpath('.//svg:path[starts-with(@id, "'+path+'")]', namespaces=nsmap)#@id="'+path+'"]', namespaces=nsmap)
 		elif type(paths) is dict:
 			for p in paths.keys():
 				outpaths= tree.xpath(".//n:path[@"+path[p]['attrib']+"='"+path[p]['value']+"']", namespaces={'n': "http://www.w3.org/2000/svg"})

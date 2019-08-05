@@ -372,10 +372,11 @@ class PSharp(Point):
 			else:
                         	return [Line(self.last().end(), self.pos)]
                 else:
-			print "No segnmet" + str(l.end())+"&&"
-			print "No segnmet" + str(self.last())+"&&"
+#			print "No segnmet" + str(l.end())+"&&"
+#			print "No segnmet" + str(self.last())+"&&"
 			if l is not None:
-				print "&&"+str(l.end())+" self.pos="+str(self.pos)
+				pass
+				#print "&&"+str(l.end())+" self.pos="+str(self.pos)
                         return []
 
 class PAroundcurve(PSharp):
