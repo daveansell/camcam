@@ -1020,6 +1020,7 @@ class Fan(Pathgroup):
                         '92mm':{'centrerad':104/2, 'centre_limit':90/2, 'hole_off':82.5/2, 'holeRad':4.5/2, 'threadRad':3.3/2 },
                         '120mm':{'centrerad':132/2, 'centre_limit':118/2, 'hole_off':105/2, 'holeRad':4.5/2, 'threadRad':3.3/2 },
                         '140mm':{'centrerad':150/2, 'centre_limit':138/2, 'hole_off':124.5/2, 'holeRad':4.5/2, 'threadRad':3.3/2 },
+                        '217mm':{'centrerad':217.0/2, 'hole_off':169.0/2, 'holeRad':4.5/2, 'threadRad':3.3/2 },
                         }
                 if 'fan_type' in config:
                         d=data[config['fan_type']]
