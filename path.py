@@ -18,6 +18,7 @@
 import os
 import math
 import shapely.geometry
+
 from minivec import Vec, Mat
 import Milling
 import pprint
@@ -443,6 +444,45 @@ class Path(object):
                 y= ((a[0]*b[1]-a[1]*b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
                 return V(x,y)
 
+        def convertIntersection(self, intersection, default):
+                        if not intersection:
+                                intersection = default#V( endCut,val)
+                        elif type(intersection) is shapely.geometry.collection.GeometryCollection:
+                                intersection = V(intersection[0].x, intersection[0].y)
+                        elif type(intersection) is shapely.geometry.linestring.LineString:
+                                intersection = V(list(intersection.coords)[0][0],list(intersection.coords)[0][1] )
+                        elif type(intersection) is shapely.geometry.multipoint.MultiPoint:
+                                intersection = V(intersection[0].x, intersection[0].y)
+                        elif type(intersection) is Vec:
+                                intersection = intersection
+                        else:
+                                intersection = V(intersection.x, intersection.y)
+                        return intersection
+
+        def convertToShapely(self,path):
+                points = []
+                if type(path) is list:
+                        for p in path:
+                                if type(p) is Vec:
+                                        points.append([p[0], p[1]])
+                                elif type(p) is list:
+                                        points.append(p)
+                                elif type(p) is Point:
+                                        points.append([p[0], p[1]])
+                        return shapely.geometry.LineString(points)
+                else:
+			path.makeShapely()
+                        return path.shapelyPolygon
+
+
+
+        def findIntersection(self, path):
+		self.convertToShapely(self)
+                intersection = self.shapelyPolygon.intersection(self.convertToShapely(path))
+                intersection = self.convertIntersection(intersection, False)
+                return intersection
+
+
         def has_changed(self):
                 for c in self.changed.keys():
                         self.changed[c]=True
@@ -673,10 +713,8 @@ class Path(object):
                         for p in ret:
                                 if 'bl' not in self.boundingBox:
                                         self.boundingBox={'bl':[1000000000,1000000000],'tr':[-1000000000,-1000000000]}
-                                self.boundingBox['bl'][0]=min(self.boundingBox['bl'][0],p[0])
-                                self.boundingBox['bl'][1]=min(self.boundingBox['bl'][1],p[1])
-                                self.boundingBox['tr'][0]=max(self.boundingBox['tr'][0],p[0])
-                                self.boundingBox['tr'][1]=max(self.boundingBox['tr'][1],p[1])
+                                self.boundingBox['bl'] = [min(self.boundingBox['bl'][0],p[0]), min(self.boundingBox['bl'][1],p[1])]
+                                self.boundingBox['tr'] = [max(self.boundingBox['tr'][0],p[0]), max(self.boundingBox['tr'][1],p[1])]
                         if('tr' in self.boundingBox):
                                 self.boundingBox['tr']=V(self.boundingBox['tr'][0],self.boundingBox['tr'][1])
                                 self.boundingBox['bl']=V(self.boundingBox['bl'][0],self.boundingBox['bl'][1])
@@ -882,6 +920,20 @@ class Path(object):
 
 
                 return config
+	def pre_render(self, config):
+
+		if getattr(self, "_pre_render", None) and callable(self._pre_render):
+			self._pre_render(config)	
+
+	def makeShapely(self):
+		if( not hasattr(self, 'shapelyPolygon') or not self.shapelyPolygon):
+                        polygonised = self.polygonise( 1.0)
+                        points = []
+                        for p in polygonised:
+                               	points.append(p)
+			self.shapelyPolygon = shapely.geometry.LineString(points)
+                        self.rawPolygon = polygonised
+			
 
         def generate_config(self, pconfig):
                 config={}
@@ -1663,7 +1715,9 @@ class Pathgroup(object):
                 else:
                         return False
 
-
+	def pre_render(self, config):
+		for p in self.paths:
+			p.pre_render(config)
         def __deepcopy__(self,memo):
                 conf={}
                 ret=copy.copy(self)#type(self)( **conf)
@@ -1679,8 +1733,12 @@ class Pathgroup(object):
 
         def _pre_render(self, config):
                 for path in self.paths:
-                        if getattr(path, "_pre_render", None) and callable(path._pre_render):
-                                path._pre_render(config)		
+                      #  print points
+                        #	path.shapelyPolygon = shapely.geometry.LineString(points)
+                        #	path.rawPolygon = polygonised
+
+                        #if getattr(path, "_pre_render", None) and callable(path._pre_render):
+             		path.pre_render(config)		
 
 	def get_config(self):
 		if self.parent is not False:
