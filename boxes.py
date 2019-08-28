@@ -547,7 +547,6 @@ class ArbitraryBox(Part):
 					face['alt_good_direction'] = rotate(face['alt_good_direction'], face['rotate'][1])
 				if 'alt_wood_direction' in face:
 					face['alt_wood_direction'] = rotate(face['alt_wood_direction'], face['rotate'][1])
-				print str(face['x']) + str(face['rotate'][0])
 			if 'layer' not in face:
 				face['layer']='layer_'+f
 				self.new_layers.append(f)
@@ -623,7 +622,6 @@ class ArbitraryBox(Part):
                                 face['x'] = face['x'].normalize()
                         else: 
                                 face['x'] = (self.tuple_to_vec(face['sides'][0][1])- self.tuple_to_vec(face['sides'][0][0])).normalize()
-#			print "x="+str(face['x'])
                         if 'y' in face:
                                 if abs(face['y'].dot(face['x'])) > 0.0000001 :
                                         raise ValueError('face[y] in face '+str(f)+' not perpendicular to x')
@@ -1107,8 +1105,6 @@ class ArbitraryBox(Part):
                         prevmode = 'on'
                         nextmode = 'on'
 			if 'joint_mode' not in joint:
-				print "f="+str(f)
-				print joint
 				joint['joint_mode']='straight'
                         if joint['joint_mode']=='straight':
                                 pass
@@ -1194,10 +1190,6 @@ class ArbitraryBox(Part):
                                 thisside = side[1]
                         # make sure this side is a joint
                         if len(thisside)>2:
-#				print f+" Joint Mode="+str(face['joint_mode'])
-#				if face['joint_mode'][side[0][1]]=='butt':
-#					print "GET CUT SIDE BUTT JOINT"
-#				else:
                                 cutside = thisside[3]
                                 if cutside * good_direction>0.0001:
                                         need_cut_from[self.sign(cutside)]=True
@@ -1340,7 +1332,6 @@ class ArbitraryBox(Part):
                         elif scount in face[prop]:
                                 otherface[prop][otherscount]=face[prop][scount]
                         elif type(otherface[prop]) is not dict:
-                                print otherface[prop]
                                 raise ValueError( str(prop)+" in face "+otherf+"must be of the form {0:[value_side_0], 1:[value_side1]}" +str(type(otherface[prop])) )
                         elif otherscount in otherface[prop]:
                                 face[prop][scount]=otherface[prop][otherscount]
@@ -1490,7 +1481,7 @@ class ArbitraryBox(Part):
                 elif t<0:
                         sideSign = -1
                 else:
-                        print ValueError( " Two adjoinig faces are parallel "+str(side[0][0])+" "+str(side[0][1])+" and "+ str(side[1][0])+" "+str(side[1][1])+" avSvec="+str(avSvec)+str(face1['normal'])+" == "+str(face2['normal']))
+#                        print ValueError( " Two adjoinig faces are parallel "+str(side[0][0])+" "+str(side[0][1])+" and "+ str(side[1][0])+" "+str(side[1][1])+" avSvec="+str(avSvec)+str(face1['normal'])+" == "+str(face2['normal']))
                         face1['corners'][scount1] = 'straight'	
                         if scount2 is not None:
                                 face2['corners'][scount2] = 'straight'
@@ -1517,12 +1508,10 @@ class ArbitraryBox(Part):
 					pnt.pos
 				except ValueError:
 					raise ValueError("Point "+str(pnt)+" in face "+str(face)+" must be either a Vec or a Point type")
-				print type(pnt)
 				face['point_type'][p]=pnt
 				face['points'][p]=pnt.pos
 			p+=1
         def _pre_render(self, config):
-		print "arbitrary box pre_render"
                 for f in self.new_layers:
                         self.get_plane().add_layer(self.faces[f]['layer'], material=self.get_layer_attrib('material',f), thickness=self.get_layer_attrib('thickness',f), colour=self.get_layer_attrib('colour',f))
 	def get_layer_attrib(self, attrib, face):
