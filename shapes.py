@@ -411,12 +411,17 @@ class Drill(Circle):
 				print "drill of "+str(self.drillrad)+"mm not found in tools"
 		self.closed=True
 		self.add_point(pos,'circle',self.drillrad)
+		if 'vertfeed' in config:
+			self.vertfeed = config['vertfeed']
+		else:
+			self.vertfeed = None
 #		self.add_point(PSharp(self.pos))
 
         def render(self, pconfig):
                 config=self.generate_config(pconfig)
                 p=PSharp(self.pos).point_transform(config['transformations'])
-                
+               	if not self.vertfeed:
+			self.vertfeed=config['vertfeed'] 
         #	print "Drill render"+str(config['mode'])
                 if config['mode']=='svg':
         #		print '<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>\n'%(p.pos[0], p.pos[1], self.drillrad)
@@ -427,11 +432,11 @@ class Drill(Circle):
 			else:
 				clearanceHeight = config['clear_height']
                         if self.peck:
-                                return [config['cutter'], 'G0X%0.2fY%0.2f\nG0Z1\n'%(p.pos[0], p.pos[1])+'G83X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.peck, config['vertfeed'],clearanceHeight)]
+                                return [config['cutter'], 'G0X%0.2fY%0.2f\nG0Z1\n'%(p.pos[0], p.pos[1])+'G83X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.peck, self.vertfeed,clearanceHeight)]
                         elif self.chipbreak:
-                                return [config['cutter'], 'G73X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.chipbreak, config['vertfeed'],clearanceHeight)]
+                                return [config['cutter'], 'G73X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.chipbreak, self.vertfeed,clearanceHeight)]
                         else:
-                                return [config['cutter'], 'G81X%0.2fY%0.2fZ%0.2fR%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+clearanceHeight,config['vertfeed'],clearanceHeight)]
+                                return [config['cutter'], 'G81X%0.2fY%0.2fZ%0.2fR%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+clearanceHeight,self.vertfeed,clearanceHeight)]
                 elif config['mode']=='simplegcode':
                         dist= config['z1']-config['z0']
                         if self.peck:
@@ -597,6 +602,18 @@ class RoundSpeakerGrill(Pathgroup):
                                         p=V((x+0.5)*spacing, y*yspacing)
                                 if p.length()<rad-holerad:
                                         self.add(Hole(pos+p, rad=holerad))
+class RoundSlitGrill(Pathgroup):
+        def __init__(self,pos, rad, slotWidth, spacing, **config):
+                self.init(config)
+                """Cut a circular grid with radius :param rad: of holes with radius :param holerad: and :param spacing:"""+self.otherargs
+		numSlits = int(rad*2/spacing)
+		o = float(numSlits)*spacing/2
+		for i in range(0,numSlits):
+			y = -o + i*spacing
+			w = math.sqrt(float(rad)**2-y**2)
+			if w:
+				self.add(RoundedRect(pos+V(0, y), centred=True, width=2*w, height=slotWidth, rad=slotWidth/2, side='in'))
+
 class RectSpeakerGrill(Pathgroup):
         def __init__(self,pos, width, height, holerad, spacing, **config):
                 self.init(config)
