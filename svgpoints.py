@@ -45,7 +45,10 @@ You can calibrate these with a rectangle or a named circle of known width and he
 			self.cal_circ = True
 		else:
 			self.cal_circ = False
-
+		if 'mode' in config and config['mode']=='dict':
+			self.outmode='dict'
+		else:
+			self.outmode='simple'
 		if 'cal_width' in config and 'cal_height' in config:
 			self.cal_rect = True
 			self.cal_width = config['cal_width']
@@ -138,7 +141,11 @@ You can calibrate these with a rectangle or a named circle of known width and he
 				pos+=off
 				pos -=cal
 				pos = V(pos[0]*scalex, -pos[1]*scaley)			
-				self.append(pos)
+				print "SVGPOINTS"+str(p.get('id'))+" "+str(self.outmode)
+				if self.outmode=='dict':
+					self.append({'pos':pos, 'id':p.get('id'), 'r':p.get('r')})
+				else:
+					self.append(pos)
 #V( (float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cx'])+off[0]-cal_centrex)*scalex, 
 #					(float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cy'])+off[1]-cal_centrex)*scaley))
 # at the moment this just treats everything as a line so add lots of points
