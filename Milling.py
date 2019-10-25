@@ -300,7 +300,7 @@ class Milling:
                 }
                 self.tools={
                 "1/4_endmill":{
-                        "id":3,
+                        "id":4,
                         "diameter":6.35,
                         "endcut":1,
                         "sidecut":1,
@@ -345,7 +345,7 @@ class Milling:
                         "sidecut":1,
                 },
                 "3mm_endmill":{
-                        "id":2,
+                        "id":1,
                         "diameter":3.0,
                         "endcut":1,
                         "sidecut":1,
@@ -363,13 +363,13 @@ class Milling:
                         "sidecut":1,
                 },
                 "1mm_endmill":{
-                        "id":4,
+                        "id":10,
                         "diameter":1.0,
                         "endcut":1,
                         "sidecut":1,
                         },
                 "0.5mm_endmill":{
-                        "id":5,
+                        "id":11,
                         "diameter":0.5,
 
                         "endcut":1,
