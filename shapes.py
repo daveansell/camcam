@@ -608,7 +608,7 @@ class RoundSlitGrill(Pathgroup):
                 """Cut a circular grid with radius :param rad: of holes with radius :param holerad: and :param spacing:"""+self.otherargs
 		numSlits = int(rad*2/spacing)
 		o = float(numSlits)*spacing/2
-		for i in range(0,numSlits):
+		for i in range(0,numSlits+1):
 			y = -o + i*spacing
 			w = math.sqrt(float(rad)**2-y**2)
 			if w:
