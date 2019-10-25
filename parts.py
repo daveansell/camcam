@@ -663,7 +663,7 @@ class Stepper(Part):
                                 'corner_rad':2,
                         },
                         'NEMA1.1':{
-                                'bolt_size':'M4',
+                                'bolt_size':'M3',
                                 'bolt_sep':23,
                                 'shaft_diam':5,
                                 'pilot_diam':22,
@@ -673,7 +673,7 @@ class Stepper(Part):
                                 'corner_rad':3,
                         },
                         'NEMA1.4':{
-                                'bolt_size':'M4',
+                                'bolt_size':'M3',
                                 'bolt_sep':26,
                                 'shaft_diam':5,
                                 'pilot_diam':22,
@@ -684,7 +684,7 @@ class Stepper(Part):
                                 'corner_rad':4,
                         },
                         'NEMA1.7':{
-                                'bolt_size':'M4',
+                                'bolt_size':'M3',
                                 'bolt_sep':31,
                                 'shaft_diam':5,
                                 'pilot_diam':22,
@@ -693,6 +693,17 @@ class Stepper(Part):
                                 'shaft_len':24,
                                 'back_shaft_len':10,
                                 'corner_rad':5,
+                        },
+                        'NEMA1.7b':{
+                                'bolt_size':'M3',
+                                'bolt_sep':34,
+                                'shaft_diam':8,
+                                'pilot_diam':30,
+                                'pilot_depth':2.5,
+                                'width':44,
+                                'shaft_len':24,
+                                'back_shaft_len':10,
+                                'corner_rad':4,
                         },
                         'NEMA2.3':{
                                 'bolt_size':'M5',
