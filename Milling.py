@@ -571,6 +571,13 @@ class Milling:
                         "kress_setting":1.5,
                         "mill_dir":'up',
                },
+                "plastazote":{
+                        "vertfeed":700,
+                        "sidefeed":2000,
+                        "stepdown":15.0,
+                        "kress_setting":1.5,
+                        "mill_dir":'up',
+               },
                 "polythene":{
                         "vertfeed":100,
                         "sidefeed":1000,
