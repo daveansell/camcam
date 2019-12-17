@@ -218,14 +218,18 @@ class RepeatEllipse(Part):
 class Spiral(Path):
         def __init__(self, pos, r1, r2, **config):
                 self.init(config)
+                self.length=0
+                self.r1=r1
+                self.r2=r2
+                self.pos = pos
                 if 'closed' in config:
                         self.closed=config['closed']
                 else:
                         self.closed=True
                 if "turns" in config:
-                        turns=config["turns"]
+                        self.turns=config["turns"]
                 else:
-                        turns = 1.0
+                        self.turns = 1.0
                 if "steps" in config:
                         steps = config["steps"]
                 else:
@@ -241,12 +245,21 @@ class Spiral(Path):
                 astep = float(360.0*turns)/numTurns
                 rstep = float(r2-r1)/numTurns
 		tstep = float(turns)/steps
+                self.length=0
 		t = startTurns
 		while t<endTurns:
 			self.add_point(PSharp(pos+V(rstep*t, 0), transform={'rotate':[pos, astep*t]}))
 			t+=tstep
+                        if i>0:
+                            self.length += (V(r1+rstep*t,0) - rotate(V(r1+rstep*(t-tstep),0), astep*tstep)).length()
 #                for i in range(int(start/, int(steps)+1):
  #                       self.add_point(PSharp(pos+V(r1+rstep*i,0), transform={'rotate':[pos, astep*i]}))
+               # astep = 360.0*self.turns/steps
+               # rstep = float(r2-r1)/steps
+               # for i in range(0, int(steps)+1):
+               #         self.add_point(PSharp(pos+V(r1+rstep*i,0), transform={'rotate':[pos, astep*i]}))
+        def alongSpiral(self, turns):
+            return self.pos + rotate(V(self.r1+float(self.r2-self.r1)*turns/self.turns,0), 360*turns)
 
 class SpiralLoop(Path):
 	def __init__(self, pos, r1, r2, width, **config):
