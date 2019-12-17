@@ -230,10 +230,48 @@ class Spiral(Path):
                         steps = config["steps"]
                 else:
                         steps = int(50 * turns)
-                astep = 360.0*turns/steps
-                rstep = float(r2-r1)/steps
-                for i in range(0, int(steps)+1):
-                        self.add_point(PSharp(pos+V(r1+rstep*i,0), transform={'rotate':[pos, astep*i]}))
+		if 'startTurns' in config:
+			startTurns = config['startTurns']
+		else:
+			startTurns = 0
+		if 'endTurns' in config:
+			endTurns = config['endTurns']
+		else:
+			endTurns = turns
+                astep = float(360.0*turns)/numTurns
+                rstep = float(r2-r1)/numTurns
+		tstep = float(turns)/steps
+		t = startTurns
+		while t<endTurns:
+			self.add_point(PSharp(pos+V(rstep*t, 0), transform={'rotate':[pos, astep*t]}))
+			t+=tstep
+#                for i in range(int(start/, int(steps)+1):
+ #                       self.add_point(PSharp(pos+V(r1+rstep*i,0), transform={'rotate':[pos, astep*i]}))
+
+class SpiralLoop(Path):
+	def __init__(self, pos, r1, r2, width, **config):
+                self.init(config)
+                self.closed=True
+                if "turns" in config:
+                        turns=config["turns"]
+                else:
+                        turns = 1.0
+                if "steps" in config:
+                        steps = config["steps"]
+                else:
+                        steps = int(50 * turns)
+		if 'startTurns' in config:
+			startTurns = config['startTurns']
+		else:
+			startTurns = 0
+		if 'endTurns' in config:
+			endTurns = config['endTurns']
+		else:
+			endTurns = turns
+		spriral1 = Spiral( pos, r1-width/2, r2-width/2, turns=turns, steps=steps, startTurns = startTurns, endTurns=endTurns)
+		spriral2 = Spiral( pos, r1+width/2, r2+width/2, turns=turns, steps=steps, startTurns = startTurns, endTurns=endTurns)
+		self.add_points(spiral1.points)
+		self.add_points(spiral2.points, end='prepend')
 
 class LineLoop(Path):
         def __init__(self, points, width, **config):
