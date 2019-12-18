@@ -241,17 +241,24 @@ class Spiral(Path):
 		if 'endTurns' in config:
 			endTurns = config['endTurns']
 		else:
-			endTurns = turns
-                astep = float(360.0*turns)/numTurns
-                rstep = float(r2-r1)/numTurns
-		tstep = float(turns)/steps
+			endTurns = self.turns
+                astep = 360.0
+                rstep = float(r2-r1)/self.turns
+		tstep = float(self.turns)/steps
                 self.length=0
+		if 'fromStart' in config:
+			startTurns+=float(config['fromStart'])/(r1+2*math.pi*startTurns*rstep)
+			
+		if 'fromEnd' in config:
+			endTurns-=float(config['fromEnd'])/(r1+2*math.pi*endTurns*rstep)
 		t = startTurns
 		while t<endTurns:
-			self.add_point(PSharp(pos+V(rstep*t, 0), transform={'rotate':[pos, astep*t]}))
+			self.add_point(PSharp(pos+rotate(V(r1+rstep*t, 0), astep*t)))
+		#	print "rad="+str(rstep*t)+" rotate="+str(astep*t)
 			t+=tstep
-                        if i>0:
+                        if t>startTurns:
                             self.length += (V(r1+rstep*t,0) - rotate(V(r1+rstep*(t-tstep),0), astep*tstep)).length()
+		self.add_point(PSharp(pos+rotate(V(r1+rstep*endTurns,0), endTurns*astep)))
 #                for i in range(int(start/, int(steps)+1):
  #                       self.add_point(PSharp(pos+V(r1+rstep*i,0), transform={'rotate':[pos, astep*i]}))
                # astep = 360.0*self.turns/steps
@@ -281,10 +288,13 @@ class SpiralLoop(Path):
 			endTurns = config['endTurns']
 		else:
 			endTurns = turns
-		spriral1 = Spiral( pos, r1-width/2, r2-width/2, turns=turns, steps=steps, startTurns = startTurns, endTurns=endTurns)
-		spriral2 = Spiral( pos, r1+width/2, r2+width/2, turns=turns, steps=steps, startTurns = startTurns, endTurns=endTurns)
+		print "Width="+str(width)
+		spiral1 = Spiral( pos, r1-width/2, r2-width/2, **config)
+		spiral2 = Spiral( pos, r1+width/2, r2+width/2, **config)
 		self.add_points(spiral1.points)
-		self.add_points(spiral2.points, end='prepend')
+		for point in spiral2.points[::-1]:
+			self.add_point(point)
+#		self.add_points(spiral2.points, end='prepend')
 
 class LineLoop(Path):
         def __init__(self, points, width, **config):
