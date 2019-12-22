@@ -242,6 +242,10 @@ class Spiral(Path):
 			endTurns = config['endTurns']
 		else:
 			endTurns = self.turns
+		if 'rad' in config:
+			rad = config['rad']
+		else:
+			rad = False
                 astep = 360.0
                 rstep = float(r2-r1)/self.turns
 		tstep = float(self.turns)/steps
@@ -254,11 +258,19 @@ class Spiral(Path):
 		t = startTurns
 		while t<endTurns:
 			self.add_point(PSharp(pos+rotate(V(r1+rstep*t, 0), astep*t)))
-		#	print "rad="+str(rstep*t)+" rotate="+str(astep*t)
-			t+=tstep
-                        if t>startTurns:
+			if t==startTurns:
+				if rad:
+					self.add_point(PIncurve(pos+rotate(V(r1+rstep*t, 0), astep*t), radius=rad))
+				else:
+					self.add_point(PSharp(pos+rotate(V(r1+rstep*t, 0), astep*t)))
+                        if t>startTurns+rad and t<endTurns-rad:
                             self.length += (V(r1+rstep*t,0) - rotate(V(r1+rstep*(t-tstep),0), astep*tstep)).length()
-		self.add_point(PSharp(pos+rotate(V(r1+rstep*endTurns,0), endTurns*astep)))
+		#self.add_point(PSharp(pos+rotate(V(r1+rstep*endTurns,0), endTurns*astep)))
+			t+=tstep
+		if rad:
+			self.add_point(PIncurve(pos+rotate(V(r1+rstep*endTurns, 0), astep*t), radius=rad))
+		else:
+			self.add_point(PSharp(pos+rotate(V(r1+rstep*endTurns, 0), astep*t)))
 #                for i in range(int(start/, int(steps)+1):
  #                       self.add_point(PSharp(pos+V(r1+rstep*i,0), transform={'rotate':[pos, astep*i]}))
                # astep = 360.0*self.turns/steps
@@ -272,22 +284,7 @@ class SpiralLoop(Path):
 	def __init__(self, pos, r1, r2, width, **config):
                 self.init(config)
                 self.closed=True
-                if "turns" in config:
-                        turns=config["turns"]
-                else:
-                        turns = 1.0
-                if "steps" in config:
-                        steps = config["steps"]
-                else:
-                        steps = int(50 * turns)
-		if 'startTurns' in config:
-			startTurns = config['startTurns']
-		else:
-			startTurns = 0
-		if 'endTurns' in config:
-			endTurns = config['endTurns']
-		else:
-			endTurns = turns
+		
 		print "Width="+str(width)
 		spiral1 = Spiral( pos, r1-width/2, r2-width/2, **config)
 		spiral2 = Spiral( pos, r1+width/2, r2+width/2, **config)
