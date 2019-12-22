@@ -1256,7 +1256,10 @@ class Path(object):
                         if '_comment' in point :
                                 comments+="<!--"+point['_comment']+"-->\n"
                         if '_colour' in point and point['_colour'] is not None:
-                                colour=point['_colour']
+				if type(point['_colour']) is str:
+                                	colour=point['_colour']
+				else:
+					print "colour is not a string"+str(point["_colour"])
                         else:
                                 colour='black'
 			if '_fill' in point and point['_fill'] is not None:
@@ -1397,6 +1400,13 @@ class Path(object):
                                 
                 else:
                                 
+                        if 'colour' in config and config['colour'] is not False and config['colour'] is not None and type(config['colour']) is not str:
+				print "config['colour'] is not string="+str(config['colour'])
+				print type(config['colour'])
+				print self
+				print self.parent
+				print self.parent.parent
+				return "black"
                         if 'colour' in config and config['colour'] is not False:
                                 return config['colour']
                         else:
