@@ -2642,6 +2642,10 @@ class Plane(Part):
                 	        repeatpattern=config['repeatpattern']
                 	else:
                 	        repeatpattern='rect'
+                	if 'repeatoffset' in config:
+                	        repeatoffset=config['repeatoffset']
+                	else:
+                	        repeatoffset=None
                         output2=''
                         if repeatmode=='gcode':
                                 for y in range(0,int(config['repeaty'])):
@@ -2665,10 +2669,15 @@ class Plane(Part):
 						docut=True
 						if repeatpattern=='cp_ext' or repeatpattern=='cp_int':
 							xoff=float(x)*float(config['xspacing'])*math.sin(math.pi/3)
+							print type(repeatoffset)
 							if x%2:
 								yoff=float(y)*float(config['yspacing'])
 							else:
-								yoff=(0.5+float(y))*float(config['yspacing'])															
+								if repeatoffset:
+									yoff = 1.0*float(repeatoffset) + float(y)*float(config['yspacing'])
+								else:
+									yoff=(0.5+float(y))*float(config['yspacing'])															
+							print "yoff = "+str(yoff)
 							if repeatpattern=='cp_int' and y==int(config['repeaty'])-1 and not x%2:
 								docut=False
 						else:
