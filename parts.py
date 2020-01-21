@@ -734,13 +734,25 @@ class Stepper(Part):
                         self.length=config['length']
                 else:
                         self.length=50
+		if 'doInsert' in config and config['doInsert']:
+			insert_layer = layer
+		else:
+			insert_layer = []
 		if 'thread_corners' in config and config['thread_corners']:
 			thread_layer=layer
 			clearance_layers='_stepper_layer'
 		else:
 			thread_layer='_stepper_layer'
-			clearance_layers=layer
+			if insert_layer == []:
+				clearance_layers=layer
+			else:
+				clearance_layers=[]
 		
+
+		if 'insert_depth' in config:
+			insert_depth = -config['insert_depth']
+		else:
+			insert_depth = False
         #	self.add(Hole(pos, rad=10))
                 d=dat[stepper_type]
                 self.d=d
@@ -753,10 +765,10 @@ class Stepper(Part):
                 if 'mode' in config and config['mode']=='justshaft':
                         self.add(Hole(pos, rad=d['shaft_diam']/2+1),layer)
                 else:	
-                        self.add(Bolt(pos+V( d['bolt_sep']/2, d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=[]))
-                        self.add(Bolt(pos+V(-d['bolt_sep']/2, d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=[]))
-                        self.add(Bolt(pos+V(-d['bolt_sep']/2,-d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=[]))
-                        self.add(Bolt(pos+V(d['bolt_sep']/2,-d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=[]))
+                        self.add(Bolt(pos+V( d['bolt_sep']/2, d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=insert_layer, z1=insert_depth))
+                        self.add(Bolt(pos+V(-d['bolt_sep']/2, d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=insert_layer, z1=insert_depth))
+                        self.add(Bolt(pos+V(-d['bolt_sep']/2,-d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=insert_layer, z1=insert_depth))
+                        self.add(Bolt(pos+V(d['bolt_sep']/2,-d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=insert_layer, z1=insert_depth))
                 
 			if 'throughPilot' in config and config['throughPilot']=='through':
 				self.add(Hole(pos, rad=d['pilot_diam']/2+0.1), layer)

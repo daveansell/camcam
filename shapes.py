@@ -134,6 +134,21 @@ class CurvedRect(Path):
                 self.add_point(pos+V(width/2, -height/2))
                 self.add_point(PArc(None, radius=siderad, direction='cw', length='short'))
 
+class RectFromTo(Path):
+        def __init__(self, cutFrom, to, width, **config):
+                self.init(config)
+                self.closed=True
+                along=(to-cutFrom).normalize()
+                perp = rotate(along, 90)
+                if 'fromends' in config and config['fromends'] is not None:
+                        cutFrom -= along*config['fromends']
+                        to += along*config['fromends']
+                self.add_point(cutFrom + perp * width/2)
+                self.add_point(cutFrom - perp * width/2)
+                self.add_point(to - perp * width/2)
+                self.add_point(to + perp * width/2)
+
+
 # Two circles joined with straight lines
 class Egg(Path):
         def __init__(self, pos1, rad1, pos2, rad2, **config):

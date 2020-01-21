@@ -833,7 +833,7 @@ class Milling:
                         }
                 },
                 "M5":{
-                        "diams":[6.5,3.95],
+                        "diams":[5.5,3.6],
                         "depths":[-1,False],
                 },
                 "M6":{

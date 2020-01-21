@@ -701,6 +701,7 @@ class ArbitraryBox(Part):
                         # DECIDE WHICH SISDE WE ARE CUttng FROM
                         # CHECK THE DIRECTION OF THR LOOP
                         t =  self.add(p)
+			print "face_"+f+" QQQQ"
                         setattr(self, 'face_' + f, t)
 #		def _pre_render(self):
                         self.align3d_face(t, f, face)
