@@ -114,7 +114,7 @@ class Path(object):
                 self.Bsegments = []
                 self.transform={}
                 self.otherargs=''
-                varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance', 'vertfeed']
+                varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance', 'vertfeed', 'downmode', 'blendTolerance']
 		if hasattr(self, 'varlist') and type(self.varlist) is list:
 			self.varlist+=varlist
 		else:
@@ -1284,7 +1284,8 @@ class Path(object):
 				if config['blendTolerance']>0:
 					ret+="G64P"+str(config['blendTolerance'])+"\n"
 				else:
-					ret+="G64\n"
+					if 'blendTolerance' in config:
+						ret+="G64\n"
                 for point in path:
                         if '_comment' in point and config['comments']:
                                 ret+="("+point['_comment']+")"
@@ -1306,7 +1307,7 @@ class Path(object):
                                 ret+="L%0.4f"%point['L']
                         # the x, y, and z are not accurate as it could be an arc, or bezier, but will probably be conservative
                         if 'F' in point:
-                                ret+="F%0.4f"%point['F']
+                                ret+="F%0.2f"%point['F']
                         ret+="\n"
 		if config['mode']=='gcode':
 			ret+="G64\n"
@@ -1418,7 +1419,7 @@ class Path(object):
                 self.config=config
                 mode=pconfig['mode']
                 if self.use_point_z:
-                        downmode='down'
+                        downmode='cutdown'
                         config['stepdown']=1000
                 else:
                         downmode=config['downmode']
@@ -1463,7 +1464,7 @@ class Path(object):
                        # if downmode=='down':
                         self.add_out(self.quickdown(depths[0]-step+config['precut_z']))
                         for depth in depths:
-                                if downmode=='down':
+                                if downmode=='down' or downmode=='cutdown':
                                         self.add_out(self.cutdown(depth))
                                 first=1
                                 for segment in segments:
@@ -1548,10 +1549,10 @@ class Path(object):
                         segments=self.Fsegments
 #			if downmode=='ramp'
 #				self.add_out(self.Fsegments[-1].out(self.mode, depths[0]))
-                        if downmode=='down':
+                        if downmode=='down' or downmode=='cutdown':
                                 self.add_out(self.quickdown(depths[0]-step+config['precut_z']))
                         for depth in depths:
-                                if downmode=='down':
+                                if downmode=='down' or downmode=='cutdown':
                                         self.add_out(self.cutdown(depth))
                                 first=1
                                 for segment in segments:
@@ -1704,7 +1705,7 @@ class Pathgroup(object):
 		self.obType = "Pathgroup"
 		self.paths=[]
 		self.trace = traceback.extract_stack()
-		varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height', 'blendTolerance', 'roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', 'chipBreak', 'justRoughing', 'vertfeed']
+		varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height', 'blendTolerance', 'roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', 'chipBreak', 'justRoughing', 'vertfeed', 'blendTolerance']
 		if hasattr(self, 'varlist') and type(self.varlist) is list:
 			self.varlist+=varlist
 		else:
@@ -1980,7 +1981,7 @@ class Part(object):
 		self.internal_borders=[]
 		self.ignore_border=False
 		self.transform={}
-		varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height', 'offset', 'blendTolerance', 'vertfeed']
+		varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height', 'offset', 'blendTolerance', 'vertfeed', 'blendTolerance']
 		self.otherargs=''
 		if hasattr(self, 'varlist') and type(self.varlist) is list:
 			self.varlist+=varlist
@@ -2426,7 +2427,7 @@ class Plane(Part):
 		self.name=name
 		self.transform=False
 		self.parent=False
-		self.varlist = ['order','transform','side', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown', 'forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z', 'cutter', 'offset']
+		self.varlist = ['order','transform','side', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown', 'forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z', 'cutter', 'offset', 'blendTolerance']
 		self.out=''
 		self.isCopy=False
 		self.copied=False
@@ -2743,7 +2744,7 @@ class Plane(Part):
                                 axismap={'X':0, 'Y':1, 'Z':2}
                                 val=float(m.group(2))
                                 val += offset[axismap[m.group(1)]]
-                                return m.group(1)+str(round(val,4))
+                                return m.group(1)+str(round(val,2))
                         else:
                                 return m.group(0)
                                 
