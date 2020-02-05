@@ -145,7 +145,7 @@ class SVGimport(Pathgroup):
                                         pos = config['pos'] + V(pos[0],float(items[i]))
                                         outpath.add_point(self.svgtransform(pos, transform))
                                         i+=1
-                        if items[i]=='m':
+                        elif items[i]=='m':
                                 if outpath!=False and len(outpath.points)>1:
                                         if (startpos-pos).length()<0.04:
                                                 outpath.closed=True
