@@ -72,17 +72,13 @@ class SVGimport(Pathgroup):
                         if m.groups(1)[0] == 'scale':
                                 pos=V(pos[0]*float(m.groups(1)[1]), pos[1]*float(m.groups(1)[2]))
 			if m.groups(1)[0] == 'matrix':
-				print "***MATRIX *** "+str(m.groups(1)[1])+"**"+str(m.groups(1)[2])
 				ma = m.groups(1)[2].split(',')
 				ma.insert(0, m.groups(1)[1])
 				ma = [float(i) for i in ma]
-				print ma
-				print pos
 				pos = V(
 					ma[0]*pos[0] + ma[2]*pos[1] + ma[4],
 					ma[1]*pos[0] + ma[3]*pos[1] + ma[3],
 				)	
-				print pos	
                 return pos
 # at the moment this just treats everything as a line so add lots of points
         def parse_d(self,d,transform, config):
