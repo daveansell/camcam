@@ -70,6 +70,8 @@ class SVGimport(Pathgroup):
 #			m = re.search('(.*?)\(([-,\d]+),\s*([-,\d]+)\)', command)
                         if m.groups(1)[0] == 'scale':
                                 pos=V(pos[0]*float(m.groups(1)[1]), pos[1]*float(m.groups(1)[2]))
+			if m.groups(1)[0] == 'transform':
+				pos+=V(m.groups(1)[1],m.groups(1)[2])
                 return pos
 # at the moment this just treats everything as a line so add lots of points
         def parse_d(self,d,transform, config):
