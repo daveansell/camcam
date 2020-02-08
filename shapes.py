@@ -201,11 +201,14 @@ class SubCircle(Path):
                 self.init(config)
                 self.closed=True
                 xoff = math.sqrt(rad*rad - yoff*yoff)
-                self.add_point(PSharp(centre + V(-xoff, yoff)))
                 self.add_point(PSharp(centre + V( xoff, yoff)))
                 self.add_point(PArc(centre, radius=rad))
                 self.add_point(PSharp(centre + V( 0, rad)))
                 self.add_point(PArc(centre, radius=rad))
+                self.add_point(PSharp(centre + V(-xoff, yoff)))
+		if 'extraSquare' in config and config['extraSquare']>0:
+			self.add_point(PSharp(centre + V(-xoff, yoff-config['extraSquare'])))
+                	self.add_point(PSharp(centre + V( xoff, yoff-config['extraSquare'])))
 
 
 class RepeatEllipse(Part):

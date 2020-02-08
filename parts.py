@@ -1746,6 +1746,46 @@ class LED5050(Pathgroup):
  #               self.add(Hole(V(0,0), rad=21.0/2, z1=-thickness+6.4))
   #              self.add(Hole(V(0,0), rad=25.0/2, z1=-thickness+6.4))
 
+class Speaker(Part):
+	def __init__(self, pos, speaker_type, layers, **config):
+		self.init(config)
+		self.translate(pos)
+		defaultLayers = {'base':[], 'cover':[]}
+		defaultLayers.update(layers)
+		layers=defaultLayers
+		print defaultLayers
+		if 'thread' in config:
+			threadLayer = layers['base']
+			insertLayer = []
+		else:
+			threadLayer = []
+			insertLayer = layers['base']
+		data={
+			"kevlar6.0":{
+				'magnetRad':145.0/2,
+				'outerRad':164.0/2,
+				'thickness':4.0,
+				'holeRad':156.0/2,
+				'holeType':'M4'
+			},
+			"kevlar5.25":{
+				'magnetRad':100.0/2,
+				'outerRad':130.0/2,
+				'holeRad':122.0/2,
+				'thickness':4.0,
+				'holeType':'M4'
+				
+			}
+		}
+		if(speaker_type in data):
+			self.d=data[speaker_type]
+		else:
+			return
+		self.add(Hole(V(0,0), rad=self.d['magnetRad']+1), layers['base'])
+		for i in range(0,4):
+			self.add(Bolt(rotate(V(0,self.d['holeRad']), i*90), self.d['holeType'], clearance_layers=layers['cover'], insert_layer=insertLayer, thread_layer=threadLayer))
+		self.add(Hole(V(0,0), rad=self.d['magnetRad']))
+
 class Magnetometer(Part):
 	def __init__(self, pos, mag_type, layer, **config):
 		self.init(config)

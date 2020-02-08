@@ -26,6 +26,7 @@ class SVGpoints(list):
 	""" This takes an inkscape svg file and looks for circles (inkscape produces paths with circle attributes), and returns the centre of all those circles as a list of poitns.
 You can calibrate these with a rectangle or a named circle of known width and height or radius"""
 	def __init__(self,pos, filename, **config):
+		self.pos=pos
 		nsmap = {
 		    'sodipodi': 'http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd',
 		    'cc': 'http://web.resource.org/cc/',
@@ -138,7 +139,7 @@ You can calibrate these with a rectangle or a named circle of known width and he
 			elif('cx' in p.attrib):
 				pos = V(float(p.attrib['cx']), float(p.attrib['cy']))
 			if pos is not False:
-				pos+=off
+				pos+=off+self.pos
 				pos -=cal
 				pos = V(pos[0]*scalex, -pos[1]*scaley)			
 				print "SVGPOINTS"+str(p.get('id'))+" "+str(self.outmode)
