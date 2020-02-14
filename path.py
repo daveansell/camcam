@@ -2744,7 +2744,7 @@ class Plane(Part):
                                 axismap={'X':0, 'Y':1, 'Z':2}
                                 val=float(m.group(2))
                                 val += offset[axismap[m.group(1)]]
-                                return m.group(1)+str(round(val,2))
+                                return m.group(1)+str(round(val,3))
                         else:
                                 return m.group(0)
                                 
