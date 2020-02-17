@@ -2165,9 +2165,9 @@ class ParametricFunction(list):
                         step = (float(pend)-float(pstart))/100
                 p = pstart
                 while p<pend:
-                        self.append(func(p))
+                        self.append(pos+func(p))
                         p+=step
-                self.append(func(pend))
+                self.append(pos+func(pend))
 class RadialParametricFunction(list):
         def __init__(self, pos, func, **config):
 		if 'pstart' in config:
