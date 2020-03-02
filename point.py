@@ -919,7 +919,7 @@ class POutcurve(Point):
                         segment_array.append( Line(p1[0], p1[1]))
                 else:
                         #segment_array.append( Line(p1[0], p1[1]))
-                        segment_array.append( Line(self.last().end(), p1[1]))
+                        segment_array.append( Line(self.last().origin(), p1[1]))
                 d3=''
                 if self.next().point_type=="outcurve":
 #                        if (self.nextorigin()-self.pos).cross(self.next().nextorigin()-self.nextorigin())[2] <0:
