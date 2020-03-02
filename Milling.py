@@ -91,7 +91,7 @@ class Milling:
 
                         },
                         'makespacerouter2':{
-                                'prefix':'G17\nG21\nG0Z30\nM3\n',
+                                'prefix':'G17\nG0Z30\nM3\n',
                                 'postfix':'M30\n',
                                 'settool_prefix':'T',
                                 'settool_postfix':' M6\nS100\nM03',
@@ -114,7 +114,7 @@ class Milling:
                         },
                         'makespacerouter':{
 #                                'prefix':'T1M6\nG17\nG0Z10S11000M3\n',
-                                'prefix':'G17\nG21\nG0Z15\nM3\n',
+                                'prefix':'G17\nG0Z15\nM3\n',
                                 'postfix':'M30\n',
                                 'mode':'simplegcode',
                                 'group':'cutter',
