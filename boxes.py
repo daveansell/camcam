@@ -575,6 +575,8 @@ class ArbitraryBox(Part):
                                 face['hole_spacing'] = {}
                         if 'corners' not in face:
                                 face['corners'] = {}
+			if 'hole_depth' not in face:
+				face['hole_depth']=False
                         if 'point_type' not in face:
                                 face['point_type'] = {}
                         if 'wood_direction' in face:
@@ -938,7 +940,7 @@ class ArbitraryBox(Part):
                                                                         cutside='left'
 							else:
 								cutside=cutside0
-                                                        part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount], butt_outline=face['butt_outline'][scount]))
+                                                        part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount], butt_outline=face['butt_outline'][scount], hole_depth=face['hole_depth']))
                                                         if not(lastcorner == 'off' and corner=='off'):
                                                                 nointersect==True
                                                 #		if p==0:
@@ -981,7 +983,7 @@ class ArbitraryBox(Part):
 							else:
 								cutside = cutside0
 
-                                                        part.add(AngledButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on', angle, lineside,  butt_depression=face['butt_depression'][scount], holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount]))
+                                                        part.add(AngledButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on', angle, lineside,  butt_depression=face['butt_depression'][scount], holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount], hole_depth=face['hole_depth']))
                                                         if not(lastcorner == 'off' and corner=='off'):
                                                                 nointersect==True
 
@@ -1111,7 +1113,7 @@ class ArbitraryBox(Part):
                                 pass
                         elif joint['joint_mode']=='butt':
 				pass
-                                part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes'], joint_type='convex', fudge=fudge, butt_outline=joint['butt_outline']))
+                                part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes'], joint_type='convex', fudge=fudge, butt_outline=joint['butt_outline'], hole_depth=face['hole_depth']))
                         elif joint['joint_mode']=='bracket':
                                 part.add(BracketJointHoles(
                                         joint['from'], 

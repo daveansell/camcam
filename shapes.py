@@ -803,24 +803,24 @@ class FilledRect(Pathgroup):
 #               sides=int(max(8, rad))
 
 #               self.add(Polygon(pos, rad, sides, partial_fill=rad-0.5, fill_direction='in', side='in'))
-                self.rect=RoundedRect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in')
-        def __render__(self,config):
-                c=self.rect.generate_config(config)
-                self.paths=[]
-                d=self.maxdist-c['cutterrad']
-                if c['cutterrad']>0:
-                        steps=math.ceil(d/c['cutterrad']/1.2)
-                        step=(self.maxdist+c['cutterrad']/2)/steps
-                        for i in range(1,int(steps)):
-#                for i in range(0,1):
-                                rad=self.rad-step*i
-                                if rad<0:
-                                        rad=0
-                                diff = step*i
-                #	self.add(Rect(self.pos, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in'))
-                                self.add(RoundedRect(self.pos, rad=rad, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in', z1=self.z1))
-		if not self.noFinal:
-	                self.add(Rect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in', cornertype=self.cornertype, z1=self.z1))
+		filldist= min(self.width,self.height)/2
+                self.add(RoundedRect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in', fill_direction='in', partial_fill=filldist, noFinal=self.noFinal))
+                #self.rect=RoundedRect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in')
+#       def __render__(self,config):
+#               c=self.rect.generate_config(config)
+#               self.paths=[]
+#               d=self.maxdist-c['cutterrad']
+#               if c['cutterrad']>0:
+#                       steps=math.ceil(d/c['cutterrad']/1.2)
+#                       step=(self.maxdist+c['cutterrad']/2)/steps
+#                       for i in range(1,int(steps)):
+#                                rad=self.rad-step*i
+#                                if rad<0:
+#                                        rad=0
+#                                diff = step*i
+#                                self.add(RoundedRect(self.pos, rad=rad, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in', z1=self.z1))
+#		if not self.noFinal:
+#	                self.add(Rect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in', cornertype=self.cornertype, z1=self.z1))
 
 
 
