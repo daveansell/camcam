@@ -977,10 +977,14 @@ class Path(object):
 # Do something about offsets manually so as not to rely on linuxcnc
                 config=self.generate_config(pconfig)
 		if config['mode']=='gcode' and hasattr(self, 'spindleDir') and self.spindleDir and spindleDir != self.spindleDir:
+			if spindleDir is None:
+				time = "5"
+			else:
+				time = "10"
 			if self.spindleDir=='ccw':
-				out.append('M03\nG04p10\n')
+				out.append('M03\nG04p'+time+'\n')
 			elif self.spindleDir=='cw':
-				out.append('M04\nG04p10\n')
+				out.append('M04\nG04p'+time+'\n')
 			spindleDir = self.spindleDir			
                 finalpass=False
 		outpaths=[]
