@@ -147,16 +147,18 @@ class LathePath(Path):
 				self.flipSide=1	
 				print "CLEAREFIRST="+str(self.clearFirst)
 			if self.doRoughing:
+				fs = self.flipSide
 				if self.clearFirst == 'z':
-					self.cuts[0].insert(0, PSharp(V(self.cuts[0][0].pos[0] * self.flipSide, self.clearZ), isRapid=True))
-					self.cuts[0].insert(0, PSharp(V(self.clearX * self.flipSide, self.clearZ), isRapid=True))
-					self.cuts[-1].append( PSharp(V(self.cuts[-1][-1].pos[-1] * self.flipSide, self.clearZ), isRapid=True))
-					self.cuts[-1].append( PSharp(V(self.clearX * self.flipSide, self.clearZ), isRapid=True))
+					self.cuts[0].insert(0, PSharp(V(self.cuts[0][0].pos[0] * fs, self.clearZ), isRapid=True))
+					self.cuts[0].insert(0, PSharp(V(self.clearX * fs, self.clearZ), isRapid=True))
+					self.cuts[-1].append( PSharp(V(self.cuts[-1][-1].pos[-1] * fs, self.clearZ), isRapid=True))
+					self.cuts[-1].append( PSharp(V(self.clearX * fs, self.clearZ), isRapid=True))
 				elif self.clearFirst == 'x':
-					self.cuts[0].insert(0, PSharp(V(self.clearX * self.flipSide, self.cuts[0][0].pos[1] ), isRapid=True))
-					self.cuts[0].insert(0, PSharp(V(self.clearX * self.flipSide, self.clearZ ), isRapid=True))
-					self.cuts[-1].append( PSharp(V(self.clearX * self.flipSide, self.cuts[-1][-1].pos[1] ), isRapid=True))
-					self.cuts[-1].append( PSharp(V(self.clearX * self.flipSide, self.clearZ ), isRapid=True))
+					self.cuts[0].insert(0, PSharp(V(self.clearX * fs, self.cuts[0][0].pos[1] ), isRapid=True))
+					self.cuts[0].insert(0, PSharp(V(self.clearX * fs, self.clearZ ), isRapid=True))
+					self.cuts[-1].append( PSharp(V(self.clearX * fs, self.cuts[-1][-1].pos[1] ), isRapid=True))
+					self.cuts[-1].append( PSharp(V(self.clearX * fs, self.clearZ ), isRapid=True))
+
 			if not self.justRoughing:
 				if self.clearFirst == 'z':
 					self.insert_point(0, PSharp(V(self.points[0].pos[0] * self.flipSide, self.clearZ), isRapid=True))
@@ -288,6 +290,7 @@ class LathePath(Path):
 			return 1
 		return 0
 	def convertIntersection(self, intersection, default):
+			print type(intersection)
 			if not intersection:
 				intersection = default#V( endCut,val)
 			elif type(intersection) is shapely.geometry.collection.GeometryCollection:
@@ -298,7 +301,11 @@ class LathePath(Path):
 				intersection = V(intersection[0].x, intersection[0].y)
 			elif type(intersection) is Vec:
 				intersection = intersection
+			elif type(intersection) is shapely.geometry.multilinestring.MultiLineString:
+				intersection = V(list(intersection[0].coords)[0][0], list(intersection[0].coords)[0][1])
+
 			else:
+				print intersection
 				intersection = V(intersection.x, intersection.y)
 			return intersection
 
