@@ -41,6 +41,7 @@ from os.path import join, dirname
 from kivy.app import App
 from kivy.logger import Logger
 from kivy.uix.scatter import Scatter
+from kivy.uix.scatter import ScatterPlane
 from kivy.properties import StringProperty
 # FIXME this shouldn't be necessary
 from kivy.core.window import Window
@@ -48,12 +49,17 @@ from kivy.core.window import Window
 import kivy.graphics
 from  kivy.uix.label import *
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.stacklayout import StackLayout
 from kivy.uix.button import Button
 from functools import partial
 from kivy.properties import NumericProperty
+from kivy.lang import Builder 
+from kivy.uix.slider import Slider
 
 
-class KvSheet(Scatter):
+Builder.load_file('/home/dave/cnc/camcam/camcam.kv')
+class KvSheet(ScatterPlane):
 	deleted = False
 	def draw(self, bl, tr):
 		self.bl = bl
@@ -74,7 +80,7 @@ class KvSheet(Scatter):
 
                 self.camcam.do_touch()
                 self.back_colour.g = 1
-                self.camcam.selected = self
+                #self.camcam.selected = self
 
 
 class KvPart(Scatter):
@@ -86,6 +92,7 @@ class KvPart(Scatter):
 		self.part = part
 		self.startcentre = (0,0)
 		if part.border:
+			#part.transform={}
 			config= part.border.generate_config({})
 			if(hasattr(part, 'isback') and part.isback):
 				print "part "+part.name+" is mirrored %%"
@@ -136,6 +143,10 @@ class KvPart(Scatter):
 				self.center = ( centrex+xoffset, centrey)
 			else:
 				self.center = ( centrex+xoffset, centrey)
+			
+			self.origin = (width/2,height/2)
+			self.canvas.add(kivy.graphics.Ellipse(pos=(self.origin[0]-1.5, self.origin[1]-1.5), size=(3, 3)))
+
 #			kvpoints=[]
 #			indices = []
 #			for p in ccpoints:
@@ -149,17 +160,16 @@ class KvPart(Scatter):
 		self.startpos = self.pos
 #		if mirror==-1:
 #			self.startpos=(self.pos[0]-400, self.pos[1])
-		self.do_rotation = True
+		self.do_rotation = False
 		self.do_scale = False
 		self.do_translation = True
 
 	def on_bring_to_front(self, touch):
-		print self.parent
 
 		self.camcam.do_touch()
 		self.back_colour.g = 1
 		self.camcam.selected = self
-		print self
+		self.camcam.slider.value = self.rotation
 class RenderPart:
 	def __init__(self):
 		self.offset=V(0,0)
@@ -185,24 +195,48 @@ class CamCam(App):
     	def build(self): 
 		print "BUILD"
         # the root is created in pictures.kv
-        	root = self.root
-
+        	root = BoxLayout(size_hint=(1,1), orientation='vertical')
+		self.floatlayout = ScatterPlane()
+		root.add_widget(self.floatlayout)
         # get any files into images directory
-		print self
-		print App
-		print dir(self)
 		sheets = {}
 		self.sheet_widgets = {}
 		buttons = []
 		layout = BoxLayout(size_hint=(1, None), height=50)
-		for plane in self.planes:
-			for part in plane.getParts():
-				layer = plane.layers[part.layer].config
-				sheetid = layer['material']+' '+str(layer['thickness'])
-				if sheetid not in sheets:
-					sheets[sheetid]=[]
-					self.sheet_widgets[sheetid] = []
-				sheets[sheetid].append( part)
+		print "command_args="+str(camcam.command_args)
+		mode='normal'
+		if camcam.command_args.layout_file:
+			mode='layout'
+			partlist={}
+                	for plane in self.planes:
+                        	for part in plane.getParts(config={}):
+                        	        part.make_copies()
+                        	        partlist[part.name] = [plane, part]
+
+			with open(camcam.command_args.layout_file, "r") as read_file:
+    				shts = json.load(read_file)['sheets']
+			for sheetid in shts:
+				sheets[sheetid]=[]
+                                self.sheet_widgets[sheetid] = []
+
+				for p in shts[sheetid]:
+					print
+					print p['name']
+					print partlist
+					if p and p['name']!='None':
+						part=copy.copy(partlist[p['name']][1])
+						part.kivy_translate=p['translate']
+						part.kivy_rotate=p['rotate']
+						sheets[sheetid].append( part)
+		else:
+			for plane in self.planes:
+				for part in plane.getParts():
+					layer = plane.layers[part.layer].config
+					sheetid = layer['material']+' '+str(layer['thickness'])
+					if sheetid not in sheets:
+						sheets[sheetid]=[]
+						self.sheet_widgets[sheetid] = []
+					sheets[sheetid].append( part)
 		for sheet in sheets:
 			button = Button(text = sheet)
 			button.bind(on_press = partial(self.set_sheet, sheet))
@@ -216,28 +250,66 @@ class CamCam(App):
 		button = Button(text = 'Save')
 		button.bind(on_press = self.save)
 		layout.add_widget(button)
+		button = Button(text = '+')
+		button.bind(on_press = self.zoomin)
+		layout.add_widget(button)
+		button = Button(text = '-')
+		button.bind(on_press = self.zoomout)
+		layout.add_widget(button)
+		self.slider = Slider(min=0, max=360, on_touch_move=self.doSlider) 
+		layout.add_widget(self.slider)
+		if not self.command_args.boardWidth:
+			self.command_args.boardWidth=1200
+		if not self.command_args.boardHeight:
+                        self.command_args.boardHeight=600
+		if not self.command_args.repeatx:
+			self.command_args.repeatx=1
+		if not self.command_args.repeaty:
+			self.command_args.repeaty=1
 		for sheet in sheets:
-			print sheet
 			material = KvSheet()
-			material.draw([0,50], [1200,650])
+			for i in range(0,int(self.command_args.repeatx)):
+				for j in range(0,int(self.command_args.repeaty)):
+					material.draw(
+						[i*int(self.command_args.boardWidth),
+						j*int(self.command_args.boardHeight)], 
+						[(i+1)*int(self.command_args.boardWidth),
+						(j+1)*int(self.command_args.boardHeight)])
 			material.camcam = self
 			self.sheet_widgets[sheet].append(material)
 			for part in sheets[sheet]:
-				for i in range(0, part.number):
+				if mode=='layout':
+					num=1
+				else:
+					num=part.number
+				for i in range(0, num):
 					picture = KvPart()#rotation=randint(-30,30))
 					picture.draw(part)
 					picture.camcam=self
 					picture.part = part
+					if hasattr(part, "kivy_translate"):
+						picture.pos =[picture.pos[0]+part.kivy_translate[0], picture.pos[1]+part.kivy_translate[1]]
+					if hasattr(part, "kivy_rotate"):
+						picture.rotation=part.kivy_rotate
 					self.sheet_widgets[sheet].append(picture)
 #				root.add_widget(picture)
-		
     		root.add_widget(layout)
+		return root
+
+	def doSlider(self, touch, b):
+		print touch
+		print b
+		if self.selected:
+			self.selected.rotation=touch.value
 		
 	def do_touch(self):
 		for s in self.sheet_widgets:
 			for p in self.sheet_widgets[s]:
 				p.back_colour.g = 0
-
+	def zoomin(self, *args):
+		self.floatlayout.scale*=1.5
+	def zoomout(self, *args):
+		self.floatlayout.scale/=1.5
 	def duplicate(self, *largs):
 		print "DUPLICATE"
 		if not self.selected:
@@ -251,7 +323,6 @@ class CamCam(App):
 #		new = copy.copy(self.selected)
 #		new.name+='_'
 #		self.sheet_widgets[self.current_sheet].append(new)
-
 	def delete(self, *largs):
 		print "DELETE"
 		print self.selected
@@ -270,32 +341,39 @@ class CamCam(App):
 		data['args']=args
 		data['sheets']={}
 		for s in self.sheet_widgets:
-			data['sheets'][s]=[]
+			for i in range(0,int(self.command_args.repeatx)):
+				for j in range(0,int(self.command_args.repeaty)):
+					data['sheets'][s+"_"+str(i)+"-"+str(j)]=[]
+			
 			for p in self.sheet_widgets[s]:
-				print p
 				if p.part is not None:
-					print str(p.part.name)+" self.center"+str(p.center)+" startcentre"+str(p.startcentre)+" pos="+str(p.pos)+" startpos="+str(p.startpos)
 					rec = {}
 					rec['name']=str(p.part.name)
+					tempr=p.rotation
+					p.rotation=0
 					rec['translate'] = (p.pos[0] - p.startpos[0], p.pos[1] - p.startpos[1])
-				
+					p.rotation=tempr
 					m= p.get_window_matrix(x = p.center[0], y = p.center[1])
-		#		print m
 					m2 = numpy.matrix(m.tolist())
-		#		print m2
 					d = transformations.decompose_matrix(m2)
-#				print "rotate="+str(d[2][2]/math.pi*180)
-#				print "translate="+str(d[3])
-#				print "perspective="+str(d[4])
-#				print "position="+ str( [d[4][0]/d[4][3], d[4][1]/d[4][3] ])
-#				print "kivy_translate="+str(rec['translate'])
-		#		rec['rotate'] = math.atan2(m[4], m[0])/math.pi*180
-					rec['rotate'] = d[2][2]/math.pi*180
-					rec['startcentre'] = [0,0]
+					rec['origin'] = p.origin
+					rec['center'] = p.center
+					rec['rotate'] = p.rotation
+					rec['startcentre'] = p.startcentre
 				#rec['startpos'] = p.startpos
 					rec['startpos'] = [d[4][0]/d[4][3], d[4][1]/d[4][3]]
+#					print str(p.part.name)+" self.center"+str(p.center)+" startcentre"+str(p.startcentre)+" pos="+str(p.pos)+" startpos="+str(p.startpos)+" translate="+str(rec['translate'])+" origin="+str(rec['origin']) 
 					if p.deleted ==0:
-						data['sheets'][s].append(rec)
+						for i in range(0,int(self.command_args.repeatx)):
+			                                for j in range(0,int(self.command_args.repeaty)):
+								if	p.pos[0]>i*int(self.command_args.boardWidth)\
+									and p.pos[0]<(i+1)*int(self.command_args.boardWidth)\
+									and p.pos[1]>j*int(self.command_args.boardHeight)\
+                                                                        and p.pos[1]<(j+1)*int(self.command_args.boardHeight):
+										data['sheets'][s+"_"+str(i)+"-"+str(j)].append(rec)
+										print "********"+str(p.part.name)+" "+str(p.pos)+" "+s+"_"+str(i)+"-"+str(j)
+									
+
 #				print p.get_window_matrix(0,0)
 		h = open( 'layout_file', 'w')
 		json.dump(data,h) 
@@ -308,10 +386,10 @@ class CamCam(App):
 			for p in self.sheet_widgets[s]:
 				if s==sheet:
 					if not p.parent:
-						self.root.add_widget(p)
+						self.floatlayout.add_widget(p)
 				else:
 					if p.parent:
-						self.root.remove_widget(p)
+						self.floatlayout.remove_widget(p)
 
    	def on_pause(self):
         	return True
@@ -333,6 +411,10 @@ parser.add_option("-b", "--sep-border",
 parser.add_option("-B", "--bom",
                   action="store_true", dest="bom", default=False,
                   help="Print Bill of Materials")
+parser.add_option("-W", "--boardWidth", dest="boardWidth",
+                  help="board Width")
+parser.add_option("-H", "--boardHeight", dest="boardHeight",
+                  help="boardHeight")
 parser.add_option("-x", "--xreps", dest="repeatx",
                   help="number of times should be repeated in x direction")
 parser.add_option("-y", "--yreps", dest="repeaty",
@@ -349,20 +431,15 @@ parser.add_option("-L", "--layout-file", dest="layout_file",
                   help="output file for layout")
 (options, args) = parser.parse_args()
 config={}
-
-camcam.command_args={}
-if options.options:
-	for pair in options.options.split(';'):
-		a=pair.split('=')
-		if len(a)>1:
-			camcam.command_args[a[0]]=a[1]
+print "options"+str(options)
+camcam.command_args=options
 print camcam.command_args
 config['command_args']=camcam.command_args
 # load all the requested files	
 files = {}
 lastfile = False
 for arg in args:
-	execfile(arg)
+	execfile(os.getcwd()+'/'+arg)
 	#if arg[-1: -3] == '.py':
 	#	execfile(arg)
 #		lastfile = arg

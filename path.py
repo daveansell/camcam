@@ -28,7 +28,7 @@ import traceback
 import re
 from point import *
 from segments import *
-
+spindleDir = False
 milling=Milling.Milling()
 arg_meanings = {'order':'A field to sort paths by',
 	       'transform':"""Transformations you can apply to the object this is a dict, and can include:
@@ -1026,14 +1026,20 @@ class Path(object):
                         
 #  output the path
         def render(self,pconfig):
+		global spindleDir
                 out=[]
 # Do something about offsets manually so as not to rely on linuxcnc
                 config=self.generate_config(pconfig)
-		if config['mode']=='gcode' and hasattr(self, 'spindleDir') and self.spindleDir:
+		if config['mode']=='gcode' and hasattr(self, 'spindleDir') and self.spindleDir and spindleDir != self.spindleDir:
+			if spindleDir is None:
+				time = "5"
+			else:
+				time = "10"
 			if self.spindleDir=='ccw':
-				out.append('M03\nG04p10\n')
+				out.append('M03\nG04p'+time+'\n')
 			elif self.spindleDir=='cw':
-				out.append('M04\nG04p10\n')
+				out.append('M04\nG04p'+time+'\n')
+			spindleDir = self.spindleDir			
                 finalpass=False
 		outpaths=[]
                 if config['side']=='in' or config['side']=='out':
@@ -2480,6 +2486,8 @@ class Plane(Part):
                         raise Warning(str(layer)+" is referenced but doesn't exist.")
 
         def render_part(self, part, callmode, pconfig=False):
+		global spindleDir
+		spindleDir = None
                 self.callmode = callmode
                 self.modeconfig=milling.mode_config[callmode]
                 self.mode=self.modeconfig['mode']
