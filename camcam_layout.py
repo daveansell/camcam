@@ -196,14 +196,36 @@ class CamCam(App):
 		buttons = []
 		layout = BoxLayout(size_hint=(1, None), height=50)
 		print "command_args="+str(camcam.command_args)
-		for plane in self.planes:
-			for part in plane.getParts():
-				layer = plane.layers[part.layer].config
-				sheetid = layer['material']+' '+str(layer['thickness'])
-				if sheetid not in sheets:
-					sheets[sheetid]=[]
-					self.sheet_widgets[sheetid] = []
-				sheets[sheetid].append( part)
+		if camcam.command_args.layout_file:
+			partlist={}
+                	for plane in self.planes:
+                        	for part in plane.getParts(config={}):
+                        	        part.make_copies()
+                        	        partlist[part.name] = [plane, part]
+
+			with open(camcam.command_args.layout_file, "r") as read_file:
+    				shts = json.load(read_file)['sheets']
+			for sheetid in shts:
+				sheets[sheetid]=[]
+                                self.sheet_widgets[sheetid] = []
+
+				for p in shts[sheetid]:
+					print
+					print p['name']
+					print partlist
+					part=copy.copy(partlist[p['name']][1])
+					part.kivy_translate=p['translate']
+					part.kivy_rotate=p['rotate']
+					sheets[sheetid].append( part)
+		else:
+			for plane in self.planes:
+				for part in plane.getParts():
+					layer = plane.layers[part.layer].config
+					sheetid = layer['material']+' '+str(layer['thickness'])
+					if sheetid not in sheets:
+						sheets[sheetid]=[]
+						self.sheet_widgets[sheetid] = []
+					sheets[sheetid].append( part)
 		for sheet in sheets:
 			button = Button(text = sheet)
 			button.bind(on_press = partial(self.set_sheet, sheet))
@@ -234,6 +256,10 @@ class CamCam(App):
 					picture.draw(part)
 					picture.camcam=self
 					picture.part = part
+					if hasattr(part, "kivy_translate"):
+						picture.pos =[picture.pos[0]+part.kivy_translate[0], picture.pos[1]+part.kivy_translate[1]]
+					if hasattr(part, "kivy_rotate"):
+						picture.rotate=part.kivy_rotate
 					self.sheet_widgets[sheet].append(picture)
 #				root.add_widget(picture)
     		root.add_widget(layout)
