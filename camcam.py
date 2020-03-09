@@ -77,6 +77,7 @@ class CamCam:
 			miny=10000
 			maxy=-10000
 			for p in sheets['sheets'][sheet]:
+			    if p is not None and p['name']!='None':
 				(plane, part) = parts[p['name']]
 				tconfig = config
 				part.border.polygonise()
