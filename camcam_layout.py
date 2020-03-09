@@ -89,6 +89,7 @@ class KvPart(Scatter):
 		self.part = part
 		self.startcentre = (0,0)
 		if part.border:
+			#part.transform={}
 			config= part.border.generate_config({})
 			if(hasattr(part, 'isback') and part.isback):
 				print "part "+part.name+" is mirrored %%"
@@ -157,12 +158,10 @@ class KvPart(Scatter):
 		self.do_translation = True
 
 	def on_bring_to_front(self, touch):
-		print self.parent
 
 		self.camcam.do_touch()
 		self.back_colour.g = 1
 		self.camcam.selected = self
-		print self
 class RenderPart:
 	def __init__(self):
 		self.offset=V(0,0)
@@ -192,13 +191,11 @@ class CamCam(App):
 		self.floatlayout = Scatter()
 		root.add_widget(self.floatlayout)
         # get any files into images directory
-		print self
-		print App
-		print dir(self)
 		sheets = {}
 		self.sheet_widgets = {}
 		buttons = []
 		layout = BoxLayout(size_hint=(1, None), height=50)
+		print "command_args="+str(camcam.command_args)
 		for plane in self.planes:
 			for part in plane.getParts():
 				layer = plane.layers[part.layer].config
@@ -227,7 +224,6 @@ class CamCam(App):
 		button.bind(on_press = self.zoomout)
 		layout.add_widget(button)
 		for sheet in sheets:
-			print sheet
 			material = KvSheet()
 			material.draw([0,50], [1200,650])
 			material.camcam = self
@@ -285,12 +281,11 @@ class CamCam(App):
 		for s in self.sheet_widgets:
 			data['sheets'][s]=[]
 			for p in self.sheet_widgets[s]:
-				print p
 				if p.part is not None:
-					print str(p.part.name)+" self.center"+str(p.center)+" startcentre"+str(p.startcentre)+" pos="+str(p.pos)+" startpos="+str(p.startpos)
 					rec = {}
 					rec['name']=str(p.part.name)
 					rec['translate'] = (p.pos[0] - p.startpos[0], p.pos[1] - p.startpos[1])
+					print str(p.part.name)+" self.center"+str(p.center)+" startcentre"+str(p.startcentre)+" pos="+str(p.pos)+" startpos="+str(p.startpos)+" translate="+str(rec['translate'] )
 				
 					m= p.get_window_matrix(x = p.center[0], y = p.center[1])
 		#		print m
@@ -362,14 +357,8 @@ parser.add_option("-L", "--layout-file", dest="layout_file",
                   help="output file for layout")
 (options, args) = parser.parse_args()
 config={}
-
-camcam.command_args={}
-if options.options:
-	for pair in options.options.split(';'):
-		a=pair.split('=')
-		if len(a)>1:
-			camcam.command_args[a[0]]=a[1]
-print os.getcwd()
+print "options"+str(options)
+camcam.command_args=options
 print camcam.command_args
 config['command_args']=camcam.command_args
 # load all the requested files	
