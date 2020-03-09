@@ -48,11 +48,14 @@ from kivy.core.window import Window
 import kivy.graphics
 from  kivy.uix.label import *
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.stacklayout import StackLayout
 from kivy.uix.button import Button
 from functools import partial
 from kivy.properties import NumericProperty
+from kivy.lang import Builder 
 
-
+Builder.load_file('/home/dave/cnc/camcam/camcam.kv')
 class KvSheet(Scatter):
 	deleted = False
 	def draw(self, bl, tr):
@@ -185,8 +188,9 @@ class CamCam(App):
     	def build(self): 
 		print "BUILD"
         # the root is created in pictures.kv
-        	root = self.root
-
+        	root = BoxLayout(size_hint=(1,1), orientation='vertical')
+		self.floatlayout = Scatter()
+		root.add_widget(self.floatlayout)
         # get any files into images directory
 		print self
 		print App
@@ -216,6 +220,12 @@ class CamCam(App):
 		button = Button(text = 'Save')
 		button.bind(on_press = self.save)
 		layout.add_widget(button)
+		button = Button(text = '+')
+		button.bind(on_press = self.zoomin)
+		layout.add_widget(button)
+		button = Button(text = '-')
+		button.bind(on_press = self.zoomout)
+		layout.add_widget(button)
 		for sheet in sheets:
 			print sheet
 			material = KvSheet()
@@ -230,14 +240,17 @@ class CamCam(App):
 					picture.part = part
 					self.sheet_widgets[sheet].append(picture)
 #				root.add_widget(picture)
-		
     		root.add_widget(layout)
-		
+		return root
+			
 	def do_touch(self):
 		for s in self.sheet_widgets:
 			for p in self.sheet_widgets[s]:
 				p.back_colour.g = 0
-
+	def zoomin(self, *args):
+		self.floatlayout.scale*=1.5
+	def zoomout(self, *args):
+		self.floatlayout.scale/=1.5
 	def duplicate(self, *largs):
 		print "DUPLICATE"
 		if not self.selected:
@@ -308,10 +321,10 @@ class CamCam(App):
 			for p in self.sheet_widgets[s]:
 				if s==sheet:
 					if not p.parent:
-						self.root.add_widget(p)
+						self.floatlayout.add_widget(p)
 				else:
 					if p.parent:
-						self.root.remove_widget(p)
+						self.floatlayout.remove_widget(p)
 
    	def on_pause(self):
         	return True
@@ -356,13 +369,14 @@ if options.options:
 		a=pair.split('=')
 		if len(a)>1:
 			camcam.command_args[a[0]]=a[1]
+print os.getcwd()
 print camcam.command_args
 config['command_args']=camcam.command_args
 # load all the requested files	
 files = {}
 lastfile = False
 for arg in args:
-	execfile(arg)
+	execfile(os.getcwd()+'/'+arg)
 	#if arg[-1: -3] == '.py':
 	#	execfile(arg)
 #		lastfile = arg
