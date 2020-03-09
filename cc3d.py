@@ -81,7 +81,6 @@ def path_render3D(self, pconfig, border=False):
         if  border==False:
                         z0 += config['thickness'] +1
 
-	print config['thickness']
         if (config['z1'] is False or config['z1'] is None) and config['z0'] is not None and config['thickness'] is not None:
                 if  border==False:
                         z1 = - config['thickness']- 20
@@ -110,13 +109,11 @@ def path_render3D(self, pconfig, border=False):
         bottom = round((min(z1,z0)+zoffset),PRECISION) *SCALEUP
 # dodgy but working atm
 	if not border and 'isback' in config and config['isback']:
-		print "IDSBACK"+str(self.parent)
 		pass
 		h = 2*h
 #	extruded = extrude_along_path(shape_pts=outline, path_pts=extrude_path)
         
         if self.extrude_scale is not None:
-		print "SCALE="+str(self.extrude_scale)
                 scale = self.extrude_scale
                 if self.extrude_centre is None:
                         self.extrude_centre = V(0,0)
@@ -159,9 +156,7 @@ def path_render3D(self, pconfig, border=False):
                         extruded=solid.translate([p.transform['translate3D'][0], p.transform['translate3D'][1],p.transform['translate3D'][2] ])(extruded)
                 p=p.parent
 #		if (hasattr(p,'renderable') and p.renderable and p.obType == "Part"):
-#			print str(p.border is not False and p.border is not None  and p.border.obType == "Path")
 #			if(p.border is not False and p.border is not None):
-#				print p.border.obType
 #	if hasattr(self, 'transform') and self.transform is not None and self.transform is not False and 'matrix3D' in self.transform:
 #		if type(self.transform['matrix3D'][0]) is list:
 #			extruded=solid.translate([-self.transform['rotate3D'][0][0], - self.transform['rotate3D'][0][1]])(extruded)
@@ -171,12 +166,10 @@ def path_render3D(self, pconfig, border=False):
 #			extruded=solid.multmatrix(m=self.transform['matrix3D'])(extruded)
 #	if hasattr(self, 'transform') and self.transform is not None and self.transform is not False and 'rotate3D' in self.transform:
 #		if type(self.transform['rotate3D'][0]) is list or type(self.transform['rotate3D'][0]) is Vec:
-#			print [-self.transform['rotate3D'][1][0], - self.transform['rotate3D'][1][1], - self.transform['rotate3D'][1][2]- zoffset]
 #			extruded=solid.translate([-self.transform['rotate3D'][1][0], - self.transform['rotate3D'][1][1], - self.transform['rotate3D'][1][2]- zoffset])(extruded)
 #			extruded=solid.rotate([self.transform['rotate3D'][0][0], self.transform['rotate3D'][0][1],self.transform['rotate3D'][0][2] ])(extruded)
 #			extruded=solid.translate([self.transform['rotate3D'][1][0], self.transform['rotate3D'][1][1], self.transform['rotate3D'][1][1] + zoffset])(extruded)
 #		else:
-#			print "qq"+str(self.transform['rotate3D'])
 #			extruded=solid.rotate([self.transform['rotate3D'][0], self.transform['rotate3D'][1],self.transform['rotate3D'][2] ])(extruded)
 #	if hasattr(self, 'transform') and self.transform is not None and self.transform is not False and 'translate3D' in self.transform:
 #		extruded=solid.translate([self.transform['translate3D'][0], self.transform['translate3D'][1],self.transform['translate3D'][2] ])(extruded)
@@ -277,7 +270,6 @@ def plane_generate_part3D(self, thepart, pconfig):
                 thepart.border3D = thepart.border.render3D(config, True)[0]
 #	else:
 #		thepart.renderable=False
-#	print thepart.border3D
         thepart.cutouts3D = []
         for path in paths:
                 thepart.cutouts3D.extend(path.render3D(config))
@@ -287,7 +279,6 @@ def plane_make_part3D(self, thepart, pconfig):
 #	for cutout in thepart.cutouts3D:
 #		for c in cutout:
 #			thepart.border3D = thepart.border3D - c
-	print "thepart"+str(thepart.layer)
         subparts = []
         for sp in thepart.parts:
                 if hasattr(sp, 'subpart') and sp.subpart:

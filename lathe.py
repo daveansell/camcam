@@ -309,14 +309,36 @@ class LathePath(Path):
 				intersection = V(intersection.x, intersection.y)
 			return intersection
 
+	def convertToShapely(self,path):
+		points = []
+		if type(path) is list:
+			for p in path:
+				if type(p) is Vec:
+					points.append([p[0], p[1])
+				elif type(p) is list:
+					points.append(p)
+				elif type(p) is Point:
+					points.append([p[0], p[1]])
+			return points
+		else:
+			return path.shapelyPolygon
+
+	
+
+	def findIntersection(self, path):
+		intersection = self.shapelyPolygon.intersection(line)
+		intersection = self.convertIntersection(intersection, V( endCut,val))
+		return intersection
+
 	def findRoughingCut(self, val, direction, stepDir, startStep, startCut, endCut, config):
 		if abs(stepDir.dot(V(0,1)))>0.0001:
 			print "FACE"
 			print [val, direction, stepDir, startStep, startCut, endCut]
 			alongCut = V(1,0) * self.sign(endCut-startCut)
-			line = shapely.geometry.LineString([ [startCut, val], [ endCut, val] ])
-			intersection = self.shapelyPolygon.intersection(line)
-			intersection = self.convertIntersection(intersection, V( endCut,val))
+#			line = shapely.geometry.LineString([ [startCut, val], [ endCut, val] ])
+#			intersection = self.shapelyPolygon.intersection(line)
+#			intersection = self.convertIntersection(intersection, V( endCut,val))
+			intersection = self.findIntersection(self, [ [startCut, val], [ endCut, val] ])
 			return [ PSharp(V(startCut, val)) 
 				] + self.cutChipBreak( V(startCut, val), intersection - alongCut*config['roughClearance']) + [
 #				PSharp(intersection - alongCut*config['roughClearance']),]  

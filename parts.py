@@ -663,7 +663,7 @@ class Stepper(Part):
                                 'corner_rad':2,
                         },
                         'NEMA1.1':{
-                                'bolt_size':'M4',
+                                'bolt_size':'M3',
                                 'bolt_sep':23,
                                 'shaft_diam':5,
                                 'pilot_diam':22,
@@ -673,7 +673,7 @@ class Stepper(Part):
                                 'corner_rad':3,
                         },
                         'NEMA1.4':{
-                                'bolt_size':'M4',
+                                'bolt_size':'M3',
                                 'bolt_sep':26,
                                 'shaft_diam':5,
                                 'pilot_diam':22,
@@ -684,7 +684,7 @@ class Stepper(Part):
                                 'corner_rad':4,
                         },
                         'NEMA1.7':{
-                                'bolt_size':'M4',
+                                'bolt_size':'M3',
                                 'bolt_sep':31,
                                 'shaft_diam':5,
                                 'pilot_diam':22,
@@ -693,6 +693,17 @@ class Stepper(Part):
                                 'shaft_len':24,
                                 'back_shaft_len':10,
                                 'corner_rad':5,
+                        },
+                        'NEMA1.7b':{
+                                'bolt_size':'M3',
+                                'bolt_sep':34,
+                                'shaft_diam':8,
+                                'pilot_diam':30,
+                                'pilot_depth':2.5,
+                                'width':44,
+                                'shaft_len':24,
+                                'back_shaft_len':10,
+                                'corner_rad':4,
                         },
                         'NEMA2.3':{
                                 'bolt_size':'M5',
@@ -723,13 +734,25 @@ class Stepper(Part):
                         self.length=config['length']
                 else:
                         self.length=50
+		if 'doInsert' in config and config['doInsert']:
+			insert_layer = layer
+		else:
+			insert_layer = []
 		if 'thread_corners' in config and config['thread_corners']:
 			thread_layer=layer
 			clearance_layers='_stepper_layer'
 		else:
 			thread_layer='_stepper_layer'
-			clearance_layers=layer
+			if insert_layer == []:
+				clearance_layers=layer
+			else:
+				clearance_layers=[]
 		
+
+		if 'insert_depth' in config:
+			insert_depth = -config['insert_depth']
+		else:
+			insert_depth = False
         #	self.add(Hole(pos, rad=10))
                 d=dat[stepper_type]
                 self.d=d
@@ -742,10 +765,10 @@ class Stepper(Part):
                 if 'mode' in config and config['mode']=='justshaft':
                         self.add(Hole(pos, rad=d['shaft_diam']/2+1),layer)
                 else:	
-                        self.add(Bolt(pos+V( d['bolt_sep']/2, d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=[]))
-                        self.add(Bolt(pos+V(-d['bolt_sep']/2, d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=[]))
-                        self.add(Bolt(pos+V(-d['bolt_sep']/2,-d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=[]))
-                        self.add(Bolt(pos+V(d['bolt_sep']/2,-d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=[]))
+                        self.add(Bolt(pos+V( d['bolt_sep']/2, d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=insert_layer, z1=insert_depth))
+                        self.add(Bolt(pos+V(-d['bolt_sep']/2, d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=insert_layer, z1=insert_depth))
+                        self.add(Bolt(pos+V(-d['bolt_sep']/2,-d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=insert_layer, z1=insert_depth))
+                        self.add(Bolt(pos+V(d['bolt_sep']/2,-d['bolt_sep']/2), d['bolt_size'], clearance_layers=clearance_layers, thread_layer=thread_layer, insert_layer=insert_layer, z1=insert_depth))
                 
 			if 'throughPilot' in config and config['throughPilot']=='through':
 				self.add(Hole(pos, rad=d['pilot_diam']/2+0.1), layer)
@@ -1020,6 +1043,7 @@ class Fan(Pathgroup):
                         '92mm':{'centrerad':104/2, 'centre_limit':90/2, 'hole_off':82.5/2, 'holeRad':4.5/2, 'threadRad':3.3/2 },
                         '120mm':{'centrerad':132/2, 'centre_limit':118/2, 'hole_off':105/2, 'holeRad':4.5/2, 'threadRad':3.3/2 },
                         '140mm':{'centrerad':150/2, 'centre_limit':138/2, 'hole_off':124.5/2, 'holeRad':4.5/2, 'threadRad':3.3/2 },
+                        '217mm':{'centrerad':217.0/2, 'hole_off':169.0/2, 'holeRad':4.5/2, 'threadRad':3.3/2 },
                         }
                 if 'fan_type' in config:
                         d=data[config['fan_type']]
@@ -1239,6 +1263,8 @@ class FlatMonitor(Part):
                         'B101UAN02'  :{'ext_width':230.0, 'ext_height':149.7, 'screen_width':217.0,  'screen_height':135.5, 'depth':4, 'border':5 },
                         'B140HAN01.2':{'ext_width':321, 'ext_height':188, 'screen_width':309.14, 'screen_height':173.89, 'lug_width':15, 'lug_depth':1, 'lug_height':7, 'toplug_fe':20, 'botlug_fe':36, 'elec_width':223, 'elec_height':12, 'conn_width':30, 'conn_x':115, 'conn_y0':-87, 'conn_y1':-117},
                         'B156HAN01.2':{'ext_width':359.5, 'ext_height':223.8, 'screen_width':344.16, 'screen_height':193.59},
+                        '27inch':{'ext_width':359.5*27/21, 'ext_height':223.8*27/21, 'screen_width':344.16, 'screen_height':193.59},
+                        '32inch':{'ext_width':359.5*32/21, 'ext_height':223.8*32/21, 'screen_width':344.16, 'screen_height':193.59},
                 }
                 assert monitorType in data
                 d = data[monitorType]
@@ -1719,6 +1745,46 @@ class LED5050(Pathgroup):
 #                self.add(Hole(V(0,0), rad=15.0/2, z1=-thickness+6.4))
  #               self.add(Hole(V(0,0), rad=21.0/2, z1=-thickness+6.4))
   #              self.add(Hole(V(0,0), rad=25.0/2, z1=-thickness+6.4))
+
+class Speaker(Part):
+	def __init__(self, pos, speaker_type, layers, **config):
+		self.init(config)
+		self.translate(pos)
+		defaultLayers = {'base':[], 'cover':[]}
+		defaultLayers.update(layers)
+		layers=defaultLayers
+		print defaultLayers
+		if 'thread' in config:
+			threadLayer = layers['base']
+			insertLayer = []
+		else:
+			threadLayer = []
+			insertLayer = layers['base']
+		data={
+			"kevlar6.0":{
+				'magnetRad':145.0/2,
+				'outerRad':164.0/2,
+				'thickness':4.0,
+				'holeRad':156.0/2,
+				'holeType':'M4'
+			},
+			"kevlar5.25":{
+				'magnetRad':100.0/2,
+				'outerRad':130.0/2,
+				'holeRad':122.0/2,
+				'thickness':4.0,
+				'holeType':'M4'
+				
+			}
+		}
+		if(speaker_type in data):
+			self.d=data[speaker_type]
+		else:
+			return
+		self.add(Hole(V(0,0), rad=self.d['magnetRad']+1), layers['base'])
+		for i in range(0,4):
+			self.add(Bolt(rotate(V(0,self.d['holeRad']), i*90), self.d['holeType'], clearance_layers=layers['cover'], insert_layer=insertLayer, thread_layer=threadLayer))
+		self.add(Hole(V(0,0), rad=self.d['magnetRad']))
 
 class Magnetometer(Part):
 	def __init__(self, pos, mag_type, layer, **config):

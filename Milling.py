@@ -39,6 +39,7 @@ class Milling:
                                 'z_overshoot':0.4,
                                 'label':False,
                                 'zero':False,
+				'blendTolerance':True,
                         },
                         "dave-lathe":{
                                 'prefix':'G21\nG64 p.001 q.001\nG18\n',
@@ -90,29 +91,30 @@ class Milling:
 
                         },
                         'makespacerouter2':{
-#                                'prefix':'T1M6\nG17\nG0Z10S11000M3\n',
-                                'prefix':'T1M6\nG17\nG0Z30S11000M3\n',
+                                'prefix':'G17\nG0Z30\nM3\n',
                                 'postfix':'M30\n',
                                 'settool_prefix':'T',
                                 'settool_postfix':' M6\nS100\nM03',
                                 'mode':'gcode',
                                 'group':'cutter',
                                 'toolchange':'newfile',
+                                'transform':[],
                                 'mirror_backs':True,
                                 'overview':False,
                                 'clear_height':10,
                                 'precut_z':1,
-                                'hide_cuts':False,
                                 'file_suffix':'.tap',
                                 'comments':False,
                                 'dosfile':True,
                                 'z_overshoot':0.2,
                                 'label':False,
                                 'zero':'bottom_left',
+				'downmode':'cutdown',
+				'hide_cuts':False,
                         },
                         'makespacerouter':{
 #                                'prefix':'T1M6\nG17\nG0Z10S11000M3\n',
-                                'prefix':'T1M6\nG17\nG0Z15S11000M3\n',
+                                'prefix':'G17\nG0Z15\nM3\n',
                                 'postfix':'M30\n',
                                 'mode':'simplegcode',
                                 'group':'cutter',
@@ -300,7 +302,7 @@ class Milling:
                 }
                 self.tools={
                 "1/4_endmill":{
-                        "id":3,
+                        "id":4,
                         "diameter":6.35,
                         "endcut":1,
                         "sidecut":1,
@@ -345,7 +347,7 @@ class Milling:
                         "sidecut":1,
                 },
                 "3mm_endmill":{
-                        "id":2,
+                        "id":1,
                         "diameter":3.0,
                         "endcut":1,
                         "sidecut":1,
@@ -363,13 +365,13 @@ class Milling:
                         "sidecut":1,
                 },
                 "1mm_endmill":{
-                        "id":4,
+                        "id":10,
                         "diameter":1.0,
                         "endcut":1,
                         "sidecut":1,
                         },
                 "0.5mm_endmill":{
-                        "id":5,
+                        "id":11,
                         "diameter":0.5,
 
                         "endcut":1,
@@ -487,7 +489,7 @@ class Milling:
                 self.materials = {
                 "plywood":{
                         "vertfeed":200,
-                        "sidefeed":2200,
+                        "sidefeed":1200,
                         "stepdown":5.0,
                         "kress_setting":4.0,
                         "spring":0.3,
@@ -568,6 +570,13 @@ class Milling:
                         "vertfeed":100,
                         "sidefeed":700,
                         "stepdown":2.0,
+                        "kress_setting":1.5,
+                        "mill_dir":'up',
+               },
+                "plastazote":{
+                        "vertfeed":700,
+                        "sidefeed":2000,
+                        "stepdown":15.0,
                         "kress_setting":1.5,
                         "mill_dir":'up',
                },
@@ -826,7 +835,7 @@ class Milling:
                         }
                 },
                 "M5":{
-                        "diams":[6.5,3.95],
+                        "diams":[5.5,3.6],
                         "depths":[-1,False],
                 },
                 "M6":{

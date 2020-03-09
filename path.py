@@ -18,6 +18,7 @@
 import os
 import math
 import shapely.geometry
+
 from minivec import Vec, Mat
 import Milling
 import pprint
@@ -113,7 +114,7 @@ class Path(object):
                 self.Bsegments = []
                 self.transform={}
                 self.otherargs=''
-                varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance']
+                varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance', 'vertfeed', 'downmode', 'blendTolerance']
 		if hasattr(self, 'varlist') and type(self.varlist) is list:
 			self.varlist+=varlist
 		else:
@@ -230,9 +231,11 @@ class Path(object):
                         else:
                                 c['downmode']='ramp'
                         config['original_cutter']=c
-		if 'vertfeed' in config and config['stepdown']:
-			config['stepdown'] *= tool['diameter']/4.0
+		if 'vertfeed' in config and config['vertfeed']:
 			config['vertfeed'] *= tool['diameter']/4.0
+		if 'stepdown' in config and config['stepdown']:
+			config['stepdown'] *= tool['diameter']/4.0
+		if 'sidefeed' in config and config['sidefeed']:
 			config['sidefeed'] *= tool['diameter']/4.0
                                 
         def set_material(self, config):
@@ -442,6 +445,45 @@ class Path(object):
                 x= ((a[0]*b[1]-a[1]*b[0])*(c[0]-d[0]) - (a[0]-b[0])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
                 y= ((a[0]*b[1]-a[1]*b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
                 return V(x,y)
+
+        def convertIntersection(self, intersection, default):
+                        if not intersection:
+                                intersection = default#V( endCut,val)
+                        elif type(intersection) is shapely.geometry.collection.GeometryCollection:
+                                intersection = V(intersection[0].x, intersection[0].y)
+                        elif type(intersection) is shapely.geometry.linestring.LineString:
+                                intersection = V(list(intersection.coords)[0][0],list(intersection.coords)[0][1] )
+                        elif type(intersection) is shapely.geometry.multipoint.MultiPoint:
+                                intersection = V(intersection[0].x, intersection[0].y)
+                        elif type(intersection) is Vec:
+                                intersection = intersection
+                        else:
+                                intersection = V(intersection.x, intersection.y)
+                        return intersection
+
+        def convertToShapely(self,path):
+                points = []
+                if type(path) is list:
+                        for p in path:
+                                if type(p) is Vec:
+                                        points.append([p[0], p[1]])
+                                elif type(p) is list:
+                                        points.append(p)
+                                elif type(p) is Point:
+                                        points.append([p[0], p[1]])
+                        return shapely.geometry.LineString(points)
+                else:
+			path.makeShapely()
+                        return path.shapelyPolygon
+
+
+
+        def findIntersection(self, path):
+		self.convertToShapely(self)
+                intersection = self.shapelyPolygon.intersection(self.convertToShapely(path))
+                intersection = self.convertIntersection(intersection, False)
+                return intersection
+
 
         def has_changed(self):
                 for c in self.changed.keys():
@@ -673,10 +715,8 @@ class Path(object):
                         for p in ret:
                                 if 'bl' not in self.boundingBox:
                                         self.boundingBox={'bl':[1000000000,1000000000],'tr':[-1000000000,-1000000000]}
-                                self.boundingBox['bl'][0]=min(self.boundingBox['bl'][0],p[0])
-                                self.boundingBox['bl'][1]=min(self.boundingBox['bl'][1],p[1])
-                                self.boundingBox['tr'][0]=max(self.boundingBox['tr'][0],p[0])
-                                self.boundingBox['tr'][1]=max(self.boundingBox['tr'][1],p[1])
+                                self.boundingBox['bl'] = [min(self.boundingBox['bl'][0],p[0]), min(self.boundingBox['bl'][1],p[1])]
+                                self.boundingBox['tr'] = [max(self.boundingBox['tr'][0],p[0]), max(self.boundingBox['tr'][1],p[1])]
                         if('tr' in self.boundingBox):
                                 self.boundingBox['tr']=V(self.boundingBox['tr'][0],self.boundingBox['tr'][1])
                                 self.boundingBox['bl']=V(self.boundingBox['bl'][0],self.boundingBox['bl'][1])
@@ -882,6 +922,20 @@ class Path(object):
 
 
                 return config
+	def pre_render(self, config):
+
+		if getattr(self, "_pre_render", None) and callable(self._pre_render):
+			self._pre_render(config)	
+
+	def makeShapely(self):
+		if( not hasattr(self, 'shapelyPolygon') or not self.shapelyPolygon):
+                        polygonised = self.polygonise( 1.0)
+                        points = []
+                        for p in polygonised:
+                               	points.append(p)
+			self.shapelyPolygon = shapely.geometry.LineString(points)
+                        self.rawPolygon = polygonised
+			
 
         def generate_config(self, pconfig):
                 config={}
@@ -1208,7 +1262,10 @@ class Path(object):
                         if '_comment' in point :
                                 comments+="<!--"+point['_comment']+"-->\n"
                         if '_colour' in point and point['_colour'] is not None:
-                                colour=point['_colour']
+				if type(point['_colour']) is str:
+                                	colour=point['_colour']
+				else:
+					print "colour is not a string"+str(point["_colour"])
                         else:
                                 colour='black'
 			if '_fill' in point and point['_fill'] is not None:
@@ -1233,7 +1290,8 @@ class Path(object):
 				if config['blendTolerance']>0:
 					ret+="G64P"+str(config['blendTolerance'])+"\n"
 				else:
-					ret+="G64\n"
+					if 'blendTolerance' in config:
+						ret+="G64\n"
                 for point in path:
                         if '_comment' in point and config['comments']:
                                 ret+="("+point['_comment']+")"
@@ -1255,7 +1313,7 @@ class Path(object):
                                 ret+="L%0.4f"%point['L']
                         # the x, y, and z are not accurate as it could be an arc, or bezier, but will probably be conservative
                         if 'F' in point:
-                                ret+="F%0.4f"%point['F']
+                                ret+="F%0.2f"%point['F']
                         ret+="\n"
 		if config['mode']=='gcode':
 			ret+="G64\n"
@@ -1349,6 +1407,13 @@ class Path(object):
                                 
                 else:
                                 
+                        if 'colour' in config and config['colour'] is not False and config['colour'] is not None and type(config['colour']) is not str:
+				print "config['colour'] is not string="+str(config['colour'])
+				print type(config['colour'])
+				print self
+				print self.parent
+				print self.parent.parent
+				return "black"
                         if 'colour' in config and config['colour'] is not False:
                                 return config['colour']
                         else:
@@ -1360,7 +1425,7 @@ class Path(object):
                 self.config=config
                 mode=pconfig['mode']
                 if self.use_point_z:
-                        downmode='down'
+                        downmode='cutdown'
                         config['stepdown']=1000
                 else:
                         downmode=config['downmode']
@@ -1405,7 +1470,7 @@ class Path(object):
                        # if downmode=='down':
                         self.add_out(self.quickdown(depths[0]-step+config['precut_z']))
                         for depth in depths:
-                                if downmode=='down':
+                                if downmode=='down' or downmode=='cutdown':
                                         self.add_out(self.cutdown(depth))
                                 first=1
                                 for segment in segments:
@@ -1490,10 +1555,10 @@ class Path(object):
                         segments=self.Fsegments
 #			if downmode=='ramp'
 #				self.add_out(self.Fsegments[-1].out(self.mode, depths[0]))
-                        if downmode=='down':
+                        if downmode=='down' or downmode=='cutdown':
                                 self.add_out(self.quickdown(depths[0]-step+config['precut_z']))
                         for depth in depths:
-                                if downmode=='down':
+                                if downmode=='down' or downmode=='cutdown':
                                         self.add_out(self.cutdown(depth))
                                 first=1
                                 for segment in segments:
@@ -1646,7 +1711,7 @@ class Pathgroup(object):
 		self.obType = "Pathgroup"
 		self.paths=[]
 		self.trace = traceback.extract_stack()
-		varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height', 'blendTolerance', 'roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', 'chipBreak', 'justRoughing']
+		varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height', 'blendTolerance', 'roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', 'chipBreak', 'justRoughing', 'vertfeed', 'blendTolerance']
 		if hasattr(self, 'varlist') and type(self.varlist) is list:
 			self.varlist+=varlist
 		else:
@@ -1669,7 +1734,9 @@ class Pathgroup(object):
                 else:
                         return False
 
-
+	def pre_render(self, config):
+		for p in self.paths:
+			p.pre_render(config)
         def __deepcopy__(self,memo):
                 conf={}
                 ret=copy.copy(self)#type(self)( **conf)
@@ -1685,8 +1752,12 @@ class Pathgroup(object):
 
         def _pre_render(self, config):
                 for path in self.paths:
-                        if getattr(path, "_pre_render", None) and callable(path._pre_render):
-                                path._pre_render(config)		
+                      #  print points
+                        #	path.shapelyPolygon = shapely.geometry.LineString(points)
+                        #	path.rawPolygon = polygonised
+
+                        #if getattr(path, "_pre_render", None) and callable(path._pre_render):
+             		path.pre_render(config)		
 
 	def get_config(self):
 		if self.parent is not False:
@@ -1916,7 +1987,7 @@ class Part(object):
 		self.internal_borders=[]
 		self.ignore_border=False
 		self.transform={}
-		varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height', 'offset', 'blendTolerance']
+		varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height', 'offset', 'blendTolerance', 'vertfeed', 'blendTolerance']
 		self.otherargs=''
 		if hasattr(self, 'varlist') and type(self.varlist) is list:
 			self.varlist+=varlist
@@ -2362,7 +2433,7 @@ class Plane(Part):
 		self.name=name
 		self.transform=False
 		self.parent=False
-		self.varlist = ['order','transform','side', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown', 'forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z', 'cutter', 'offset']
+		self.varlist = ['order','transform','side', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown', 'forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer','partial_fill','finishing','fill_direction','precut_z', 'cutter', 'offset', 'blendTolerance']
 		self.out=''
 		self.isCopy=False
 		self.copied=False
@@ -2580,6 +2651,10 @@ class Plane(Part):
                 	        repeatpattern=config['repeatpattern']
                 	else:
                 	        repeatpattern='rect'
+                	if 'repeatoffset' in config:
+                	        repeatoffset=config['repeatoffset']
+                	else:
+                	        repeatoffset=None
                         output2=''
                         if repeatmode=='gcode':
                                 for y in range(0,int(config['repeaty'])):
@@ -2603,10 +2678,15 @@ class Plane(Part):
 						docut=True
 						if repeatpattern=='cp_ext' or repeatpattern=='cp_int':
 							xoff=float(x)*float(config['xspacing'])*math.sin(math.pi/3)
+							print type(repeatoffset)
 							if x%2:
 								yoff=float(y)*float(config['yspacing'])
 							else:
-								yoff=(0.5+float(y))*float(config['yspacing'])															
+								if repeatoffset:
+									yoff = 1.0*float(repeatoffset) + float(y)*float(config['yspacing'])
+								else:
+									yoff=(0.5+float(y))*float(config['yspacing'])															
+							print "yoff = "+str(yoff)
 							if repeatpattern=='cp_int' and y==int(config['repeaty'])-1 and not x%2:
 								docut=False
 						else:
@@ -2672,7 +2752,7 @@ class Plane(Part):
                                 axismap={'X':0, 'Y':1, 'Z':2}
                                 val=float(m.group(2))
                                 val += offset[axismap[m.group(1)]]
-                                return m.group(1)+str(round(val,4))
+                                return m.group(1)+str(round(val,3))
                         else:
                                 return m.group(0)
                                 

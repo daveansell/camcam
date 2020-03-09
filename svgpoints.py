@@ -26,6 +26,7 @@ class SVGpoints(list):
 	""" This takes an inkscape svg file and looks for circles (inkscape produces paths with circle attributes), and returns the centre of all those circles as a list of poitns.
 You can calibrate these with a rectangle or a named circle of known width and height or radius"""
 	def __init__(self,pos, filename, **config):
+		self.pos=pos
 		nsmap = {
 		    'sodipodi': 'http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd',
 		    'cc': 'http://web.resource.org/cc/',
@@ -45,7 +46,10 @@ You can calibrate these with a rectangle or a named circle of known width and he
 			self.cal_circ = True
 		else:
 			self.cal_circ = False
-
+		if 'mode' in config and config['mode']=='dict':
+			self.outmode='dict'
+		else:
+			self.outmode='simple'
 		if 'cal_width' in config and 'cal_height' in config:
 			self.cal_rect = True
 			self.cal_width = config['cal_width']
@@ -59,8 +63,11 @@ You can calibrate these with a rectangle or a named circle of known width and he
 		if 'item_type' in config and config['item_type'] is not False:
 			item_type = config['item_type']
 		else:
-			item_type = 'path'
-
+			item_type = 'path'		
+		if 'match_type' in config:
+			match_type = config['match_type']
+		else:
+			match_type = 'exact'
 		with open( filename, 'r') as infile: 
 			tree = etree.parse(infile) 
 			root = tree.getroot()
@@ -102,10 +109,17 @@ You can calibrate these with a rectangle or a named circle of known width and he
 		elif type(paths) is list:
 			outpaths = []
 			for path in paths:
+				#print path
 				if item_type == 'circle':
-					 outpaths += tree.xpath('.//svg:circle[@id="'+path+'"]', namespaces=nsmap)
+					if match_type == 'exact':
+					 	outpaths += tree.xpath('.//svg:circle[@id="'+path+'"]', namespaces=nsmap)
+					else:
+						outpaths += tree.xpath('.//svg:circle[starts-with(@id, "'+path+'")]', namespaces=nsmap)#@id="'+path+'"]', namespaces=nsmap)
 				else:
-					outpaths += tree.xpath('.//svg:path[@id="'+path+'"]', namespaces=nsmap)
+					if match_type == 'exact':
+						outpaths += tree.xpath('.//svg:path[@id="'+path+'"]', namespaces=nsmap)
+					else:
+						outpaths += tree.xpath('.//svg:path[starts-with(@id, "'+path+'")]', namespaces=nsmap)#@id="'+path+'"]', namespaces=nsmap)
 		elif type(paths) is dict:
 			for p in paths.keys():
 				outpaths= tree.xpath(".//n:path[@"+path[p]['attrib']+"='"+path[p]['value']+"']", namespaces={'n': "http://www.w3.org/2000/svg"})
@@ -125,10 +139,14 @@ You can calibrate these with a rectangle or a named circle of known width and he
 			elif('cx' in p.attrib):
 				pos = V(float(p.attrib['cx']), float(p.attrib['cy']))
 			if pos is not False:
-				pos+=off
+				pos+=off+self.pos
 				pos -=cal
 				pos = V(pos[0]*scalex, -pos[1]*scaley)			
-				self.append(pos)
+				print "SVGPOINTS"+str(p.get('id'))+" "+str(self.outmode)
+				if self.outmode=='dict':
+					self.append({'pos':pos, 'id':p.get('id'), 'r':p.get('r')})
+				else:
+					self.append(pos)
 #V( (float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cx'])+off[0]-cal_centrex)*scalex, 
 #					(float(p.attrib['{http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}cy'])+off[1]-cal_centrex)*scaley))
 # at the moment this just treats everything as a line so add lots of points

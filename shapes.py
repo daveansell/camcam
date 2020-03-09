@@ -134,6 +134,21 @@ class CurvedRect(Path):
                 self.add_point(pos+V(width/2, -height/2))
                 self.add_point(PArc(None, radius=siderad, direction='cw', length='short'))
 
+class RectFromTo(Path):
+        def __init__(self, cutFrom, to, width, **config):
+                self.init(config)
+                self.closed=True
+                along=(to-cutFrom).normalize()
+                perp = rotate(along, 90)
+                if 'fromends' in config and config['fromends'] is not None:
+                        cutFrom -= along*config['fromends']
+                        to += along*config['fromends']
+                self.add_point(cutFrom + perp * width/2)
+                self.add_point(cutFrom - perp * width/2)
+                self.add_point(to - perp * width/2)
+                self.add_point(to + perp * width/2)
+
+
 # Two circles joined with straight lines
 class Egg(Path):
         def __init__(self, pos1, rad1, pos2, rad2, **config):
@@ -186,11 +201,14 @@ class SubCircle(Path):
                 self.init(config)
                 self.closed=True
                 xoff = math.sqrt(rad*rad - yoff*yoff)
-                self.add_point(PSharp(centre + V(-xoff, yoff)))
                 self.add_point(PSharp(centre + V( xoff, yoff)))
                 self.add_point(PArc(centre, radius=rad))
                 self.add_point(PSharp(centre + V( 0, rad)))
                 self.add_point(PArc(centre, radius=rad))
+                self.add_point(PSharp(centre + V(-xoff, yoff)))
+		if 'extraSquare' in config and config['extraSquare']>0:
+			self.add_point(PSharp(centre + V(-xoff, yoff-config['extraSquare'])))
+                	self.add_point(PSharp(centre + V( xoff, yoff-config['extraSquare'])))
 
 
 class RepeatEllipse(Part):
@@ -218,22 +236,80 @@ class RepeatEllipse(Part):
 class Spiral(Path):
         def __init__(self, pos, r1, r2, **config):
                 self.init(config)
+                self.length=0
+                self.r1=r1
+                self.r2=r2
+                self.pos = pos
                 if 'closed' in config:
                         self.closed=config['closed']
                 else:
                         self.closed=True
                 if "turns" in config:
-                        turns=config["turns"]
+                        self.turns=config["turns"]
                 else:
-                        turns = 1.0
+                        self.turns = 1.0
                 if "steps" in config:
                         steps = config["steps"]
                 else:
                         steps = int(50 * turns)
-                astep = 360.0*turns/steps
-                rstep = float(r2-r1)/steps
-                for i in range(0, int(steps)+1):
-                        self.add_point(PSharp(pos+V(r1+rstep*i,0), transform={'rotate':[pos, astep*i]}))
+		if 'startTurns' in config:
+			startTurns = config['startTurns']
+		else:
+			startTurns = 0
+		if 'endTurns' in config:
+			endTurns = config['endTurns']
+		else:
+			endTurns = self.turns
+		if 'rad' in config:
+			rad = config['rad']
+		else:
+			rad = False
+                astep = 360.0
+                rstep = float(r2-r1)/self.turns
+		tstep = float(self.turns)/steps
+                self.length=0
+		if 'fromStart' in config:
+			startTurns+=float(config['fromStart'])/(r1+2*math.pi*startTurns*rstep)
+			
+		if 'fromEnd' in config:
+			endTurns-=float(config['fromEnd'])/(r1+2*math.pi*endTurns*rstep)
+		t = startTurns
+		while t<endTurns:
+			self.add_point(PSharp(pos+rotate(V(r1+rstep*t, 0), astep*t)))
+			if t==startTurns:
+				if rad:
+					self.add_point(PIncurve(pos+rotate(V(r1+rstep*t, 0), astep*t), radius=rad))
+				else:
+					self.add_point(PSharp(pos+rotate(V(r1+rstep*t, 0), astep*t)))
+                        if t>startTurns+rad and t<endTurns-rad:
+                            self.length += (V(r1+rstep*t,0) - rotate(V(r1+rstep*(t-tstep),0), astep*tstep)).length()
+		#self.add_point(PSharp(pos+rotate(V(r1+rstep*endTurns,0), endTurns*astep)))
+			t+=tstep
+		if rad:
+			self.add_point(PIncurve(pos+rotate(V(r1+rstep*endTurns, 0), astep*t), radius=rad))
+		else:
+			self.add_point(PSharp(pos+rotate(V(r1+rstep*endTurns, 0), astep*t)))
+#                for i in range(int(start/, int(steps)+1):
+ #                       self.add_point(PSharp(pos+V(r1+rstep*i,0), transform={'rotate':[pos, astep*i]}))
+               # astep = 360.0*self.turns/steps
+               # rstep = float(r2-r1)/steps
+               # for i in range(0, int(steps)+1):
+               #         self.add_point(PSharp(pos+V(r1+rstep*i,0), transform={'rotate':[pos, astep*i]}))
+        def alongSpiral(self, turns):
+            return self.pos + rotate(V(self.r1+float(self.r2-self.r1)*turns/self.turns,0), 360*turns)
+
+class SpiralLoop(Path):
+	def __init__(self, pos, r1, r2, width, **config):
+                self.init(config)
+                self.closed=True
+		
+		print "Width="+str(width)
+		spiral1 = Spiral( pos, r1-width/2, r2-width/2, **config)
+		spiral2 = Spiral( pos, r1+width/2, r2+width/2, **config)
+		self.add_points(spiral1.points)
+		for point in spiral2.points[::-1]:
+			self.add_point(point)
+#		self.add_points(spiral2.points, end='prepend')
 
 class LineLoop(Path):
         def __init__(self, points, width, **config):
@@ -411,12 +487,17 @@ class Drill(Circle):
 				print "drill of "+str(self.drillrad)+"mm not found in tools"
 		self.closed=True
 		self.add_point(pos,'circle',self.drillrad)
+		if 'vertfeed' in config:
+			self.vertfeed = config['vertfeed']
+		else:
+			self.vertfeed = None
 #		self.add_point(PSharp(self.pos))
 
         def render(self, pconfig):
                 config=self.generate_config(pconfig)
                 p=PSharp(self.pos).point_transform(config['transformations'])
-                
+               	if not self.vertfeed:
+			self.vertfeed=config['vertfeed'] 
         #	print "Drill render"+str(config['mode'])
                 if config['mode']=='svg':
         #		print '<circle cx="%0.2f" cy="%0.2f" r="%0.2f"/>\n'%(p.pos[0], p.pos[1], self.drillrad)
@@ -427,11 +508,11 @@ class Drill(Circle):
 			else:
 				clearanceHeight = config['clear_height']
                         if self.peck:
-                                return [config['cutter'], 'G0X%0.2fY%0.2f\nG0Z1\n'%(p.pos[0], p.pos[1])+'G83X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.peck, config['vertfeed'],clearanceHeight)]
+                                return [config['cutter'], 'G0X%0.2fY%0.2f\nG0Z1\n'%(p.pos[0], p.pos[1])+'G83X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.peck, self.vertfeed,clearanceHeight)]
                         elif self.chipbreak:
-                                return [config['cutter'], 'G73X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.chipbreak, config['vertfeed'],clearanceHeight)]
+                                return [config['cutter'], 'G73X%0.2fY%0.2fZ%0.2fR%0.2fQ%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+3, self.chipbreak, self.vertfeed,clearanceHeight)]
                         else:
-                                return [config['cutter'], 'G81X%0.2fY%0.2fZ%0.2fR%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+clearanceHeight,config['vertfeed'],clearanceHeight)]
+                                return [config['cutter'], 'G81X%0.2fY%0.2fZ%0.2fR%0.2fF%0.2f\nG0Z%0.2f\n'%(p.pos[0], p.pos[1], config['z1'], config['z0']+clearanceHeight,self.vertfeed,clearanceHeight)]
                 elif config['mode']=='simplegcode':
                         dist= config['z1']-config['z0']
                         if self.peck:
@@ -597,6 +678,18 @@ class RoundSpeakerGrill(Pathgroup):
                                         p=V((x+0.5)*spacing, y*yspacing)
                                 if p.length()<rad-holerad:
                                         self.add(Hole(pos+p, rad=holerad))
+class RoundSlitGrill(Pathgroup):
+        def __init__(self,pos, rad, slotWidth, spacing, **config):
+                self.init(config)
+                """Cut a circular grid with radius :param rad: of holes with radius :param holerad: and :param spacing:"""+self.otherargs
+		numSlits = int(rad*2/spacing)
+		o = float(numSlits)*spacing/2
+		for i in range(0,numSlits+1):
+			y = -o + i*spacing
+			w = math.sqrt(float(rad)**2-y**2)
+			if w:
+				self.add(RoundedRect(pos+V(0, y), centred=True, width=2*w, height=slotWidth, rad=slotWidth/2, side='in'))
+
 class RectSpeakerGrill(Pathgroup):
         def __init__(self,pos, width, height, holerad, spacing, **config):
                 self.init(config)
@@ -710,24 +803,24 @@ class FilledRect(Pathgroup):
 #               sides=int(max(8, rad))
 
 #               self.add(Polygon(pos, rad, sides, partial_fill=rad-0.5, fill_direction='in', side='in'))
-                self.rect=RoundedRect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in')
-        def __render__(self,config):
-                c=self.rect.generate_config(config)
-                self.paths=[]
-                d=self.maxdist-c['cutterrad']
-                if c['cutterrad']>0:
-                        steps=math.ceil(d/c['cutterrad']/1.2)
-                        step=(self.maxdist+c['cutterrad']/2)/steps
-                        for i in range(1,int(steps)):
-#                for i in range(0,1):
-                                rad=self.rad-step*i
-                                if rad<0:
-                                        rad=0
-                                diff = step*i
-                #	self.add(Rect(self.pos, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in'))
-                                self.add(RoundedRect(self.pos, rad=rad, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in', z1=self.z1))
-		if not self.noFinal:
-	                self.add(Rect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in', cornertype=self.cornertype, z1=self.z1))
+		filldist= min(self.width,self.height)/2
+                self.add(RoundedRect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in', fill_direction='in', partial_fill=filldist, noFinal=self.noFinal))
+                #self.rect=RoundedRect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in')
+#       def __render__(self,config):
+#               c=self.rect.generate_config(config)
+#               self.paths=[]
+#               d=self.maxdist-c['cutterrad']
+#               if c['cutterrad']>0:
+#                       steps=math.ceil(d/c['cutterrad']/1.2)
+#                       step=(self.maxdist+c['cutterrad']/2)/steps
+#                       for i in range(1,int(steps)):
+#                                rad=self.rad-step*i
+#                                if rad<0:
+#                                        rad=0
+#                                diff = step*i
+#                                self.add(RoundedRect(self.pos, rad=rad, width=self.width-diff*2, height=self.height-diff*2, centred=True, side='in', z1=self.z1))
+#		if not self.noFinal:
+#	                self.add(Rect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in', cornertype=self.cornertype, z1=self.z1))
 
 
 
@@ -2072,9 +2165,9 @@ class ParametricFunction(list):
                         step = (float(pend)-float(pstart))/100
                 p = pstart
                 while p<pend:
-                        self.append(func(p))
+                        self.append(pos+func(p))
                         p+=step
-                self.append(func(pend))
+                self.append(pos+func(pend))
 class RadialParametricFunction(list):
         def __init__(self, pos, func, **config):
 		if 'pstart' in config:
