@@ -223,10 +223,11 @@ class CamCam(App):
 					print
 					print p['name']
 					print partlist
-					part=copy.copy(partlist[p['name']][1])
-					part.kivy_translate=p['translate']
-					part.kivy_rotate=p['rotate']
-					sheets[sheetid].append( part)
+					if p and p['name']!='None':
+						part=copy.copy(partlist[p['name']][1])
+						part.kivy_translate=p['translate']
+						part.kivy_rotate=p['rotate']
+						sheets[sheetid].append( part)
 		else:
 			for plane in self.planes:
 				for part in plane.getParts():
@@ -257,9 +258,23 @@ class CamCam(App):
 		layout.add_widget(button)
 		self.slider = Slider(min=0, max=360, on_touch_move=self.doSlider) 
 		layout.add_widget(self.slider)
+		if not self.command_args.boardWidth:
+			self.command_args.boardWidth=1200
+		if not self.command_args.boardHeight:
+                        self.command_args.boardHeight=600
+		if not self.command_args.repeatx:
+			self.command_args.repeatx=1
+		if not self.command_args.repeaty:
+			self.command_args.repeaty=1
 		for sheet in sheets:
 			material = KvSheet()
-			material.draw([0,50], [1200,650])
+			for i in range(0,int(self.command_args.repeatx)):
+				for j in range(0,int(self.command_args.repeaty)):
+					material.draw(
+						[i*int(self.command_args.boardWidth),
+						j*int(self.command_args.boardHeight)], 
+						[(i+1)*int(self.command_args.boardWidth),
+						(j+1)*int(self.command_args.boardHeight)])
 			material.camcam = self
 			self.sheet_widgets[sheet].append(material)
 			for part in sheets[sheet]:
@@ -326,7 +341,10 @@ class CamCam(App):
 		data['args']=args
 		data['sheets']={}
 		for s in self.sheet_widgets:
-			data['sheets'][s]=[]
+			for i in range(0,int(self.command_args.repeatx)):
+				for j in range(0,int(self.command_args.repeaty)):
+					data['sheets'][s+"_"+str(i)+"-"+str(j)]=[]
+			
 			for p in self.sheet_widgets[s]:
 				if p.part is not None:
 					rec = {}
@@ -336,25 +354,26 @@ class CamCam(App):
 					rec['translate'] = (p.pos[0] - p.startpos[0], p.pos[1] - p.startpos[1])
 					p.rotation=tempr
 					m= p.get_window_matrix(x = p.center[0], y = p.center[1])
-		#		print m
 					m2 = numpy.matrix(m.tolist())
-		#		print m2
 					d = transformations.decompose_matrix(m2)
-#				print "rotate="+str(d[2][2]/math.pi*180)
-#				print "translate="+str(d[3])
-#				print "perspective="+str(d[4])
-#				print "position="+ str( [d[4][0]/d[4][3], d[4][1]/d[4][3] ])
-#				print "kivy_translate="+str(rec['translate'])
-		#		rec['rotate'] = math.atan2(m[4], m[0])/math.pi*180
 					rec['origin'] = p.origin
 					rec['center'] = p.center
 					rec['rotate'] = p.rotation
 					rec['startcentre'] = p.startcentre
 				#rec['startpos'] = p.startpos
 					rec['startpos'] = [d[4][0]/d[4][3], d[4][1]/d[4][3]]
-					print str(p.part.name)+" self.center"+str(p.center)+" startcentre"+str(p.startcentre)+" pos="+str(p.pos)+" startpos="+str(p.startpos)+" translate="+str(rec['translate'])+" origin="+str(rec['origin']) 
+#					print str(p.part.name)+" self.center"+str(p.center)+" startcentre"+str(p.startcentre)+" pos="+str(p.pos)+" startpos="+str(p.startpos)+" translate="+str(rec['translate'])+" origin="+str(rec['origin']) 
 					if p.deleted ==0:
-						data['sheets'][s].append(rec)
+						for i in range(0,int(self.command_args.repeatx)):
+			                                for j in range(0,int(self.command_args.repeaty)):
+								if	p.pos[0]>i*int(self.command_args.boardWidth)\
+									and p.pos[0]<(i+1)*int(self.command_args.boardWidth)\
+									and p.pos[1]>j*int(self.command_args.boardHeight)\
+                                                                        and p.pos[1]<(j+1)*int(self.command_args.boardHeight):
+										data['sheets'][s+"_"+str(i)+"-"+str(j)].append(rec)
+										print "********"+str(p.part.name)+" "+str(p.pos)+" "+s+"_"+str(i)+"-"+str(j)
+									
+
 #				print p.get_window_matrix(0,0)
 		h = open( 'layout_file', 'w')
 		json.dump(data,h) 
@@ -392,6 +411,10 @@ parser.add_option("-b", "--sep-border",
 parser.add_option("-B", "--bom",
                   action="store_true", dest="bom", default=False,
                   help="Print Bill of Materials")
+parser.add_option("-W", "--boardWidth", dest="boardWidth",
+                  help="board Width")
+parser.add_option("-H", "--boardHeight", dest="boardHeight",
+                  help="boardHeight")
 parser.add_option("-x", "--xreps", dest="repeatx",
                   help="number of times should be repeated in x direction")
 parser.add_option("-y", "--yreps", dest="repeaty",
