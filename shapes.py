@@ -1444,7 +1444,8 @@ class ButtJointMid(Pathgroup):
                                                 bl = start-parallel*fudge - perp*(-deppos+fudge), 
                                                 tr = end+perp*(thickness+fudge+deppos)+parallel*fudge, 
                                                 z1 = -depth, side='in',
-                                                cornertype = PInsharp))
+                                                cornertype = PInsharp, 
+						))
 			if outline:
 				print outline
 #				self.add(Rect(
