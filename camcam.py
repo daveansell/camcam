@@ -79,13 +79,26 @@ class CamCam:
 			for p in sheets['sheets'][sheet]:
 				(plane, part) = parts[p['name']]
 				tconfig = config
-				tconfig['transformations'] = [{'rotate':[ V(p['startcentre'][0],p['startcentre'][1]), p['rotate']], 'translate':V(p['translate'][0], p['translate'][1] ) }]
-				plane.render_part(part, mode, tconfig)
+				part.border.polygonise()
 				if hasattr(part, 'border') and part.border:
-					minx=min(minx, part.border.boundingBox['bl'][0]+p['translate'][0])
-					miny=min(miny, part.border.boundingBox['bl'][1]+p['translate'][1])
-					maxx=max(maxx, part.border.boundingBox['tr'][0]+p['translate'][0])
-					maxy=max(maxy, part.border.boundingBox['tr'][1]+p['translate'][1])
+					minx=min(minx, part.border.boundingBox['bl'][0])
+					miny=min(miny, part.border.boundingBox['bl'][1])
+					maxx=max(maxx, part.border.boundingBox['tr'][0])
+					maxy=max(maxy, part.border.boundingBox['tr'][1])
+					cx=(part.border.boundingBox['bl'][0]+part.border.boundingBox['tr'][0])/2
+					cy=(part.border.boundingBox['bl'][1]+part.border.boundingBox['tr'][1])/2
+					print p['name']+" translate="+str(p['translate'])+" origin="+str(p['origin'])+" center="+str(V(cx,cy))	
+				tconfig['transformations'] = [
+#					{'rotate':[V((minx+maxx)/2,(minx+maxx)/2), -p['rotate']]},
+#					{'rotate':[V(p['startcentre'][0],p['startcentre'][1]), -p['rotate']]},
+				#	{'rotate':[V(cx,cy), -p['rotate']]},
+					{'rotate':[V(cx+p['translate'][0],cy+p['translate'][1]), -p['rotate']]},
+					{ 'translate':V(p['translate'][0], p['translate'][1] ) }, 
+				]
+				print tconfig['transformations']
+#				part.rotate(V(cx,cy), -p['rotate'])
+#				part.rotate(V(p['origin'][0],p['origin'][1]), -p['rotate'])
+				plane.render_part(part, mode, tconfig)
 				if type(plane.lay_out) is dict:
 					for i in plane.lay_out:
 						if i not in out:

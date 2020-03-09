@@ -54,6 +54,8 @@ from kivy.uix.button import Button
 from functools import partial
 from kivy.properties import NumericProperty
 from kivy.lang import Builder 
+from kivy.uix.slider import Slider
+
 
 Builder.load_file('/home/dave/cnc/camcam/camcam.kv')
 class KvSheet(Scatter):
@@ -77,7 +79,7 @@ class KvSheet(Scatter):
 
                 self.camcam.do_touch()
                 self.back_colour.g = 1
-                self.camcam.selected = self
+                #self.camcam.selected = self
 
 
 class KvPart(Scatter):
@@ -140,6 +142,10 @@ class KvPart(Scatter):
 				self.center = ( centrex+xoffset, centrey)
 			else:
 				self.center = ( centrex+xoffset, centrey)
+			
+			self.origin = (width/2,height/2)
+			self.canvas.add(kivy.graphics.Ellipse(pos=(self.origin[0]-1.5, self.origin[1]-1.5), size=(3, 3)))
+
 #			kvpoints=[]
 #			indices = []
 #			for p in ccpoints:
@@ -153,7 +159,7 @@ class KvPart(Scatter):
 		self.startpos = self.pos
 #		if mirror==-1:
 #			self.startpos=(self.pos[0]-400, self.pos[1])
-		self.do_rotation = True
+		self.do_rotation = False
 		self.do_scale = False
 		self.do_translation = True
 
@@ -162,6 +168,7 @@ class KvPart(Scatter):
 		self.camcam.do_touch()
 		self.back_colour.g = 1
 		self.camcam.selected = self
+		self.camcam.slider.value = self.rotation
 class RenderPart:
 	def __init__(self):
 		self.offset=V(0,0)
@@ -245,6 +252,8 @@ class CamCam(App):
 		button = Button(text = '-')
 		button.bind(on_press = self.zoomout)
 		layout.add_widget(button)
+		self.slider = Slider(min=0, max=360, on_touch_move=self.doSlider) 
+		layout.add_widget(self.slider)
 		for sheet in sheets:
 			material = KvSheet()
 			material.draw([0,50], [1200,650])
@@ -259,12 +268,18 @@ class CamCam(App):
 					if hasattr(part, "kivy_translate"):
 						picture.pos =[picture.pos[0]+part.kivy_translate[0], picture.pos[1]+part.kivy_translate[1]]
 					if hasattr(part, "kivy_rotate"):
-						picture.rotate=part.kivy_rotate
+						picture.rotation=part.kivy_rotate
 					self.sheet_widgets[sheet].append(picture)
 #				root.add_widget(picture)
     		root.add_widget(layout)
 		return root
-			
+
+	def doSlider(self, touch, b):
+		print touch
+		print b
+		if self.selected:
+			self.selected.rotation=touch.value
+		
 	def do_touch(self):
 		for s in self.sheet_widgets:
 			for p in self.sheet_widgets[s]:
@@ -286,7 +301,6 @@ class CamCam(App):
 #		new = copy.copy(self.selected)
 #		new.name+='_'
 #		self.sheet_widgets[self.current_sheet].append(new)
-
 	def delete(self, *largs):
 		print "DELETE"
 		print self.selected
@@ -310,9 +324,10 @@ class CamCam(App):
 				if p.part is not None:
 					rec = {}
 					rec['name']=str(p.part.name)
+					tempr=p.rotation
+					p.rotation=0
 					rec['translate'] = (p.pos[0] - p.startpos[0], p.pos[1] - p.startpos[1])
-					print str(p.part.name)+" self.center"+str(p.center)+" startcentre"+str(p.startcentre)+" pos="+str(p.pos)+" startpos="+str(p.startpos)+" translate="+str(rec['translate'] )
-				
+					p.rotation=tempr
 					m= p.get_window_matrix(x = p.center[0], y = p.center[1])
 		#		print m
 					m2 = numpy.matrix(m.tolist())
@@ -324,10 +339,13 @@ class CamCam(App):
 #				print "position="+ str( [d[4][0]/d[4][3], d[4][1]/d[4][3] ])
 #				print "kivy_translate="+str(rec['translate'])
 		#		rec['rotate'] = math.atan2(m[4], m[0])/math.pi*180
-					rec['rotate'] = d[2][2]/math.pi*180
-					rec['startcentre'] = [0,0]
+					rec['origin'] = p.origin
+					rec['center'] = p.center
+					rec['rotate'] = p.rotation
+					rec['startcentre'] = p.startcentre
 				#rec['startpos'] = p.startpos
 					rec['startpos'] = [d[4][0]/d[4][3], d[4][1]/d[4][3]]
+					print str(p.part.name)+" self.center"+str(p.center)+" startcentre"+str(p.startcentre)+" pos="+str(p.pos)+" startpos="+str(p.startpos)+" translate="+str(rec['translate'])+" origin="+str(rec['origin']) 
 					if p.deleted ==0:
 						data['sheets'][s].append(rec)
 #				print p.get_window_matrix(0,0)
