@@ -41,6 +41,7 @@ from os.path import join, dirname
 from kivy.app import App
 from kivy.logger import Logger
 from kivy.uix.scatter import Scatter
+from kivy.uix.scatter import ScatterPlane
 from kivy.properties import StringProperty
 # FIXME this shouldn't be necessary
 from kivy.core.window import Window
@@ -58,7 +59,7 @@ from kivy.uix.slider import Slider
 
 
 Builder.load_file('/home/dave/cnc/camcam/camcam.kv')
-class KvSheet(Scatter):
+class KvSheet(ScatterPlane):
 	deleted = False
 	def draw(self, bl, tr):
 		self.bl = bl
@@ -195,7 +196,7 @@ class CamCam(App):
 		print "BUILD"
         # the root is created in pictures.kv
         	root = BoxLayout(size_hint=(1,1), orientation='vertical')
-		self.floatlayout = Scatter()
+		self.floatlayout = ScatterPlane()
 		root.add_widget(self.floatlayout)
         # get any files into images directory
 		sheets = {}
@@ -203,7 +204,9 @@ class CamCam(App):
 		buttons = []
 		layout = BoxLayout(size_hint=(1, None), height=50)
 		print "command_args="+str(camcam.command_args)
+		mode='normal'
 		if camcam.command_args.layout_file:
+			mode='layout'
 			partlist={}
                 	for plane in self.planes:
                         	for part in plane.getParts(config={}):
@@ -260,7 +263,11 @@ class CamCam(App):
 			material.camcam = self
 			self.sheet_widgets[sheet].append(material)
 			for part in sheets[sheet]:
-				for i in range(0, part.number):
+				if mode=='layout':
+					num=1
+				else:
+					num=part.number
+				for i in range(0, num):
 					picture = KvPart()#rotation=randint(-30,30))
 					picture.draw(part)
 					picture.camcam=self
