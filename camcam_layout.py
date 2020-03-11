@@ -340,6 +340,7 @@ class CamCam(App):
 		data = {}
 		data['args']=args
 		data['sheets']={}
+		data['command_args']=camcam.command_args
 		for s in self.sheet_widgets:
 			for i in range(0,int(self.command_args.repeatx)):
 				for j in range(0,int(self.command_args.repeaty)):
@@ -433,6 +434,13 @@ parser.add_option("-L", "--layout-file", dest="layout_file",
 config={}
 print "options"+str(options)
 camcam.command_args=options
+if camcam.command_args.layout_file:
+	with open(camcam.command_args.layout_file, "r") as read_file:
+		layout = json.load(read_file)
+	(options2, args2) = parser.parse_args()
+	print options2
+	print args2
+
 print camcam.command_args
 config['command_args']=camcam.command_args
 # load all the requested files	
