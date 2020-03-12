@@ -775,7 +775,7 @@ class POutcurve(Point):
                 if forward:
                         return seg[1].cutto
                 else:
-                        return seg[1].cutfrom
+                        return seg[1].cutto
         def end(self):
                 if hasattr(self, 'endpos'):
                         return self.endpos
