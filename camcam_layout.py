@@ -234,7 +234,11 @@ class CamCam(App):
 						sheets[sheetid]=[]
 						self.sheet_widgets[sheetid] = []
 					sheets[sheetid].append( part)
-		for sheet in sheets:
+		if hasattr( self.command_args, "sheets") and self.command_args.sheets:
+			sheetlist = self.command_args.sheets.split(',')
+		else:
+			sheetlist = sheets.keys()
+		for sheet in sheetlist:
 			button = Button(text = sheet)
 			button.bind(on_press = partial(self.set_sheet, sheet))
 			layout.add_widget(button)
@@ -425,8 +429,8 @@ parser.add_option("-r", "--repeatmode", dest="repeatmode",
                   help="Repeat mode - can be origin - move the origin, regexp - replace all the X and Y coordinates")
 parser.add_option("-L", "--layout-file", dest="layout_file",
                   help="output file for layout")
-parser.add_option("-s", "--sheet", dest="sheet",
-                  help="just output this sheet")
+parser.add_option("-s", "--sheets", dest="sheets",
+                  help="just output these sheets (comma separated)")
 parser.add_option("-O", "--repeatoffset", dest="repeatoffset",
                   help="Repeat Offset for cp_int etc")
 parser.add_option('-o', '--options', dest='options',
