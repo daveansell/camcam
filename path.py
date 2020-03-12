@@ -114,7 +114,7 @@ class Path(object):
                 self.Bsegments = []
                 self.transform={}
                 self.otherargs=''
-                varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance', 'vertfeed', 'downmode', 'blendTolerance']
+                varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance', 'vertfeed', 'downmode', 'blendTolerance','finalpass']
 		if hasattr(self, 'varlist') and type(self.varlist) is list:
 			self.varlist+=varlist
 		else:
@@ -1711,7 +1711,7 @@ class Pathgroup(object):
 		self.obType = "Pathgroup"
 		self.paths=[]
 		self.trace = traceback.extract_stack()
-		varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height', 'blendTolerance', 'roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', 'chipBreak', 'justRoughing', 'vertfeed', 'blendTolerance']
+		varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height', 'blendTolerance', 'roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', 'chipBreak', 'justRoughing', 'vertfeed', 'blendTolerance','finalpass']
 		if hasattr(self, 'varlist') and type(self.varlist) is list:
 			self.varlist+=varlist
 		else:
@@ -1987,7 +1987,7 @@ class Part(object):
 		self.internal_borders=[]
 		self.ignore_border=False
 		self.transform={}
-		varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height', 'offset', 'blendTolerance', 'vertfeed', 'blendTolerance']
+		varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height', 'offset', 'blendTolerance', 'vertfeed', 'blendTolerance','finalpass']
 		self.otherargs=''
 		if hasattr(self, 'varlist') and type(self.varlist) is list:
 			self.varlist+=varlist
@@ -2676,10 +2676,14 @@ class Plane(Part):
                                 for y in range(0,int(config['repeaty'])):
                                         for x in range(0,int(config['repeatx'])):
 						docut=True
-						if repeatpattern=='cp_ext' or repeatpattern=='cp_int':
+						if repeatpattern=='cp_int2':
+							xp=x+1
+						else:
+							xp=x
+						if repeatpattern=='cp_ext' or repeatpattern=='cp_int' or repeatpattern=='cp_int2':
 							xoff=float(x)*float(config['xspacing'])*math.sin(math.pi/3)
 							print type(repeatoffset)
-							if x%2:
+							if xp%2:
 								yoff=float(y)*float(config['yspacing'])
 							else:
 								if repeatoffset:
@@ -2687,7 +2691,7 @@ class Plane(Part):
 								else:
 									yoff=(0.5+float(y))*float(config['yspacing'])															
 							print "yoff = "+str(yoff)
-							if repeatpattern=='cp_int' and y==int(config['repeaty'])-1 and not x%2:
+							if repeatpattern in ['cp_int', 'cp_int2'] and y==int(config['repeaty'])-1 and not xp%2:
 								docut=False
 						else:
 							xoff=x*float(config['xspacing'])
