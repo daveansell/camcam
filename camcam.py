@@ -126,7 +126,18 @@ class CamCam:
 				else:
 					fileextra = ''
 				f=open(self.sanitise_filename(sheet+ i + fileextra + modeconfig['file_suffix']), 'w')
-				f.write(modeconfig['prefix'] + out[i] + modeconfig['postfix'])
+				out[i] = modeconfig['prefix'] + out[i] + modeconfig['postfix']
+				if 'noblank' in config and config['noblank']:
+					print "removing blank lines"
+				
+                                	lines = out[i].split("\n")
+
+                                	lines2 = [line for line in lines if line.strip() != ""]
+                                	out[i] = ''
+                                	for line in lines2:
+                                	      out[i] += line + "\n"
+
+				f.write(out[i])
 		
 
 

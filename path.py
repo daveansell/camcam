@@ -2729,7 +2729,6 @@ class Plane(Part):
                         filename+='_'+str(config['repeatx'])+'x_'+str(config['repeaty'])+'y'
                         #output=output2
 		output=self.offset_gcode(output, config['offset'])
-
                 config['prefix']=config['prefix'].replace("%zclear%", str(config['clear_height']))
                 # if we are making gcode we we should have tool changes in there
                 if config['mode']=='gcode':
@@ -2743,7 +2742,16 @@ class Plane(Part):
                                         self.lay_out[key]=''
                                 self.lay_out[key]+=output
                 else:
-                        output = config['prefix']+"\n"+output+"\n"+config['postfix']
+                	output = config['prefix']+"\n"+output+"\n"+config['postfix']
+			if 'noblank' in config and config['noblank']:
+				print "removing blank lines"
+				lines = output.split("\n")
+
+				lines2 = [line for line in lines if line.strip() != ""]
+				output = ''
+				for line in lines2:
+				      output += line + "\n"
+			output += "\n"
                         f=open(self.sanitise_filename(filename+config['file_suffix']),'w')
                         f.write(output)
                         f.close()

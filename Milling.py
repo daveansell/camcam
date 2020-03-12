@@ -91,7 +91,7 @@ class Milling:
 
                         },
                         'makespacerouter2':{
-                                'prefix':'G17\nG0Z30\nM3\n',
+                                'prefix':'T1M6\nG17\nG0Z30\n',
                                 'postfix':'M30\n',
                                 'settool_prefix':'T',
                                 'settool_postfix':' M6\nS100\nM03',
@@ -114,7 +114,7 @@ class Milling:
                         },
                         'makespacerouter':{
 #                                'prefix':'T1M6\nG17\nG0Z10S11000M3\n',
-                                'prefix':'G17\nG0Z15\nM3\n',
+                                'prefix':'T1M6\nG17\nG0Z30\n',
                                 'postfix':'M30\n',
                                 'mode':'simplegcode',
                                 'group':'cutter',
@@ -129,6 +129,7 @@ class Milling:
                                 'dosfile':True,
                                 'z_overshoot':0.2,
                                 'label':False,
+				'noblank':True,
                 	#	'downmode':'down',
                 		#'zero':'bottom_left',
                         },
@@ -489,7 +490,7 @@ class Milling:
                 self.materials = {
                 "plywood":{
                         "vertfeed":200,
-                        "sidefeed":1200,
+                        "sidefeed":1100,
                         "stepdown":5.0,
                         "kress_setting":4.0,
                         "spring":0.3,
