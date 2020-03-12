@@ -773,9 +773,9 @@ class POutcurve(Point):
         def origin(self, forward=True):
                 seg=self.makeSegment({'findOrigin':True})
                 if forward:
-                        return seg[1].cutfrom
-                else:
                         return seg[1].cutto
+                else:
+                        return seg[1].cutfrom
         def end(self):
                 if hasattr(self, 'endpos'):
                         return self.endpos
@@ -919,7 +919,7 @@ class POutcurve(Point):
                         segment_array.append( Line(p1[0], p1[1]))
                 else:
                         #segment_array.append( Line(p1[0], p1[1]))
-                        segment_array.append( Line(self.last().origin(), p1[1]))
+                        segment_array.append( Line(self.last().origin(not self.reverse), p1[1]))
                 d3=''
                 if self.next().point_type=="outcurve":
 #                        if (self.nextorigin()-self.pos).cross(self.next().nextorigin()-self.nextorigin())[2] <0:
