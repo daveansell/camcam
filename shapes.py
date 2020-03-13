@@ -1151,21 +1151,25 @@ class LineObjects(Part):
                         endi = num
                 totlength=(b-a).length()
                 length=totlength-2*fromends
-		if('stepLength' in config):
-			step=(b-a).normalize() * config['stepLength']
-			if num is None or num is False:
-				num = int((b-a).length() / config['stepLength'])
+		# if we just have one hole put it in the middle
+		if num==1:
+			self.add(CopyObject(ob, [(a+b)/2]))
 		else:
-                	step=(b-a)/(num-1)
-                	step=length/(num-1)*(b-a).normalize()
-                start=a+fromends*(b-a).normalize()
-                points=[]
-                for i in range(0, num):
-                        points.append(start+step*i)
-                if ob.obType=='Part':
-                        self.add(CopyObject(ob, points))
-                else:
-                        self.add(CopyObject(ob, points, layers=config['layers']))
+			if('stepLength' in config):
+				step=(b-a).normalize() * config['stepLength']
+				if num is None or num is False:
+					num = int((b-a).length() / config['stepLength'])
+			else:
+	                	step=(b-a)/(num-1)
+	                	step=length/(num-1)*(b-a).normalize()
+	                start=a+fromends*(b-a).normalize()
+	                points=[]
+	                for i in range(0, num):
+	                        points.append(start+step*i)
+	                if ob.obType=='Part':
+	                        self.add(CopyObject(ob, points))
+	                else:
+	                        self.add(CopyObject(ob, points, layers=config['layers']))
 
 class SquareObjects(Part):
         """Copy objects around the edge of a square defined with bl&tr or bl, centred, width and height. starting :param fromends: from the ends. numx and numy on sides"""
