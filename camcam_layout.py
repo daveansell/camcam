@@ -372,12 +372,12 @@ class CamCam(App):
 					if p.deleted ==0:
 						for i in range(0,int(self.command_args.repeatx)):
 			                                for j in range(0,int(self.command_args.repeaty)):
-								if	p.pos[0]>i*int(self.command_args.boardWidth)\
-									and p.pos[0]<(i+1)*int(self.command_args.boardWidth)\
-									and p.pos[1]>j*int(self.command_args.boardHeight)\
-                                                                        and p.pos[1]<(j+1)*int(self.command_args.boardHeight):
+								if	p.center[0]>i*int(self.command_args.boardWidth)\
+									and p.center[0]<(i+1)*int(self.command_args.boardWidth)\
+									and p.center[1]>j*int(self.command_args.boardHeight)\
+                                                                        and p.center[1]<(j+1)*int(self.command_args.boardHeight):
 										data['sheets'][s+"_"+str(i)+"-"+str(j)].append(rec)
-										print "********"+str(p.part.name)+" "+str(p.pos)+" "+s+"_"+str(i)+"-"+str(j)
+										print "*>>>>* "+str(p.part.name)+" "+str(p.pos)+" "+s+"_"+str(i)+"-"+str(j)+" center"+str(p.center)
 									
 
 #				print p.get_window_matrix(0,0)
