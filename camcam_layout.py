@@ -211,6 +211,7 @@ class CamCam(App):
                         	for part in plane.getParts(config={}):
                         	        part.make_copies()
                         	        partlist[part.name] = [plane, part]
+					
 
 			with open(camcam.command_args.layout_file, "r") as read_file:
     				shts = json.load(read_file)['sheets']
@@ -224,6 +225,7 @@ class CamCam(App):
 						part=copy.copy(partlist[str(p['name'])][1])
 						part.kivy_translate=p['translate']
 						part.kivy_rotate=p['rotate']
+						part.sheet = sheetname
 						sheets[sheetname].append( part)
 		else:
 			for plane in self.planes:
@@ -233,6 +235,7 @@ class CamCam(App):
 					if sheetid not in sheets:
 						sheets[sheetid]=[]
 						self.sheet_widgets[sheetid] = []
+					part.sheet = sheetid
 					sheets[sheetid].append( part)
 		if hasattr( self.command_args, "sheets") and self.command_args.sheets:
 			sheetlist = self.command_args.sheets.split(',')
@@ -314,12 +317,13 @@ class CamCam(App):
 		print "DUPLICATE"
 		if not self.selected:
 			return
-		picture = KvPart()#rotation=randint(-30,30))
+		picture = KvPart()#copy.copy(self.selected)#rotation=randint(-30,30))
+		part = copy.copy(self.selected.part)
                 picture.draw(self.selected.part)
                 picture.camcam=self
-                picture.part = self.selected.part
+                picture.part = part
                 self.sheet_widgets[self.current_sheet].append(picture)
-
+		self.floatlayout.add_widget(picture)
 #		new = copy.copy(self.selected)
 #		new.name+='_'
 #		self.sheet_widgets[self.current_sheet].append(new)
@@ -473,11 +477,12 @@ if camcam.command_args.layout_file:
 	if len(args)==0:
 		args = layoutData['args']
 	print "******ARGS="+str(args)
-	for v in camcam.command_args.__dict__:
-		if camcam.command_args.__dict__[v] is not None:
-			layoutData['command_args'][v] = camcam.command_args.__dict__[v]
-	print "****"+str(layoutData['command_args'])
-	camcam.command_args.__dict__ = layoutData['command_args']
+	if 'command_args' in layoutData:
+		for v in camcam.command_args.__dict__:
+			if camcam.command_args.__dict__[v] is not None:
+				layoutData['command_args'][v] = camcam.command_args.__dict__[v]
+		print "****"+str(layoutData['command_args'])
+		camcam.command_args.__dict__ = layoutData['command_args']
 	
 
 print camcam.command_args
