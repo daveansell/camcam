@@ -382,7 +382,7 @@ class CamCam(App):
 
 #				print p.get_window_matrix(0,0)
 		h = open( 'layout_file', 'w')
-		json.dump(data,h) 
+		json.dump(data,h, indent=4) 
 #		pickle.dump(data, h)
 
 	def set_sheet(self, sheet, *largs):
