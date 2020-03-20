@@ -264,31 +264,40 @@ class Spiral(Path):
 			rad = config['rad']
 		else:
 			rad = False
+		self.startTurns = startTurns
+		self.endTurns = endTurns
                 astep = 360.0
                 rstep = float(r2-r1)/self.turns
 		tstep = float(self.turns)/steps
                 self.length=0
 		if 'fromStart' in config:
-			startTurns+=float(config['fromStart'])/(r1+2*math.pi*startTurns*rstep)
+			startTurns+=float(config['fromStart']+10.0*math.pi*tstep)/(r1+startTurns*rstep)/2/math.pi
 			
 		if 'fromEnd' in config:
-			endTurns-=float(config['fromEnd'])/(r1+2*math.pi*endTurns*rstep)
+			endTurns-=float(config['fromEnd']+10.0*math.pi*tstep)/(r1+endTurns*rstep)/2/math.pi
 		t = startTurns
 		while t<endTurns:
-			self.add_point(PSharp(pos+rotate(V(r1+rstep*t, 0), astep*t)))
+#			self.add_point(PSharp(pos+rotate(V(r1+rstep*t, 0), astep*t)))
 			if t==startTurns:
 				if rad:
-					self.add_point(PIncurve(pos+rotate(V(r1+rstep*t, 0), astep*t), radius=rad))
+					#self.add_point(PIncurve(pos+rotate(V(r1+rstep*t, 0), astep*t), radius=rad))
+					self.add_point(PIncurve(self.alongSpiral( t), radius=rad))
 				else:
-					self.add_point(PSharp(pos+rotate(V(r1+rstep*t, 0), astep*t)))
+					#self.add_point(PSharp(pos+rotate(V(r1+rstep*t, 0), astep*t)))
+					self.add_point(PSharp(self.alongSpiral( t)))
+			else:
+				self.add_point(PSharp(self.alongSpiral(t)))
                         if t>startTurns+rad and t<endTurns-rad:
-                            self.length += (V(r1+rstep*t,0) - rotate(V(r1+rstep*(t-tstep),0), astep*tstep)).length()
+			    self.length += (self.alongSpiral( t)-self.alongSpiral(t-tstep))
+#                            self.length += (V(r1+rstep*t,0) - rotate(V(r1+rstep*(t-tstep),0), astep*tstep)).length()
 		#self.add_point(PSharp(pos+rotate(V(r1+rstep*endTurns,0), endTurns*astep)))
 			t+=tstep
 		if rad:
-			self.add_point(PIncurve(pos+rotate(V(r1+rstep*endTurns, 0), astep*t), radius=rad))
+#			self.add_point(PIncurve(pos+rotate(V(r1+rstep*endTurns, 0), astep*t), radius=rad))
+			self.add_point(PIncurve(self.alongSpiral(endTurns), radius=rad))
 		else:
-			self.add_point(PSharp(pos+rotate(V(r1+rstep*endTurns, 0), astep*t)))
+#			self.add_point(PSharp(pos+rotate(V(r1+rstep*endTurns, 0), astep*t)))
+			self.add_point(PSharp(self.alongSpiral(endTurns)))
 #                for i in range(int(start/, int(steps)+1):
  #                       self.add_point(PSharp(pos+V(r1+rstep*i,0), transform={'rotate':[pos, astep*i]}))
                # astep = 360.0*self.turns/steps
@@ -303,7 +312,6 @@ class SpiralLoop(Path):
                 self.init(config)
                 self.closed=True
 		
-		print "Width="+str(width)
 		spiral1 = Spiral( pos, r1-width/2, r2-width/2, **config)
 		spiral2 = Spiral( pos, r1+width/2, r2+width/2, **config)
 		self.add_points(spiral1.points)
@@ -336,6 +344,7 @@ class LineLoop(Path):
                         self.add_point(p)
                 for p in back.points:
                         self.add_point(p)
+
 class Lines(Path):
         def __init__(self, points, **config):
 #		assert type(points) is list
@@ -391,7 +400,6 @@ class Polygon(Path):
 			startAngle= config['startAngle']
 		else:
 			startAngle=0			
-		print "ISES="+str(sides)+" rad="+str(rad)
                 for i in range(0,int(sides)):
                         self.add_point(pos+rotate(V(rad,0), i*step+startAngle),cornertype,cornerrad,direction=cornerdir)
                 self.comment("Polygon")
