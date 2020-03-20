@@ -2702,16 +2702,19 @@ class Plane(Part):
 			return output2
 
         def writeGcodeFile(self,partName, key, output, border, config):
-                filename=str(partName)+"_"+str(self.name)+"_"+str(key)
-                if len(config['command_args']):
-                        for k in config['command_args'].keys():
-                                filename=k+"_"+filename+"-"+config['command_args'][k]	
-                if 'cutter' in config:
-                        filename+="_cutter-"+str(config['cutter'])
-                if 'material' in config:
-                        filename+='_'+str(config['material'])
-                if 'thickness' in config:
-                        filename+="_thickness-"+str(config['thickness'])
+		if 'shortFilename' in config and config['shortFilename']:
+			filename = str(partName)+str(key)
+		else:
+                	filename=str(partName)+"_"+str(self.name)+"_"+str(key)
+                	if len(config['command_args']):
+                	        for k in config['command_args'].keys():
+                	                filename=k+"_"+filename+"-"+config['command_args'][k]	
+                	if 'material' in config:
+                	        filename+='_'+str(config['material'])
+                	if 'thickness' in config:
+                	        filename+="_thickness-"+str(config['thickness'])
+                	if 'cutter' in config:
+                	        filename+="_cutter-"+str(config['cutter'])
                 if 'zero' in config and config['zero']=='bottom_left' and border!=None:
 			if 'layout' in config and config['layout']:
 				offset = V(0,0)

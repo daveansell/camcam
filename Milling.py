@@ -130,6 +130,7 @@ class Milling:
                                 'z_overshoot':0.2,
                                 'label':False,
 				'noblank':True,
+				'shortFilename':True,
                 	#	'downmode':'down',
                 		#'zero':'bottom_left',
                         },
@@ -317,6 +318,13 @@ class Milling:
                 "16mm_endmill":{
                         "id":5,
                         "diameter":16.0,
+                        "endcut":1,
+
+                        "sidecut":1,
+                },
+                "18mm_endmill":{
+                        "id":30,
+                        "diameter":18.0,
                         "endcut":1,
 
                         "sidecut":1,
