@@ -275,14 +275,14 @@ class Spiral(Path):
 			
 		if 'fromEnd' in config:
 			endTurns-=float(config['fromEnd'])/(r1+endTurns*rstep)/2/math.pi
-		t = startTurns + rad/(r1+startTurns*rstep)/2/math.pi
+		t = startTurns + (2*rad)/(r1+startTurns*rstep)/2/math.pi
 		if rad:
 #			self.add_point(PIncurve(pos+rotate(V(r1+rstep*endTurns, 0), astep*t), radius=rad))
 			self.add_point(PIncurve(self.alongSpiral(startTurns), radius=rad))
 		else:
 #			self.add_point(PSharp(pos+rotate(V(r1+rstep*endTurns, 0), astep*t)))
 			self.add_point(PSharp(self.alongSpiral(startTurns)))
-		while t<endTurns-rad/(r1+endTurns*rstep)/2/math.pi:
+		while t<endTurns-(rad*2)/(r1+endTurns*rstep)/2/math.pi:
 #			self.add_point(PSharp(pos+rotate(V(r1+rstep*t, 0), astep*t)))
 			self.add_point(PSharp(self.alongSpiral(t)))
                         if t>startTurns+rad and t<endTurns-rad:
