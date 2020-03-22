@@ -26,6 +26,7 @@ from parts import *
 from boxes import *
 from font import *
 from dxf import *
+from utils import *
 #import importlib
 from optparse import OptionParser
 import sys
