@@ -319,8 +319,8 @@ class LathePath(Path):
 
 	
 
-	def findIntersection(self, path):
-		intersection = self.shapelyPolygon.intersection(line)
+	def findIntersection(self, line, endCut, val):
+		intersection = self.shapelyPolygon.intersection(shapely.geometry.linestring.LineString(line))
 		intersection = self.convertIntersection(intersection, V( endCut,val))
 		return intersection
 
@@ -332,7 +332,7 @@ class LathePath(Path):
 #			line = shapely.geometry.LineString([ [startCut, val], [ endCut, val] ])
 #			intersection = self.shapelyPolygon.intersection(line)
 #			intersection = self.convertIntersection(intersection, V( endCut,val))
-			intersection = self.findIntersection(self, [ [startCut, val], [ endCut, val] ])
+			intersection = self.findIntersection( [ [startCut, val], [ endCut, val] ], endCut, val)
 			return [ PSharp(V(startCut, val)) 
 				] + self.cutChipBreak( V(startCut, val), intersection - alongCut*config['roughClearance']) + [
 #				PSharp(intersection - alongCut*config['roughClearance']),]  
