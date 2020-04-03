@@ -364,7 +364,10 @@ class LathePath(Path):
 		else:
 			return [PSharp(cutFrom)]
 		numCuts= int(math.ceil((cutTo-cutFrom).length() / chipBreak))
-		step = (cutTo-cutFrom).length() / numCuts
+                if numCuts>0:
+		    step = (cutTo-cutFrom).length() / numCuts
+                else:
+                    step = (cutTo-cutFrom).length()
 		along = (cutTo-cutFrom).normalize()
 		points=[]
 		for i in range(1, numCuts+1):
