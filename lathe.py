@@ -140,12 +140,13 @@ class LathePath(Path):
 			else:
 				self.spindle('ccw')
 				self.flipSide=1	
+	# if we are doing roughing add going to a safe position to the cut
 			if self.doRoughing:
 				fs = self.flipSide
 				if self.clearFirst == 'z':
-					self.cuts[0].insert(0, PSharp(V(self.cuts[0][0].pos[0] * fs, self.clearZ), isRapid=True))
+					self.cuts[0].insert(0, PSharp(V(self.cuts[0][0].pos[0] , self.clearZ), isRapid=True))
 					self.cuts[0].insert(0, PSharp(V(self.clearX * fs, self.clearZ), isRapid=True))
-					self.cuts[-1].append( PSharp(V(self.cuts[-1][-1].pos[-1] * fs, self.clearZ), isRapid=True))
+					self.cuts[-1].append( PSharp(V(self.cuts[-1][-1].pos[-1] , self.clearZ), isRapid=True))
 					self.cuts[-1].append( PSharp(V(self.clearX * fs, self.clearZ), isRapid=True))
 				elif self.clearFirst == 'x':
 					self.cuts[0].insert(0, PSharp(V(self.clearX * fs, self.cuts[0][0].pos[1] ), isRapid=True))
@@ -155,9 +156,9 @@ class LathePath(Path):
 
 			if not self.justRoughing:
 				if self.clearFirst == 'z':
-					self.insert_point(0, PSharp(V(self.points[0].pos[0] * self.flipSide, self.clearZ), isRapid=True))
+					self.insert_point(0, PSharp(V(self.points[0].pos[0], self.clearZ), isRapid=True))
 					self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.clearZ), isRapid=True))
-					self.add_point( PSharp(V(self.points[-1].pos[0] * self.flipSide, self.clearZ), isRapid=True))
+					self.add_point( PSharp(V(self.points[-1].pos[0], self.clearZ), isRapid=True))
 					self.add_point( PSharp(V(self.clearX * self.flipSide, self.clearZ), isRapid=True))
 				elif self.clearFirst == 'x':
 					self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.points[0].pos[1] ), isRapid=True))
@@ -187,7 +188,7 @@ class LathePath(Path):
 			self.clearZ = self.max[1] + config['matEnd']
 			self.clearX = config['matRad']+1.0
 			startZ = self.max[1] + config['matEnd']	
-			endZ = self.min[1]#+config['roughClearance']
+			endZ = self.min[1]+config['roughClearance']
 			roughing = self.findRoughingCuts( stepDir, cutDir, startZ, endZ, startRad, endRad, config)
 
 		elif config['latheMode']=='bore':
@@ -273,9 +274,12 @@ class LathePath(Path):
 		cuts=[]
 		numSteps = int(math.ceil(abs((endStep - startStep)/config['step'])))
 		step = (endStep - startStep)/numSteps
+#		print "stepDir="+str(stepDir)+" cutDir="+str(cutDir)+" numSteps"+str(numSteps)
 		for i in range(1, numSteps+1):
 			#print str(startStep+i*step)+"  startCut="+str(startCut)+" endCut="+str(endCut) +" cutDir="+str(cutDir)+" stepDir="+str(stepDir)
 			cuts+=self.findRoughingCut(startStep+i*step, cutDir, stepDir,startStep, startCut, endCut, config)
+#		for p in  cuts:
+#			print p.pos
 		return cuts
 	def sign(self, x):
 		if x<0:
@@ -319,20 +323,25 @@ class LathePath(Path):
 
 	
 
-	def findIntersection(self, path):
-		intersection = self.shapelyPolygon.intersection(line)
+	def findIntersection(self, line, endCut, val):
+		intersection = self.shapelyPolygon.intersection(shapely.geometry.linestring.LineString(line))
 		intersection = self.convertIntersection(intersection, V( endCut,val))
 		return intersection
 
 	def findRoughingCut(self, val, direction, stepDir, startStep, startCut, endCut, config):
 		if abs(stepDir.dot(V(0,1)))>0.0001:
-			#print "FACE"
-			#print [val, direction, stepDir, startStep, startCut, endCut]
+			print "FACE"
+			print [val, direction, stepDir, startStep, startCut, endCut]
 			alongCut = V(1,0) * self.sign(endCut-startCut)
-#			line = shapely.geometry.LineString([ [startCut, val], [ endCut, val] ])
-#			intersection = self.shapelyPolygon.intersection(line)
-#			intersection = self.convertIntersection(intersection, V( endCut,val))
-			intersection = self.findIntersection(self, [ [startCut, val], [ endCut, val] ])
+#			intersection = self.findIntersection( [ [startCut, val], [ endCut, val] ], endCut, val)
+			line = shapely.geometry.LineString([ [ startCut, val], [ endCut, val] ])
+			intersection = self.shapelyPolygon.intersection(line)
+			print line
+			print self.shapelyPolygon
+			print intersection
+			intersection = self.convertIntersection(intersection, V( endCut, val))
+			print "intesection="+str(intersection)
+			print " chibpra=" +str(self.cutChipBreak( V(startCut, val), intersection - alongCut*config['roughClearance'])[0].pos)
 			return [ PSharp(V(startCut, val)) 
 				] + self.cutChipBreak( V(startCut, val), intersection - alongCut*config['roughClearance']) + [
 #				PSharp(intersection - alongCut*config['roughClearance']),]  
@@ -364,7 +373,10 @@ class LathePath(Path):
 		else:
 			return [PSharp(cutFrom)]
 		numCuts= int(math.ceil((cutTo-cutFrom).length() / chipBreak))
-		step = (cutTo-cutFrom).length() / numCuts
+                if numCuts>0:
+		    step = (cutTo-cutFrom).length() / numCuts
+                else:
+                    step = (cutTo-cutFrom).length()
 		along = (cutTo-cutFrom).normalize()
 		points=[]
 		for i in range(1, numCuts+1):
