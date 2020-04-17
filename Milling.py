@@ -483,7 +483,7 @@ class Milling:
                         "id":52,
                         "diameter":1,
                         "endcut":1,
-                        "sidecut":1,
+                        "sidecut":0,
 			"forcestepdown":1000,
 			"handedness":1,
                 },
