@@ -330,18 +330,18 @@ class LathePath(Path):
 
 	def findRoughingCut(self, val, direction, stepDir, startStep, startCut, endCut, config):
 		if abs(stepDir.dot(V(0,1)))>0.0001:
-			print "FACE"
-			print [val, direction, stepDir, startStep, startCut, endCut]
+			#print "FACE"
+			#print [val, direction, stepDir, startStep, startCut, endCut]
 			alongCut = V(1,0) * self.sign(endCut-startCut)
 #			intersection = self.findIntersection( [ [startCut, val], [ endCut, val] ], endCut, val)
 			line = shapely.geometry.LineString([ [ startCut, val], [ endCut, val] ])
 			intersection = self.shapelyPolygon.intersection(line)
-			print line
-			print self.shapelyPolygon
-			print intersection
+			#print line
+			#print self.shapelyPolygon
+			#print intersection
 			intersection = self.convertIntersection(intersection, V( endCut, val))
-			print "intesection="+str(intersection)
-			print " chibpra=" +str(self.cutChipBreak( V(startCut, val), intersection - alongCut*config['roughClearance'])[0].pos)
+			#print "intesection="+str(intersection)
+			#print " chibpra=" +str(self.cutChipBreak( V(startCut, val), intersection - alongCut*config['roughClearance'])[0].pos)
 			return [ PSharp(V(startCut, val)) 
 				] + self.cutChipBreak( V(startCut, val), intersection - alongCut*config['roughClearance']) + [
 #				PSharp(intersection - alongCut*config['roughClearance']),]  

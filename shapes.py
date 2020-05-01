@@ -1227,19 +1227,19 @@ class Bolt(Part):
                 if 'clearance_layers' in config:
                         clearance_layers = config['clearance_layers']
                 else:
-                        clearance_layers = ['perspex', 'paper']
+                        clearance_layers = []#['perspex', 'paper']
                 if 'insert_layer' in config:
                         insert_layer = config['insert_layer']
                 else:
-                        insert_layer = 'base'
+                        insert_layer = []#'base'
                 if 'head_layer' in config:
                         head_layer = config['head_layer']
                 else:
-                        head_layer = 'top'
+                        head_layer = []#'top'
                 if 'thread_layer' in config:
                         thread_layer = config['thread_layer']
                 else:
-                        thread_layer = ['back']
+                        thread_layer = []#['back']
                 if 'thread_depth' in config:
                         thread_depth = config['thread_depth']
                 else:
