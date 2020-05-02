@@ -22,7 +22,3 @@ net.make_paths()
 
 plane.add_layer('test', material = 'plywood', thickness = 6)
 plane.add(NetworkPart(net, name='test', layer='test'))
-
-
-
-

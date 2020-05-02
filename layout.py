@@ -46,12 +46,12 @@ from  kivy.uix.label import *
 
 class KvPart(Scatter):
 	def draw(self, part):
-		print "drawp pwart "+str(part.name)
+		print("drawp pwart "+str(part.name))
 		if part.border:
 			ccpoints = part.border.polygonise()
 			self.canvas.add(Color(1,0,0,0.05))
-			print part.border.centre
-			print (part.border.boundingBox['tr'][0]-part.border.boundingBox['bl'][0],part.border.boundingBox['tr'][1]-part.border.boundingBox['bl'][1])
+			print(part.border.centre)
+			print((part.border.boundingBox['tr'][0]-part.border.boundingBox['bl'][0],part.border.boundingBox['tr'][1]-part.border.boundingBox['bl'][1]))
 			width = part.border.boundingBox['tr'][0]-part.border.boundingBox['bl'][0]
 			height = part.border.boundingBox['tr'][1]-part.border.boundingBox['bl'][1]
 			centrex = part.border.centre[0]
@@ -100,17 +100,17 @@ class CamCam(App):
 			self.planes.append(plane)
 			return plane
 		else:
-			print "Tring to add a non-plane to camcam"
+			print("Tring to add a non-plane to camcam")
     	def build(self): 
-		print "BUILD"
+		print("BUILD")
         # the root is created in pictures.kv
         	root = self.root
 
         # get any files into images directory
-		print self
-		print root
+		print(self)
+		print(root)
 		for plane in self.planes:
-			print "plane="+str(plane)
+			print("plane="+str(plane))
 			for part in plane.getParts():
 				for i in range(0, part.number):
 					picture = KvPart()#rotation=randint(-30,30))
@@ -124,7 +124,7 @@ class CamCam(App):
 camcam = CamCam()
 milling = Milling.Milling()
 parser = OptionParser()
-modes = ','.join(milling.mode_config.keys())
+modes = ','.join(list(milling.mode_config.keys()))
 
 parser.add_option("-m", "--mode", dest="mode",
                   help="mode the output should be in. Can be one of "+modes, metavar="MODE")
@@ -161,7 +161,7 @@ if options.options:
 config['command_args']=camcam.command_args
 # load all the requested files	
 for arg in args:
-	execfile(arg)
+	exec(compile(open(arg, "rb").read(), arg, 'exec'))
 
 
 if __name__ == '__main__':

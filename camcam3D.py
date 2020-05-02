@@ -35,63 +35,63 @@ import pickle
 
 
 class CamCam:
-        def __init__(self):
-                self.planes=[]
-        def add_plane(self,plane):
-        #	print plane.obType
-                if hasattr(plane,'obType') and plane.obType=='Plane':#type(plane) is Plane:
-                        self.planes.append(plane)
-                        return plane
-                else:
-                        print "Tring to add a non-plane to camcam"
+    def __init__(self):
+        self.planes=[]
+    def add_plane(self,plane):
+    #       print plane.obType
+        if hasattr(plane,'obType') and plane.obType=='Plane':#type(plane) is Plane:
+            self.planes.append(plane)
+            return plane
+        else:
+            print("Tring to add a non-plane to camcam")
 
-        def render(self, mode,config):
-        #	modeconfig=milling.mode_config[mode]
-#		if modeconfig['overview']:
-#			out=''
-#			for plane in self.planes:
-#				plane.render_all(mode,config)
-#				out+=plane.out
-#		 	f=open("Overview_"+mode+".svg",'w')
-#			f.write(modeconfig['prefix'] + out + modeconfig['postfix'])
-#			f.close()
+    def render(self, mode,config):
+    #       modeconfig=milling.mode_config[mode]
+#               if modeconfig['overview']:
+#                       out=''
+#                       for plane in self.planes:
+#                               plane.render_all(mode,config)
+#                               out+=plane.out
+#                       f=open("Overview_"+mode+".svg",'w')
+#                       f.write(modeconfig['prefix'] + out + modeconfig['postfix'])
+#                       f.close()
 #
-#		else:
-                config['mode'] = 'dave-emc'
-                for plane in self.planes:
-                        plane.render_all3D(mode,config)
+#               else:
+        config['mode'] = 'dave-emc'
+        for plane in self.planes:
+            plane.render_all3D(mode,config)
 
 
-        def sanitise_filename(self,filename):
-                return "".join(x for x in filename if x.isalnum() or x in '-._')
+    def sanitise_filename(self,filename):
+        return "".join(x for x in filename if x.isalnum() or x in '-._')
 
-        def listparts(self):
-                 for plane in self.planes:
-                                plane.list_all()
-        def get_bom(self):
-                ret=[]
-                for plane in self.planes:
-                        ret.extend(plane.get_bom())
-                lookup={}
-                ret2=[]
-                c=0
-                for l in ret:
-                        if type(l) is BOM_part:
-                                if str(l.part_number)+str(l.length) in lookup:
-                                        ret2[lookup[str(l.part_number)+str(l.length)]].number+=l.number
-                                else:
-                                        ret2.append(l)
-                                        lookup[str(l.part_number)+str(l.length)]=c
-                                        c+=1
-                        else:
-                                ret2.append(l)
-                                c+=1
-                for l in ret2:
-                        print l
+    def listparts(self):
+        for plane in self.planes:
+            plane.list_all()
+    def get_bom(self):
+        ret=[]
+        for plane in self.planes:
+            ret.extend(plane.get_bom())
+        lookup={}
+        ret2=[]
+        c=0
+        for l in ret:
+            if type(l) is BOM_part:
+                if str(l.part_number)+str(l.length) in lookup:
+                    ret2[lookup[str(l.part_number)+str(l.length)]].number+=l.number
+                else:
+                    ret2.append(l)
+                    lookup[str(l.part_number)+str(l.length)]=c
+                    c+=1
+            else:
+                ret2.append(l)
+                c+=1
+        for l in ret2:
+            print(l)
 camcam = CamCam()
 milling = Milling.Milling()
 parser = OptionParser()
-modes = ','.join(milling.mode_config.keys())
+modes = ','.join(list(milling.mode_config.keys()))
 
 parser.add_option("-m", "--mode", dest="mode",
                   help="mode the output should be in. Can be one of "+modes, metavar="MODE")
@@ -123,27 +123,26 @@ config={}
 
 camcam.command_args={}
 if options.options:
-        for pair in options.options.split(';'):
-                a=pair.split('=')
-                if len(a)>1:
-                        camcam.command_args[a[0]]=a[1]
+    for pair in options.options.split(';'):
+        a=pair.split('=')
+        if len(a)>1:
+            camcam.command_args[a[0]]=a[1]
 config['command_args']=camcam.command_args
 config['transformations']=[{}]
 if options.rotate:
-        config['transformations'][0]['rotate'] = [V(0,0), float(options.rotate)]
+    config['transformations'][0]['rotate'] = [V(0,0), float(options.rotate)]
 if options.mirror:
-        config['transformations'][0]['mirror'] = [V(0,0),'x']
+    config['transformations'][0]['mirror'] = [V(0,0),'x']
 
 if options.zbase:
-        config['zbase'] = True
-# load all the requested files	
+    config['zbase'] = True
+# load all the requested files
 for arg in args:
-        execfile(arg)
+    exec(compile(open(arg, "rb").read(), arg, 'exec'))
 
 if options.listparts:
-        camcam.listparts()
+    camcam.listparts()
 if options.bom:
-        camcam.get_bom()
+    camcam.get_bom()
 
 camcam.render(options.mode,config)
-
