@@ -703,7 +703,6 @@ class ArbitraryBox(Part):
             # DECIDE WHICH SISDE WE ARE CUttng FROM
             # CHECK THE DIRECTION OF THR LOOP
             t =  self.add(p)
-            print("face_"+f+" QQQQ")
             setattr(self, 'face_' + f, t)
 #               def _pre_render(self):
             self.align3d_face(t, f, face)
@@ -1399,9 +1398,7 @@ class ArbitraryBox(Part):
         for point in points:
             sval = [f, p]
             sid = self.get_sid(point, points[(p-1)%len(points)])
-            print ("sid="+str(sid))
             if sid in self.sides:
-                print("******** Found side")
                 self.sides[sid].append(sval)
             else:
                 self.sides[sid] = [sval]
