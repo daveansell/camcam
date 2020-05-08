@@ -28,6 +28,7 @@ class Text(Pathgroup):
 			font=config['font']
 		else:
 			font='/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf'
+                        font='/usr/share/fonts/truetype/ubuntu/Ubuntu-B.ttf'
 		if 'scale' in config:
 			self.scale =config['scale']
 		else:
