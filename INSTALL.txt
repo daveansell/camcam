@@ -1,6 +1,9 @@
 required packages
 
-apt-get install python-lxml tofrodos python python-shapely python-pip
-pip install solidpython
-pip install freetype-py
-pip install dxfwrite
+apt-get install python3-lxml tofrodos python3 python3-pip
+
+pip3 install solidpython
+pip3 install freetype-py
+pip3 install dxfwrite
+pip3 install shapely
+pip3 install kivy
