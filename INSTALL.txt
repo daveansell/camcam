@@ -1,6 +1,7 @@
-required packages
+#required packages
 
 apt-get install python3-lxml tofrodos python3 python3-pip
+sudo apt-get install build-essential libgl1-mesa-dev 
 
 pip3 install solidpython
 pip3 install freetype-py
