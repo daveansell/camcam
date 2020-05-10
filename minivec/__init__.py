@@ -22,6 +22,6 @@
 """Minivec provides basic support for vector and matrix objects."""
 
 
-from minivec import *
-from minivec import __version__, __author__, __license__, __url__
+from .minivec import *
+from .minivec import __version__, __author__, __license__, __url__
 del minivec

@@ -44,7 +44,7 @@ blowerWallBack = (blowerTubeSpace + windowThickness ) * math.cos(angle)
 #blowerWallBack =0
 windowBack = windowThickness* math.cos(angle)
 wallPerp = rotate( (V( steelWidth/2, 0, 0) +traycorner -V( steelWidth/2, steelTopWall, wallTop)).normalize(), 90.0, V(1,0,0))
-print "%%"+str(wallPerp)
+print("%%"+str(wallPerp))
 
 plane = camcam.add_plane(Plane('xy', cutter='1/8_endmill'))
 
@@ -63,8 +63,8 @@ box = plane.add(ArbitraryBox(
                 #               V(-steelWidth/2, steelBottomWall, wallFromFloor),
                                 V( box_thickness, -skirtingWidth, skirtingHeight),
                                 V( box_thickness, 0, skirtingHeight),
-				V( box_thickness, -200, skirtingHeight),
-				V( box_thickness, -200, 0),
+                                V( box_thickness, -200, skirtingHeight),
+                                V( box_thickness, -200, 0),
                                 V( box_thickness, 0, 0),
                                 V( box_thickness, 0, 0) +V(0,traycorner[1] + box_thickness,0),
                                 V( box_thickness, 0, 0) +traycorner + wallPerp * box_thickness,
@@ -92,14 +92,13 @@ box = plane.add(ArbitraryBox(
                         'good_direction':V(0,0.0,-1.0),
                 },
 
-	},
-	fudge = fudge,
-	tab_length = 60,
-	thickness = box_thickness,
-#	joint_mode = "butt",
-	hole_spacing = 250,
-	holerad = 4.5,
-	butt_depression = 0,
-	name="steel",
+        },
+        fudge = fudge,
+        tab_length = 60,
+        thickness = box_thickness,
+#       joint_mode = "butt",
+        hole_spacing = 250,
+        holerad = 4.5,
+        butt_depression = 0,
+        name="steel",
 ))
-

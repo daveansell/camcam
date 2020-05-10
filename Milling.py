@@ -479,6 +479,14 @@ class Milling:
 			"forcestepdown":1000,
 			"handedness":-1,
                 },
+                "latheParting":{
+                        "id":52,
+                        "diameter":1,
+                        "endcut":1,
+                        "sidecut":0,
+			"forcestepdown":1000,
+			"handedness":1,
+                },
                 "latheTurning":{
                         "id":51,
                         "diameter":1,

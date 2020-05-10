@@ -50,7 +50,7 @@ except (ImportError, AttributeError):  # Built without threading
     _ThreadLocal = object()
 
 
-Nan = struct.unpack("f", '\x00\x00\xc0\x7f')[0]
+Nan = struct.unpack("f", b'\x00\x00\xc0\x7f')[0]
 _Rad = radians(1.0)
 _Deg = degrees(1.0)
 _DefaultError = 0.0
@@ -58,21 +58,21 @@ _DefaultEpsilon = 1e-8
 
 
 def V(x=False,y=False,z=False):
-        if x==False:
-                x=0
-        if y==False:
-                y=False
-        if z==False:
-                z=False
-        return Vec(x,y,z)
+    if x==False:
+        x=0
+    if y==False:
+        y=False
+    if z==False:
+        z=False
+    return Vec(x,y,z)
 
 def rotate(pos, a):
-        if type(pos) is Vec:
-                M=Mat(1).rotateAxis(a,V(0,0,-1))
-                pos=pos.transform(M)
-                return pos
-        else:
-                return False
+    if type(pos) is Vec:
+        M=Mat(1).rotateAxis(a,V(0,0,-1))
+        pos=pos.transform(M)
+        return pos
+    else:
+        return False
 
 class Vec(object):
     """Immutable vector class for linear algebra.
@@ -127,7 +127,7 @@ class Vec(object):
 
     def __getitem__(self, key):
         # Index the vector as a tuple, handles slicing
-        if isinstance(key, basestring):
+        if isinstance(key, str):
             return self.swizzle(key)
         return self.__vec[key]
 
@@ -149,8 +149,8 @@ class Vec(object):
         """
         selfX, selfY, selfZ = self.__vec
         otherX, otherY, otherZ = _Triplet(vec, allowNested=True, allowNone=False)
-	if epsilon is None:
-	        epsilon = getattr(_ThreadLocal, "minivecEpsilon", _DefaultEpsilon)
+        if epsilon is None:
+            epsilon = getattr(_ThreadLocal, "minivecEpsilon", _DefaultEpsilon)
         #return fabs(selfX - otherX) < epsilon and fabs(selfY - otherY) < epsilon and fabs(selfZ - otherZ) < epsilon
         return fabs(selfX - otherX) < epsilon > fabs(selfY - otherY) and fabs(selfZ - otherZ) < epsilon
 
@@ -262,7 +262,7 @@ class Vec(object):
         dot = selfX * otherX + selfY * otherY + selfZ * otherZ
         selfLength = sqrt(selfX * selfX + selfY * selfY + selfZ * selfZ)
         otherLength = sqrt(otherX * otherX + otherY * otherY + otherZ * otherZ)
-	radians = acos(min(max(dot / (selfLength * otherLength), -1), 1))
+        radians = acos(min(max(dot / (selfLength * otherLength), -1), 1))
         return radians * _Deg
 
 
@@ -284,7 +284,7 @@ class Vec(object):
         return cmp(self.__vec, tuple(otherVec))
 
 
-    def __nonzero__(self):
+    def __bool__(self):
         selfX, selfY, selfZ = self.__vec
         epsilon = getattr(_ThreadLocal, "minivecEpsilon", _DefaultEpsilon)
         return fabs(selfX) >= epsilon or fabs(selfY) >= epsilon or fabs(selfZ) >= epsilon
@@ -399,7 +399,7 @@ class Vec(object):
         values = {"x": selfX, "y": selfY, "z": selfZ,
                     "X": -selfX, "Y":-selfY, "Z": -selfZ,
                     "0": 0.0, "1": 1.0, "!": -1.0}
-        result = map(values.__getitem__, lookup)
+        result = list(map(values.__getitem__, lookup))
         return result
 
 
@@ -455,9 +455,9 @@ class Vec(object):
         raise TypeError("Unknown type for Vector contains, %s" % otherType.__name__)
 
     def intersect_lines(self,a, b, c, d):
-                x= ((a[0]*b[1]-a[1]*b[0])*(c[0]-d[0]) - (a[0]-b[0])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
-                y= ((a[0]*b[1]-a[1]*b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
-                return V(x,y)
+        x= ((a[0]*b[1]-a[1]*b[0])*(c[0]-d[0]) - (a[0]-b[0])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
+        y= ((a[0]*b[1]-a[1]*b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
+        return V(x,y)
 
     def intersects(self, other):
         """Test any part of another object intersects this point.
@@ -617,7 +617,7 @@ class Mat(object):
         return True
 
 
-    def __nonzero__(self):
+    def __bool__(self):
         epsilon = getattr(_ThreadLocal, "minivecEpsilon", _DefaultEpsilon)
         return any(fabs(s) >= epsilon for s in self.__mat)
 
@@ -1172,7 +1172,7 @@ def _DecomposeScaling(self):
     # close to zero; we correct for this step at the end by multiplying the
     # scaling factors by maxVal at the end (shear and rotation are not
     # affected by the normalization).
-    maxVal = max(map(fabs, (sa, sb, sc, se, sf, sg, si, sj, sk)))
+    maxVal = max(list(map(fabs, (sa, sb, sc, se, sf, sg, si, sj, sk))))
     if maxVal > 1.0 - epsilon:
         maxVal = 0.0
     if fabs(maxVal) >= epsilon:
@@ -1526,7 +1526,7 @@ def _Sixteenlet(obj, allowNone=False, allowNested=True, allowScalar=True):
     elif seqLen == 16:
         return _TupleOfFloats(seq)
     elif seqLen == 4:
-        a, b, c, d = map(_Quadlet, seq)
+        a, b, c, d = list(map(_Quadlet, seq))
         return a + b + c + d
     raise TypeError("Unknown data type for matrix argument")
 
@@ -1578,4 +1578,3 @@ def _FindOperationType(obj, operationName):
         except (TypeError, ValueError):
             reverse = getattr(obj, "_r" + operationName, None)
             return obj, mro[0], reverse
-
