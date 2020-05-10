@@ -703,7 +703,7 @@ class RoundSlotsGrill(Pathgroup):
         if 'pattern' in config:
             pattern = config['pattern']
         else:
-            pattern = fcc
+            pattern = 'offset'
         if 'crop' in config:
             crop = config['crop']
         else:
