@@ -727,17 +727,27 @@ class RoundSlotsGrill(Pathgroup):
             if w:
                 for j in range(0, numCols+1):
                     x = -ox + j*spacingx
-                    if crop and abs(x)+slotWidth/2>w:
-                        if abs(x)+slotWidth/2>w:
-                            width = (w - abs(x))*2
-                            print ("Width="+str(width))
-#                            x2 = x/abs(x)*(w-width/2)
-                            x2 = x/abs(x)*(abs(x)-slotWidth/2+width/2)
-                            if width >slotRad*2:
-                                self.add(RoundedRect(pos+V(x2, y), centred=True, width=width, height=slotHeight, rad=slotRad, side='in'))
-
+                    if type(slotWidth) is list:
+                        s = (float(spacingx) - sum(slotWidth))
+                        l = len(slotWidth)
+                        ds = s/(l)
+                        tot=0.5*ds-spacingx/2
+                        for k in range(0, l):
+                            dx=tot+slotWidth[k]/2
+                            self.add(RoundedRect(pos+V(x+dx, y), centred=True, width=slotWidth[k], height=slotHeight, rad=slotRad, side='in'))
+                            tot+=slotWidth[k]+ds
                     else:
-                        self.add(RoundedRect(pos+V(x, y), centred=True, width=slotWidth, height=slotHeight, rad=slotRad, side='in'))
+                        if crop and abs(x)+slotWidth/2>w:
+                            if abs(x)+slotWidth/2>w:
+                                width = (w - abs(x))*2
+                                print ("Width="+str(width))
+#                               x2 = x/abs(x)*(w-width/2)
+                                x2 = x/abs(x)*(abs(x)-slotWidth/2+width/2)
+                                if width >slotRad*2:
+                                    self.add(RoundedRect(pos+V(x2, y), centred=True, width=width, height=slotHeight, rad=slotRad, side='in'))
+
+                        else:
+                            self.add(RoundedRect(pos+V(x, y), centred=True, width=slotWidth, height=slotHeight, rad=slotRad, side='in'))
 
 class RectSpeakerGrill(Pathgroup):
     def __init__(self,pos, width, height, holerad, spacing, **config):
