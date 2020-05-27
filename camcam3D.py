@@ -17,8 +17,7 @@
 
 #    Author Dave Ansell
 
-
-
+__camcam3d__ =1
 from minivec import *
 from path import *
 from cc3d import *

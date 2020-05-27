@@ -18,7 +18,11 @@
 from path import *
 from shapes import *
 from parts import *
-from cc3d import *
+try:
+    __camcam3d__
+    from cc3d import *
+except NameError:
+    pass
 class RoundedBoxEnd(Part):
     def __init__(self,pos, layer, name, width, centre_height, centre_rad, centre_holerad, side_height, bend_rad=0,  sidemodes=False, thickness=6, tab_length=False,  fudge=0, **config):
         self.init(config)

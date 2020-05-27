@@ -696,6 +696,59 @@ class RoundSlitGrill(Pathgroup):
             if w:
                 self.add(RoundedRect(pos+V(0, y), centred=True, width=2*w, height=slotWidth, rad=slotWidth/2, side='in'))
 
+class RoundSlotsGrill(Pathgroup):
+    def __init__(self,pos, rad, slotWidth, slotHeight, slotRad, spacingx, spacingy, **config):
+        self.init(config)
+        """Cut a circular grid with radius :param rad: of slots with width :param slotWidth:, height :param slotHeight: radius :param slotRad: and :param spacing:"""+self.otherargs
+        if 'pattern' in config:
+            pattern = config['pattern']
+        else:
+            pattern = 'offset'
+        if 'crop' in config:
+            crop = config['crop']
+        else:
+            crop = True
+        numRows = int(rad*2/spacingy)
+        o = float(numRows)*spacingy/2
+        for i in range(0,numRows+1):
+            y = -o + i*spacingy
+            w = math.sqrt(float(rad)**2-y**2)
+            if pattern=='square':
+                numCols = int(w/spacingx)*2
+            elif pattern=='offset':
+                numCols = int(w/spacingx) 
+                if numCols%1 != i%1:
+                    numCols-=1
+            elif pattern=='best_fit':
+                numCols = int(w*2/spacingx) 
+            if crop:
+                numCols+=2
+            ox = float(numCols)*spacingx/2
+            if w:
+                for j in range(0, numCols+1):
+                    x = -ox + j*spacingx
+                    if type(slotWidth) is list:
+                        s = (float(spacingx) - sum(slotWidth))
+                        l = len(slotWidth)
+                        ds = s/(l)
+                        tot=0.5*ds-spacingx/2
+                        for k in range(0, l):
+                            dx=tot+slotWidth[k]/2
+                            self.add(RoundedRect(pos+V(x+dx, y), centred=True, width=slotWidth[k], height=slotHeight, rad=slotRad, side='in'))
+                            tot+=slotWidth[k]+ds
+                    else:
+                        if crop and abs(x)+slotWidth/2>w:
+                            if abs(x)+slotWidth/2>w:
+                                width = (w - abs(x))*2
+                                print ("Width="+str(width))
+#                               x2 = x/abs(x)*(w-width/2)
+                                x2 = x/abs(x)*(abs(x)-slotWidth/2+width/2)
+                                if width >slotRad*2:
+                                    self.add(RoundedRect(pos+V(x2, y), centred=True, width=width, height=slotHeight, rad=slotRad, side='in'))
+
+                        else:
+                            self.add(RoundedRect(pos+V(x, y), centred=True, width=slotWidth, height=slotHeight, rad=slotRad, side='in'))
+
 class RectSpeakerGrill(Pathgroup):
     def __init__(self,pos, width, height, holerad, spacing, **config):
         self.init(config)
