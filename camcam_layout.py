@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # This file is part of CamCam.
 
@@ -472,7 +472,9 @@ if camcam.command_args.layout_file:
             return input
 
     with open(camcam.command_args.layout_file, "r") as read_file:
-        layoutData = byteify(json.load(read_file))
+        #layoutData = byteify(json.load(read_file))
+        layoutData = json.load(read_file)
+        print (layoutData)
     print(list(layoutData.keys()))
     if len(args)==0:
         args = layoutData['args']
