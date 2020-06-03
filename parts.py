@@ -67,6 +67,18 @@ class Switch(Part):
                     self.add(ClearRect(V(0,0), width=data['cutout_width'], height=data['cutout_height'], centred=True),layers=l)
                 if task=='clearance':
                     self.add(ClearRect(V(0,0), width=data['clearance_width'], height=data['clearance_height'], centred=True),layers=l)
+        if config['switch_type']=='arcade':
+            print( "Arcade siwthc")
+            for l in list(config['layer_config'].keys()):
+                task =  config['layer_config'][l]
+                print (str(l)+"task="+str(task))
+                if task=='cutout':
+                    print("cutout="+config['layer_config'][l])
+                    self.add(Hole(V(0,0), rad=25.0/2), layers=l)
+                elif task=='clearance':
+                    self.add(Hole(V(0,0), rad=35.0/2), layers=l)
+
+            self.add_bom('arcade_switch', 1)
 
 class SevenSegmentDisplay(Part):
     def __init__(self, pos, **config):
