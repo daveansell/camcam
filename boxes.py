@@ -21,8 +21,9 @@ from parts import *
 try:
     __camcam3d__
     from cc3d import *
+    has3D = True
 except NameError:
-    pass
+    has3D = False
 class RoundedBoxEnd(Part):
     def __init__(self,pos, layer, name, width, centre_height, centre_rad, centre_holerad, side_height, bend_rad=0,  sidemodes=False, thickness=6, tab_length=False,  fudge=0, **config):
         self.init(config)
@@ -786,13 +787,15 @@ class ArbitraryBox(Part):
 #                if face['good_direction']==face['wood_direction'] and face['wood_direction']==1:
 #               if not ((face['wdir']=='cw')==face['good_direction']==face['wood_direction'] and flipped==-1):
       #          p.isback=True
-            p.border.translate3D([0,0,face['thickness']])
+            if has3D:
+                p.border.translate3D([0,0,face['thickness']])
         #        p.rotate3D([0, 180, 0], self.pos)
       #  elif (hasattr(p, 'isback') and p.isback is True):
    #         p.rotate3D([0, 180, 0],self.pos)
         #        p.translate3D([0,0,-face['thickness']])
-        p.matrix3D([xs,ys,zs,qs],self.pos)
-        p.translate3D(face['origin'])
+        if has3D:
+            p.matrix3D([xs,ys,zs,qs],self.pos)
+            p.translate3D(face['origin'])
 
     def tuple_to_vec(self, t):
         return V(t[0], t[1], t[2])

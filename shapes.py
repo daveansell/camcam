@@ -815,7 +815,7 @@ class FilledCircle(Pathgroup):
     def __render__(self,config):
         c=self.circle.generate_config(config)
         self.paths=[]
-        if 'partial_fill' in c and c['partial_fill'] and c['partial_fill'] >0:
+        if 'partial_fill' in c and c['partial_fill'] and c['partial_fill']>0:
             steps = math.ceil((c['partial_fill'] - c['cutterrad']) /c['cutterrad']/1.2)
             if 'overview' in config and config['overview'] or c['cutterrad']<0.1:
                 steps=1
