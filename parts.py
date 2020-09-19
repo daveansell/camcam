@@ -78,6 +78,7 @@ class Switch(Part):
                     task =  config['layer_config'][l]
                     if task=='cutout':
                         self.add(Hole(V(0,0), rad=roundrocker_data[config['sub_type']]['rad']), layers=l)
+                        self.add(Hole(V(0,roundrocker_data[config['sub_type']]['rad']-0.5), rad=3.3/2))
                     if task=='clearance':
                         if 'thickness' in config:
                             self.add(Hole(V(0,0), rad=roundrocker_data[config['sub_type']]['clearance'], z1=-thickness + roundrocker_data[config['sub_type']]['panelThickness']), layers=l)
