@@ -72,9 +72,16 @@ class Switch(Part):
             for l in list(config['layer_config'].keys()):
                 task =  config['layer_config'][l]
                 print (str(l)+"task="+str(task))
-                if task=='cutout':
-                    print("cutout="+config['layer_config'][l])
+                if task=='top':
+                    print("top="+config['layer_config'][l])
+                    self.add(RoundedRect(V(0,28.2/2+0.4), width=3.3, height=5.0, centred=True, z1=-4.5, side='in'), layers=l)
+                    self.add(Hole(V(0,0), rad=28.2/2, z1=-4), layers=l)
                     self.add(Hole(V(0,0), rad=25.0/2), layers=l)
+                elif task=='back':
+                    self.add(Hole(V(0,0), rad=26.0/2), layers=l)
+                elif task=='cutout':
+                    self.add(RoundedRect(V(0,28.2/2), width=3.3, height=5.0, centred=True, side='in'), layers=l)
+                    self.add(Hole(V(0,0), rad=28.2/2), layers=l)
                 elif task=='clearance':
                     self.add(Hole(V(0,0), rad=35.0/2), layers=l)
 
