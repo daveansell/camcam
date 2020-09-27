@@ -26,6 +26,7 @@ class Switch(Part):
             config['layer_config']={'base':'clearance', 'perspex':'doubleflat'}
         if 'switch_type' not in config:
             config['switch_type'] = 'IWS_small'
+
         if config['switch_type'] == 'IWS_small':
             self.add_bom('IWS small switch', 1, part_number='59-112', description='Red Round Ip67 Mom Switch Solder Term')
         if config['switch_type'] == 'IWS_small_LED':
@@ -79,6 +80,22 @@ class Switch(Part):
                     self.add(Hole(V(0,0), rad=35.0/2), layers=l)
 
             self.add_bom('arcade_switch', 1)
+
+        elif(config['switch_type']=='round_rocker'):
+            roundrocker_data={
+                    'R13':{'rad':20.2/2, 'extraWidth':2.2, 'extraRad':0.9, 'clearance':25.0/2, 'panelThickness':3.0},
+                    }
+            if('sub_type' in config and config['sub_type'] in roundrocker_data):
+                for l in list(config['layer_config'].keys()):
+                    task =  config['layer_config'][l]
+                    if task=='cutout':
+                        self.add(Hole(V(0,0), rad=roundrocker_data[config['sub_type']]['rad']), layers=l)
+                        self.add(Hole(V(0,roundrocker_data[config['sub_type']]['rad']-0.5), rad=3.3/2))
+                    if task=='clearance':
+                        if 'thickness' in config:
+                            self.add(Hole(V(0,0), rad=roundrocker_data[config['sub_type']]['clearance'], z1=-config['thickness'] + roundrocker_data[config['sub_type']]['panelThickness']), layers=l)
+                        else:
+                            self.add(Hole(V(0,0), rad=roundrocker_data[config['sub_type']]['clearance']), layers=l)
 
 class SevenSegmentDisplay(Part):
     def __init__(self, pos, **config):
