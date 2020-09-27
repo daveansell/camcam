@@ -204,6 +204,9 @@ class Path(object):
     def set_cutter(self, config):
         if 'forcecutter' in config and config['forcecutter'] is not None:
             cutter = config['forcecutter']
+        elif 'partcutter' in config and config['partcutter'] is not None:
+            print ("Partcutter="+str(config['partcutter']))
+            cutter = config['partcutter']
         else:
             cutter=config['cutter']
         if cutter in milling.tools:
@@ -988,7 +991,7 @@ class Path(object):
                 config['z1'] = - thickness
         return config
 
-    def fill_path(self, side, cutterrad, distance=False, step=False, poly=False):
+    def fill_path(self, side, cutterrad, distance=False, step=False, cutDirection=None):
         if step==False:
             step = cutterrad*0.5
         ret=[self]
@@ -1005,25 +1008,29 @@ class Path(object):
         else:
             steps = 100
         polTree = self.fill_path_step( side, step, poly, steps)
-        polPaths = self.make_fill_path(polTree)
+        polPaths = self.make_fill_path(polTree, cutDirection)
         fillPath = Pathgroup()
         for p in polPaths:
-            path = Path(closed=False, side='on', z1=self.z1)
+            path = Path(closed=True, side='on', z1=self.z1)
             path.add_points(p)
             fillPath.add(path)
         return fillPath
 
-    def make_fill_path(self, polTree):
+    def make_fill_path(self, polTree, cutDirection):
         ret=[]
         for section in polTree[1]:
-            ret+=self.make_fill_path(section)
+            ret+=self.make_fill_path(section, cutDirection)
         if len(ret)==0:
             ret.append([])
         elif ret[0] is None:
             ret[0]=[]
         if type(polTree[0]) is shapely.geometry.LineString:
+            newPoints = []
             for p in polTree[0].coords:
-                ret[0].append(PSharp(V(p[0], p[1])))
+                newPoints.append(PSharp(V(p[0], p[1])))
+            if (self.signed_area(polTree[0])>0) != (cutDirection=='ccw'):
+                newPoints.reverse()
+            ret[0]+=newPoints
         return ret
 
     def signed_area(self,pr):
@@ -1238,7 +1245,11 @@ class Path(object):
             c['partial_fill']=None
             offpath.output_path(c)
             out.append( offpath.render_path(offpath,c))
-        return [config['cutter'],out]
+        if 'partcutter' in config and config['partcutter'] is not None:
+            key = config['partcutter']
+        else:
+            key = config['cutter']
+        return [key,out]
 
 
   #  def fill_path(self, path,  direction='in', distance=0, inner_paths=False, **config):
@@ -2572,6 +2583,10 @@ class Plane(Part):
         if part.layer in layers and part.layer is not False and part.layer is not None:
             paths=layers[part.layer]
             config.update(self.get_layer_config(part.layer))
+            if hasattr(part, 'cutter'):
+                config['partcutter']=part.cutter
+            else:
+                config['partcutter']=None
         elif part.layer is not False and part.layer is not None:
             paths=[]
             config.update(self.get_layer_config(part.layer))
