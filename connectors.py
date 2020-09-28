@@ -64,7 +64,7 @@ class XLR(Part):
         if 'type' in config:
             d=data[config['type']]
             self.add(Hole(V(0,0), d['r']))
-            self.add(Hole(d['h'],3.3/2))
-            self.add(Hole(-d['h'],3.3/2))
+            self.add(Hole(d['h'],3.3/2, z1=-1))
+            self.add(Hole(-d['h'],3.3/2, z1=-1))
         self.add_bom('XLR-'+str(config['type']),1,'XLR-'+str(config['type']))
         #position, type="male/female"
