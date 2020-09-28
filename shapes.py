@@ -720,12 +720,14 @@ class RoundSlotsGrill(Pathgroup):
                 if numCols%1 != i%1:
                     numCols-=1
             elif pattern=='best_fit':
-                numCols = int(w*2/spacingx) 
+                print( "i="+str(i)+"fCols = "+str(w*2/spacingx)+" iCol="+str(int(w*2/spacingx)))
+                numCols = int(w*2/spacingx)
             if crop:
                 numCols+=2
-            ox = float(numCols)*spacingx/2
+            ox = (float(numCols-1)*spacingx)/2
+            print( ox)
             if w:
-                for j in range(0, numCols+1):
+                for j in range(-1, numCols+1):
                     x = -ox + j*spacingx
                     if type(slotWidth) is list:
                         s = (float(spacingx) - sum(slotWidth))
@@ -740,7 +742,7 @@ class RoundSlotsGrill(Pathgroup):
                         if crop and abs(x)+slotWidth/2>w:
                             if abs(x)+slotWidth/2>w:
                                 width = (w - abs(x))*2
-                                print ("Width="+str(width))
+                  #              print ("Width="+str(width))
 #                               x2 = x/abs(x)*(w-width/2)
                                 x2 = x/abs(x)*(abs(x)-slotWidth/2+width/2)
                                 if width >slotRad*2:
