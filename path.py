@@ -18,6 +18,7 @@
 import os
 import math
 import shapely.geometry
+import shapely.ops
 
 from minivec import Vec, Mat
 import Milling
@@ -203,6 +204,9 @@ class Path(object):
     def set_cutter(self, config):
         if 'forcecutter' in config and config['forcecutter'] is not None:
             cutter = config['forcecutter']
+        elif 'partcutter' in config and config['partcutter'] is not None:
+            print ("Partcutter="+str(config['partcutter']))
+            cutter = config['partcutter']
         else:
             cutter=config['cutter']
         if cutter in milling.tools:
@@ -404,6 +408,7 @@ class Path(object):
         for i in range(1, len(points)):
             self.points.append(points[i])
         self.reset_points()
+
     def close_intersect(self):
         joint=self.intersect_lines(self.points[len(self.points)-2].pos, self.points[len(self.points)-1].pos, self.points[0].pos, self.points[1].pos)
         if joint is not False:
@@ -421,13 +426,16 @@ class Path(object):
         if (self.ccw(bp, bq, ap) * self.ccw(bp, bq, aq) > 0):
             return False
         return True;
-    def self_intersects(self):
+
+    def self_intersects(self, points):
         ret=[]
         l=len(self.points)
-        for i in range(0, len(self.points)):
-            for j in range(i+1, len(self.points)):
-                if self.intersects(self.points[i], self.points[(i-1)%l], self.points[j], self.points[(j-1)%l]):
-                    ret.append( [i,j, self.intersect_lines(self.points[i], self.points[(i-1)%l], self.points[j], self.points[(j-1)%l])])
+        for i in range(0, len(points)):
+            for j in range(i+1, len(points)):
+                if self.intersects(points[i], points[(i-1)%l], points[j], points[(j-1)%l]):
+                    intersection = self.intersect_lines(points[i], points[(i-1)%l], points[j], points[(j-1)%l])
+                    if (intersection-points[i]).length()>0.01 and (intersection-points[(i-1)%l]).length()>0.01:
+                        ret.append( [i,j, intersection])
         return ret
 
 
@@ -932,7 +940,7 @@ class Path(object):
             polygonised = self.polygonise( 1.0)
             points = []
             for p in polygonised:
-                points.append(p)
+                points.append([p[0], p[1]])
             self.shapelyPolygon = shapely.geometry.LineString(points)
             self.rawPolygon = polygonised
 
@@ -983,46 +991,114 @@ class Path(object):
                 config['z1'] = - thickness
         return config
 
-    def fill_path(self, side, cutterrad, distance=False, step=False, poly=False):
+    def fill_path(self, side, cutterrad, distance=False, step=False, cutDirection=None):
         if step==False:
-            step = cutterrad
+            step = cutterrad*0.5
         ret=[self]
-        path = self.polygonise(2*cutterrad)
-
-        path = self.offset_path(side, 2*cutterrad)
-        if distance !=False and distance< 2*cutterrad:
-            return ret
+        self.makeShapely()
+        poly = shapely.geometry.LineString(self.shapelyPolygon.coords[:] + self.shapelyPolygon.coords[0:1])
+        thisdir=self.find_direction({})
+        if (thisdir=='ccw') == (side=='in'):
+            cutside='right'
         else:
-            offset = 2*step
-    def fill_path_step(self, side, cutterrad, distance, step):
-        ret=[self]
-        newdist=distance-step
-        if distance-step<0:
-            return [self]
-        path=self.offset_path(side, step)
-        paths = path.clean_simplepath()
-        for p in paths:
-            # check if the path has the same curl direction as the parent we carry on, else we dump it
-            ret.append(p.fill_path_step(side, cutterad, newdist, step))
+            cutside='left'
+        if distance is not False:
+            steps = int(distance/step)+1
+            step = distance/steps
+        else:
+            steps = 100
+        polTree = self.fill_path_step( side, step, poly, steps)
+        polPaths = self.make_fill_path(polTree, cutDirection)
+        fillPath = Pathgroup()
+        for p in polPaths:
+            path = Path(closed=True, side='on', z1=self.z1)
+            path.add_points(p)
+            fillPath.add(path)
+        return fillPath
 
+    def make_fill_path(self, polTree, cutDirection):
+        ret=[]
+        for section in polTree[1]:
+            ret+=self.make_fill_path(section, cutDirection)
+        if len(ret)==0:
+            ret.append([])
+        elif ret[0] is None:
+            ret[0]=[]
+        if type(polTree[0]) is shapely.geometry.LineString:
+            newPoints = []
+            for p in polTree[0].coords:
+                newPoints.append(PSharp(V(p[0], p[1])))
+            if (self.signed_area(polTree[0])>0) != (cutDirection=='ccw'):
+                newPoints.reverse()
+            ret[0]+=newPoints
+        return ret
+
+    def signed_area(self,pr):
+        """Return the signed area enclosed by a ring using the linear time
+        algorithm at http://www.cgafaq.info/wiki/Polygon_Area. A value >= 0
+        indicates a counter-clockwise oriented ring."""
+        xs, ys = map(list, zip(*pr.coords))
+        xs.append(xs[1])
+        ys.append(ys[1])
+        return sum(xs[i]*(ys[i+1]-ys[i-1]) for i in range(1, len(pr.coords)))/2.0
+    def fill_path_step(self, cutside, step, polygon, stepcount):
+        stepcount-=1;
+        if polygon.is_empty:
+            return [[],[]]
+        if (cutside=='in') == (self.signed_area(polygon)>0):
+                side='left'
+        else:
+                side='right'
+        new=polygon.parallel_offset(step, side, join_style=2)
+        ret=[]
+
+        if stepcount==0:
+            pass
+        elif type(new) is shapely.geometry.LineString:
+            ret.append(self.fill_path_step( cutside, step, new, stepcount))
+        elif type(new) is shapely.geometry.MultiLineString:
+            for p in new:
+                ret.append(self.fill_path_step( cutside, step, p, stepcount))
+        return [polygon, ret]
     def _key_cross(self, a):
         return a[0]
-    # If a simplepath crosses itself
-    def clean_simplepath(self):
-        intersections = self.self_intersects()
-        crosses = []
-        for i,intersection in intersections.items():
-            crosses.append([intersection[0],intersection[1],i,0,intersection[2],0])
-            crosses.append([intersection[1],intersection[0],i,1,intersection[2],0])
-        sorted(crosses, key=self._key_crosses)
-        points = self.points
-        paths = []
-        while len(points):
-            pass
+    # If a simplepath crosses itself split it into many paths
+    def clean_simplepath(self, resolution, direction):
+        self.makeShapely()
+        mls = shapely.ops.unary_union(lr)
+        print (lr.is_simple)
+        print (mls.geom_type)
+        print(shapely.ops.polygonize(mls))
+        for polygon in shapely.ops.polygonize(mls):
+            print ("y="+str(polygon))
+#        points = copy.copy(self.polygon[resolution])
+#        intersections = self.self_intersects(points)
+#        crosses = []
+#        print (intersections)
+#        for i  in range(0,len(intersections)):
+#            print (i)
+#            intersection=intersections[i]
+#            crosses.append([intersection[0],intersection[1],i,0,intersection[2],0])
+#            crosses.append([intersection[1],intersection[0],i,1,intersection[2],0])
+#        sorted(crosses, key=self._key_cross)
+#        print( crosses)
+#       # points = self.points
+#        if len(crosses)==0:
+#            return [points]
+
+ #       paths = [[]]
+        # keep going while we have points in the bank
+        #traverse_loop(0, paths[0], crosses, paths, points):
 
 
-    def traverse_loop(self, crosses, direction):
-        pass
+    def traverse_loop(self, c, path, crosses, direction, paths, points):
+        path.append(crosses[c][4])
+        p = crosses[c][0]
+        while crosses[(c+1)%len(crosses)][0]!=p:
+            path.append(points[p])
+            p+=direction
+            
+
 
 #  output the path
     def render(self,pconfig):
@@ -1169,37 +1245,39 @@ class Path(object):
             c['partial_fill']=None
             offpath.output_path(c)
             out.append( offpath.render_path(offpath,c))
-        return [config['cutter'],out]
+        if 'partcutter' in config and config['partcutter'] is not None:
+            key = config['partcutter']
+        else:
+            key = config['cutter']
+        return [key,out]
 
 
-    def fill_path(self, path,  direction='in', distance=0, inner_paths=False, **config):
-        done = False
-        tpath=[path]
-        i=0
-        paths = [[path]]
-        paths.extend(copy.copy(inner_paths))
-        startdir=path.find_direction()
-        segments=[]
+  #  def fill_path(self, path,  direction='in', distance=0, inner_paths=False, **config):
+  #      done = False
+  #      tpath=[path]
+  #      i=0
+  #      paths = [[path]]
+  #      paths.extend(copy.copy(inner_paths))
+  #      startdir=path.find_direction()
+  #      segments=[]
         # we start with a list of paths and then offset them and check wiheter they intersect with themselves or any of the newly made paths
 
         # if they do intersect then we slice them up into smaller sections and check they still have the same sense as before and drop the onces which didn't
 
-        while done==False:
-            # iterate t
-            for j in range(len(paths)-1,-1):
-                paths[j].append(tpath.offset_path(ns, step, c))
-                n = len(paths[j])-1
-                paths[j][n].output_path(config)
-                intersections = paths[j][n].self_intersects()
-                if len(intersections)>0:
+   #     while done==False:
+   #         # iterate t
+   #         for j in range(len(paths)-1,-1):
+   #             paths[j].append(tpath.offset_path(ns, step, c))
+   #             n = len(paths[j])-1
+   #             paths[j][n].output_path(config)
+   #             intersections = paths[j][n].self_intersects()
+    #            if len(intersections)>0:
+#
+#                    pass
+#                else:
+#                    if self.find_direction()!=startdir:
+ #                       done=True
 
-                    pass
-                else:
-                    if self.find_direction()!=startdir:
-                        done=True
-
-    def self_intersects(self):
-        return False
 
     def other_intersects(self, paths, j, n):
         pass
@@ -2505,6 +2583,10 @@ class Plane(Part):
         if part.layer in layers and part.layer is not False and part.layer is not None:
             paths=layers[part.layer]
             config.update(self.get_layer_config(part.layer))
+            if hasattr(part, 'cutter'):
+                config['partcutter']=part.cutter
+            else:
+                config['partcutter']=None
         elif part.layer is not False and part.layer is not None:
             paths=[]
             config.update(self.get_layer_config(part.layer))

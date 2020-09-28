@@ -642,7 +642,7 @@ class PIncurve(PSharp):
             startcurve=self.pos-(self.pos-lastpoint).normalize()*dl
             endcurve = self.pos+(nextpoint-self.pos).normalize()*dl
             # If these are straight there should be no curve or the maths blows up so just behave like a normal point
-            if(((startcurve + endcurve)/2-self.pos).length()==0 or angle==0 or angle==180):
+            if(((startcurve + endcurve)/2-self.pos).length()<0.001 or angle==0 or angle==180):
                 return [Line(self.last().end(),self.pos)]
             else:
                 d = math.sqrt(dl*dl+self.radius*self.radius)/((startcurve + endcurve)/2-self.pos).length()
@@ -657,10 +657,18 @@ class PIncurve(PSharp):
                     tempd='ccw'
                 else:
                     tempd='cw'
-                return [
-                        Line(self.last().end(),startcurve),
-                        Arc(startcurve, endcurve, centre,tempd),
-                ]
+                print ([
+                    "Line("+str(self.last().end())+","+str(startcurve)+")",
+                    "Arc("+str(startcurve)+", "+str(endcurve)+", "+str(centre)+","+str(tempd)+"),"
+                ])
+                if( endcurve-startcurve).length()>0.01:
+                    return [
+                         Line(self.last().end(),startcurve),
+                         Arc(startcurve, endcurve, centre,tempd),
+                 ]
+                else:
+                    return [Line(self.last().end(),startcurve),
+                            Line(startcurve,endcurve)]
             frompoint=endcurve
         elif next(self)==None:
             return [Line(self.last().origin(), self.pos)]
@@ -795,7 +803,14 @@ class POutcurve(Point):
     def offset(self, side, distance, direction):
         t=copy.copy(self)
         self.setangle()
-        if self.corner_side(side, direction)=='external':
+        if self.direction in ['cw', 'ccw']:
+            if (self.direction == 'cw') == (side=='left'):
+                extint='external'
+            else:
+                extint='internal'
+        else:
+            extint= self.corner_side(side, direction)
+        if extint =='external':
             t.radius += distance
         elif(self.radius>=distance):
             t.radius -= distance
