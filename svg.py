@@ -217,7 +217,12 @@ class SVGimport(Pathgroup):
             elif items[i]=='v':
                 i+=1
                 while i<len(items) and self.is_number(items[i]):
-                    pos+=V(0, -float(items[0]))
+                    try:
+                        pos+=V(0, -float(items[i]))
+                    except ValueError:
+                        print (d)
+                    
+                        raise( ValueError);
                     outpath.add_point(self.svgtransform(pos, transform))
                     i+=1
             elif items[i]=='z' or items[i]=='Z':
