@@ -657,10 +657,6 @@ class PIncurve(PSharp):
                     tempd='ccw'
                 else:
                     tempd='cw'
-                print ([
-                    "Line("+str(self.last().end())+","+str(startcurve)+")",
-                    "Arc("+str(startcurve)+", "+str(endcurve)+", "+str(centre)+","+str(tempd)+"),"
-                ])
                 if( endcurve-startcurve).length()>0.01:
                     return [
                          Line(self.last().end(),startcurve),
