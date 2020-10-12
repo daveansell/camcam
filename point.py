@@ -778,7 +778,7 @@ class POutcurve(Point):
         return t
     def origin(self, forward=True):
         seg=self.makeSegment({'findOrigin':True})
-        if forward:
+        if forward == self.reverse:
             return seg[1].cutfrom
         else:
             return seg[1].cutto
