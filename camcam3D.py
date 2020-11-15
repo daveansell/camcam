@@ -16,8 +16,9 @@
 #    along with CamCam.  If not, see <http://www.gnu.org/licenses/>.
 
 #    Author Dave Ansell
-
-__camcam3d__ =1
+from camcamconfig import *
+has3D=1
+#print("camcam3d"+str(__camcam3d__))
 from minivec import *
 from path import *
 from cc3d import *
