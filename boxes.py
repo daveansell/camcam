@@ -1045,18 +1045,19 @@ class ArbitraryBox(Part):
                         # this is being cut from the side we are cutting:
 
                         lineside=face['lineside']
+                        if cutside0=='left' and joint_type=='concave':
+                            cutside='right'
+                        elif cutside0=='right' and joint_type=='concave':
+                            cutside='left'
+                        else:
+                            cutside=cutside0
+
                         if thisside[3]*face['good_direction']*face['intfact']<0:
 # THIS PUTS THE SLOPE ON THE WRONG PART OF THE JOINT
 # create a new mode in finger joints called int and have it behave properly
                             newpoints = AngledFingerJoint(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, fudge, material_thickness=face['thickness'])
                             part.add( AngledFingerJointSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 3.17/2, angle, lineside, fudge, material_thickness=face['thickness']))
                         else:
-                            if cutside0=='left' and joint_type=='concave':
-                                cutside='right'
-                            elif cutside0=='right' and joint_type=='concave':
-                                cutside='left'
-                            else:
-                                cutside=cutside0
                             newpoints = AngledFingerJointNoSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, fudge, material_thickness=face['thickness'])
                     else:
                         if cutside0=='left' and joint_type=='concave':
