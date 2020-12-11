@@ -2223,6 +2223,24 @@ class RectAlong(Path):
         self.add_point(start-perp*w)
         self.add_point(PIncurve(start-perp*w-para*rad, radius=rad))
 
+class ParametricFunctionAlongPath(list):
+    def __init__(self, pathFunc, paramFunc, pstart, pend, **config):
+        if 'step' in config:
+            step=config['step']
+        else:
+            step = (float(pend)-float(pstart))/100
+        p = pstart
+        while p<pend:
+            along = (pathFunc(p+step/4)-pathFunc(p-step/4)).normalize()
+            perp = rotate(along, 90)
+            self.append( PSharp(pathFunc(p) + perp * paramFunc(p) ))
+            p+=step 
+        p = pend
+        along = (pathFunc(p+step/4)-pathFunc(p-step/4)).normalize()
+        perp = rotate(along, 90)
+        self.append( PSharp(pathFunc(p) + perp * paramFunc(p) ))
+
+
 class ParametricFunction(list):
     def __init__(self, pos, pstart, pend, func, **config):
         if 'step' in config:
@@ -2231,9 +2249,9 @@ class ParametricFunction(list):
             step = (float(pend)-float(pstart))/100
         p = pstart
         while p<pend:
-            self.append(pos+func(p))
+            self.append(PSharp(pos+func(p)))
             p+=step
-        self.append(pos+func(pend))
+        self.append(PSharp(pos+func(pend)))
 class RadialParametricFunction(list):
     def __init__(self, pos, func, **config):
         if 'pstart' in config:

@@ -374,6 +374,11 @@ class Path(object):
         self.has_changed()
         self.reset_points()
 
+    def get_bounding_box(self):
+        self.polygonise()
+        return self.boundingBox
+
+
     def get_last_vec(self,points=False):
         if points==False:
             points=self.points

@@ -18,7 +18,7 @@
 #    Author Dave Ansell
 
 
-
+from camcamconfig import *
 from minivec import *
 from path import *
 from shapes import *

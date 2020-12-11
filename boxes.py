@@ -14,16 +14,19 @@
 #    along with CamCam.  If not, see <http://www.gnu.org/licenses/>.
 
 #    Author Dave Ansell
-
+from camcamconfig import *
 from path import *
 from shapes import *
 from parts import *
-try:
-    __camcam3d__
-    from cc3d import *
-    has3D = True
-except NameError:
-    has3D = False
+#print ("********has3D"+str(__camcam3d__))
+#try:
+#    __camcam3d__
+#    from cc3d import *
+#    has3D = True
+#except NameError:
+#    has3D = False
+from cc3d import *
+has3D = True
 class RoundedBoxEnd(Part):
     def __init__(self,pos, layer, name, width, centre_height, centre_rad, centre_holerad, side_height, bend_rad=0,  sidemodes=False, thickness=6, tab_length=False,  fudge=0, **config):
         self.init(config)
@@ -1042,6 +1045,13 @@ class ArbitraryBox(Part):
                         # this is being cut from the side we are cutting:
 
                         lineside=face['lineside']
+                        if cutside0=='left' and joint_type=='concave':
+                            cutside='right'
+                        elif cutside0=='right' and joint_type=='concave':
+                            cutside='left'
+                        else:
+                            cutside=cutside0
+
                         if thisside[3]*face['good_direction']*face['intfact']<0:
 # THIS PUTS THE SLOPE ON THE WRONG PART OF THE JOINT
 # create a new mode in finger joints called int and have it behave properly

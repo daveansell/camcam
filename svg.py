@@ -20,6 +20,7 @@
 from lxml import etree
 from path import *
 import re
+import codecs
 
 class SVGimport(Pathgroup):
     def __init__(self,pos, filename, paths, **config):
@@ -41,9 +42,15 @@ class SVGimport(Pathgroup):
             match_type = config['match_type']
         else:
             match_type = 'exact'
-        with open( filename, 'r') as infile:
-            tree = etree.parse(infile)
-            root = tree.getroot()
+        extraargs = {}
+        if 'encoding' in config:
+            infile = codecs.open(filename, 'r', encoding=config['encoding'])
+        else:
+            infile =  open( filename, 'r', **extraargs)
+
+        tree = etree.parse(infile)
+        root = tree.getroot()
+
         outpaths=[]
         if paths=='all':
             outpaths= tree.xpath('.//svg:path',namespaces=nsmap)
