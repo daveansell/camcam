@@ -1857,8 +1857,10 @@ class Magnetometer(Part):
         if countersink_depth:
             self.add(Rect(d['cutoutCentre'], centred=True, width = d['width'], height=d['height'], z1=-countersink_depth, partial_fill = min(d['width'], d['height'])/2))
 
-class LazySusan:
+class LazySusan(Part):
     def __init__(self, pos, bearingType, **config):
+        self.init(config)
+        self.translate(pos)
         if 'innerLayer' in config:
             innerLayer = config['innerLayer']
         else:
@@ -1873,14 +1875,14 @@ class LazySusan:
             innerLayerRotate = 0
 
         data ={
-                'HD300mm':{ 'InnerHoleRad':257.0/2, 'OuterHoleRad':286.0/2, 'outerRad':300, 'innerRad':245.0/2, 'numHoles':6},
-                'HD255mm':{ 'InnerHoleRad':207.0/2, 'OuterHoleRad':241.0/2, 'outerRad':255.0/2, 'innerRad':195.0/2, 'numHoles':6},
-                'HD200mm':{ 'InnerHoleRad':157.0/2, 'OuterHoleRad':186.0/2, 'outerRad':200.0/2, 'innerRad':145.0/2, 'numHoles':6},
-                'HD140mm':{ 'InnerHoleRad':102.0/2, 'OuterHoleRad':126.0/2, 'outerRad':140.0/2, 'innerRad':90.0/2, 'numHoles':4},
+                'HD300mm':{ 'InnerHoleRad':257.0/2, 'OuterHoleRad':286.0/2, 'outerRad':300, 'innerRad':245.0/2, 'numHoles':6, 'holeRad':5.0/2},
+                'HD255mm':{ 'InnerHoleRad':207.0/2, 'OuterHoleRad':241.0/2, 'outerRad':255.0/2, 'innerRad':195.0/2, 'numHoles':6, 'holeRad':5.0/2},
+                'HD200mm':{ 'InnerHoleRad':157.0/2, 'OuterHoleRad':186.0/2, 'outerRad':200.0/2, 'innerRad':145.0/2, 'numHoles':6, 'holeRad':5.0/2},
+                'HD140mm':{ 'InnerHoleRad':102.0/2, 'OuterHoleRad':126.0/2, 'outerRad':140.0/2, 'innerRad':90.0/2, 'numHoles':4, 'holeRad':5.0/2},
         }
-        if 'bearingType' in data:
-            self.d = d[config['bearingType']] 
+        if bearingType in data:
+            self.d = data[bearingType] 
             anglestep = 360.0/self.d['numHoles']
             for i in range(0, self.d['numHoles']):
-                self.add(Hole(rotate(V(0, self.d['InnerHoleRad']), i*anglestep +innerLayerRotate), rad = self.d['holeRad']), layer=innerLayer)
-                self.add(Hole(rotate(V(0, self.d['OuterHoleRad']), i*anglestep), rad = self.d['holeRad']), layer=outerLayer)
+                self.add(Hole(rotate(V(0, self.d['InnerHoleRad']), i*anglestep +innerLayerRotate), rad = self.d['holeRad']), innerLayer)
+                self.add(Hole(rotate(V(0, self.d['OuterHoleRad']), i*anglestep), rad = self.d['holeRad']), outerLayer)
