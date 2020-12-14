@@ -1861,3 +1861,33 @@ class Magnetometer(Part):
         self.add(RoundedRect(V(0, d['solder_y']), centred=True, width = d['solder_width'], height=3.3, z1=- countersink_depth-2, side='in'), layer)
         if countersink_depth:
             self.add(Rect(d['cutoutCentre'], centred=True, width = d['width'], height=d['height'], z1=-countersink_depth, partial_fill = min(d['width'], d['height'])/2))
+
+class LazySusan(Part):
+    def __init__(self, pos, bearingType, **config):
+        self.init(config)
+        self.translate(pos)
+        if 'innerLayer' in config:
+            innerLayer = config['innerLayer']
+        else:
+            innerLayer = []
+        if 'outerLayer' in config:
+            outerLayer = config['outerLayer']
+        else:
+            outerLayer=[]
+        if 'innerLayerRotate' in config:
+            innerLayerRotate = config['innerLayerRotate']
+        else:
+            innerLayerRotate = 0
+
+        data ={
+                'HD300mm':{ 'InnerHoleRad':257.0/2, 'OuterHoleRad':286.0/2, 'outerRad':300, 'innerRad':245.0/2, 'numHoles':6, 'holeRad':5.0/2},
+                'HD255mm':{ 'InnerHoleRad':207.0/2, 'OuterHoleRad':241.0/2, 'outerRad':255.0/2, 'innerRad':195.0/2, 'numHoles':6, 'holeRad':5.0/2},
+                'HD200mm':{ 'InnerHoleRad':157.0/2, 'OuterHoleRad':186.0/2, 'outerRad':200.0/2, 'innerRad':145.0/2, 'numHoles':6, 'holeRad':5.0/2},
+                'HD140mm':{ 'InnerHoleRad':102.0/2, 'OuterHoleRad':126.0/2, 'outerRad':140.0/2, 'innerRad':90.0/2, 'numHoles':4, 'holeRad':5.0/2},
+        }
+        if bearingType in data:
+            self.d = data[bearingType] 
+            anglestep = 360.0/self.d['numHoles']
+            for i in range(0, self.d['numHoles']):
+                self.add(Hole(rotate(V(0, self.d['InnerHoleRad']), i*anglestep +innerLayerRotate), rad = self.d['holeRad']), innerLayer)
+                self.add(Hole(rotate(V(0, self.d['OuterHoleRad']), i*anglestep), rad = self.d['holeRad']), outerLayer)
