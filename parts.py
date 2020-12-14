@@ -158,14 +158,18 @@ class TightHole(Pathgroup):
         self.init(config)
         self.pos=pos
         self.rad = rad
+        self.layers = config['layers']
         self.materials={
                 'plywood':0.97,
                 'delrin':0.98,
                 'pvc':0.99,
                 'perspex':0.99,
         }
+        print ("TightHole layers"+str(self.layers))
+
     def _pre_render(self, config):
-        self.add(Hole(self.pos, self.rad*self.materials[config['material']]))
+        print ("TightHole Render"+str(config))
+        self.add(Hole(self.pos, self.rad), self.layers)
 
 class Dowel(Part):
     def __init__(self, pos, rad, dowel_type, layers, **config):
@@ -182,7 +186,8 @@ class Dowel(Part):
         self.tightrad = rad*offsets[dowel_type]['tight']
         self.looserad = rad*offsets[dowel_type]['loose']
         if 'tight' in layers:
-            self.add(TightHole(self.pos, rad=self.tightrad), layers['tight'])
+            print( "TIGHT")
+            self.add(Hole(self.pos, rad=self.tightrad), layers= layers['tight'])
         if 'loose' in layers:
             self.add(Hole(self.pos, rad=self.looserad), layers['loose'])
             self.add(Hole(self.pos, rad=self.looserad), layers['loose'])
