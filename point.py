@@ -390,7 +390,7 @@ class PAroundcurve(PSharp):
         self.radius=radius
         self.direction=direction
         self.transform=transform
-        if centre is False:
+        if centre is False or centre is None:
             self.cp1 = pos
         else:
             self.cp1 = centre
@@ -412,8 +412,8 @@ class PAroundcurve(PSharp):
         ret = [self.copy()]
         if (self.direction=='cw' and side=='left' or self.direction=='ccw' and side=='right') !=self.reverse:
             ret[0].radius+=distance
-# There is a case where for small angles offsetting can move the convergence point outside the radius
-            if (t[0].pos - self.cp1).length()> ret[0].radius:
+# There is a case where for small angles offsetting can move the convergence point outside the radius so see if the line and the aroundcurve arc will intersect, if not just return a PSharp
+            if self.lineArcIntersect( self.lastorigin(), self.pos, self.cp1, ret[0].radius) is False:
                 ret= [PSharp(t[0].pos)]
 
         else:
