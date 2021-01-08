@@ -1556,6 +1556,11 @@ class ArbitraryBox(Part):
     def face_intersection_line(self, face1, face2):
         return plane_intersection_line(face1.origin, face1.normal, face2, face2.normal )
 
+# need to find the projection of the intersection line from face f1 on f2 and vice versa
+# if these aren't contained then return false
+# if not we need to find out entry and leaving points of the intersection in both faces
+# return these points and which face they cross
+
     def face_intersection(self, f1, f2):
         face1 = self.faces[f1]
         face2 = self.faces[f2]
