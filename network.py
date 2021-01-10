@@ -104,6 +104,7 @@ class NetworkPart(Part):
         for path in netlist:
             if path==netlist.border:
                 self.add_border(path)
+                self.border.side='out'
             else:
                 self.add(path)
         for path in netlist.otherpaths:
