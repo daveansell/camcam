@@ -1581,6 +1581,17 @@ class ArbitraryBox(Part):
             if(face2.border.contains(t2)>-1):
                 return True
 
+    def line_intersect_face(self, face, line):
+        # project line onto face
+        line2D = [ V(line[0].dot(face['x']), line[0].dot(face['y'])), 
+                V(line[1].dot(face['x']), line[1].dot(face['y'])) ]
+        intersections=[]
+        for p in range(0, len(face['ppoints'])):
+            intersections.append([p, Path.intersects(False, line2D, [face['ppoints'][(p-1)%len(face['ppoints'])],face['ppoints'][p]])])
+        return intersections
+
+
+
 class PlainBox2(ArbitraryBox):
     def __init__(self, pos, name, layers, width, height, depth, thickness, tab_length, **config):
         self.init(config)
