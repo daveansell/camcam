@@ -1352,12 +1352,12 @@ class Bolt(Part):
                 else:
                     self.add(Hole(pos, milling.bolts[thread]['tap']/2, side='in'),thread_layer)
 
-class AngledButtJoint(list):
-    def __init__(self, start, end, side, linemode, startmode, endmode, hole_spacing, thickness, cutterrad,  angle, lineside='back', **config):
-        newThickness = abs(thickness / math.sin(float(angle)/math.pi*180))
+#class AngledButtJoint(list):
+#    def __init__(self, start, end, side, linemode, startmode, endmode, hole_spacing, thickness, cutterrad,  angle, lineside='back', **config):
+#        newThickness = abs(thickness / math.sin(float(angle)/math.pi*180))
 
-        for p in ButtJoint(start, end, side, linemode, startmode, endmode, hole_spacing, newThickness, cutterrad,**config):
-            self.append(p)
+#        for p in ButtJoint(start, end, side, linemode, startmode, endmode, hole_spacing, newThickness, cutterrad,**config):
+#            self.append(p)
 class ButtJoint(list):
     def __init__(self, start, end, side, linemode, startmode, endmode, hole_spacing, thickness, cutterrad, **config):
         assert startmode==endmode, "ButtJoint - startmode and endmode should be the same"
@@ -1529,11 +1529,15 @@ class ButtJointMid(Pathgroup):
 class AngledButtJointMid(ButtJointMid):
     def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode,  angle, lineside='back', **config):
         config['hole_depth']=2
-        newThickness = thickness / math.sin(float(angle)/math.pi*180)
+        newThickness = thickness / math.cos(float(angle)/math.pi*180)
+       # newThickness = thickness / math.sin(float(angle)/math.pi*180)
         if 'hole_offset' in config and config['hole_offset'] is not None:
-            config['hole_offset']+=newThickness
-        else:
-            config['hole_offset']=newThickness
+            config['hole_offset']/=math.cos(float(angle)/math.pi*180)
+
+            #config['hole_offset']+=newThickness-thickness
+      #  else:
+       #     config['hole_offset']=newThickness-thickness
+        print("new Hole_offset="+str(config['hole_offset']))
         super(AngledButtJointMid, self).__init__(start, end, side,linemode, startmode, endmode, hole_spacing, newThickness, cutterrad, prevmode, nextmode, **config)
 
 class FingerJointMid(Pathgroup):
