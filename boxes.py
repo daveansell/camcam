@@ -25,8 +25,9 @@ from parts import *
 #    has3D = True
 #except NameError:
 #    has3D = False
-from cc3d import *
-has3D = True
+if has3D:
+    from cc3d import *
+#has3D = True
 class RoundedBoxEnd(Part):
     def __init__(self,pos, layer, name, width, centre_height, centre_rad, centre_holerad, side_height, bend_rad=0,  sidemodes=False, thickness=6, tab_length=False,  fudge=0, **config):
         self.init(config)
