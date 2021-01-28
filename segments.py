@@ -101,6 +101,8 @@ class Segment(object):
                 return []
             else:
                 return([{"cmd":"G1", "Z":zto}])
+    def length(self):
+        return (self.cutto - self.cutfrom).length()
 class Line(Segment):
     def __init__(self, cutfrom, cutto, rapid=False):
         self.seg_type='line'
@@ -132,6 +134,26 @@ class Arc(Segment):
             self.centre=centre
         else:
             self.centre=cutfrom+centre
+
+    def length(self):
+        a = (self.centre - self.cutfrom).normalize()
+        b = (self.centre - self.cutto).normalize()
+        aa = math.atan2(a[1], a[0])
+        ab = math.atan2(b[1], b[1])
+        
+        if aa > ab :
+            if self.direction == 'cw':
+                angle = math.pi + aa - ab
+            else:
+                angle = aa - ab
+        else:
+            if self.direction == 'cw':
+                angle = ab - aa
+            else:
+                angle = math.pi - ab + aa 
+
+        return (self.cutto-self.centre).length() * angle
+
     def gcode(self,direction=True):
         if (self.centre-self.cutfrom).length()==0:
             print(Warning( "Arc of zero length"))
