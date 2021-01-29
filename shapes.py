@@ -1496,6 +1496,7 @@ class ButtJointMid(Pathgroup):
             else:
                 holepos = thickness/2+hole_offset
                 deppos = 0
+            print ("holepos="+str(holepos))
             if holes:
                 if 'hole_depth' in config:
                     hole_depth = config['hole_depth']
@@ -1528,10 +1529,17 @@ class ButtJointMid(Pathgroup):
 class AngledButtJointMid(ButtJointMid):
     def __init__(self, start, end, side,linemode, startmode, endmode, hole_spacing, thickness, cutterrad, prevmode, nextmode,  angle, lineside='back', **config):
         config['hole_depth']=2
+#        print ("lineside="+str(lineside)+" angle="+str(angle)+" obtuse="+str(config['obtuse']))
         newThickness = thickness / math.cos(float(angle)*math.pi/180)
        # newThickness = thickness / math.sin(float(angle)/math.pi*180)
         if 'hole_offset' in config and config['hole_offset'] is not None:
             config['hole_offset']/=math.cos(float(angle)/math.pi*180)
+        else:
+            config['hole_offset']=0
+        if lineside=='back' == ('obtuse' in config and config['obtuse']==1):
+            config['hole_offset'] -= newThickness-thickness
+       # else:
+        #    config['hole_offset'] += newThickness-thickness
 
             #config['hole_offset']+=newThickness-thickness
       #  else:

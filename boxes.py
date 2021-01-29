@@ -828,6 +828,10 @@ class ArbitraryBox(Part):
             scount = (p)%len(face['sides'])
             s = face['sides'][scount]
             side = self.sides[s]
+            if len(side[0])>2:
+                obtuse = side[0][7]
+            else:
+                obtuse = 0
             lasts = face['sides'][(scount-1)%len(face['sides'])]
             nexts = face['sides'][(scount+1)%len(face['sides'])]
             lastsi = self.sides[lasts]
@@ -1006,7 +1010,8 @@ class ArbitraryBox(Part):
                                 lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), 
                                 nextparallel = self.parallel(lastpoint, point, point, nextpoint), 
                                 angle=angle, 
-                                lineside=lineside
+                                lineside=lineside,
+                                obtuse=obtuse,
                         )
 #                                                        if corner=='off':
  #                                                               newpoints.insert(0, PInsharp(lastpoint))
@@ -1064,7 +1069,8 @@ class ArbitraryBox(Part):
                                 joint_type=joint_type, 
                                 fudge=fudge, 
                                 hole_offset=face['hole_offset'][scount], 
-                                hole_depth=face['hole_depth']
+                                hole_depth=face['hole_depth'],
+                                obtuse=obtuse,
                             ))
                         if not(lastcorner == 'off' and corner=='off'):
                             nointersect==True
@@ -1526,6 +1532,7 @@ class ArbitraryBox(Part):
             return False
         face1 = self.faces[side[0][0]]
         internal=False
+
         if side[1][0]=='_internal':
             face2 = self.faces[side[1][1]]
             internal=True
@@ -1581,17 +1588,28 @@ class ArbitraryBox(Part):
             if scount2 is not None:
                 face2['corners'][scount2] = 'straight'
             sideSign = 0
+
+        # is the joint acute or obtuse
+        if(svec1.dot(svec2)<0):
+            obtuse=1
+        elif( svec1.dot(svec2)>0):
+            obtuse=-1
+        else:
+            obtuse=0
+        print ("svec dot svec"+str(svec1.dot(svec2))+" obtuse="+str(obtuse))
         side[0].append(sideSign)
         side[0].append( avSvec.dot ( face1['normal'] ) * cutsign)
         side[0].append( angle )
         side[0].append(altside)
         side[0].append('convex')
+        side[0].append(obtuse)
 
         side[1].append(sideSign)
         side[1].append( avSvec.dot ( face2['normal'] ) * cutsign)
         side[1].append( angle )
         side[1].append(altside)
         side[1].append('convex')
+        side[1].append(obtuse)
 
     def preparsePoints(self, face):
         p=0
