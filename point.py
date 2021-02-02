@@ -559,6 +559,8 @@ class PInsharp(PAroundcurve):
                 nextpoint=self.nextorigin()
                 if nextpoint==self.pos:
                     nextpoint=self.next().nextorigin()
+
+                # fail more gracefully if two points are in the same place
                 if (self.pos - lastpoint).length()==0 or (nextpoint-self.pos).length()==0:
                     self.radius=0
                     self.cp1=self.pos
