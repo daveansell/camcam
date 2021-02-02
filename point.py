@@ -559,6 +559,11 @@ class PInsharp(PAroundcurve):
                 nextpoint=self.nextorigin()
                 if nextpoint==self.pos:
                     nextpoint=self.next().nextorigin()
+                if (self.pos - lastpoint).length()==0 or (nextpoint-self.pos).length()==0:
+                    self.radius=0
+                    self.cp1=self.pos
+                    return
+
                 angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
                 if abs(angle-180)>0.00001 and abs(angle)>0.00001:
                     d=self.config['original_cutter']['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1- 1.0/math.sin(angle/2/180*math.pi))
