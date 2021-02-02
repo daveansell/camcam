@@ -1818,6 +1818,8 @@ class Pathgroup(object):
             return False
 
     def pre_render(self, config):
+        if hasattr(self, '_pre_render'):
+            self._pre_render(config)
         for p in self.paths:
             p.pre_render(config)
     def __deepcopy__(self,memo):
