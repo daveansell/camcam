@@ -538,7 +538,8 @@ class Path(object):
     #               numpoints=len(pointlist)*2-2
 #               for p,point in enumerate(pointlist):
         for p in range(0,numpoints):
-            segment_array.extend(pointlist[p].generateSegment(self.isreversed, config))
+            newsegments = pointlist[p].generateSegment(self.isreversed, config)
+            segment_array.extend(newsegments)
         for s in segment_array:
             s.config=config
             s.parent=self
@@ -1571,6 +1572,7 @@ class Path(object):
             if  (mode=='gcode' or mode=='simplegcode'):
                 self.add_out(self.Fsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
             self.add_out(self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side']))
+
         if self.mode=='gcode':
             self.add_out( [{"cmd":'G40'}])
         if self.mode=='gcode' or self.mode=='simplegcode':
@@ -1658,10 +1660,13 @@ class Path(object):
             if  (mode=='gcode' or mode=='simplegcode'):
                 self.add_out(self.Fsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
             self.add_out(self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side']))
+
+    # Deal with open lines
         else:
             self.runin(downmode,self.side)
             d=True
-            for depth in depths:
+            # add the final depth one more time so it comes back and cuts the ramp
+            for depth in depths+[depths[-1]]:
                 if d:
                     segments=self.Fsegments
                 else:
@@ -1670,22 +1675,22 @@ class Path(object):
                     self.add_out(self.cutdown(depth))
                 first=1
                 s=len(segments)
-                for s in range(0,s):
+                for s in range(1,s):
                     segment=segments[s]
                     if first==1 and downmode=='ramp':
                         if firstdepth and (mode=='gcode' or mode=='simplegcode'):
                             self.add_out(self.quickdown(depth-step+config['precut_z']))
                             firstdepth=0
-                        self.add_out(segment.out(d,mode,depth-step,depth, config['use_point_z']))
+                        self.add_out(segment.out(True,mode,depth-step,depth, config['use_point_z']))
                     else:
-                        self.add_out(segment.out(d,mode, depth, depth, config['use_point_z']))
+                        self.add_out(segment.out(True,mode, depth, depth, config['use_point_z']))
                     first=0
                 d= not d
 #                       if downmode='ramp':
             if d:
-                self.add_out(self.Fsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
+                self.add_out(self.Fsegments[0].out(True,mode, depth, depth, config['use_point_z']))
             else:
-                self.add_out(self.Bsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
+                self.add_out(self.Bsegments[0].out(True,mode, depth, depth, config['use_point_z']))
             self.add_out(self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side']))
         # If we are in a gcode mode, go through all the cuts and add feed rates to them
         if self.mode=='gcode':
