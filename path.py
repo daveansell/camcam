@@ -358,6 +358,8 @@ class Path(object):
     def add_points(self,points, end='end', transform={}):
         c=0
         for p in points:
+            if type(p) is Vec:
+                p = PSharp(p)
             if hasattr(p,'obType') and p.obType=='Point':
                 q = copy.deepcopy(p)
                 q.transform=transform

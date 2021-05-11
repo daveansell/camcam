@@ -71,6 +71,12 @@ class Point(object):
     def setPos(self, pos):
         self.pos = pos
 
+    def __add__(self,x):
+        if type(x) is Vec:
+            ret = copy.deepcopy(self)
+            ret.pos+=x
+            return ret
+
     def copy(self):
         t = Point( self.pos, self.point_type, self.radius, self.cp1, self.cp2, self.direction, self.transform, self.invert)
         t.invert = self.invert
@@ -560,7 +566,7 @@ class PInsharp(PAroundcurve):
                 if nextpoint==self.pos:
                     nextpoint=self.next().nextorigin()
                 angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
-                if abs(angle-180)>0.00001 and abs(angle)>0.00001:
+                if abs(angle-180)>0.00001 and abs(angle)>0.00001 and 'original_cutter' in self.config and self.config['original_cutter']:
                     d=self.config['original_cutter']['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1- 1.0/math.sin(angle/2/180*math.pi))
                     self.cp1=self.pos-(((lastpoint-self.pos).normalize()+(nextpoint-self.pos).normalize())/2).normalize()*d
                 else:

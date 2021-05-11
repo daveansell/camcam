@@ -660,6 +660,9 @@ class ArbitraryBox(Part):
                 face['ppoints'].append(V(p2.dot(face['x']), p2.dot(face['y'])))
             face['wdir']=self.find_direction(face['ppoints'])
 
+        for f, face in faces.items():
+            for g in faces.keys():
+                self.face_intersection(f,g)
         # go through unconnected sides and see if they are in the middle of any faces
         for s,side in self.sides.items():
             if len(side)==1:
@@ -1554,27 +1557,54 @@ class ArbitraryBox(Part):
         return intersection_origin, intersection_normal
 
     def face_intersection_line(self, face1, face2):
-        return plane_intersection_line(face1.origin, face1.normal, face2, face2.normal )
+        return self.plane_intersection_line(face1['origin'], face1['normal'], face2['origin'], face2['normal'] )
+
+    def intersect_lines(self,a, b, c, d):
+        # if the things we are trying to intersect are parallel we don't have to do any work
+#               if abs((d-c).normalize().dot((b-a).normalize())) -1 <0.0001:
+#                       return False
+        if (a[0]-b[0])==0 and a[1]-b[1]==0:
+            return b
+        if (c[1]-d[1])==0 and (c[0]-d[0])==0:
+            return c
+        # if the denominator is zero the rest of this will explode because they don't intersect, so return false
+        if ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))==0:
+            return False
+        x= ((a[0]*b[1]-a[1]*b[0])*(c[0]-d[0]) - (a[0]-b[0])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
+        y= ((a[0]*b[1]-a[1]*b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
+        return V(x,y)
+
+    def intersects_line_loop(self, line, loop):
+        intersections = []
+        for i in range(0, len(loop)):
+                intersect = self.intersect_lines(line[0], line[1], loop[i], loop[(i+1)%len(loop)])
+                if intersect:
+                    intersections.append([i,intersect])
+        return intersections		
 
     def face_intersection(self, f1, f2):
         face1 = self.faces[f1]
         face2 = self.faces[f2]
         intersection_origin, intersection_normal = self.face_intersection_line(face1, face2)
+        print("intersection_origin"+str(intersection_origin))
         if intersection_origin is False:
             return False
         # resolve intersection onto 2 faces
-        intersection_origin_f1 = V((intersection_origin-face1.origin).dot(face1.x), (intersection_origin-face1.origin).dot(face1.y))
-        intersection_line_f1 = V(intersection_normal.dot(face1.x), intersection_normal.dot(face1.y))
-        t1 = Path()
-        t1.add_points(intersection_origin_f1-1000*intersection_line_f1, intersection_origin_f1+1000*intersection_line_f1)
-        if(face1.border.contains(t1)>-1):
-
-            intersection_origin_f2 = V((intersection_origin-face1.origin).dot(face2.x), (intersection_origin-face1.origin)).dot(face2.y)
-            intersection_line_f2 = V(intersection_normal.dot(face2.x), intersection_normal.dot(face2.y))
-            t2 = Path()
-            t2.add_points(intersection_origin_f2-1000*intersection_line_f2, intersection_origin_f2+1000*intersection_line_f2)
-            if(face2.border.contains(t2)>-1):
-                return True
+        intersection_origin_f1 = V((intersection_origin-face1['origin']).dot(face1['x']), (intersection_origin-face1['origin']).dot(face1['y']))
+        intersection_line_f1 = V(intersection_normal.dot(face1['x']), intersection_normal.dot(face1['y']))
+        print("intersection_origin ft="+str(intersection_origin))
+        t1 = [intersection_origin_f1-1000*intersection_line_f1, intersection_origin_f1+1000*intersection_line_f1]
+	# the line of the intersection on face1
+        intersection_line_f1 = self.intersects_line_loop(t1, face1['points'])
+	# if either end of this line is on or in face2 we have an intersection
+#        if(ft1.contains(t1)>-1):
+#            print("CONTAINS")
+#            intersection_origin_f2 = V((intersection_origin-face1['origin']).dot(face2['x']), (intersection_origin-face1['origin'])).dot(face2['y'])
+#            intersection_line_f2 = V(intersection_normal.dot(face2['x']), intersection_normal.dot(face2['y']))
+#            t2 = Path()
+#            t2.add_points([PSharp(intersection_origin_f2-1000*intersection_line_f2), PSharp(intersection_origin_f2+1000*intersection_line_f2)])
+#            if(face2.border.contains(t2)>-1):
+#                return True
 
 class PlainBox2(ArbitraryBox):
     def __init__(self, pos, name, layers, width, height, depth, thickness, tab_length, **config):
