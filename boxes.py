@@ -25,8 +25,9 @@ from parts import *
 #    has3D = True
 #except NameError:
 #    has3D = False
-from cc3d import *
-has3D = True
+if has3D:
+    from cc3d import *
+#has3D = True
 class RoundedBoxEnd(Part):
     def __init__(self,pos, layer, name, width, centre_height, centre_rad, centre_holerad, side_height, bend_rad=0,  sidemodes=False, thickness=6, tab_length=False,  fudge=0, **config):
         self.init(config)
@@ -854,6 +855,10 @@ class ArbitraryBox(Part):
             scount = (p)%len(face['sides'])
             s = face['sides'][scount]
             side = self.sides[s]
+            if len(side[0])>2:
+                obtuse = side[0][7]
+            else:
+                obtuse = 0
             lasts = face['sides'][(scount-1)%len(face['sides'])]
             nexts = face['sides'][(scount+1)%len(face['sides'])]
             lastsi = self.sides[lasts]
@@ -991,13 +996,18 @@ class ArbitraryBox(Part):
                         #               firstnointersect=True
 
                     else:
-                        if face['cut_from']<0:
-                            if  cutside0=='left':
-                                cutside= 'right'
-                            else:
+    #                    if face['cut_from']<0:
+   #                         if  cutside0=='left':
+  #                              cutside= 'right'
+ #                           else:
+#                                cutside='left'
+                        if  self.find_direction(face['ppoints'])=='cw':
                                 cutside='left'
                         else:
-                            cutside=cutside0
+                                cutside= 'right'
+
+                      #  else:
+                       #     cutside=cutside0
                         if nextotherside is None or nextotherside[0]=='_internal':
                             next_offset = 0
                         else:
@@ -1013,21 +1023,90 @@ class ArbitraryBox(Part):
                             else:
                                 last_offset = 0
                         lineside=face['lineside']
-                        print(f+" - Angled Butt Joint"+str(angle))
-                        newpoints = AngledButtJoint(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, fudge = fudge, butt_depression=face['butt_depression'][scount], butt_holerad=face['butt_holerad'][scount], joint_type=joint_type, hole_offset=face['hole_offset'][scount], nextcorner=nextcorner, lastcorner=lastcorner, last_offset=last_offset, next_offset=next_offset, lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), nextparallel = self.parallel(lastpoint, point, point, nextpoint), angle=angle, lineside=lineside)
+                        print(f+" -> "+otherf+" Angled Butt Joint angle="+str(angle)+" corner="+str(corner))
+                        newpoints = AngledButtJoint(
+                                lastpoint, 
+                                point, 
+                                cutside, 
+                                'external', 
+                                corner, 
+                                corner, 
+                                face['hole_spacing'][scount], 
+                                otherface['thickness'], 
+                                0, 
+                                fudge = fudge, 
+                                butt_depression=face['butt_depression'][scount], 
+                                butt_holerad=face['butt_holerad'][scount], 
+                                joint_type=joint_type, 
+                                hole_offset=face['hole_offset'][scount], 
+                                nextcorner=nextcorner, lastcorner=lastcorner, 
+                                last_offset=last_offset, 
+                                next_offset=next_offset, 
+                                lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), 
+                                nextparallel = self.parallel(lastpoint, point, point, nextpoint), 
+                                angle=angle, 
+                                lineside=lineside,
+                                obtuse=obtuse,
+                        )
 #                                                        if corner=='off':
  #                                                               newpoints.insert(0, PInsharp(lastpoint))
-                        if corner=='off' and otherside[0]=='_internal':
-                            newpoints.append( PInsharp(point))
-                        if face['cut_from']<0:
-                            if  cutside0=='left':
-                                cutside= 'right'
-                            else:
-                                cutside='left'
-                        else:
-                            cutside = cutside0
+         #               if corner=='off' and otherside[0]=='_internal':
+        #                    newpoints.append( PInsharp(point))
+       #                 if face['cut_from']<0:
+      #                      if  cutside0=='left':
+     #                           cutside= 'right'
+    #                        else:
+   #                             cutside='left'
+  #                      else:
+ #                           cutside = cutside0
+#
+   #                     newpoints = AngledButtJoint(
+  #                              lastpoint, 
+                              ###  point, 
+                             #   cutside, 
+                            #    'external', 
+                           #     corner, 
+                          #      corner, 
+                         #       face['hole_spacing'][scount], 
+                        #        otherface['thickness'], 
+                       #         0, 
+                      #          fudge = fudge, 
+                     #           butt_depression=face['butt_depression'][scount], 
+                    #            butt_holerad=face['butt_holerad'][scount], 
+                   #             joint_type=joint_type, 
+                  #              hole_offset=face['hole_offset'][scount], 
+                 #               nextcorner=nextcorner, lastcorner=lastcorner, 
+                #                last_offset=last_offset, 
+               #                 next_offset=next_offset, 
+              #                  lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), 
+             #                   nextparallel = self.parallel(lastpoint, point, point, nextpoint), 
+            #                    angle=angle, 
+           #                     lineside=lineside
+          #              )
 
-                        part.add(AngledButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on', angle, lineside,  butt_depression=face['butt_depression'][scount], holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount], hole_depth=face['hole_depth']))
+                        part.add(AngledButtJointMid(
+                                lastpoint, 
+                                point, 
+                                cutside, 
+                                'external', 
+                                corner, 
+                                corner, 
+                                face['hole_spacing'][scount], 
+                                otherface['thickness'], 
+                                0, 
+                                'on', 
+                                'on', 
+                                angle, 
+                                lineside,  
+                                butt_depression=face['butt_depression'][scount], 
+                                holerad=face['butt_holerad'][scount], 
+                                butt_numholes=face['butt_numholes'][scount], 
+                                joint_type=joint_type, 
+                                fudge=fudge, 
+                                hole_offset=face['hole_offset'][scount], 
+                                hole_depth=face['hole_depth'],
+                                obtuse=obtuse,
+                            ))
                         if not(lastcorner == 'off' and corner=='off'):
                             nointersect==True
 
@@ -1488,6 +1567,7 @@ class ArbitraryBox(Part):
             return False
         face1 = self.faces[side[0][0]]
         internal=False
+
         if side[1][0]=='_internal':
             face2 = self.faces[side[1][1]]
             internal=True
@@ -1543,17 +1623,28 @@ class ArbitraryBox(Part):
             if scount2 is not None:
                 face2['corners'][scount2] = 'straight'
             sideSign = 0
+
+        # is the joint acute or obtuse
+        if(svec1.dot(svec2)<0):
+            obtuse=1
+        elif( svec1.dot(svec2)>0):
+            obtuse=-1
+        else:
+            obtuse=0
+        print ("svec dot svec"+str(svec1.dot(svec2))+" obtuse="+str(obtuse))
         side[0].append(sideSign)
         side[0].append( avSvec.dot ( face1['normal'] ) * cutsign)
         side[0].append( angle )
         side[0].append(altside)
         side[0].append('convex')
+        side[0].append(obtuse)
 
         side[1].append(sideSign)
         side[1].append( avSvec.dot ( face2['normal'] ) * cutsign)
         side[1].append( angle )
         side[1].append(altside)
         side[1].append('convex')
+        side[1].append(obtuse)
 
     def preparsePoints(self, face):
         p=0
@@ -1641,6 +1732,11 @@ class ArbitraryBox(Part):
                   sides.append(i)
 
         return [intersections,sides]	
+
+# need to find the projection of the intersection line from face f1 on f2 and vice versa
+# if these aren't contained then return false
+# if not we need to find out entry and leaving points of the intersection in both faces
+# return these points and which face they cross
 
     def face_intersection(self, f1, f2):
         face1 = self.faces[f1]
@@ -1743,6 +1839,17 @@ class ArbitraryBox(Part):
 
 
             
+
+    def line_intersect_face(self, face, line):
+        # project line onto face
+        line2D = [ V(line[0].dot(face['x']), line[0].dot(face['y'])), 
+                V(line[1].dot(face['x']), line[1].dot(face['y'])) ]
+        intersections=[]
+        for p in range(0, len(face['ppoints'])):
+            intersections.append([p, Path.intersects(False, line2D, [face['ppoints'][(p-1)%len(face['ppoints'])],face['ppoints'][p]])])
+        return intersections
+
+
 
 class PlainBox2(ArbitraryBox):
     def __init__(self, pos, name, layers, width, height, depth, thickness, tab_length, **config):

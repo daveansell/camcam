@@ -396,7 +396,7 @@ class PAroundcurve(PSharp):
         self.radius=radius
         self.direction=direction
         self.transform=transform
-        if centre is False:
+        if centre is False or centre is None:
             self.cp1 = pos
         else:
             self.cp1 = centre
@@ -418,8 +418,8 @@ class PAroundcurve(PSharp):
         ret = [self.copy()]
         if (self.direction=='cw' and side=='left' or self.direction=='ccw' and side=='right') !=self.reverse:
             ret[0].radius+=distance
-# There is a case where for small angles offsetting can move the convergence point outside the radius
-            if (t[0].pos - self.cp1).length()> ret[0].radius:
+# There is a case where for small angles offsetting can move the convergence point outside the radius so see if the line and the aroundcurve arc will intersect, if not just return a PSharp
+            if self.lineArcIntersect( self.lastorigin(), self.pos, self.cp1, ret[0].radius) is False:
                 ret= [PSharp(t[0].pos)]
 
         else:
@@ -565,6 +565,13 @@ class PInsharp(PAroundcurve):
                 nextpoint=self.nextorigin()
                 if nextpoint==self.pos:
                     nextpoint=self.next().nextorigin()
+
+                # fail more gracefully if two points are in the same place
+                if (self.pos - lastpoint).length()==0 or (nextpoint-self.pos).length()==0:
+                    self.radius=0
+                    self.cp1=self.pos
+                    return
+
                 angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
                 if abs(angle-180)>0.00001 and abs(angle)>0.00001 and 'original_cutter' in self.config and self.config['original_cutter']:
                     d=self.config['original_cutter']['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1- 1.0/math.sin(angle/2/180*math.pi))
