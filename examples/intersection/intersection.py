@@ -1,7 +1,9 @@
 
 # rectangle with 4 holes
+w=400
 W=100
 H=100
+x1=200
 thickness=9
 
 plane = camcam.add_plane(Plane('xy', cutter='1/8_endmill'))
@@ -11,7 +13,7 @@ plane = camcam.add_plane(Plane('xy', cutter='1/8_endmill'))
 box = plane.add(ArbitraryBox(
                 faces={
 		    'mid2':{
-        		'points':[V(-W,-H+5,0), V(-W,H,0), V(W,H,0), V(W,-H+5,0)],
+        		'points':[V(-w,-H+5,0), V(-w,H+5,0), V(w,H+25,0), V(w,-H+5,0)],
         		'origin':V(0,0,0),
         		'x':V(1,0,0),
         		'good_direction':V(0,0,1),
@@ -25,6 +27,24 @@ box = plane.add(ArbitraryBox(
         		'x':V(0,1,0),
         		'good_direction':V(1,0,0),
         		'wood_direction':V(1,0,0),
+        		'material':'plywood',
+        		'thickness':thickness,
+			},
+		    'mid3':{
+        		'points':[V(x1,-H,W), V(x1,H,W), V(x1,H,-W), V(x1,-H,-W)],
+        		'origin':V(x1,0,0),
+        		'x':V(0,1,0),
+        		'good_direction':V(1,0,0),
+        		'wood_direction':V(1,0,0),
+        		'material':'plywood',
+        		'thickness':thickness,
+			},
+		    'mid4':{
+        		'points':[V(w+W,-H/2,W), V(w-W,-H/2,W), V(w-W,-H/2,-W), V(w+W,-H/2,-W)],
+        		'origin':V(w,-H/2,0),
+        		'x':V(1,0,0),
+        		'good_direction':V(0,1,0),
+        		'wood_direction':V(0,1,0),
         		'material':'plywood',
         		'thickness':thickness,
 			},
