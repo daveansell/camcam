@@ -942,6 +942,7 @@ class ArbitraryBox(Part):
                         fudge = self.fudge
                 else:
                     fudge = self.fudge
+                print("joint_mode="+str(face['joint_mode']))
                 if face['joint_mode'][scount]=='straight':
                     newpoints = [PInsharp(lastpoint),PInsharp(point)]
                 elif face['joint_mode'][scount]=='mitre':
@@ -1876,16 +1877,15 @@ class ArbitraryBox(Part):
             otherface=self.faces[intersection['otherface']]
             face=self.faces[intersection['face']]
             print ("face="+str(intersection['face']))
-            if(otherface['normal'].dot(point3d-lastpoint3d) >0):
-                d=1
-            else:
+            if(otherface['normal'].dot(point3d-lastpoint3d)*otherface['wood_direction'] >0):
                 d=-1
+            else:
+                d=1
             slotPerp = V(
-                    otherface['normal'].dot(face['x']*otherface['wood_direction']), 
-                    otherface['normal'].dot(
-                        face['y']*otherface['wood_direction']*otherface['wood_direction'])
+                    -otherface['normal'].dot( face['x']*otherface['wood_direction'] ), 
+                    otherface['normal'].dot( face['y'] )
                     )
-            slotW = slotPerp/self.unproject(slotPerp,face).dot(otherface['normal'])*otherface['thickness']
+            slotW = slotPerp/abs(self.unproject(slotPerp,face).dot(otherface['normal']))*otherface['thickness']
             print("oythernormal"+str(otherface['normal']))
             print("slotPerp="+str(slotPerp)+ "slotW="+str(slotW)+" thickness="+str(otherface['thickness'])+" dot="+str(slotW.normalize().dot( (point-lastpoint).normalize()))) 
 
