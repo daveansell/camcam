@@ -831,6 +831,23 @@ class ArbitraryBox(Part):
     def tuple_to_vec(self, t):
         return V(t[0], t[1], t[2])
 
+    def simpleBorder(self, face):
+        path = Path(closed=True)
+        p=0
+        for point in face['ppoints']:
+            if p in face['point_type']:
+                pnt=face['point_type'][p]
+                pnt.setPos(point)
+                path.add_point(pnt)
+            else:
+                path.add_point(point)
+
+            p+=1
+        return path
+    def simpleBorderPolygon(self, face):
+        path = self.simpleBorder(face)
+        return path.polygonise(direction=None)
+
     def get_border(self, part, f, face, mode):
         if mode == 'internal':
             path = Path(closed=True, side='in')
@@ -887,17 +904,17 @@ class ArbitraryBox(Part):
                         nointersect=True
                 else:
                     newpoints.append(PInsharp(lastpoint))
+                if scount in face['intersections']:
+                         
+                    keys=list(face['intersections'][scount].keys())
+                    keys.sort()
+                    for i in keys:
+                        intersection=face['intersections'][scount][i]
+                        newpoints+=self.intersection_slot(intersection, lastpoint, point, face['points'][(scount-1)%len(face['points'])], face['points'][scount])
                 if scount in face['point_type']:
                     newpoints.append(face['point_type'][scount])
                     newpoints[-1].setPos(point)
                 else:
-                    if scount in face['intersections']:
-                        
-                        keys=list(face['intersections'][scount].keys())
-                        keys.sort()
-                        for i in keys:
-                            intersection=face['intersections'][scount][i]
-                            newpoints+=self.intersection_slot(intersection, lastpoint, point, face['points'][(scount-1)%len(face['points'])], face['points'][scount])
                     
                     newpoints.append(PInsharp(point))
 #                               newpoints = [PInsharp(lastpoint),PInsharp(point)]
@@ -1023,7 +1040,6 @@ class ArbitraryBox(Part):
                             else:
                                 last_offset = 0
                         lineside=face['lineside']
-                        print(f+" -> "+otherf+" Angled Butt Joint angle="+str(angle)+" corner="+str(corner))
                         newpoints = AngledButtJoint(
                                 lastpoint, 
                                 point, 
@@ -1359,10 +1375,8 @@ class ArbitraryBox(Part):
             else:
                 raise ValueError(t+" in "+f+"is perpendicular to the normal")
         recursion += 1
-        print ("############ propogate face:"+str(f))
         for s in face['sides']:
             side = self.sides[s]
-            print(str(s)+" -> "+str(side))
             if(len(side)>1):
                 if side[0][0]==f:
                     newf = side[1][0]
@@ -1631,7 +1645,7 @@ class ArbitraryBox(Part):
             obtuse=-1
         else:
             obtuse=0
-        print ("svec dot svec"+str(svec1.dot(svec2))+" obtuse="+str(obtuse))
+      #  print ("svec dot svec"+str(svec1.dot(svec2))+" obtuse="+str(obtuse))
         side[0].append(sideSign)
         side[0].append( avSvec.dot ( face1['normal'] ) * cutsign)
         side[0].append( angle )
@@ -1677,7 +1691,7 @@ class ArbitraryBox(Part):
         if det < 0.001:
             return False, False
         intersection_origin = ( intersection_normal.cross(n2)*o1.dot(-n1) + n1.cross(intersection_normal)*o2.dot(-n2))/det
-        print("intersection_origin="+str(intersection_origin)+" intersection_normal="+str(intersection_normal)+" o1="+str(o1)+" n1="+str(n1)+" o2="+str(o2)+" n2="+str(n2))
+        #print("intersection_origin="+str(intersection_origin)+" intersection_normal="+str(intersection_normal)+" o1="+str(o1)+" n1="+str(n1)+" o2="+str(o2)+" n2="+str(n2))
         return intersection_origin, intersection_normal
 
     def face_intersection_line(self, face1, face2):
@@ -1723,10 +1737,10 @@ class ArbitraryBox(Part):
     def intersects_line_loop(self, line, loop):
         intersections = []
         sides = []
-        print("line="+str(line))
+        #print("line="+str(line))
         for i in range(0, len(loop)):
                 intersect = self.intersect_lines(line[0], line[1], loop[i], loop[(i-1)%len(loop)])
-                print("i="+str(i)+"intersect="+str(intersect)+" "+str(loop[i])+"->"+str(loop[(i-1)%len(loop)]))
+         #       print("i="+str(i)+"intersect="+str(intersect)+" "+str(loop[i])+"->"+str(loop[(i-1)%len(loop)]))
                 if intersect:
                   intersections.append(intersect)
                   sides.append(i)
@@ -1743,68 +1757,111 @@ class ArbitraryBox(Part):
         face2 = self.faces[f2]
         print("###########"+f1+"-"+f2+"#############")
         intersection_origin, intersection_normal = self.face_intersection_line(face1, face2)
-        print("intersection_origin"+str(intersection_origin))
+        #print("intersection_origin"+str(intersection_origin))
         if intersection_origin is False:
             return False
         # resolve intersection onto 2 faces
         t0 = [intersection_origin-1000*intersection_normal, intersection_origin+1000*intersection_normal]
-        print ("t0="+str(t0))
+#        print ("t0="+str(t0))
 	# the line of the intersection on face1
         print (self.project(t0, face1))
-        intersection_line_f1, intersection_side_f1 = self.intersects_line_loop(self.project(t0,face1), face1['ppoints'])
-        intersection_line_f2, intersection_side_f2 = self.intersects_line_loop(self.project(t0,face2), face2['ppoints'])
+        points1=self.simpleBorderPolygon(face1)
+        points2=self.simpleBorderPolygon(face2)
+  #      for i in range(0,len(points1)):
+ #           print("points1["+str(i)+"].pnum="+str(points1[i].pnum))
+   #     for i in range(0,len(points2)):
+    #        print("points2["+str(i)+"].pnum="+str(points2[i].pnum))
+        intersection_line_f1, intersection_side_f1 = self.intersects_line_loop(self.project(t0,face1), points1)#face1['ppoints'])
+        intersection_line_f2, intersection_side_f2 = self.intersects_line_loop(self.project(t0,face2), points2)#face2['ppoints'])
         if len(intersection_line_f1) <2 or len(intersection_line_f2) <2:
             return
         t1 = self.unproject(intersection_line_f1, face1)
         t2 = self.unproject(intersection_line_f2, face2)
-        print("t1="+str(t1)+" t2="+str(t2))
+     #   print("t1="+str(t1)+" t2="+str(t2))
         a1a=t1[0].dot(intersection_normal.normalize())
         a1b=t1[1].dot(intersection_normal.normalize())
         a2a=t2[0].dot(intersection_normal.normalize())
         a2b=t2[1].dot(intersection_normal.normalize())
-        print("a1="+str(a1a)+"-"+str(a1b)+" a2="+str(a2a)+"-"+str(a2b))	
+      #  print("a1="+str(a1a)+"-"+str(a1b)+" a2="+str(a2a)+"-"+str(a2b))	
         intersectionLine = {}
-        if a1a >= a2a and a1a <= a2b or a1a <= a2a and a1a >= a2b:
-            print("A1")
-            intersectionLine[0] = 0
-        elif a1b >= a2a and a1b <= a2b or a1b <= a2a and a1b >= a2b:
-            print("A2")
-            intersectionLine[0] = 1
-        if a2a >= a1a and a2a <= a1b or a2a <= a1a and a2a >= a1b :
-            print("A3")
-            intersectionLine[1] = 0
-        elif a2b >= a1a and a2b <= a1b or a2b <= a1a and a2b >= a1b:
-            print("A4")
-            intersectionLine[1] = 1
-        print ("***********intersection_line="+str(intersectionLine))
+        b = self.which_between( a1a, a1b, a2a, a2b)
+        if b is not None:
+            intersectionLine[0] = b
+        b = self.which_between( a2a, a2b, a1a, a1b)
+        if b is not None:
+            intersectionLine[1] = b
+     #   if self.between(a1a ,a2a, a2b):
+     #       print("A1")
+     #       intersectionLine[0] = 0
+     #   elif self.between(a2a ,a2a, a2b):
+     #       print("A2")
+     #       intersectionLine[0] = 1
+     #   if self.between(a2a, a1a, a1b):
+     #       print("A3")
+     #       intersectionLine[1] = 0
+     #   elif self.between(a2b, a1a, a1b):
+     #       print("A4")
+     #       intersectionLine[1] = 1
+       # print ("***********intersection_line="+str(intersectionLine))
         if len(intersectionLine)==2:
             otherEnd1=self.project(t2[intersectionLine[1]], face1)
             thisEnd1=self.project(t1[intersectionLine[0]], face1)
-            print("otherEnd1="+str(otherEnd1)+"t2="+str(t2[intersectionLine[1]])+" x="+str(face1['x'])+"y="+str(face1['y'])+" thisEnd"+str(thisEnd1))
+        #    print("otherEnd1="+str(otherEnd1)+"t2="+str(t2[intersectionLine[1]])+" x="+str(face1['x'])+"y="+str(face1['y'])+" thisEnd"+str(thisEnd1))
+         #   print(intersectionLine)
+          #  print(intersection_side_f1)
+           # print(intersection_side_f1[intersectionLine[0]])
+            #print(points1[intersection_side_f1[intersectionLine[0]]])
             self.add_intersection(
                 face1,
-                intersection_side_f1[intersectionLine[0]],
+                points1[intersection_side_f1[intersectionLine[0]]].pnum,
                 {
                     'side':intersection_side_f1[intersectionLine[0]], 
                     'edgePoint':intersection_line_f1[intersectionLine[0]], 
                     'otherEnd':otherEnd1, 
                     'otherface':f2,
                     'face':f1,
+                    'pnum':points1[intersection_side_f1[intersectionLine[0]]].pnum,
                     'midPoint':(intersection_line_f1[intersectionLine[0]]+otherEnd1)/2
                 }
             )
             otherEnd2=self.project(t1[intersectionLine[0]], face2)
-            print("otherEnd2="+str(otherEnd2)+"t1="+str(t1[intersectionLine[0]])+" x="+str(face2['x'])+"y="+str(face2['y'])+" thisEnd")
-            self.add_intersection(face2, intersection_side_f2[intersectionLine[1]], {
+           # print("otherEnd2="+str(otherEnd2)+"t1="+str(t1[intersectionLine[0]])+" x="+str(face2['x'])+"y="+str(face2['y'])+" thisEnd")
+            self.add_intersection(
+                    face2, 
+                    points2[intersection_side_f2[intersectionLine[1]]].pnum, {
                 'side':intersection_side_f2[intersectionLine[1]], 
                 'edgePoint':intersection_line_f2[intersectionLine[1]], 
                 'otherEnd':otherEnd2, 
                 'otherface':f1,
                 'face':f2,
+                'pnum':points2[intersection_side_f2[intersectionLine[1]]].pnum,
                 'midPoint':(intersection_line_f2[intersectionLine[1]]+otherEnd2)/2
             })
-            print(face1['intersections']) 
-            print(face2['intersections'])
+           # print(face1['intersections']) 
+          #  print(face2['intersections'])
+    def which_between(self, x,y,a,b):
+        if self.between(x, a, b):
+            return 0
+        elif self.between(y, a, b):
+            return 1
+        elif self.between(x, a, b, True):
+            return 0
+        elif self.between(y, a,b, True):
+            return 1
+        else: 
+            return None
+
+    def between(self, x, a, b, m=False):
+        if m:
+            if x>=min(a,b) and x<=max(a,b):
+                return True
+            else:
+                return False
+        else:
+            if x>min(a,b) and x<max(a,b):
+                return True
+            else:
+                return False
 
     def add_intersection(self, face, s, intersection):
             if s not in face['intersections']:
@@ -1818,11 +1875,16 @@ class ArbitraryBox(Part):
     def intersection_slot(self,intersection, lastpoint, point, lastpoint3d, point3d):
             otherface=self.faces[intersection['otherface']]
             face=self.faces[intersection['face']]
+            print ("face="+str(intersection['face']))
             if(otherface['normal'].dot(point3d-lastpoint3d) >0):
                 d=1
             else:
                 d=-1
-            slotPerp = V(otherface['normal'].dot(face['x']*otherface['wood_direction']), otherface['normal'].dot(face['y']*otherface['wood_direction'*otherface['wood_direction']]))
+            slotPerp = V(
+                    otherface['normal'].dot(face['x']*otherface['wood_direction']), 
+                    otherface['normal'].dot(
+                        face['y']*otherface['wood_direction']*otherface['wood_direction'])
+                    )
             slotW = slotPerp/self.unproject(slotPerp,face).dot(otherface['normal'])*otherface['thickness']
             print("oythernormal"+str(otherface['normal']))
             print("slotPerp="+str(slotPerp)+ "slotW="+str(slotW)+" thickness="+str(otherface['thickness'])+" dot="+str(slotW.normalize().dot( (point-lastpoint).normalize()))) 
@@ -1830,7 +1892,9 @@ class ArbitraryBox(Part):
             p = PSharp(intersection['edgePoint'])
             p1 = PSharp(intersection['midPoint'])
             p2 = PSharp(intersection['midPoint']+slotW)
-            p3 = PSharp(intersection['edgePoint']+slotW/ slotW.normalize().dot( (lastpoint-point).normalize()))
+            p3 = PSharp(intersection['edgePoint']+slotW/ abs(slotW.normalize().dot( (lastpoint-point).normalize())))
+            if intersection['face']=='mid2':
+                print ([p, p1,p2,p3])
             if(d==1):
                 return [p, p1,p2,p3]
             else:
