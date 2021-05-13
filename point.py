@@ -189,10 +189,13 @@ class Point(object):
             #self.lastpoint._setup()
             return self.lastpoint
 
-    def generateSegment(self, reverse, config):
+    def generateSegment(self, reverse, config, pnum=None):
         self.reverse=reverse
         s = self.makeSegment(config)
         if type(s) is list:
+            if pnum is not None:
+                for seg in s:
+                    seg.pnum = pnum
             return s#self.makeSegment(config)
         else:
             print("No segment returned "+str(type(self)))
@@ -580,9 +583,11 @@ class PInsharp(PAroundcurve):
                     self.cp1 = self.pos
                 if ( self.config['cutside']=='right' and self.direction=='cw' or self.config['cutside']=='left' and self.direction=='ccw') == self.reverse or abs(angle<0.01):
                     self.radius=0
-                else:
+                elif 'original_cuttter' in self.config:
                     self.radius = self.config['original_cutter']['cutterrad']
 #                               print str(self.pos)+"self.cofig side="+self.config['cutside'] + " angle="+str(angle)+ " direction="+self.direction+ " reverse="+str(self.reverse)+" radius="+str(self.radius)
+                else:
+                    self.radius=0
 
 class PIncurve(PSharp):
     def __init__(self, pos, radius=0, direction=False, transform=False):

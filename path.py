@@ -519,7 +519,9 @@ class Path(object):
         self.simplify_points()
         pointlist = self.transform_pointlist(self.points,config['transformations'])
         self.reset_points(pointlist)
-        if direction!=self.find_direction(config):
+        if direction is None:
+            self.isreversed=0
+        elif direction!=self.find_direction(config):
             pointlist.reverse()
             # this is in the wrong sense as it will be run second in the reversed sense
             self.isreversed=1
@@ -540,7 +542,7 @@ class Path(object):
     #               numpoints=len(pointlist)*2-2
 #               for p,point in enumerate(pointlist):
         for p in range(0,numpoints):
-            newsegments = pointlist[p].generateSegment(self.isreversed, config)
+            newsegments = pointlist[p].generateSegment(self.isreversed, config,p)
             segment_array.extend(newsegments)
         for s in segment_array:
             s.config=config
@@ -718,14 +720,14 @@ class Path(object):
 
 
     # converts a shape into a simple polygon
-    def polygonise(self,resolution=5):
+    def polygonise(self,resolution=5, direction='cw'):
         ret=[]
         self.Fsegments=[]
         if resolution in self.polygon and (resolution not in self.changed or self.changed[resolution]==False):
             return self.polygon[resolution]
         else:
             config=self.generate_config({'cutterrad':0})
-            self.make_segments('cw',self.Fsegments,config)
+            self.make_segments(direction,self.Fsegments,config)
             for s in self.Fsegments:
                 ret.extend(s.polygon(resolution))
             for p in ret:
