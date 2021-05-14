@@ -94,12 +94,11 @@ class Vec(object):
       Vec(xrange(3))
     """
 
-    __slots__ = ("__vec")
+    __slots__ = ("__vec", "pnum")
 
     def __init__(self, *vec):
         self.__vec = _Triplet(vec, allowNone=True)
-
-
+        self.pnum = None
     @classmethod
     def Error(cls, reason="Invalid Vector"):
         """Create a new vector that represents an error.

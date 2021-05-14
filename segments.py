@@ -108,6 +108,7 @@ class Line(Segment):
         self.seg_type='line'
         self.cutto=cutto
         self.cutfrom=cutfrom
+        self.pnum = None
         if rapid:
             self.cmd="G0"
         else:
@@ -123,6 +124,8 @@ class Line(Segment):
         else:
             return [{"cmd":"L","x":self.cutfrom[0],"y":self.cutfrom[1]}]
     def polygon(self, resolution=1, direction=1):
+        p = self.cutto
+        p.pnum = self.pnum
         return [self.cutto]
 class Arc(Segment):
     def __init__(self, cutfrom, cutto,centre,direction, mode='abs'):
@@ -130,6 +133,7 @@ class Arc(Segment):
         self.cutto=cutto
         self.cutfrom=cutfrom
         self.direction=direction
+        self.pnum = None
         if mode=='abs':
             self.centre=centre
         else:
@@ -226,6 +230,8 @@ class Arc(Segment):
         if thetasum>360:
             return [self.cutto]
         else:
+            for p in points:
+                p.pnum=self.pnum
             return points
 class Quad(Segment):
     def __init__(self, cutfrom, cutto, cp):
@@ -233,6 +239,7 @@ class Quad(Segment):
         self.cutto=cutto
         self.cutfrom=cutfrom
         self.cp=cp
+        self.pnum = None
     def gcode(self,direction=True):
         if(direction):
             offset = self.cp - self.cutfrom
@@ -260,6 +267,8 @@ class Quad(Segment):
         for i in range(1,numsteps-1):
             t=float(i)*step
             ret.append((1-t)*(1-t)*p0 + 2*(1-t)*t*p1 + t*t*p2 )
+        for p in ret:
+            p.pnum = self.pnum
         return ret
 
 class Cubic(Segment):
