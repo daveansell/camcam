@@ -565,7 +565,6 @@ class PInsharp(PAroundcurve):
                     self.radius=0
                     self.cp1=self.pos
                     return
-
                 angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
                 if abs(angle-180)>0.00001 and abs(angle)>0.00001:
                     d=self.config['original_cutter']['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1- 1.0/math.sin(angle/2/180*math.pi))
@@ -605,6 +604,9 @@ class PIncurve(PSharp):
         self._setup()
         lastpoint=self.lastorigin()
         nextpoint=self.nextorigin()
+        if((self.pos-nextpoint).length()<0.0001 or (self.pos-lastpoint).length()<0.0001):
+            print("overlapping points")
+            return self.pos
         angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
         dl=self.radius*math.tan((angle/180)/2*math.pi)
         if angle==180 or angle==0:
@@ -644,6 +646,8 @@ class PIncurve(PSharp):
         if self.last() != None and next(self) !=None:
             lastpoint=self.lastorigin()
             nextpoint=self.nextorigin()
+            if (self.pos - lastpoint).length()==0 or (nextpoint-self.pos).length()==0:
+                return []
             angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
             dl=self.radius*math.tan((angle/180)/2*math.pi)
             startcurve=self.pos-(self.pos-lastpoint).normalize()*dl
