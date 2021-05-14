@@ -309,6 +309,12 @@ class Milling:
                         "endcut":1,
                         "sidecut":1,
                 },
+                "1/4_straight":{
+                        "id":4,
+                        "diameter":6.35,
+                        "endcut":0,
+                        "sidecut":1,
+                },
                 "1/8_endmill":{
                         "id":3,
                         "diameter":3.127,
