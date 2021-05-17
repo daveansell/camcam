@@ -369,7 +369,10 @@ class PSharp(Point):
                         a=(math.pi-self.angle)/2
                     else:
                         a=self.angle/2
-                    t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.sin(a)))
+                    if a>0:
+                        t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.sin(a)))
+                    else:
+                        print ("ERROR a=0 at t.pos="+str(t.pos))
                 else:
                     a=(math.pi-self.angle)/2
                     t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.sin(a)))
