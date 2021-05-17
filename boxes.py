@@ -548,6 +548,8 @@ class ArbitraryBox(Part):
                         face['points'][p].pos = rotate(face['points'][p].pos-face['rotate'][0], face['rotate'][1])+ face['rotate'][0]
                 face['origin'] = rotate(face['origin']-face['rotate'][0], face['rotate'][1])+ face['rotate'][0]
                 face['x'] = rotate(face['x'], face['rotate'][1])
+                if 'y' in face:
+                    face['y'] = rotate(face['y'], face['rotate'][1])
                 if 'good_direction' in face:
                     face['good_direction'] = rotate(face['good_direction'], face['rotate'][1])
                 if 'wood_direction' in face:
@@ -1878,21 +1880,23 @@ class ArbitraryBox(Part):
             face=self.faces[intersection['face']]
             print ("face="+str(intersection['face']))
             if(otherface['normal'].dot(point3d-lastpoint3d)*otherface['wood_direction'] >0):
-                d=-1
-            else:
                 d=1
+            else:
+                d=-1
+            print (intersection['face']+" -> "+intersection['otherface']+" wd="+str(face['wood_direction'])+ " gd="+str(face['good_direction'])+"-> wd="+str(otherface['wood_direction'])+ " gd="+str(otherface['good_direction'])+" d="+str(d))
             slotPerp = V(
-                    -otherface['normal'].dot( face['x']*otherface['wood_direction'] ), 
+                    otherface['normal'].dot( face['x'])*otherface['wood_direction'], 
                     otherface['normal'].dot( face['y'] )
                     )
+            edgeAlong = (point-lastpoint).normalize()
             slotW = slotPerp/abs(self.unproject(slotPerp,face).dot(otherface['normal']))*otherface['thickness']
-            print("oythernormal"+str(otherface['normal']))
+            print("oythernormal"+str(otherface['normal'])+" x="+str(face['x'])+ " y="+str(face['y']))
             print("slotPerp="+str(slotPerp)+ "slotW="+str(slotW)+" thickness="+str(otherface['thickness'])+" dot="+str(slotW.normalize().dot( (point-lastpoint).normalize()))) 
 
-            p = PSharp(intersection['edgePoint'])
+            p  = PSharp(intersection['edgePoint'])
             p1 = PSharp(intersection['midPoint'])
             p2 = PSharp(intersection['midPoint']+slotW)
-            p3 = PSharp(intersection['edgePoint']+slotW/ abs(slotW.normalize().dot( (lastpoint-point).normalize())))
+            p3 = PSharp(intersection['edgePoint']+edgeAlong *otherface['thickness']*d/ abs(slotPerp.normalize().dot(edgeAlong)))
             if intersection['face']=='mid2':
                 print ([p, p1,p2,p3])
             if(d==1):
