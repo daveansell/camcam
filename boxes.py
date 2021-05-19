@@ -566,6 +566,7 @@ class ArbitraryBox(Part):
             self.make_normal(f, face['points'])
             face['internal_joints'] = []
             face['intersections'] = {}
+            face['reversed']=False
             if 'zoffset' not in face:
                 face['zoffset'] = 0
 #                       self.check_layer(face)
@@ -647,6 +648,7 @@ class ArbitraryBox(Part):
             assert face['good_direction'] in [-1,1]
             if face['wood_direction'] == face['good_direction']:
                 face['x'] *=-1
+                face['reversed']=True
 #                       face['y'] = face['x'].cross(face['normal']).normalize()
             # if we are cutting from the back flip x
 #                       if 'isback' in face and face['isback']:
@@ -832,19 +834,25 @@ class ArbitraryBox(Part):
 
     def tuple_to_vec(self, t):
         return V(t[0], t[1], t[2])
-
+# create a border path with no joints etc for finding intesections etc.
     def simpleBorder(self, face):
         path = Path(closed=True)
         p=0
         for point in face['ppoints']:
             if p in face['point_type']:
-                pnt=face['point_type'][p]
+                pnt=copy.deepcopy(face['point_type'][p])
                 pnt.setPos(point)
+                if face['reversed'] and hasattr(pnt, 'direction'):
+                    if pnt.direction=='cw':
+                        pnt.direction='ccw'
+                    elif pnt.direction=='ccw':
+                        pnt.direction='cw'
                 path.add_point(pnt)
             else:
                 path.add_point(point)
 
             p+=1
+        #self.add(Part(name='simpleBorder', layer='simpleBorder', border=path))
         return path
     def simpleBorderPolygon(self, face):
         path = self.simpleBorder(face)
@@ -872,6 +880,7 @@ class ArbitraryBox(Part):
             lastlastpoint = face['ppoints'][(p-2)%len(face['sides'])]
             nextpoint = face['ppoints'][(p+1)%len(face['sides'])]
             scount = (p)%len(face['sides'])
+            lastscount = (p-1)%len(face['sides'])
             s = face['sides'][scount]
             side = self.sides[s]
             if len(side[0])>2:
@@ -896,18 +905,30 @@ class ArbitraryBox(Part):
             simplepoints.append(PSharp(point))
             #clear newpoints
             newpoints=[]
+
             # need to add 2 points here so intersect_points works
-            if len(side)==1 or scount in face['point_type'] and face['point_type'][scount].point_type not in  ['sharp', 'insharp', 'clear', 'doubleclear'] :
+            if len(side)==1 or (scount in face['joint_mode'] and face['joint_mode'][scount]=='straight') or scount in face['point_type'] and face['point_type'][scount].point_type not in  ['sharp', 'insharp', 'clear', 'doubleclear'] or lastscount in face['point_type'] and face['point_type'][lastscount].point_type not in  ['sharp', 'insharp', 'clear', 'doubleclear'] :
                 newpoints=[]
-                if ((p-1)%len(face['sides'])) in face['point_type']:
-                    newpoints.append(face['point_type'][(p-1)%len(face['sides'])])
-                    newpoints[-1].setPos(lastpoint)
-                    if face['point_type'] not in ['sharp', 'insharp', 'clear', 'doubleclear']:
+                if (lastscount) in face['point_type']:
+
+                    #print(str(lastpoint)+"-->"+str(path.points[-1].pos)+"  "+str(path.points[-1]))
+                    if((lastpoint-path.points[-1].pos).length()>0.001):
+                     #   print("ADD")
+                        newpoints.append(face['point_type'][lastscount])
+                        newpoints[-1].setPos(lastpoint)
+                        if face['reversed'] and hasattr(newpoints[-1], 'direction'):
+                            if newpoints[-1].direction=='cw':
+                                newpoints[-1].direction='ccw'
+                            elif newpoints[-1].direction=='ccw':
+                                newpoints[-1].direction='cw'
+
+                    if face['point_type'][(p-1)%len(face['sides'])] not in ['sharp', 'insharp', 'clear', 'doubleclear']:
+                      #  print("QQQ") 
                         nointersect=True
                 else:
                     newpoints.append(PInsharp(lastpoint))
                 if scount in face['intersections']:
-                         
+                   # print("INTERSECTOINS") 
                     keys=list(face['intersections'][scount].keys())
                     keys.sort()
                     for i in keys:
@@ -916,6 +937,14 @@ class ArbitraryBox(Part):
                 if scount in face['point_type']:
                     newpoints.append(face['point_type'][scount])
                     newpoints[-1].setPos(point)
+                    if face['reversed'] and hasattr(newpoints[-1], 'direction'):
+                   #         print ("$$$$$$$$reversed")
+                            if newpoints[-1].direction=='cw':
+                                newpoints[-1].direction='ccw'
+                            elif newpoints[-1].direction=='ccw':
+                                newpoints[-1].direction='cw'
+                    if face['point_type'][(p)%len(face['sides'])] not in ['sharp', 'insharp', 'clear', 'doubleclear']:
+                        nointersect=True
                 else:
                     
                     newpoints.append(PInsharp(point))
@@ -925,6 +954,7 @@ class ArbitraryBox(Part):
  #                                      newpoints = [PSharp(point)]
 
   #                             else:
+              #  print("joint--"+str(side))
                 angle = thisside[4]
                 altside = thisside[5]
                 joint_type = thisside[6]
@@ -944,7 +974,6 @@ class ArbitraryBox(Part):
                         fudge = self.fudge
                 else:
                     fudge = self.fudge
-                print("joint_mode="+str(face['joint_mode']))
                 if face['joint_mode'][scount]=='straight':
                     newpoints = [PInsharp(lastpoint),PInsharp(point)]
                 elif face['joint_mode'][scount]=='mitre':
@@ -1211,15 +1240,18 @@ class ArbitraryBox(Part):
                                 0, fudge,
                                 nextcorner=nextcorner,
                                 lastcorner=lastcorner)
+          #  print("NEWPOINTS"+str(nointersect)+str(newpoints))
             if first or len(newpoints)<2 or nointersect:
                 first = False
                 path.add_points(newpoints)
             else:
                 path.add_points_intersect(newpoints)
             p += 1
+          #  print(path.points)
         if len(newpoints) >1 and not firstnointersect:
             path.close_intersect()
         simplepath.add_points(simplepoints)
+      #  print ("PATH="+str(path.points))
         path.simplify_points()
 
  #      part.add(simplepath)
@@ -1871,39 +1903,60 @@ class ArbitraryBox(Part):
                 face['intersections'][s]={}
             lastpoint= face['ppoints'][(s-1)%len(face['ppoints'])]
            # point= face['ppoints'][s]
-            along = (intersection['edgePoint']-lastpoint).length()
-            face['intersections'][s][along] = intersection
+            along = round((intersection['edgePoint']-lastpoint).length(),4)
+            if not along in face['intersections'][s]:
+                face['intersections'][s][along] = []
+            face['intersections'][s][along].append( intersection)
              
 
-    def intersection_slot(self,intersection, lastpoint, point, lastpoint3d, point3d):
-            otherface=self.faces[intersection['otherface']]
-            face=self.faces[intersection['face']]
-            print ("face="+str(intersection['face']))
-            if(otherface['normal'].dot(point3d-lastpoint3d)*otherface['wood_direction'] >0):
-                d=1
-            else:
-                d=-1
-            print (intersection['face']+" -> "+intersection['otherface']+" wd="+str(face['wood_direction'])+ " gd="+str(face['good_direction'])+"-> wd="+str(otherface['wood_direction'])+ " gd="+str(otherface['good_direction'])+" d="+str(d))
-            slotPerp = V(
-                    otherface['normal'].dot( face['x'])*otherface['wood_direction'], 
-                    otherface['normal'].dot( face['y'] )
-                    )
-            edgeAlong = (point-lastpoint).normalize()
-            slotW = slotPerp/abs(self.unproject(slotPerp,face).dot(otherface['normal']))*otherface['thickness']
-            print("oythernormal"+str(otherface['normal'])+" x="+str(face['x'])+ " y="+str(face['y']))
-            print("slotPerp="+str(slotPerp)+ "slotW="+str(slotW)+" thickness="+str(otherface['thickness'])+" dot="+str(slotW.normalize().dot( (point-lastpoint).normalize()))) 
+    def intersection_slot(self,intersections, lastpoint, point, lastpoint3d, point3d):
+            ret=[]
+            for intersection in intersections:
+              #  print ("face="+str(intersection['face']))
+                otherface=self.faces[intersection['otherface']]
+                face=self.faces[intersection['face']]
+                if(otherface['normal'].dot(point3d-lastpoint3d)*otherface['wood_direction'] >0):
+                    d=1
+                else:
+                    d=-1
+                if(otherface['reversed']):
+                    D=1
+                else:
+                    D=-1
+              #  print (intersection['face']+" -> "+intersection['otherface']+" wd="+str(face['wood_direction'])+ " gd="+str(face['good_direction'])+"-> wd="+str(otherface['wood_direction'])+ " gd="+str(otherface['good_direction'])+" d="+str(d))
+                slotPerp = V(
+                        otherface['normal'].dot( face['x'])*otherface['wood_direction'], 
+                        otherface['normal'].dot( face['y'] )
+                        )
+                edgeAlong = (point-lastpoint).normalize()
+                slotW = D*slotPerp/abs(self.unproject(slotPerp,face).dot(otherface['normal']))*otherface['thickness']
+              #  print("oythernormal"+str(otherface['normal'])+" x="+str(face['x'])+ " y="+str(face['y']))
+              #  print("slotPerp="+str(slotPerp)+ "slotW="+str(slotW)+" thickness="+str(otherface['thickness'])+" dot="+str(slotW.normalize().dot( (point-lastpoint).normalize()))) 
 
-            p  = PSharp(intersection['edgePoint'])
-            p1 = PSharp(intersection['midPoint'])
-            p2 = PSharp(intersection['midPoint']+slotW)
-            p3 = PSharp(intersection['edgePoint']+edgeAlong *otherface['thickness']*d/ abs(slotPerp.normalize().dot(edgeAlong)))
-            if intersection['face']=='mid2':
-                print ([p, p1,p2,p3])
-            if(d==1):
-                return [p, p1,p2,p3]
-            else:
-                return [p3,p2,p1,p]
-    
+                p  = PSharp(intersection['edgePoint'])
+                p1 = PSharp(intersection['midPoint'])
+                p2 = PSharp(intersection['midPoint']+slotW)
+                p3 = PSharp(intersection['edgePoint']+edgeAlong *otherface['thickness']*d/ abs(slotPerp.normalize().dot(edgeAlong)))
+               # if intersection['face']=='mid2':
+                #    print ([p, p1,p2,p3])
+                if(d==1):
+                    ret.append([p, p1,p2,p3])
+                else:
+                    ret.append( [p3,p2,p1,p])
+            if len(ret)==1:
+                return ret[0]
+            if len(ret)==2:
+                print( "MULTIPLE JOINTS"+str(ret))
+                for i in ret:
+                    print("_")
+                    for j in i:
+                        print (str(j.pos)+",")
+                if (ret[0][3].pos-ret[1][0].pos).length()<0.001 and (ret[0][2].pos-ret[1][1].pos).length()<0.001:
+                    return [ret[0][0], ret[0][1], ret[1][2], ret[1][3]]
+                if (ret[1][3].pos-ret[0][0].pos).length()<0.001 and (ret[1][2].pos-ret[0][1].pos).length()<0.001:
+                    return [ret[1][0], ret[1][1], ret[0][2], ret[0][3]]
+                else:
+                    return ret[0]+ret[1]
 
 
             
