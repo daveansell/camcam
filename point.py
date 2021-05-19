@@ -203,8 +203,10 @@ class Point(object):
 
     def setangle(self):
         self._setup()
-        b1=(self.pos-self.lastorigin()).normalize()
-        b2=(self.nextorigin()-self.pos).normalize()
+        b13=(self.pos-self.lastorigin())
+        b1=V(b13[0], b13[1]).normalize()
+        b23=(self.nextorigin()-self.pos).normalize()
+        b2=V(b23[0], b23[1]).normalize()
         self.dot=b1.dot(b2)
         if self.dot>=1:
             self.angle = 0
@@ -214,6 +216,7 @@ class Point(object):
             self.angle = math.acos(b1.dot(b2))
         a=b2-b1
         self.angle0=math.atan2(a[1], a[0])
+        self.anglecross = b1.cross(b2)[2]
 #               self.angle2=(b1.angle(-b2)-90)*math.pi/180
 
 # side - side we are cutting on, direction overall direction of cut (cw/ccw)
@@ -1113,7 +1116,7 @@ If it can't reach either point with the arc, it will join up to them perpendicul
         self.length=length
         self.transform=transform
         self.point_type='arc'
-        self.control = False#True
+        self.control = True
         self.dirpoint = False
         self.obType='Point'
     def copy(self):
@@ -1130,7 +1133,11 @@ If it can't reach either point with the arc, it will join up to them perpendicul
         if self.pos is not None and self.radius is not False:
             if(self.direction is None):
                 self.setangle()
-                if self.angle>0:
+#                if self.angle>0:
+ #                   self.direction='ccw'
+  #              else:
+   #                 self.direction='cw'
+                if self.anglecross<0:
                     self.direction='ccw'
                 else:
                     self.direction='cw'
