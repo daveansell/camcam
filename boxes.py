@@ -1239,7 +1239,7 @@ class ArbitraryBox(Part):
             else:
                 path.add_points_intersect(newpoints)
             p += 1
-        if len(newpoints) >1 and not firstnointersect:
+        if len(newpoints) >1 and not firstnointersect and not nointersect:
             path.close_intersect()
         simplepath.add_points(simplepoints)
         path.simplify_points()
@@ -1764,7 +1764,7 @@ class ArbitraryBox(Part):
         sides = []
         for i in range(0, len(loop)):
                 intersect = self.intersect_lines(line[0], line[1], loop[i], loop[(i-1)%len(loop)])
-                print("int="+str(intersect)+" line0="+str([line])+" loopline="+str([loop[i],loop[(i-1)%len(loop)]]))
+                #print("int="+str(intersect)+" line0="+str([line])+" loopline="+str([loop[i],loop[(i-1)%len(loop)]]))
                 if intersect:
                   intersections.append(intersect)
                   sides.append(i)
@@ -1803,7 +1803,7 @@ class ArbitraryBox(Part):
         b = self.which_between( a2a, a2b, a1a, a1b)
         if b is not None:
             intersectionLine[1] = b
-        print (intersectionLine)
+        #print (intersectionLine)
         if len(intersectionLine)==2:
             otherEnd1=self.project(t2[intersectionLine[1]], face1)
             thisEnd1=self.project(t1[intersectionLine[0]], face1)
@@ -1857,7 +1857,7 @@ class ArbitraryBox(Part):
                 return False
 
     def add_intersection(self, face, s, intersection):
-            print (intersection)
+            #print (intersection)
             if s not in face['intersections']:
                 face['intersections'][s]={}
             lastpoint= face['ppoints'][(s-1)%len(face['ppoints'])]

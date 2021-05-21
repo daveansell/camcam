@@ -450,10 +450,13 @@ class Path(object):
         # if the things we are trying to intersect are parallel we don't have to do any work
 #               if abs((d-c).normalize().dot((b-a).normalize())) -1 <0.0001:
 #                       return False
-        if (a[0]-b[0])==0 and a[1]-b[1]==0:
+        if abs(a[0]-b[0])<0.001 and abs(a[1]-b[1])<0.001:
             return b
-        if (c[1]-d[1])==0 and (c[0]-d[0])==0:
+        if abs(c[1]-d[1])<0.001 and abs(c[0]-d[0])<0.001:
             return c
+        # if the join point is in the same place
+        if (b-c).length()<0.01:
+            return b
         # if the denominator is zero the rest of this will explode because they don't intersect, so return false
         if ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))==0:
             return False
