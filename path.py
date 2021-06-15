@@ -589,12 +589,16 @@ class Path(object):
 #                                 or (point.point_type == 'insharp' and
 #                                       point.next().point_type=='insharp' and
 #                                       point.last().point_type=='insharp') ):# and p!=0 and p!=len(self.points)-1:
+                # delete if the two points are in the same place
                     if (point.point_transform({}).pos-point.lastpoint.point_transform({}).pos).length()<0.0001:
                         self.delete_point(p)
-                    elif point.point_transform({}).pos!= point.next().point_transform({}).pos and abs((point.point_transform({}).pos-point.last().point_transform({}).pos).normalize().dot((point.next().point_transform({}).pos-point.point_transform({}).pos).normalize())-1)<0.0001:
+                # delete if they are in a straight line
+                    elif point.point_transform({}).pos!= point.next().point_transform({}).pos and abs((point.point_transform({}).pos-point.last().point_transform({}).pos).normalize().dot((point.next().point_transform({}).pos-point.point_transform({}).pos).normalize())-1)<0.001:
                         self.delete_point(p)
-                elif point.point_type == point.lastpoint.point_type and (point.point_transform({}).pos-point.lastpoint.point_transform({}).pos).length()<0.0001:
+                # delete if they are are in the same place and the same point type
+                elif point.point_type == point.lastpoint.point_type and (point.point_transform({}).pos-point.lastpoint.point_transform({}).pos).length()<0.001:
                     self.delete_point(p)
+
     def offset_path(self,side,distance, config):
         self.simplify_points()
         newpath=copy.deepcopy(self)
