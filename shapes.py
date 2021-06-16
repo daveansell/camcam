@@ -1825,9 +1825,13 @@ The line defines the
         else:
             perp = rotate((end-start).normalize(),90)
         along=tab_length*(end-start).normalize()
+
         cra=(end-start).normalize()*(cutterrad+fudge)
+        # don't apply fudge on the first and last points or it can overshoot
+        craFirst=(end-start).normalize()*(cutterrad)
         crp=perp*cutterrad
         cutin=perp*thickness
+        first=True
         if linemode=='external' or linemode==False:
             if cutterrad==0:
                 offpointmode=PInsharp
@@ -1848,7 +1852,11 @@ The line defines the
             print("NO LINEMODE"+str(linemode))
         if startmode=='on':
             if lastcorner != "on":
-                self.append(onpointmode(start+crp-cra))
+                if first:
+                    self.append(onpointmode(start+crp-craFirst))
+                    first=False
+                else:
+                    self.append(onpointmode(start+crp-cra))
             self.append(onpointmode(start+crp))#onpointmode))
             m='on'
         elif startmode=='off':
@@ -1872,10 +1880,10 @@ The line defines the
                 m='on'
         if endmode=='on':
             if nextcorner != "on":
-                self.append(onpointmode(end+crp+cra))
+                self.append(onpointmode(end+crp+craFirst))
             self.append(onpointmode(end+crp))#onpointmode))
         elif endmode=='off':
-            self.append(offpointmode(end+cutin+crp+cra))
+            self.append(offpointmode(end+cutin+crp+craFirst))
             if nextcorner != "off":
                 self.append(onpointmode(end+cutin+crp))#offpointmode))
 
