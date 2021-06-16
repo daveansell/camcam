@@ -1239,7 +1239,14 @@ class ArbitraryBox(Part):
                 path.add_points_intersect(newpoints)
             p += 1
         if len(newpoints) >1 and not firstnointersect and not nointersect:
+
             path.close_intersect()
+        if(f=='support3'):
+            print(f+" nointersect="+str(nointersect)+" firstnointersect="+str(firstnointersect))
+            t=''
+            for p in path.points:
+                t=" "+str(p.pos)
+                print(t)
         simplepath.add_points(simplepoints)
         path.simplify_points()
 
