@@ -2244,12 +2244,14 @@ class ParametricFunctionAlongPath(list):
         while p<pend:
             along = (pathFunc(p+step/4)-pathFunc(p-step/4)).normalize()
             perp = rotate(along, 90)
-            self.append( PSharp(pathFunc(p) + perp * paramFunc(p) ))
+            if pathFunc(p) is not None and paramFunc(p) is not None:
+                self.append( PSharp(pathFunc(p) + perp * paramFunc(p) ))
             p+=step 
         p = pend
         along = (pathFunc(p+step/4)-pathFunc(p-step/4)).normalize()
         perp = rotate(along, 90)
-        self.append( PSharp(pathFunc(p) + perp * paramFunc(p) ))
+        if pathFunc(p) is not None and paramFunc(p) is not None:
+            self.append( PSharp(pathFunc(p) + perp * paramFunc(p) ))
 
 
 class ParametricFunction(list):
