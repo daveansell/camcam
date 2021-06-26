@@ -521,10 +521,12 @@ class ArbitraryBox(Part):
         self.tab_length = tab_length
         self.fudge = fudge
         self.faces = faces
-        self.auto_properties = ['tab_length', 'joint_mode', 'butt_depression', 'butt_holerad', 'butt_numholes', 'hole_spacing', 'hole_offset', 'butt_outline']
+        self.auto_properties = {'tab_length':100, 'joint_mode':'finger', 'butt_depression':None, 'butt_holerad':4.2, 'butt_numholes':None, 'hole_spacing':100, 'hole_offset':0, 'butt_outline':False, 'slot_extra':0}
         for prop in self.auto_properties:
             if prop in config:
                 setattr(self, prop, config[prop])
+            else:
+                setattr(self, prop, self.auto_properties[prop])
         self.sides={}
         self.normals = {}
         self.side_angles={}
@@ -1259,9 +1261,9 @@ class ArbitraryBox(Part):
     # iterate through the internal joints
         for joint in face['internal_joints']:
             if (joint['to3D']-joint['from3D']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']) >0:
-                cutside='right'
-            else:
                 cutside='left'
+            else:
+                cutside='right'
             if 'isback' in face and face['isback']:
                 if  cutside=='left':
                     cutside= 'right'
@@ -1891,12 +1893,13 @@ class ArbitraryBox(Part):
                         otherface['normal'].dot( face['x'])*otherface['wood_direction'], 
                         otherface['normal'].dot( face['y'] )
                         )
+                slotAlong = (intersection['midPoint'] - intersection['edgePoint'] ).normalize()
                 edgeAlong = (point-lastpoint).normalize()
                 slotW = D*slotPerp/abs(self.unproject(slotPerp,face).dot(otherface['normal']))*otherface['thickness']
 
                 p  = PSharp(intersection['edgePoint'])
-                p1 = PSharp(intersection['midPoint'])
-                p2 = PSharp(intersection['midPoint']+slotW)
+                p1 = PSharp(intersection['midPoint']+slotAlong*self.slot_extra)
+                p2 = PSharp(intersection['midPoint']+slotW + slotAlong*self.slot_extra)
                 p3 = PSharp(intersection['edgePoint']+edgeAlong *otherface['thickness']*d/ abs(slotPerp.normalize().dot(edgeAlong)))
                 if(d==1):
                     ret.append([p, p1,p2,p3])
