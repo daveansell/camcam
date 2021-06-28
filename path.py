@@ -101,6 +101,29 @@ def rotate(pos, a, *config):
     else:
         return False
 
+def interpolate(p1, p2, **config):
+    i=0;
+    j=1;
+    if 'i' in config:
+        i=config['i']
+    if 'j' in config:
+        j=config['j']
+    if 'x' in config:
+        d=p2-p1
+        a=d[j]/d[i]
+        return p1 + a*(x-p1[i])
+
+    elif 'y' in config:
+        d=p2-p1
+        a=d[i]/d[j]
+        return p1 + a*(x-p1[j])
+
+    elif 'dist' in config:
+        a = (p2-p1).normalize()
+        return p1+a*config['dist']
+
+    elif 'prop' in config:
+        return config['prop']*p2+ (1-config['prop'])*p1
 
 class Path(object):
     def __init__(self, closed=False, **config):
