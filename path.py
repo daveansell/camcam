@@ -101,22 +101,39 @@ def rotate(pos, a, *config):
     else:
         return False
 
+
+# Interpolate between p1 and p2
+# x - return point on line where x=x
+# y - retruen point on line where y=y
+# dist - return point xy dist along line from p1
+# prop - return point xy which is a proportion of the way from p1 to p2
 def interpolate(p1, p2, **config):
     i=0;
     j=1;
+    
     if 'i' in config:
         i=config['i']
     if 'j' in config:
         j=config['j']
     if 'x' in config:
         d=p2-p1
-        a=d[j]/d[i]
-        return p1 + a*(x-p1[i])
+        t=[0,0,0]
+        t[j]=d[j]/d[i]
+        a=Vec(t)
+        t=[0,0,0]
+        t[i]=1
+        xdir = Vec(t)
+        return p1 + a*(config['x']-p1[i]) + (config['x']-p1[i])*xdir
 
     elif 'y' in config:
         d=p2-p1
-        a=d[i]/d[j]
-        return p1 + a*(x-p1[j])
+        t=[0,0,0]
+        t[i]=d[i]/d[j]
+        a=Vec(t)
+        t=[0,0,0]
+        t[j]=1
+        ydir = Vec(t)
+        return p1 + a*(config['y']-p1[j]) + (config['y']-p1[j])*ydir
 
     elif 'dist' in config:
         a = (p2-p1).normalize()
