@@ -18,6 +18,8 @@ from camcamconfig import *
 from path import *
 from shapes import *
 from parts import *
+if has3D:
+    from cc3d import *
 
 class ArbitraryBox(Part):
     """
@@ -304,6 +306,9 @@ class ArbitraryBox(Part):
                         self.faces[f]['internal_joints'].append( { 'side':s, 'otherside':side[0], 'from':p1p, 'to':p2p, 'otherface':face1, 'otherf':side[0][0], 'sidedat':side, 'from3D':p1, 'to3D':p2 } )
                         side.append( [ '_internal', f, len(self.faces[f]['internal_joints'])-1 ])
                         self.find_angle(s, side)
+                        if f=='tubeBottom':
+                            print ("internal joint:")
+                            print (self.faces[f]['internal_joints'][-1])
         # The edge cross the normal gives you a vector that is in the plane and perpendicular to the edge
         svec1 = (face1['points'][ (side[0][1]-1)%len(face1['points']) ] - face1['points'][side[0][1]]).cross( face1['normal'] ).normalize()
 
