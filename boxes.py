@@ -972,6 +972,8 @@ class ArbitraryBox(Part):
             if(len(side)>1):
                 if side[0][0]==f:
                     newf = side[1][0]
+                    print(side)
+                    print face['points']
                     d = side[0][2]
                 else:
                     newf = side[0][0]
