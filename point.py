@@ -1204,6 +1204,12 @@ If it can't reach either point with the arc, it will join up to them perpendicul
         l=self.next().pos - self.last().pos
         perp=rotate(l.normalize(),-90)
         centre=self.pos.intersect_lines(self.last().pos, self.next().pos, self.pos, self.pos+perp)
+        if centre is None:
+
+            print ("Can't intersect lines");
+            print ("last="+str(self.last())+" this="+(str(self))+" next="+str(self.next()))
+            print ("last="+str(self.last().pos)+" this="+(str(self.pos))+" next="+str(self.next().pos))
+            return self.next().pos
         if self.radius**2 - (self.pos-centre).length()**2 > 0:
             c=math.sqrt(self.radius**2 - (self.pos-centre).length()**2)
             a = l.normalize()*c
