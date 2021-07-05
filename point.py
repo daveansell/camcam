@@ -507,7 +507,7 @@ class PAroundcurve(PSharp):
         if not self.setup:
             if self.next().pos is False:
                 print("ERROR: next().pos="+str(self.next().pos))
-            print("NO setup end()"+str(self))
+           # print("NO setup end()"+str(self))
             return self.next().pos
         if self.radius==0:
             return self.pos

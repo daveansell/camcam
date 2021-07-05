@@ -1496,7 +1496,6 @@ class ButtJointMid(Pathgroup):
             else:
                 holepos = thickness/2+hole_offset
                 deppos = 0
-            print ("holepos="+str(holepos))
             if holes:
                 if 'hole_depth' in config:
                     hole_depth = config['hole_depth']
