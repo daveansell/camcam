@@ -81,6 +81,7 @@ class ArbitraryBox(Part):
         for f, face in faces.items():
             self.extract_sides(face)
             if 'rotate' in face:
+                face['points']=copy.deepcopy(face['points'])
                 for p in range(0, len(face['points'])):
                     if type(face['points'][p]) is Vec:
                         face['points'][p]=rotate(face['points'][p]-face['rotate'][0], face['rotate'][1])+ face['rotate'][0]
@@ -329,10 +330,6 @@ class ArbitraryBox(Part):
                         self.faces[f]['internal_joints'].append( { 'side':s, 'otherside':side[0], 'from':p1p, 'to':p2p, 'otherface':face1, 'otherf':side[0][0], 'sidedat':side, 'from3D':p1, 'to3D':p2 } )
                         side.append( [ '_internal', f, len(self.faces[f]['internal_joints'])-1 ])
                         self.find_angle(s, side)
-                        if f=='tubeBottom' and side[0][0]=='stringer_0':
-                            print ("internal joint:"+str(f))
-                            print (self.faces[f]['internal_joints'][-1])
-                            print ("SISE+"+str(side))
         # The edge cross the normal gives you a vector that is in the plane and perpendicular to the edge
         svec1 = (face1['points'][ (side[0][1]-1)%len(face1['points']) ] - face1['points'][side[0][1]]).cross( face1['normal'] ).normalize()
 
@@ -800,12 +797,6 @@ class ArbitraryBox(Part):
         if len(newpoints) >1 and not firstnointersect and not nointersect:
 
             path.close_intersect()
-        if(f=='support3'):
-            print(f+" nointersect="+str(nointersect)+" firstnointersect="+str(firstnointersect))
-            t=''
-            for p in path.points:
-                t=" "+str(p.pos)
-                print(t)
         simplepath.add_points(simplepoints)
         path.simplify_points()
 
@@ -843,8 +834,6 @@ class ArbitraryBox(Part):
 
             prevmode = 'on'
             nextmode = 'on'
-            if(f=='tubeBottom'):
-                print ("internal_joints=", joint['joint_mode'])
             if 'joint_mode' not in joint:
                 joint['joint_mode']='straight'
             if joint['joint_mode']=='straight':
@@ -969,11 +958,9 @@ class ArbitraryBox(Part):
         recursion += 1
         for s in face['sides']:
             side = self.sides[s]
-            if(len(side)>1):
+            if(len(side)==2):
                 if side[0][0]==f:
                     newf = side[1][0]
-                    print(side)
-                    print face['points']
                     d = side[0][2]
                 else:
                     newf = side[0][0]
@@ -1150,7 +1137,7 @@ class ArbitraryBox(Part):
 
     def set_joint_type(self, s, side):
         face1 = self.faces[side[0][0]]
-        if len(side)==1:
+        if len(side)==1 or len(side)>2:
             return False
         elif side[1][0]=='_internal':
             joint_type='convex'
