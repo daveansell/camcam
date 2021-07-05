@@ -454,6 +454,10 @@ class Vec(object):
         raise TypeError("Unknown type for Vector contains, %s" % otherType.__name__)
 
     def intersect_lines(self,a, b, c, d):
+        if (((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0])) ==0 ) or (((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))==0):
+            return None
+
+
         x= ((a[0]*b[1]-a[1]*b[0])*(c[0]-d[0]) - (a[0]-b[0])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
         y= ((a[0]*b[1]-a[1]*b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]*d[1]-c[1]*d[0]) ) / ((a[0]-b[0])*(c[1]-d[1]) - (a[1]-b[1])*(c[0]-d[0]))
         return V(x,y)
