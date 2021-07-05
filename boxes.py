@@ -292,23 +292,24 @@ class ArbitraryBox(Part):
                 if abs(p1p[2])<0.05 and abs(p2p[2])<0.05:
                     # we are in plane are we in the face
                     p=Path(closed=True)
-                    c=0
-                    for point in face['ppoints']:
-                        if c in face['point_type']:
-                            t=face['point_type'][c]
-                            t.pos = point
-                        else:
-                            t=PSharp(point)
-                        p.add_point(t)
-                        c+=1
-                    poly=self.simpleBorderPolygon(face1)#p.polygonise(5)
+                  #  c=0
+                   # for point in face['ppoints']:
+                    #    if c in face['point_type']:
+                     #       t=face['point_type'][c]
+                      #      t.pos = point
+                       # else:
+                        #    t=PSharp(point)
+                   #     p.add_point(t)
+                    #    c+=1
+                    poly=self.simpleBorderPolygon(face)#p.polygonise(5)
                     if p.contains_point(p1p,poly) and p.contains_point(p2p, poly) and abs(p1p[2])<0.05 and abs(p2p[2])<0.05:
                         self.faces[f]['internal_joints'].append( { 'side':s, 'otherside':side[0], 'from':p1p, 'to':p2p, 'otherface':face1, 'otherf':side[0][0], 'sidedat':side, 'from3D':p1, 'to3D':p2 } )
                         side.append( [ '_internal', f, len(self.faces[f]['internal_joints'])-1 ])
                         self.find_angle(s, side)
-                        if f=='tubeBottom':
-                            print ("internal joint:")
+                        if f=='tubeBottom' and side[0][0]=='stringer_0':
+                            print ("internal joint:"+str(f))
                             print (self.faces[f]['internal_joints'][-1])
+                            print ("SISE+"+str(side))
         # The edge cross the normal gives you a vector that is in the plane and perpendicular to the edge
         svec1 = (face1['points'][ (side[0][1]-1)%len(face1['points']) ] - face1['points'][side[0][1]]).cross( face1['normal'] ).normalize()
 
@@ -819,6 +820,8 @@ class ArbitraryBox(Part):
 
             prevmode = 'on'
             nextmode = 'on'
+            if(f=='tubeBottom'):
+                print ("internal_joints=", joint['joint_mode'])
             if 'joint_mode' not in joint:
                 joint['joint_mode']='straight'
             if joint['joint_mode']=='straight':
