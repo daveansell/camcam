@@ -20,6 +20,14 @@ from shapes import *
 from parts import *
 if has3D:
     from cc3d import *
+# Class to hold configuration of a side
+class Side:
+    def __init__(self,**config):
+        self.config={}
+        self.auto_properties = {'tab_length':100, 'joint_mode':'finger', 'butt_depression':None, 'butt_holerad':4.2, 'butt_numholes':None, 'hole_spacing':100, 'hole_offset':0, 'butt_outline':False, 'slot_extra':0}
+        for prop in self.auto_properties:
+            if prop in config:
+                self.config[prop] = config[prop]
 
 class ArbitraryBox(Part):
     """
@@ -71,6 +79,7 @@ class ArbitraryBox(Part):
         else:
             self.name='box'
         for f, face in faces.items():
+            self.extract_sides(face)
             if 'rotate' in face:
                 for p in range(0, len(face['points'])):
                     if type(face['points'][p]) is Vec:
@@ -257,6 +266,20 @@ class ArbitraryBox(Part):
             setattr(self, 'face_' + f, t)
 #               def _pre_render(self):
             self.align3d_face(t, f, face)
+
+    def extract_sides(self, face):
+        scount=0
+        newpoints=[]
+        for p in range(0,len(face['points'])):
+                if type(face['points'][p]) is Side:
+                    for prop in face['points'][p].config:
+                        if prop not in face:
+                            face[prop]={}
+                        face[prop][scount] = face['points'][p].config[prop]
+                else:
+                    newpoints.append(face['points'][p])
+                    scount+=1
+        face['points']=newpoints
 
     def project(self,points, face):
             if type(points) is Vec:
