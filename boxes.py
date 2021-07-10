@@ -1314,7 +1314,7 @@ class ArbitraryBox(Part):
 
         return intersection_point
 
-
+# Test if line insersects loop 
     def intersects_line_loop(self, line, loop):
         intersections = []
         sides = []
@@ -1360,7 +1360,8 @@ class ArbitraryBox(Part):
         if b is not None:
             intersectionLine[1] = b
         #print (intersectionLine)
-        if len(intersectionLine)==2:
+        # check there is a valid intersection and that the intersection is not in the plane of either face (as then it is a different kind of joint)
+        if len(intersectionLine)==2 and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face1) and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face2):
             otherEnd1=self.project(t2[intersectionLine[1]], face1)
             thisEnd1=self.project(t1[intersectionLine[0]], face1)
             self.add_intersection(
@@ -1463,7 +1464,14 @@ class ArbitraryBox(Part):
                 else:
                     return ret[0]+ret[1]
 
+    def point_from_face(self, point, face ):
+        return (point-face['origin']).dot(face['normal'])
 
+    def line_in_plane(self, line, face):
+        if self.point_from_face(line[0], face) < 0.01 and self.point_from_face(line[0],face)<0.01:
+            return True
+        else:
+            return False
             
 
 #    def line_intersect_face(self, face, line):
