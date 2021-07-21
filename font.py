@@ -20,6 +20,39 @@
 from freetype import *
 from path import *
 from point import *
+from HersheyFonts import HersheyFonts
+
+class HersheyText(Pathgroup):
+    def __init__(self, pos, text, **config):
+        self.init(config)
+        thefont = HersheyFonts()
+        if 'font' in config:
+            thefont.load_default_font(config['font'])
+        else:
+            thefont.load_default_font('rowmans')
+        if 'scale' in config:
+            self.scale =float(config['scale'])
+        else:
+            self.scale=1.0
+        lastx=None
+        lasty=None
+        minx = 100000
+        miny = 100000
+        maxx = -100000
+        maxy = -100000
+        for (x1, y1), (x2, y2) in thefont.lines_for_text(text):
+            if lastx!=x1 or lasty!=y1:
+                thepath = self.add(Path(closed=False))
+                thepath.add_point(pos+V(x1,-y1)*self.scale)
+            thepath.add_point(pos+V(x2,-y2)*self.scale)
+            lastx=x2
+            lasty=y2
+            maxx = max(maxx, x1, x2)
+            maxy = max(maxy, y1, y2)
+            minx = min(minx, x1, x2)
+            miny = min(miny, y1, y2)
+        if 'centred' in config and config['centred']:
+            self.translate(-V((maxx+minx)/2, (maxy+miny)/2)*self.scale)
 
 class Text(Pathgroup):
     def __init__(self, pos, text, **config):
