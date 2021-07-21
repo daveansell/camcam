@@ -2087,6 +2087,30 @@ class KeyHoleArc(Path):
         self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a1]}))
         self.add_point(PArc(pos+V(-keyOff,rad), radius=keyHoleRad, direction='cw', transform={'rotate':[pos, a1]}))
 
+class RoundedArrow(Path):
+    def __init__(self, pos, rad, width, headwidth, headlength, angle,  **config):
+        """ An arc of length angle with width - width with arrow head on the end """
+        self.init(config)
+        if 'startangle' in config:
+            startangle = config['startangle']
+        else:
+            startangle = 0
+
+        self.closed=True
+        a1 = -float(angle)/2+startangle
+        a2 = float(angle)/2+startangle
+        w = float(width)/2
+        headw = headwidth/2
+        self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a1]}))
+        self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
+        self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a2]}))
+        self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a2]}))
+        self.add_point(PArc(pos+V(0,0), radius=rad-w, direction='ccw'))
+        self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a1]}))
+
+        self.add_point(PSharp(pos+V(0,rad-headw), transform={'rotate':[pos, a1]}))
+        self.add_point(PSharp(pos+V(-headlength,rad), transform={'rotate':[pos, a1]}))
+        self.add_point(PSharp(pos+V(0,rad+headw), transform={'rotate':[pos, a1]}))
 
 class RoundedArc(Path):
     def __init__(self, pos, rad, width, angle,  **config):
