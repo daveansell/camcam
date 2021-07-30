@@ -8,3 +8,4 @@ pip3 install freetype-py
 pip3 install dxfwrite
 pip3 install shapely
 pip3 install kivy
+pip3 install Hershey-Fonts
