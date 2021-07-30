@@ -273,7 +273,6 @@ def plane_generate_part3D(self, thepart, pconfig):
     thepart.cutouts3D = []
     for path in paths:
         thepart.cutouts3D.extend(path.render3D(config))
-
 def plane_make_part3D(self, thepart, pconfig):
     self.generate_part3D(thepart, pconfig)
 #       for cutout in thepart.cutouts3D:
@@ -284,7 +283,10 @@ def plane_make_part3D(self, thepart, pconfig):
         if hasattr(sp, 'subpart') and sp.subpart:
             self.make_part3D(sp, pconfig)
             if hasattr(sp, 'border3D'):
-                subparts.append(sp.border3D)
+                if(sp.subpart=='subtract'):
+                    thepart.cutouts3D.append([sp.border3D])
+                else:    
+                    subparts.append(sp.border3D)
     if len(subparts):
         if hasattr(thepart, 'border3D'):
             thepart.border3D=solid.union()(thepart.border3D,*subparts)
