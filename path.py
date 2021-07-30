@@ -153,7 +153,7 @@ class Path(object):
         self.points = []
         self.Fsegments = []
         self.Bsegments = []
-        self.transform={}
+        self.transform=[]
         self.otherargs=''
         varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance', 'vertfeed', 'downmode', 'blendTolerance','finalpass']
         if hasattr(self, 'varlist') and type(self.varlist) is list:
@@ -228,18 +228,18 @@ class Path(object):
 
     def rotate(self,pos, angle):
         if self.transform==False or self.transform==None:
-            self.transform={}
-        self.transform['rotate']=[pos, angle]
+            self.transform=[]
+        self.transform.append({'rotate':[pos, angle]})
 
     def mirror(self, pos, dirvec):
         if self.transform==False or self.transform==None:
-            self.transform={}
-        self.transform['mirror']=[pos,dirvec]
+            self.transform=[]
+        self.transform.append({'mirror':[pos,dirvec]})
 
     def translate(self,vec):
         if self.transform is False or self.transform is None:
-            self.transform={}
-        self.transform['translate']=vec
+            self.transform=[]
+        self.transform.append({'translate':vec})
 
     def set_cutter(self, config):
         if 'forcecutter' in config and config['forcecutter'] is not None:
@@ -938,7 +938,10 @@ class Path(object):
         else:
             config['transformations']=pconfig['transformations'][:]
         if self.transform!=None:
-            config['transformations'].append(self.transform)
+            if type(self.transform) is list :
+                config['transformations']+=self.transform
+            else:
+                config['transformations'].append(self.transform)
         #       self.transform=None
     #       self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','finishdepth','forcestepdown', 'forcecutter', 'mode','partial_fill','finishing','fill_direction','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z','clear_height', 'sidefeed']
         for v in self.varlist:
@@ -1865,7 +1868,7 @@ class Pathgroup(object):
         self.output=[]
         self.parent=False
         self.comments=[]
-        self.transform={}
+        self.transform=[]#{}
 
     def get_plane(self):
         if self.parent:
@@ -1912,7 +1915,9 @@ class Pathgroup(object):
             config['transformations']=[]
         else:
             config['transformations']=pconfig['transformations'][:]
-        if self.transform!=None:
+        if type(self.transform) is list:
+            config['transformations']+=self.transform
+        elif self.transform!=None:
             config['transformations'].append(self.transform)
         #       self.transform=None
         for v in self.varlist:
@@ -2019,18 +2024,18 @@ class Pathgroup(object):
 
     def rotate(self,pos, angle):
         if self.transform==False:
-            self.transform={}
-        self.transform['rotate']=[pos, angle]
+            self.transform=[]
+        self.transform.append({'rotate':[pos, angle]})
 
     def translate(self,vec):
         if self.transform is False or self.transform is None:
-            self.transform={}
-        self.transform['translate']=vec
+            self.transform=[]
+        self.transform.append({'translate':vec})
 
     def mirror(self, pos, dirvec):
         if self.transform==False or self.transform==None:
             self.transform={}
-        self.transform['mirror']=[pos,dirvec]
+        self.transform.append({'mirror':[pos,dirvec]})
 
 
 
@@ -2127,7 +2132,7 @@ class Part(object):
         self.parent=False
         self.internal_borders=[]
         self.ignore_border=False
-        self.transform={}
+        self.transform=[]
         varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height', 'offset', 'blendTolerance', 'vertfeed', 'blendTolerance','finalpass']
         self.otherargs=''
         if hasattr(self, 'varlist') and type(self.varlist) is list:
@@ -2204,18 +2209,18 @@ class Part(object):
 
     def rotate(self,pos, angle):
         if self.transform==False or self.transform==None:
-            self.transform={}
-        self.transform['rotate']=[pos, angle]
+            self.transform=[]
+        self.transform.append({'rotate':[pos, angle]})
 
     def mirror(self, pos, dirvec):
         if self.transform==False or self.transform==None:
-            self.transform={}
-        self.transform['mirror']=[pos,dirvec]
+            self.transform=[]
+        self.transform.append({'mirror':[pos,dirvec]})
 
     def translate(self,vec):
         if self.transform is False or self.transform is None:
-            self.transform={}
-        self.transform['translate']=vec
+            self.transform=[]
+        self.transform.append({'translate':vec})
     def add_bom(self,name, number=False, part_number=False, description=False, length=False):
         if type(name) is not str:
             if hasattr(name,'obType') and name.obType=='BOM':
@@ -2263,7 +2268,9 @@ class Part(object):
             config['transformations']=[]
         else:
             config['transformations']=pconfig['transformations'][:]
-        if self.transform is not None:
+        if type(self.transform ) is list:
+            config['transformations']+=self.transform
+        elif self.transform is not None:
             config['transformations'].append(self.transform)
         #       self.transform=None
         for v in self.varlist:
