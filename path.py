@@ -620,6 +620,15 @@ class Path(object):
             self.points[p+1].lastpoint = self.points[p-1]
         self.points.pop(p)
 
+    def remove_backtracks(self):
+        if len(self.points)>3:
+            for p,point in enumerate(self.points):
+                if (point.point_type in ['sharp', 'clear', 'doubleclear', 'insharp'] ):
+                    point.setangle()
+                    if point.dot==-1 and (self.closed or p!=0 and p!=len(self.points)-1):
+                        print( "deleting point as pos="+str(point.pos))
+                        self.delete_point(p)
+
     def simplify_points(self):
         if len(self.points)>2:
             for p,point in enumerate(self.points):
@@ -638,6 +647,7 @@ class Path(object):
                 # delete if they are are in the same place and the same point type
                 elif point.point_type == point.lastpoint.point_type and (point.point_transform({}).pos-point.lastpoint.point_transform({}).pos).length()<0.001:
                     self.delete_point(p)
+        self.remove_backtracks()
 
     def offset_path(self,side,distance, config):
         self.simplify_points()
@@ -2612,8 +2622,11 @@ class Plane(Part):
         config['mode']=milling.mode_config[mode]['mode']
         self.make_copies()
         for part in self.getParts(milling.mode_config[mode]['overview'],config=config):
-
-            self.render_part(part, mode,config)
+            if('parts' in config and type(config['parts']) is list and len(config['parts'])):
+                if(part.name in config['parts']):
+                    self.render_part(part, mode,config)
+            else:
+                self.render_part(part, mode,config)
     def list_all(self):
         """List all tha parts in this Plane"""
         for part in self.getParts():
