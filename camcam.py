@@ -146,7 +146,9 @@ class CamCam:
         return "".join(x for x in filename if x.isalnum() or x in '-._')
 
     def listparts(self):
+        print ("listparts()")
         for plane in self.planes:
+            print (plane)
             plane.list_all()
     def get_bom(self):
         ret=[]
@@ -173,6 +175,8 @@ milling = Milling.Milling()
 parser = OptionParser()
 modes = ','.join(list(milling.mode_config.keys()))
 
+parser.add_option("-A", "--parts", dest="parts",
+                  help="comma deliminated list of part names (can be found by -l)")
 parser.add_option("-m", "--mode", dest="mode",
                   help="mode the output should be in. Can be one of "+modes, metavar="MODE")
 parser.add_option("-l", "--list",
@@ -220,6 +224,7 @@ parser.add_option("-Q", "--offsety", dest="offsety",
 config={}
 
 camcam.command_args={}
+
 if options.options:
     for pair in options.options.split(';'):
         a=pair.split('=')
@@ -255,6 +260,10 @@ if options.zero:
     config['zero']=options.zero
 else:
     config['zero']=False
+if options.parts:
+    config['parts']=options.parts.split(',')
+    print("parts="+str(config['parts']))
+
 if options.offsetx:
     offsetx = float(options.offsetx)
 else:
@@ -278,7 +287,10 @@ for arg in args:
     camcam.files.append(arg)
 
 if options.listparts:
+    print ("listparts")
     camcam.listparts()
+    exit()
+
 if options.bom:
     camcam.get_bom()
 elif options.layout_file:

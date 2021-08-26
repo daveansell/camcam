@@ -260,7 +260,7 @@ class CamCam(App):
         button = Button(text = '-')
         button.bind(on_press = self.zoomout)
         layout2.add_widget(button)
-        self.slider = Slider(min=0, max=360, on_touch_move=self.doSlider)
+        self.slider = Slider(min=0, max=360, on_touch_move=self.doSlider, size_hint_x=4)
         layout2.add_widget(self.slider)
         if not self.command_args.boardWidth:
             self.command_args.boardWidth=1200
