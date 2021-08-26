@@ -26,7 +26,7 @@ from types import MethodType
 
 
 SEGMENTS = 120
-RESOLUTION = 4
+RESOLUTION = 1
 _delta = 0
 SCALEUP = 1
 PRECISION = 3
@@ -336,7 +336,7 @@ def plane_render_part3D(self, thepart, pconfig, filename=False):
     else:
         filename = filename +',scad'
     if hasattr(thepart, 'border3D'):
-        solid.scad_render_to_file(thepart.border3D, filename, include_orig_code=False)
+        solid.scad_render_to_file(thepart.border3D, filename,file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=False)
 
 def plane_render_all3D(self,callmode,config):
     """Render all parts in the Plane"""
@@ -358,7 +358,7 @@ def plane_render_all3D(self,callmode,config):
                         scene = solid.part()(thepart.border3D)
                     else:
                         scene += solid.part()(thepart.border3D)
-        solid.scad_render_to_file(scene, 'Overview.scad', include_orig_code=False)
+        solid.scad_render_to_file(scene, 'Overview.scad', file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=False)
 
 Plane.generate_part3D = plane_generate_part3D# MethodType(plane_generate_part3D, Plane)
 Plane.make_part3D = plane_make_part3D#MethodType(plane_render_part3D, Plane)
