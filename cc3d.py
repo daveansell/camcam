@@ -39,7 +39,7 @@ def rotations_to_3D(self):
             if 'rotate' in p.transform:
                 if 'rotate3D' not in p.transform:
 #                                       p.transform['rotate3D'] = [ p.transform['rotate'][0], [0,0, p.transform['rotate'][1]] ]
-                    p.transform['rotate3D'] = [ [p.transform['rotate'][0][0], p.transform['rotate'][0][1], p.transform['rotate'][0][2]],[0,0, p.transform['rotate'][1]] ]
+                    p.transform.insert(0,{'rotate3D': [ [p.transform['rotate'][0][0], p.transform['rotate'][0][1], p.transform['rotate'][0][2]],[0,0, p.transform['rotate'][1]]} ]
                     del(p.transform['rotate'])
                 else:
                     print("OVERWRITING rotate3D with rotate which is unstable"+str(p.transform['rotate3D']))
