@@ -35,6 +35,8 @@ class Rect(Path):
         :param centred: true if you want the rectangle to be centred
         :param cornertype: type of corner points sharp, incurve, outcurve
         :param rad: radius of cornwer curves if you have them"""
+        if 'width' in config and 'height' in config and 'centred' not in config:
+            config['centred']=True
         if 'centred' in config and config['centred']:
             if 'width' in config and 'height' in config:
                 pos=bl
