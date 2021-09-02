@@ -1133,14 +1133,23 @@ class Path(object):
     def _key_cross(self, a):
         return a[0]
     # If a simplepath crosses itself split it into many paths
-    def clean_simplepath(self, resolution, direction):
-        self.makeShapely()
+    def clean_simplepath(self, points):
+#        self.makeShapely(dd)
+        ls = shapely.geometry.LineString(points)
+        lr = shapely.geometry.LineString(ls.coords[:] + ls.coords[0:1])
+        if lr.is_simple:
+            return points
         mls = shapely.ops.unary_union(lr)
         print (lr.is_simple)
         print (mls.geom_type)
-        print(shapely.ops.polygonize(mls))
+       # print(shapely.ops.polygonize(mls))
+        ret = False
+        maxarea=0
         for polygon in shapely.ops.polygonize(mls):
-            print ("y="+str(polygon))
+            if polygon.area>maxarea:
+                ret=polygon
+                maxarea=polygon.area
+        return list(zip(*ret.exterior.coords.xy))
 #        points = copy.copy(self.polygon[resolution])
 #        intersections = self.self_intersects(points)
 #        crosses = []
