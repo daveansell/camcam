@@ -24,9 +24,8 @@ from segments import *
 import math
 from types import MethodType
 
-
 SEGMENTS = 120
-RESOLUTION = 1
+RESOLUTION = 0.5
 _delta = 0
 SCALEUP = 1
 PRECISION = 3
@@ -99,9 +98,20 @@ def path_render3D(self, pconfig, border=False):
     outline = []
     self.reset_points()
     points = self.polygonise(RESOLUTION)
+    points = self.clean_simplepath(points)
+
 #       extrude_path = [ Point3(0,0,zoffset + float(z0)), Point3(0,0, zoffset + float(z1)) ]
+    lastpoint=False
+    # don't output repeated points in case it confuses things later
     for p in points:
-        outline.append( [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
+        newpoint = [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ]
+        if newpoint != lastpoint:
+            outline.append( newpoint)
+        lastpoint = newpoint
+    newpoint = [round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP]
+    if newpoint != lastpoint:
+        outline.append( newpoint)
+
     outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
 #               outline.append( Point3(p[0], p[1], p[2] ))
 #       outline.append( Point3(points[0][0], points[0][1], points[0][2] ))
@@ -132,47 +142,34 @@ def path_render3D(self, pconfig, border=False):
 #               extruded = solid.mirror([1,0,0])(extruded )
     if 'colour' in config and config['colour']:
         extruded = solid.color(self.scad_colour(config['colour']))(extruded)
-    p=self
-    p.rotations_to_3D()
-    while(p and type(p) is not Plane and not ( hasattr(p,'renderable') and p.renderable())):# and (c==0 or not p.renderable() )):
-        if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and 'matrix3D' in p.transform:
-            if type(p.transform['matrix3D'][0]) is list or type(p.transform['matrix3D'][0]) is Vec:
-                extruded=solid.translate([-p.transform['matrix3D'][0][0], -p.transform['matrix3D'][0][1],-p.transform['matrix3D'][0][2]])(extruded)
-                extruded=solid.multmatrix(m=p.transform['matrix3D'][1])(extruded)
-                extruded=solid.translate([p.transform['matrix3D'][0][0], p.transform['matrix3D'][0][1],p.transform['matrix3D'][0][2]])(extruded)
-            else:
-                extruded=solid.multmatrix(m=p.transform['matrix3D'])(extruded)
+    return self.transform3D(self, extruded)
 
-        if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and 'rotate3D' in p.transform:
-            if type(p.transform['rotate3D'][0]) is list or type(p.transform['rotate3D'][0]) is Vec:
-                if p.transform['rotate3D'][0]!=[0,0,0]:
-                    extruded=solid.translate([-p.transform['rotate3D'][0][0], -p.transform['rotate3D'][0][1],-p.transform['rotate3D'][0][2]])(extruded)
-                extruded=solid.rotate([p.transform['rotate3D'][1][0], p.transform['rotate3D'][1][1],p.transform['rotate3D'][1][2] ])(extruded)
-                if p.transform['rotate3D'][0]!=[0,0,0]:
-                    extruded=solid.translate([p.transform['rotate3D'][0][0], p.transform['rotate3D'][0][1],p.transform['rotate3D'][0][2]])(extruded)
-            else:
-                extruded=solid.rotate([p.transform['rotate3D'][0], p.transform['rotate3D'][1],p.transform['rotate3D'][2] ])(extruded)
-        if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and 'translate3D' in p.transform:
-            extruded=solid.translate([p.transform['translate3D'][0], p.transform['translate3D'][1],p.transform['translate3D'][2] ])(extruded)
-        p=p.parent
-#               if (hasattr(p,'renderable') and p.renderable and p.obType == "Part"):
-#                       if(p.border is not False and p.border is not None):
-#       if hasattr(self, 'transform') and self.transform is not None and self.transform is not False and 'matrix3D' in self.transform:
-#               if type(self.transform['matrix3D'][0]) is list:
-#                       extruded=solid.translate([-self.transform['rotate3D'][0][0], - self.transform['rotate3D'][0][1]])(extruded)
-#                       extruded=solid.multmatrix(m=self.transform['matrix3D'][0])(extruded)
-#                       extruded=solid.translate([self.transform['rotate3D'][0][0],  self.transform['rotate3D'][0][1]])(extruded)
-#               else:
-#                       extruded=solid.multmatrix(m=self.transform['matrix3D'])(extruded)
-#       if hasattr(self, 'transform') and self.transform is not None and self.transform is not False and 'rotate3D' in self.transform:
-#               if type(self.transform['rotate3D'][0]) is list or type(self.transform['rotate3D'][0]) is Vec:
-#                       extruded=solid.translate([-self.transform['rotate3D'][1][0], - self.transform['rotate3D'][1][1], - self.transform['rotate3D'][1][2]- zoffset])(extruded)
-#                       extruded=solid.rotate([self.transform['rotate3D'][0][0], self.transform['rotate3D'][0][1],self.transform['rotate3D'][0][2] ])(extruded)
-#                       extruded=solid.translate([self.transform['rotate3D'][1][0], self.transform['rotate3D'][1][1], self.transform['rotate3D'][1][1] + zoffset])(extruded)
-#               else:
-#                       extruded=solid.rotate([self.transform['rotate3D'][0], self.transform['rotate3D'][1],self.transform['rotate3D'][2] ])(extruded)
-#       if hasattr(self, 'transform') and self.transform is not None and self.transform is not False and 'translate3D' in self.transform:
-#               extruded=solid.translate([self.transform['translate3D'][0], self.transform['translate3D'][1],self.transform['translate3D'][2] ])(extruded)
+def path_transform3D(self, ob, extruded):
+    p=ob
+    c=0
+ #   while(p and type(p) is not Plane):# and (c==0 or not p.renderable() )):
+    p.rotations_to_3D()
+    if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and type(p.transform) is list:
+            for transform in p.transform:
+                if 'matrix3D' in transform:
+                    if type(transform['matrix3D'][0]) is list or type(transform['matrix3D'][0]) is Vec:
+                        extruded=solid.translate([-transform['matrix3D'][0][0], -transform['matrix3D'][0][1],-transform['matrix3D'][0][2]])(extruded)
+                        extruded=solid.multmatrix(m=transform['matrix3D'][1])(extruded)
+                        extruded=solid.translate([transform['matrix3D'][0][0], transform['matrix3D'][0][1],transform['matrix3D'][0][2]])(extruded)
+                    else:
+                        extruded=solid.multmatrix(m=transform['matrix3D'])(extruded)
+
+                if 'rotate3D' in transform:
+                    if type(transform['rotate3D'][0]) is list or type(transform['rotate3D'][0]) is Vec:
+                        extruded=solid.translate([-transform['rotate3D'][0][0], -transform['rotate3D'][0][1],-transform['rotate3D'][0][2]])(extruded)
+                        extruded=solid.rotate([transform['rotate3D'][1][0], transform['rotate3D'][1][1],transform['rotate3D'][1][2] ])(extruded)
+                        extruded=solid.translate([transform['rotate3D'][0][0], transform['rotate3D'][0][1],transform['rotate3D'][0][2]])(extruded)
+                    else:
+                        extruded=solid.rotate([transform['rotate3D'][0], transform['rotate3D'][1],transform['rotate3D'][2] ])(extruded)
+                if 'translate3D' in transform:
+                    extruded=solid.translate([transform['translate3D'][0], transform['translate3D'][1],transform['translate3D'][2] ])(extruded)
+   #     c+=1
+#        p=p.parent
     return [extruded]
 #def path_transform3D(self, pconfig):
 #       config=self.overwrite(config,pconfig)
@@ -183,6 +180,7 @@ def path_render3D(self, pconfig, border=False):
 
 
 Path.render3D = path_render3D
+Path.transform3D = path_transform3D
 
 def path_scad_colour(self, svgcolour):
     a=1.0
@@ -302,6 +300,7 @@ def plane_make_part3D(self, thepart, pconfig):
     thepart.border3D = solid.difference()(*cutouts)
     # 3D transformations can only be applied to parts, so we can just go up the tree
     p = thepart
+
     c=0
     while(p and type(p) is not Plane):# and (c==0 or not p.renderable() )):
         p.rotations_to_3D()
@@ -358,7 +357,7 @@ def plane_render_all3D(self,callmode,config):
                         scene = solid.part()(thepart.border3D)
                     else:
                         scene += solid.part()(thepart.border3D)
-        solid.scad_render_to_file(scene, 'Overview.scad', file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=False)
+        solid.scad_render_to_file(scene, 'Overview.scad',file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=False)
 
 Plane.generate_part3D = plane_generate_part3D# MethodType(plane_generate_part3D, Plane)
 Plane.make_part3D = plane_make_part3D#MethodType(plane_render_part3D, Plane)
