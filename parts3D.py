@@ -1,5 +1,6 @@
 import solid
 from  path import *
+from cc3d import *
 
 class SolidPath(Path):
     def __init__(self, **config):
@@ -48,3 +49,41 @@ class Sphere(SolidPath):
         self.translate3D(self.pos)
         return solid.sphere(r=self.rad)
 print (Sphere.render3D)
+
+class SolidOfRotation(SolidPath):
+    def __init__(self, pos, shape, **config):
+        self.init(config)
+        self.shape=shape
+        self.pos = pos
+        self.translate3D(pos)
+        if 'convexity' in config:
+            self.convexity = config['convexity']
+        else:
+            self.convexity = 10
+
+    def getSolid(self):
+        global RESOLUTION
+        outline=[]
+        points = self.shape.polygonise(RESOLUTION)
+        for p in points:
+            outline.append( [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
+        outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
+        print( points)
+        polygon = solid.polygon(outline)
+        return solid.rotate_extrude(convexity=self.convexity)(polygon)
+
+class Torus(SolidOfRotation):
+    def __init__(self, bigRad, smallRad, **config):
+        self.init(config)
+        self.smallRad = smallRad
+        self.bigRad = bigRad
+        if 'convexity' in config:
+            self.convexity = config['convexity']
+        else:
+            self.convexity = 10
+
+    def getSolid(self):
+        return solid.rotate_extrude(convexity = self.convexity)(solid.translate([self.bigRad,0,0])(circle(r=self.smallRad)))
+
+#class Hull(SolidPath):
+#    def __init__(self, ):
