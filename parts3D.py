@@ -45,6 +45,9 @@ class Sphere(SolidPath):
         self.init(config)
         self.pos=pos
         self.rad=rad
+        self.closed=True
+        self.add_point(pos,'circle',rad)
+
     def getSolid(self):
         self.translate3D(self.pos)
         return solid.sphere(r=self.rad)
