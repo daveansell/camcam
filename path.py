@@ -1062,6 +1062,7 @@ class Path(object):
         return config
 
     def fill_path(self, side, cutterrad, distance=False, step=False, cutDirection=None):
+        print ("FIll pTh")
         if step==False:
             step = cutterrad*0.5
         ret=[self]
@@ -1086,21 +1087,26 @@ class Path(object):
             fillPath.add(path)
         return fillPath
 
-    def make_fill_path(self, polTree, cutDirection):
+    def make_fill_path(self, polTree, cutDirection, depth=0):
         ret=[]
         for section in polTree[1]:
-            ret+=self.make_fill_path(section, cutDirection)
+#            print("SECTION£");
+            ret+=self.make_fill_path(section, cutDirection, depth+1)
         if len(ret)==0:
             ret.append([])
         elif ret[0] is None:
             ret[0]=[]
         if type(polTree[0]) is shapely.geometry.LineString:
             newPoints = []
+            print("num="+str(depth)+" sections="+str(len(polTree[1]))+" "+str(polTree[0].coords[0])+"lenret="+str(len(ret)))
             for p in polTree[0].coords:
                 newPoints.append(PSharp(V(p[0], p[1])))
             if (self.signed_area(polTree[0])>0) != (cutDirection=='ccw'):
                 newPoints.reverse()
-            ret[0]+=newPoints
+            if(depth==0):
+                ret.append(newPoints)
+            else:
+                ret[0]+=newPoints
         return ret
 
     def signed_area(self,pr):
