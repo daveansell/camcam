@@ -1066,8 +1066,9 @@ class Path(object):
         if step==False:
             step = cutterrad*0.5
         ret=[self]
-        self.makeShapely()
-        poly = shapely.geometry.LineString(self.shapelyPolygon.coords[:] + self.shapelyPolygon.coords[0:1])
+        spath=self.offset_path('in', cutterrad)
+        spath.makeShapely()
+        poly = shapely.geometry.LineString(spath.shapelyPolygon.coords[:] + spath.shapelyPolygon.coords[0:1])
         thisdir=self.find_direction({})
         if (thisdir=='ccw') == (side=='in'):
             cutside='right'
