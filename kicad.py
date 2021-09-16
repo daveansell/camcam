@@ -5,6 +5,8 @@ import math
 from kicad_pcb import *
 from  path import *
 from point import *
+from shapes import *
+import re
 
 class Kicad:
     def __init__(self, filename):
@@ -13,15 +15,33 @@ class Kicad:
         for e in self.pcb.getError():
             print('Error: {}'.format(e))
 
-    def getModules(self, moduleName):
+    def getModules(self, modulePrefix=None, moduleName=None, output='simple'):
         positions=[]
         for module in self.pcb.module:
-            print (module[0])
-            if module[0]==moduleName:
-                positions.append(self.toV(module['at']))
+            prefix, name = module[0].split(':')
+            if (prefix==modulePrefix or modulePrefix==None) and (name==moduleName or moduleName==None):
+                if output=='simple':
+                    positions.append(self.toV(module['at']))
+                elif output=='dict':
+                    positions.append({'pos':self.toV(module['at']), 'name':name, 'prefix':prefix})
         return positions 
+
     def toTuple(self, a):
         return (float(a[0]), float(a[1]))
+
+    def getPart(self, name, layer):
+        self.makeBorders('Edge.Cuts')
+        part=Part(name=name, layer=layer, border=self.border)
+        for path in self.paths:
+            part.add(path)
+        p=re.compile('(\d+)mm')
+        for hole in self.getModules('MountingHole', None, 'dict'):
+            m=p.search(hole['name'])
+            if m and m.group(1):
+                part.add(Hole(hole['pos'], rad=float(m.group(1))/2))
+        return part
+
+
     def makeBorders(self, layer):
         segments=[]
         # collect all the sections
@@ -46,7 +66,6 @@ class Kicad:
             start= c['start']
             end = c['end']
             c['id']=count
-            print ("start="+str(c['start'])+ "end="+str(c['end'])+" type="+str(c['type']))
             if start in ends:
                 ends[start].append([count,'start'])
             else:
@@ -83,8 +102,6 @@ class Kicad:
                         else:
                             paths[j].side='in'
                 if not fail:
-                    print (paths)
-                    print(paths[i])
                     self.border=paths[i]
                     paths.remove(paths[i])
                     self.paths=paths
@@ -98,17 +115,19 @@ class Kicad:
     def makePath(self, loop):
         path = Path(closed=True)
         for l in loop:
+            if l['reversed']:
+                end='start'
+                direction='cw'
+            else:
+                end='end'
+                direction='ccw'
+
             if l['type']=='line':
-                print(l['end'])
-                path.add_point(PSharp(self.toV(l['end'])))
+                path.add_point(PSharp(self.toV(l[end])))
             if l['type']=='arc':
-                if l['reversed']:
-                    direction='cw'
-                else:
-                    direction='ccw'
                 rad=(self.toV(l['start'])-self.toV(l['centre'])).length()
                 path.add_point(PArc(self.toV(l['centre']), radius=rad, direction=direction))
-                path.add_point(PSharp(self.toV(l['end'])))
+                path.add_point(PSharp(self.toV(l[end])))
         return path
     def getLoop(self, ends, segments, p, start, i, istart, depth=0):
         # we have gone all the way around the loop
