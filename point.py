@@ -627,7 +627,7 @@ class PIncurve(PSharp):
         angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
         dl=self.radius*math.tan((angle/180)/2*math.pi)
         if angle==180 or angle==0:
-            print("STRAIGHT LINE")
+          #  print("STRAIGHT LINE")
             return self.pos
         return self.pos+(nextpoint-self.pos).normalize()*dl
     def start(self):
@@ -636,7 +636,7 @@ class PIncurve(PSharp):
         angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
         dl=self.radius*math.tan((angle/180)/2*math.pi)
         if angle==180 or angle==0:
-            print("STRAIGHT LINE")
+           # print("STRAIGHT LINE")
             return self.pos
         return self.pos+(lastpoint-self.pos).normalize()*dl
     def offset(self, side, distance, direction):
