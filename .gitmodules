@@ -1,0 +1,3 @@
+[submodule "kicad_parser"]
+	path = kicad_pcb
+	url = https://github.com/realthunder/kicad_parser.git
