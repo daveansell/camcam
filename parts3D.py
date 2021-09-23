@@ -51,8 +51,26 @@ class Sphere(SolidPath):
     def getSolid(self):
         self.translate3D(self.pos)
         return solid.sphere(r=self.rad)
-print (Sphere.render3D)
 
+class Text3D(SolidPath):
+    def __init__(self, pos, text, height, **config):
+        self.init(config)
+        self.pos=pos
+        self.text=text
+        self.args = {}
+        self.height = height
+        argNames = ['valign', 'size', 'halign', 'font']
+        for n in argNames:
+            if n in config:
+                self.args[n]=config[n]
+        self.args['text']=text
+        self.closed=True
+        self.add_point(pos,'circle',1)
+
+    def getSolid(self):
+        self.translate3D(self.pos)
+        return solid.linear_extrude(height=self.height)(solid.text(**self.args))
+print (Sphere.render3D)
 class SolidOfRotation(SolidPath):
     def __init__(self, pos, shape, **config):
         self.init(config)
