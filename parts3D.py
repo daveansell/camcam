@@ -76,12 +76,13 @@ class SolidOfRotation(SolidPath):
         self.init(config)
         self.shape=shape
         self.pos = pos
+        self.closed=True
         self.translate3D(pos)
         if 'convexity' in config:
             self.convexity = config['convexity']
         else:
             self.convexity = 10
-
+        self.add_points(shape.points)
     def getSolid(self):
         global RESOLUTION
         outline=[]
