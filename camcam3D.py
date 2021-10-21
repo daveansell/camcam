@@ -137,7 +137,10 @@ if options.mirror:
 if options.zbase:
     config['zbase'] = True
 # load all the requested files
+currentFolder=""
 for arg in args:
+    _currentFolder=os.getcwd()
+    print("currentFolder="+os.getcwd())
     exec(compile(open(arg, "rb").read(), arg, 'exec'))
 
 if options.listparts:
