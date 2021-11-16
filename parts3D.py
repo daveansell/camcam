@@ -52,6 +52,20 @@ class Sphere(SolidPath):
         self.translate3D(self.pos)
         return solid.sphere(r=self.rad)
 
+class Cylinder(SolidPath):
+    def __init__(self, pos, rad1, rad2, height, **config):
+        self.init(config)
+        self.pos=pos
+        self.rad1=rad1
+        self.rad2=rad2
+        self.height=height
+        self.closed=True
+        self.add_point(pos,'circle',rad2)
+
+    def getSolid(self):
+        return solid.translate(self.pos)(solid.cylinder(r1=self.rad1, r2=self.rad2, h=self.height))
+
+
 class Text3D(SolidPath):
     def __init__(self, pos, text, height, **config):
         self.init(config)
