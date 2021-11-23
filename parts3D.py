@@ -143,28 +143,33 @@ class CylindricalPolyhedron(Polyhedron):
         if 'zStep' in config:
             zStep = config['zStep']
         else:
-            zStep = 5.0#1.0
+            zStep = 1.0
+        if 'z0' in config:
+            self.z0=float(config['z0'])
+        else:
+            self.z0=0.0
         height = float(height)
-        nz = height/zStep +1
+        nz = (height-self.z0)/zStep +1
         self.facetLength = nz
         if 'facets' in config:
             self.facets = config['facets']
         else:
-            self.facets = 6 #30
+            self.facets = 30
         tStep = 360.0/self.facets
-        self.points = [V(0,0,0), V(0,0,height)]
+        self.points = [V(0,0,self.z0), V(0,0,height)]
         self.faces = []
         self.first=2
-        z=0.0
+        z=float(self.z0)
         
         t=0.0
         f=0
         while t<360.0:
             c=0
-            z=0.0
+            z=self.z0
             while z<height:
+
                 self.points.append(rotate(V(rFunc(z,t),0,z), t))
-                if(z==0.0):
+                if(z==self.z0):
                     self.faces.append([0, self.pn(f,c),  self.pn(f+1,c)])
                 else:
                     self.faces.append([
@@ -176,7 +181,7 @@ class CylindricalPolyhedron(Polyhedron):
                 z+=zStep
                 c+=1
             self.points.append(rotate(V(rFunc(height,t),0,height), t))
-            c+=1
+        #    c+=1
             self.faces.append([
                 self.pn(f,c-1), 
                 self.pn(f,c), 
@@ -191,9 +196,8 @@ class CylindricalPolyhedron(Polyhedron):
             t+=tStep
             f+=1
             c+=1
-            print ("c="+str(c)+" facetLength="+str(self.facetLength)+" poinlen="+str(len(self.points)))
     def pn(self, facet, c):
-        return self.first+(facet%self.facets) * self.facetLength + c 
+        return int(self.first+(facet%self.facets) * self.facetLength + c) 
 
 #class Hull(SolidPath):
 #    def __init__(self, ):
