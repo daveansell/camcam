@@ -170,23 +170,23 @@ class CylindricalPolyhedron(Polyhedron):
 
                 self.points.append(rotate(V(rFunc(z,t),0,z), t))
                 if(z==self.z0):
-                    self.faces.append([0, self.pn(f,c),  self.pn(f+1,c)])
+                    self.faces.append([ self.pn(f,c), 0,  self.pn(f+1,c)])
                 else:
                     self.faces.append([
-                        self.pn(f, c-1), 
-                        self.pn(f,c), 
+                        self.pn(f+1,c-1),
                         self.pn(f+1,c), 
-                        self.pn(f+1,c-1)
+                        self.pn(f,c), 
+                        self.pn(f, c-1), 
                         ])
                 z+=zStep
                 c+=1
             self.points.append(rotate(V(rFunc(height,t),0,height), t))
         #    c+=1
             self.faces.append([
-                self.pn(f,c-1), 
-                self.pn(f,c), 
+                self.pn(f+1,c-1),
                 self.pn(f+1,c), 
-                self.pn(f+1,c-1)
+                self.pn(f,c), 
+                self.pn(f,c-1), 
                 ])
             self.faces.append([
                 self.pn(f,c), 
