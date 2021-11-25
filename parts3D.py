@@ -55,6 +55,10 @@ class Sphere(SolidPath):
 class Cylinder(SolidPath):
     def __init__(self, pos, rad1, rad2, height, **config):
         self.init(config)
+        if 'centre' in config:
+            self.centre= config['centre']
+        else:
+            self.centre= False
         self.pos=pos
         self.rad1=rad1
         self.rad2=rad2
@@ -63,7 +67,7 @@ class Cylinder(SolidPath):
         self.add_point(pos,'circle',rad2)
 
     def getSolid(self):
-        return solid.translate(self.pos)(solid.cylinder(r1=self.rad1, r2=self.rad2, h=self.height))
+        return solid.translate(self.pos)(solid.cylinder(r1=self.rad1, r2=self.rad2, h=self.height, center=self.centre))
 
 
 class Text3D(SolidPath):
@@ -148,6 +152,10 @@ class CylindricalPolyhedron(Polyhedron):
             self.z0=float(config['z0'])
         else:
             self.z0=0.0
+        if 'gradient' in config:
+            gradient = config['gradient']
+        else:
+            gradient = V(0,0)
         height = float(height)
         nz = (height-self.z0)/zStep +1
         self.facetLength = nz
@@ -168,7 +176,7 @@ class CylindricalPolyhedron(Polyhedron):
             z=self.z0
             while z<height:
 
-                self.points.append(rotate(V(rFunc(z,t),0,z), t))
+                self.points.append(gradient*z+rotate(V(rFunc(z,t),0,z), t))
                 if(z==self.z0):
                     self.faces.append([ self.pn(f,c), 0,  self.pn(f+1,c)])
                 else:
@@ -180,7 +188,7 @@ class CylindricalPolyhedron(Polyhedron):
                         ])
                 z+=zStep
                 c+=1
-            self.points.append(rotate(V(rFunc(height,t),0,height), t))
+            self.points.append(gradient*height+rotate(V(rFunc(height,t),0,height), t))
         #    c+=1
             self.faces.append([
                 self.pn(f+1,c-1),

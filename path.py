@@ -2355,7 +2355,7 @@ class Part(object):
             return True
         if hasattr(self,'ignore_border') and self.ignore_border==True and self.layer is not False:
             return True
-        if hasattr(self,'subpart') and self.subpart==True and self.layer is False:
+        if hasattr(self,'subpart') and self.subpart!=False and self.subpart!=None:# and self.layer is False:
             return False
         return False
 
