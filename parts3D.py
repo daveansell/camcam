@@ -89,6 +89,7 @@ class Text3D(SolidPath):
         self.translate3D(self.pos)
         return solid.linear_extrude(height=self.height)(solid.text(**self.args))
 print (Sphere.render3D)
+
 class SolidOfRotation(SolidPath):
     def __init__(self, pos, shape, **config):
         self.init(config)
@@ -113,8 +114,9 @@ class SolidOfRotation(SolidPath):
         return solid.rotate_extrude(convexity=self.convexity)(polygon)
 
 class Torus(SolidOfRotation):
-    def __init__(self, bigRad, smallRad, **config):
+    def __init__(self, pos, bigRad, smallRad, **config):
         self.init(config)
+        self.translate3D(pos)
         self.smallRad = smallRad
         self.bigRad = bigRad
         if 'convexity' in config:
@@ -123,7 +125,24 @@ class Torus(SolidOfRotation):
             self.convexity = 10
 
     def getSolid(self):
-        return solid.rotate_extrude(convexity = self.convexity)(solid.translate([self.bigRad,0,0])(circle(r=self.smallRad)))
+        return solid.rotate_extrude(convexity = self.convexity)(solid.translate([self.bigRad,0,0])(solid.circle(r=self.smallRad)))
+
+
+class RoundedTube(SolidOfRotation):
+    def __init__(self, pos, rad, length, **config):
+        self.init(config)
+        self.shape=Path(closed=True)
+        self.shape.add_point(V(0.01, length/2))
+        self.shape.add_point(PIncurve(V(rad, length/2), radius=rad-0.1))
+        self.shape.add_point(PIncurve(V(rad, -length/2), radius=rad-0.1))
+        self.shape.add_point(V(0.01, -length/2))
+        self.length=length
+        self.rad=rad
+        self.convexity=10
+    def getSolid(self):
+        return solid.union()(super().getSolid(), Cylinder(V(0,0), 0.11, .11, height=self.length, centre=True).getSolid())
+
+
 
 class Polyhedron(SolidPath):
     def __init__(self, points, faces, **config):
