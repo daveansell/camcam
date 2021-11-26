@@ -150,6 +150,8 @@ class PointyTube(RoundedTube):
         self.shape.add_point(V(rad, length/2-rad))
         self.shape.add_point(V(rad, -length/2+rad))
         self.shape.add_point(V(0.01, -length/2))
+        for p in self.points:
+            print (p.pos)
         self.length=length
         self.rad=rad
         self.convexity=10
