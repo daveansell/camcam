@@ -146,12 +146,10 @@ class PointyTube(RoundedTube):
     def __init__(self, pos, rad, length, **config):
         self.init(config)
         self.shape=Path(closed=True)
-        self.shape.add_point(V(0.01, length/2))
-        self.shape.add_point(V(rad, length/2-rad))
-        self.shape.add_point(V(rad, -length/2+rad))
-        self.shape.add_point(V(0.01, -length/2))
-        for p in self.points:
-            print (p.pos)
+        self.shape.add_point(V(0.01, length/2,0))
+        self.shape.add_point(V(rad, length/2-rad,0))
+        self.shape.add_point(V(rad, -length/2+rad,0))
+        self.shape.add_point(V(0.01, -length/2,0))
         self.length=length
         self.rad=rad
         self.convexity=10
