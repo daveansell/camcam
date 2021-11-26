@@ -142,7 +142,17 @@ class RoundedTube(SolidOfRotation):
     def getSolid(self):
         return solid.union()(super().getSolid(), Cylinder(V(0,0), 0.11, .11, height=self.length, centre=True).getSolid())
 
-
+class PointyTube(RoundedTube):
+    def __init__(self, pos, rad, length, **config):
+        self.init(config)
+        self.shape=Path(closed=True)
+        self.shape.add_point(V(0.01, length/2))
+        self.shape.add_point(V(rad, length/2-rad))
+        self.shape.add_point(V(rad, -length/2+rad))
+        self.shape.add_point(V(0.01, -length/2))
+        self.length=length
+        self.rad=rad
+        self.convexity=10
 
 class Polyhedron(SolidPath):
     def __init__(self, points, faces, **config):
