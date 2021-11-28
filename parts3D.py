@@ -90,6 +90,44 @@ class Text3D(SolidPath):
         return solid.linear_extrude(height=self.height)(solid.text(**self.args))
 print (Sphere.render3D)
 
+class SolidExtrude(SolidPath):
+    def __init__(self, pos, shape,height, **config):
+        self.init(config)
+        self.shape=shape
+        self.pos = pos
+        self.closed=True
+        self.translate3D(pos)
+        self.height=height
+        if 'twist' in config:
+                self.twist = config['twist']
+        else:
+                self.twist = 0
+        if 'centre' in config:
+                self.centre=config['centre']
+        else:
+                self.centre=False
+        if 'convexity' in config:
+                self.convexity=config['convexity']
+        else:
+                self.convexity=10
+        if 'scale' in config:
+                self.scale=config['scale']
+        else:
+                self.scale=1
+
+    def getSolid(self):
+        global RESOLUTION
+        outline=[]
+        points = self.shape.polygonise(RESOLUTION)
+        for p in points:
+            outline.append( [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
+        outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
+        polygon = solid.polygon(outline)
+        return solid.linear_extrude(height=self.height, convexity=self.convexity, scale=self.scale,  center=self.centre, twist=self.twist)(polygon)
+
+
+
+
 class SolidOfRotation(SolidPath):
     def __init__(self, pos, shape, **config):
         self.init(config)
@@ -109,7 +147,6 @@ class SolidOfRotation(SolidPath):
         for p in points:
             outline.append( [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
         outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
-        print( points)
         polygon = solid.polygon(outline)
         return solid.rotate_extrude(convexity=self.convexity)(polygon)
 
