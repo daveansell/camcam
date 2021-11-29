@@ -396,6 +396,9 @@ class Polygon(Path):
             cornerdir=False
         if 'radMode' in config and config['radMode']=='flat':
             rad/=math.cos(math.pi/sides)
+        elif 'radMode' in config and config['radMode']=='side':
+            a = math.pi * 2 / sides
+            rad = rad/ 2 / math.sin(a/2)
         if 'startAngle' in config:
             startAngle= config['startAngle']
         else:
