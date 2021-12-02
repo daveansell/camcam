@@ -283,6 +283,7 @@ if options.zbase:
     config['zbase'] = True
 # load all the requested files
 for arg in args:
+    _currentFolder=os.getcwd()
     exec(compile(open(arg, "rb").read(), arg, 'exec'))
     camcam.files.append(arg)
 

@@ -396,6 +396,9 @@ class Polygon(Path):
             cornerdir=False
         if 'radMode' in config and config['radMode']=='flat':
             rad/=math.cos(math.pi/sides)
+        elif 'radMode' in config and config['radMode']=='side':
+            a = math.pi * 2 / sides
+            rad = rad/ 2 / math.sin(a/2)
         if 'startAngle' in config:
             startAngle= config['startAngle']
         else:
@@ -675,6 +678,7 @@ class RoundSpeakerGrill(Pathgroup):
     def __init__(self,pos, rad, holerad, spacing, **config):
         self.init(config)
         """Cut a circular grid with radius :param rad: of holes with radius :param holerad: and :param spacing:"""+self.otherargs
+
         yspacing=spacing*math.cos(math.pi/6)
         numholesx = int(math.ceil(rad/spacing)+1)
         numholesy = int(math.ceil(rad/yspacing))
@@ -685,7 +689,10 @@ class RoundSpeakerGrill(Pathgroup):
                 else:
                     p=V((x+0.5)*spacing, y*yspacing)
                 if p.length()<rad-holerad:
-                    self.add(Hole(pos+p, rad=holerad))
+                    if 'shape' in config and config['shape']=='hexagon':
+                        p=self.add(Polygon(pos+p, sides=6, rad=holerad, startAngle=30))
+                    else:
+                        self.add(Hole(pos+p, rad=holerad))
 class RoundSlitGrill(Pathgroup):
     def __init__(self,pos, rad, slotWidth, spacing, **config):
         self.init(config)

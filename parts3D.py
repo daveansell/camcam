@@ -52,6 +52,24 @@ class Sphere(SolidPath):
         self.translate3D(self.pos)
         return solid.sphere(r=self.rad)
 
+class Cylinder(SolidPath):
+    def __init__(self, pos, rad1, rad2, height, **config):
+        self.init(config)
+        if 'centre' in config:
+            self.centre= config['centre']
+        else:
+            self.centre= False
+        self.pos=pos
+        self.rad1=rad1
+        self.rad2=rad2
+        self.height=height
+        self.closed=True
+        self.add_point(pos,'circle',rad2)
+
+    def getSolid(self):
+        return solid.translate(self.pos)(solid.cylinder(r1=self.rad1, r2=self.rad2, h=self.height, center=self.centre))
+
+
 class Text3D(SolidPath):
     def __init__(self, pos, text, height, **config):
         self.init(config)
@@ -71,16 +89,31 @@ class Text3D(SolidPath):
         self.translate3D(self.pos)
         return solid.linear_extrude(height=self.height)(solid.text(**self.args))
 print (Sphere.render3D)
-class SolidOfRotation(SolidPath):
-    def __init__(self, pos, shape, **config):
+
+class SolidExtrude(SolidPath):
+    def __init__(self, pos, shape,height, **config):
         self.init(config)
         self.shape=shape
         self.pos = pos
+        self.closed=True
         self.translate3D(pos)
-        if 'convexity' in config:
-            self.convexity = config['convexity']
+        self.height=height
+        if 'twist' in config:
+                self.twist = config['twist']
         else:
-            self.convexity = 10
+                self.twist = 0
+        if 'centre' in config:
+                self.centre=config['centre']
+        else:
+                self.centre=False
+        if 'convexity' in config:
+                self.convexity=config['convexity']
+        else:
+                self.convexity=10
+        if 'scale' in config:
+                self.scale=config['scale']
+        else:
+                self.scale=1
 
     def getSolid(self):
         global RESOLUTION
@@ -89,13 +122,38 @@ class SolidOfRotation(SolidPath):
         for p in points:
             outline.append( [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
         outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
-        print( points)
+        polygon = solid.polygon(outline)
+        return solid.linear_extrude(height=self.height, convexity=self.convexity, scale=self.scale,  center=self.centre, twist=self.twist)(polygon)
+
+
+
+
+class SolidOfRotation(SolidPath):
+    def __init__(self, pos, shape, **config):
+        self.init(config)
+        self.shape=shape
+        self.pos = pos
+        self.closed=True
+        self.translate3D(pos)
+        if 'convexity' in config:
+            self.convexity = config['convexity']
+        else:
+            self.convexity = 10
+        self.add_points(shape.points)
+    def getSolid(self):
+        global RESOLUTION
+        outline=[]
+        points = self.shape.polygonise(RESOLUTION)
+        for p in points:
+            outline.append( [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
+        outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
         polygon = solid.polygon(outline)
         return solid.rotate_extrude(convexity=self.convexity)(polygon)
 
 class Torus(SolidOfRotation):
-    def __init__(self, bigRad, smallRad, **config):
+    def __init__(self, pos, bigRad, smallRad, **config):
         self.init(config)
+        self.translate3D(pos)
         self.smallRad = smallRad
         self.bigRad = bigRad
         if 'convexity' in config:
@@ -104,7 +162,116 @@ class Torus(SolidOfRotation):
             self.convexity = 10
 
     def getSolid(self):
-        return solid.rotate_extrude(convexity = self.convexity)(solid.translate([self.bigRad,0,0])(circle(r=self.smallRad)))
+        return solid.rotate_extrude(convexity = self.convexity)(solid.translate([self.bigRad,0,0])(solid.circle(r=self.smallRad)))
+
+
+class RoundedTube(SolidOfRotation):
+    def __init__(self, pos, rad, length, **config):
+        self.init(config)
+        self.shape=Path(closed=True)
+        self.shape.add_point(V(0.01, length/2))
+        self.shape.add_point(PIncurve(V(rad, length/2), radius=rad-0.1))
+        self.shape.add_point(PIncurve(V(rad, -length/2), radius=rad-0.1))
+        self.shape.add_point(V(0.01, -length/2))
+        self.length=length
+        self.rad=rad
+        self.convexity=10
+    def getSolid(self):
+        return solid.union()(super().getSolid(), Cylinder(V(0,0), 0.11, .11, height=self.length, centre=True).getSolid())
+
+class PointyTube(RoundedTube):
+    def __init__(self, pos, rad, length, **config):
+        self.init(config)
+        self.shape=Path(closed=True)
+        self.shape.add_point(V(0.01, length/2,0))
+        self.shape.add_point(V(rad, length/2-rad,0))
+        self.shape.add_point(V(rad, -length/2+rad,0))
+        self.shape.add_point(V(0.01, -length/2,0))
+        self.length=length
+        self.rad=rad
+        self.convexity=10
+
+class Polyhedron(SolidPath):
+    def __init__(self, points, faces, **config):
+        if 'convexity' in config:
+            self.convexity=config['convexity']
+        else:
+            self.convexity=10
+        self.init(config)
+        self.points = points
+        self.faces = faces
+    def getSolid(self):
+        return solid.polyhedron(points=self.points, faces=self.faces, convexity=self.convexity)
+
+class CylindricalPolyhedron(Polyhedron):
+    def __init__(self, rFunc, height, **config):
+        self.init(config)
+        if 'convexity' in config:
+            self.convexity=config['convexity']
+        else:
+            self.convexity=10
+        if 'zStep' in config:
+            zStep = config['zStep']
+        else:
+            zStep = 1.0
+        if 'z0' in config:
+            self.z0=float(config['z0'])
+        else:
+            self.z0=0.0
+        if 'gradient' in config:
+            gradient = config['gradient']
+        else:
+            gradient = V(0,0)
+        height = float(height)
+        nz = (height-self.z0)/zStep +1
+        self.facetLength = nz
+        if 'facets' in config:
+            self.facets = config['facets']
+        else:
+            self.facets = 30
+        tStep = 360.0/self.facets
+        self.points = [V(0,0,self.z0), V(0,0,height)]
+        self.faces = []
+        self.first=2
+        z=float(self.z0)
+        
+        t=0.0
+        f=0
+        while t<360.0:
+            c=0
+            z=self.z0
+            while z<height:
+
+                self.points.append(gradient*z+rotate(V(rFunc(z,t),0,z), t))
+                if(z==self.z0):
+                    self.faces.append([ self.pn(f,c), 0,  self.pn(f+1,c)])
+                else:
+                    self.faces.append([
+                        self.pn(f+1,c-1),
+                        self.pn(f+1,c), 
+                        self.pn(f,c), 
+                        self.pn(f, c-1), 
+                        ])
+                z+=zStep
+                c+=1
+            self.points.append(gradient*height+rotate(V(rFunc(height,t),0,height), t))
+        #    c+=1
+            self.faces.append([
+                self.pn(f+1,c-1),
+                self.pn(f+1,c), 
+                self.pn(f,c), 
+                self.pn(f,c-1), 
+                ])
+            self.faces.append([
+                self.pn(f,c), 
+                self.pn(f+1,c), 
+                    1
+                ])
+            t+=tStep
+            f+=1
+            c+=1
+    def pn(self, facet, c):
+        return int(self.first+(facet%self.facets) * self.facetLength + c) 
 
 #class Hull(SolidPath):
 #    def __init__(self, ):
