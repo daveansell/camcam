@@ -160,6 +160,7 @@ class Torus(SolidOfRotation):
             self.convexity = config['convexity']
         else:
             self.convexity = 10
+        self.add_points(PCircle(pos, radius=smallRad))
 
     def getSolid(self):
         return solid.rotate_extrude(convexity = self.convexity)(solid.translate([self.bigRad,0,0])(solid.circle(r=self.smallRad)))
@@ -176,6 +177,7 @@ class RoundedTube(SolidOfRotation):
         self.length=length
         self.rad=rad
         self.convexity=10
+        self.add_points(shape.points)
     def getSolid(self):
         return solid.union()(super().getSolid(), Cylinder(V(0,0), 0.11, .11, height=self.length, centre=True).getSolid())
 
@@ -190,22 +192,27 @@ class PointyTube(RoundedTube):
         self.length=length
         self.rad=rad
         self.convexity=10
+        self.add_points(shape.points)
 
 class Polyhedron(SolidPath):
     def __init__(self, points, faces, **config):
+        self.init(config)
+        self.closed=True
         if 'convexity' in config:
             self.convexity=config['convexity']
         else:
             self.convexity=10
         self.init(config)
-        self.points = points
+        self.inPoints = points
         self.faces = faces
+        self.add_point(PCircle(V(0,0), rad=1))
     def getSolid(self):
-        return solid.polyhedron(points=self.points, faces=self.faces, convexity=self.convexity)
+        return solid.polyhedron(points=self.inPoints, faces=self.faces, convexity=self.convexity)
 
 class CylindricalPolyhedron(Polyhedron):
     def __init__(self, rFunc, height, **config):
         self.init(config)
+        self.closed=True
         if 'convexity' in config:
             self.convexity=config['convexity']
         else:
@@ -230,7 +237,7 @@ class CylindricalPolyhedron(Polyhedron):
         else:
             self.facets = 30
         tStep = 360.0/self.facets
-        self.points = [V(0,0,self.z0), V(0,0,height)]
+        self.inPoints = [V(0,0,self.z0), V(0,0,height)]
         self.faces = []
         self.first=2
         z=float(self.z0)
@@ -242,7 +249,7 @@ class CylindricalPolyhedron(Polyhedron):
             z=self.z0
             while z<height:
 
-                self.points.append(gradient*z+rotate(V(rFunc(z,t),0,z), t))
+                self.inPoints.append(gradient*z+rotate(V(rFunc(z,t),0,z), t))
                 if(z==self.z0):
                     self.faces.append([ self.pn(f,c), 0,  self.pn(f+1,c)])
                 else:
@@ -254,7 +261,7 @@ class CylindricalPolyhedron(Polyhedron):
                         ])
                 z+=zStep
                 c+=1
-            self.points.append(gradient*height+rotate(V(rFunc(height,t),0,height), t))
+            self.inPoints.append(gradient*height+rotate(V(rFunc(height,t),0,height), t))
         #    c+=1
             self.faces.append([
                 self.pn(f+1,c-1),
@@ -270,6 +277,8 @@ class CylindricalPolyhedron(Polyhedron):
             t+=tStep
             f+=1
             c+=1
+        self.add_point(PCircle(V(0,0), radius=1))
+        self.closed=True
     def pn(self, facet, c):
         return int(self.first+(facet%self.facets) * self.facetLength + c) 
 
