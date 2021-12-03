@@ -465,9 +465,15 @@ class Milling:
                         "sidecut":1,
                 },
                 "6mm_ballmill":{
-                        "id":21,
+                        "id":22,
                         "diameter":6.0,
                         "endcut":1,
+                        "sidecut":1,
+                },
+                "engraving":{
+                        "id":23,
+                        "diameter":1.2,
+                        "endcut":0,
                         "sidecut":1,
                 },
 
