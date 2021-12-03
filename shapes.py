@@ -98,7 +98,7 @@ class DottedCircle(Pathgroup):
         self.init(config)
         numDots = round(2*math.pi/dotLength*rad)
         print ("numDots="+str(numDots))
-        angle = math.pi*2/numDots
+        angle = math.pi*2/numDots/math.pi*180
         print ("angle="+str(angle))
         for i in range(0, numDots):
             p=Path(closed=False, side='on')
@@ -106,7 +106,7 @@ class DottedCircle(Pathgroup):
             p.add_point(PArc(pos, radius=rad, direction='cw'))
             p.add_point(PSharp(pos+rotate(V(0,rad), angle*(i+prop))))
             self.add(p)
-            print(p.points[0].pos+" "+p.points[1].pos)
+            print(str(p.points[0].pos)+" "+str(p.points[1].pos))
 
 
 class RoundedRect(Rect):
