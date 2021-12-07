@@ -245,7 +245,7 @@ class ArbitraryBox(Part):
 
 
         for f, face in faces.items():
-
+            print ("face="+str(f))
         # if we are cutting an internal hole then don't make it the part border
             if "layer" not in face:
                 raise ValueError( "Face "+f+" does not have a layer")
@@ -792,6 +792,9 @@ class ArbitraryBox(Part):
                 first = False
                 path.add_points(newpoints)
             else:
+                print (path)
+                print (path.points)
+                print(newpoints)
                 path.add_points_intersect(newpoints)
             p += 1
         if len(newpoints) >1 and not firstnointersect and not nointersect:
