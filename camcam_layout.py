@@ -58,7 +58,7 @@ from kivy.lang import Builder
 from kivy.uix.slider import Slider
 
 
-Builder.load_file('/home/dave/cnc/camcam/camcam.kv')
+Builder.load_file(os.path.expanduser('~')+'/cnc/camcam/camcam.kv')
 class KvSheet(ScatterPlane):
     deleted = False
     def draw(self, bl, tr):
