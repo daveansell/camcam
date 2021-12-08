@@ -243,9 +243,9 @@ def part_matrix3D(self, vec, pos=False):
     if self.transform is False or self.transform is None:
         self.transform={}
     if pos is False:
-        self.transform['matrix3D']=vec
+        self.transform.append({'matrix3D':vec})
     else:
-        self.transform['matrix3D']=[pos,vec]
+        self.transform.append({'matrix3D':[pos,vec]})
 Part.matrix3D = part_matrix3D
 
 
