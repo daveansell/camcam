@@ -947,6 +947,57 @@ class ArbitraryBox(Part):
         else:
             return 0
 
+    def propagate_folds(self, t, f, recursion):
+        face = self.faces[f]
+        if recursion==0:
+            if face[t].dot(face['normal'])>0:
+                face[t]=1
+            elif face[t].dot(face['normal'])<0:
+                face[t]=-1
+            else:
+                raise ValueError(t+" in "+f+"is perpendicular to the normal")
+        recursion += 1
+        for s in face['sides']:
+            if face.joint_mode[s]=='fold':
+                side = self.sides[s]
+                if(len(side)==2):
+                    if side[0][0]==f:
+                        newf = side[1][0]
+                        d = side[0][2]
+                    else:
+                        newf = side[0][0]
+                        d = side[1][2]
+
+                    newface = self.faces[newf]
+                    if newface.combined:
+                        print ("found a folding face loop, along f="+f+" newf="+newf)
+                    else:    
+                        newface.combined=True
+                        transform = self.align_points(
+                            self.previous(face['ppoints'],side[0][1]),
+                            face['ppoints'][side[0][1]],
+                            self.previous(newface['ppoints'],side[1][1]),
+                            newface['ppoints'][side[1][1]])
+                        for p in range(0, len[newface['ppoints']]):
+                            newface['ppoints'][p]+=transform['translate']
+                            newface['ppoints'][p]=rotate(tranform['rotate'][0], transform['rotate'][1])
+                            #MIRROR
+
+# find transforms that move points a & b to points A&B
+    def align_points(self, a, b, A, B):
+        d=b-a
+        D=B-A
+        if d.length() != B.length():
+            print ("Points are not the same distance apart")
+
+        t=math.atan2(d[1], d[0])
+        T=math.atan2(D[1], D[0])
+        
+        return {'translate':A-a, 'rotate':[A, (T-t)/math.pi*180]}
+
+    def previous(self, array, num):
+        return array[(num-1)%len(array)]
+
 # t - type of direction - face key
 # f - face that has it to start with
     def propagate_direction(self, t, f, recursion):
