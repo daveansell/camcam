@@ -30,6 +30,9 @@ import re
 from point import *
 from segments import *
 spindleDir = False
+
+inch = 25.4
+
 milling=Milling.Milling()
 arg_meanings = {'order':'A field to sort paths by',
                'transform':"""Transformations you can apply to the object this is a dict, and can include:
@@ -1091,7 +1094,6 @@ class Path(object):
     def make_fill_path(self, polTree, cutDirection, depth=0):
         ret=[]
         for section in polTree[1]:
-#            print("SECTION£");
             ret+=self.make_fill_path(section, cutDirection, depth+1)
         if len(ret)==0:
             ret.append([])

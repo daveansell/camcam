@@ -572,6 +572,11 @@ class Milling:
                         "stepdown":0.3,
                         "kress_setting":1,
                         "mill_dir":'down',
+                        "K":{
+                            'bending':{1:0.33, 3:0.4, 10:0.5},
+                            'bottoming':{1:0.42, 3:0.46, 10:0.5},
+                            'coining':{1:0.38, 3:0.44, 10:0.5},
+                        }
                },
                 
                 "copper":{
@@ -587,6 +592,11 @@ class Milling:
                         "stepdown":0.2,
                         "kress_setting":3,
                         "mill_dir":'down',
+                        "K":{
+                            'bending':{1:0.38, 3:0.43, 10:0.5},
+                            'bottoming':{1:0.44, 3:0.47, 10:0.5},
+                            'coining':{1:0.41, 3:0.46, 10:0.5},
+                        }
                },
                 "steel":{
                         "vertfeed":20,
@@ -594,6 +604,11 @@ class Milling:
                         "stepdown":0.2,
                         "kress_setting":3,
                         "mill_dir":'down',
+                        "K":{
+                            'bending':{1:0.4, 3:0.45, 10:0.5},
+                            'bottoming':{1:0.46, 3:0.48, 10:0.5},
+                            'coining':{1:0.44, 3:0.47, 10:0.5},
+                        }
                },
                 "polypropelene":{
                         "vertfeed":100,
