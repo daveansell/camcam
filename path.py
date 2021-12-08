@@ -1094,7 +1094,6 @@ class Path(object):
     def make_fill_path(self, polTree, cutDirection, depth=0):
         ret=[]
         for section in polTree[1]:
-#            print("SECTION£");
             ret+=self.make_fill_path(section, cutDirection, depth+1)
         if len(ret)==0:
             ret.append([])
