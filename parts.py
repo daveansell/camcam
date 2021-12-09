@@ -373,6 +373,49 @@ class Pi3(Part):
     def _pre_render(self,config):
         self.get_plane().add_layer('_pilayer', 'pcb', 1, zoffset=0, colour='#808080')
 
+class Pi4(Part):
+    def __init__(self, pos,**config):
+        self.init(config)
+        if('simple' in config):
+            simple=config['simple']
+        else:
+            simple=False
+        w=85
+        h=56
+        o=1.5
+        self.layer='_pilayer'
+        self.name='Pi4'
+        self.translate(pos)
+#               self.zoffset+=o
+        self.no_mirror = True
+        self.add_border(RoundedRect(V(0,0), width=w, height=h, centred=True, rad=3, thickness=1.5,  colour="#008030"))
+        self.network = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(w/2-8.55, h/2-10.25), centred=True, width=21.1, height=15.5, zoffset=13.6, thickness=13.6, colour='#808080'))       )
+        self.USB1 = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(w/2-6.65, h/2-29), centred=True, width=17.7, height=13.3, zoffset=15.0, thickness=15.0, colour='#808080')))
+        self.USB2 = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(w/2-6.65, h/2-47), centred=True, width=17.7, height=13.3, zoffset=15.0, thickness=15.0, colour='#808080')))
+        if not simple:
+            self.hdmi = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-w/2+32, -h/2+6.1-2), centred=True, width=14, height=12.2, zoffset=6, thickness=6, colour='#808080')))
+            self.GPIO = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-w/2+29+3.5, 49/2), centred=True, width=50.5, height=5, zoffset=5, thickness=5, colour='#101010')))
+            self.CPU = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-15.6, -h/2+30.3), centred=True, width=13.8, height=13.8, zoffset=1, thickness=1, colour='#101010')))
+            self.CSI = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-2.6, -h/2+11.5), centred=True, width=4, height=22.2, zoffset=4, thickness=4, colour='#dddddd')))
+            self.DSI = self.add(Part(subpart=True, layer='_pilayer', border=Rect(V(-39, -h/2+28), centred=True, width=4, height=22.2, zoffset=4, thickness=4, colour='#dddddd')))
+        if 'clearance_layers' in config:
+            if type(config['clearance_layers']) is list:
+                config['clearance_layers'].append('_pilayer')
+            else:
+                config['clearance_layers']=[config['clearance_layers'], '_pilayer']
+        else:
+            config['clearance_layers']='_pilayer'
+        if 'thread_layer' not in config:
+            config['thread_layer'] = []
+        if 'insert_layer' not in config:
+            config['insert_layer'] = []
+#               self.add(Hole(V(0,0), rad=3))
+        self.add(Bolt(V(-w/2+3.5, 49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+        self.add(Bolt(V(-w/2+3.5, -49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+        self.add(Bolt(V(-w/2+3.5+58, 49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+        self.add(Bolt(V(-w/2+3.5+58, -49/2), 'M2.5', clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+    def _pre_render(self,config):
+        self.get_plane().add_layer('_pilayer', 'pcb', 1, zoffset=0, colour='#808080')
 class PiCompute(Part):
     def __init__(self, pos, **config):
         self.init(config)
