@@ -241,11 +241,15 @@ class Path(object):
             self.transform=[]
         self.transform.append({'translate':vec})
 
+    def scale(self,vec):
+        if self.transform is False or self.transform is None:
+            self.transform=[]
+        self.transform.append({'scale':vec})
+
     def set_cutter(self, config):
         if 'forcecutter' in config and config['forcecutter'] is not None:
             cutter = config['forcecutter']
         elif 'partcutter' in config and config['partcutter'] is not None:
-            print ("Partcutter="+str(config['partcutter']))
             cutter = config['partcutter']
         else:
             cutter=config['cutter']
@@ -560,6 +564,7 @@ class Path(object):
     def make_segments(self, direction,segment_array,config):
         self.reset_points()
         self.simplify_points()
+        print(config['transformations'])
         pointlist = self.transform_pointlist(self.points,config['transformations'])
         self.reset_points(pointlist)
         if direction is None:
@@ -2064,6 +2069,11 @@ class Pathgroup(object):
         self.transform.append({'mirror':[pos,dirvec]})
 
 
+    def scale(self,vec):
+        if self.transform is False or self.transform is None:
+            self.transform=[]
+        self.transform.append({'scale':vec})
+
 
 class Project(object):
     def __init__(name):
@@ -2247,6 +2257,12 @@ class Part(object):
         if self.transform is False or self.transform is None:
             self.transform=[]
         self.transform.append({'translate':vec})
+
+    def scale(self,vec):
+        if self.transform is False or self.transform is None:
+            self.transform=[]
+        self.transform.append({'scale':vec})
+
     def add_bom(self,name, number=False, part_number=False, description=False, length=False):
         if type(name) is not str:
             if hasattr(name,'obType') and name.obType=='BOM':

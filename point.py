@@ -120,6 +120,11 @@ class Point(object):
                         p.pos = self.scale(p.pos, t['scale'])
                         p.cp1 = self.scale(p.cp1, t['scale'])
                         p.cp2 = self.scale(p.cp2, t['scale'])
+                        if hasattr('radius', p):
+                            if(type(t) is list):
+                                p.radius *= t[1]
+                            else:
+                                p.radius *= t
         return p
 
     def compile(self):
@@ -160,12 +165,14 @@ class Point(object):
     def scale(self, pos, t):
         if t is False or t is None or type(t) is list and (t[0] is False or t[0] is None):
             return pos
-        if type(pos) is Vec and type(t[0]) is Vec:
-            out=Vec(pos)
-            out-=t[0]
-            out*=t[1]
-            out+=t[0]
-            return out
+        if type(pos) is Vec and type(t) is list and type(t[0]) is Vec:
+            s=t[1]
+            offset=t[0]
+        elif( type(pos) is Vec and type(t) in ['int', 'float']):
+            out*=t
+            s = t
+        
+
 
     def __next__(self):
         if self.reverse:
