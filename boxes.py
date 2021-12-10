@@ -249,24 +249,22 @@ class ArbitraryBox(Part):
         # if we are cutting an internal hole then don't make it the part border
             if "layer" not in face:
                 raise ValueError( "Face "+f+" does not have a layer")
-            if 'internal' in face and face['internal']:
-                border = Path(closed=True, side='in')
-
-            # add points here
-
-                p = Part(name = self.name+'_'+f, layer = face['layer'], zoffset=face['zoffset'])
-                self.get_border(p,  f, face, 'internal')
-            else:
-                p = Part(name = self.name+'_'+f, layer = face['layer'], zoffset=face['zoffset'])
-                self.get_border(p,  f, face, 'external')
+            p = Part(name = self.name+'_'+f, layer = face['layer'], zoffset=face['zoffset'])
 #                       if face['y'] == -face['x'].cross(face['normal']).normalize():
 #                       if face['good_direction'] == -1:
             # DECIDE WHICH SISDE WE ARE CUttng FROM
             # CHECK THE DIRECTION OF THR LOOP
             t =  self.add(p)
             setattr(self, 'face_' + f, t)
+            face['part']=t
 #               def _pre_render(self):
-            self.align3d_face(t, f, face)
+
+        for f, face in faces.items():
+            if 'internal' in face and face['internal']:
+                self.get_border(face['part'],  f, face, 'internal')
+            else:
+                self.get_border(face['part'],  f, face, 'external')
+            self.align3d_face(face['part'], f, face)
 
     def extract_sides(self, face):
         scount=0
@@ -947,7 +945,7 @@ class ArbitraryBox(Part):
         else:
             return 0
 
-    def propagate_folds(self, t, f, recursion):
+    def propagate_folds(self, t, f, transforms, recursion):
         face = self.faces[f]
         if recursion==0:
             if face[t].dot(face['normal'])>0:
@@ -973,11 +971,11 @@ class ArbitraryBox(Part):
                         print ("found a folding face loop, along f="+f+" newf="+newf)
                     else:    
                         newface.combined=True
-                        transform = self.align_points(
+                        newtransforms =  self.align_points(
                             self.previous(face['ppoints'],side[0][1]),
                             face['ppoints'][side[0][1]],
                             self.previous(newface['ppoints'],side[1][1]),
-                            newface['ppoints'][side[1][1]])
+                            newface['ppoints'][side[1][1]]) + transforms
                         for p in range(0, len[newface['ppoints']]):
                             newface['ppoints'][p]+=transform['translate']
                             newface['ppoints'][p]=rotate(tranform['rotate'][0], transform['rotate'][1])
