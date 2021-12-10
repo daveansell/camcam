@@ -987,7 +987,7 @@ class ArbitraryBox(Part):
     def align_points(self, a, b, A, B):
         d=b-a
         D=B-A
-        if d.length() != B.length():
+        if abs(d.length() -B.length())>0.01:
             print ("Points are not the same distance apart")
 
         t=math.atan2(d[1], d[0])
