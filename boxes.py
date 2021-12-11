@@ -411,7 +411,7 @@ class ArbitraryBox(Part):
         path = self.simpleBorder(face)
         return path.polygonise(direction=None)
 
-    def get_border(self, part, f, face, mode):
+    def get_border(self, part, f, face, mode, firstPoint=0):
         if mode == 'internal':
             path = Path(closed=True, side='in')
         else:
@@ -428,7 +428,10 @@ class ArbitraryBox(Part):
             cutside0='right'
         firstnointersect=False
         print("GET_BORDER "+f)
-        for point in face['ppoints']:
+        #for point in face['ppoints']:
+        for i in range(0, len(face['ppoints'])):    
+            p= (i+firstPoint)%len(face['ppoints'])
+            point= face['ppoints'][p]
             nointersect = False
             lastpoint = face['ppoints'][(p-1)%len(face['sides'])]
             lastlastpoint = face['ppoints'][(p-2)%len(face['sides'])]
@@ -754,7 +757,9 @@ class ArbitraryBox(Part):
         path.simplify_points()
 
  #      part.add(simplepath)
-        if mode=='internal':
+        if mode=='fold':
+            pass
+        elif mode=='internal':
             part.add(path)
         else:
             part.add_border(path)
@@ -816,6 +821,8 @@ class ArbitraryBox(Part):
             else:
                 part.add(FingerJointMid( joint['from'], joint['to'], cutside,'internal',  joint['corners'], joint['corners'], joint['tab_length'], joint['otherface']['thickness'], 0, prevmode, nextmode, fudge=fudge))
 
+        if mode=='fold':
+            return path.points
 
     def get_cutside(self, cutside0, joint_type):
         if cutside0=='left' and joint_type=='concave':
@@ -910,43 +917,40 @@ class ArbitraryBox(Part):
         else:
             return 0
 
-    def propagate_folds(self, f, transforms, rootPart, recursion):
+    def propagate_fold(self, f, s, transforms, rootPart, recursion):
         face = self.faces[f]
         face.part.cutTransform = transforms
+        face.combined=True
         if recursion == 0:
             rootPart = face.part
-        if recursion==0:
-            if face[t].dot(face['normal'])>0:
-                face[t]=1
-            elif face[t].dot(face['normal'])<0:
-                face[t]=-1
-            else:
-                raise ValueError(t+" in "+f+"is perpendicular to the normal")
+        else:
+            rootPart.extraLayers.append(face.part.layer) # ************** need to do something about cutouts 
         recursion += 1
-        for s in face['sides']:
-            if face.joint_mode[s]=='fold':
-                side = self.sides[s]
-                if(len(side)==2):
-                    if side[0][0]==f:
-                        newf = side[1][0]
-                        d = side[0][2]
-                    else:
-                        newf = side[0][0]
-                        d = side[1][2]
+        side = self.sides[s]
+        if(len(side)==2):
+            if side[0][0]==f:
+                newf = side[1][0]
+                d = side[0][2]
+            else:
+                newf = side[0][0]
+                d = side[1][2]
 
-                    newface = self.faces[newf]
-                    if newface.combined:
+            newface = self.faces[newf]
+            if newface.combined:
                         print ("found a folding face loop, along f="+f+" newf="+newf)
-                    else:    
-                        newface.combined=True
-                        newtransforms =  self.align_points(
+                        return []
+            else:
+                # *********** ADD BEND RADIUS STUFF
+                newtransforms =  self.align_points(
                             self.previous(face['ppoints'],side[0][1]),
                             face['ppoints'][side[0][1]],
                             self.previous(newface['ppoints'],side[1][1]),
                             newface['ppoints'][side[1][1]]) + transforms
-                        for p in range(0, len[newface['ppoints']]):
-                            newface['ppoints'][p]+=transform['translate']
-                            newface['ppoints'][p]=rotate(tranform['rotate'][0], transform['rotate'][1])
+                new_points=self.get_border( part, f, face, 'fold', firstPoint=s)
+
+                for p in new_points:
+                    new_points.transform+=newtransforms
+                return new_points
                             #MIRROR
 
 # find transforms that move points a & b to points A&B
