@@ -398,7 +398,7 @@ class Path(object):
             self.points[1%l].lastpoint = self.points[0]
 
 
-    def add_points(self,points, end='end', transform={}):
+    def add_points(self,points, end='end', transform=[]):
         c=0
         for p in points:
             if type(p) is Vec:
@@ -2062,7 +2062,7 @@ class Pathgroup(object):
 
     def mirror(self, pos, dirvec):
         if self.transform==False or self.transform==None:
-            self.transform={}
+            self.transform=[]
         self.transform.append({'mirror':[pos,dirvec]})
 
 
@@ -2156,6 +2156,7 @@ class Part(object):
         self.copied = False
         self.isCopy = False
         self.layer = False
+        self.xLayers = []
         self.comments = []
         self.parent=False
         self.internal_borders=[]
