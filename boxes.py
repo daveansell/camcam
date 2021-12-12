@@ -108,6 +108,7 @@ class ArbitraryBox(Part):
             face['internal_joints'] = []
             face['intersections'] = {}
             face['reversed']=False
+            face['combined']=False
             if 'zoffset' not in face:
                 face['zoffset'] = 0
 #                       self.check_layer(face)
@@ -411,7 +412,7 @@ class ArbitraryBox(Part):
         path = self.simpleBorder(face)
         return path.polygonise(direction=None)
 
-    def get_border(self, part, f, face, mode, firstPoint=0):
+    def get_border(self, part, f, face, mode, firstPoint=0, **config):
         if mode == 'internal':
             path = Path(closed=True, side='in')
         else:
@@ -540,8 +541,21 @@ class ArbitraryBox(Part):
                 print("side="+str(scount))
                 if face['joint_mode'][scount]=='straight':
                     newpoints = [PInsharp(lastpoint),PInsharp(point)]
-
-
+                elif face['joint_mode'][scount]=='fold':
+                    print("config="+str(config))
+                    if 'transforms' in config:
+                        transforms = config['transforms']
+                    else:
+                        transforms = []
+                    if 'recursion' in config:
+                        recursion = config['recursion']
+                    else:
+                        recursion = ''
+                    if 'rootPart' in config:
+                        rootPart = config['rootPart']
+                    else:
+                        rootPart = False
+                    self.propagate_fold( f, s, transforms, rootPart, recursion)
 
                 elif face['joint_mode'][scount]=='mitre':
                     cutside=self.get_cut_side(self, cutside0, joint_type)
@@ -918,38 +932,45 @@ class ArbitraryBox(Part):
             return 0
 
     def propagate_fold(self, f, s, transforms, rootPart, recursion):
+        print("propogate fold recursion="+str(recursion));
         face = self.faces[f]
-        face.part.cutTransform = transforms
-        face.combined=True
-        if recursion == 0:
-            rootPart = face.part
+        face['part'].cutTransform = transforms
+
+        face['combined']=True
+        if not recursion:
+            recursion=0
+            rootPart = face['part']
         else:
-            rootPart.extraLayers.append(face.part.layer) # ************** need to do something about cutouts 
+            print( "rootPart="+str(rootPart))
+            rootPart.xLayers.append(face['part'].layer) # ************** need to do something about cutouts 
         recursion += 1
         side = self.sides[s]
         if(len(side)==2):
+            print (side)
             if side[0][0]==f:
                 newf = side[1][0]
                 d = side[0][2]
             else:
                 newf = side[0][0]
                 d = side[1][2]
-
+            print ("newf="+newf+" d="+str(d))
             newface = self.faces[newf]
-            if newface.combined:
-                        print ("found a folding face loop, along f="+f+" newf="+newf)
-                        return []
+            print(f+":"+str(newface))
+            if newface['combined']:
+                print ("found a folding face loop, along f="+f+" newf="+newf)
+                return []
             else:
+                # ********* DEAL WITH ORDERING
                 # *********** ADD BEND RADIUS STUFF
                 newtransforms =  self.align_points(
                             self.previous(face['ppoints'],side[0][1]),
                             face['ppoints'][side[0][1]],
                             self.previous(newface['ppoints'],side[1][1]),
                             newface['ppoints'][side[1][1]]) + transforms
-                new_points=self.get_border( part, f, face, 'fold', firstPoint=s)
+                new_points=self.get_border( rootPart, newf, newface, 'fold', firstPoint=side[1][1], transforms=newtransforms, rootPart=rootPart, recursion=recursion)
 
-                for p in new_points:
-                    new_points.transform+=newtransforms
+                for p in range(0,len(new_points)):
+                    new_points[p].transform+=newtransforms
                 return new_points
                             #MIRROR
 
@@ -963,7 +984,7 @@ class ArbitraryBox(Part):
         t=math.atan2(d[1], d[0])
         T=math.atan2(D[1], D[0])
         
-        return {'translate':A-a, 'rotate':[A, (T-t)/math.pi*180]}
+        return [{'translate':A-a},{ 'rotate':[A, (T-t)/math.pi*180]}]
 
     def previous(self, array, num):
         return array[(num-1)%len(array)]
