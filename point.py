@@ -94,6 +94,8 @@ class Point(object):
         p=self.copy()
         # If we are applying the transfomations the point shouldn't have them as a transform any more
         p.transform=False
+        if type(self.transform) is list:
+            transformations = self.transform
         if self.transform!=False:
             transformations=[self.transform]
         else:
