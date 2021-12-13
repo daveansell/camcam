@@ -169,6 +169,9 @@ class ArbitraryBox(Part):
             face=self.faces[f]
             self.get_cut_side(f, face)
 #                       face['good_direction'] *= face['cut_from']
+            print (f+" cut_from "+str(face['cut_from'])+" "+str(face['cut_from']*face['normal']))
+            print (f+" wood_direction "+str(face['wood_direction'])+" "+str(face['wood_direction']*face['normal']))
+            print (f+" good_direction "+str(face['good_direction'])+" "+str(face['good_direction']*face['normal']))
             if face['cut_from']<0:
                 pass
                 face['isback']=True
@@ -262,6 +265,7 @@ class ArbitraryBox(Part):
 #               def _pre_render(self):
 
         for f, face in faces.items():
+            print("GENERATE BORDER FOR FACE-="+str(f))
             if 'internal' in face and face['internal']:
                 self.get_border(face['part'],  f, face, 'internal')
             else:
@@ -555,8 +559,24 @@ class ArbitraryBox(Part):
                         rootPart = config['rootPart']
                     else:
                         rootPart = False
-                    self.propagate_fold( f, s, transforms, rootPart, recursion)
-
+                    foldPoints = self.propagate_fold( f, s, transforms, rootPart, recursion)
+                    newpoints = [PInsharp(lastpoint)]
+                    if len(foldPoints)==0:
+                        newpoints = [PInsharp(lastpoint),PInsharp(point)]
+                        pass
+                    elif self.find_direction(face['ppoints'])==self.find_direction(foldPoints):
+                        newpoints+=foldPoints
+                        print ("ENDFOLD")
+                    else:
+                        print("Opposite directions")
+                        newpoints += self.reverse_points(foldPoints)
+                        print ("ENDFOLD")
+                    newpoints.append(PSharp(point))
+                    t=[]
+                    print(newpoints)
+                    for p in newpoints:
+                        t.append(p.pos)
+                    print(t)
                 elif face['joint_mode'][scount]=='mitre':
                     cutside=self.get_cut_side(self, cutside0, joint_type)
 
@@ -759,10 +779,10 @@ class ArbitraryBox(Part):
                 first = False
                 path.add_points(newpoints)
             else:
-                print (path)
-                print (path.points)
-                print(newpoints)
-                path.add_points_intersect(newpoints)
+                if(len(path.points)>1):
+                    path.add_points_intersect(newpoints)
+                else:
+                    path.add_points(newpoints)
             p += 1
         if len(newpoints) >1 and not firstnointersect and not nointersect:
 
@@ -859,12 +879,27 @@ class ArbitraryBox(Part):
             return True
         else:
             return False
-
+    def reverse_points (self, points):
+        ret = []
+        for p in reversed(points):
+            q = copy.copy(p)
+            if hasattr(p, 'direction'):
+                if q.direction=='cw':
+                    q.direction='ccw'
+                elif q.direction == 'ccw':
+                    q.direction = 'cw'
+            ret.append(q)
+        return ret
 
     def find_direction(self, points):
         total = 0
-        for p,q in enumerate(points):
-            total+=(points[p]-points[(p-1)%len(points)]).normalize().cross((points[(p+1)%len(points)]-points[p]).normalize())
+        if type(points[0]) is Vec:
+            for p,q in enumerate(points):
+                total+=(points[p]-points[(p-1)%len(points)]).normalize().cross((points[(p+1)%len(points)]-points[p]).normalize())
+        else:
+            for p,q in enumerate(points):
+                total+=(points[p].pos-points[(p-1)%len(points)].pos).normalize().cross((points[(p+1)%len(points)].pos-points[p].pos).normalize())
+
         # if it is a circle
         if total[2] ==0:
             print("side doesn't have a direction")
@@ -912,7 +947,7 @@ class ArbitraryBox(Part):
                     need_cut_from[self.sign(cutside)]=True
                 elif cutside!=0:
                     pref_cut_from = self.sign(cutside)
-
+        print("need_cut_from="+str(need_cut_from)+" pref_cut_from="+str(pref_cut_from))
                 # this means we should be cutting from this side
         if len(need_cut_from)>1:
             raise ValueError(str(f) + " cannot be cut without cavities as slopes can only be cut from one side ")
@@ -921,7 +956,8 @@ class ArbitraryBox(Part):
         elif pref_cut_from is not False:
             face['cut_from'] = pref_cut_from
         else:
-            face['cut_from'] = 1
+            face['cut_from'] = face['good_direction']
+        print("cut_from"+str(face['cut_from'])+" "+str(face['cut_from']*face['normal']))
 
     def sign(self, val):
         if val>0:
@@ -932,7 +968,8 @@ class ArbitraryBox(Part):
             return 0
 
     def propagate_fold(self, f, s, transforms, rootPart, recursion):
-        print("propogate fold recursion="+str(recursion));
+        t=Path()
+        print("propogate fold recursion="+str(recursion)+" face="+f);
         face = self.faces[f]
         face['part'].cutTransform = transforms
 
@@ -945,46 +982,71 @@ class ArbitraryBox(Part):
             rootPart.xLayers.append(face['part'].layer) # ************** need to do something about cutouts 
         recursion += 1
         side = self.sides[s]
+        thisdir = self.find_direction(face['ppoints'])
         if(len(side)==2):
             print (side)
             if side[0][0]==f:
                 newf = side[1][0]
                 d = side[0][2]
+                pnt = side[0][1]
+                newpnt = side[1][1]
             else:
                 newf = side[0][0]
                 d = side[1][2]
-            print ("newf="+newf+" d="+str(d))
+                pnt = side[1][1]
+                newpnt = side[0][1]
+            if newf=='_internal':
+                return []
             newface = self.faces[newf]
-            print(f+":"+str(newface))
+            newdir= self.find_direction(newface['ppoints'])
+            print ("newf="+newf+" d="+str(d)+" thisdir="+str(thisdir)+" otherdir="+str(newdir))
             if newface['combined']:
                 print ("found a folding face loop, along f="+f+" newf="+newf)
                 return []
             else:
-                # ********* DEAL WITH ORDERING
+                # *********** DEAL WITH BACKTRACKING
+                # *********** DRAW IN FOLDS
+                # **********  GET HOLES TO WORK
                 # *********** ADD BEND RADIUS STUFF
-                newtransforms =  self.align_points(
-                            self.previous(face['ppoints'],side[0][1]),
-                            face['ppoints'][side[0][1]],
-                            self.previous(newface['ppoints'],side[1][1]),
-                            newface['ppoints'][side[1][1]]) + transforms
-                new_points=self.get_border( rootPart, newf, newface, 'fold', firstPoint=side[1][1], transforms=newtransforms, rootPart=rootPart, recursion=recursion)
+                if(thisdir!=newdir):
+                    newtransforms =  self.align_points(
+                            newface['ppoints'][newpnt],
+                            self.previous(newface['ppoints'],newpnt),
+                            face['ppoints'][pnt],
+                            self.previous(face['ppoints'],pnt),
+                            )# + transforms
+                else:
+                    newtransforms =  self.align_points(
+                            self.previous(newface['ppoints'],newpnt),
+                            newface['ppoints'][newpnt],
+                            face['ppoints'][pnt],
+                            self.previous(face['ppoints'],pnt),
+                           # 180,
+                            )# + transforms
+                print ("***newtransforms="+str(newtransforms))
+                new_points=self.get_border( rootPart, newf, newface, 'fold', firstPoint=newpnt, transforms=newtransforms, rootPart=rootPart, recursion=recursion)
 
                 for p in range(0,len(new_points)):
-                    new_points[p].transform+=newtransforms
+                    #new_points[p].transform+=newtransforms
+                    print (new_points[p])
+                    new_points[p]=new_points[p].point_transform(newtransforms)
                 return new_points
                             #MIRROR
 
 # find transforms that move points a & b to points A&B
-    def align_points(self, a, b, A, B):
+    def align_points(self, a, b, A, B, r=0):
+        print("align_points a="+str(a)+"b="+str(b)+" A="+str(A)+" B="+str(B))
         d=b-a
         D=B-A
-        if abs(d.length() -B.length())>0.01:
+        if abs(d.length() -D.length())>0.01:
             print ("Points are not the same distance apart")
 
-        t=math.atan2(d[1], d[0])
-        T=math.atan2(D[1], D[0])
-        
-        return [{'translate':A-a},{ 'rotate':[A, (T-t)/math.pi*180]}]
+        t=math.atan2(d[0], d[1])
+        T=math.atan2(D[0], D[1])
+        return [
+                {'translate':A-a},
+                { 'rotate':[a, (T-t)/math.pi*180+r]},
+                ]
 
     def previous(self, array, num):
         return array[(num-1)%len(array)]
