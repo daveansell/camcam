@@ -1008,28 +1008,47 @@ class ArbitraryBox(Part):
                 # *********** DRAW IN FOLDS
                 # **********  GET HOLES TO WORK
                 # *********** ADD BEND RADIUS STUFF
+
+                first = face['ppoints'][pnt]
+                last = self.previous(face['ppoints'],pnt)
                 if(thisdir!=newdir):
-                    newtransforms =  self.align_points(
-                            newface['ppoints'][newpnt],
-                            self.previous(newface['ppoints'],newpnt),
-                            face['ppoints'][pnt],
-                            self.previous(face['ppoints'],pnt),
-                            )# + transforms
+                    newfirst = newface['ppoints'][newpnt]
+                    newlast = self.previous(newface['ppoints'],newpnt)
                 else:
-                    newtransforms =  self.align_points(
-                            self.previous(newface['ppoints'],newpnt),
-                            newface['ppoints'][newpnt],
-                            face['ppoints'][pnt],
-                            self.previous(face['ppoints'],pnt),
+                    newlast = newface['ppoints'][newpnt]
+                    newfirst = self.previous(newface['ppoints'],newpnt)
+                   # newtransforms =  self.align_points(
+                    #        self.previous(newface['ppoints'],newpnt),
+                     #       newface['ppoints'][newpnt],
+                      #      face['ppoints'][pnt],
+                       #     self.previous(face['ppoints'],pnt),
                            # 180,
+                        #    )# + transforms
+                newtransforms =  self.align_points(
+                            newfirst,
+                            newlast,
+                            first,
+                            last
                             )# + transforms
                 print ("***newtransforms="+str(newtransforms))
-                new_points=self.get_border( rootPart, newf, newface, 'fold', firstPoint=newpnt, transforms=newtransforms, rootPart=rootPart, recursion=recursion)
+                new_points=self.get_border( rootPart, newf, newface, 'fold', firstPoint=newpnt, transforms=newtransforms+transforms, rootPart=rootPart, recursion=recursion)
 
                 for p in range(0,len(new_points)):
                     #new_points[p].transform+=newtransforms
                     print (new_points[p])
                     new_points[p]=new_points[p].point_transform(newtransforms)
+                # ****** alter when added Bend radius stuff (ought to be automatic)
+                # ****** change colour with bend sense
+                newFirstPoint = PSharp(newfirst).point_transform(newtransforms)
+                startPoint = PSharp((first+newFirstPoint.pos)/2 ).point_transform(transforms)
+                newLastPoint = PSharp(newlast).point_transform(newtransforms)
+                endPoint = PSharp((last+newLastPoint.pos)/2 ).point_transform(transforms)
+                print (side)
+                if side[0][6]=='convex':
+                    rootPart.add(Lines([startPoint.pos, endPoint.pos], z1=-0.1, colour='#a00000'))
+                else:
+                    rootPart.add(Lines([startPoint.pos, endPoint.pos], z1=-0.2, colour='#00a000'))
+
                 return new_points
                             #MIRROR
 
