@@ -1028,7 +1028,7 @@ class PIgnore(PSharp):
         self.point_type='clear'
         self.transform=transform
         self.obType="Point"
-        self.sharp = True
+        self.control=True
     def copy(self):
         t = PClear( self.pos, self.transform)
         t.lastpoint=self.lastpoint
