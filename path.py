@@ -1161,7 +1161,10 @@ class Path(object):
             if polygon.area>maxarea:
                 ret=polygon
                 maxarea=polygon.area
-        return list(zip(*ret.exterior.coords.xy))
+        if hasattr(ret, 'exterior'):
+            return list(zip(*ret.exterior.coords.xy))
+        else:
+            return []
 #        points = copy.copy(self.polygon[resolution])
 #        intersections = self.self_intersects(points)
 #        crosses = []
@@ -2297,7 +2300,7 @@ class Part(object):
             pconfig = False
 
         config = {}
-        if hasattr(self, 'cutTransforms') and type(self.cutTransforms) is list:
+        if 'cuttingMode' in pconfig and pconfig['cuttingMode'] and hasattr(self, 'cutTransforms') and type(self.cutTransforms) is list:
 #            print("self.cutTransform="+str(self.cutTransforms))
             config['transformations']=self.cutTransforms
         else:

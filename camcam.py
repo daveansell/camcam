@@ -32,7 +32,7 @@ from optparse import OptionParser
 import sys
 import Milling
 import json
-
+import builtins
 
 class CamCam:
     def __init__(self):
@@ -222,6 +222,7 @@ parser.add_option("-Q", "--offsety", dest="offsety",
                   help="offset y")
 (options, args) = parser.parse_args()
 config={}
+builtins.cuttingmode = milling.mode_config[options.mode]
 
 camcam.command_args={}
 

@@ -104,7 +104,8 @@ def path_render3D(self, pconfig, border=False):
     self.reset_points()
     points = self.polygonise(RESOLUTION)
     points = self.clean_simplepath(points)
-
+    if len(points)==0:
+        return []
 #       extrude_path = [ Point3(0,0,zoffset + float(z0)), Point3(0,0, zoffset + float(z1)) ]
     lastpoint=False
     # don't output repeated points in case it confuses things later

@@ -18,6 +18,7 @@ from camcamconfig import *
 from path import *
 from shapes import *
 from parts import *
+import builtins
 if has3D:
     from cc3d import *
 # Class to hold configuration of a side
@@ -544,13 +545,13 @@ class ArbitraryBox(Part):
                         fudge = self.fudge
                 else:
                     fudge = self.fudge
+               #terrible kludge to not generate nets when we don't want to 
+                if not builtins.cuttingmode['cuttingMode'] and face['joint_mode'][scount]=='fold':
+                    face['joint_mode'][scount]='straight'
 
-
-                print("side="+str(scount))
                 if face['joint_mode'][scount]=='straight':
                     newpoints = [PInsharp(lastpoint),PInsharp(point)]
                 elif face['joint_mode'][scount]=='fold':
-                    print("config="+str(config))
                     if 'transforms' in config:
                         transforms = config['transforms']
                     else:
@@ -570,17 +571,12 @@ class ArbitraryBox(Part):
                         pass
                     elif self.find_direction(face['ppoints'])==self.find_direction(foldPoints):
                         newpoints+=foldPoints
-                        print ("ENDFOLD")
                     else:
-                        print("Opposite directions")
                         newpoints += self.reverse_points(foldPoints)
-                        print ("ENDFOLD")
                     newpoints.append(PSharp(point))
                     t=[]
-                    print(newpoints)
                     for p in newpoints:
                         t.append(p.pos)
-                    print(t)
                 elif face['joint_mode'][scount]=='mitre':
                     cutside=self.get_cut_side(self, cutside0, joint_type)
 
@@ -951,7 +947,6 @@ class ArbitraryBox(Part):
                     need_cut_from[self.sign(cutside)]=True
                 elif cutside!=0:
                     pref_cut_from = self.sign(cutside)
-        print("need_cut_from="+str(need_cut_from)+" pref_cut_from="+str(pref_cut_from))
                 # this means we should be cutting from this side
         if len(need_cut_from)>1:
             raise ValueError(str(f) + " cannot be cut without cavities as slopes can only be cut from one side ")
@@ -961,7 +956,6 @@ class ArbitraryBox(Part):
             face['cut_from'] = pref_cut_from
         else:
             face['cut_from'] = face['good_direction']
-        print("cut_from"+str(face['cut_from'])+" "+str(face['cut_from']*face['normal']))
 
     def sign(self, val):
         if val>0:
@@ -973,25 +967,16 @@ class ArbitraryBox(Part):
 
     def propagate_fold(self, f, s, transforms, rootPart, recursion):
         t=Path()
-        print("propogate fold recursion="+str(recursion)+" face="+f);
         face = self.faces[f]
-        print ("Transforms="+str(transforms))
-        print ("cutTransforms="+str(face['part'].cutTransforms))
         face['combined']=True
         if not recursion:
             recursion=0
             rootPart = face['part']
-        else:
-            print( "rootPart="+str(rootPart))
-         #   rootPart.xLayers.append(face['part'].layer) # ************** need to do something about cutouts 
-        #if not hasattr(face['part'],'cutTransforms') or not face['part'].cutTransforms:
-        print ("part.cutTransforms="+str(face['part'].cutTransforms))
 
         recursion += 1
         side = self.sides[s]
         thisdir = self.find_direction(face['ppoints'])
         if(len(side)==2):
-            print (side)
             if side[0][0]==f:
                 newf = side[1][0]
                 d = side[0][2]
@@ -1006,7 +991,6 @@ class ArbitraryBox(Part):
                 return []
             newface = self.faces[newf]
             newdir= self.find_direction(newface['ppoints'])
-            print ("newf="+newf+" d="+str(d)+" thisdir="+str(thisdir)+" otherdir="+str(newdir))
             if newface['combined']:
                 print ("found a folding face loop, along f="+f+" newf="+newf)
                 return []
@@ -1037,18 +1021,15 @@ class ArbitraryBox(Part):
                             first,
                             last
                             )# + transforms
-                print ("***newtransforms="+str(newtransforms))
                 newface['part'].cutTransforms = transforms+newtransforms#+transforms
                 if not hasattr(rootPart, 'xLayers') or type(rootPart.xLayers ) is not list:
                     rootPart.xLayers=[]
                 if newface['part'].layer != rootPart.layer and newface['part'].layer not in rootPart.xLayers:
                     rootPart.xLayers.append(newface['part'].layer)
-                print("layer="+newface['part'].layer+" xLayer "+str(rootPart.xLayers))
                 new_points=self.get_border( rootPart, newf, newface, 'fold', firstPoint=newpnt, transforms=transforms+newtransforms, rootPart=rootPart, recursion=recursion)
 
                 for p in range(0,len(new_points)):
                     #new_points[p].transform+=newtransforms
-                    print (new_points[p])
                     new_points[p]=new_points[p].point_transform(newtransforms)
                 # ****** alter when added Bend radius stuff (ought to be automatic)
                 # ****** change colour with bend sense
@@ -1056,7 +1037,6 @@ class ArbitraryBox(Part):
                 startPoint = PSharp((first+newFirstPoint.pos)/2 ).point_transform(transforms)
                 newLastPoint = PSharp(newlast).point_transform(newtransforms)
                 endPoint = PSharp((last+newLastPoint.pos)/2 ).point_transform(transforms)
-                print (side)
                 if side[0][6]=='convex':
                     rootPart.add(Lines([startPoint.pos, endPoint.pos], z1=-0.1, colour='#ff0000'))
                 else:
@@ -1067,7 +1047,6 @@ class ArbitraryBox(Part):
 
 # find transforms that move points a & b to points A&B
     def align_points(self, a, b, A, B, r=0):
-        print("align_points a="+str(a)+"b="+str(b)+" A="+str(A)+" B="+str(B))
         d=b-a
         D=B-A
         if abs(d.length() -D.length())>0.01:
@@ -1108,7 +1087,6 @@ class ArbitraryBox(Part):
                 newface = self.faces[newf]
                 if t not in newface:
                     self.faces[newf][t] = d * face[t]
-                    print("propogate "+str(t)+" to "+str(newf)+" d="+str(d*face[t])+" "+str(self.faces[newf][t]))
                     self.propagate_direction(t, newf, recursion)
         for f in self.faces:
             if t not in self.faces[f] and 'alt_'+t in self.faces[f]:
