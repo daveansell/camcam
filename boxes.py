@@ -264,13 +264,17 @@ class ArbitraryBox(Part):
             face['part']=t
 #               def _pre_render(self):
 
-        for f, face in faces.items():
+        for f in faces:
+            face=faces[f]
             print("GENERATE BORDER FOR FACE-="+str(f))
             if 'internal' in face and face['internal']:
                 self.get_border(face['part'],  f, face, 'internal')
             else:
                 self.get_border(face['part'],  f, face, 'external')
             self.align3d_face(face['part'], f, face)
+
+        for f in faces:
+            face=faces[f]
 
     def extract_sides(self, face):
         scount=0
@@ -971,15 +975,18 @@ class ArbitraryBox(Part):
         t=Path()
         print("propogate fold recursion="+str(recursion)+" face="+f);
         face = self.faces[f]
-        face['part'].cutTransform = transforms
-
+        print ("Transforms="+str(transforms))
+        print ("cutTransforms="+str(face['part'].cutTransforms))
         face['combined']=True
         if not recursion:
             recursion=0
             rootPart = face['part']
         else:
             print( "rootPart="+str(rootPart))
-            rootPart.xLayers.append(face['part'].layer) # ************** need to do something about cutouts 
+         #   rootPart.xLayers.append(face['part'].layer) # ************** need to do something about cutouts 
+        #if not hasattr(face['part'],'cutTransforms') or not face['part'].cutTransforms:
+        print ("part.cutTransforms="+str(face['part'].cutTransforms))
+
         recursion += 1
         side = self.sides[s]
         thisdir = self.find_direction(face['ppoints'])
@@ -1031,7 +1038,13 @@ class ArbitraryBox(Part):
                             last
                             )# + transforms
                 print ("***newtransforms="+str(newtransforms))
-                new_points=self.get_border( rootPart, newf, newface, 'fold', firstPoint=newpnt, transforms=newtransforms+transforms, rootPart=rootPart, recursion=recursion)
+                newface['part'].cutTransforms = transforms+newtransforms#+transforms
+                if not hasattr(rootPart, 'xLayers') or type(rootPart.xLayers ) is not list:
+                    rootPart.xLayers=[]
+                if newface['part'].layer != rootPart.layer and newface['part'].layer not in rootPart.xLayers:
+                    rootPart.xLayers.append(newface['part'].layer)
+                print("layer="+newface['part'].layer+" xLayer "+str(rootPart.xLayers))
+                new_points=self.get_border( rootPart, newf, newface, 'fold', firstPoint=newpnt, transforms=transforms+newtransforms, rootPart=rootPart, recursion=recursion)
 
                 for p in range(0,len(new_points)):
                     #new_points[p].transform+=newtransforms
@@ -1045,9 +1058,9 @@ class ArbitraryBox(Part):
                 endPoint = PSharp((last+newLastPoint.pos)/2 ).point_transform(transforms)
                 print (side)
                 if side[0][6]=='convex':
-                    rootPart.add(Lines([startPoint.pos, endPoint.pos], z1=-0.1, colour='#a00000'))
+                    rootPart.add(Lines([startPoint.pos, endPoint.pos], z1=-0.1, colour='#ff0000'))
                 else:
-                    rootPart.add(Lines([startPoint.pos, endPoint.pos], z1=-0.2, colour='#00a000'))
+                    rootPart.add(Lines([startPoint.pos, endPoint.pos], z1=-0.2, colour='#00ff00'))
 
                 return new_points
                             #MIRROR
