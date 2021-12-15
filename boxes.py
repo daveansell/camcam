@@ -1476,9 +1476,10 @@ class ArbitraryBox(Part):
         b = self.which_between( a2a, a2b, a1a, a1b)
         if b is not None:
             intersectionLine[1] = b
-        #print (intersectionLine)
+        
         # check there is a valid intersection and that the intersection is not in the plane of either face (as then it is a different kind of joint)
-        if len(intersectionLine)==2 and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face1) and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face2):
+        # ************* This is to stop joints at an edge. We are checking the wrong planes
+        if len(intersectionLine)==2:# and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face1) and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face2):
             otherEnd1=self.project(t2[intersectionLine[1]], face1)
             thisEnd1=self.project(t1[intersectionLine[0]], face1)
             self.add_intersection(
