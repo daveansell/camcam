@@ -652,7 +652,7 @@ class Path(object):
                     self.delete_point(p)
                 elif type(point) is PIgnore:
                         self.delete_point(p)
-        if 'forcecutter' not in builtins.cuttingmode or builtins.cuttingmode['forcecutter']!='laser':
+        if 'forcecutter' not in builtins.cuttingmode or not builtins.cuttingmode['forcecutter'] in ['laser','on']:
             self.remove_backtracks()
 
     def offset_path(self,side,distance, config):
