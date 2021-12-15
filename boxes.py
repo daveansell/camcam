@@ -578,7 +578,7 @@ class ArbitraryBox(Part):
                     for p in newpoints:
                         t.append(p.pos)
                 elif face['joint_mode'][scount]=='mitre':
-                    cutside=self.get_cut_side(self, cutside0, joint_type)
+                    cutside=self.get_cutside( cutside0, joint_type)
 
                     if nextotherside is None or nextotherside[0]=='_internal':
                         next_offset = 0
@@ -604,7 +604,7 @@ class ArbitraryBox(Part):
 
                 elif face['joint_mode'][scount]=='butt':
                     if angle<0.0001:
-                        cutside=self.get_cut_side(self, cutside0, joint_type)
+                        cutside=self.get_cutside( cutside0, joint_type)
 
                         if nextotherside is None or nextotherside[0]=='_internal':
                             next_offset = 0
@@ -714,7 +714,7 @@ class ArbitraryBox(Part):
 
                 elif face['joint_mode'][scount]=='bracket':
                     if angle==0:
-                        cutside=self.get_cut_side(self, cutside0, joint_type)
+                        cutside=self.get_cutside( cutside0, joint_type)
 
                         if nextotherside is None or nextotherside[0]=='_internal':
                             next_offset = 0
@@ -752,7 +752,7 @@ class ArbitraryBox(Part):
                         # this is being cut from the side we are cutting:
 
                         lineside=face['lineside']
-                        cutside=self.get_cut_side(self, cutside0, joint_type)
+                        cutside=self.get_cutside( cutside0, joint_type)
 
                         if thisside[3]*face['good_direction']*face['intfact']<0:
 # THIS PUTS THE SLOPE ON THE WRONG PART OF THE JOINT
@@ -762,7 +762,7 @@ class ArbitraryBox(Part):
                         else:
                             newpoints = AngledFingerJointNoSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, fudge, material_thickness=face['thickness'])
                     else:
-                        cutside=self.get_cut_side( cutside0, joint_type)
+                        cutside=self.get_cutside( cutside0, joint_type)
                         newpoints = FingerJoint(
                                 lastpoint,
                                 point,
