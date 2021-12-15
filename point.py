@@ -510,7 +510,7 @@ class PAroundcurve(PSharp):
             if self.next().pos is False:
                 print("ERROR: next().pos="+str(self.next().pos))
            # print("NO setup end()"+str(self))
-            return self.next().pos
+            return self.pos
         if self.radius==0:
             return self.pos
         if not self.cp1==self.pos:
@@ -568,7 +568,7 @@ class PInsharp(PAroundcurve):
             if not self.reverse:
                 self.direction=self.otherDir(self.direction)
 #                       self.direction=self.otherDir(self.direction)
-            if self.dosetup and self.config is not False and  self.last() != None and next(self) !=None:
+            if self.dosetup and self.config is not False and  self.last() != None and self.next() !=None:
                 self.setup=True
                 lastpoint=self.lastorigin()
                 if lastpoint==self.pos:
@@ -1025,7 +1025,7 @@ class PIgnore(PSharp):
         """Create a sharp point at position=pos with an extra cut so that a sharp corner will fit inside it"""
         self.init()
         self.pos=Vec(pos)
-        self.point_type='clear'
+        self.point_type='ignore'
         self.transform=transform
         self.obType="Point"
         self.control=True
@@ -1038,43 +1038,6 @@ class PIgnore(PSharp):
         return t
     def makeSegment(self, config):
         return [
-        ]
-class PClear(PSharp):
-    def __init__(self, pos, transform=False):
-        """Create a sharp point at position=pos with an extra cut so that a sharp corner will fit inside it"""
-        self.init()
-        self.pos=Vec(pos)
-        self.point_type='clear'
-        self.transform=transform
-        self.obType="Point"
-        self.sharp = True
-    def copy(self):
-        t = PClear( self.pos, self.transform)
-        t.lastpoint=self.lastpoint
-        t.nextpoint=self.nextpoint
-        t.reverse=self.reverse
-        t.invert = self.invert
-        return t
-    def makeSegment(self, config):
-        if self.last() != None and next(self) !=None:
-            lastpoint=self.lastorigin()
-            if lastpoint==self.pos:
-                lastpoint=self.last().lastorigin()
-            nextpoint=self.nextorigin()
-            if nextpoint==self.pos:
-                nextpoint=self.next().nextorigin()
-            angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
-            if abs(angle-180)>0.00001:
-                d=config['cutterrad']*(1/math.sin((180-angle)/2/180*math.pi)-1)
-
-                extrapoint=self.pos-(((lastpoint-self.pos).normalize()+(nextpoint-self.pos).normalize())/2).normalize()*d
-            else:
-                return [Line(self.last().end(),self.pos)]
-
-        return [
-                Line(self.last().end(),self.pos),
-                Line(self.pos,extrapoint),
-                Line(extrapoint,self.pos),
         ]
 
 class PDoubleClear(Point):

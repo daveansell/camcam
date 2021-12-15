@@ -30,7 +30,7 @@ import re
 from point import *
 from segments import *
 spindleDir = False
-
+import builtins
 inch = 25.4
 
 milling=Milling.Milling()
@@ -630,7 +630,7 @@ class Path(object):
                     point.setangle()
                     if point.dot==-1 and (self.closed or p!=0 and p!=len(self.points)-1):
                         print( "deleting point as pos="+str(point.pos))
-       #                 self.delete_point(p)
+                        self.delete_point(p)
 
     def simplify_points(self):
         if len(self.points)>2:
@@ -650,7 +650,10 @@ class Path(object):
                 # delete if they are are in the same place and the same point type
                 elif point.point_type == point.lastpoint.point_type and (point.point_transform({}).pos-point.lastpoint.point_transform({}).pos).length()<0.001:
                     self.delete_point(p)
-        self.remove_backtracks()
+                elif type(point) is PIgnore:
+                        self.delete_point(p)
+        if 'forcecutter' not in builtins.cuttingmode or builtins.cuttingmode['forcecutter']!='laser':
+            self.remove_backtracks()
 
     def offset_path(self,side,distance, config):
         self.simplify_points()
@@ -1068,7 +1071,6 @@ class Path(object):
         return config
 
     def fill_path(self, side, cutterrad, distance=False, step=False, cutDirection=None):
-        print ("FIll pTh")
         if step==False:
             step = cutterrad*0.5
         ret=[self]
@@ -2300,7 +2302,7 @@ class Part(object):
             pconfig = False
 
         config = {}
-        if 'cuttingMode' in pconfig and pconfig['cuttingMode'] and hasattr(self, 'cutTransforms') and type(self.cutTransforms) is list:
+        if builtins.cuttingmode['cuttingMode'] and hasattr(self, 'cutTransforms') and type(self.cutTransforms) is list:
 #            print("self.cutTransform="+str(self.cutTransforms))
             config['transformations']=self.cutTransforms
         else:
@@ -2758,8 +2760,6 @@ class Plane(Part):
 
             if path.obType=="Pathgroup":
                 for p in path.get_paths(config):
-                    if hasattr(path, 'cutTransform') and path.cutTransform is not None:
-                        p.cutTransform=path.cutTransform
                     if not hasattr(part, 'border') or part.ignore_border or part.contains(p)>-1:
                         (k,pa)=p.render(config)
                         if self.modeconfig['group'] is False:

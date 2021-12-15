@@ -782,6 +782,7 @@ class ArbitraryBox(Part):
                 if(len(path.points)>1):
                     path.add_points_intersect(newpoints)
                 else:
+                    print( "not enough points to intersect f="+str(f)+" scount="+str(scount))
                     path.add_points(newpoints)
             p += 1
         if len(newpoints) >1 and not firstnointersect and not nointersect:
@@ -789,7 +790,6 @@ class ArbitraryBox(Part):
             path.close_intersect()
         simplepath.add_points(simplepoints)
         path.simplify_points()
-
  #      part.add(simplepath)
         if mode=='fold':
             pass
@@ -854,7 +854,6 @@ class ArbitraryBox(Part):
                         args=self.config['bracket_args']))
             else:
                 part.add(FingerJointMid( joint['from'], joint['to'], cutside,'internal',  joint['corners'], joint['corners'], joint['tab_length'], joint['otherface']['thickness'], 0, prevmode, nextmode, fudge=fudge))
-
         if mode=='fold':
             return path.points
 
