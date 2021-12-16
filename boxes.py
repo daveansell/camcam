@@ -60,7 +60,7 @@ class ArbitraryBox(Part):
         self.tab_length = tab_length
         self.fudge = fudge
         self.faces = faces
-        self.auto_properties = {'tab_length':100, 'joint_mode':'finger', 'butt_depression':None, 'butt_holerad':4.2, 'butt_numholes':None, 'hole_spacing':100, 'hole_offset':0, 'butt_outline':False, 'slot_extra':0}
+        self.auto_properties = {'tab_length':100, 'joint_mode':'finger', 'butt_depression':None, 'butt_holerad':4.2, 'butt_numholes':None, 'hole_spacing':100, 'hole_offset':0, 'butt_outline':False, 'slot_extra':0, 'fold_rad':0}
         for prop in self.auto_properties:
             if prop in config:
                 setattr(self, prop, config[prop])
@@ -135,6 +135,8 @@ class ArbitraryBox(Part):
                 face['hole_depth']=False
             if 'point_type' not in face:
                 face['point_type'] = {}
+            if 'fold_rad' not in face:
+                face['fold_rad'] = {}
             if 'wood_direction' in face:
   #                              if wood_direction_face is not None or wood_direction_face !=None:
  #                                       raise ValueError('wood direction defined more than once')
@@ -231,6 +233,7 @@ class ArbitraryBox(Part):
                 self.set_corners(self.sides[s], f, scount)
 #                               self.set_tab_length(self.sides[s], f, scount)
                 self.set_property(self.sides[s], f, scount, 'joint_mode')
+                self.set_property(self.sides[s], f, scount, 'fold_rad')
                 self.set_property(self.sides[s], f, scount, 'tab_length')
                 self.set_property(self.sides[s], f, scount, 'butt_depression')
                 self.set_property(self.sides[s], f, scount, 'butt_holrad')
@@ -1020,6 +1023,33 @@ class ArbitraryBox(Part):
                             first,
                             last
                             )# + transforms
+                # Compensate for the bend
+                along = (face['ppoints'][pnt] - self.previous(face['ppoints'],pnt)).normalize()
+                if thisdir=='cw':
+                    perp=rotate(along, -90)
+                else:
+                    perp=rotate(along, 90)
+                K=False
+                Ks = milling.materials[face['material']]['K']
+                for k in Ks['bending']:
+                    print (k)
+                    if face['thickness']<=k or k==10:
+                        K = Ks['bending'][k]
+                angle = side[0][8]
+                obtuse = side[0][7]
+                print ("bend rad="+str(face['fold_rad'][pnt])+" along="+str(along)+" perp="+str(perp))
+                r = face['fold_rad'][pnt]
+                arcLen = angle * math.pi / 180 * (r + K * face['thickness'])
+                straightLen = 2 * r * math.tan( angle/180*math.pi/2)
+                if side[0][6]=='convex':
+                    e = 0
+                else:
+                    e = -2 * face['thickness']* math.tan(angle/180*math.pi/2)
+                print("angle="+str(angle)+"arcLen"+str(arcLen)+" straightLen="+str(straightLen)+"bend comp="+str((arcLen - straightLen + e)))
+                newtransforms.insert(0,{'translate':perp * (arcLen - straightLen + e)})
+
+                #  *********** ADD cutback from line of fold if angle of receeding path>90 d = (- arcLen +e )/2 in each direction
+
                 newface['part'].cutTransforms = transforms+newtransforms#+transforms
                 if not hasattr(rootPart, 'xLayers') or type(rootPart.xLayers ) is not list:
                     rootPart.xLayers=[]
@@ -1031,7 +1061,6 @@ class ArbitraryBox(Part):
                     #new_points[p].transform+=newtransforms
                     new_points[p]=new_points[p].point_transform(newtransforms)
                 # ****** alter when added Bend radius stuff (ought to be automatic)
-                # ****** change colour with bend sense
                 newFirstPoint = PSharp(newfirst).point_transform(newtransforms)
                 startPoint = PSharp((first+newFirstPoint.pos)/2 ).point_transform(transforms)
                 newLastPoint = PSharp(newlast).point_transform(newtransforms)
@@ -1344,12 +1373,13 @@ class ArbitraryBox(Part):
         else:
             obtuse=0
       #  print ("svec dot svec"+str(svec1.dot(svec2))+" obtuse="+str(obtuse))
-        side[0].append(sideSign)
-        side[0].append( avSvec.dot ( face1['normal'] ) * cutsign)
-        side[0].append( angle )
-        side[0].append(altside)
-        side[0].append('convex')
-        side[0].append(obtuse)
+        side[0].append(sideSign) #2
+        side[0].append( avSvec.dot ( face1['normal'] ) * cutsign) #3
+        side[0].append( angle ) # 4
+        side[0].append(altside) # 5
+        side[0].append('convex') # 6
+        side[0].append(obtuse) # 7
+        side[0].append(baseAngle) # 8
 
         side[1].append(sideSign)
         side[1].append( avSvec.dot ( face2['normal'] ) * cutsign)
@@ -1357,6 +1387,7 @@ class ArbitraryBox(Part):
         side[1].append(altside)
         side[1].append('convex')
         side[1].append(obtuse)
+        side[1].append(baseAngle)
 
     def preparsePoints(self, face):
         p=0
