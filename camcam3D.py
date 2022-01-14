@@ -32,7 +32,7 @@ from optparse import OptionParser
 import sys
 import Milling
 import pickle
-
+import builtins
 
 class CamCam:
     def __init__(self):
@@ -120,6 +120,8 @@ parser.add_option("-L", "--layout-file", dest="layout_file",
                   help="file for layout")
 (options, args) = parser.parse_args()
 config={}
+
+builtins.cuttingmode = milling.mode_config[options.mode]
 
 camcam.command_args={}
 if options.options:

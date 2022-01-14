@@ -40,6 +40,7 @@ class Milling:
                                 'label':False,
                                 'zero':False,
 				'blendTolerance':True,
+                                'cuttingMode':True,   
                         },
                         "dave-lathe":{
                                 'prefix':'G21\nG64 p.001 q.001\nG18\n',
@@ -60,6 +61,7 @@ class Milling:
                                 'z_overshoot':0.4,
                                 'label':False,
                                 'zero':False,
+                                'cuttingMode':True,   
                         },
                         'eagle':{
                                 'prefix':'GRID MM\nLAYER 21\n',
@@ -79,15 +81,18 @@ class Milling:
                                 'dosfile':True,
                                 'label':False,
                                 'zero':False,
+                                'cuttingMode':True,   
                         },
                         '3D':{
                                 'overview':False,
                                 'mirror_backs':False,
+                                'cuttingMode':False,   
 
                         },
                         '3Dall':{
                                 'overview':True,
                                 'mirror_backs':True,
+                                'cuttingMode':False,   
 
                         },
                         'makespacerouter2':{
@@ -111,6 +116,7 @@ class Milling:
                                 'zero':'bottom_left',
 				'downmode':'cutdown',
 				'hide_cuts':False,
+                                'cuttingMode':True,   
                         },
                         'makespacerouter':{
 #                                'prefix':'T1M6\nG17\nG0Z10S11000M3\n',
@@ -133,6 +139,7 @@ class Milling:
 				'shortFilename':True,
                 	#	'downmode':'down',
                 		#'zero':'bottom_left',
+                                'cuttingMode':True,   
                         },
                         'laser':{
                               #  'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -151,6 +158,7 @@ class Milling:
                                 'label':False,
                                 'zero':False,
                                 'file_suffix':'.svg',
+                                'cuttingMode':True,   
                         },
                         'cutdxf':{
                                 'forcestepdown':1000,
@@ -165,6 +173,7 @@ class Milling:
                                 'file_suffix':'.dxf',
                                 'mode':'dxf',
                                 'render_string':False,
+                                'cuttingMode':True,   
                         },
                         'laserdxf':{
                                 'forcestepdown':1000,
@@ -181,6 +190,7 @@ class Milling:
                                 'mode':'dxf',
                                 'render_string':False,
                                 'precut_z':0,
+                                'cuttingMode':True,   
                         },
                         'exportdxf':{
                                 'forcestepdown':1000,
@@ -195,6 +205,7 @@ class Milling:
                                 'file_suffix':'.dxf',
                                 'mode':'dxf',
                                 'render_string':False,
+                                'cuttingMode':True,   
                         },
                         'dxf':{
                                 'forcestepdown':1000,
@@ -208,6 +219,7 @@ class Milling:
                                 'file_suffix':'.dxf',
                                 'mode':'dxf',
                                 'render_string':False,
+                                'cuttingMode':False,   
                         },
                         'pcbsvg':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -224,7 +236,8 @@ class Milling:
 #				'transformations':[{'scale':1/2.54}]
                                 'label':False,
                                 'zero':False,
-				'file_suffix':'.svg'
+				'file_suffix':'.svg',
+                                'cuttingMode':False,   
                         },
                         'paper':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -240,6 +253,7 @@ class Milling:
                                 'z_overshoot':0.01,
                                 'label':False,
                                 'zero':False,
+                                'cuttingMode':True,   
                         },
                         'millsvg':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -255,6 +269,7 @@ class Milling:
                                 'label':False,
                                 'zero':False,
                                 'file_suffix':'.svg',
+                                'cuttingMode':True,   
                         },
                         'svg':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg width="594mm" height="420mm"\n     xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 594 420">\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -268,7 +283,8 @@ class Milling:
                                 'z_overshoot':0,
                                 'label':False,
                                 'zero':False,
-				'file_suffix':'.svg'
+				'file_suffix':'.svg',
+                                'cuttingMode':False,   
                         },
                         'diagram':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n <svg width="594mm" height="420mm"\n   xmlns:dc="http://purl.org/dc/elements/1.1/" \n   xmlns:cc="http://creativecommons.org/ns#"\n   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n   xmlns:svg="http://www.w3.org/2000/svg"\n   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"\n   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"\n   xmlns="http://www.w3.org/2000/svg"\n version="1.1" viewBox="0 0 594 420">\n<sodipodi:namedview      id="base"      pagecolor="#ffffff"      bordercolor="#666666"      borderopacity="1.0"      inkscape:pageopacity="0.0"      inkscape:pageshadow="2"     inkscape:zoom="0.35"     inkscape:cx="375"     inkscape:cy="520"     inkscape:document-units="mm"     inkscape:current-layer="layer1"     showgrid="false"     units="mm"     inkscape:window-width="504"     inkscape:window-height="441"     inkscape:window-x="320"     inkscape:window-y="25"     inkscape:window-maximized="0" />\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -283,6 +299,8 @@ class Milling:
                                 'z_overshoot':0,
                                 'label':True,
                                 'zero':False,
+                                'cuttingMode':True,   
+                                'forcecutter':'laser',
                         },
                         'visualise':{
                                 'prefix':'<?xml version="1.0" standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n <svg width="594mm" height="420mm"\n   xmlns:dc="http://purl.org/dc/elements/1.1/" \n   xmlns:cc="http://creativecommons.org/ns#"\n   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n   xmlns:svg="http://www.w3.org/2000/svg"\n   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"\n   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"\n   xmlns="http://www.w3.org/2000/svg"\n version="1.1" viewBox="0 0 594 420">\n<sodipodi:namedview      id="base"      pagecolor="#ffffff"      bordercolor="#666666"      borderopacity="1.0"      inkscape:pageopacity="0.0"      inkscape:pageshadow="2"     inkscape:zoom="0.35"     inkscape:cx="375"     inkscape:cy="520"     inkscape:document-units="mm"     inkscape:current-layer="layer1"     showgrid="false"     units="mm"     inkscape:window-width="504"     inkscape:window-height="441"     inkscape:window-x="320"     inkscape:window-y="25"     inkscape:window-maximized="0" />\n<g transform="scale(1, -1) translate(0,-420)">',
@@ -297,6 +315,7 @@ class Milling:
                                 'z_overshoot':0,
                                 'label':True,
                                 'zero':False,
+                                'cuttingMode':False,   
                                 
                         }
 

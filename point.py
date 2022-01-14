@@ -94,6 +94,8 @@ class Point(object):
         p=self.copy()
         # If we are applying the transfomations the point shouldn't have them as a transform any more
         p.transform=False
+        if type(self.transform) is list:
+            transformations = self.transform
         if self.transform!=False:
             transformations=[self.transform]
         else:
@@ -515,7 +517,7 @@ class PAroundcurve(PSharp):
             if self.next().pos is False:
                 print("ERROR: next().pos="+str(self.next().pos))
            # print("NO setup end()"+str(self))
-            return self.next().pos
+            return self.pos
         if self.radius==0:
             return self.pos
         if not self.cp1==self.pos:
@@ -573,7 +575,7 @@ class PInsharp(PAroundcurve):
             if not self.reverse:
                 self.direction=self.otherDir(self.direction)
 #                       self.direction=self.otherDir(self.direction)
-            if self.dosetup and self.config is not False and  self.last() != None and next(self) !=None:
+            if self.dosetup and self.config is not False and  self.last() != None and self.next() !=None:
                 self.setup=True
                 lastpoint=self.lastorigin()
                 if lastpoint==self.pos:
@@ -1024,6 +1026,25 @@ class PClear(PSharp):
                 Line(self.last().end(),self.pos),
                 Line(self.pos,extrapoint),
                 Line(extrapoint,self.pos),
+        ]
+class PIgnore(PSharp):
+    def __init__(self, pos, transform=False):
+        """Create a sharp point at position=pos with an extra cut so that a sharp corner will fit inside it"""
+        self.init()
+        self.pos=Vec(pos)
+        self.point_type='ignore'
+        self.transform=transform
+        self.obType="Point"
+        self.control=True
+    def copy(self):
+        t = PClear( self.pos, self.transform)
+        t.lastpoint=self.lastpoint
+        t.nextpoint=self.nextpoint
+        t.reverse=self.reverse
+        t.invert = self.invert
+        return t
+    def makeSegment(self, config):
+        return [
         ]
 
 class PDoubleClear(Point):

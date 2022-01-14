@@ -18,6 +18,7 @@ from camcamconfig import *
 from path import *
 from shapes import *
 from parts import *
+import builtins
 if has3D:
     from cc3d import *
 # Class to hold configuration of a side
@@ -59,7 +60,7 @@ class ArbitraryBox(Part):
         self.tab_length = tab_length
         self.fudge = fudge
         self.faces = faces
-        self.auto_properties = {'tab_length':100, 'joint_mode':'finger', 'butt_depression':None, 'butt_holerad':4.2, 'butt_numholes':None, 'hole_spacing':100, 'hole_offset':0, 'butt_outline':False, 'slot_extra':0}
+        self.auto_properties = {'tab_length':100, 'joint_mode':'finger', 'butt_depression':None, 'butt_holerad':4.2, 'butt_numholes':None, 'hole_spacing':100, 'hole_offset':0, 'butt_outline':False, 'slot_extra':0, 'fold_rad':0}
         for prop in self.auto_properties:
             if prop in config:
                 setattr(self, prop, config[prop])
@@ -108,6 +109,7 @@ class ArbitraryBox(Part):
             face['internal_joints'] = []
             face['intersections'] = {}
             face['reversed']=False
+            face['combined']=False
             if 'zoffset' not in face:
                 face['zoffset'] = 0
 #                       self.check_layer(face)
@@ -133,6 +135,8 @@ class ArbitraryBox(Part):
                 face['hole_depth']=False
             if 'point_type' not in face:
                 face['point_type'] = {}
+            if 'fold_rad' not in face:
+                face['fold_rad'] = {}
             if 'wood_direction' in face:
   #                              if wood_direction_face is not None or wood_direction_face !=None:
  #                                       raise ValueError('wood direction defined more than once')
@@ -164,9 +168,13 @@ class ArbitraryBox(Part):
             self.set_joint_type(s, side)
 
 
-        for f, face in faces.items():
+        for f in faces:
+            face=self.faces[f]
             self.get_cut_side(f, face)
 #                       face['good_direction'] *= face['cut_from']
+            print (f+" cut_from "+str(face['cut_from'])+" "+str(face['cut_from']*face['normal']))
+            print (f+" wood_direction "+str(face['wood_direction'])+" "+str(face['wood_direction']*face['normal']))
+            print (f+" good_direction "+str(face['good_direction'])+" "+str(face['good_direction']*face['normal']))
             if face['cut_from']<0:
                 pass
                 face['isback']=True
@@ -225,6 +233,7 @@ class ArbitraryBox(Part):
                 self.set_corners(self.sides[s], f, scount)
 #                               self.set_tab_length(self.sides[s], f, scount)
                 self.set_property(self.sides[s], f, scount, 'joint_mode')
+                self.set_property(self.sides[s], f, scount, 'fold_rad')
                 self.set_property(self.sides[s], f, scount, 'tab_length')
                 self.set_property(self.sides[s], f, scount, 'butt_depression')
                 self.set_property(self.sides[s], f, scount, 'butt_holrad')
@@ -249,24 +258,27 @@ class ArbitraryBox(Part):
         # if we are cutting an internal hole then don't make it the part border
             if "layer" not in face:
                 raise ValueError( "Face "+f+" does not have a layer")
-            if 'internal' in face and face['internal']:
-                border = Path(closed=True, side='in')
-
-            # add points here
-
-                p = Part(name = self.name+'_'+f, layer = face['layer'], zoffset=face['zoffset'])
-                self.get_border(p,  f, face, 'internal')
-            else:
-                p = Part(name = self.name+'_'+f, layer = face['layer'], zoffset=face['zoffset'])
-                self.get_border(p,  f, face, 'external')
+            p = Part(name = self.name+'_'+f, layer = face['layer'], zoffset=face['zoffset'])
 #                       if face['y'] == -face['x'].cross(face['normal']).normalize():
 #                       if face['good_direction'] == -1:
             # DECIDE WHICH SISDE WE ARE CUttng FROM
             # CHECK THE DIRECTION OF THR LOOP
             t =  self.add(p)
             setattr(self, 'face_' + f, t)
+            face['part']=t
 #               def _pre_render(self):
-            self.align3d_face(t, f, face)
+
+        for f in faces:
+            face=faces[f]
+            print("GENERATE BORDER FOR FACE-="+str(f))
+            if 'internal' in face and face['internal']:
+                self.get_border(face['part'],  f, face, 'internal')
+            else:
+                self.get_border(face['part'],  f, face, 'external')
+            self.align3d_face(face['part'], f, face)
+
+        for f in faces:
+            face=faces[f]
 
     def extract_sides(self, face):
         scount=0
@@ -412,7 +424,7 @@ class ArbitraryBox(Part):
         path = self.simpleBorder(face)
         return path.polygonise(direction=None)
 
-    def get_border(self, part, f, face, mode):
+    def get_border(self, part, f, face, mode, firstPoint=0, **config):
         if mode == 'internal':
             path = Path(closed=True, side='in')
         else:
@@ -428,7 +440,11 @@ class ArbitraryBox(Part):
         else:
             cutside0='right'
         firstnointersect=False
-        for point in face['ppoints']:
+        print("GET_BORDER "+f)
+        #for point in face['ppoints']:
+        for i in range(0, len(face['ppoints'])):    
+            p= (i+firstPoint)%len(face['ppoints'])
+            point= face['ppoints'][p]
             nointersect = False
             lastpoint = face['ppoints'][(p-1)%len(face['sides'])]
             lastlastpoint = face['ppoints'][(p-2)%len(face['sides'])]
@@ -463,9 +479,12 @@ class ArbitraryBox(Part):
             # need to add 2 points here so intersect_points works
             if len(side)==1 or (scount in face['joint_mode'] and face['joint_mode'][scount]=='straight') or scount in face['point_type'] and face['point_type'][scount].point_type not in  ['sharp', 'insharp', 'clear', 'doubleclear'] or lastscount in face['point_type'] and face['point_type'][lastscount].point_type not in  ['sharp', 'insharp', 'clear', 'doubleclear'] :
                 newpoints=[]
+                print ("len(side)=1 or type!=sharp")
                 if (lastscount) in face['point_type']:
+                    print("other point type");
 
                     if(len(path.points) and (lastpoint-path.points[-1].pos).length()>0.001):
+                        newpoints.append(PIgnore((lastpoint+point)/2))
                         newpoints.append(face['point_type'][lastscount])
                         newpoints[-1].setPos(lastpoint)
                         if face['reversed'] and hasattr(newpoints[-1], 'direction'):
@@ -473,17 +492,24 @@ class ArbitraryBox(Part):
                                 newpoints[-1].direction='ccw'
                             elif newpoints[-1].direction=='ccw':
                                 newpoints[-1].direction='cw'
+                    else:
+                        newpoints.append(PIgnore((lastpoint+point)/2))
 
                     if face['point_type'][(p-1)%len(face['sides'])] not in ['sharp', 'insharp', 'clear', 'doubleclear']:
                         nointersect=True
                 else:
+                    print("simple");
+                    newpoints.append(PIgnore((lastpoint+point)/2))
                     newpoints.append(PInsharp(lastpoint))
+
+                    # Deal with Intersection slots
                 if scount in face['intersections']:
                     keys=list(face['intersections'][scount].keys())
                     keys.sort()
                     for i in keys:
                         intersection=face['intersections'][scount][i]
                         newpoints+=self.intersection_slot(intersection, lastpoint, point, face['points'][(scount-1)%len(face['points'])], face['points'][scount])
+
                 if scount in face['point_type']:
                     newpoints.append(face['point_type'][scount])
                     newpoints[-1].setPos(point)
@@ -522,15 +548,41 @@ class ArbitraryBox(Part):
                         fudge = self.fudge
                 else:
                     fudge = self.fudge
+               #terrible kludge to not generate nets when we don't want to 
+                if not builtins.cuttingmode['cuttingMode'] and face['joint_mode'][scount]=='fold':
+                    face['joint_mode'][scount]='straight'
+
                 if face['joint_mode'][scount]=='straight':
                     newpoints = [PInsharp(lastpoint),PInsharp(point)]
-                elif face['joint_mode'][scount]=='mitre':
-                    if cutside0=='left' and joint_type=='concave':
-                        cutside='right'
-                    elif cutside0=='right' and joint_type=='concave':
-                        cutside='left'
+                elif face['joint_mode'][scount]=='fold':
+                    if 'transforms' in config:
+                        transforms = config['transforms']
                     else:
-                        cutside=cutside0
+                        transforms = []
+                    if 'recursion' in config:
+                        recursion = config['recursion']
+                    else:
+                        recursion = ''
+                    if 'rootPart' in config:
+                        rootPart = config['rootPart']
+                    else:
+                        rootPart = False
+                    foldPoints = self.propagate_fold( f, s, transforms, rootPart, recursion)
+                    newpoints = [PInsharp(lastpoint)]
+                    if len(foldPoints)==0:
+                        newpoints = [PInsharp(lastpoint),PInsharp(point)]
+                        pass
+                    elif self.find_direction(face['ppoints'])==self.find_direction(foldPoints):
+                        newpoints+=foldPoints
+                    else:
+                        newpoints += self.reverse_points(foldPoints)
+                    newpoints.append(PSharp(point))
+                    t=[]
+                    for p in newpoints:
+                        t.append(p.pos)
+                elif face['joint_mode'][scount]=='mitre':
+                    cutside=self.get_cutside( cutside0, joint_type)
+
                     if nextotherside is None or nextotherside[0]=='_internal':
                         next_offset = 0
                     else:
@@ -550,14 +602,12 @@ class ArbitraryBox(Part):
  #                                                               newpoints.insert(0, PInsharp(lastpoint))
                     if corner=='off' and otherside[0]=='_internal':
                         newpoints.append( PInsharp(point))
+
+
+
                 elif face['joint_mode'][scount]=='butt':
                     if angle<0.0001:
-                        if cutside0=='left' and joint_type=='concave':
-                            cutside='right'
-                        elif cutside0=='right' and joint_type=='concave':
-                            cutside='left'
-                        else:
-                            cutside = cutside0
+                        cutside=self.get_cutside( cutside0, joint_type)
 
                         if nextotherside is None or nextotherside[0]=='_internal':
                             next_offset = 0
@@ -589,22 +639,13 @@ class ArbitraryBox(Part):
                         part.add(ButtJointMid(lastpoint, point, cutside, 'external', corner, corner, face['hole_spacing'][scount], otherface['thickness'], 0, 'on', 'on',  butt_depression=face['butt_depression'][scount], holerad=face['butt_holerad'][scount], butt_numholes=face['butt_numholes'][scount], joint_type=joint_type, fudge=fudge, hole_offset=face['hole_offset'][scount], butt_outline=face['butt_outline'][scount], hole_depth=face['hole_depth']))
                         if not(lastcorner == 'off' and corner=='off'):
                             nointersect==True
-                    #               if p==0:
-                        #               firstnointersect=True
 
                     else:
-    #                    if face['cut_from']<0:
-   #                         if  cutside0=='left':
-  #                              cutside= 'right'
- #                           else:
-#                                cutside='left'
                         if  self.find_direction(face['ppoints'])=='cw':
                                 cutside='left'
                         else:
                                 cutside= 'right'
 
-                      #  else:
-                       #     cutside=cutside0
                         if nextotherside is None or nextotherside[0]=='_internal':
                             next_offset = 0
                         else:
@@ -644,41 +685,6 @@ class ArbitraryBox(Part):
                                 lineside=lineside,
                                 obtuse=obtuse,
                         )
-#                                                        if corner=='off':
- #                                                               newpoints.insert(0, PInsharp(lastpoint))
-         #               if corner=='off' and otherside[0]=='_internal':
-        #                    newpoints.append( PInsharp(point))
-       #                 if face['cut_from']<0:
-      #                      if  cutside0=='left':
-     #                           cutside= 'right'
-    #                        else:
-   #                             cutside='left'
-  #                      else:
- #                           cutside = cutside0
-#
-   #                     newpoints = AngledButtJoint(
-  #                              lastpoint, 
-                              ###  point, 
-                             #   cutside, 
-                            #    'external', 
-                           #     corner, 
-                          #      corner, 
-                         #       face['hole_spacing'][scount], 
-                        #        otherface['thickness'], 
-                       #         0, 
-                      #          fudge = fudge, 
-                     #           butt_depression=face['butt_depression'][scount], 
-                    #            butt_holerad=face['butt_holerad'][scount], 
-                   #             joint_type=joint_type, 
-                  #              hole_offset=face['hole_offset'][scount], 
-                 #               nextcorner=nextcorner, lastcorner=lastcorner, 
-                #                last_offset=last_offset, 
-               #                 next_offset=next_offset, 
-              #                  lastparallel = self.parallel(lastlastpoint, lastpoint, lastpoint, point), 
-             #                   nextparallel = self.parallel(lastpoint, point, point, nextpoint), 
-            #                    angle=angle, 
-           #                     lineside=lineside
-          #              )
 
                         part.add(AngledButtJointMid(
                                 lastpoint, 
@@ -706,16 +712,12 @@ class ArbitraryBox(Part):
                         if not(lastcorner == 'off' and corner=='off'):
                             nointersect==True
 
-#                                                        print "WARNING: angled butt joint not handled properly - needs update angle="+str(angle)
- #                                                       newpoints = [PInsharp(lastpoint),PInsharp(point)]
+
+
+
                 elif face['joint_mode'][scount]=='bracket':
                     if angle==0:
-                        if cutside0=='left' and joint_type=='concave':
-                            cutside='right'
-                        elif cutside0=='right' and joint_type=='concave':
-                            cutside='left'
-                        else:
-                            cutside=cutside0
+                        cutside=self.get_cutside( cutside0, joint_type)
 
                         if nextotherside is None or nextotherside[0]=='_internal':
                             next_offset = 0
@@ -749,18 +751,11 @@ class ArbitraryBox(Part):
                         print("WARNING: angled butt joint not handled properly - needs update")
                         newpoints = [PInsharp(lastpoint),PInsharp(point)]
                 else:
-
-
                     if angle!=0:
                         # this is being cut from the side we are cutting:
 
                         lineside=face['lineside']
-                        if cutside0=='left' and joint_type=='concave':
-                            cutside='right'
-                        elif cutside0=='right' and joint_type=='concave':
-                            cutside='left'
-                        else:
-                            cutside=cutside0
+                        cutside=self.get_cutside( cutside0, joint_type)
 
                         if thisside[3]*face['good_direction']*face['intfact']<0:
 # THIS PUTS THE SLOPE ON THE WRONG PART OF THE JOINT
@@ -770,12 +765,7 @@ class ArbitraryBox(Part):
                         else:
                             newpoints = AngledFingerJointNoSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, fudge, material_thickness=face['thickness'])
                     else:
-                        if cutside0=='left' and joint_type=='concave':
-                            cutside='right'
-                        elif cutside0=='right' and joint_type=='concave':
-                            cutside='left'
-                        else:
-                            cutside=cutside0
+                        cutside=self.get_cutside( cutside0, joint_type)
                         newpoints = FingerJoint(
                                 lastpoint,
                                 point,
@@ -792,19 +782,21 @@ class ArbitraryBox(Part):
                 first = False
                 path.add_points(newpoints)
             else:
-                print (path)
-                print (path.points)
-                print(newpoints)
-                path.add_points_intersect(newpoints)
+                if(len(path.points)>1):
+                    path.add_points_intersect(newpoints)
+                else:
+                    print( "not enough points to intersect f="+str(f)+" scount="+str(scount))
+                    path.add_points(newpoints)
             p += 1
         if len(newpoints) >1 and not firstnointersect and not nointersect:
 
             path.close_intersect()
         simplepath.add_points(simplepoints)
         path.simplify_points()
-
  #      part.add(simplepath)
-        if mode=='internal':
+        if mode=='fold':
+            pass
+        elif mode=='internal':
             part.add(path)
         else:
             part.add_border(path)
@@ -865,6 +857,19 @@ class ArbitraryBox(Part):
                         args=self.config['bracket_args']))
             else:
                 part.add(FingerJointMid( joint['from'], joint['to'], cutside,'internal',  joint['corners'], joint['corners'], joint['tab_length'], joint['otherface']['thickness'], 0, prevmode, nextmode, fudge=fudge))
+        if mode=='fold':
+            return path.points
+
+    def get_cutside(self, cutside0, joint_type):
+        if cutside0=='left' and joint_type=='concave':
+            return 'right'
+        elif cutside0=='right' and joint_type=='concave':
+            return 'left'
+        else:
+            return cutside0
+
+
+
     def set_wood_factor(self, face):
         if face['wood_direction'].dot(face['normal'])>0:
             face['wood_factor']=1
@@ -876,12 +881,27 @@ class ArbitraryBox(Part):
             return True
         else:
             return False
-
+    def reverse_points (self, points):
+        ret = []
+        for p in reversed(points):
+            q = copy.copy(p)
+            if hasattr(p, 'direction'):
+                if q.direction=='cw':
+                    q.direction='ccw'
+                elif q.direction == 'ccw':
+                    q.direction = 'cw'
+            ret.append(q)
+        return ret
 
     def find_direction(self, points):
         total = 0
-        for p,q in enumerate(points):
-            total+=(points[p]-points[(p-1)%len(points)]).normalize().cross((points[(p+1)%len(points)]-points[p]).normalize())
+        if type(points[0]) is Vec:
+            for p,q in enumerate(points):
+                total+=(points[p]-points[(p-1)%len(points)]).normalize().cross((points[(p+1)%len(points)]-points[p]).normalize())
+        else:
+            for p,q in enumerate(points):
+                total+=(points[p].pos-points[(p-1)%len(points)].pos).normalize().cross((points[(p+1)%len(points)].pos-points[p].pos).normalize())
+
         # if it is a circle
         if total[2] ==0:
             print("side doesn't have a direction")
@@ -903,6 +923,7 @@ class ArbitraryBox(Part):
         return (thisside, otherside)
 
     def get_cut_side(self, f, face):
+        face = self.faces[f]
         if 'force_cut_direction' in face:
             assert face['force_cut_direction'].dot(face['normal'])!=0, "force_cut_direction for face "+f+" is parallel with face"
             if face['force_cut_direction'].dot(face['normal'])>0:
@@ -928,7 +949,6 @@ class ArbitraryBox(Part):
                     need_cut_from[self.sign(cutside)]=True
                 elif cutside!=0:
                     pref_cut_from = self.sign(cutside)
-
                 # this means we should be cutting from this side
         if len(need_cut_from)>1:
             raise ValueError(str(f) + " cannot be cut without cavities as slopes can only be cut from one side ")
@@ -937,7 +957,7 @@ class ArbitraryBox(Part):
         elif pref_cut_from is not False:
             face['cut_from'] = pref_cut_from
         else:
-            face['cut_from'] = 1
+            face['cut_from'] = face['good_direction']
 
     def sign(self, val):
         if val>0:
@@ -947,53 +967,125 @@ class ArbitraryBox(Part):
         else:
             return 0
 
-    def propagate_folds(self, t, f, recursion):
+    def propagate_fold(self, f, s, transforms, rootPart, recursion):
+        t=Path()
         face = self.faces[f]
-        if recursion==0:
-            if face[t].dot(face['normal'])>0:
-                face[t]=1
-            elif face[t].dot(face['normal'])<0:
-                face[t]=-1
-            else:
-                raise ValueError(t+" in "+f+"is perpendicular to the normal")
-        recursion += 1
-        for s in face['sides']:
-            if face.joint_mode[s]=='fold':
-                side = self.sides[s]
-                if(len(side)==2):
-                    if side[0][0]==f:
-                        newf = side[1][0]
-                        d = side[0][2]
-                    else:
-                        newf = side[0][0]
-                        d = side[1][2]
+        face['combined']=True
+        if not recursion:
+            recursion=0
+            rootPart = face['part']
 
-                    newface = self.faces[newf]
-                    if newface.combined:
-                        print ("found a folding face loop, along f="+f+" newf="+newf)
-                    else:    
-                        newface.combined=True
-                        transform = self.align_points(
-                            self.previous(face['ppoints'],side[0][1]),
-                            face['ppoints'][side[0][1]],
-                            self.previous(newface['ppoints'],side[1][1]),
-                            newface['ppoints'][side[1][1]])
-                        for p in range(0, len[newface['ppoints']]):
-                            newface['ppoints'][p]+=transform['translate']
-                            newface['ppoints'][p]=rotate(tranform['rotate'][0], transform['rotate'][1])
+        recursion += 1
+        side = self.sides[s]
+        thisdir = self.find_direction(face['ppoints'])
+        if(len(side)==2):
+            if side[0][0]==f:
+                newf = side[1][0]
+                d = side[0][2]
+                pnt = side[0][1]
+                newpnt = side[1][1]
+            else:
+                newf = side[0][0]
+                d = side[1][2]
+                pnt = side[1][1]
+                newpnt = side[0][1]
+            if newf=='_internal':
+                return []
+            newface = self.faces[newf]
+            newdir= self.find_direction(newface['ppoints'])
+            if newface['combined']:
+                print ("found a folding face loop, along f="+f+" newf="+newf)
+                return []
+            else:
+                # *********** DEAL WITH BACKTRACKING
+                # *********** DRAW IN FOLDS
+                # **********  GET HOLES TO WORK
+                # *********** ADD BEND RADIUS STUFF
+
+                first = face['ppoints'][pnt]
+                last = self.previous(face['ppoints'],pnt)
+                if(thisdir!=newdir):
+                    newfirst = newface['ppoints'][newpnt]
+                    newlast = self.previous(newface['ppoints'],newpnt)
+                else:
+                    newlast = newface['ppoints'][newpnt]
+                    newfirst = self.previous(newface['ppoints'],newpnt)
+                   # newtransforms =  self.align_points(
+                    #        self.previous(newface['ppoints'],newpnt),
+                     #       newface['ppoints'][newpnt],
+                      #      face['ppoints'][pnt],
+                       #     self.previous(face['ppoints'],pnt),
+                           # 180,
+                        #    )# + transforms
+                newtransforms =  self.align_points(
+                            newfirst,
+                            newlast,
+                            first,
+                            last
+                            )# + transforms
+                # Compensate for the bend
+                along = (face['ppoints'][pnt] - self.previous(face['ppoints'],pnt)).normalize()
+                if thisdir=='cw':
+                    perp=rotate(along, -90)
+                else:
+                    perp=rotate(along, 90)
+                K=False
+                Ks = milling.materials[face['material']]['K']
+                for k in Ks['bending']:
+                    print (k)
+                    if face['thickness']<=k or k==10:
+                        K = Ks['bending'][k]
+                angle = side[0][8]
+                obtuse = side[0][7]
+                print ("bend rad="+str(face['fold_rad'][pnt])+" along="+str(along)+" perp="+str(perp))
+                r = face['fold_rad'][pnt]
+                arcLen = angle * math.pi / 180 * (r + K * face['thickness'])
+                straightLen = 2 * r * math.tan( angle/180*math.pi/2)
+                if side[0][6]=='convex':
+                    e = 0
+                else:
+                    e = -2 * face['thickness']* math.tan(angle/180*math.pi/2)
+                print("angle="+str(angle)+"arcLen"+str(arcLen)+" straightLen="+str(straightLen)+"bend comp="+str((arcLen - straightLen + e)))
+                newtransforms.insert(0,{'translate':perp * (arcLen - straightLen + e)})
+
+                #  *********** ADD cutback from line of fold if angle of receeding path>90 d = (- arcLen +e )/2 in each direction
+
+                newface['part'].cutTransforms = transforms+newtransforms#+transforms
+                if not hasattr(rootPart, 'xLayers') or type(rootPart.xLayers ) is not list:
+                    rootPart.xLayers=[]
+                if newface['part'].layer != rootPart.layer and newface['part'].layer not in rootPart.xLayers:
+                    rootPart.xLayers.append(newface['part'].layer)
+                new_points=self.get_border( rootPart, newf, newface, 'fold', firstPoint=newpnt, transforms=transforms+newtransforms, rootPart=rootPart, recursion=recursion)
+
+                for p in range(0,len(new_points)):
+                    #new_points[p].transform+=newtransforms
+                    new_points[p]=new_points[p].point_transform(newtransforms)
+                # ****** alter when added Bend radius stuff (ought to be automatic)
+                newFirstPoint = PSharp(newfirst).point_transform(newtransforms)
+                startPoint = PSharp((first+newFirstPoint.pos)/2 ).point_transform(transforms)
+                newLastPoint = PSharp(newlast).point_transform(newtransforms)
+                endPoint = PSharp((last+newLastPoint.pos)/2 ).point_transform(transforms)
+                if side[0][6]=='convex':
+                    rootPart.add(Lines([startPoint.pos, endPoint.pos], z1=-0.1, colour='#ff0000'))
+                else:
+                    rootPart.add(Lines([startPoint.pos, endPoint.pos], z1=-0.2, colour='#00ff00'))
+
+                return new_points
                             #MIRROR
 
 # find transforms that move points a & b to points A&B
-    def align_points(self, a, b, A, B):
+    def align_points(self, a, b, A, B, r=0):
         d=b-a
         D=B-A
-        if d.length() != B.length():
+        if abs(d.length() -D.length())>0.01:
             print ("Points are not the same distance apart")
 
-        t=math.atan2(d[1], d[0])
-        T=math.atan2(D[1], D[0])
-        
-        return {'translate':A-a, 'rotate':[A, (T-t)/math.pi*180]}
+        t=math.atan2(d[0], d[1])
+        T=math.atan2(D[0], D[1])
+        return [
+                {'translate':A-a},
+                { 'rotate':[a, (T-t)/math.pi*180+r]},
+                ]
 
     def previous(self, array, num):
         return array[(num-1)%len(array)]
@@ -1281,12 +1373,13 @@ class ArbitraryBox(Part):
         else:
             obtuse=0
       #  print ("svec dot svec"+str(svec1.dot(svec2))+" obtuse="+str(obtuse))
-        side[0].append(sideSign)
-        side[0].append( avSvec.dot ( face1['normal'] ) * cutsign)
-        side[0].append( angle )
-        side[0].append(altside)
-        side[0].append('convex')
-        side[0].append(obtuse)
+        side[0].append(sideSign) #2
+        side[0].append( avSvec.dot ( face1['normal'] ) * cutsign) #3
+        side[0].append( angle ) # 4
+        side[0].append(altside) # 5
+        side[0].append('convex') # 6
+        side[0].append(obtuse) # 7
+        side[0].append(baseAngle) # 8
 
         side[1].append(sideSign)
         side[1].append( avSvec.dot ( face2['normal'] ) * cutsign)
@@ -1294,6 +1387,7 @@ class ArbitraryBox(Part):
         side[1].append(altside)
         side[1].append('convex')
         side[1].append(obtuse)
+        side[1].append(baseAngle)
 
     def preparsePoints(self, face):
         p=0
@@ -1413,9 +1507,10 @@ class ArbitraryBox(Part):
         b = self.which_between( a2a, a2b, a1a, a1b)
         if b is not None:
             intersectionLine[1] = b
-        #print (intersectionLine)
+        
         # check there is a valid intersection and that the intersection is not in the plane of either face (as then it is a different kind of joint)
-        if len(intersectionLine)==2 and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face1) and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face2):
+        # ************* This is to stop joints at an edge. We are checking the wrong planes
+        if len(intersectionLine)==2:# and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face1) and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face2):
             otherEnd1=self.project(t2[intersectionLine[1]], face1)
             thisEnd1=self.project(t1[intersectionLine[0]], face1)
             self.add_intersection(

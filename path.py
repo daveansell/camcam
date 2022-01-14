@@ -30,7 +30,7 @@ import re
 from point import *
 from segments import *
 spindleDir = False
-
+import builtins
 inch = 25.4
 
 milling=Milling.Milling()
@@ -402,7 +402,7 @@ class Path(object):
             self.points[1%l].lastpoint = self.points[0]
 
 
-    def add_points(self,points, end='end', transform={}):
+    def add_points(self,points, end='end', transform=[]):
         c=0
         for p in points:
             if type(p) is Vec:
@@ -655,7 +655,10 @@ class Path(object):
                 # delete if they are are in the same place and the same point type
                 elif point.point_type == point.lastpoint.point_type and (point.point_transform({}).pos-point.lastpoint.point_transform({}).pos).length()<0.001:
                     self.delete_point(p)
-        self.remove_backtracks()
+                elif type(point) is PIgnore:
+                        self.delete_point(p)
+        if 'forcecutter' not in builtins.cuttingmode or not builtins.cuttingmode['forcecutter'] in ['laser','on']:
+            self.remove_backtracks()
 
     def offset_path(self,side,distance, config):
         self.simplify_points()
@@ -1026,6 +1029,9 @@ class Path(object):
     def generate_config(self, pconfig):
         config={}
         config=self.overwrite(config,pconfig)
+       # if 'cuttingMode' in config and config['cuttingMode'] and 
+        #if not('transformations' in config and type(config['transformations']) is list):
+        #    config['transformations']=[]
         inherited = self.get_config()
 #               if('transformations' in config):
         config=self.overwrite(config, inherited)
@@ -1070,7 +1076,6 @@ class Path(object):
         return config
 
     def fill_path(self, side, cutterrad, distance=False, step=False, cutDirection=None):
-        print ("FIll pTh")
         if step==False:
             step = cutterrad*0.5
         ret=[self]
@@ -1106,7 +1111,7 @@ class Path(object):
             ret[0]=[]
         if type(polTree[0]) is shapely.geometry.LineString:
             newPoints = []
-            print("num="+str(depth)+" sections="+str(len(polTree[1]))+" "+str(polTree[0].coords[0])+"lenret="+str(len(ret)))
+            #print("num="+str(depth)+" sections="+str(len(polTree[1]))+" "+str(polTree[0].coords[0])+"lenret="+str(len(ret)))
             for p in polTree[0].coords:
                 newPoints.append(PSharp(V(p[0], p[1])))
             if (self.signed_area(polTree[0])>0) != (cutDirection=='ccw'):
@@ -1163,7 +1168,10 @@ class Path(object):
             if polygon.area>maxarea:
                 ret=polygon
                 maxarea=polygon.area
-        return list(zip(*ret.exterior.coords.xy))
+        if hasattr(ret, 'exterior'):
+            return list(zip(*ret.exterior.coords.xy))
+        else:
+            return []
 #        points = copy.copy(self.polygon[resolution])
 #        intersections = self.self_intersects(points)
 #        crosses = []
@@ -2067,7 +2075,7 @@ class Pathgroup(object):
 
     def mirror(self, pos, dirvec):
         if self.transform==False or self.transform==None:
-            self.transform={}
+            self.transform=[]
         self.transform.append({'mirror':[pos,dirvec]})
 
 
@@ -2166,12 +2174,14 @@ class Part(object):
         self.copied = False
         self.isCopy = False
         self.layer = False
+        self.xLayers = []
+        self.cutTransforms = []
         self.comments = []
         self.parent=False
         self.internal_borders=[]
         self.ignore_border=False
         self.transform=[]
-        varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height', 'offset', 'blendTolerance', 'vertfeed', 'blendTolerance','finalpass']
+        varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height', 'offset', 'blendTolerance', 'vertfeed', 'blendTolerance','finalpass', 'cutTransforms', 'xLayers']
         self.otherargs=''
         if hasattr(self, 'varlist') and type(self.varlist) is list:
             self.varlist+=varlist
@@ -2308,10 +2318,13 @@ class Part(object):
             pconfig = False
 
         config = {}
-        if pconfig is None or pconfig is False or 'transformations' not in pconfig or  pconfig['transformations'] is None:
-            config['transformations']=[]
+        if builtins.cuttingmode['cuttingMode'] and hasattr(self, 'cutTransforms') and type(self.cutTransforms) is list:
+#            print("self.cutTransform="+str(self.cutTransforms))
+            config['transformations']=self.cutTransforms
         else:
-            config['transformations']=pconfig['transformations'][:]
+            config['transformations']=[]
+        if not (pconfig is None or pconfig is False or 'transformations' not in pconfig or  pconfig['transformations'] is None):
+            config['transformations']+=pconfig['transformations'][:]
         if type(self.transform ) is list:
             config['transformations']+=self.transform
         elif self.transform is not None:
@@ -2698,8 +2711,12 @@ class Plane(Part):
             config=self.overwrite(config,pconfig)
         config=self.overwrite(config,self.config)
         if part.layer in layers and part.layer is not False and part.layer is not None:
-            paths=layers[part.layer]
+            paths=copy.copy(layers[part.layer])
             config.update(self.get_layer_config(part.layer))
+            if hasattr(part, 'xLayers') and type(part.xLayers) is list:
+                for l in part.xLayers:
+                    if l in layers:
+                        paths += copy.copy(layers[l])
             if hasattr(part, 'cutter'):
                 config['partcutter']=part.cutter
             else:
@@ -2716,6 +2733,11 @@ class Plane(Part):
 #                               config['transformations'].insert(0,{'mirror':[V(0,0),'x']})
             else:
                 config['transformations']=[{'mirror':[V(0,0),'x']}]
+      #  if 'cutTransforms' in config and type(config['cutTransforms']) is list:
+       #     print ("cutTransforms="+str(part.cutTransforms)+" type="+str(type(part.cutTransforms)))
+       #     config['transformations']+=part.cutTransforms
+       # else:
+       #     config['transformations']=part.cutTransforms
         part_config = copy.deepcopy(config)
         part_config=self.overwrite(part_config, part.get_config())
         if 'part_thickness' in part_config:
@@ -2750,8 +2772,8 @@ class Plane(Part):
                         if k not in list(output.keys()):
                             output[k]=[]
                         output[k].append(pa)
-
                     lastcutter=k
+
             if path.obType=="Pathgroup":
                 for p in path.get_paths(config):
                     if not hasattr(part, 'border') or part.ignore_border or part.contains(p)>-1:
