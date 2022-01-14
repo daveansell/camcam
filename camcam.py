@@ -94,10 +94,10 @@ class CamCam:
 #                                       {'rotate':[V((minx+maxx)/2,(minx+maxx)/2), -p['rotate']]},
 #                                       {'rotate':[V(p['startcentre'][0],p['startcentre'][1]), -p['rotate']]},
                     #       {'rotate':[V(cx,cy), -p['rotate']]},
-                            {'rotate':[V(cx+p['translate'][0],cy+p['translate'][1]), -p['rotate']]},
-                            { 'translate':V(p['translate'][0], p['translate'][1] ) },
+                            [{'rotate':[V(cx+p['translate'][0],cy+p['translate'][1]), -p['rotate']]}],
+                            [{ 'translate':V(p['translate'][0], p['translate'][1] ) }],
                     ]
-                    print(tconfig['transformations'])
+                    print(p['name']+str(tconfig['transformations']))
 #                               part.rotate(V(cx,cy), -p['rotate'])
 #                               part.rotate(V(p['origin'][0],p['origin'][1]), -p['rotate'])
                     plane.render_part(part, mode, tconfig)
