@@ -655,7 +655,7 @@ class Path(object):
         if 'forcecutter' not in builtins.cuttingmode or not builtins.cuttingmode['forcecutter'] in ['laser','on']:
             self.remove_backtracks()
 
-    def offset_path(self,side,distance, config):
+    def offset_path(self,side,distance, config={}):
         self.simplify_points()
         newpath=copy.deepcopy(self)
         newpath.points=[]
