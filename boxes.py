@@ -60,7 +60,19 @@ class ArbitraryBox(Part):
         self.tab_length = tab_length
         self.fudge = fudge
         self.faces = faces
-        self.auto_properties = {'tab_length':100, 'joint_mode':'finger', 'butt_depression':None, 'butt_holerad':4.2, 'butt_numholes':None, 'hole_spacing':100, 'hole_offset':0, 'butt_outline':False, 'slot_extra':0, 'fold_rad':0}
+        self.auto_properties = {
+                'tab_length':100, 
+                'joint_mode':'finger', 
+                'butt_depression':None, 
+                'butt_holerad':4.2, 
+                'butt_numholes':None, 
+                'hole_spacing':100, # hole spacing in butt style joints (and others)
+                'hole_offset':0, #  can offset the holes one side or the other
+                'butt_outline':False, # outline the butt joint on the long side for assembly
+                'slot_extra':0, # how much longer to cut the slots than theoretical minimum
+                'fold_rad':False, # radius of the fold
+                'fold_comp':False  # fold compensation, the amount to add to the length of the internal side of the joint to make the fold correct
+                }
         for prop in self.auto_properties:
             if prop in config:
                 setattr(self, prop, config[prop])
@@ -137,6 +149,8 @@ class ArbitraryBox(Part):
                 face['point_type'] = {}
             if 'fold_rad' not in face:
                 face['fold_rad'] = {}
+            if 'fold_comp' not in face:
+                face['fold_comp'] = {}
             if 'wood_direction' in face:
   #                              if wood_direction_face is not None or wood_direction_face !=None:
  #                                       raise ValueError('wood direction defined more than once')
@@ -234,6 +248,7 @@ class ArbitraryBox(Part):
 #                               self.set_tab_length(self.sides[s], f, scount)
                 self.set_property(self.sides[s], f, scount, 'joint_mode')
                 self.set_property(self.sides[s], f, scount, 'fold_rad')
+                self.set_property(self.sides[s], f, scount, 'fold_comp')
                 self.set_property(self.sides[s], f, scount, 'tab_length')
                 self.set_property(self.sides[s], f, scount, 'butt_depression')
                 self.set_property(self.sides[s], f, scount, 'butt_holrad')
@@ -1039,7 +1054,11 @@ class ArbitraryBox(Part):
                 obtuse = side[0][7]
                 print ("bend rad="+str(face['fold_rad'][pnt])+" along="+str(along)+" perp="+str(perp))
                 r = face['fold_rad'][pnt]
-                arcLen = angle * math.pi / 180 * (r + K * face['thickness'])
+                if face['fold_comp'][pnt] is not False:
+                    arcConst = float(face['fold_comp'][pnt]) /math.pi * 2
+                else:
+                    arcConst = (r + K * face['thickness'])
+                arcLen = angle * math.pi / 180 * arcConst
                 straightLen = 2 * r * math.tan( angle/180*math.pi/2)
                 if side[0][6]=='convex':
                     e = 0
@@ -1095,6 +1114,8 @@ class ArbitraryBox(Part):
     def propagate_direction(self, t, f, recursion):
         face = self.faces[f]
         if recursion==0:
+            if not face[t]:
+                print (str(t)+" is not in face "+str(f))
             if face[t].dot(face['normal'])>0:
                 face[t]=1
             elif face[t].dot(face['normal'])<0:
