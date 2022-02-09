@@ -538,7 +538,7 @@ class PAroundcurve(PSharp):
 
 
 class PInsharp(PAroundcurve):
-    def __init__(self, pos, transform=False):
+    def __init__(self, pos, radius=0, transform=False):
         """Create a point which will head for point pos and then add an arc around the point centre with a radius=radius. Useful for adding ears around screw holes. if centre is not specified it is assumed it is the same as pos"""
         self.init()
         self.pos=Vec(pos)
@@ -548,7 +548,8 @@ class PInsharp(PAroundcurve):
         self.transform=transform
         self.obType="Point"
         self.config = {'cutterrad':0}
-        self.radius = 0
+        self.radius = radius
+    
         self.cp1=pos
         self.dosetup=False
     def copy(self):
@@ -559,6 +560,7 @@ class PInsharp(PAroundcurve):
         t.forcelastpoint = self.lastpoint
         t.forcenextpoint = self.nextpoint
         t.invert = self.invert
+        t.radius = self.radius
         return t
     def _setup(self):
         if not self.setup:
@@ -588,13 +590,17 @@ class PInsharp(PAroundcurve):
                     self.cp1=self.pos-(((lastpoint-self.pos).normalize()+(nextpoint-self.pos).normalize())/2).normalize()*d
                 else:
                     self.cp1 = self.pos
-                if ( self.config['cutside']=='right' and self.direction=='cw' or self.config['cutside']=='left' and self.direction=='ccw') == self.reverse or abs(angle<0.01):
+                print("Insharp r0="+str(self.radius))
+                if self.radius>0:
+                    pass
+                elif ( self.config['cutside']=='right' and self.direction=='cw' or self.config['cutside']=='left' and self.direction=='ccw') == self.reverse or abs(angle<0.01):
                     self.radius=0
                 elif 'original_cuttter' in self.config:
                     self.radius = self.config['original_cutter']['cutterrad']
 #                               print str(self.pos)+"self.cofig side="+self.config['cutside'] + " angle="+str(angle)+ " direction="+self.direction+ " reverse="+str(self.reverse)+" radius="+str(self.radius)
                 else:
                     self.radius=0
+                print("Insharp r="+str(self.radius)+" pos="+str(self.pos))
 
 class PIncurve(PSharp):
     def __init__(self, pos, radius=0, direction=False, transform=False):
