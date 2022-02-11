@@ -1011,9 +1011,9 @@ class Path(object):
         if getattr(self, "_pre_render", None) and callable(self._pre_render):
             self._pre_render(config)
 
-    def makeShapely(self):
+    def makeShapely(self, resolution = 1.0):
         if( not hasattr(self, 'shapelyPolygon') or not self.shapelyPolygon):
-            polygonised = self.polygonise( 1.0)
+            polygonised = self.polygonise( resolution)
             points = []
             for p in polygonised:
                 points.append([p[0], p[1]])
@@ -2819,7 +2819,8 @@ class Plane(Part):
             if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
                 self.writeGcodeFile(part.name,key, output[key], part.border, part_config)
             elif self.modeconfig['mode']=='svg':
-                out+="<!-- "+str(part.name)+" - "+str(key)+" -->\n"+output[key]
+                if hasattr(part, 'name'):
+                    out+="<!-- "+str(part.name)+" - "+str(key)+" -->\n"+output[key]
             elif self.modeconfig['mode']=='scr':
                 out+='\n\n'+output[key]
             elif self.modeconfig['mode'] in self.output_modes and self.modeconfig['group']!=False:
@@ -2831,7 +2832,7 @@ class Plane(Part):
                 centre=part.border.centre
             else:
                 centre=V(0,0)
-            if self.modeconfig['label'] and  self.modeconfig['mode'] == 'svg':
+            if self.modeconfig['label'] and  self.modeconfig['mode'] == 'svg' and hasattr(part, 'name'):
                 out+="<text transform='scale(1,-1)' text-anchor='middle' x='"+str(int(centre[0]))+"' y='"+str(-int(centre[1]))+"'>"+str(part.name)+"</text>"
             if 'layout' in pconfig and pconfig['layout']:
                 self.lay_out['svg'] = '<g>'+out+'</g>'
