@@ -61,10 +61,13 @@ class Kicad:
                 segments.append(newsect)
         count=0
         ends={}
+        {'start': (156.593634, 89.100001), 'end': (163.406366, 89.100001), 'width': 0.2, 'type': 'line', 'id': 3}
+
+        {'start': (156.593634, 89.100001), 'centre': (156.593634, 94.100001), 'angle': -60, 'width': 0.2, 'end': (152.26353400000002, 91.600001), 'type': 'arc', 'id': 10}
         # create a hash of all the end positions
         for c in segments:
-            start= c['start']
-            end = c['end']
+            start = self.round3(c['start'])
+            end   = self.round3(c['end'])
             c['id']=count
             if start in ends:
                 ends[start].append([count,'start'])
@@ -115,12 +118,19 @@ class Kicad:
     def makePath(self, loop):
         path = Path(closed=True)
         for l in loop:
+            print (l)
             if l['reversed']:
                 end='start'
-                direction='cw'
+                if 'angle' in l and l['angle']>0:
+                    direction='ccw'
+                else:
+                    direction='cw'
             else:
                 end='end'
-                direction='ccw'
+                if 'angle' in l and l['angle']>0:
+                    direction='cw'
+                else:
+                    direction='ccw'
 
             if l['type']=='line':
                 path.add_point(PSharp(self.toV(l[end])))
@@ -129,13 +139,19 @@ class Kicad:
                 path.add_point(PArc(self.toV(l['centre']), radius=rad, direction=direction))
                 path.add_point(PSharp(self.toV(l[end])))
         return path
+    def round3(self,val):
+        return (round(val[0],3), round(val[1],3))
+
     def getLoop(self, ends, segments, p, start, i, istart, depth=0):
         # we have gone all the way around the loop
         if(p==start and depth!=0):
             return []
         segment=segments[p]
         pos = segment[i]
-        end = ends[pos]
+        end = ends[self.round3(pos)]
+
+        #if len(end)<2:
+         #   return []
         if end[0][0]==p:
             a=1
             na=0
