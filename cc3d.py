@@ -275,6 +275,7 @@ def plane_generate_part3D(self, thepart, pconfig):
 #       else:
 #               thepart.renderable=False
     thepart.cutouts3D = []
+    thepart.intersections3D = []
     for path in paths:
         thepart.cutouts3D.extend(path.render3D(config))
 def plane_make_part3D(self, thepart, pconfig):
@@ -289,6 +290,8 @@ def plane_make_part3D(self, thepart, pconfig):
             if hasattr(sp, 'border3D'):
                 if(sp.subpart=='subtract'):
                     thepart.cutouts3D.append([sp.border3D])
+                elif(sp.subpart=='intersect'):
+                    thepart.intersections3D.append(sp.border3D)
                 else:    
                     subparts.append(sp.border3D)
     if len(subparts):
@@ -304,6 +307,9 @@ def plane_make_part3D(self, thepart, pconfig):
             cutouts.append(c)
 
     thepart.border3D = solid.difference()(*cutouts)
+    if len(thepart.intersections3D):
+        thepart.border3D = solid.intersection()(thepart.border3D, *thepart.intersections3D)
+
     # 3D transformations can only be applied to parts, so we can just go up the tree
     p = thepart
 
@@ -333,6 +339,7 @@ def plane_make_part3D(self, thepart, pconfig):
         p=p.parent
 
 def plane_render_part3D(self, thepart, pconfig, filename=False):
+    print ("RENDER "+thepart.name)
     self.make_part3D(thepart, pconfig)
     if filename==False:
         if thepart.name is None:
@@ -341,6 +348,7 @@ def plane_render_part3D(self, thepart, pconfig, filename=False):
     else:
         filename = filename +',scad'
     if hasattr(thepart, 'border3D'):
+        print("border3d "+str(thepart.border3D))
         solid.scad_render_to_file(thepart.border3D, filename,file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=False)
 
 def plane_render_all3D(self,callmode,config):
