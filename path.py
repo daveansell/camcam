@@ -1016,9 +1016,9 @@ class Path(object):
         if getattr(self, "_pre_render", None) and callable(self._pre_render):
             self._pre_render(config)
 
-    def makeShapely(self):
+    def makeShapely(self, resolution = 1.0):
         if( not hasattr(self, 'shapelyPolygon') or not self.shapelyPolygon):
-            polygonised = self.polygonise( 1.0)
+            polygonised = self.polygonise( resolution)
             points = []
             for p in polygonised:
                 points.append([p[0], p[1]])
@@ -2835,7 +2835,7 @@ class Plane(Part):
             if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
                 self.writeGcodeFile(part.name,key, output[key], part.border, part_config)
             elif self.modeconfig['mode']=='svg':
-                if(hasattr(part,'name')):
+                if hasattr(part, 'name'):
                     out+="<!-- "+str(part.name)+" - "+str(key)+" -->\n"+output[key]
             elif self.modeconfig['mode']=='scr':
                 out+='\n\n'+output[key]
