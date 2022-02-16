@@ -69,7 +69,33 @@ class Cylinder(SolidPath):
     def getSolid(self):
         return solid.translate(self.pos)(solid.cylinder(r1=self.rad1, r2=self.rad2, h=self.height, center=self.centre))
 
-
+class RoundedCuboid(SolidPath):
+    def __init__(self, pos, width, height, depth, rad, **config):
+        self.init(config)
+        self.closed=True
+        self.W = width/2-rad
+        self.H = height/2 - rad
+        self.D = depth/2 -rad
+        self.rad = rad
+        self.pos = pos
+        self.add_point(pos,'circle',rad)
+    def getSolid(self):
+        W=self.W
+        H=self.H
+        D=self.D
+        rad=self.rad
+        return solid.translate(self.pos)(
+                solid.hull()(
+                    solid.translate([W,H,D])( solid.sphere(r=rad)),
+                    solid.translate([-W,H,D])( solid.sphere(r=rad)),
+                    solid.translate([-W,-H,D])( solid.sphere(r=rad)),
+                    solid.translate([W,-H,D])( solid.sphere(r=rad)),
+                    solid.translate([W, H,-D])( solid.sphere(r=rad)),
+                    solid.translate([-W, H,-D])( solid.sphere(r=rad)),
+                    solid.translate([ W,-H,-D])( solid.sphere(r=rad)),
+                    solid.translate([-W,-H,-D])( solid.sphere(r=rad))
+                )
+                )
 class Text3D(SolidPath):
     def __init__(self, pos, text, height, **config):
         self.init(config)
