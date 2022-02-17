@@ -105,13 +105,16 @@ class LathePath(Path):
 
 
         def _pre_render(self, pconfig):
+                print ("START PRE RENDER")
+                for p in self.points:
+                                print( p.pos)
                 out=[]
                 config=self.generate_config(pconfig)
                 if not self.donePreRender and config['cutFromBack'] and (not 'mode' in config or config['mode']=='gcode'):
                         self.donePreRender=True
                         c=0
                         for p in self.points:
-                #               print p.pos
+                                print("invert along z-"+str( p.pos))
                                 self.points[c].pos=V(p.pos[0],-p.pos[1])
                                 if hasattr(p, 'direction') and p.direction in ['cw','ccw']:
                                         self.points[c].direction=p.otherDir(p.direction)
@@ -136,11 +139,21 @@ class LathePath(Path):
                         if self.cutHandedness != config['handedness']:
                                 for cut in self.points:
                                         cut.pos= V(-cut.pos[0], cut.pos[1])
+                                        if hasattr(cut, 'direction'):
+                                            cut.direction = cut.otherDir(cut.direction)
                                 self.spindle('cw')
                                 self.flipSide=-1        
                         else:
                                 self.spindle('ccw')
                                 self.flipSide=1 
+                       # if self.flipSide==-1:
+                        #    c=0
+                         #   for p in self.points:
+                          #      print("invert along x-"+str( p.pos))
+                           #     self.points[c].pos=V(-p.pos[0],p.pos[1])
+                            #    if hasattr(p, 'direction') and p.direction in ['cw','ccw']:
+                             #           self.points[c].direction=p.otherDir(p.direction)
+                              #  c+=1
         # if we are doing roughing add going to a safe position to the cut
                         if self.doRoughing:
                                 fs = self.flipSide
@@ -265,43 +278,35 @@ class LathePath(Path):
                         self.cuts.append(roughing)
                         self.flipSide=1
                 else:
+                        print("Wrong handedness")
                         for cut in roughing:
                                 cut.pos= V(-cut.pos[0], cut.pos[1])
+                                print (cut)
+                                if hasattr(cut, 'direction') and cut.direction in ['cw','ccw']:
+                                        print("flip direction")
+                                        cut.direction=cut.otherDir(cut.direction)
                         self.flipSide=-1        
                         self.cuts.append(roughing)
-#                       print self.cuts
-                                
-        def findRoughingCuts(self, stepDir, cutDir, startStep, endStep, startCut, endCut, config):
-                cuts=[]
-                numSteps = int(math.ceil(abs((endStep - startStep)/config['step'])))
-                step = (endStep - startStep)/numSteps
-#               print "stepDir="+str(stepDir)+" cutDir="+str(cutDir)+" numSteps"+str(numSteps)
-                for i in range(1, numSteps+1):
-                        #print str(startStep+i*step)+"  startCut="+str(startCut)+" endCut="+str(endCut) +" cutDir="+str(cutDir)+" stepDir="+str(stepDir)
-                        cuts+=self.findRoughingCut(startStep+i*step, cutDir, stepDir,startStep, startCut, endCut, config)
-#               for p in  cuts:
-#                       print p.pos
-                return cuts
+
         def findRoughingCuts2(self, stepDir, cutDir, startStep, endStep, startCut, endCut, config):
                 cuts=[]
                 numSteps = int(math.ceil(abs((endStep - startStep)/config['step'])))
-                step = (endStep - startStep)/numSteps
+                if numSteps == 0:
+                    step = 1
+                else:
+                    step = (endStep - startStep)/numSteps
 
-#               print "stepDir="+str(stepDir)+" cutDir="+str(cutDir)+" numSteps"+str(numSteps)
-        #        for i in range(1, numSteps+1):
-                        #print str(startStep+i*step)+"  startCut="+str(startCut)+" endCut="+str(endCut) +" cutDir="+str(cutDir)+" stepDir="+str(stepDir)
                 cuts+=self.findRoughingCut2(startStep, cutDir, stepDir, False, startCut, endCut, step, endStep, config)
- #               for p in  cuts:
-#                       print( p.pos)
                 return cuts
+
         def sign(self, x):
                 if x<0:
                         return -1
                 if x>0:
                         return 1
                 return 0
+
         def convertIntersection(self, intersection, default):
-                        #print type(intersection)
                         if not intersection:
                                 intersection = default#V( endCut,val)
                         elif type(intersection) is shapely.geometry.collection.GeometryCollection:
@@ -313,21 +318,16 @@ class LathePath(Path):
                                     intersection = V(list(intersection.coords)[0][0],list(intersection.coords)[0][1] )
                         elif type(intersection) is shapely.geometry.multipoint.MultiPoint:
                                 intersection2 = []
-                       #         print (len(intersection))
                                 for i in range(0,len(intersection)):
-                        #            print (intersection[i])
                                     intersection2.append(V(intersection[i].x, intersection[i].y))
                                 
                                 intersection = intersection2
-                        #        intersection = V(intersection[0].x, intersection[0].y)
-                      #          print("multipoint="+str(intersection))
                         elif type(intersection) is Vec:
                                 intersection = intersection
                         elif type(intersection) is shapely.geometry.multilinestring.MultiLineString:
                                 intersection = V(list(intersection[0].coords)[0][0], list(intersection[0].coords)[0][1])
 
                         else:
-                                #print intersection
                                 intersection = V(intersection.x, intersection.y)
                         return intersection
 
@@ -340,7 +340,6 @@ class LathePath(Path):
                 return intersection
 
         def findRoughingCut2(self, val, direction, stepDir, intersected, startCut, endCut, step, endStep, config):
-              #  print ("find RoughingCuts"+str([val, direction, stepDir, intersected, startCut, endCut, endStep, step]))
                 if step<0:
                     if val<endStep:
                         return []
@@ -348,8 +347,6 @@ class LathePath(Path):
                     if val>endStep:
                         return []
                 if abs(stepDir.dot(V(0,1)))>0.0001:
-                        #print "FACE"
-                        #print [val, direction, stepDir, intersected, startCut, endCut]
                         alongCut = V(1,0) * self.sign(endCut-startCut)
                         alongAxis = V(1,0)
                         stepAxis = V(0,1)
@@ -366,7 +363,6 @@ class LathePath(Path):
                 intersection = self.convertIntersection(intersection, None)
 # if we get no intersection we might have gone past line or have not got there yet
                 if intersection is None:
-                    print ("bleep")
                     if intersected:
                         return []
                     else:
@@ -376,42 +372,45 @@ class LathePath(Path):
                 if not type(intersection) is list:
                     intersection = [intersection]
 
-                print ("final intersection="+str(intersection))
                 if type(intersection) is list:
+                            def keyfunc(a):
+                                return a.dot(alongCut)
+                            intersection.sort(key=keyfunc)
                             ret = []
                             p=0
                             if len(intersection)%2==1:
-                                print("S 1="+str(intersection[p]))
                                 #ret+=  [PSharp(startCut*alongAxis+ val*stepAxis) ]+ 
+                                nextcuts=self.findRoughingCut2( val+step, direction, stepDir, intersected, startCut, intersection[p].dot(alongAxis), step, endStep,  config)
                                 ret+=self.cutChipBreak(
                                         startCut*alongAxis+ val*stepAxis,
-                                        intersection[p]-stepDir*config['cutClear'] - alongCut*config['roughClearance']
-                                    )+[
-                                        PSharp(stepAxis*val + startCut * alongAxis - stepDir*config['cutClear'], isRapid=True)
-                                    ]
-                                ret+=self.findRoughingCut2( val+step, direction, stepDir, intersected, startCut, intersection[p].dot(alongAxis), step, endStep,  config)
+                                        intersection[p]+stepDir*config['cutClear'] - alongCut*config['roughClearance']
+                                    )
+                                if len(nextcuts):
+                                     ret+=[
+                                        PSharp(nextcuts[0].pos+stepDir*step, isRapid=True)
+                                    ]+nextcuts
                                 #ret.append(
                                  #   PSharp(val*stepAxis+ ret[-1].pos.dot(alongAxis) - stepDir*(step+config['cutClear']), isRapid=True)
                                 #)
                                 
                                 p+=1
                             while p<len(intersection):
-                                print("L 1="+str(intersection[p])+" 2="+str(intersection[p+1]))
+                                nextcuts=self.findRoughingCut2( val+step, direction, stepDir, True, intersection[p].dot(alongAxis), intersection[p+1].dot(alongAxis), step, endStep, config)
 # move to one step outside the start position
                                 #ret.append(PSharp(intersection[p] - stepDir*(step+config['cutClear']), isRapid=True))
 # cut down to the start position
-                                ret+= [ PSharp(intersection[p] - stepDir*config['cutClear'] - alongCut*config['roughClearance']) ] \
-                                    + [PSharp(intersection[p+1] - stepDir*config['cutClear'] + alongCut*config['roughClearance'])]+[
+                                ret+= [ PSharp(intersection[p] - stepDir*config['cutClear'] + alongCut*config['roughClearance']) ] \
+                                    + [PSharp(intersection[p+1] - stepDir*config['cutClear'] - alongCut*config['roughClearance'])]
 # cut along the cut we want to make
                                    #     +self.cutChipBreak(
                                     #        intersection[p] - stepDir*config['cutClear'] + alongCut*config['roughClearance'],
                                      #       intersection[p+1] - stepDir*config['cutClear'] - alongCut*config['roughClearance']
                                       #  )+[
 # move out to clear part
-                                        PSharp(stepAxis*val+ alongAxis* startCut - stepDir*config['cutClear'] + alongCut*config['roughClearance'], isRapid=True)
-                                    ]
+                                if len(nextcuts):
+                                        ret+= [PSharp(nextcuts[0].pos+step*stepDir, isRapid=True)
+                                    ] + nextcuts
 # make any more cuts in this section
-                                ret+=self.findRoughingCut2( val+step, direction, stepDir, True, intersection[p].dot(alongAxis), intersection[p+1].dot(alongAxis), step, endStep, config)
 # move one step out in case we need to move to another section
                                 #ret.append(
                                 #    PSharp(val*stepAxis+ ret[-1].pos.dot(alongAxis) - stepDir*(step+config['cutClear']), isRapid=True)
@@ -421,52 +420,6 @@ class LathePath(Path):
                 return ret
 
 
-        def findRoughingCut(self, val, direction, stepDir, startStep, startCut, endCut, config):
-                if abs(stepDir.dot(V(0,1)))>0.0001:
-                        #print "FACE"
-                        #print [val, direction, stepDir, startStep, startCut, endCut]
-                        alongCut = V(1,0) * self.sign(endCut-startCut)
-#                       intersection = self.findIntersection( [ [startCut, val], [ endCut, val] ], endCut, val)
-                        line = shapely.geometry.LineString([ [ startCut, val], [ endCut, val] ])
-                        intersection = self.shapelyPolygon.intersection(line)
-                        #print line
-                        #print self.shapelyPolygon
-                        print (intersection)
-                        intersection = self.convertIntersection(intersection, V( endCut, val))
-
-                        if type(intersection) is list:
-                            intersection = intersection[0]
-
-                        #print "intesection="+str(intersection)
-                        #print " chibpra=" +str(self.cutChipBreak( V(startCut, val), intersection - alongCut*config['roughClearance'])[0].pos)
-                            #print ([intersection, stepDir,config['cutClear'] ,alongCut,config['roughClearance']])
-                        return [ PSharp(V(startCut, val)) 
-                                ] + self.cutChipBreak( V(startCut, val), intersection - alongCut*config['roughClearance']) + [
-#                               PSharp(intersection - alongCut*config['roughClearance']),]  
-                                
-                                PSharp(intersection-stepDir*config['cutClear'] - alongCut*config['roughClearance'], isRapid=True), 
-                                PSharp(V(startCut, val)-stepDir*config['cutClear'], isRapid=True)
-                                ]
-                else:
-                        alongCut = V(0,1) * self.sign(endCut-startCut)
-                        off = val
-                        line = shapely.geometry.LineString([ [val, startCut], [ val, endCut] ])
-                        intersection = self.shapelyPolygon.intersection(line)
-                        print(intersection)
-                        intersection = self.convertIntersection(intersection, V( val, endCut))
-                        if type(intersection) is list:
-                            intersection = intersection[0]
-#                       if not intersection:
-#                               intersection = V(val, endCut)
-#                       else:
-#                               intersection = V(intersection.x, intersection.y)
-                        return [
-                                PSharp(V(val, startCut))
-                                ] + self.cutChipBreak ( V(val, startCut), intersection - alongCut*config['roughClearance'] ) + [ 
-#                               PSharp(intersection - alongCut*config['roughClearance']), 
-                                PSharp(intersection - stepDir*config['cutClear'] - alongCut*config['roughClearance'], isRapid=True), 
-                                PSharp(V(val, startCut) - stepDir*config['cutClear'], isRapid=True)
-                        ]                       
         def cutChipBreak(self, cutFrom, cutTo):
                 
                 if hasattr(self, 'chipBreak') and self.chipBreak:
