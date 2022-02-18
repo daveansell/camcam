@@ -340,7 +340,7 @@ class Path(object):
             l = len(self.points)
             pointlist[p].path=self
             pointlist[p].i = p
-            if self.closed==True:
+            if self.closed==True and self.closed!='raw':
                 pointlist[p].nextpoint = pointlist[(p+1)%l]
                 pointlist[p].lastpoint = pointlist[(p-1)%l]
             else:
@@ -629,6 +629,8 @@ class Path(object):
         self.points.pop(p)
 
     def remove_backtracks(self):
+        if self.closed=='raw':
+            return
         if len(self.points)>3:
             for p,point in enumerate(self.points):
                 if (point.point_type in ['sharp', 'clear', 'doubleclear', 'insharp'] ):
@@ -1730,7 +1732,13 @@ class Path(object):
             return False
 # if closed go around and around, if open go back and forth
         firstdepth=1
-        if self.closed:
+        if self.closed=='raw':
+                print (self.points)
+                segments=self.Fsegments
+                for segment in segments:
+                        print ("cutfrom="+str(segment.cutfrom)+"cutTo"+str(segment.cutto))
+                        self.add_out(segment.out(True,mode, 0, 0, config['use_point_z']))
+        elif self.closed:
             self.runin(config['cutterrad'],config['direction'],config['downmode'],config['side'])
             segments=self.Fsegments
 #                       if downmode=='ramp'
@@ -1848,6 +1856,8 @@ class Path(object):
         #if len(self.Bsegments)==0:
         cutto=segments[seg].cutto
         cutfrom=segments[seg].cutfrom
+        if mode=='none':
+                return
         if side=='on':
             if mode=='down':
                 self.comment("runin0")
@@ -2861,6 +2871,8 @@ class Plane(Part):
                 f.write( self.modeconfig['prefix'] + out + self.modeconfig['postfix'] )
                 f.close()
         elif self.modeconfig['mode'] in self.output_modes and self.modeconfig['group'] == False:
+            if not hasattr(part, 'name'):
+                part.name='none';
             self.output_modes[self.modeconfig['mode']](self, part.name,key, output, part.border, config)
 
     def repeatGcode(self, output, config):

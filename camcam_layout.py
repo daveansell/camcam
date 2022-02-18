@@ -143,6 +143,7 @@ class KvPart(Scatter):
             else:
                 self.center = ( centrex+xoffset, centrey)
 
+            self.add_widget(Label(text=str(part.name), x=self.center[0], y=self.center[1], halign='center'))
             self.origin = (width/2,height/2)
             self.canvas.add(kivy.graphics.Ellipse(pos=(self.origin[0]-1.5, self.origin[1]-1.5), size=(3, 3)))
 
@@ -154,7 +155,6 @@ class KvPart(Scatter):
 #                       print kvpoints
 #                       self.canvas.add(Mesh(verticies=kvpoints, indices=indices, mode='line_loop'))
             self.canvas.add(kivy.graphics.Color(0,0,0))
-            self.add_widget(Label(text=str(part.name), x=0, y=0, halign='center'))
         self.startpos = self.pos
 #               if mirror==-1:
 #                       self.startpos=(self.pos[0]-400, self.pos[1])
@@ -353,6 +353,7 @@ class CamCam(App):
 
             for p in self.sheet_widgets[s]:
                 if p.part is not None:
+                    print (p.part.name)
                     rec = {}
                     rec['name']=str(p.part.name)
                     tempr=p.rotation
@@ -378,7 +379,8 @@ class CamCam(App):
                                         and p.center[1]<(j+1)*int(self.command_args.boardHeight):
                                     data['sheets'][s+"_"+str(i)+"-"+str(j)].append(rec)
                                     print("*>>>>* "+str(p.part.name)+" "+str(p.pos)+" "+s+"_"+str(i)+"-"+str(j)+" center"+str(p.center))
-
+                    else:
+                        print("*deleted*")
 
 #                               print p.get_window_matrix(0,0)
         h = open( 'layout_file', 'w')

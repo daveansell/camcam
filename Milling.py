@@ -504,7 +504,7 @@ class Milling:
                 },
                 "latheBoring":{
                         "id":50,
-                        "diameter":1,
+                        "diameter":4,
                         "endcut":1,
                         "sidecut":1,
 			"forcestepdown":1000,
@@ -512,7 +512,7 @@ class Milling:
                 },
                 "latheParting":{
                         "id":52,
-                        "diameter":1,
+                        "diameter":4,
                         "endcut":1,
                         "sidecut":0,
 			"forcestepdown":1000,
@@ -520,7 +520,7 @@ class Milling:
                 },
                 "latheTurning":{
                         "id":51,
-                        "diameter":1,
+                        "diameter":4,#this way sidefeed is not changed
                         "endcut":1,
                         "sidecut":1,
 			"forcestepdown":1000,

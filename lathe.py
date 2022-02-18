@@ -39,11 +39,12 @@ class LathePart(Part):
 class LathePath(Path):
         def __init__(self, **config):
                 self.init(config)
-                self.closed=False
+                self.closed='raw'
                 self.side='on'
+                self.downmode='none'
         
         def init(self, config):
-                self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', "spindleDir", "chipBreak", "justRouging", "cutHandedness", "doRoughing"]
+                self.varlist=['roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', "spindleDir", "chipBreak", "justRouging", "cutHandedness", "doRoughing", 'donePreRender']
                 self.shapelyPolygon=False
                 self.stepdown = 1000
                 self.direction= 'this'  
@@ -105,13 +106,16 @@ class LathePath(Path):
 
 
         def _pre_render(self, pconfig):
-                print ("START PRE RENDER")
+                print ("START PRE RENDER"+str(self))
                 for p in self.points:
                                 print( p.pos)
                 out=[]
                 config=self.generate_config(pconfig)
+                if self.donePreRender:
+                    return
+                for p in self.points:
+                    print("p-"+str( p.pos))
                 if not self.donePreRender and config['cutFromBack'] and (not 'mode' in config or config['mode']=='gcode'):
-                        self.donePreRender=True
                         c=0
                         for p in self.points:
                                 print("invert along z-"+str( p.pos))
@@ -119,6 +123,7 @@ class LathePath(Path):
                                 if hasattr(p, 'direction') and p.direction in ['cw','ccw']:
                                         self.points[c].direction=p.otherDir(p.direction)
                                 c+=1
+                self.donePreRender=True
                 if 'step' not in config or not config['step']:
                         config['step']=1.0
                         
@@ -170,11 +175,13 @@ class LathePath(Path):
 
                         if not self.justRoughing:
                                 if self.clearFirst == 'z':
+                                        print("clearZ")
                                         self.insert_point(0, PSharp(V(self.points[0].pos[0], self.clearZ), isRapid=True))
                                         self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.clearZ), isRapid=True))
                                         self.add_point( PSharp(V(self.points[-1].pos[0], self.clearZ), isRapid=True))
                                         self.add_point( PSharp(V(self.clearX * self.flipSide, self.clearZ), isRapid=True))
                                 elif self.clearFirst == 'x':
+                                        print("clearX")
                                         self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.points[0].pos[1] ), isRapid=True))
                                         self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.clearZ), isRapid=True))
                                         self.add_point( PSharp(V(self.clearX * self.flipSide, self.points[-1].pos[1] ), isRapid=True))
@@ -185,7 +192,8 @@ class LathePath(Path):
                         if self.doRoughing:
                                 for cut in self.cuts:#[::-1]:
                                         self.add_points(cut, 'prepend')
-                        
+                        for p in self.points:
+                            print("epoint="+str(p.pos))
                 self.doneRoughing=True
                 
         def spindle(self, direction):
@@ -454,6 +462,19 @@ class LathePath(Path):
                 self.min=V(minX, minY)
                 self.max=V(maxX, maxY)
 
+        def render(self,pconfig):
+                config=self.generate_config(pconfig)
+                out=[]
+                for p in self.points:
+                    print("render point+"+str(p.pos))
+                self.output_path(config)
+                out.append( self.render_path(self,config))
+                print(out)
+                if 'partcutter' in config and config['partcutter'] is not None:
+                    key = config['partcutter']
+                else:
+                    key = config['cutter']
+                return [key,out]
 
 #class LatheFace(Path):
 #       def __init__(self, pos):
