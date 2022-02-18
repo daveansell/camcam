@@ -464,6 +464,17 @@ class LathePath(Path):
 
         def render(self,pconfig):
                 config=self.generate_config(pconfig)
+        	if config['mode']=='gcode' and hasattr(self, 'spindleDir') and self.spindleDir and spindleDir != self.spindleDir:
+            		if spindleDir is None:
+                		time = "5"
+            		else:
+                		time = "10"
+            		if self.spindleDir=='ccw':
+                		out.append('M03\nG04p'+time+'\n')
+            		elif self.spindleDir=='cw':
+                		out.append('M04\nG04p'+time+'\n')
+            		spindleDir = self.spindleDir
+
                 out=[]
                 for p in self.points:
                     print("render point+"+str(p.pos))
