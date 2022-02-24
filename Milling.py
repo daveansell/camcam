@@ -671,6 +671,18 @@ class Milling:
                         "stepdown":2.0,
                         "kress_setting":1.5,
                },
+                "petg":{
+                        "vertfeed":100,
+                        "sidefeed":900,
+                        "stepdown":2.0,
+                        "kress_setting":1.5,
+               },
+                "pla":{
+                        "vertfeed":100,
+                        "sidefeed":900,
+                        "stepdown":2.0,
+                        "kress_setting":1.5,
+               },
                "pcb":{
                         "vertfeed":100,
                         "sidefeed":300,
