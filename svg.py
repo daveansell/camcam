@@ -33,7 +33,7 @@ class SVGimport(Pathgroup):
             'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
             'inkscape': 'http://www.inkscape.org/namespaces/inkscape'
         }
-
+        self.svgpaths=[]
         self.init(config)
         #self.translate(pos)
         config['pos']=pos
@@ -47,7 +47,7 @@ class SVGimport(Pathgroup):
             infile = codecs.open(filename, 'r', encoding=config['encoding'])
         else:
             infile =  open( filename, 'r', **extraargs)
-
+        
         tree = etree.parse(infile)
         root = tree.getroot()
 
@@ -66,14 +66,13 @@ class SVGimport(Pathgroup):
                 outpaths= tree.xpath(".//n:path[@"+path[p]['attrib']+"='"+path[p]['value']+"']", namespaces={'n': "http://www.w3.org/2000/svg"})
         for p in outpaths:
             transform = p.get('transform')
-            self.parse_d(p.get('d'),transform, config)
-
+            self.svgpaths.append(self.parse_d(p.get('d'),transform, config))
+        
     def svgtransform(self, pos, transform):
         if transform is None:
             return pos
         commands=transform.split(';')
         for command in commands:
-            print(command)
             m= re.search('(.*?)\((.*?),(.*?)\)', command)
 #                       m = re.search('(.*?)\(([-,\d]+),\s*([-,\d]+)\)', command)
             if m.groups(1)[0] == 'scale':
@@ -160,12 +159,12 @@ class SVGimport(Pathgroup):
             elif items[i]=='V':
                 i+=1
                 while i<len(items) and self.is_number(items[i]):
-                    pos = config['pos'] + V(pos[0],float(items[i]))
+                    pos = config['pos'] + V(pos[0],-float(items[i]))
                     outpath.add_point(self.svgtransform(pos, transform))
                     i+=1
             elif items[i]=='m':
                 if outpath!=False and len(outpath.points)>1:
-                    if (startpos-pos).length()<0.04:
+                    if (outpath.points[0].pos-outpath.points[-1].pos).length()<0.04 and len(outpath.points)>1:
                         outpath.closed=True
                         outpath.points.pop()
                     outpaths.append(outpath)
@@ -239,7 +238,7 @@ class SVGimport(Pathgroup):
             else:
                 i+=1
         if outpath!=False and len(outpath.points)>0:
-            if (startpos-pos).length()<0.04:
+            if (outpath.points[0].pos-outpath.points[-1].pos).length()<0.04:
                 outpath.closed=True
                # outpath.points.pop()
             outpaths.append(outpath)
@@ -264,6 +263,7 @@ class SVGimport(Pathgroup):
                         outpaths[i].side='right'
                     elif config['side']=='right':
                         outpaths[i].side='left'
+        return outpaths
     def is_number(self,s):
         try:
             float(s)
@@ -271,4 +271,24 @@ class SVGimport(Pathgroup):
         except ValueError:
             return False
 
+
+class SVGPartList(list):
+    def __init__(self,pos, name, layer, filename, paths, **config):
+        #self.init(config)
+        pathgroup = SVGimport( pos, filename, paths, **config)
+        p=0
+        for opath in pathgroup.svgpaths:
+            c=0
+            if opath:
+                part=Part(name=name+str(p), layer=layer)
+                for path in opath:
+                    if c==0:
+                        path.side='out'
+                        part.add_border(path)
+                    else:
+                        path.side='in'
+                        part.add(path)
+                    c+=1
+                p+=1
+                self.append(part)
 #s=SVGimport(1, '/home/dave/cnc/modules/davecad1/beam_bridge/beam-bridge-river.svg','all')
