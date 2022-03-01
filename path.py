@@ -659,7 +659,7 @@ class Path(object):
                     self.delete_point(p)
                 elif type(point) is PIgnore:
                         self.delete_point(p)
-        if 'forcecutter' not in builtins.cuttingmode or not builtins.cuttingmode['forcecutter'] in ['laser','on']:
+        if not hasattr(builtins,'cuttingMode') or 'forcecutter' not in builtins.cuttingMode or not  hasattr(builtins,'cuttingMode') or not builtins.cuttingMode['forcecutter'] in ['laser','on']:
             self.remove_backtracks()
 
     def offset_path(self,side,distance, config={}):
@@ -2327,7 +2327,9 @@ class Part(object):
             pconfig = False
 
         config = {}
-        if builtins.cuttingmode['cuttingMode'] and hasattr(self, 'cutTransforms') and type(self.cutTransforms) is list:
+        if hasattr(builtins, 'cuttingMode') and builtins.cuttingMode['cuttingMode'] and \
+            hasattr(self, 'cutTransforms') and \
+            type(self.cutTransforms) is list:
 #            print("self.cutTransform="+str(self.cutTransforms))
             config['transformations']=self.cutTransforms
         else:
