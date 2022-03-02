@@ -1736,7 +1736,6 @@ class Path(object):
                 print (self.points)
                 segments=self.Fsegments
                 for segment in segments:
-                        print ("cutfrom="+str(segment.cutfrom)+"cutTo"+str(segment.cutto))
                         self.add_out(segment.out(True,mode, 0, 0, config['use_point_z']))
         elif self.closed:
             self.runin(config['cutterrad'],config['direction'],config['downmode'],config['side'])
