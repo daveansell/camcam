@@ -107,18 +107,17 @@ class LathePath(Path):
 
         def _pre_render(self, pconfig):
                 print ("START PRE RENDER"+str(self))
-                for p in self.points:
-                                print( p.pos)
+#                for p in self.points:
+ #                               print( p.pos)
                 out=[]
                 config=self.generate_config(pconfig)
                 if self.donePreRender:
                     return
-                for p in self.points:
-                    print("p-"+str( p.pos))
+  #              for p in self.points:
+   #                 print("p-"+str( p.pos))
                 if not self.donePreRender and config['cutFromBack'] and (not 'mode' in config or config['mode']=='gcode'):
                         c=0
                         for p in self.points:
-                                print("invert along z-"+str( p.pos))
                                 self.points[c].pos=V(p.pos[0],-p.pos[1])
                                 if hasattr(p, 'direction') and p.direction in ['cw','ccw']:
                                         self.points[c].direction=p.otherDir(p.direction)
@@ -160,9 +159,11 @@ class LathePath(Path):
                              #           self.points[c].direction=p.otherDir(p.direction)
                               #  c+=1
         # if we are doing roughing add going to a safe position to the cut
-                        if self.doRoughing:
+                        if len(self.cuts) and len(self.cuts[0]) and self.doRoughing:
+                                
                                 fs = self.flipSide
                                 if self.clearFirst == 'z':
+                                        print(len(self.cuts))
                                         self.cuts[0].insert(0, PSharp(V(self.cuts[0][0].pos[0] , self.clearZ), isRapid=True))
                                         self.cuts[0].insert(0, PSharp(V(self.clearX * fs, self.clearZ), isRapid=True))
                                         self.cuts[-1].append( PSharp(V(self.cuts[-1][-1].pos[-1] , self.clearZ), isRapid=True))
@@ -192,8 +193,6 @@ class LathePath(Path):
                         if self.doRoughing:
                                 for cut in self.cuts:#[::-1]:
                                         self.add_points(cut, 'prepend')
-                        for p in self.points:
-                            print("epoint="+str(p.pos))
                 self.doneRoughing=True
                 
         def spindle(self, direction):
@@ -286,10 +285,8 @@ class LathePath(Path):
                         self.cuts.append(roughing)
                         self.flipSide=1
                 else:
-                        print("Wrong handedness")
                         for cut in roughing:
                                 cut.pos= V(-cut.pos[0], cut.pos[1])
-                                print (cut)
                                 if hasattr(cut, 'direction') and cut.direction in ['cw','ccw']:
                                         print("flip direction")
                                         cut.direction=cut.otherDir(cut.direction)
@@ -387,25 +384,28 @@ class LathePath(Path):
                             ret = []
                             p=0
                             if len(intersection)%2==1:
-                                #ret+=  [PSharp(startCut*alongAxis+ val*stepAxis) ]+ 
+                                print ("ODD QQ"+self.clearFirst)
+ #                               ret+=  [PSharp(startCut*alongAxis+ val*stepAxis) ]  
                                 nextcuts=self.findRoughingCut2( val+step, direction, stepDir, intersected, startCut, intersection[p].dot(alongAxis), step, endStep,  config)
-                                ret+=self.cutChipBreak(
+                                theCut=self.cutChipBreak(
                                         startCut*alongAxis+ val*stepAxis,
                                         intersection[p]+stepDir*config['cutClear'] - alongCut*config['roughClearance']
                                     )
                                 if len(nextcuts):
-                                     ret+=[
-                                        PSharp(nextcuts[0].pos+stepDir*step, isRapid=True)
-                                    ]+nextcuts
+                                     ret+= theCut+[
+                                        PSharp(nextcuts[0].pos+stepDir*step*2, isRapid=True)
+                                    ]+nextcuts +[PSharp(nextcuts[-1].pos+step*stepDir*2, isRapid=True)
+                                    ] 
                                 #ret.append(
-                                 #   PSharp(val*stepAxis+ ret[-1].pos.dot(alongAxis) - stepDir*(step+config['cutClear']), isRapid=True)
+                                 #   PSharp(val*stepAxis+ ret[-1].pos.dot(alongAxis) + stepAxis*(config['cutClear']), isRapid=True)
                                 #)
                                 
                                 p+=1
                             while p<len(intersection):
+                                print ("EVEN QQ"+self.clearFirst)
                                 nextcuts=self.findRoughingCut2( val+step, direction, stepDir, True, intersection[p].dot(alongAxis), intersection[p+1].dot(alongAxis), step, endStep, config)
 # move to one step outside the start position
-                                #ret.append(PSharp(intersection[p] - stepDir*(step+config['cutClear']), isRapid=True))
+#                                ret.append(PSharp(intersection[p] - stepDir*(step+config['cutClear']), isRapid=True))
 # cut down to the start position
 # cut along the cut we want to make
                                 ret+= [ PSharp(intersection[p] - stepDir*config['cutClear'] + alongCut*config['roughClearance']) ] \
@@ -415,8 +415,9 @@ class LathePath(Path):
                                         )
 # move out to clear part
                                 if len(nextcuts):
-                                        ret+= [PSharp(nextcuts[0].pos+step*stepDir, isRapid=True)
-                                    ] + nextcuts
+                                        ret+= [PSharp(nextcuts[0].pos+step*stepDir*2, isRapid=True)
+                                    ] + nextcuts + [PSharp(nextcuts[-1].pos+step*stepDir*2, isRapid=True)]
+                                     
 # make any more cuts in this section
 # move one step out in case we need to move to another section
                                 #ret.append(
@@ -477,11 +478,8 @@ class LathePath(Path):
                                 out.append('M04\nG04p'+time+'\n')
                         spindleDir = self.spindleDir
 
-                for p in self.points:
-                    print("render point+"+str(p.pos))
                 self.output_path(config)
                 out.append( self.render_path(self,config))
-                print(out)
                 if 'partcutter' in config and config['partcutter'] is not None:
                     key = config['partcutter']
                 else:
