@@ -407,13 +407,12 @@ class LathePath(Path):
 # move to one step outside the start position
                                 #ret.append(PSharp(intersection[p] - stepDir*(step+config['cutClear']), isRapid=True))
 # cut down to the start position
-                                ret+= [ PSharp(intersection[p] - stepDir*config['cutClear'] + alongCut*config['roughClearance']) ] \
-                                    + [PSharp(intersection[p+1] - stepDir*config['cutClear'] - alongCut*config['roughClearance'])]
 # cut along the cut we want to make
-                                   #     +self.cutChipBreak(
-                                    #        intersection[p] - stepDir*config['cutClear'] + alongCut*config['roughClearance'],
-                                     #       intersection[p+1] - stepDir*config['cutClear'] - alongCut*config['roughClearance']
-                                      #  )+[
+                                ret+= [ PSharp(intersection[p] - stepDir*config['cutClear'] + alongCut*config['roughClearance']) ] \
+                                        + self.cutChipBreak(
+                                            intersection[p] - stepDir*config['cutClear'] + alongCut*config['roughClearance'],
+                                            intersection[p+1] - stepDir*config['cutClear'] - alongCut*config['roughClearance']
+                                        )
 # move out to clear part
                                 if len(nextcuts):
                                         ret+= [PSharp(nextcuts[0].pos+step*stepDir, isRapid=True)
