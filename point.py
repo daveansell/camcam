@@ -597,7 +597,6 @@ class PInsharp(PAroundcurve):
                     self.cp1=self.pos-(((lastpoint-self.pos).normalize()+(nextpoint-self.pos).normalize())/2).normalize()*d
                 else:
                     self.cp1 = self.pos
-                print("Insharp r0="+str(self.radius))
                 if self.radius>0:
                     pass
                 elif  ( self.config['cutside']=='right' and self.direction=='cw' or self.config['cutside']=='left' and self.direction=='ccw') == self.reverse or abs(angle<0.01):
@@ -607,8 +606,6 @@ class PInsharp(PAroundcurve):
                     self.radius = self.config['original_cutter']['cutterrad']
                 else:
                     self.radius=0
-                self.radius=0
-                print("Insharp r="+str(self.radius)+" pos="+str(self.pos))
 
 class PIncurve(PSharp):
     def __init__(self, pos, radius=0, direction=False, transform=False):

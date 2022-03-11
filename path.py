@@ -567,7 +567,6 @@ class Path(object):
     def make_segments(self, direction,segment_array,config):
         self.reset_points()
         self.simplify_points()
-        print(config['transformations'])
         pointlist = self.transform_pointlist(self.points,config['transformations'])
         self.reset_points(pointlist)
         if direction is None:
@@ -1024,7 +1023,10 @@ class Path(object):
             points = []
             for p in polygonised:
                 points.append([p[0], p[1]])
-            self.shapelyPolygon = shapely.geometry.LineString(points)
+            if self.closed:
+                self.shapelyPolygon = shapely.geometry.Polygon(points)
+            else:
+                self.shapelyPolygon = shapely.geometry.LineString(points)
             self.rawPolygon = polygonised
 
 
@@ -1161,8 +1163,6 @@ class Path(object):
         if lr.is_simple:
             return points
         mls = shapely.ops.unary_union(lr)
-        print (lr.is_simple)
-        print (mls.geom_type)
        # print(shapely.ops.polygonize(mls))
         ret = False
         maxarea=0
@@ -1589,11 +1589,6 @@ class Path(object):
         else:
 
             if 'colour' in config and config['colour'] is not False and config['colour'] is not None and type(config['colour']) is not str:
-                print("config['colour'] is not string="+str(config['colour']))
-                print(type(config['colour']))
-                print(self)
-                print(self.parent)
-                print(self.parent.parent)
                 return "black"
             if 'colour' in config and config['colour'] is not False:
                 return config['colour']
@@ -1733,7 +1728,6 @@ class Path(object):
 # if closed go around and around, if open go back and forth
         firstdepth=1
         if self.closed=='raw':
-                print (self.points)
                 segments=self.Fsegments
                 for segment in segments:
                         self.add_out(segment.out(True,mode, 0, 0, config['use_point_z']))
