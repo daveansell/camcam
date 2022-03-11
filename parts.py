@@ -418,6 +418,7 @@ class Pi4(Part):
         self.add(Bolt(V(-w/2+3.5, -49/2), holeSize, clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
         self.add(Bolt(V(-w/2+3.5+58, 49/2), holeSize, clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
         self.add(Bolt(V(-w/2+3.5+58, -49/2), holeSize, clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
+        self.holePoses=[V(-w/2+3.5, 49/2), V(-w/2+3.5, -49/2), V(-w/2+3.5+58, 49/2), V(-w/2+3.5+58, -49/2)]
     def _pre_render(self,config):
         self.get_plane().add_layer('_pilayer', 'pcb', 1, zoffset=0, colour='#808080')
 class PiCompute(Part):
