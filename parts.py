@@ -384,11 +384,11 @@ class Pi4(Part):
         h=56
         o=1.5
         self.layer='_pilayer'
-        self.name='Pi4'
         if 'holeSize' in config:
             holeSize = config['holeSize']
         else:
             holeSize = 'M2.5'
+        self.name='Pi4'
         self.translate(pos)
 #               self.zoffset+=o
         self.no_mirror = True
@@ -414,6 +414,14 @@ class Pi4(Part):
         if 'insert_layer' not in config:
             config['insert_layer'] = []
 #               self.add(Hole(V(0,0), rad=3))
+        if 'holeRad' in config and (type(config['holeRad']) is int or type(config['holeRad']) is float) and 'holeLayer' in config:
+            self.add(Hole(V(-w/2+3.5, 49/2), config['holeRad']), config['holeLayer'])
+            self.add(Hole(V(-w/2+3.5, -49/2), config['holeRad']), config['holeLayer'])
+            self.add(Hole(V(-w/2+3.5+58, 49/2), config['holeRad']), config['holeLayer'])
+            self.add(Hole(V(-w/2+3.5+58, -49/2), config['holeRad']), config['holeLayer'])
+            
+
+        
         self.add(Bolt(V(-w/2+3.5, 49/2), holeSize, clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
         self.add(Bolt(V(-w/2+3.5, -49/2), holeSize, clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
         self.add(Bolt(V(-w/2+3.5+58, 49/2), holeSize, clearance_layers=config['clearance_layers'], insert_layer=config['insert_layer'], thread_layer=config['thread_layer']))
