@@ -311,66 +311,123 @@ class CylindricalPolyhedron(Polyhedron):
 #class Hull(SolidPath):
 #    def __init__(self, ):
 class SurfacePolyhedron(Polyhedron):
-    def __init__(self, vFunc, xmin, xmax, ymin, ymax, floorz, **config):
+    def __init__(self, vFunc, bFunc, xmin, xmax, ymin, ymax, **config):
 
         self.init(config)
         self.closed=True
+        if 'convexity' in config:
+            self.convexity=config['convexity']
+        else:
+            self.convexity=10
         if 'step' in config:
             self.step = config['step']
         else:
             self.step = 1.0
-        self.basePoints = []
-        self.leftSide = []
-        self.rightSide = []
-        self.topSide = []
-        self.bottomSide = []
+        cols = math.floor((xmax-xmin)/self.step)+1
+        rows = math.floor((ymax-ymin)/self.step)+1
+    #    self.basePoints = []
+   #     self.leftSide = []
+  #      self.rightSide = []
+ #       self.topSide = []
+#        self.bottomSide = []
         self.faces = []
         self.inPoints = []
         self.first=0
+        self.faces=[]
+        self.pArray= [[0 for k in range(0,cols)] for j in range(0,rows)]#[[0]*cols]*rows
+        self.bArray= [[0 for k in range(0,cols)] for j in range(0,rows)]#[[0]*cols]*rows
         x = xmin
+        p=0
+        X=0
+        Y=0
         while x<xmax:
-            p
+            y = ymin
+            Y = 0
+            while y<ymax:
+                self.inPoints.append(vFunc(x,y))
+                self.pArray[X][Y]=p
+                p+=1
+                if(X>0 and Y>0):
+                    self.faces.append([self.pArray[X][Y], self.pArray[X-1][Y], self.pArray[X-1][Y-1], self.pArray[X][Y-1]])
+                Y+=1
+                y+=self.step
+            if(X>0 and Y>0):
+                self.inPoints.append(vFunc(x,ymax))
+                p+=1
+   #             Y+=1
+   #             self.faces.append([self.pArray[X][Y], self.pArray[X-1][Y], self.pArray[X-1][Y-1], self.pArray[X][Y-1]])
 
+            x+=self.step
+            X+=1
+        Y=0
+        y=ymin
+        x=xmax
+        while y<ymax:
+            self.inPoints.append(vFunc(x,y))
+   #         if(X>0 and Y>0):
+    #            self.faces.append([self.pArray[X][Y], self.pArray[X-1][Y], self.pArray[X-1][Y-1], self.pArray[X][Y-1]])
+            p+=1
+            Y+=1
+            y+=self.step
+        self.inPoints.append(vFunc(xmax,ymax))
+        p+=1
+        self.faces.append([self.pArray[X][Y], self.pArray[X-1][Y], self.pArray[X-1][Y-1], self.pArray[X][Y-1]])
 
-        t=0.0
-        f=0
-        while t<360.0:
-            c=0
-            z=self.z0
-            while z<height:
+        # back face
+        X=0
+        Y=0
+        x=xmin
+        y=ymin
+        while x<xmax:
+            y = ymin
+            Y = 0
+            while y<ymax:
+                self.inPoints.append(bFunc(x,y))
+                self.bArray[X][Y]=p
+                print ("x="+str(X)+" Y="+str(Y)+" p="+str(p))
+                if(X>0 and Y>0):
+                    self.faces.append([self.bArray[X][Y], self.bArray[X-1][Y], self.bArray[X-1][Y-1], self.bArray[X][Y-1]])
+                p+=1
+                Y+=1
+                y+=self.step
+            if(X>0 and Y>0):
+                self.inPoints.append(bFunc(x,ymax))
+      #          self.faces.append([self.bArray[X][Y], self.bArray[X-1][Y], self.bArray[X-1][Y-1], self.bArray[X][Y-1]])
+                p+=1
 
-                self.inPoints.append(gradient*z+rotate(V(rFunc(z,t),0,z), t))
-                if(z==self.z0):
-                    self.faces.append([ self.pn(f,c), 0,  self.pn(f+1,c)])
-                else:
-                    self.faces.append([
-                        self.pn(f+1,c-1),
-                        self.pn(f+1,c), 
-                        self.pn(f,c), 
-                        self.pn(f, c-1), 
-                        ])
-                z+=zStep
-                c+=1
-            self.inPoints.append(gradient*height+rotate(V(rFunc(height,t),0,height), t))
-        #    c+=1
-            self.faces.append([
-                self.pn(f+1,c-1),
-                self.pn(f+1,c), 
-                self.pn(f,c), 
-                self.pn(f,c-1), 
-                ])
-            self.faces.append([
-                self.pn(f,c), 
-                self.pn(f+1,c), 
-                    1
-                ])
-            t+=tStep
-            f+=1
-            c+=1
+            x+=self.step
+            X+=1
+        Y=0
+        y=ymin
+        x=xmax
+        while y<ymax:
+            self.inPoints.append(bFunc(x,y))
+   #         if(X>0 and Y>0):
+    #            self.faces.append([self.bArray[X][Y], self.bArray[X-1][Y], self.bArray[X-1][Y-1], self.bArray[X][Y-1]])
+            p+=1
+            Y+=1
+            y+=self.step
+        self.inPoints.append(bFunc(xmax,ymax))
+        p+=1
+        self.faces.append([self.bArray[X][Y], self.bArray[X-1][Y], self.bArray[X-1][Y-1], self.bArray[X][Y-1]])
+
+        for i in range(0,cols):
+            s=""
+            for j in range(0,rows):
+                s+=" "+str(self.bArray[i][j])
+            print (s)
+        # work around the edges
+        for X in range(1, cols-1):
+            pass
+            self.faces.append([self.pArray[X][0], self.pArray[X-1][0], self.bArray[X-1][0], self.bArray[X][0]])
+            self.faces.append([self.pArray[X][rows-2], self.pArray[X-1][rows-2], self.bArray[X-1][rows-2], self.bArray[X][rows-2]])
+        for Y in range(1, rows-1):
+            pass
+            self.faces.append([self.pArray[0][Y], self.pArray[0][Y-1], self.bArray[0][Y-1], self.bArray[0][Y]])
+            self.faces.append([self.pArray[cols-2][Y], self.pArray[cols-2][Y-1], self.bArray[cols-2][Y-1], self.bArray[cols-2][Y]])
+
         self.add_point(PCircle(V(0,0), radius=1))
         self.closed=True
-    def pn(self, facet, c):
-        return int(self.first+(facet%self.facets) * self.facetLength + c) 
 
 #class Hull(SolidPath):
 #    def __init__(self, ):
