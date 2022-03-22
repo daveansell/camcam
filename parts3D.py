@@ -310,3 +310,67 @@ class CylindricalPolyhedron(Polyhedron):
 
 #class Hull(SolidPath):
 #    def __init__(self, ):
+class SurfacePolyhedron(Polyhedron):
+    def __init__(self, vFunc, xmin, xmax, ymin, ymax, floorz, **config):
+
+        self.init(config)
+        self.closed=True
+        if 'step' in config:
+            self.step = config['step']
+        else:
+            self.step = 1.0
+        self.basePoints = []
+        self.leftSide = []
+        self.rightSide = []
+        self.topSide = []
+        self.bottomSide = []
+        self.faces = []
+        self.inPoints = []
+        self.first=0
+        x = xmin
+        while x<xmax:
+            p
+
+
+        t=0.0
+        f=0
+        while t<360.0:
+            c=0
+            z=self.z0
+            while z<height:
+
+                self.inPoints.append(gradient*z+rotate(V(rFunc(z,t),0,z), t))
+                if(z==self.z0):
+                    self.faces.append([ self.pn(f,c), 0,  self.pn(f+1,c)])
+                else:
+                    self.faces.append([
+                        self.pn(f+1,c-1),
+                        self.pn(f+1,c), 
+                        self.pn(f,c), 
+                        self.pn(f, c-1), 
+                        ])
+                z+=zStep
+                c+=1
+            self.inPoints.append(gradient*height+rotate(V(rFunc(height,t),0,height), t))
+        #    c+=1
+            self.faces.append([
+                self.pn(f+1,c-1),
+                self.pn(f+1,c), 
+                self.pn(f,c), 
+                self.pn(f,c-1), 
+                ])
+            self.faces.append([
+                self.pn(f,c), 
+                self.pn(f+1,c), 
+                    1
+                ])
+            t+=tStep
+            f+=1
+            c+=1
+        self.add_point(PCircle(V(0,0), radius=1))
+        self.closed=True
+    def pn(self, facet, c):
+        return int(self.first+(facet%self.facets) * self.facetLength + c) 
+
+#class Hull(SolidPath):
+#    def __init__(self, ):
