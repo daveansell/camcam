@@ -348,7 +348,7 @@ class SurfacePolyhedron(Polyhedron):
                 self.pArray[X][Y]=p
                 p+=1
                 if(X>0 and Y>0):
-                    self.faces.append([self.pArray[X][Y], self.pArray[X-1][Y], self.pArray[X-1][Y-1], self.pArray[X][Y-1]])
+                    self.faces+=self.quad([self.pArray[X][Y], self.pArray[X-1][Y], self.pArray[X-1][Y-1], self.pArray[X][Y-1]])
                 Y+=1
                 y+=self.step
             if(X>0 and Y>0):
@@ -371,7 +371,7 @@ class SurfacePolyhedron(Polyhedron):
             y+=self.step
         self.inPoints.append(vFunc(xmax,ymax))
         p+=1
-        self.faces.append([self.pArray[X][Y], self.pArray[X-1][Y], self.pArray[X-1][Y-1], self.pArray[X][Y-1]])
+        self.faces+=self.quad([self.pArray[X][Y], self.pArray[X-1][Y], self.pArray[X-1][Y-1], self.pArray[X][Y-1]])
 
         # back face
         X=0
@@ -384,9 +384,11 @@ class SurfacePolyhedron(Polyhedron):
             while y<ymax:
                 self.inPoints.append(bFunc(x,y))
                 self.bArray[X][Y]=p
-                print ("x="+str(X)+" Y="+str(Y)+" p="+str(p))
+        #        print ("x="+str(X)+" Y="+str(Y)+" p="+str(p))
                 if(X>0 and Y>0):
-                    self.faces.append([self.bArray[X][Y], self.bArray[X-1][Y], self.bArray[X-1][Y-1], self.bArray[X][Y-1]])
+                    self.faces+=self.quad([self.bArray[X][Y], self.bArray[X-1][Y], self.bArray[X-1][Y-1], self.bArray[X][Y-1]])
+                    #self.faces.append([ self.bArray[X-1][Y], self.bArray[X-1][Y-1], self.bArray[X][Y-1]])
+                    #self.faces.append([self.bArray[X][Y], self.bArray[X-1][Y], self.bArray[X][Y-1]])
                 p+=1
                 Y+=1
                 y+=self.step
@@ -409,25 +411,26 @@ class SurfacePolyhedron(Polyhedron):
             y+=self.step
         self.inPoints.append(bFunc(xmax,ymax))
         p+=1
-        self.faces.append([self.bArray[X][Y], self.bArray[X-1][Y], self.bArray[X-1][Y-1], self.bArray[X][Y-1]])
+        self.faces+=self.quad([self.bArray[X][Y], self.bArray[X-1][Y], self.bArray[X-1][Y-1], self.bArray[X][Y-1]])
 
-        for i in range(0,cols):
-            s=""
-            for j in range(0,rows):
-                s+=" "+str(self.bArray[i][j])
-            print (s)
+       # for i in range(0,cols):
+        #    s=""
+       #     for j in range(0,rows):
+      #          s+=" "+str(self.bArray[i][j])
+     #       print (s)
         # work around the edges
         for X in range(1, cols-1):
             pass
-            self.faces.append([self.pArray[X][0], self.pArray[X-1][0], self.bArray[X-1][0], self.bArray[X][0]])
-            self.faces.append([self.pArray[X][rows-2], self.pArray[X-1][rows-2], self.bArray[X-1][rows-2], self.bArray[X][rows-2]])
+            self.faces+=self.quad([self.pArray[X][0], self.pArray[X-1][0], self.bArray[X-1][0], self.bArray[X][0]])
+            self.faces+=self.quad([self.pArray[X][rows-2], self.pArray[X-1][rows-2], self.bArray[X-1][rows-2], self.bArray[X][rows-2]])
         for Y in range(1, rows-1):
             pass
-            self.faces.append([self.pArray[0][Y], self.pArray[0][Y-1], self.bArray[0][Y-1], self.bArray[0][Y]])
-            self.faces.append([self.pArray[cols-2][Y], self.pArray[cols-2][Y-1], self.bArray[cols-2][Y-1], self.bArray[cols-2][Y]])
+            self.faces+=self.quad([self.pArray[0][Y], self.pArray[0][Y-1], self.bArray[0][Y-1], self.bArray[0][Y]])
+            self.faces+=self.quad([self.pArray[cols-2][Y], self.pArray[cols-2][Y-1], self.bArray[cols-2][Y-1], self.bArray[cols-2][Y]])
 
         self.add_point(PCircle(V(0,0), radius=1))
         self.closed=True
-
+    def quad(self,p):
+        return [ [p[0], p[1], p[2]], [p[0],p[2],p[3]] ]
 #class Hull(SolidPath):
 #    def __init__(self, ):
