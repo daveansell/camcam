@@ -323,6 +323,14 @@ class SurfacePolyhedron(Polyhedron):
             self.step = config['step']
         else:
             self.step = 1.0
+        if 'sFunc' in config:
+            sFunc = config['sFunc']
+        else:
+            sFunc = False
+        if 'sbFunc' in config:
+            sbFunc = config['sbFunc']
+        else:
+            sbFunc = False
         cols = math.floor((xmax-xmin)/self.step)+1
         rows = math.floor((ymax-ymin)/self.step)+1
     #    self.basePoints = []
@@ -336,6 +344,8 @@ class SurfacePolyhedron(Polyhedron):
         self.faces=[]
         self.pArray= [[0 for k in range(0,rows+1)] for j in range(0,cols+1)]#[[0]*cols]*rows
         self.bArray= [[0 for k in range(0,rows+1)] for j in range(0,cols+1)]#[[0]*cols]*rows
+        self.sArray= [[0 for k in range(0,rows+1)] for j in range(0,cols+1)]#[[0]*cols]*rows
+        self.sbArray= [[0 for k in range(0,rows+1)] for j in range(0,cols+1)]#[[0]*cols]*rows
         x = xmin
         p=0
         X=0
@@ -347,12 +357,17 @@ class SurfacePolyhedron(Polyhedron):
                 self.inPoints.append(vFunc(x,y))
                 self.pArray[X][Y]=p
                 p+=1
-                if(X>0 and Y>0):
-                    self.faces+=self.quad([self.pArray[X][Y], self.pArray[X-1][Y], self.pArray[X-1][Y-1], self.pArray[X][Y-1]])
+                self.inPoints.append(bFunc(x,y))
+                self.bArray[X][Y]=p
+                p+=1
                 Y+=1
                 y+=self.step
             if(X>0 and Y>0):
                 self.inPoints.append(vFunc(x,ymax))
+                self.pArray[X][Y]=p
+                p+=1
+                self.inPoints.append(bFunc(x,ymax))
+                self.bArray[X][Y]=p
                 p+=1
    #             Y+=1
    #             self.faces.append([self.pArray[X][Y], self.pArray[X-1][Y], self.pArray[X-1][Y-1], self.pArray[X][Y-1]])
@@ -364,57 +379,88 @@ class SurfacePolyhedron(Polyhedron):
         x=xmax
         while y<ymax:
             self.inPoints.append(vFunc(x,y))
-   #         if(X>0 and Y>0):
-    #            self.faces.append([self.pArray[X][Y], self.pArray[X-1][Y], self.pArray[X-1][Y-1], self.pArray[X][Y-1]])
+            self.pArray[X][Y]=p
+            p+=1
+            self.inPoints.append(bFunc(x,y))
+            self.bArray[X][Y]=p
             p+=1
             Y+=1
             y+=self.step
         self.inPoints.append(vFunc(xmax,ymax))
+        self.pArray[X][Y]=p
         p+=1
-        self.faces+=self.quad([self.pArray[X][Y], self.pArray[X-1][Y], self.pArray[X-1][Y-1], self.pArray[X][Y-1]])
-
-        # back face
-        X=0
-        Y=0
-        x=xmin
-        y=ymin
-        while x<xmax:
-            y = ymin
-            Y = 0
-            while y<ymax:
-                self.inPoints.append(bFunc(x,y))
-                self.bArray[X][Y]=p
-        #        print ("x="+str(X)+" Y="+str(Y)+" p="+str(p))
-                if(X>0 and Y>0):
-                    self.faces+=self.quad([self.bArray[X-1][Y], self.bArray[X][Y], self.bArray[X][Y-1], self.bArray[X-1][Y-1]])
-                    #self.faces.append([ self.bArray[X-1][Y], self.bArray[X-1][Y-1], self.bArray[X][Y-1]])
-                    #self.faces.append([self.bArray[X][Y], self.bArray[X-1][Y], self.bArray[X][Y-1]])
-                p+=1
-                Y+=1
-                y+=self.step
-            if(X>0 and Y>0):
-                self.inPoints.append(bFunc(x,ymax))
-      #          self.faces.append([self.bArray[X][Y], self.bArray[X-1][Y], self.bArray[X-1][Y-1], self.bArray[X][Y-1]])
-                p+=1
-
-            x+=self.step
-            X+=1
-        Y=0
-        y=ymin
-        x=xmax
-        while y<ymax:
-            self.inPoints.append(bFunc(x,y))
-   #         if(X>0 and Y>0):
-    #            self.faces.append([self.bArray[X][Y], self.bArray[X-1][Y], self.bArray[X-1][Y-1], self.bArray[X][Y-1]])
-            p+=1
-            Y+=1
-            y+=self.step
         self.inPoints.append(bFunc(xmax,ymax))
+        self.bArray[X][Y]=p
         p+=1
-        self.faces+=self.quad([self.bArray[X-1][Y], self.bArray[X][Y], self.bArray[X][Y-1], self.bArray[X-1][Y-1]])
 
-       # for i in range(0,cols):
-        #    s=""
+
+        # apply a second function perpendicular to the surface
+        if sFunc:
+            for X in range(0, cols-1):
+                for Y in range(0,rows-1):
+                    if X==0:
+                        xvec1 = (self.inPoints[self.pArray[X+1][Y]]-self.inPoints[self.pArray[X][Y]]).normalize()
+                    else:
+                        xvec1 = (self.inPoints[self.pArray[X][Y]]-self.inPoints[self.pArray[X-1][Y]]).normalize()
+                    if X==cols-2:
+                        xvec2 = (self.inPoints[self.pArray[X][Y]]-self.inPoints[self.pArray[X-1][Y]]).normalize()
+                    else:
+                        xvec2 = (self.inPoints[self.pArray[X+1][Y]]-self.inPoints[self.pArray[X][Y]]).normalize()
+                    xvec = (xvec1+xvec2)/2
+                    if Y==0:
+                        yvec1 = (self.inPoints[self.pArray[X][Y+1]]-self.inPoints[self.pArray[X][Y]]).normalize()
+                    else:
+                        yvec1 = (self.inPoints[self.pArray[X][Y]]-self.inPoints[self.pArray[X][Y-1]]).normalize()
+                    if Y==rows-2:
+                        yvec2 = (self.inPoints[self.pArray[X][Y]]-self.inPoints[self.pArray[X][Y-1]]).normalize()
+                    else:
+                        yvec2 = (self.inPoints[self.pArray[X][Y+1]]-self.inPoints[self.pArray[X][Y]]).normalize()
+                    yvec = (yvec1+yvec2)/2
+                    normal = -xvec.cross(yvec)
+                    point = self.inPoints[self.pArray[X][Y]]
+                    self.sArray[X][Y] = normal*sFunc(point[0], point[1])
+            for X in range(0, cols-1):
+                for Y in range(0,rows-1):
+                    self.inPoints[self.pArray[X][Y]]+=self.sArray[X][Y]
+
+        if sbFunc:
+            for X in range(0, cols-1):
+                for Y in range(0,rows-1):
+                    if X==0:
+                        xvec1 = (self.inPoints[self.bArray[X+1][Y]]-self.inPoints[self.bArray[X][Y]]).normalize()
+                    else:
+                        xvec1 = (self.inPoints[self.bArray[X][Y]]-self.inPoints[self.bArray[X-1][Y]]).normalize()
+                    if X==cols-2:
+                        xvec2 = (self.inPoints[self.bArray[X][Y]]-self.inPoints[self.bArray[X-1][Y]]).normalize()
+                    else:
+                        xvec2 = (self.inPoints[self.bArray[X+1][Y]]-self.inPoints[self.bArray[X][Y]]).normalize()
+                    xvec = (xvec1+xvec2)/2
+                    if Y==0:
+                        yvec1 = (self.inPoints[self.bArray[X][Y+1]]-self.inPoints[self.bArray[X][Y]]).normalize()
+                    else:
+                        yvec1 = (self.inPoints[self.bArray[X][Y]]-self.inPoints[self.bArray[X][Y-1]]).normalize()
+                    if Y==rows-2:
+                        yvec2 = (self.inPoints[self.bArray[X][Y]]-self.inPoints[self.bArray[X][Y-1]]).normalize()
+                    else:
+                        yvec2 = (self.inPoints[self.bArray[X][Y+1]]-self.inPoints[self.bArray[X][Y]]).normalize()
+                    yvec = (yvec1+yvec2)/2
+                    normal = -xvec.cross(yvec)
+                    point = self.inPoints[self.bArray[X][Y]]
+                    self.sbArray[X][Y] = normal*sbFunc(point[0], point[1])
+            for X in range(0, cols-1):
+                for Y in range(0,rows-1):
+                    self.inPoints[self.bArray[X][Y]]+=self.sbArray[X][Y]
+
+
+
+
+
+        for X in range(0, cols-1):
+            for Y in range(0,rows-1):
+                if(X>0 and Y>0):
+                    self.faces+=self.quad([self.pArray[X][Y], self.pArray[X-1][Y], self.pArray[X-1][Y-1], self.pArray[X][Y-1]])
+                    self.faces+=self.quad([self.bArray[X-1][Y], self.bArray[X][Y], self.bArray[X][Y-1], self.bArray[X-1][Y-1]])
+
        #     for j in range(0,rows):
       #          s+=" "+str(self.bArray[i][j])
      #       print (s)
