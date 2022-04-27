@@ -69,6 +69,39 @@ class Cylinder(SolidPath):
     def getSolid(self):
         return solid.translate(self.pos)(solid.cylinder(r1=self.rad1, r2=self.rad2, h=self.height, center=self.centre))
 
+class CSScrew(SolidPath):
+    def __init__(self, pos, size, length, mode,**config):
+        self.init(config)
+        self.closed=True
+        self.pos=pos
+        self.size=size
+        self.length=length
+        self.mode=mode
+        if mode=='clearance':
+            self.add_point(PCircle(pos,radius=milling.bolts[self.size]['clearance']/2))
+        else:
+            self.add_point(PCircle(pos,radius=milling.bolts[self.size]['tap']/2))
+
+    def getSolid(self):
+        ret = []
+        if self.mode=='clearance':
+            ret.append(solid.cylinder(r=milling.bolts[self.size]['clearance']/2, h=self.length)) 
+                
+        elif self.mode=='thread':
+            ret.append(solid.cylinder(r=milling.bolts[self.size]['tap']/2, h=self.length)) 
+
+
+        ret.append(
+            solid.translate(V(0,0,-1))(
+                solid.cylinder(
+                    r1=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+1)/milling.bolts[self.size]['cs']['head_l'], 
+                    r2=milling.bolts[self.size]['tap']/2, 
+                    h=milling.bolts[self.size]['cs']['head_l']+1
+                )
+            )
+        )
+        return solid.translate(self.pos)(solid.union()(*ret))
+
 class RoundedCuboid(SolidPath):
     def __init__(self, pos, width, height, depth, rad, **config):
         self.init(config)
@@ -310,6 +343,63 @@ class CylindricalPolyhedron(Polyhedron):
 
 #class Hull(SolidPath):
 #    def __init__(self, ):
+class PathPolyhedron(Polyhedron):
+    def __init__(self, xsection, path, **config):
+        self.init(config)
+        self.closed=True
+        if 'convexity' in config:
+            self.convexity=config['convexity']
+        else:
+            self.convexity=10
+        if 'zStep' in config:
+            zStep = config['zStep']
+        else:
+            zStep = 1.0
+        print(config)
+        if 'x0' in config:
+            print("X0="+str(config['x0']))
+            lastx=config['x0']
+        else:
+            lastx = V(1,0,0)
+        if 'gradient' in config:
+            gradient = config['gradient']
+        else:
+            gradient = V(0,0)
+        pxsection = xsection.polygonise()
+        ppath = path.polygonise()
+        self.faces = []
+        self.rings=[]
+        self.inPoints=[]
+        pc=0
+        for p in range(0,len(ppath)):
+            if p==0:
+                along = (ppath[1]-ppath[0]).normalize()
+            elif p==len(ppath)-1:
+                along = (ppath[len(ppath)-1]-ppath[len(ppath)-2]).normalize()
+            else:
+                along = ((ppath[p]-ppath[p-1]).normalize()+(ppath[p+1]-ppath[p]).normalize())/2
+            y = along.cross(lastx).normalize()
+            x = along.cross(y).normalize()
+            if(x.dot(lastx)<0):
+                x*=-1
+            print ("along="+str(along)+"x"+str(x))
+            self.rings.append([])
+            for o in range(0,len(pxsection)):
+                self.inPoints.append(ppath[p]+x*pxsection[o][0]+y*pxsection[o][1])
+                self.rings[-1].append(pc)
+                if p>0 and o>0:
+                    self.faces.append([ self.rings[-1][o], self.rings[-1][o-1], self.rings[-2][o-1], self.rings[-2][o]])
+                pc+=1
+            if p>0:
+                self.faces.append([ self.rings[-1][-1], self.rings[-1][0], self.rings[-2][0], self.rings[-2][-1]])
+            lastx = x
+        self.faces.append(self.rings[0])
+        self.faces.append(self.rings[-1])
+        self.add_point(PCircle(V(0,0), radius=1))
+        self.closed=True
+
+#class Hull(SolidPath):
+#    def __init__(self, ):
 class SurfacePolyhedron(Polyhedron):
     def __init__(self, vFunc, bFunc, xmin, xmax, ymin, ymax, **config):
 
@@ -450,10 +540,6 @@ class SurfacePolyhedron(Polyhedron):
             for X in range(0, cols-1):
                 for Y in range(0,rows-1):
                     self.inPoints[self.bArray[X][Y]]+=self.sbArray[X][Y]
-
-
-
-
 
         for X in range(0, cols-1):
             for Y in range(0,rows-1):
