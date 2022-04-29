@@ -358,9 +358,15 @@ class PathPolyhedron(Polyhedron):
         print(config)
         if 'x0' in config:
             print("X0="+str(config['x0']))
-            lastx=config['x0']
+            lastx=config['x0'].normalize()
         else:
             lastx = V(1,0,0)
+        # preserve x direction
+        if 'samex' in config:
+            samex=config['samex']
+        else:
+            samex=False
+
         if 'gradient' in config:
             gradient = config['gradient']
         else:
@@ -378,8 +384,12 @@ class PathPolyhedron(Polyhedron):
                 along = (ppath[len(ppath)-1]-ppath[len(ppath)-2]).normalize()
             else:
                 along = ((ppath[p]-ppath[p-1]).normalize()+(ppath[p+1]-ppath[p]).normalize())/2
-            y = along.cross(lastx).normalize()
-            x = along.cross(y).normalize()
+            if samex:
+                x = lastx
+                y = along.cross(lastx).normalize()
+            else:
+                y = along.cross(lastx).normalize()
+                x = along.cross(y).normalize()
             if(x.dot(lastx)<0):
                 x*=-1
             print ("along="+str(along)+"x"+str(x))
