@@ -49,8 +49,7 @@ class Sphere(SolidPath):
         self.add_point(pos,'circle',rad)
 
     def getSolid(self):
-        self.translate3D(self.pos)
-        return solid.sphere(r=self.rad)
+        return solid.translate(self.pos)(solid.sphere(r=self.rad))
 
 class Cylinder(SolidPath):
     def __init__(self, pos, rad1, rad2, height, **config):
@@ -401,9 +400,10 @@ class PathPolyhedron(Polyhedron):
                     self.faces.append([ self.rings[-1][o], self.rings[-1][o-1], self.rings[-2][o-1], self.rings[-2][o]])
                 pc+=1
             if p>0:
-                self.faces.append([ self.rings[-1][-1], self.rings[-1][0], self.rings[-2][0], self.rings[-2][-1]])
+                self.faces.append([ self.rings[-1][0], self.rings[-1][-1], self.rings[-2][-1], self.rings[-2][0]])
             lastx = x
         self.faces.append(self.rings[0])
+        self.faces[-1].reverse()
         self.faces.append(self.rings[-1])
         self.add_point(PCircle(V(0,0), radius=1))
         self.closed=True
@@ -576,3 +576,37 @@ class SurfacePolyhedron(Polyhedron):
         return [ [p[2], p[1], p[0]], [p[3],p[2],p[0]] ]
 #class Hull(SolidPath):
 #    def __init__(self, ):
+
+class RoundedBox(SolidPath):
+    def __init__(self,pos, width, height, depth, rad,**config):
+        self.init(config)
+        if rad<0:
+            self.rad=0
+        else:
+            self.rad=rad
+        self.width=width
+        self.height=height
+        self.depth=depth
+        self.pos=pos
+
+    def getSolid(self):
+        w=self.width/2-self.rad
+        h=self.height/2-self.rad
+        d=self.depth/2-self.rad
+        return self.rbox([
+		V(w,h,d),
+		V(w,h,-d),
+		V(w,-h,d),
+		V(w,-h,-d),
+		V(-w,h,d),
+		V(-w,h,-d),
+		V(-w,-h,d),
+		V(-w,-h,-d),
+		],self.rad)
+
+    def rbox(self,corners, R):
+        spheres = []
+        for c in corners:
+            spheres.append(solid.translate(c+self.pos)(solid.sphere(r=R)))
+        return solid.hull()(*spheres)
+
