@@ -64,6 +64,7 @@ class Cylinder(SolidPath):
         self.height=height
         self.closed=True
         self.add_point(pos,'circle',rad2)
+        self.centre=pos
 
     def getSolid(self):
         return solid.translate(self.pos)(solid.cylinder(r1=self.rad1, r2=self.rad2, h=self.height, center=self.centre))
