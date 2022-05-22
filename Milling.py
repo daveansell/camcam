@@ -575,7 +575,7 @@ class Milling:
                 },
                 "tufnol":{
                         "vertfeed":100,
-                        "sidefeed":400,
+                        "sidefeed":900,
                         "stepdown":1.5,
                         "kress_setting":2.0,
                },
