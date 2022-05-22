@@ -56,4 +56,5 @@ for s in data['sheets']:
         print(r['translate'])
 fout =open(filename+'.sorted', 'w')
 
-fout.write(json.dumps(data, indent=4))
+fout.write(json.dumps(data,encoding='ascii', indent=4, ensure_ascii=True))
+

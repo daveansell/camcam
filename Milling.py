@@ -723,6 +723,10 @@ class Milling:
                                 'head_d':5,
                                 'head_l':1.65,
                         },
+                        'cs':{
+                            'head_d':4.7,
+                            'head_l':1.5,
+                        },
                 },
                 'M3':{
                         'diam':3.0,
@@ -735,6 +739,10 @@ class Milling:
                         'button':{
                                 'head_d':5.7,
                                 'head_l':1.65,
+                        },
+                        'cs':{
+                            'head_d':5.5,
+                            'head_l':1.7,
                         },
                 },
                 'M4':{
@@ -749,6 +757,10 @@ class Milling:
                                 'head_d':7.6,
                                 'head_l':2.2,
                         },
+                        'cs':{
+                            'head_d':7.6,
+                            'head_l':2.6,
+                        },
                 },
                 'M5':{
                         'diam':5.0,
@@ -761,6 +773,10 @@ class Milling:
                         'button':{
                                 'head_d':9.5,
                                 'head_l':2.75,
+                        },
+                        'cs':{
+                            'head_d':8.9,
+                            'head_l':3.1,
                         },
                 },
                 'M6':{
@@ -779,6 +795,10 @@ class Milling:
                                 'head_d':10.0,
                                 'head_l':4.3,
                         },
+                        'cs':{
+                            'head_d':11.2,
+                            'head_l':3.6,
+                        },
                 },
                 'M8':{
                         'diam':8.0,
@@ -796,6 +816,10 @@ class Milling:
                                 'head_d':13.0,
                                 'head_l':5.6,
                         },
+                        'cs':{
+                            'head_d':14.7,
+                            'head_l':4.5,
+                        },
                 },
                 'M10':{
                         'diam':10.0,
@@ -808,6 +832,10 @@ class Milling:
                         'button':{
                                 'head_d':17.5,
                                 'head_l':5.5,
+                        },
+                        'cs':{
+                            'head_d':18.3,
+                            'head_l':6.0,
                         },
                 },
                 'M12':{

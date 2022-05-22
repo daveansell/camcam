@@ -49,8 +49,7 @@ class Sphere(SolidPath):
         self.add_point(pos,'circle',rad)
 
     def getSolid(self):
-        self.translate3D(self.pos)
-        return solid.sphere(r=self.rad)
+        return solid.translate(self.pos)(solid.sphere(r=self.rad))
 
 class Cylinder(SolidPath):
     def __init__(self, pos, rad1, rad2, height, **config):
@@ -65,9 +64,43 @@ class Cylinder(SolidPath):
         self.height=height
         self.closed=True
         self.add_point(pos,'circle',rad2)
+        self.centre=pos
 
     def getSolid(self):
         return solid.translate(self.pos)(solid.cylinder(r1=self.rad1, r2=self.rad2, h=self.height, center=self.centre))
+
+class CSScrew(SolidPath):
+    def __init__(self, pos, size, length, mode,**config):
+        self.init(config)
+        self.closed=True
+        self.pos=pos
+        self.size=size
+        self.length=length
+        self.mode=mode
+        if mode=='clearance':
+            self.add_point(PCircle(pos,radius=milling.bolts[self.size]['clearance']/2))
+        else:
+            self.add_point(PCircle(pos,radius=milling.bolts[self.size]['tap']/2))
+
+    def getSolid(self):
+        ret = []
+        if self.mode=='clearance':
+            ret.append(solid.cylinder(r=milling.bolts[self.size]['clearance']/2, h=self.length)) 
+                
+        elif self.mode=='thread':
+            ret.append(solid.cylinder(r=milling.bolts[self.size]['tap']/2, h=self.length)) 
+
+
+        ret.append(
+            solid.translate(V(0,0,-1))(
+                solid.cylinder(
+                    r1=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+1)/milling.bolts[self.size]['cs']['head_l'], 
+                    r2=milling.bolts[self.size]['tap']/2, 
+                    h=milling.bolts[self.size]['cs']['head_l']+1
+                )
+            )
+        )
+        return solid.translate(self.pos)(solid.union()(*ret))
 
 class RoundedCuboid(SolidPath):
     def __init__(self, pos, width, height, depth, rad, **config):
@@ -310,3 +343,271 @@ class CylindricalPolyhedron(Polyhedron):
 
 #class Hull(SolidPath):
 #    def __init__(self, ):
+class PathPolyhedron(Polyhedron):
+    def __init__(self, xsection, path, **config):
+        self.init(config)
+        self.closed=True
+        if 'convexity' in config:
+            self.convexity=config['convexity']
+        else:
+            self.convexity=10
+        if 'zStep' in config:
+            zStep = config['zStep']
+        else:
+            zStep = 1.0
+        print(config)
+        if 'x0' in config:
+            print("X0="+str(config['x0']))
+            lastx=config['x0'].normalize()
+        else:
+            lastx = V(1,0,0)
+        # preserve x direction
+        if 'samex' in config:
+            samex=config['samex']
+        else:
+            samex=False
+
+        if 'gradient' in config:
+            gradient = config['gradient']
+        else:
+            gradient = V(0,0)
+        pxsection = xsection.polygonise()
+        ppath = path.polygonise()
+        self.faces = []
+        self.rings=[]
+        self.inPoints=[]
+        pc=0
+        for p in range(0,len(ppath)):
+            if p==0:
+                along = (ppath[1]-ppath[0]).normalize()
+            elif p==len(ppath)-1:
+                along = (ppath[len(ppath)-1]-ppath[len(ppath)-2]).normalize()
+            else:
+                along = ((ppath[p]-ppath[p-1]).normalize()+(ppath[p+1]-ppath[p]).normalize())/2
+            if samex:
+                x = lastx
+                y = along.cross(lastx).normalize()
+            else:
+                y = along.cross(lastx).normalize()
+                x = along.cross(y).normalize()
+            if(x.dot(lastx)<0):
+                x*=-1
+            print ("along="+str(along)+"x"+str(x))
+            self.rings.append([])
+            for o in range(0,len(pxsection)):
+                self.inPoints.append(ppath[p]+x*pxsection[o][0]+y*pxsection[o][1])
+                self.rings[-1].append(pc)
+                if p>0 and o>0:
+                    self.faces.append([ self.rings[-1][o], self.rings[-1][o-1], self.rings[-2][o-1], self.rings[-2][o]])
+                pc+=1
+            if p>0:
+                self.faces.append([ self.rings[-1][0], self.rings[-1][-1], self.rings[-2][-1], self.rings[-2][0]])
+            lastx = x
+        self.faces.append(self.rings[0])
+        self.faces[-1].reverse()
+        self.faces.append(self.rings[-1])
+        self.add_point(PCircle(V(0,0), radius=1))
+        self.closed=True
+
+#class Hull(SolidPath):
+#    def __init__(self, ):
+class SurfacePolyhedron(Polyhedron):
+    def __init__(self, vFunc, bFunc, xmin, xmax, ymin, ymax, **config):
+
+        self.init(config)
+        self.closed=True
+        if 'convexity' in config:
+            self.convexity=config['convexity']
+        else:
+            self.convexity=10
+        if 'step' in config:
+            self.step = config['step']
+        else:
+            self.step = 1.0
+        if 'sFunc' in config:
+            sFunc = config['sFunc']
+        else:
+            sFunc = False
+        if 'sbFunc' in config:
+            sbFunc = config['sbFunc']
+        else:
+            sbFunc = False
+        cols = math.floor((xmax-xmin)/self.step)+1
+        rows = math.floor((ymax-ymin)/self.step)+1
+    #    self.basePoints = []
+   #     self.leftSide = []
+  #      self.rightSide = []
+ #       self.topSide = []
+#        self.bottomSide = []
+        self.faces = []
+        self.inPoints = []
+        self.first=0
+        self.faces=[]
+        self.pArray= [[0 for k in range(0,rows+1)] for j in range(0,cols+1)]#[[0]*cols]*rows
+        self.bArray= [[0 for k in range(0,rows+1)] for j in range(0,cols+1)]#[[0]*cols]*rows
+        self.sArray= [[0 for k in range(0,rows+1)] for j in range(0,cols+1)]#[[0]*cols]*rows
+        self.sbArray= [[0 for k in range(0,rows+1)] for j in range(0,cols+1)]#[[0]*cols]*rows
+        x = xmin
+        p=0
+        X=0
+        Y=0
+        while x<xmax:
+            y = ymin
+            Y = 0
+            while y<ymax:
+                self.inPoints.append(vFunc(x,y))
+                self.pArray[X][Y]=p
+                p+=1
+                self.inPoints.append(bFunc(x,y))
+                self.bArray[X][Y]=p
+                p+=1
+                Y+=1
+                y+=self.step
+            if(X>0 and Y>0):
+                self.inPoints.append(vFunc(x,ymax))
+                self.pArray[X][Y]=p
+                p+=1
+                self.inPoints.append(bFunc(x,ymax))
+                self.bArray[X][Y]=p
+                p+=1
+   #             Y+=1
+   #             self.faces.append([self.pArray[X][Y], self.pArray[X-1][Y], self.pArray[X-1][Y-1], self.pArray[X][Y-1]])
+
+            x+=self.step
+            X+=1
+        Y=0
+        y=ymin
+        x=xmax
+        while y<ymax:
+            self.inPoints.append(vFunc(x,y))
+            self.pArray[X][Y]=p
+            p+=1
+            self.inPoints.append(bFunc(x,y))
+            self.bArray[X][Y]=p
+            p+=1
+            Y+=1
+            y+=self.step
+        self.inPoints.append(vFunc(xmax,ymax))
+        self.pArray[X][Y]=p
+        p+=1
+        self.inPoints.append(bFunc(xmax,ymax))
+        self.bArray[X][Y]=p
+        p+=1
+
+
+        # apply a second function perpendicular to the surface
+        if sFunc:
+            for X in range(0, cols-1):
+                for Y in range(0,rows-1):
+                    if X==0:
+                        xvec1 = (self.inPoints[self.pArray[X+1][Y]]-self.inPoints[self.pArray[X][Y]]).normalize()
+                    else:
+                        xvec1 = (self.inPoints[self.pArray[X][Y]]-self.inPoints[self.pArray[X-1][Y]]).normalize()
+                    if X==cols-2:
+                        xvec2 = (self.inPoints[self.pArray[X][Y]]-self.inPoints[self.pArray[X-1][Y]]).normalize()
+                    else:
+                        xvec2 = (self.inPoints[self.pArray[X+1][Y]]-self.inPoints[self.pArray[X][Y]]).normalize()
+                    xvec = (xvec1+xvec2)/2
+                    if Y==0:
+                        yvec1 = (self.inPoints[self.pArray[X][Y+1]]-self.inPoints[self.pArray[X][Y]]).normalize()
+                    else:
+                        yvec1 = (self.inPoints[self.pArray[X][Y]]-self.inPoints[self.pArray[X][Y-1]]).normalize()
+                    if Y==rows-2:
+                        yvec2 = (self.inPoints[self.pArray[X][Y]]-self.inPoints[self.pArray[X][Y-1]]).normalize()
+                    else:
+                        yvec2 = (self.inPoints[self.pArray[X][Y+1]]-self.inPoints[self.pArray[X][Y]]).normalize()
+                    yvec = (yvec1+yvec2)/2
+                    normal = -xvec.cross(yvec)
+                    point = self.inPoints[self.pArray[X][Y]]
+                    self.sArray[X][Y] = normal*sFunc(point[0], point[1])
+            for X in range(0, cols-1):
+                for Y in range(0,rows-1):
+                    self.inPoints[self.pArray[X][Y]]+=self.sArray[X][Y]
+
+        if sbFunc:
+            for X in range(0, cols-1):
+                for Y in range(0,rows-1):
+                    if X==0:
+                        xvec1 = (self.inPoints[self.bArray[X+1][Y]]-self.inPoints[self.bArray[X][Y]]).normalize()
+                    else:
+                        xvec1 = (self.inPoints[self.bArray[X][Y]]-self.inPoints[self.bArray[X-1][Y]]).normalize()
+                    if X==cols-2:
+                        xvec2 = (self.inPoints[self.bArray[X][Y]]-self.inPoints[self.bArray[X-1][Y]]).normalize()
+                    else:
+                        xvec2 = (self.inPoints[self.bArray[X+1][Y]]-self.inPoints[self.bArray[X][Y]]).normalize()
+                    xvec = (xvec1+xvec2)/2
+                    if Y==0:
+                        yvec1 = (self.inPoints[self.bArray[X][Y+1]]-self.inPoints[self.bArray[X][Y]]).normalize()
+                    else:
+                        yvec1 = (self.inPoints[self.bArray[X][Y]]-self.inPoints[self.bArray[X][Y-1]]).normalize()
+                    if Y==rows-2:
+                        yvec2 = (self.inPoints[self.bArray[X][Y]]-self.inPoints[self.bArray[X][Y-1]]).normalize()
+                    else:
+                        yvec2 = (self.inPoints[self.bArray[X][Y+1]]-self.inPoints[self.bArray[X][Y]]).normalize()
+                    yvec = (yvec1+yvec2)/2
+                    normal = -xvec.cross(yvec)
+                    point = self.inPoints[self.bArray[X][Y]]
+                    self.sbArray[X][Y] = normal*sbFunc(point[0], point[1])
+            for X in range(0, cols-1):
+                for Y in range(0,rows-1):
+                    self.inPoints[self.bArray[X][Y]]+=self.sbArray[X][Y]
+
+        for X in range(0, cols-1):
+            for Y in range(0,rows-1):
+                if(X>0 and Y>0):
+                    self.faces+=self.quad([self.pArray[X][Y], self.pArray[X-1][Y], self.pArray[X-1][Y-1], self.pArray[X][Y-1]])
+                    self.faces+=self.quad([self.bArray[X-1][Y], self.bArray[X][Y], self.bArray[X][Y-1], self.bArray[X-1][Y-1]])
+
+       #     for j in range(0,rows):
+      #          s+=" "+str(self.bArray[i][j])
+     #       print (s)
+        # work around the edges
+        for X in range(1, cols-1):
+            pass
+            self.faces+=self.quad([self.pArray[X][0], self.pArray[X-1][0], self.bArray[X-1][0], self.bArray[X][0]])
+            self.faces+=self.quad([self.pArray[X-1][rows-2], self.pArray[X][rows-2], self.bArray[X][rows-2], self.bArray[X-1][rows-2]])
+        for Y in range(1, rows-1):
+            pass
+            self.faces+=self.quad([self.pArray[0][Y], self.pArray[0][Y-1], self.bArray[0][Y-1], self.bArray[0][Y]])
+            self.faces+=self.quad([self.pArray[cols-2][Y-1], self.pArray[cols-2][Y], self.bArray[cols-2][Y], self.bArray[cols-2][Y-1]])
+
+        self.add_point(PCircle(V(0,0), radius=1))
+        self.closed=True
+    def quad(self,p):
+        return [ [p[2], p[1], p[0]], [p[3],p[2],p[0]] ]
+#class Hull(SolidPath):
+#    def __init__(self, ):
+
+class RoundedBox(SolidPath):
+    def __init__(self,pos, width, height, depth, rad,**config):
+        self.init(config)
+        if rad<0:
+            self.rad=0
+        else:
+            self.rad=rad
+        self.width=width
+        self.height=height
+        self.depth=depth
+        self.pos=pos
+
+    def getSolid(self):
+        w=self.width/2-self.rad
+        h=self.height/2-self.rad
+        d=self.depth/2-self.rad
+        return self.rbox([
+		V(w,h,d),
+		V(w,h,-d),
+		V(w,-h,d),
+		V(w,-h,-d),
+		V(-w,h,d),
+		V(-w,h,-d),
+		V(-w,-h,d),
+		V(-w,-h,-d),
+		],self.rad)
+
+    def rbox(self,corners, R):
+        spheres = []
+        for c in corners:
+            spheres.append(solid.translate(c+self.pos)(solid.sphere(r=R)))
+        return solid.hull()(*spheres)
+
