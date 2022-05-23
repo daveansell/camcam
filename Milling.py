@@ -919,6 +919,10 @@ class Milling:
                 "M3":{
                         "diams":[5,4.5/2],
                         "depths":[-0.1,False],
+                        'plastic':{
+                            'diams':4.0,
+                            'depths':False
+                        },
                 },
                 "M3.5":{
                         "diams":5.1/2,
@@ -935,15 +939,27 @@ class Milling:
                         'headless':{
                                 "diams":[3.05],
                                 "depths":[False],
-                        }
+                        },
+                        'plastic':{
+                            'diams':5.9,
+                            'depths':False
+                        },
                 },
                 "M5":{
                         "diams":[5.5,3.6],
                         "depths":[-1,False],
+                        'plastic':{
+                            'diams':6.5,
+                            'depths':False
+                        },
                 },
                 "M6":{
                         "diams":[7,4.25], #Edited db from 6mm dia... these are also radii...
                         "depths":[-1,False],
+                        'plastic':{
+                            'diams':8.2,
+                            'depths':False
+                        },
                 },
                 "M8":{
                         "diams":[7.75,5.5],
