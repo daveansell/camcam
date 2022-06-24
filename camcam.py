@@ -188,6 +188,13 @@ parser.add_option("-b", "--sep-border",
 parser.add_option("-B", "--bom",
                   action="store_true", dest="bom", default=False,
                   help="Print Bill of Materials")
+parser.add_option("-f", "--flip", dest="flip", action='store_true',
+                  help="flip on alternate parts")
+parser.add_option("-i", "--flip-offsetx", dest="flipOffsetX",
+                  help="x offset to apply to flipped parts")
+parser.add_option("-j", "--flip-offsety", dest="flipOffsetY",
+                  help="y offset to apply to flipped parts")
+
 parser.add_option("-x", "--xreps", dest="repeatx",
                   help="number of times should be repeated in x direction")
 parser.add_option("-y", "--yreps", dest="repeaty",
@@ -249,6 +256,12 @@ elif options.yspacing and options.repeaty:
     config['repeatx']=1
 if options.repeatmode:
     config['repeatmode']=options.repeatmode
+if options.flip:
+    config['flip']=options.flip
+if options.flipOffsetX:
+    config['flipOffsetX']=options.flipOffsetX
+if options.flipOffsetY:
+    config['flipOffsetY']=options.flipOffsetY
 if options.repeatpattern:
     config['repeatpattern']=options.repeatpattern
 if options.repeatoffset:
