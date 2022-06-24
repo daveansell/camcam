@@ -163,7 +163,7 @@ class LathePath(Path):
                                 
                                 fs = self.flipSide
                                 if self.clearFirst == 'z':
-                                        print(len(self.cuts))
+                                       # print(len(self.cuts))
                                         self.cuts[0].insert(0, PSharp(V(self.cuts[0][0].pos[0] , self.clearZ), isRapid=True))
                                         self.cuts[0].insert(0, PSharp(V(self.clearX * fs, self.clearZ), isRapid=True))
                                         self.cuts[-1].append( PSharp(V(self.cuts[-1][-1].pos[-1] , self.clearZ), isRapid=True))
@@ -176,13 +176,13 @@ class LathePath(Path):
 
                         if not self.justRoughing:
                                 if self.clearFirst == 'z':
-                                        print("clearZ")
+                                        #print("clearZ")
                                         self.insert_point(0, PSharp(V(self.points[0].pos[0], self.clearZ), isRapid=True))
                                         self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.clearZ), isRapid=True))
                                         self.add_point( PSharp(V(self.points[-1].pos[0], self.clearZ), isRapid=True))
                                         self.add_point( PSharp(V(self.clearX * self.flipSide, self.clearZ), isRapid=True))
                                 elif self.clearFirst == 'x':
-                                        print("clearX")
+                                        #print("clearX")
                                         self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.points[0].pos[1] ), isRapid=True))
                                         self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.clearZ), isRapid=True))
                                         self.add_point( PSharp(V(self.clearX * self.flipSide, self.points[-1].pos[1] ), isRapid=True))
@@ -288,7 +288,7 @@ class LathePath(Path):
                         for cut in roughing:
                                 cut.pos= V(-cut.pos[0], cut.pos[1])
                                 if hasattr(cut, 'direction') and cut.direction in ['cw','ccw']:
-                                        print("flip direction")
+                                        #print("flip direction")
                                         cut.direction=cut.otherDir(cut.direction)
                         self.flipSide=-1        
                         self.cuts.append(roughing)
@@ -473,9 +473,9 @@ class LathePath(Path):
                         else:
                                 time = "10"
                         if self.spindleDir=='ccw':
-                                out.append('M03\nG04p'+time+'\n')
+                                out.append('M03S'+str(config['spindleRPM'])+'\n')#G04p'+time+'\n')
                         elif self.spindleDir=='cw':
-                                out.append('M04\nG04p'+time+'\n')
+                                out.append('M04S'+str(config['spindleRPM'])+'\n')#G04p'+time+'\n')
                         spindleDir = self.spindleDir
 
                 self.output_path(config)
