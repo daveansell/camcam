@@ -703,7 +703,10 @@ class RoundSpeakerGrill(Pathgroup):
                 if p.length()<rad-holerad:
                     if 'shape' in config and config['shape']=='hexagon':
                         p=self.add(Polygon(pos+p, sides=6, rad=holerad, startAngle=30))
+                    elif 'shape' in config and config['shape']=='drill':
+                        p=self.add(Drill(pos+p, rad=holerad))
                     else:
+                        print("ROundspeakergrill"+str(pos)+" p="+str(p)+" holerad="+str(holerad))
                         self.add(Hole(pos+p, rad=holerad))
 class RoundSlitGrill(Pathgroup):
     def __init__(self,pos, rad, slotWidth, spacing, **config):
