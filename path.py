@@ -2884,18 +2884,28 @@ class Plane(Part):
         else:
             repeatoffset=None
         output2=''
+        print( "repeatmode="+str(repeatmode))
         if repeatmode=='gcode':
             for y in range(0,int(config['repeaty'])):
-                output2+='\nG0X0Y0\nG10 L20 P1'+'Y%0.4f'%(float(config['yspacing']))
-                output2+='X%0.4f\n'%(-(float(config['repeatx'])-1)*float(config['xspacing']))
+              #  output2+='\nG0X0Y0\nG10 L20 P0'+'Y%0.4f'%(float(config['yspacing']))
+              #  output2+='X%0.4f\n'%(-(float(config['repeatx'])-1)*float(config['xspacing']))
                 c=0
                 for x in range(0,int(config['repeatx'])):
-                    if c==0:
-                        c=1
-                    else:
-                        output2+='\nG0X0Y0\nG10 L20 P1'+'X%0.4f'%(float(config['xspacing']))
+                    if c%2==0:
+                        output2+='\nG0X0Y0\nG10 L2 P0'+'R0 X%0.4f'%(float(config['xspacing'])*x)+' Y%0.4f'%(float(config['yspacing'])*y)
                         output2+='G54\n'
+                        
+                    else:
+                        if 'flip' in config and config['flip']:
+                            output2+='\nG0X0Y0\nG10 L2 P0 '+'R180 X%0.4f'%(float(config['xspacing'])*x+float(config['flipOffsetX']))+'Y%0.4f'%(float(config['yspacing'])*y+float(config['flipOffsetY']))
+                            output2+='G54\n'
+                            
+                        else:
+                            output2+='\nG0X0Y0\nG10 L2 P0'+'R0 X%0.4f'%(float(config['xspacing'])*x)+'Y%0.4f'%(float(config['yspacing'])*y)
+                            output2+='G54\n'
+                    c+=1
                     output2+=output
+            output2+='G10 L2 P0 r0'
         elif repeatmode=='regexp':
             # one approach is to just grep through for all Xnumber or Ynumbers and add an offset. This works as I and J are relative unless we do something cunning
 #                               xreg=re.compile('X[\d\.-]+')
