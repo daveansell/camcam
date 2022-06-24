@@ -1023,7 +1023,7 @@ class Path(object):
             points = []
             for p in polygonised:
                 points.append([p[0], p[1]])
-            if self.closed:
+            if self.closed == True:
                 self.shapelyPolygon = shapely.geometry.Polygon(points)
             else:
                 self.shapelyPolygon = shapely.geometry.LineString(points)
@@ -1415,6 +1415,9 @@ class Path(object):
     def render_path_svg(self,path,config):
         ret=""
         comments=""
+        z=''
+        if(len(path)==0):
+            return ''
         for point in path:
             if 'cmd' in point:
                 ret+=" "+point['cmd']
@@ -2853,8 +2856,12 @@ class Plane(Part):
                 centre=part.border.centre
             else:
                 centre=V(0,0)
+            print (part.border)
             if self.modeconfig['label'] and  self.modeconfig['mode'] == 'svg' and hasattr(part, 'name'):
-                out+="<text transform='scale(1,-1)' text-anchor='middle' x='"+str(int(centre[0]))+"' y='"+str(-int(centre[1]))+"'>"+str(part.name)+"</text>"
+                out+="<text transform='scale(1,-1)' text-anchor='middle' x='"+\
+                    str(int(centre[0]))+"' y='"+\
+                    str(-int(centre[1]))+"'>"+\
+                    str(part.name)+"</text>"
             if 'layout' in pconfig and pconfig['layout']:
                 self.lay_out['svg'] = '<g>'+out+'</g>'
                 return True
