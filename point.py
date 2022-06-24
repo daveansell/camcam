@@ -599,11 +599,11 @@ class PInsharp(PAroundcurve):
                     self.cp1 = self.pos
                 if self.radius>0:
                     pass
-                elif ( self.config['cutside']=='right' and self.direction=='cw' or self.config['cutside']=='left' and self.direction=='ccw') == self.reverse or abs(angle<0.01):
+                elif  ( self.config['cutside']=='right' and self.direction=='cw' or self.config['cutside']=='left' and self.direction=='ccw') == self.reverse or abs(angle<0.01):
                     self.radius=0
-                elif 'original_cuttter' in self.config:
+                elif 'original_cutter' in self.config:
+                    print ("original cutter="+str(self.config['original_cutter']))
                     self.radius = self.config['original_cutter']['cutterrad']
-#                               print str(self.pos)+"self.cofig side="+self.config['cutside'] + " angle="+str(angle)+ " direction="+self.direction+ " reverse="+str(self.reverse)+" radius="+str(self.radius)
                 else:
                     self.radius=0
 
