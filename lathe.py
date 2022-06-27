@@ -106,7 +106,6 @@ class LathePath(Path):
 
 
         def _pre_render(self, pconfig):
-                print ("START PRE RENDER"+str(self))
 #                for p in self.points:
  #                               print( p.pos)
                 out=[]
@@ -115,6 +114,15 @@ class LathePath(Path):
                     return
   #              for p in self.points:
    #                 print("p-"+str( p.pos))
+                if not self.donePreRender and (not 'mode' in config or config['mode']=='gcode'):
+                    c=0
+                    for p in self.points:
+                        self.points[c].pos=V(-p.pos[0],p.pos[1])
+                        if hasattr(p, 'direction') and p.direction in ['cw','ccw']:
+                                self.points[c].direction=p.otherDir(p.direction)
+                        c+=1
+
+
                 if not self.donePreRender and config['cutFromBack'] and (not 'mode' in config or config['mode']=='gcode'):
                         c=0
                         for p in self.points:
@@ -146,10 +154,10 @@ class LathePath(Path):
                                         if hasattr(cut, 'direction'):
                                             cut.direction = cut.otherDir(cut.direction)
                                 self.spindle('cw')
-                                self.flipSide=1 # has been swapped to flip over machine to how it is supposed to be        
+                                self.flipSide=-1 # has been swapped to flip over machine to how it is supposed to be        
                         else:
                                 self.spindle('ccw')
-                                self.flipSide=-1 # has been swapped to flip over machine to how it is supposed to be
+                                self.flipSide= 1 # has been swapped to flip over machine to how it is supposed to be
                        # if self.flipSide==-1:
                         #    c=0
                          #   for p in self.points:
@@ -163,12 +171,14 @@ class LathePath(Path):
                                 
                                 fs = self.flipSide
                                 if self.clearFirst == 'z':
+                                        print("clearZfirst - doroughing")
                                        # print(len(self.cuts))
                                         self.cuts[0].insert(0, PSharp(V(self.cuts[0][0].pos[0] , self.clearZ), isRapid=True))
                                         self.cuts[0].insert(0, PSharp(V(self.clearX * fs, self.clearZ), isRapid=True))
                                         self.cuts[-1].append( PSharp(V(self.cuts[-1][-1].pos[-1] , self.clearZ), isRapid=True))
                                         self.cuts[-1].append( PSharp(V(self.clearX * fs, self.clearZ), isRapid=True))
                                 elif self.clearFirst == 'x':
+                                        print("clearXfirst - doroughing")
                                         self.cuts[0].insert(0, PSharp(V(self.clearX * fs, self.cuts[0][0].pos[1] ), isRapid=True))
                                         self.cuts[0].insert(0, PSharp(V(self.clearX * fs, self.clearZ ), isRapid=True))
                                         self.cuts[-1].append( PSharp(V(self.clearX * fs, self.cuts[-1][-1].pos[1] ), isRapid=True))
@@ -176,12 +186,14 @@ class LathePath(Path):
 
                         if not self.justRoughing:
                                 if self.clearFirst == 'z':
+                                        print("clearZfirst - dofinish")
                                         #print("clearZ")
                                         self.insert_point(0, PSharp(V(self.points[0].pos[0], self.clearZ), isRapid=True))
                                         self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.clearZ), isRapid=True))
                                         self.add_point( PSharp(V(self.points[-1].pos[0], self.clearZ), isRapid=True))
                                         self.add_point( PSharp(V(self.clearX * self.flipSide, self.clearZ), isRapid=True))
                                 elif self.clearFirst == 'x':
+                                        print("clearXfirst - dofinish")
                                         #print("clearX")
                                         self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.points[0].pos[1] ), isRapid=True))
                                         self.insert_point(0, PSharp(V(self.clearX * self.flipSide, self.clearZ), isRapid=True))
@@ -201,77 +213,78 @@ class LathePath(Path):
         def generateRouging(self,  config):
                 if config['latheMode']=='face':
                         stepDir = V(0,-1)
-                        cutDir = V(-1,0)
+                        cutDir = V(1,0)
                         endRad = 0
                         startRad = config['matRad']
                         self.cutHandedness = 1                  
                         self.clearFirst = "z"
                         self.clearZ = self.max[1] + config['matEnd']
-                        self.clearX = config['matRad']+1.0
+                        self.clearX = -config['matRad']-1.0
                         startZ = self.max[1] + config['matEnd'] 
                         endZ = self.min[1]+config['roughClearance']
                         roughing = self.findRoughingCuts2( stepDir, cutDir, startZ, endZ, startRad, endRad, config)
 
                 elif config['latheMode']=='bore':
-                        stepDir = V(1,0)
+                        stepDir = V(-1,0)
                         cutDir = V(0,-1)
-                        startRad = self.min[0] + config['roughClearance']
+                        startRad = self.max[0] - config['roughClearance']
                         self.cutHandedness = -1                 
                         self.clearFirst = "z"
                         self.clearZ = self.max[1] + config['matEnd']
                         self.clearX = 0.0
-                        endRad = self.max[0]# - config['roughClearance']        
+                        endRad = self.min[0]# - config['roughClearance']        
                         startZ = self.max[1] + config['matEnd']
                         endZ = self.min[1] + config['roughClearance']   
                         roughing = self.findRoughingCuts2( stepDir, cutDir, startRad, endRad, startZ, endZ, config)
 
                 elif config['latheMode']=='boreface':
                         stepDir = V(0,-1)
-                        cutDir = V(1,0)
-                        startRad = self.min[0] + config['roughClearance'] 
-                        endRad = self.max[0] 
+                        cutDir = V(-1,0)
+                        startRad = self.max[0] + config['roughClearance'] 
+                        endRad = self.min[0] 
                         self.cutHandedness = -1                 
                         self.clearFirst = "z"
                         self.clearZ = self.max[1] + config['matEnd']
                         self.clearX = 0.0
-                        endRad = self.max[0]# - config['roughClearance']        
+                        endRad = self.min[0]# - config['roughClearance']        
                         startZ = self.max[1] + config['matEnd']
                         endZ = self.min[1]# + config['roughClearance']  
                         roughing = self.findRoughingCuts2( stepDir, cutDir, startZ, endZ, startRad, endRad, config)
 
                 elif config['latheMode']=='backBore':
-                        stepDir = V(1,0)
+                        stepDir = V(-1,0)
                         cutDir = V(0,1)
                         self.cutHandedness = -1                 
                         self.clearFirst = "z"
                         self.clearZ = self.max[1] + config['matEnd']
                         self.clearX = 0.0
                         startRad = 0 #+ config['roughClearance']
-                        endRad = self.max[0]# - config['roughClearance']        
+                        endRad = self.min[0]# - config['roughClearance']        
                         startZ = self.min[1]# - config['matEnd']
                         endZ = self.max[1] #- config['roughClearance']
                         roughing = self.findRoughingCuts2( stepDir, cutDir, startZ, endZ, startRad, endRad, config)
                 elif config['latheMode']=='turn':
                         cutDir=V(0,-1)
-                        stepDir = V(-1,0)
-                        startRad = config['matRad']
-                        endRad = self.min[0]# + config['roughClearance']
+                        stepDir = V(1,0)
+                        startRad = -config['matRad']
+                        endRad = self.max[0]# + config['roughClearance']
                         startZ = self.max[1] + config['matEnd'] 
                         endZ = self.min[1]# + config['roughClearance']  
                         self.cutHandedness = 1                  
                         self.clearFirst = "x"
-                        self.clearX = config['matRad'] + 2.0
+                        self.clearX = -config['matRad'] - 2.0
                         self.clearZ = self.max[1]+config['matEnd']
+                        print("turn");
                         roughing = self.findRoughingCuts2( stepDir, cutDir, startRad, endRad, startZ, endZ, config)
                 elif config['latheMode']=='backTurn':
-                        cutDir = V(1,0)
+                        cutDir = V(-1,0)
                         self.clearFirst = "x"
                         self.clearX = config['matRad'] + 2.0
                         self.clearZ = self.max[1]+config['matEnd']
                         if(self.min[0]<0 and self.max[0]<0):
-                                startRad = -config['matRad']    
+                                startRad = config['matRad']    
                                 stepDir=V(0,1)
-                                endRad = self.max[0]# - config['roughClearance']
+                                endRad = self.min[0]# - config['roughClearance']
                         else:
                                 startRad = config['matRad']     
                                 stepDir=V(0,-1)
@@ -300,7 +313,6 @@ class LathePath(Path):
                     step = 1
                 else:
                     step = (endStep - startStep)/numSteps
-
                 cuts+=self.findRoughingCut2(startStep, cutDir, stepDir, False, startCut, endCut, step, endStep, config)
                 return cuts
 
@@ -345,6 +357,7 @@ class LathePath(Path):
                 return intersection
 
         def findRoughingCut2(self, val, direction, stepDir, intersected, startCut, endCut, step, endStep, config):
+                print("x="+str(val))
                 if step<0:
                     if val<endStep:
                         return []
@@ -376,7 +389,7 @@ class LathePath(Path):
                     intersected = True
                 if not type(intersection) is list:
                     intersection = [intersection]
-
+                print("bleep")
                 if type(intersection) is list:
                             def keyfunc(a):
                                 return a.dot(alongCut)
@@ -384,25 +397,25 @@ class LathePath(Path):
                             ret = []
                             p=0
                             if len(intersection)%2==1:
-                                print ("ODD QQ"+self.clearFirst)
  #                               ret+=  [PSharp(startCut*alongAxis+ val*stepAxis) ]  
                                 nextcuts=self.findRoughingCut2( val+step, direction, stepDir, intersected, startCut, intersection[p].dot(alongAxis), step, endStep,  config)
                                 theCut=self.cutChipBreak(
                                         startCut*alongAxis+ val*stepAxis,
-                                        intersection[p]+stepDir*config['cutClear'] - alongCut*config['roughClearance']
+                                        intersection[p]-stepDir*config['cutClear'] - alongCut*config['roughClearance']
                                     )
+                                print("len nextcuts="+str(len(nextcuts)))
                                 if len(nextcuts):
+                                     print("len="+str(len(nextcuts))+" last point="+str(nextcuts[-1].pos))
                                      ret+= theCut+[
-                                        PSharp(nextcuts[0].pos+stepDir*step*2, isRapid=True)
-                                    ]+nextcuts +[PSharp(nextcuts[-1].pos+step*stepDir*2, isRapid=True)
-                                    ] 
+                                        PSharp(nextcuts[0].pos-stepDir*step*2, isRapid=True)
+                                    ]+nextcuts +[PSharp(nextcuts[-1].pos-step*stepDir*2,isRapid=True)]
                                 #ret.append(
                                  #   PSharp(val*stepAxis+ ret[-1].pos.dot(alongAxis) + stepAxis*(config['cutClear']), isRapid=True)
                                 #)
                                 
                                 p+=1
                             while p<len(intersection):
-                                print ("EVEN QQ"+self.clearFirst)
+                               
                                 nextcuts=self.findRoughingCut2( val+step, direction, stepDir, True, intersection[p].dot(alongAxis), intersection[p+1].dot(alongAxis), step, endStep, config)
 # move to one step outside the start position
 #                                ret.append(PSharp(intersection[p] - stepDir*(step+config['cutClear']), isRapid=True))
@@ -414,9 +427,12 @@ class LathePath(Path):
                                             intersection[p+1] - stepDir*config['cutClear'] - alongCut*config['roughClearance']
                                         )
 # move out to clear part
+                                print("x="+str(val+step)+"len nextcuts="+str(len(nextcuts)))
+                            
                                 if len(nextcuts):
-                                        ret+= [PSharp(nextcuts[0].pos+step*stepDir*2, isRapid=True)
-                                    ] + nextcuts + [PSharp(nextcuts[-1].pos+step*stepDir*2, isRapid=True)]
+                                        print("len="+str(len(nextcuts))+" last point="+str(nextcuts[-1].pos))
+                                        ret+= [PSharp(nextcuts[0].pos - step*stepDir*2, isRapid=True)
+                                    ] + nextcuts + [PSharp(nextcuts[-1].pos-step*stepDir*2, isRapid=True)]
                                      
 # make any more cuts in this section
 # move one step out in case we need to move to another section
@@ -425,6 +441,8 @@ class LathePath(Path):
                                 #)
 
                                 p+=2
+                if len(ret):
+                    print("val="+str(val)+" last point="+str(ret[-1].pos))
                 return ret
 
 
