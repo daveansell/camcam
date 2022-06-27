@@ -473,9 +473,9 @@ class LathePath(Path):
                         else:
                                 time = "10"
                         if self.spindleDir=='ccw':
-                                out.append('M03S'+str(config['spindleRPM'])+'\n')#G04p'+time+'\n')
-                        elif self.spindleDir=='cw':
                                 out.append('M04S'+str(config['spindleRPM'])+'\n')#G04p'+time+'\n')
+                        elif self.spindleDir=='cw':
+                                out.append('M03S'+str(config['spindleRPM'])+'\n')#G04p'+time+'\n')
                         spindleDir = self.spindleDir
 
                 self.output_path(config)
