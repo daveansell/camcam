@@ -146,10 +146,10 @@ class LathePath(Path):
                                         if hasattr(cut, 'direction'):
                                             cut.direction = cut.otherDir(cut.direction)
                                 self.spindle('cw')
-                                self.flipSide=-1        
+                                self.flipSide=1 # has been swapped to flip over machine to how it is supposed to be        
                         else:
                                 self.spindle('ccw')
-                                self.flipSide=1 
+                                self.flipSide=-1 # has been swapped to flip over machine to how it is supposed to be
                        # if self.flipSide==-1:
                         #    c=0
                          #   for p in self.points:
