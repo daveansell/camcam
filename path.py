@@ -935,6 +935,8 @@ class Path(object):
 
 # find depths you should cut at
     def get_depths(self,mode, z0, z1, stepdown):
+        if stepdown is None:
+            stepdown = 1.0
         if z0==z1:
             return [1,[]]
         if self.mode=='svg' or mode=='laser':
@@ -2841,7 +2843,8 @@ class Plane(Part):
                     output['__border']=[b]
         for key in sorted(output.keys(), key=str):
             if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
-                self.writeGcodeFile(part.name,key, output[key], part.border, part_config)
+                if hasattr(part, 'name'):
+                    self.writeGcodeFile(part.name,key, output[key], part.border, part_config)
             elif self.modeconfig['mode']=='svg':
                 if hasattr(part, 'name'):
                     out+="<!-- "+str(part.name)+" - "+str(key)+" -->\n"+output[key]
