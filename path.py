@@ -2687,7 +2687,7 @@ class Plane(Part):
         self.make_copies()
         for part in self.getParts(milling.mode_config[mode]['overview'],config=config):
             if('parts' in config and type(config['parts']) is list and len(config['parts'])):
-                if(part.name in config['parts']):
+                if(hasattr(part, 'name') and part.name in config['parts']):
                     self.render_part(part, mode,config)
             else:
                 self.render_part(part, mode,config)
