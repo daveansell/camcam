@@ -209,9 +209,9 @@ class CurvedText(Text):
         if 'font' in config:
             font=config['font']
         else:
-            font='/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf'
+            font='/home/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf'
             try:
-                f=open("filename.txt")
+                f=open(font)
             except FileNotFoundError:
                 font='/usr/share/fonts/truetype/ubuntu/Ubuntu-B.ttf'
         print (font)
