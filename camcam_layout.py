@@ -376,7 +376,8 @@ class CamCam(App):
                                 if      p.center[0]>i*int(self.command_args.boardWidth)\
                                         and p.center[0]<(i+1)*int(self.command_args.boardWidth)\
                                         and p.center[1]>j*int(self.command_args.boardHeight)\
-                                        and p.center[1]<(j+1)*int(self.command_args.boardHeight):
+                                        and p.center[1]<(j+1)*int(self.command_args.boardHeight)\
+                                        or camcam.command_args.ignoreBoard:
                                     data['sheets'][s+"_"+str(i)+"-"+str(j)].append(rec)
                                     print("*>>>>* "+str(p.part.name)+" "+str(p.pos)+" "+s+"_"+str(i)+"-"+str(j)+" center"+str(p.center))
                     else:
@@ -423,6 +424,8 @@ parser.add_option("-W", "--boardWidth", dest="boardWidth",
                   help="board Width")
 parser.add_option("-H", "--boardHeight", dest="boardHeight",
                   help="boardHeight")
+parser.add_option("-i", "--ignoreBoard", dest="ignoreBoard", action='store_true', default=False,
+                  help="ignore board")
 parser.add_option("-x", "--xreps", dest="repeatx",
                   help="number of times should be repeated in x direction")
 parser.add_option("-y", "--yreps", dest="repeaty",
