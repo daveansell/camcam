@@ -494,7 +494,7 @@ class ArbitraryBox(Part):
             # need to add 2 points here so intersect_points works
             if len(side)==1 or (scount in face['joint_mode'] and face['joint_mode'][scount]=='straight') or scount in face['point_type'] and face['point_type'][scount].point_type not in  ['sharp', 'insharp', 'clear', 'doubleclear'] or lastscount in face['point_type'] and face['point_type'][lastscount].point_type not in  ['sharp', 'insharp', 'clear', 'doubleclear'] :
                 newpoints=[]
-                print ("len(side)=1 or type!=sharp")
+                #print ("len(side)=1 or type!=sharp")
                 if (lastscount) in face['point_type']:
                     print("other point type");
 
@@ -524,7 +524,32 @@ class ArbitraryBox(Part):
                     for i in keys:
                         intersection=face['intersections'][scount][i]
                         newpoints+=self.intersection_slot(intersection, lastpoint, point, face['points'][(scount-1)%len(face['points'])], face['points'][scount])
-
+                # if there are any control points on this side reinsert them.  (we can't currently cope with intersection slots
+                elif len(face['controlPoints'][i]):
+                    if(face['reversed']):
+                        for cp in reversed(face['controlPoints'][i]):
+                            cpoint = copy.deepcopy(cp)
+                            if(cpoint.pos is not None):
+                                cpoint.setPos(self.project(cp.pos, face))
+                            if cpoint.cp1 is not None:
+                                cpoint.cp1 = self.project(cp.cp1,face)
+                            if cpoint.cp2 is not None:
+                                cpoint.cp2 = self.project(cp.cp2, face)
+                            if cpoint.direction is not None:
+                                if cpoint.direction == 'cw':
+                                    cpoint.direction = 'ccw'
+                                else:
+                                    cpoint.direction = 'cw'
+                            newpoints.append(cpoint)
+                    else:
+                        for cp in face['controlPoints'][i]:
+                            cpoint = copy.deepcopy(cp)
+                            cpoint.setPos(self.project(cp.pos, face))
+                            if cpoint.cp1 is not None:
+                                cpoint.cp1 = self.project(cp.cp1,face)
+                            if cpoint.cp2 is not None:
+                                cpoint.cp2 = self.project(cp.cp2, face)
+                            newpoints.append(cpoint)
                 if scount in face['point_type']:
                     newpoints.append(face['point_type'][scount])
                     newpoints[-1].setPos(point)
@@ -1412,8 +1437,23 @@ class ArbitraryBox(Part):
 
     def preparsePoints(self, face):
         p=0
+        newpoints = []
+        face['controlPoints']={0:[]}
         if 'point_type' not in face:
             face['point_type']={}
+        np=0
+        for p, pnt in enumerate(face['points']):
+            if type(pnt) is Vec or not pnt.control:
+                newpoints.append(pnt)
+                np+=1
+                if(p>=len(face['points'])-2):
+                   np=0
+                else:
+                    face['controlPoints'][np]=[]
+            else:
+                face['controlPoints'][np].append(pnt)
+        face['points']=newpoints
+        p=0
         for pnt in face['points']:
             if type(pnt) is not Vec:
                 try:
