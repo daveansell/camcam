@@ -1078,7 +1078,6 @@ class ArbitraryBox(Part):
                 angle = side[0][8]
                 obtuse = side[0][7]
                 print ("bend rad="+str(face['fold_rad'][pnt])+" along="+str(along)+" perp="+str(perp))
-                r = face['fold_rad'][pnt]
                 if face['fold_comp'][pnt] is not False:
                     arcConst = float(face['fold_comp'][pnt]) /math.pi * 2
                 else:
@@ -1447,11 +1446,14 @@ class ArbitraryBox(Part):
                 newpoints.append(pnt)
                 np+=1
                 if(p>=len(face['points'])-2):
+                   face['controlPoints'][np]=[]
                    np=0
                 else:
                     face['controlPoints'][np]=[]
             else:
                 face['controlPoints'][np].append(pnt)
+        print (face['controlPoints'])
+        print (face['points'])
         face['points']=newpoints
         p=0
         for pnt in face['points']:
