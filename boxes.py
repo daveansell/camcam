@@ -352,7 +352,7 @@ class ArbitraryBox(Part):
                         #    t=PSharp(point)
                    #     p.add_point(t)
                     #    c+=1
-                    poly=self.simpleBorderPolygon(face)#p.polygonise(5)
+                    poly=self.simpleBorderPolygon(face,True)#p.polygonise(5)
                     if p.contains_point(p1p,poly) and p.contains_point(p2p, poly) and abs(p1p[2])<0.05 and abs(p2p[2])<0.05:
                         self.faces[f]['internal_joints'].append( { 'side':s, 'otherside':side[0], 'from':p1p, 'to':p2p, 'otherface':face1, 'otherf':side[0][0], 'sidedat':side, 'from3D':p1, 'to3D':p2 } )
                         side.append( [ '_internal', f, len(self.faces[f]['internal_joints'])-1 ])
@@ -416,10 +416,37 @@ class ArbitraryBox(Part):
     def tuple_to_vec(self, t):
         return V(t[0], t[1], t[2])
 # create a border path with no joints etc for finding intesections etc.
-    def simpleBorder(self, face):
+    def simpleBorder(self, face, control=False):
         path = Path(closed=True)
         p=0
-        for point in face['ppoints']:
+        # reinsert control points
+        for i,point in enumerate(face['ppoints']):
+            if control and len(face['controlPoints'][i]):
+                if(face['reversed']):
+                    for cp in reversed(face['controlPoints'][i]):
+                        cpoint = copy.deepcopy(cp)
+                        if(cpoint.pos is not None):
+                            cpoint.setPos(self.project(cp.pos, face))
+                        if cpoint.cp1 is not None:
+                            cpoint.cp1 = self.project(cp.cp1,face)
+                        if cpoint.cp2 is not None:
+                            cpoint.cp2 = self.project(cp.cp2, face)
+                        if cpoint.direction is not None:
+                            if cpoint.direction == 'cw':
+                                cpoint.direction = 'ccw'
+                            else:
+                                cpoint.direction = 'cw'
+                        path.add_point(cpoint)
+                else:
+                    for cp in face['controlPoints'][i]:
+                        cpoint = copy.deepcopy(cp)
+                        cpoint.setPos(self.project(cp.pos, face))
+                        if cpoint.cp1 is not None:
+                            cpoint.cp1 = self.project(cp.cp1,face)
+                        if cpoint.cp2 is not None:
+                            cpoint.cp2 = self.project(cp.cp2, face)
+                        path.add_point(cpoint)
+
             if p in face['point_type']:
                 pnt=copy.deepcopy(face['point_type'][p])
                 pnt.setPos(point)
@@ -435,8 +462,8 @@ class ArbitraryBox(Part):
             p+=1
         #self.add(Part(name='simpleBorder', layer='simpleBorder', border=path))
         return path
-    def simpleBorderPolygon(self, face):
-        path = self.simpleBorder(face)
+    def simpleBorderPolygon(self, face, control=False):
+        path = self.simpleBorder(face, control)
         return path.polygonise(direction=None)
 
     def get_border(self, part, f, face, mode, firstPoint=0, **config):
@@ -844,19 +871,23 @@ class ArbitraryBox(Part):
     # iterate through the internal joints
         for joint in face['internal_joints']:
             if (joint['to3D']-joint['from3D']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']) >0:
-                cutside='left'
-            else:
                 cutside='right'
+            else:
+                cutside='left' # swapped these see if it helps
+            c1=cutside
             if 'isback' in face and face['isback']:
                 if  cutside=='left':
                     cutside= 'right'
                 else:
                     cutside='left'
+            c2=cutside
             if 'force_swap_internal' in face and face['force_swap_internal']:
                 if  cutside=='left':
                     cutside= 'right'
                 else:
                     cutside='left'
+            c3=cutside
+            print(" cutsides="+str(c1)+" "+str(c2)+" "+str(c3))
             if('fudge' in joint['otherface']):
                 if type(joint['otherface']['fudge']) is dict and joint['sidedat'][0][1] in joint['otherface']['fudge']:
                     fudge = joint['otherface']['fudge'][joint['sidedat'][0][1]]

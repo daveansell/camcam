@@ -1178,6 +1178,7 @@ If it can't reach either point with the arc, it will join up to them perpendicul
             l = self.lastpoint.pos
             n = self.nextpoint.pos
             d = n-l
+            print("d.length"+str(d.length())+" rad="+str(self.radius))
             perpdist = math.sqrt(self.radius **2 - d.length()**2/4)
             perp = rotate(d.normalize(),90)
             if self.direction == 'cw':
