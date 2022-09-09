@@ -364,16 +364,16 @@ class ArbitraryBox(Part):
 
     def align3d_face(self, p, f, face):
 #               config = p.get_config()
-        if face['wood_direction'] == face['good_direction']:
-            flip=1#-face['wood_direction']
+        if face['wood_direction'] >0:#== face['good_direction']:
+            flip=-1#-face['wood_direction']
         else:
-            flip = -1
+            flip = 1
         z = (face['normal'] * flip).normalize()
 
         x =  face['x'].normalize()
    #     if face['wdir']=='cw':
     #            flip *=-1
-        flip=1
+       # flip=1
         flipped = 1
         if 'y' in face:
             y=face['y'].normalize()
@@ -398,6 +398,10 @@ class ArbitraryBox(Part):
         xs = [x[0]*flip,y[0]*flip,z[0]*flip,0]
         ys = [x[1],y[1],z[1],0]
         zs = [x[2]*flip,y[2]*flip,z[2]*flip,0]
+        qs = [0,0,0,1]
+        xs = [x[0]*flip,y[0],z[0]*flip,0]
+        ys = [x[1]*flip,y[1],z[1]*flip,0]
+        zs = [x[2]*flip,y[2],z[2]*flip,0]
         qs = [0,0,0,1]
         if face['good_direction']==face['wood_direction'] and face['wood_direction']==1 or p.isback==True:
 #                if face['good_direction']==face['wood_direction'] and face['wood_direction']==1:
