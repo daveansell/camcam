@@ -1173,19 +1173,16 @@ If it can't reach either point with the arc, it will join up to them perpendicul
         self.checkArc()
     def checkArc(self):
         # if we don't have a centre yet work one out
-        print ("self.radius="+str(self.radius))
         if self.pos is None and self.radius is not False and self.direction is not False:
             l = self.lastpoint.pos
             n = self.nextpoint.pos
             d = n-l
-            print("d.length"+str(d.length())+" rad="+str(self.radius))
             perpdist = math.sqrt(self.radius **2 - d.length()**2/4)
             perp = rotate(d.normalize(),90)
             if self.direction == 'cw':
                 self.pos = l + d/2 + perp * perpdist
             else:
                 self.pos = l + d/2 - perp * perpdist
-            print("self.radius = "+str(self.radius)+ " d.length="+str(d.length())+" perpdist="+str(self.radius-perpdist)+" pos="+str(self.pos))
 
         # if we don't have a direction work it out
         elif self.pos is not None and self.radius is not None:
