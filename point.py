@@ -103,7 +103,8 @@ class Point(object):
         transformations[:0] = ext_transformations
         self.invert = False
         if type(transformations) is list:
-            for t in reversed(transformations):
+           # for t in reversed(transformations):
+            for t in transformations:
                 if type(t) is dict and p.pos is not None:
                     if 'rotate' in t:
                         p.pos=self.rotate(p.pos, t['rotate'])
