@@ -527,7 +527,6 @@ class ArbitraryBox(Part):
                 newpoints=[]
                 #print ("len(side)=1 or type!=sharp")
                 if (lastscount) in face['point_type']:
-                    print("other point type");
 
                     if(len(path.points) and (lastpoint-path.points[-1].pos).length()>0.001):
                         newpoints.append(PIgnore((lastpoint+point)/2))
@@ -874,24 +873,32 @@ class ArbitraryBox(Part):
         part.tag = self.name+"_"+f
     # iterate through the internal joints
         for joint in face['internal_joints']:
-            if (joint['to3D']-joint['from3D']).cross( joint['otherface']['normal']*joint['otherface']['wood_direction']).dot(face['normal']) >0:
-                cutside='right'
+            if self.project(joint['to3D']-joint['from3D'],face).cross(self.project(joint['otherface']['normal'] * joint['otherface']['wood_direction'],face))[2]>0:
+                cutside='left'
             else:
-                cutside='left' # swapped these see if it helps
-            c1=cutside
-            if 'isback' in face and face['isback']:
-                if  cutside=='left':
-                    cutside= 'right'
-                else:
-                    cutside='left'
-            c2=cutside
-            if 'force_swap_internal' in face and face['force_swap_internal']:
-                if  cutside=='left':
-                    cutside= 'right'
-                else:
-                    cutside='left'
-            c3=cutside
-            print(" cutsides="+str(c1)+" "+str(c2)+" "+str(c3))
+                cutside='right'
+
+#            if (joint['to3D']-joint['from3D']).cross( 
+#                    joint['otherface']['normal'] * joint['otherface']['wood_direction']
+ #                   ).dot(face['normal']) >0:
+  #              cutside='right'
+   #         else:
+    #            cutside='left' # swapped these see if it helps
+    #        if not ('isback' in face and face['isback']):
+    #            if  cutside=='left':
+     #               cutside= 'right'
+      #          else:
+       #             cutside='left'
+        #    if 'force_swap_internal' in face and face['force_swap_internal']:
+         #       if  cutside=='left':
+          #          cutside= 'right'
+           #     else:
+            #        cutside='left'
+           # if  ('isback' in joint['otherface'] and joint['otherface']['isback']):
+            #    if  cutside=='left':
+             #       cutside= 'right'
+              #  else:
+               #     cutside='left'
             if('fudge' in joint['otherface']):
                 if type(joint['otherface']['fudge']) is dict and joint['sidedat'][0][1] in joint['otherface']['fudge']:
                     fudge = joint['otherface']['fudge'][joint['sidedat'][0][1]]
@@ -910,6 +917,7 @@ class ArbitraryBox(Part):
                 pass
             elif joint['joint_mode']=='butt':
                 pass
+                print(cutside)
                 part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes'], joint_type='convex', fudge=fudge, butt_outline=joint['butt_outline'], hole_depth=face['hole_depth']))
             elif joint['joint_mode']=='bracket':
                 part.add(BracketJointHoles(
