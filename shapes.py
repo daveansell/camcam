@@ -1183,9 +1183,9 @@ class Screw(Part):
                 else:
                     self.add(Hole(pos, **conf), c)
 class FourScrews(Part):
-    def __init__(self, bl, tr, layer_conf, **config):
+    def __init__(self, bl, layer_conf, **config):
         self.init(config)
-        self.add(FourObjects(bl,  Screw(V(0,0), layer_config=layer_conf, tr=tr)))
+        self.add(FourObjects(bl,  Screw(V(0,0), layer_config=layer_conf,**config), **config))
 #               d=tr-bl
 #               self.add(Screw(bl, layer_config=layer_conf, **config))
 #               self.add(Screw(bl+V(d[0], 0), layer_config=layer_conf, **config))
