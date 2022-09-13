@@ -269,7 +269,6 @@ class ArbitraryBox(Part):
 
 
         for f, face in faces.items():
-            print ("face="+str(f))
         # if we are cutting an internal hole then don't make it the part border
             if "layer" not in face:
                 raise ValueError( "Face "+f+" does not have a layer")
@@ -482,7 +481,6 @@ class ArbitraryBox(Part):
         lastpoly = False
         simplepoints = []
         firstnointersect=False
-        print("GET_BORDER "+f)
         #for point in face['ppoints']:
         for i in range(0, len(face['ppoints'])):    
             p= (i+firstPoint)%len(face['ppoints'])
@@ -1621,7 +1619,7 @@ class ArbitraryBox(Part):
         
         # check there is a valid intersection and that the intersection is not in the plane of either face (as then it is a different kind of joint)
         # ************* This is to stop joints at an edge. We are checking the wrong planes
-        if len(intersectionLine)==2:# and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face1) and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face2):
+        if len(intersectionLine)==2 and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face1) and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face2):
             otherEnd1=self.project(t2[intersectionLine[1]], face1)
             thisEnd1=self.project(t1[intersectionLine[0]], face1)
             self.add_intersection(
