@@ -2521,7 +2521,6 @@ class Part(object):
             t.isCopy = True
             t.transform = copytrans
             self.parent.add(t)
-
         self.copied = True
 
     # flatten the parts tree
