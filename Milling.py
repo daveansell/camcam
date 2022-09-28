@@ -327,18 +327,21 @@ class Milling:
                         "diameter":6.35,
                         "endcut":1,
                         "sidecut":1,
+                        "flutes":1,
                 },
                 "1/4_straight":{
                         "id":4,
                         "diameter":6.35,
                         "endcut":0,
                         "sidecut":1,
+                        "flutes":2,
                 },
                 "1/8_endmill":{
                         "id":3,
                         "diameter":3.127,
                         "endcut":1,
                         "sidecut":1,
+                        "flutes":1,
                 },
                 "16mm_endmill":{
                         "id":5,
@@ -346,6 +349,7 @@ class Milling:
                         "endcut":1,
 
                         "sidecut":1,
+                        "flutes":2,
                 },
                 "18mm_endmill":{
                         "id":30,
@@ -353,6 +357,7 @@ class Milling:
                         "endcut":1,
 
                         "sidecut":1,
+                        "flutes":2,
                 },
                 "22mm_endmill":{
                         "id":22,
@@ -360,6 +365,7 @@ class Milling:
                         "endcut":1,
 
                         "sidecut":1,
+                        "flutes":2,
                 },
                 "6mm_endmill":{
                         "id":2,
@@ -367,42 +373,49 @@ class Milling:
                         "endcut":1,
 
                         "sidecut":1,
+                        "flutes":1,
                 },
                 "2mm_endmill":{
                         "id":8,
                         "diameter":2.0,
                         "endcut":1,
                         "sidecut":1,
+                        "flutes":1,
                 },
                 "9.4mm_endmill":{
                         "id":21,
                         "diameter":9.4,
                         "endcut":1,
                         "sidecut":1,
+                        "flutes":2,
                 },
                 "3mm_endmill":{
                         "id":1,
                         "diameter":3.0,
                         "endcut":1,
                         "sidecut":1,
+                        "flutes":2,
                 },
                 "4mm_endmill":{
                         "id":9,
                         "diameter":4.0,
                         "endcut":1,
                         "sidecut":1,
+                        "flutes":1,
                 },
                 "8mm_endmill":{
                         "id":7,
                         "diameter":8.0,
                         "endcut":1,
                         "sidecut":1,
+                        "flutes":2,
                 },
                 "1mm_endmill":{
                         "id":10,
                         "diameter":1.0,
                         "endcut":1,
                         "sidecut":1,
+                        "flutes":2,
                         },
                 "0.5mm_endmill":{
                         "id":11,
@@ -410,6 +423,7 @@ class Milling:
 
                         "endcut":1,
                         "sidecut":1,
+                        "flutes":2,
                 },
                 "countersink25":{
                         "id":20,
@@ -418,6 +432,7 @@ class Milling:
                         "sidecut":1,
                         "min_diameter":2.0,
                         "angle":45,
+                        "flutes":2,
                 },
                 "countersink":{
                         "id":6,
@@ -426,6 +441,7 @@ class Milling:
                         "sidecut":1,
                         "min_diameter":2.0,
                         "angle":45,
+                        "flutes":2,
                 },
                 "1mm_drill":{
                         "id":12,
@@ -476,24 +492,28 @@ class Milling:
                         "sidecut":1,
                         "angle":17.0/2,
                         "sidestep":0.5,
+                        "flutes":2,
                 },
                 "3mm_ballmill":{
                         "id":21,
                         "diameter":3.0,
                         "endcut":1,
                         "sidecut":1,
+                        "flutes":2,
                 },
                 "6mm_ballmill":{
                         "id":22,
                         "diameter":6.0,
                         "endcut":1,
                         "sidecut":1,
+                        "flutes":2,
                 },
                 "engraving":{
                         "id":23,
                         "diameter":1.2,
                         "endcut":0,
                         "sidecut":1,
+                        "flutes":2,
                 },
 
                 "laser":{
@@ -501,6 +521,7 @@ class Milling:
                         "diameter":0.05,
                         "endcut":1,
                         "sidecut":1,
+                        "flutes":1,
                 },
                 "latheBoring":{
                         "id":50,
@@ -531,6 +552,7 @@ class Milling:
                         "diameter":0,
                         "endcut":1,
                         "sidecut":1,
+                        "flutes":1,
                 },
                 }
 # feeds and stepdown are definined for 4mm cutter, and scaled linearly by cutterrad
@@ -541,7 +563,12 @@ class Milling:
                         "stepdown":5.0,
                         "kress_setting":4.0,
                         "spring":0.3,
-
+                        "surface_speed":650*300, # mm/min
+                        "chip_loading":{
+                            'low':{3.16:	0.1016	,6.32:	0.2794	,9.48:	0.4318	,12.64:	0.5334},
+                            'high':{3.16:	0.1524	,6.32:	0.3302	,9.48:	0.508	,12.64:	0.5842},
+                            },
+                            
                 },
                 "mdf":{
                         "vertfeed":200,
@@ -549,6 +576,11 @@ class Milling:
                         "stepdown":3.5,
                         "kress_setting":4.0,
                         "spring":0.3,
+                        "surface_speed":650*300, # mm/min
+                        "chip_loading":{
+                            'low':{ 3.16:	0.1016	,6.32:	0.3302	,9.48:	0.508	,12.64:0.635},
+                            'high':{3.16:	0.1778	,6.32:	0.4064	,9.48:	0.5842	,12.64:0.6858 },
+                            },
 
                 },
 
@@ -557,13 +589,23 @@ class Milling:
                         "sidefeed":600,
                         "stepdown":2.0,
                         "kress_setting":2.0,
+                        "surface_speed":500*300, # mm/min
                 #	"mill_dir":'down',
+                        "chip_loading":{
+                            'low':{3.16:	0.0762	,6.32:	0.2032	,9.48:	0.254	,12.64:	0.3048 },
+                            'high':{ 3.16:	0.127	,6.32:	0.254	,9.48:	0.3048	,12.64:	0.381},
+                            },
                 },
                 "polycarbonate":{
                         "vertfeed":120,
                         "sidefeed":700,
                         "stepdown":2.0,
                         "kress_setting":2.0,
+                        "surface_speed":500*300, # mm/min
+                        "chip_loading":{ # from acrylic 
+                            'low':{3.16:	0.0762	,6.32:	0.2032	,9.48:	0.254	,12.64:	0.3048 },
+                            'high':{ 3.16:	0.127	,6.32:	0.254	,9.48:	0.3048	,12.64:	0.381},
+                            },
 
                 },
                 "delrin":{
@@ -572,18 +614,29 @@ class Milling:
                         "stepdown":3.0,
                         "kress_setting":2.0,
                         "mill_dir":'down',
+                        "surface_speed":500*300, # mm/min
+                        "chip_loading":{
+                            'low':{3.16:	0.0508	,6.32:	0.1524	,9.48:	0.2032	,12.64:	0.254},
+                            'high':{3.16:	0.1016	,6.32:	0.2286	,9.48:	0.254	,12.64:	0.3048},
+                            },
                 },
                 "tufnol":{
                         "vertfeed":100,
                         "sidefeed":900,
                         "stepdown":1.5,
                         "kress_setting":2.0,
+                        "surface_speed":400*300, # mm/min
+                        "chip_loading":{ # from Al
+                            'low':{3.16:	0.0762	,6.32:	0.127	,9.48:	0.1524	,12.64:	0.2032},
+                            'high':{3.16:	0.1016	,6.32:	0.1778	,9.48:	0.2032	,12.64:	0.254},
+                            },
                },
                 "HIPS":{
                         "vertfeed":100,
                         "sidefeed":500,
                         "stepdown":3.0,
                         "kress_setting":1.5,
+                        "surface_speed":450*300, # mm/min
                },
                 "aluminium":{
                         "vertfeed":30,
@@ -595,7 +648,12 @@ class Milling:
                             'bending':{1:0.33, 3:0.4, 10:0.5},
                             'bottoming':{1:0.42, 3:0.46, 10:0.5},
                             'coining':{1:0.38, 3:0.44, 10:0.5},
-                        }
+                        },
+                        "surface_speed":250*300, # mm/min
+                        "chip_loading":{ # from Al
+                            'low':{3.16:	0.0762	,6.32:	0.127	,9.48:	0.1524	,12.64:	0.2032},
+                            'high':{3.16:	0.1016	,6.32:	0.1778	,9.48:	0.2032	,12.64:	0.254},
+                            },
                },
                 
                 "copper":{
@@ -604,6 +662,7 @@ class Milling:
                         "stepdown":0.2,
                         "kress_setting":3,
                         "mill_dir":'down',
+                        "surface_speed":300*300, # mm/min
                },
                 "brass":{
                         "vertfeed":20,
@@ -615,7 +674,8 @@ class Milling:
                             'bending':{1:0.38, 3:0.43, 10:0.5},
                             'bottoming':{1:0.44, 3:0.47, 10:0.5},
                             'coining':{1:0.41, 3:0.46, 10:0.5},
-                        }
+                        },
+                        "surface_speed":200*300, # mm/min
                },
                 "steel":{
                         "vertfeed":20,
@@ -627,7 +687,8 @@ class Milling:
                             'bending':{1:0.4, 3:0.45, 10:0.5},
                             'bottoming':{1:0.46, 3:0.48, 10:0.5},
                             'coining':{1:0.44, 3:0.47, 10:0.5},
-                        }
+                        },
+                        "surface_speed":110*300, # mm/min
                },
                 "polypropelene":{
                         "vertfeed":100,
@@ -635,6 +696,7 @@ class Milling:
                         "stepdown":2.0,
                         "kress_setting":1.5,
                         "mill_dir":'up',
+                        "surface_speed":450*300, # mm/min
                },
                 "plastazote":{
                         "vertfeed":700,
@@ -643,20 +705,29 @@ class Milling:
                         "kress_setting":1.5,
                         "mill_dir":'up',
                },
-                "polythene":{
-                        "vertfeed":100,
-                        "sidefeed":1000,
-                        "stepdown":15.0,
-			"finishdepth":1.5,
-                        "kress_setting":1.5,
-                        "mill_dir":'up',
-               },
                 "polyethene":{
                         "vertfeed":100,
                         "sidefeed":1000,
                         "stepdown":2.0,
                         "kress_setting":1.5,
-			"mill_dir":'down',
+			            "mill_dir":'down',
+                        "surface_speed":450*300, # mm/min
+                        "chip_loading":{  
+                            'low':{3.16:	0.0762	,0.25:	0.1778	,9.48:	0.254	,12.64:	0.3048},
+                            'high':{3.16:	0.1524	,0.25:	0.254	,9.48:	0.3048	,12.64:	0.4064},
+                            },
+               },
+                "polythene":{
+                        "vertfeed":100,
+                        "sidefeed":1000,
+                        "stepdown":2.0,
+                        "kress_setting":1.5,
+			            "mill_dir":'down',
+                        "surface_speed":450*300, # mm/min
+                        "chip_loading":{  
+                            'low':{3.16:	0.0762	,0.25:	0.1778	,9.48:	0.254	,12.64:	0.3048},
+                            'high':{3.16:	0.1524	,0.25:	0.254	,9.48:	0.3048	,12.64:	0.4064},
+                            },
                },
                 "pvc":{
                         "vertfeed":100,
@@ -664,30 +735,39 @@ class Milling:
                         "stepdown":3.0,
                         "kress_setting":1.5,
                         "mill_dir":'up',
+                        "surface_speed":350*300, # mm/min
+                        "chip_loading":{ # from polythene 
+                            'low':{3.16:	0.0762	,0.25:	0.1778	,9.48:	0.254	,12.64:	0.3048},
+                            'high':{3.16:	0.1524	,0.25:	0.254	,9.48:	0.3048	,12.64:	0.4064},
+                            },
                },
                 "abs":{
                         "vertfeed":100,
                         "sidefeed":900,
                         "stepdown":2.0,
                         "kress_setting":1.5,
+                        "surface_speed":350*300, # mm/min
                },
                 "petg":{
                         "vertfeed":100,
                         "sidefeed":900,
                         "stepdown":2.0,
                         "kress_setting":1.5,
+                        "surface_speed":350*300, # mm/min
                },
                 "pla":{
                         "vertfeed":100,
                         "sidefeed":900,
                         "stepdown":2.0,
                         "kress_setting":1.5,
+                        "surface_speed":350*300, # mm/min
                },
                "pcb":{
                         "vertfeed":100,
                         "sidefeed":300,
                         "stepdown":2.0,
                         "kress_setting":3.0,
+                        "surface_speed":650*300, # mm/min
                },
                "paper":{
                         "vertfeed":100,

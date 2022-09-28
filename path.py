@@ -258,6 +258,7 @@ class Path(object):
             cutter=config['cutter']
         if cutter in milling.tools:
             tool=milling.tools[cutter]
+            config['tool']=tool
             config['cutterrad']=float(tool['diameter'])/2
             config['endcut']=tool['endcut']
             config['sidecut']=tool['sidecut']
@@ -286,15 +287,29 @@ class Path(object):
             config['vertfeed'] *= tool['diameter']/4.0
         if 'stepdown' in config and config['stepdown']:
             config['stepdown'] *= tool['diameter']/4.0
-        if 'sidefeed' in config and config['sidefeed']:
-            config['sidefeed'] *= tool['diameter']/4.0
+        #if 'sidefeed' in config and config['sidefeed']:
+         #   config['sidefeed'] *= tool['diameter']/4.0
+        if('material' in config and config['material'] is not None):
+            mat=milling.materials[config['material']]
+            if 'spindleRPM' not in config or config['spindleRPM'] is None:
+                    config['spindleRPM']= mat['surface_speed']/config['cutterrad']/math.pi/2
+            if 'sidefeed' not in config or config['sidefeed'] is None:
+                #    config['sidefeed']=mat['sidefeed']
+                print("chip loading ="+str(self.get_chip_loading(config['cutterrad'], mat['chip_loading']['low']) ))
+                config['sidefeed']= self.get_chip_loading(config['cutterrad'], mat['chip_loading']['low']) * config['spindleRPM']*tool['flutes']
+
+            print("cutter"+str(cutter)+'spindleRPM'+str(config['spindleRPM'])+ 'sidefeed'+str(config['sidefeed']))
+    def get_chip_loading(self, rad, values):
+        diam = rad*2
+        for d in sorted(values):
+            if d>diam:
+                return values[d]
+        return values[d]
 
     def set_material(self, config):
         if config['material'] in milling.materials:
             mat=milling.materials[config['material']]
             config['vertfeed']=mat['vertfeed']
-            if 'sidefeed' not in config or config['sidefeed'] is None:
-                config['sidefeed']=mat['sidefeed']
             if 'stepdown' not in config or type(config['stepdown']) is not int and type(config['stepdown']) is not float:
                 config['stepdown']=mat['stepdown']
             config['kress_setting']=mat['kress_setting']
@@ -1081,6 +1096,9 @@ class Path(object):
                 config['z1'] = - thickness
         return config
 
+        
+
+
     def fill_path(self, side, cutterrad, distance=False, step=False, cutDirection=None):
         if step==False:
             step = cutterrad*0.5
@@ -1218,16 +1236,17 @@ class Path(object):
         out=[]
 # Do something about offsets manually so as not to rely on linuxcnc
         config=self.generate_config(pconfig)
-        if config['mode']=='gcode' and hasattr(self, 'spindleDir') and self.spindleDir and spindleDir != self.spindleDir:
-            if spindleDir is None:
-                time = "5"
-            else:
-                time = "10"
-            if self.spindleDir=='ccw':
-                out.append('M03\nG04p'+time+'\n')
-            elif self.spindleDir=='cw':
-                out.append('M04\nG04p'+time+'\n')
-            spindleDir = self.spindleDir
+        if config['mode']=='gcode':
+            if hasattr(self, 'spindleDir') and self.spindleDir and spindleDir != self.spindleDir:
+                if spindleDir is None:
+                    time = "5"
+                else:
+                    time = "10"
+                if self.spindleDir=='ccw':
+                    out.append('M03\nG04p'+time+'\n')
+                elif self.spindleDir=='cw':
+                    out.append('M04\nG04p'+time+'\n')
+                spindleDir = self.spindleDir
         finalpass=False
         outpaths=[]
         if config['side']=='in' or config['side']=='out':
@@ -1485,6 +1504,8 @@ class Path(object):
                 else:
                     if 'blendTolerance' in config:
                         ret+="G64\n"
+            if 'spindleRPM' in config and  config['spindleRPM'] is not None:
+                ret+='M03 S'+str(round(config['spindleRPM'],2))+'\n'
         for point in path:
             if '_comment' in point and config['comments']:
                 ret+="("+point['_comment']+")"
