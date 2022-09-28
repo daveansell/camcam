@@ -586,9 +586,9 @@ class Milling:
                         "kress_setting":1.5,
                },
                 "aluminium":{
-                        "vertfeed":50,
+                        "vertfeed":30,
                         "sidefeed":950,
-                        "stepdown":0.3,
+                        "stepdown":0.6,
                         "kress_setting":1,
                         "mill_dir":'down',
                         "K":{
