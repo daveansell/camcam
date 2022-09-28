@@ -91,12 +91,16 @@ class CamCam:
                         cy=(part.border.boundingBox['bl'][1]+part.border.boundingBox['tr'][1])/2
                         print(p['name']+" translate="+str(p['translate'])+" origin="+str(p['origin'])+" center="+str(V(cx,cy)))
                     tconfig['transformations'] = [
-#                                       {'rotate':[V((minx+maxx)/2,(minx+maxx)/2), -p['rotate']]},
-#                                       {'rotate':[V(p['startcentre'][0],p['startcentre'][1]), -p['rotate']]},
-                    #       {'rotate':[V(cx,cy), -p['rotate']]},
-                            [{'rotate':[V(cx+p['translate'][0],cy+p['translate'][1]), -p['rotate']]}],
-                            [{ 'translate':V(p['translate'][0], p['translate'][1] ) }],
+                            { 'translate':V(p['translate'][0], p['translate'][1] ) },
+                            {'rotate':[V(cx+p['translate'][0],cy+p['translate'][1]), -p['rotate']]},
                     ]
+                   # part.transform = [
+#                      ##                 {'rotate':[V((minx+maxx)/2,(minx+maxx)/2), -p['rotate']]},
+#                    ##                   {'rotate':[V(p['startcentre'][0],p['startcentre'][1]), -p['rotate']]},
+                    ##       {'rotate':[V(cx,cy), -p['rotate']]},
+                    #        {'rotate':[V(cx+p['translate'][0],cy+p['translate'][1]), -p['rotate']]},
+                     #       { 'translate':V(p['translate'][0], p['translate'][1] ) },
+                   # ]
                     print(p['name']+str(tconfig['transformations']))
 #                               part.rotate(V(cx,cy), -p['rotate'])
 #                               part.rotate(V(p['origin'][0],p['origin'][1]), -p['rotate'])
