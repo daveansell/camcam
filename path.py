@@ -215,10 +215,10 @@ class Path(object):
             else:
                 a['transformations']=[]
         if 'transformations' in b and type(b['transformations']) is list:
-            a['transformations'].extend(b['transformations'])
+            a['transformations']=b['transformations']+a['transformations']
         if 'transform' in b and b['transform'] is not False and b['transform'] is not None:
         #       if type(b['transform']) is list:
-            a['transformations'].append(b['transform'])
+            a['transformations'].insert(0,b['transform'])
         return a
 #               for i in b.keys():
 #                       if b[i] is not False and b[i] is not None:
@@ -553,9 +553,9 @@ class Path(object):
     def has_changed(self):
         for c in list(self.changed.keys()):
             self.changed[c]=True
+
     def transform_pointlist(self, pointlist,transformations):
         pout=[]
-
         for p in pointlist:
             # reset the pointlist
             p.invert=False
@@ -963,9 +963,9 @@ class Path(object):
             config['transformations']=pconfig['transformations'][:]
         if self.transform!=None:
             if type(self.transform) is list :
-                config['transformations']+=self.transform
+                config['transformations']=self.transform+config['transformations']
             else:
-                config['transformations'].append(self.transform)
+                config['transformations'].insert(0,self.transform)
         #       self.transform=None
     #       self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','finishdepth','forcestepdown', 'forcecutter', 'mode','partial_fill','finishing','fill_direction','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z','clear_height', 'sidefeed']
         for v in self.varlist:
@@ -1085,9 +1085,13 @@ class Path(object):
         if step==False:
             step = cutterrad*0.5
         ret=[self]
-        spath=self.offset_path('in', cutterrad, {})
+        spath=self.offset_path(side, cutterrad, {})
         spath.makeShapely()
-        poly = shapely.geometry.LineString(spath.shapelyPolygon.coords[:] + spath.shapelyPolygon.coords[0:1])
+  #      if(type(spath.shapelyPolygon)=='shapely.geometry.polygon.Polygon'):
+        if hasattr(spath.shapelyPolygon, 'boundary'):
+            poly = shapely.geometry.LineString( spath.shapelyPolygon.boundary.coords[:] + spath.shapelyPolygon.boundary.coords[0:1] )
+        else:
+            poly = shapely.geometry.LineString(spath.shapelyPolygon.coords[:] + spath.shapelyPolygon.coords[0:1])
         thisdir=self.find_direction({})
         if (thisdir=='ccw') == (side=='in'):
             cutside='right'
@@ -1098,13 +1102,17 @@ class Path(object):
             step = distance/steps
         else:
             steps = 100
+        print ("distance="+str(distance)+" steps="+str(steps)+" step="+str(step))
         polTree = self.fill_path_step( side, step, poly, steps)
+        print(polTree)
         polPaths = self.make_fill_path(polTree, cutDirection)
         fillPath = Pathgroup()
         for p in polPaths:
-            path = Path(closed=True, side='on', z1=self.z1)
-            path.add_points(p)
-            fillPath.add(path)
+            if len(p):
+                path = Path(closed=True, side='on', z1=self.z1)
+                path.add_points(p)
+                fillPath.add(path)
+                print (len(fillPath.paths[-1].points))
         return fillPath
 
     def make_fill_path(self, polTree, cutDirection, depth=0):
@@ -1146,7 +1154,6 @@ class Path(object):
                 side='right'
         new=polygon.parallel_offset(step, side, join_style=2)
         ret=[]
-
         if stepcount==0:
             pass
         elif type(new) is shapely.geometry.LineString:
@@ -1965,9 +1972,9 @@ class Pathgroup(object):
         else:
             config['transformations']=pconfig['transformations'][:]
         if type(self.transform) is list:
-            config['transformations']+=self.transform
+            config['transformations']= self.transform + config['transformations']
         elif self.transform!=None:
-            config['transformations'].append(self.transform)
+            config['transformations'].insert(0,self.transform)
         #       self.transform=None
         for v in self.varlist:
             if v !='transform' and v !='transformations':
