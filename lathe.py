@@ -211,6 +211,7 @@ class LathePath(Path):
                 self.spindleDir = direction
 
         def generateRouging(self,  config):
+                
                 if config['latheMode']=='face':
                         stepDir = V(0,-1)
                         cutDir = V(1,0)
@@ -309,11 +310,13 @@ class LathePath(Path):
         def findRoughingCuts2(self, stepDir, cutDir, startStep, endStep, startCut, endCut, config):
                 cuts=[]
                 numSteps = int(math.ceil(abs((endStep - startStep)/config['step'])))
+ #               print ("findRoughingCuts2 "+str(numSteps))
                 if numSteps == 0:
                     step = 1
                 else:
                     step = (endStep - startStep)/numSteps
                 cuts+=self.findRoughingCut2(startStep, cutDir, stepDir, False, startCut, endCut, step, endStep, config)
+                print(cuts)
                 return cuts
 
         def sign(self, x):
@@ -357,7 +360,7 @@ class LathePath(Path):
                 return intersection
 
         def findRoughingCut2(self, val, direction, stepDir, intersected, startCut, endCut, step, endStep, config):
-                print("x="+str(val))
+                #print("x="+str(val))
                 if step<0:
                     if val<endStep:
                         return []
@@ -389,26 +392,30 @@ class LathePath(Path):
                     intersected = True
                 if not type(intersection) is list:
                     intersection = [intersection]
-                print("bleep")
+                #print("bleep")
                 if type(intersection) is list:
                             def keyfunc(a):
                                 return a.dot(alongCut)
                             intersection.sort(key=keyfunc)
                             ret = []
                             p=0
+                            # If there are an odd number of intersections one cut will start from 
                             if len(intersection)%2==1:
+                                #print("Q="+str(len(intersection)))
  #                               ret+=  [PSharp(startCut*alongAxis+ val*stepAxis) ]  
                                 nextcuts=self.findRoughingCut2( val+step, direction, stepDir, intersected, startCut, intersection[p].dot(alongAxis), step, endStep,  config)
                                 theCut=self.cutChipBreak(
                                         startCut*alongAxis+ val*stepAxis,
                                         intersection[p]-stepDir*config['cutClear'] - alongCut*config['roughClearance']
                                     )
-                                print("len nextcuts="+str(len(nextcuts)))
+                                #print("len nextcuts="+str(len(nextcuts)))
                                 if len(nextcuts):
-                                     print("len="+str(len(nextcuts))+" last point="+str(nextcuts[-1].pos))
+                                 #    print("len="+str(len(nextcuts))+" last point="+str(nextcuts[-1].pos))
                                      ret+= theCut+[
                                         PSharp(nextcuts[0].pos-stepDir*step*2, isRapid=True)
                                     ]+nextcuts +[PSharp(nextcuts[-1].pos-step*stepDir*2,isRapid=True)]
+                                else:
+                                    ret+= theCut
                                 #ret.append(
                                  #   PSharp(val*stepAxis+ ret[-1].pos.dot(alongAxis) + stepAxis*(config['cutClear']), isRapid=True)
                                 #)
@@ -427,7 +434,7 @@ class LathePath(Path):
                                             intersection[p+1] - stepDir*config['cutClear'] - alongCut*config['roughClearance']
                                         )
 # move out to clear part
-                                print("x="+str(val+step)+"len nextcuts="+str(len(nextcuts)))
+                                #print("x="+str(val+step)+"len nextcuts="+str(len(nextcuts)))
                             
                                 if len(nextcuts):
                                         print("len="+str(len(nextcuts))+" last point="+str(nextcuts[-1].pos))
