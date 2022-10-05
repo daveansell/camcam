@@ -158,7 +158,7 @@ class Path(object):
         self.Bsegments = []
         self.transform=[]
         self.otherargs=''
-        varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance', 'vertfeed', 'downmode', 'blendTolerance','finalpass', 'spindleRPM']
+        varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance', 'vertfeed', 'downmode', 'blendTolerance','finalpass', 'spindleRPM', 'stepdown']
         if hasattr(self, 'varlist') and type(self.varlist) is list:
             self.varlist+=varlist
         else:
@@ -177,6 +177,7 @@ class Path(object):
         self.polygon={}
         self.changed={}
         self.input_direction=False
+        self.mirrored=False
         self.parent=False
         self.blendTolerance=0
         self.comment("start:"+str(type(self)))
@@ -293,11 +294,12 @@ class Path(object):
             mat=milling.materials[config['material']]
             if 'spindleRPM' not in config or config['spindleRPM'] is None:
                     config['spindleRPM']= mat['surface_speed']/config['cutterrad']/math.pi/2
-            if 'sidefeed' not in config or config['sidefeed'] is None:
+            if 'sidefeed' not in config or config['sidefeed'] is None and 'type' not in tool or tool['type'] !='lathe':
                 #    config['sidefeed']=mat['sidefeed']
                 print("chip loading ="+str(self.get_chip_loading(config['cutterrad'], mat['chip_loading']['low']) ))
                 config['sidefeed']= self.get_chip_loading(config['cutterrad'], mat['chip_loading']['low']) * config['spindleRPM']*tool['flutes']
-
+        if 'stepdown' in config and config['stepdown'] and 'sidefeed' in config and config['sidefeed'] and config['stepdown']>1.5*tool['diameter']:
+            config['sidefeed']*= 1.5*tool['diameter']/config['stepdown']
             print("cutter"+str(cutter)+'spindleRPM'+str(config['spindleRPM'])+ 'sidefeed'+str(config['sidefeed']))
     def get_chip_loading(self, rad, values):
         diam = rad*2
@@ -312,6 +314,8 @@ class Path(object):
             config['vertfeed']=mat['vertfeed']
             if 'stepdown' not in config or type(config['stepdown']) is not int and type(config['stepdown']) is not float:
                 config['stepdown']=mat['stepdown']
+            else:
+                print("existing stepdown")
             config['kress_setting']=mat['kress_setting']
             if 'mill_dir' in mat:
                 config['mill_dir']=mat['mill_dir']
@@ -1065,7 +1069,6 @@ class Path(object):
         self.set_material(config)
         self.set_cutter(config)
         thisdir=self.find_direction(config)
-
         if 'direction' not in config or config['direction'] is False:
 
             if hasattr(self,'direction') and  self.direction=='this':
