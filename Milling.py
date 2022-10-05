@@ -530,6 +530,7 @@ class Milling:
                         "sidecut":1,
 			"forcestepdown":1000,
 			"handedness":-1,
+                        "type":"lathe",
                 },
                 "latheParting":{
                         "id":52,
@@ -538,6 +539,7 @@ class Milling:
                         "sidecut":0,
 			"forcestepdown":1000,
 			"handedness":1,
+                        "type":"lathe",
                 },
                 "latheTurning":{
                         "id":51,
@@ -546,6 +548,7 @@ class Milling:
                         "sidecut":1,
 			"forcestepdown":1000,
 			"handedness":1,
+                        "type":"lathe",
                 },
                 "on":{
                         "id":101,
@@ -720,7 +723,7 @@ class Milling:
                 "polythene":{
                         "vertfeed":100,
                         "sidefeed":1000,
-                        "stepdown":2.0,
+                        "stepdown":15.0,
                         "kress_setting":1.5,
 			            "mill_dir":'down',
                         "surface_speed":450*300, # mm/min
