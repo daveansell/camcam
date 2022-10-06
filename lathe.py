@@ -78,7 +78,8 @@ class LathePath(Path):
                                         point['cmd']="G3"
                                 elif point['cmd']=="G3":
                                         point['cmd']="G2"
-                        if '_comment' in point and config['comments']:
+                        if '_comment' in point and point['_comment'] and config['comments']:
+                                print('_comment='+str(point['_comment']))
                                 ret+="("+point['_comment']+")"
                         if 'cmd' in point:
                                 ret+=point['cmd']
@@ -251,6 +252,7 @@ class LathePath(Path):
                         startZ = self.max[1] + config['matEnd']
                         endZ = self.min[1]# + config['roughClearance']  
                         roughing = self.findRoughingCuts2( stepDir, cutDir, startZ, endZ, startRad, endRad, config)
+                        print("startZ="+str(startZ)+" clearZ="+str(self.clearZ))
 
                 elif config['latheMode']=='backBore':
                         stepDir = V(-1,0)
@@ -316,7 +318,6 @@ class LathePath(Path):
                 else:
                     step = (endStep - startStep)/numSteps
                 cuts+=self.findRoughingCut2(startStep, cutDir, stepDir, False, startCut, endCut, step, endStep, config)
-                print(cuts)
                 return cuts
 
         def sign(self, x):
@@ -366,6 +367,7 @@ class LathePath(Path):
                         return []
                 else:
                     if val>endStep:
+                        print("endstep"+str(endStep))
                         return []
                 if abs(stepDir.dot(V(0,1)))>0.0001:
                         alongCut = V(1,0) * self.sign(endCut-startCut)
@@ -373,13 +375,16 @@ class LathePath(Path):
                         stepAxis = V(0,1)
 #                       intersection = self.findIntersection( [ [startCut, val], [ endCut, val] ], endCut, val)
                         line = shapely.geometry.LineString([ [ startCut, val], [ endCut, val] ])
+                        cAlong = self.sign(endCut-startCut)
                 else:
                         alongCut = V(0,1) * self.sign(endCut-startCut)
                         alongAxis = V(0,1)
                         stepAxis = V(1,0)
                         off = val
                         line = shapely.geometry.LineString([ [val, startCut], [ val, endCut] ])
+                        cAlong = self.sign(endCut-startCut)
                 intersection = self.shapelyPolygon.intersection(line)
+                print("I="+str(intersection)+"val="+str(val)+"line="+str(line))
                 default = endCut*alongAxis + val * stepAxis
                 intersection = self.convertIntersection(intersection, None)
 # if we get no intersection we might have gone past line or have not got there yet
@@ -392,6 +397,7 @@ class LathePath(Path):
                     intersected = True
                 if not type(intersection) is list:
                     intersection = [intersection]
+                print("i="+str(intersection))
                 #print("bleep")
                 if type(intersection) is list:
                             def keyfunc(a):
@@ -399,21 +405,22 @@ class LathePath(Path):
                             intersection.sort(key=keyfunc)
                             ret = []
                             p=0
+
+                            print("Q="+str(intersection))
                             # If there are an odd number of intersections one cut will start from 
                             if len(intersection)%2==1:
-                                #print("Q="+str(len(intersection)))
- #                               ret+=  [PSharp(startCut*alongAxis+ val*stepAxis) ]  
+ #                               ret+=  [PSharp(startCut*alongAxis+ val*stepAxis) ]
                                 nextcuts=self.findRoughingCut2( val+step, direction, stepDir, intersected, startCut, intersection[p].dot(alongAxis), step, endStep,  config)
                                 theCut=self.cutChipBreak(
-                                        startCut*alongAxis+ val*stepAxis,
+                                        startCut*alongAxis+ val*stepAxis-stepDir*config['cutClear'],
                                         intersection[p]-stepDir*config['cutClear'] - alongCut*config['roughClearance']
                                     )
-                                #print("len nextcuts="+str(len(nextcuts)))
+                                print("len nextcuts="+str(len(nextcuts)))
                                 if len(nextcuts):
-                                 #    print("len="+str(len(nextcuts))+" last point="+str(nextcuts[-1].pos))
+                                     print("len="+str(len(nextcuts))+" last point="+str(nextcuts[-1].pos)+" retract="+str(step))
                                      ret+= theCut+[
-                                        PSharp(nextcuts[0].pos-stepDir*step*2, isRapid=True)
-                                    ]+nextcuts +[PSharp(nextcuts[-1].pos-step*stepDir*2,isRapid=True)]
+                                         PSharp(nextcuts[0].pos-stepDir*abs(step)*2, isRapid=True, comment='move to start')
+                                    ]+nextcuts +[PSharp(nextcuts[-1].pos-abs(step)*stepDir*2,isRapid=True, comment='retract')]
                                 else:
                                     ret+= theCut
                                 #ret.append(
@@ -422,8 +429,21 @@ class LathePath(Path):
                                 
                                 p+=1
                             while p<len(intersection):
-                               
-                                nextcuts=self.findRoughingCut2( val+step, direction, stepDir, True, intersection[p].dot(alongAxis), intersection[p+1].dot(alongAxis), step, endStep, config)
+                                print("R="+str(intersection)+str([intersection[p].dot(alongAxis), intersection[p+1].dot(alongAxis),]))
+                                print ("p="+str(p)+" len="+str(len(intersection))+"calong"+str(cAlong))
+
+                                # if 
+                                if p==0:
+                                    nextStartCut = startCut
+                                else:
+                                    nextStartCut = intersection[p].dot(alongAxis)-0.01*calong
+
+                                if p==len(intersection)-2:
+                                    nextEndCut = endCut
+                                else:
+                                    nextEndCut = intersection[p+1].dot(alongAxis)+0.01*calong
+                                print([nextStartCut,nextEndCut])
+                                nextcuts=self.findRoughingCut2( val+step, direction, stepDir, True, nextStartCut, nextEndCut, step, endStep, config)
 # move to one step outside the start position
 #                                ret.append(PSharp(intersection[p] - stepDir*(step+config['cutClear']), isRapid=True))
 # cut down to the start position
@@ -438,8 +458,8 @@ class LathePath(Path):
                             
                                 if len(nextcuts):
                                         print("len="+str(len(nextcuts))+" last point="+str(nextcuts[-1].pos))
-                                        ret+= [PSharp(nextcuts[0].pos - step*stepDir*2, isRapid=True)
-                                    ] + nextcuts + [PSharp(nextcuts[-1].pos-step*stepDir*2, isRapid=True)]
+                                        ret+= [PSharp(nextcuts[0].pos - abs(step)*stepDir*2, isRapid=True)
+                                    ] + nextcuts + [PSharp(nextcuts[-1].pos-abs(step)*stepDir*2, isRapid=True)]
                                      
 # make any more cuts in this section
 # move one step out in case we need to move to another section
