@@ -309,7 +309,7 @@ class Point(object):
 
 
 class PSharp(Point):
-    def __init__(self, pos, radius=0, cp1=False, cp2=False, direction=False, transform=False, sharp=True, isRapid=False):
+    def __init__(self, pos, radius=0, cp1=False, cp2=False, direction=False, transform=False, sharp=True, isRapid=False, comment=False):
         """Create a sharp point at position=pos"""
         self.init()
         self.pos=Vec(pos)
@@ -323,6 +323,7 @@ class PSharp(Point):
         self.sharp=sharp
         self.isRapid=isRapid
         self.control = False
+        self.comment = comment
 
     def copy(self):
         t=PSharp( self.pos, self.radius, self.cp1, self.cp2, self.direction, self.transform)
@@ -334,6 +335,7 @@ class PSharp(Point):
         t.sharp = self.sharp
         t.invert = self.invert
         t.isRapid = self.isRapid
+        t.comment = self.comment
         return t
 
     def origin(self, forward=True):
@@ -395,10 +397,12 @@ class PSharp(Point):
     def makeSegment(self, config):
         l= self.last()
         if type(l) is not None and l.end()!=self.pos:
+            if self.comment:
+                print("p comment="+str(self.comment))
             if self.isRapid==True:
-                return [Line(self.last().end(), self.pos, rapid=True)]
+                return [Line(self.last().end(), self.pos, rapid=True, comment=self.comment)]
             else:
-                return [Line(self.last().end(), self.pos)]
+                return [Line(self.last().end(), self.pos, comment=self.comment)]
         else:
 #                       print "No segnmet" + str(l.end())+"&&"
 #                       print "No segnmet" + str(self.last())+"&&"
@@ -1041,7 +1045,7 @@ class PClear(PSharp):
                 Line(extrapoint,self.pos),
         ]
 class PIgnore(PSharp):
-    def __init__(self, pos, transform=False):
+    def __init__(self, pos, transform=False, comment=False):
         """Create a sharp point at position=pos with an extra cut so that a sharp corner will fit inside it"""
         self.init()
         self.pos=Vec(pos)
@@ -1049,6 +1053,7 @@ class PIgnore(PSharp):
         self.transform=transform
         self.obType="Point"
         self.control=True
+        self.comment = comment
     def copy(self):
         t = PClear( self.pos, self.transform)
         t.lastpoint=self.lastpoint
