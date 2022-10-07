@@ -1510,7 +1510,7 @@ class Path(object):
             if 'spindleRPM' in config and  config['spindleRPM'] is not None:
                 ret+='M03 S'+str(round(config['spindleRPM'],2))+'\n'
         for point in path:
-            if '_comment' in point and config['comments']:
+            if '_comment' in point and point['_comment'] and config['comments']:
                 ret+="("+point['_comment']+")"
             if 'cmd' in point:
                 ret+=point['cmd']
