@@ -158,7 +158,7 @@ class Path(object):
         self.Bsegments = []
         self.transform=[]
         self.otherargs=''
-        varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance', 'vertfeed', 'downmode', 'blendTolerance','finalpass', 'spindleRPM']
+        varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance', 'vertfeed', 'downmode', 'blendTolerance','finalpass', 'spindleRPM', 'stepdown']
         if hasattr(self, 'varlist') and type(self.varlist) is list:
             self.varlist+=varlist
         else:
@@ -177,6 +177,7 @@ class Path(object):
         self.polygon={}
         self.changed={}
         self.input_direction=False
+        self.mirrored=False
         self.parent=False
         self.blendTolerance=0
         self.comment("start:"+str(type(self)))
@@ -215,10 +216,10 @@ class Path(object):
             else:
                 a['transformations']=[]
         if 'transformations' in b and type(b['transformations']) is list:
-            a['transformations'].extend(b['transformations'])
+            a['transformations']=b['transformations']+a['transformations']
         if 'transform' in b and b['transform'] is not False and b['transform'] is not None:
         #       if type(b['transform']) is list:
-            a['transformations'].append(b['transform'])
+            a['transformations'].insert(0,b['transform'])
         return a
 #               for i in b.keys():
 #                       if b[i] is not False and b[i] is not None:
@@ -293,11 +294,12 @@ class Path(object):
             mat=milling.materials[config['material']]
             if 'spindleRPM' not in config or config['spindleRPM'] is None:
                     config['spindleRPM']= mat['surface_speed']/config['cutterrad']/math.pi/2
-            if 'sidefeed' not in config or config['sidefeed'] is None:
+            if 'sidefeed' not in config or config['sidefeed'] is None and 'type' not in tool or tool['type'] !='lathe':
                 #    config['sidefeed']=mat['sidefeed']
                 print("chip loading ="+str(self.get_chip_loading(config['cutterrad'], mat['chip_loading']['low']) ))
                 config['sidefeed']= self.get_chip_loading(config['cutterrad'], mat['chip_loading']['low']) * config['spindleRPM']*tool['flutes']
-
+        if 'stepdown' in config and config['stepdown'] and 'sidefeed' in config and config['sidefeed'] and config['stepdown']>1.5*tool['diameter']:
+            config['sidefeed']*= 1.5*tool['diameter']/config['stepdown']
             print("cutter"+str(cutter)+'spindleRPM'+str(config['spindleRPM'])+ 'sidefeed'+str(config['sidefeed']))
     def get_chip_loading(self, rad, values):
         diam = rad*2
@@ -312,6 +314,8 @@ class Path(object):
             config['vertfeed']=mat['vertfeed']
             if 'stepdown' not in config or type(config['stepdown']) is not int and type(config['stepdown']) is not float:
                 config['stepdown']=mat['stepdown']
+            else:
+                print("existing stepdown")
             config['kress_setting']=mat['kress_setting']
             if 'mill_dir' in mat:
                 config['mill_dir']=mat['mill_dir']
@@ -568,9 +572,9 @@ class Path(object):
     def has_changed(self):
         for c in list(self.changed.keys()):
             self.changed[c]=True
+
     def transform_pointlist(self, pointlist,transformations):
         pout=[]
-
         for p in pointlist:
             # reset the pointlist
             p.invert=False
@@ -978,9 +982,9 @@ class Path(object):
             config['transformations']=pconfig['transformations'][:]
         if self.transform!=None:
             if type(self.transform) is list :
-                config['transformations']+=self.transform
+                config['transformations']=self.transform+config['transformations']
             else:
-                config['transformations'].append(self.transform)
+                config['transformations'].insert(0,self.transform)
         #       self.transform=None
     #       self.varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode', 'stepdown','finishdepth','forcestepdown', 'forcecutter', 'mode','partial_fill','finishing','fill_direction','precut_z', 'layer', 'no_mirror', 'part_thickness','use_point_z','clear_height', 'sidefeed']
         for v in self.varlist:
@@ -1065,7 +1069,6 @@ class Path(object):
         self.set_material(config)
         self.set_cutter(config)
         thisdir=self.find_direction(config)
-
         if 'direction' not in config or config['direction'] is False:
 
             if hasattr(self,'direction') and  self.direction=='this':
@@ -1103,9 +1106,13 @@ class Path(object):
         if step==False:
             step = cutterrad*0.5
         ret=[self]
-        spath=self.offset_path('in', cutterrad, {})
+        spath=self.offset_path(side, cutterrad, {})
         spath.makeShapely()
-        poly = shapely.geometry.LineString(spath.shapelyPolygon.coords[:] + spath.shapelyPolygon.coords[0:1])
+  #      if(type(spath.shapelyPolygon)=='shapely.geometry.polygon.Polygon'):
+        if hasattr(spath.shapelyPolygon, 'boundary'):
+            poly = shapely.geometry.LineString( spath.shapelyPolygon.boundary.coords[:] + spath.shapelyPolygon.boundary.coords[0:1] )
+        else:
+            poly = shapely.geometry.LineString(spath.shapelyPolygon.coords[:] + spath.shapelyPolygon.coords[0:1])
         thisdir=self.find_direction({})
         if (thisdir=='ccw') == (side=='in'):
             cutside='right'
@@ -1116,13 +1123,17 @@ class Path(object):
             step = distance/steps
         else:
             steps = 100
+        print ("distance="+str(distance)+" steps="+str(steps)+" step="+str(step))
         polTree = self.fill_path_step( side, step, poly, steps)
+        print(polTree)
         polPaths = self.make_fill_path(polTree, cutDirection)
         fillPath = Pathgroup()
         for p in polPaths:
-            path = Path(closed=True, side='on', z1=self.z1)
-            path.add_points(p)
-            fillPath.add(path)
+            if len(p):
+                path = Path(closed=True, side='on', z1=self.z1)
+                path.add_points(p)
+                fillPath.add(path)
+                print (len(fillPath.paths[-1].points))
         return fillPath
 
     def make_fill_path(self, polTree, cutDirection, depth=0):
@@ -1164,7 +1175,6 @@ class Path(object):
                 side='right'
         new=polygon.parallel_offset(step, side, join_style=2)
         ret=[]
-
         if stepcount==0:
             pass
         elif type(new) is shapely.geometry.LineString:
@@ -1500,7 +1510,7 @@ class Path(object):
             if 'spindleRPM' in config and  config['spindleRPM'] is not None:
                 ret+='M03 S'+str(round(config['spindleRPM'],2))+'\n'
         for point in path:
-            if '_comment' in point and config['comments']:
+            if '_comment' in point and point['_comment'] and config['comments']:
                 ret+="("+point['_comment']+")"
             if 'cmd' in point:
                 ret+=point['cmd']
@@ -1986,9 +1996,9 @@ class Pathgroup(object):
         else:
             config['transformations']=pconfig['transformations'][:]
         if type(self.transform) is list:
-            config['transformations']+=self.transform
+            config['transformations']= self.transform + config['transformations']
         elif self.transform!=None:
-            config['transformations'].append(self.transform)
+            config['transformations'].insert(0,self.transform)
         #       self.transform=None
         for v in self.varlist:
             if v !='transform' and v !='transformations':

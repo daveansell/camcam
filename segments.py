@@ -103,21 +103,25 @@ class Segment(object):
                 return([{"cmd":"G1", "Z":zto}])
     def length(self):
         return (self.cutto - self.cutfrom).length()
+
 class Line(Segment):
-    def __init__(self, cutfrom, cutto, rapid=False):
+    def __init__(self, cutfrom, cutto, rapid=False, comment=False):
         self.seg_type='line'
         self.cutto=cutto
         self.cutfrom=cutfrom
         self.pnum = None
+        self.comment = comment
         if rapid:
             self.cmd="G0"
         else:
             self.cmd="G1"
     def gcode(self,direction=True):
+        if self.comment:
+            print('seg comment='+str(self.comment))
         if(direction):
-            return [{"cmd":self.cmd,"X":self.cutto[0],"Y":self.cutto[1], "Z":self.cutto[2]}]
+            return [{"cmd":self.cmd,"X":self.cutto[0],"Y":self.cutto[1], "Z":self.cutto[2], '_comment':self.comment }]
         else:
-            return [{"cmd":self.cmd,"X":self.cutfrom[0],"Y":self.cutfrom[1],"Z":self.cutfrom[2]}]
+            return [{"cmd":self.cmd,"X":self.cutfrom[0],"Y":self.cutfrom[1],"Z":self.cutfrom[2], '_comment':self.comment}]
     def svg(self,direction=True):
         if(direction):
             return [{"cmd":"L","x":self.cutto[0],"y":self.cutto[1]}]
@@ -128,12 +132,13 @@ class Line(Segment):
         p.pnum = self.pnum
         return [self.cutto]
 class Arc(Segment):
-    def __init__(self, cutfrom, cutto,centre,direction, mode='abs'):
+    def __init__(self, cutfrom, cutto,centre,direction, mode='abs', comment=False):
         self.seg_type='arc'
         self.cutto=cutto
         self.cutfrom=cutfrom
         self.direction=direction
         self.pnum = None
+        self.comment = comment
         if mode=='abs':
             self.centre=centre
         else:
@@ -164,14 +169,14 @@ class Arc(Segment):
             return []
         if( not  direction):
             if self.direction=='cw':
-                return [{"cmd":"G2","X":self.cutfrom[0],"Y":self.cutfrom[1], "I":self.centre[0]-self.cutto[0], "J":self.centre[1]-self.cutto[1]}]
+                return [{"cmd":"G2","X":self.cutfrom[0],"Y":self.cutfrom[1], "I":self.centre[0]-self.cutto[0], "J":self.centre[1]-self.cutto[1], '_comment':self.comment}]
             else:
-                return [{"cmd":"G3","X":self.cutfrom[0],"Y":self.cutfrom[1], "I":self.centre[0]-self.cutto[0], "J":self.centre[1]-self.cutto[1]}]
+                return [{"cmd":"G3","X":self.cutfrom[0],"Y":self.cutfrom[1], "I":self.centre[0]-self.cutto[0], "J":self.centre[1]-self.cutto[1], '_comment':self.comment}]
         else:
             if self.direction=='cw':
-                return [{"cmd":"G3","X":self.cutto[0],"Y":self.cutto[1], "I":self.centre[0]-self.cutfrom[0], "J":self.centre[1]-self.cutfrom[1]}]
+                return [{"cmd":"G3","X":self.cutto[0],"Y":self.cutto[1], "I":self.centre[0]-self.cutfrom[0], "J":self.centre[1]-self.cutfrom[1], '_comment':self.comment}]
             else:
-                return [{"cmd":"G2","X":self.cutto[0],"Y":self.cutto[1], "I":self.centre[0]-self.cutfrom[0], "J":self.centre[1]-self.cutfrom[1]}]
+                return [{"cmd":"G2","X":self.cutto[0],"Y":self.cutto[1], "I":self.centre[0]-self.cutfrom[0], "J":self.centre[1]-self.cutfrom[1], '_comment':self.comment}]
     def svg(self,direction=True):
         # Find if the arc is long or not
         tempcross=(self.centre-self.cutfrom).cross(self.cutto-self.centre)
@@ -234,19 +239,20 @@ class Arc(Segment):
                 p.pnum=self.pnum
             return points
 class Quad(Segment):
-    def __init__(self, cutfrom, cutto, cp):
+    def __init__(self, cutfrom, cutto, cp, comment=False):
         self.seg_type='quad'
         self.cutto=cutto
         self.cutfrom=cutfrom
         self.cp=cp
         self.pnum = None
+        self.comment = comment
     def gcode(self,direction=True):
         if(direction):
             offset = self.cp - self.cutfrom
-            return [{"cmd":"G5.1", "X":self.cutto[0], "Y":self.cutto[1], "I":offset[0], "J":offset[1]}]
+            return [{"cmd":"G5.1", "X":self.cutto[0], "Y":self.cutto[1], "I":offset[0], "J":offset[1], '_comment':self.comment}]
         else:
             offset = self.cp - self.cutto
-            return [{"cmd":"G5.1", "X":self.cutfrom[0], "Y":self.cutfrom[1], "I":offset[0], "J":offset[1]}]
+            return [{"cmd":"G5.1", "X":self.cutfrom[0], "Y":self.cutfrom[1], "I":offset[0], "J":offset[1], '_comment':self.comment}]
     def svg(self,direction = True):
         if(direction):
             offset = self.cp - self.cutfrom

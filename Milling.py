@@ -530,6 +530,7 @@ class Milling:
                         "sidecut":1,
 			"forcestepdown":1000,
 			"handedness":-1,
+                        "type":"lathe",
                 },
                 "latheParting":{
                         "id":52,
@@ -538,6 +539,7 @@ class Milling:
                         "sidecut":0,
 			"forcestepdown":1000,
 			"handedness":1,
+                        "type":"lathe",
                 },
                 "latheTurning":{
                         "id":51,
@@ -546,6 +548,7 @@ class Milling:
                         "sidecut":1,
 			"forcestepdown":1000,
 			"handedness":1,
+                        "type":"lathe",
                 },
                 "on":{
                         "id":101,
@@ -639,9 +642,9 @@ class Milling:
                         "surface_speed":450*300, # mm/min
                },
                 "aluminium":{
-                        "vertfeed":50,
+                        "vertfeed":30,
                         "sidefeed":950,
-                        "stepdown":0.3,
+                        "stepdown":0.6,
                         "kress_setting":1,
                         "mill_dir":'down',
                         "K":{
@@ -689,6 +692,10 @@ class Milling:
                             'coining':{1:0.44, 3:0.47, 10:0.5},
                         },
                         "surface_speed":110*300, # mm/min
+                        "chip_loading":{
+                            'low':{ 3.16:	0.01016	,6.32:	0.03302	,9.48:	0.0508	,12.64:0.0635},
+                            'high':{3.16:	0.01778	,6.32:	0.04064	,9.48:	0.05842	,12.64:0.06858 },
+                            },
                },
                 "polypropelene":{
                         "vertfeed":100,
@@ -720,7 +727,7 @@ class Milling:
                 "polythene":{
                         "vertfeed":100,
                         "sidefeed":1000,
-                        "stepdown":2.0,
+                        "stepdown":15.0,
                         "kress_setting":1.5,
 			            "mill_dir":'down',
                         "surface_speed":450*300, # mm/min
