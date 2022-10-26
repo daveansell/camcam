@@ -2870,7 +2870,7 @@ class Plane(Part):
                 return True
             if self.modeconfig['overview']:
                 self.out+='<g>'+out+'</g>'
-            elif part.name is not None:
+            elif hasattr(part, 'name') and part.name is not None:
                 filename=self.name+"_"+part.name+config['file_suffix']
                 f=open(filename,'w')
                 f.write( self.modeconfig['prefix'] + out + self.modeconfig['postfix'] )
