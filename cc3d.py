@@ -314,7 +314,7 @@ def plane_make_part3D(self, thepart, pconfig):
     p = thepart
 
     c=0
-    while(p and type(p) is not Plane) and (c==0 or not p.renderable() ):
+    while(p and type(p) is not Plane):# and (c==0 or not p.renderable() ):
         p.rotations_to_3D()
         if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and type(p.transform) is list:
             for transform in p.transform:

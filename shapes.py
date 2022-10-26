@@ -507,7 +507,8 @@ class Drill(Circle):
                 self.drillrad=milling.tools[self.cutter]['diameter']/2
 
             if self.cutter is False or self.cutter is None:
-                print("drill of "+str(self.drillrad)+"mm not found in tools")
+                pass
+                #print("drill of "+str(self.drillrad)+"mm not found in tools")
         self.closed=True
         self.add_point(pos,'circle',self.drillrad)
         if 'vertfeed' in config:
@@ -781,33 +782,47 @@ class RectSpeakerGrill(Pathgroup):
         """Cut a rectangular grid with width :param width: and height :param height: of holes with radius :param holerad: and :param spacing:"""+self.otherargs
         yspacing=spacing*math.cos(math.pi/6)
         numholesx = int(math.ceil(width/spacing)+1)
-        numholesy = float(math.floor(height/yspacing)+1)
+        numholesy = float(math.ceil(height/yspacing)+2)
+        if numholesy % 2:
+            yoff=1.0
+        else:
+            yoff=0.0
+        print("yoff="+str(yoff))
         self.miny=100000
         self.maxy=-100000
         self.minx=100000
         self.maxx=-100000
         for x in range(-numholesx,numholesx):
             count =0;
-            for y0 in range(-int(numholesy),int(numholesy),2):
+            for y0 in range(-int(2*numholesy),int(2*numholesy),2):
+                y0 = yoff+ y0
                 holes=[]
                 y=float(y0)/2
                 if count%2:
                     p=V(x*spacing, y*yspacing)
                 else:
                     p=V((x+0.5)*spacing, y*yspacing)
-                if abs(p[0])<width/2-holerad and abs(p[1])<height/2-holerad:
-                    holes.append(Hole(pos+p, rad=holerad))
+                if abs(p[0])<=width/2-holerad and abs(p[1])<=height/2-holerad:
+                    print(str(x)+","+str(y)+" "+str(p)+" "+str(width/2)+" "+str(height/2))
+                    if 'shape' in config and config['shape']=='hexagon':
+                        holes.append(Polygon(pos+p, sides=6, rad=holerad, startAngle=30))
+                    elif 'shape' in config and config['shape']=='drill':
+                        holes.append(Drill(pos+p, rad=holerad))
+                    else:
+                        print("Rectpeakergrill"+str(pos)+" p="+str(p)+" holerad="+str(holerad))
+                        holes.append(Hole(pos+p, rad=holerad))
+                    #holes.append(Hole(pos+p, rad=holerad))
                     self.maxx=max(self.maxx, (pos+p)[0])
                     self.maxy=max(self.maxy, (pos+p)[1])
                     self.minx=min(self.minx, (pos+p)[0])
                     self.miny=min(self.miny, (pos+p)[1])
                 count+=1
                 if x%2:
-                    print("NORMAL")
+                   # print("NORMAL")
                     for h in holes:
                         self.add(h)
                 else:
-                    print("REVERWSED")
+                    #print("REVERWSED")
                     for h in reversed(holes):
                         self.add(h)
 
@@ -862,7 +877,7 @@ class FilledRect(Pathgroup):
 
     def __init__(self, bl,  **config):
         self.init(config)
-        if 'centred' in config and config['centred']:
+        if 'centred' in config and config['centred'] or ('width' in config and 'height' in config):
             self.width = float(config['width'])
             self.height = float(config['height'])
             self.pos=bl
@@ -1183,9 +1198,9 @@ class Screw(Part):
                 else:
                     self.add(Hole(pos, **conf), c)
 class FourScrews(Part):
-    def __init__(self, bl, tr, layer_conf, **config):
+    def __init__(self, bl, layer_conf, **config):
         self.init(config)
-        self.add(FourObjects(bl,  Screw(V(0,0), layer_config=layer_conf, tr=tr)))
+        self.add(FourObjects(bl,  Screw(V(0,0), layer_config=layer_conf,**config), **config))
 #               d=tr-bl
 #               self.add(Screw(bl, layer_config=layer_conf, **config))
 #               self.add(Screw(bl+V(d[0], 0), layer_config=layer_conf, **config))

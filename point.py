@@ -103,7 +103,8 @@ class Point(object):
         transformations[:0] = ext_transformations
         self.invert = False
         if type(transformations) is list:
-            for t in reversed(transformations):
+           # for t in reversed(transformations):
+            for t in transformations:
                 if type(t) is dict and p.pos is not None:
                     if 'rotate' in t:
                         p.pos=self.rotate(p.pos, t['rotate'])
@@ -308,7 +309,7 @@ class Point(object):
 
 
 class PSharp(Point):
-    def __init__(self, pos, radius=0, cp1=False, cp2=False, direction=False, transform=False, sharp=True, isRapid=False):
+    def __init__(self, pos, radius=0, cp1=False, cp2=False, direction=False, transform=False, sharp=True, isRapid=False, comment=False):
         """Create a sharp point at position=pos"""
         self.init()
         self.pos=Vec(pos)
@@ -321,6 +322,8 @@ class PSharp(Point):
         self.obType="Point"
         self.sharp=sharp
         self.isRapid=isRapid
+        self.control = False
+        self.comment = comment
 
     def copy(self):
         t=PSharp( self.pos, self.radius, self.cp1, self.cp2, self.direction, self.transform)
@@ -332,6 +335,7 @@ class PSharp(Point):
         t.sharp = self.sharp
         t.invert = self.invert
         t.isRapid = self.isRapid
+        t.comment = self.comment
         return t
 
     def origin(self, forward=True):
@@ -393,10 +397,12 @@ class PSharp(Point):
     def makeSegment(self, config):
         l= self.last()
         if type(l) is not None and l.end()!=self.pos:
+            if self.comment:
+                print("p comment="+str(self.comment))
             if self.isRapid==True:
-                return [Line(self.last().end(), self.pos, rapid=True)]
+                return [Line(self.last().end(), self.pos, rapid=True, comment=self.comment)]
             else:
-                return [Line(self.last().end(), self.pos)]
+                return [Line(self.last().end(), self.pos, comment=self.comment)]
         else:
 #                       print "No segnmet" + str(l.end())+"&&"
 #                       print "No segnmet" + str(self.last())+"&&"
@@ -419,6 +425,7 @@ class PAroundcurve(PSharp):
         else:
             self.cp1 = centre
         self.obType="Point"
+        self.control=False
 
     def copy(self):
         t= PAroundcurve( self.pos, self.cp1, self.radius, self.direction, self.transform)
@@ -559,6 +566,7 @@ class PInsharp(PAroundcurve):
     
         self.cp1=pos
         self.dosetup=False
+        self.control=False
     def copy(self):
         t= PInsharp( self.pos, self.transform)
         t.reverse=self.reverse
@@ -618,6 +626,7 @@ class PIncurve(PSharp):
         self.transform=transform
         self.obType="Point"
         self.sharp = False
+        self.control=False
     def copy(self):
         t= PIncurve( self.pos, self.radius, self.direction, self.transform)
         t.reverse=self.reverse
@@ -726,6 +735,7 @@ class PSmoothArc(PIncurve):
 #                self.direction=direction
 #                self.transform=transform
         self.obType="Point"
+        self.control=False
     def copy(self):
         if self.setup:
             t= PIncurve( self.pos, self.radius, self.direction, self.transform)
@@ -771,6 +781,7 @@ class PChamfer(Point):
         self.direction=direction
         self.transform=transform
         self.obType="Point"
+        self.control=False
     def copy(self):
         return PChamfer( self.pos, self.chamfer, self.radius, self.direction, self.transform)
     def compile(self):
@@ -808,6 +819,7 @@ class POutcurve(Point):
         self.direction=direction
         self.transform=transform
         self.obType="Point"
+        self.control=False
     def copy(self):
         t=POutcurve( self.pos, self.radius, self.direction, self.transform)
         t.lastpoint=self.lastpoint
@@ -1003,6 +1015,7 @@ class PClear(PSharp):
         self.transform=transform
         self.obType="Point"
         self.sharp = True
+        self.control=False
     def copy(self):
         t = PClear( self.pos, self.transform)
         t.lastpoint=self.lastpoint
@@ -1032,7 +1045,7 @@ class PClear(PSharp):
                 Line(extrapoint,self.pos),
         ]
 class PIgnore(PSharp):
-    def __init__(self, pos, transform=False):
+    def __init__(self, pos, transform=False, comment=False):
         """Create a sharp point at position=pos with an extra cut so that a sharp corner will fit inside it"""
         self.init()
         self.pos=Vec(pos)
@@ -1040,6 +1053,7 @@ class PIgnore(PSharp):
         self.transform=transform
         self.obType="Point"
         self.control=True
+        self.comment = comment
     def copy(self):
         t = PClear( self.pos, self.transform)
         t.lastpoint=self.lastpoint
@@ -1060,6 +1074,7 @@ class PDoubleClear(Point):
         self.transform=transform
         self.obType="Point"
         self.sharp = True
+        self.control=False
     def copy(self):
         t = PDoubleClear( self.pos, self.transform)
         t.lastpoint=self.lastpoint
@@ -1160,9 +1175,23 @@ If it can't reach either point with the arc, it will join up to them perpendicul
         t.reverse=self.reverse
         t.invert = self.invert
         return t
-
+    def _setup(self):
+        self.checkArc()
     def checkArc(self):
-        if self.pos is not None and self.radius is not False:
+        # if we don't have a centre yet work one out
+        if self.pos is None and self.radius is not False and self.direction is not False:
+            l = self.lastpoint.pos
+            n = self.nextpoint.pos
+            d = n-l
+            perpdist = math.sqrt(self.radius **2 - d.length()**2/4)
+            perp = rotate(d.normalize(),90)
+            if self.direction == 'cw':
+                self.pos = l + d/2 + perp * perpdist
+            else:
+                self.pos = l + d/2 - perp * perpdist
+
+        # if we don't have a direction work it out
+        elif self.pos is not None and self.radius is not None:
             if(self.direction is None):
                 self.setangle()
 #                if self.angle>0:
@@ -1277,6 +1306,7 @@ class PCircle(Point):
         self.transform=transform
         self.point_type='circle'
         self.obType='Point'
+        self.control=False
     def copy(self):
         t= PCircle( self.pos, self.radius,  self.transform)
         t.lastpoint=self.lastpoint
