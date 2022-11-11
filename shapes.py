@@ -375,7 +375,9 @@ class Lines(Path):
         else:
             rad = 0
         for p in points:
-            if(type(cornertype) is str):
+            if(type(p) is not 'Vec' and hasattr(p, 'obType')):
+                self.add_point(p)
+            elif(type(cornertype) is str):
                 self.add_point(p, cornertype, radius=rad)
             else:
                 self.add_point(cornertype(p))
@@ -2173,13 +2175,18 @@ class RoundedArrow(Path):
                 self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a1]}))
                 self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
                 self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a2]}))
+                if(heads[1]):
+                        self.add_point(PSharp(pos+V(0,rad+headw), transform={'rotate':[pos, a2]}))
+                        self.add_point(PSharp(pos+V(headlength,rad), transform={'rotate':[pos, a2]}))
+                        self.add_point(PSharp(pos+V(0,rad-headw), transform={'rotate':[pos, a2]}))
+             
                 self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a2]}))
                 self.add_point(PArc(pos+V(0,0), radius=rad-w, direction='ccw'))
                 self.add_point(PSharp(pos+V(0,rad-w), transform={'rotate':[pos, a1]}))
-
-                self.add_point(PSharp(pos+V(0,rad-headw), transform={'rotate':[pos, a1]}))
-                self.add_point(PSharp(pos+V(-headlength,rad), transform={'rotate':[pos, a1]}))
-                self.add_point(PSharp(pos+V(0,rad+headw), transform={'rotate':[pos, a1]}))
+                if(heads[0]):
+                        self.add_point(PSharp(pos+V(0,rad-headw), transform={'rotate':[pos, a1]}))
+                        self.add_point(PSharp(pos+V(-headlength,rad), transform={'rotate':[pos, a1]}))
+                        self.add_point(PSharp(pos+V(0,rad+headw), transform={'rotate':[pos, a1]}))
         
 class RoundedArc(Path):
     def __init__(self, pos, rad, width, angle,  **config):
