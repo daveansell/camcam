@@ -623,7 +623,7 @@ class ArbitraryBox(Part):
                 else:
                     fudge = self.fudge
                #terrible kludge to not generate nets when we don't want to 
-                if not builtins.cuttingmode['cuttingMode'] and face['joint_mode'][scount]=='fold':
+                if hasattr( builtins, 'cuttingMode') and not builtins.cuttingmode['cuttingMode'] and face['joint_mode'][scount]=='fold':
                     face['joint_mode'][scount]='straight'
 
                 if face['joint_mode'][scount]=='straight':
