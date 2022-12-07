@@ -102,6 +102,23 @@ class CSScrew(SolidPath):
         )
         return solid.translate(self.pos)(solid.union()(*ret))
 
+class HullSpheres(SolidPath):
+    def __init__(self, pos, corners, **config):
+        self.init(config)
+        self.closed=True
+        self.pos=pos
+        if 'rad' in config:
+            self.rad=config['rad']
+        else:
+            self.rad=0.01
+        self.corners = corners
+    def getSolid(self):
+        spheres=[]
+        for c in self.corners: 
+            spheres.append(solid.translate(c)( solid.sphere(r=self.rad)))
+        return solid.translate(self.pos)(
+                solid.hull()(*spheres)
+                )
 class RoundedCuboid(SolidPath):
     def __init__(self, pos, width, height, depth, rad, **config):
         self.init(config)
@@ -119,7 +136,6 @@ class RoundedCuboid(SolidPath):
         rad=self.rad
         return solid.translate(self.pos)(
                 solid.hull()(
-                    solid.translate([W,H,D])( solid.sphere(r=rad)),
                     solid.translate([-W,H,D])( solid.sphere(r=rad)),
                     solid.translate([-W,-H,D])( solid.sphere(r=rad)),
                     solid.translate([W,-H,D])( solid.sphere(r=rad)),
