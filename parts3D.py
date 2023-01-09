@@ -51,6 +51,24 @@ class Sphere(SolidPath):
     def getSolid(self):
         return solid.translate(self.pos)(solid.sphere(r=self.rad))
 
+class Cuboid(SolidPath):
+    def __init__(self, pos, width, height, depth, **config):
+        self.init(config)
+        if 'centre' in config:
+            self.centre= config['centre']
+        else:
+            self.centre= False
+        self.pos=pos
+        self.width=width
+        self.height=height
+        self.depth=depth
+        self.closed=True
+        self.add_point(pos,'circle',width/2)
+
+    def getSolid(self):
+        return solid.translate(self.pos)(solid.cube([self.width, self.height, self.depth], center=self.centre))
+
+
 class Cylinder(SolidPath):
     def __init__(self, pos, rad1, rad2, height, **config):
         self.init(config)
@@ -64,7 +82,7 @@ class Cylinder(SolidPath):
         self.height=height
         self.closed=True
         self.add_point(pos,'circle',rad2)
-        self.centre=pos
+        #self.centre=pos
 
     def getSolid(self):
         return solid.translate(self.pos)(solid.cylinder(r1=self.rad1, r2=self.rad2, h=self.height, center=self.centre))
