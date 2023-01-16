@@ -7,14 +7,18 @@ sys.path.append("../../../camcam/")
 import kicad
 
 class ProjectBox(Part):
-    def __init__(self,width, height, depth, thickness, outerrad, innerWidth, innerHeight, innerRad, cutz, screwFromEdge, pcbScrewLength,pcbScrewCylinderRad, pcbScrewThreadRad, screwPoses,  screwCylinderRad, screwThreadRad, screwRad,screwHeadRad,overlap, mountingEars, earThickness, edge, holePoses, pcbs, extraSolids=[], extraHoles=[]):
-
+    def __init__(self,width, height, depth, thickness, outerrad, innerWidth, innerHeight, innerRad, cutz, screwFromEdge, pcbScrewLength,pcbScrewCylinderRad, pcbScrewThreadRad, screwPoses,  screwCylinderRad, screwThreadRad, screwRad,screwHeadRad,overlap, mountingEars, earThickness, edge, holePoses, pcbs, extraSolids=[], extraHoles=[], **config):
+        if 'slope' in config:
+            slope = config['slope']
+        else:
+            slope = 0
         print(width)
         print("Hello")
 
+        Sf=(height-2*thickness)*math.sin(float(slope)/180*math.pi)
         faces = {
-                'front' :[ {'rotate3D':[[0,0,0], V(0,0,0)]},   {'translate3D':V(0,0,depth/2+1)}],
-                'back'  :[ {'rotate3D':[[0,0,0], V(0,0,0)]},   {'translate3D':V(0,0,-depth/2+1)}],
+                'front' :[ {'rotate3D':[[0,180,0], V(0,0,0)]},   {'translate3D':V(0,0,depth/2-1)}],
+                'back'  :[ {'rotate3D':[[0,0,0], V(0,0,0)]},  {'rotate3D':[[slope,0,0],V(0,0,0)]}, {'translate3D':V(0,0,-depth/2+1-Sf/2)}],
                 'left'  :[ {'rotate3D':[[90,0,90], V(0,0,0)]}, {'translate3D':V(-width/2+1,0,0)}],
                 'right' :[ {'rotate3D':[[90,0,-90], V(0,0,0)]},{'translate3D':V( width/2-1,0,0)}],
                 'top'   :[ {'rotate3D':[[0,90,90], V(0,0,0)]}, {'rotate3D':[[0,90,0], V(0,0,0)]},{'translate3D':V( 0,height/2+1,0)}],
@@ -24,8 +28,8 @@ class ProjectBox(Part):
         defaultEar = {'length':12, 'holeEarProp':0.5, 'holeFromEndsProp':0.5, 'numHoles':2, 'holeRad':4.5/2}
         innerRad = max(innerRad,0.5)
 
-        outerbox = self.box(width, height, depth, outerrad)
-        innerbox = self.box(width-2*thickness, height-2*thickness, depth=depth -2*thickness, rad=max(outerrad-thickness,0.5))
+        outerbox = self.box(width, height, depth, outerrad,slope)
+        innerbox = self.box(width-2*thickness, height-2*thickness, depth=depth -2*thickness, rad=max(outerrad-thickness,0.5),slope=slope)
         earShape={'xmin':-width/2, 'xmax':width/2, 'ymin':-height/2, 'ymax':height/2}
         doEars = False
         earHoles = []
@@ -57,11 +61,17 @@ class ProjectBox(Part):
                     hp = [start[0] + (end[0]-start[0])/(config['numHoles']-1)*i, start[1] + (end[1]-start[1])/(config['numHoles']-1)*i]
                     print("hp"+str(hp)+e+" start="+str(start)+" end="+str(end))
                     earHoles.append(translate([hp[0], hp[1], -depth/2])(cylinder(r=config['holeRad'], h=earThickness+10, center=True)))
-        earHole=union()(*earHoles)
-        er = earThickness/4
+        er = earThickness/4*math.cos(float(slope)/180*math.pi)
+
+        S=(height-2*er)*math.sin(float(slope)/180*math.pi)
+        earHole=self.doTransform(union()(*earHoles), [{'rotate3D':[[slope,0,0],V(0,0,-depth/2)]}, {'translate3D':V(0,0,-S/2)}
+            ])
+        print("S+"+str(S))
         earbox = difference()(
-                self.rbox(earShape['xmax']-er, earShape['xmin']+er, earShape['ymax']-er, earShape['ymin']+er, -depth/2+earThickness-er , -depth/2+er, er )
-                ,earHole)
+                        self.rbox(earShape['xmax']-er, earShape['xmin']+er, earShape['ymax']-er, earShape['ymin']+er, -depth/2+earThickness-er , -depth/2+er, er, S, S )
+                    ,earHole)
+#                    [{'rotate3D':[[slope,0,0],V(0,-height/2,-depth/2)]}])
+
         outer = union()(outerbox, earbox)
 
 
@@ -128,7 +138,7 @@ class ProjectBox(Part):
                         holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2-1])(cylinder(r=hole['rad'], h=hole['length']+1)), faces[face]))
                         rods.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2])(cylinder(r=hole['pillarRad'], h=hole['length']+1)), faces[face]))
                     else:
-                        holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2+hole['length']+1])(cylinder(r=hole['rad'], h=hole['length']+1)), faces[face]))
+                        holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], 1])(cylinder(r=hole['rad'], h=hole['length']+1)), faces[face]))
                         rods.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2+0.1])(cylinder(r=hole['pillarRad'], h=hole['length']-0.1)), faces[face]))
                 elif hole['shape']=='slot':
                     holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2+1])(self.SlotPrism(hole['width'], hole['height'], thickness+1)), faces[face]))
@@ -162,7 +172,14 @@ class ProjectBox(Part):
         for tr in transforms:
             for t in tr.keys():
                 if t=='rotate3D':
-                    ret = solid.rotate(tr[t][0])(ret)
+                    if len(tr[t])>=2:
+                        ret = solid.translate(tr[t][1])(
+                                solid.rotate(tr[t][0])(
+                                    solid.translate(-tr[t][1])(ret)
+                                ))
+                    else:
+                        ret = solid.rotate(tr[t][0])(ret)
+
                 elif t=='translate3D':
                     ret = translate(tr[t])(ret)
         return ret
@@ -194,28 +211,30 @@ class ProjectBox(Part):
         return linear_extrude(height=depth, center=True)(self.PointyRect(width, height))
 
 
-    def box(self,width, height, depth, rad):
+    def box(self,width, height, depth, rad,slope):
             W=width/2-rad
             H=height/2-rad
             D=depth/2-rad
+            S=(height-2*rad)*math.sin(float(slope)/180*math.pi)
             if rad<0:
                 R=0
             else:
                 R=rad
-            return self.rbox(W, -W, H, -H, D, -D, R)
+            print ("sleop= "+str(slope)+" S="+str(S))
+            return self.rbox(W, -W, H, -H, D, -D, R, S)
 
-    def rbox(self,Wa, Wi, Ha, Hi, Da, Di, R):
-            print([Wa, Wi, Ha, Hi, Da, Di, R])
+    def rbox(self,Wa, Wi, Ha, Hi, Da, Di, R, S=0, ST=0):
+            print([Wa, Wi, Ha, Hi, Da, Di, R, S])
             return  hull()(
             translate([Wa,Ha,Da])(sphere(r=R)),
             translate([Wi,Ha,Da])(sphere(r=R)),
-            translate([Wi,Hi,Da])(sphere(r=R)),
-            translate([Wa,Hi,Da])(sphere(r=R)),
+            translate([Wi,Hi,Da-ST])(sphere(r=R)),
+            translate([Wa,Hi,Da-ST])(sphere(r=R)),
 
             translate([Wa,Ha,Di])(sphere(r=R)),
             translate([Wi,Ha,Di])(sphere(r=R)),
-            translate([Wi,Hi,Di])(sphere(r=R)),
-            translate([Wa,Hi,Di])(sphere(r=R)),
+            translate([Wi,Hi,Di-S])(sphere(r=R)),
+            translate([Wa,Hi,Di-S])(sphere(r=R)),
             )
 
 
