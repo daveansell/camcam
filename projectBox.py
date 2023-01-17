@@ -134,7 +134,9 @@ class ProjectBox(Part):
             print(pcbs[face])
             for pcb in pcbs[face]:
                 p=importpcb(pcb, depth)
-                pillars+=p.getPillars()
+                newpillars=p.getPillars()
+                for pillar in newpillars:
+                    pillars.append(self.doTransform(pillar, faces[face]))
                 # apply transforms
             for hole in holePoses[face]:
                 print (hole)
@@ -287,7 +289,7 @@ class importpcb:
                     if p['diameter']==rad*2:
                         print('append')
                         pillars.append(
-                                translate([mod['pos'][0]+self.offset[0], mod['pos'][1]+self.offset[1],-self.depth/2+self.conf['fromBottom']-0.1])(
+                                translate([mod['pos'][0]+self.offset[0], mod['pos'][1]+self.offset[1],-0.1])(
                                 difference()(
                                 cylinder(r=p['cylinderRad'], h=self.conf['fromBottom']+0.1),
                                 translate([0,0,-1])(cylinder(r=p['holeRad'], h=self.conf['fromBottom']+2))
