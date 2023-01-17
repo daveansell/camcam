@@ -35,6 +35,10 @@ class ProjectBox(Part):
         earHoles = []
 
         # mounting ears
+        er = earThickness/4*math.cos(float(slope)/180*math.pi)
+        Sx = 0
+        Ox = 0
+        Scos = math.cos(float(slope)/180*math.pi)
         for e in earEdges:
             if e in mountingEars:
                 doEars = True
@@ -48,27 +52,32 @@ class ProjectBox(Part):
                     earShape['xmax']+=config['length']
                     start = [  earShape['xmax']-config['length']*config['holeEarProp'], height/2 - config['holeFromEndsProp']*config['length']]
                     end   = [  earShape['xmax']-config['length']*config['holeEarProp'], -height/2 + config['holeFromEndsProp']*config['length']]
+                    S=(height-2*er)*math.sin(float(slope)/180*math.pi)
                 elif e=='top':
                     earShape['ymax']+=config['length']
-                    start = [ -width/2 + config['holeFromEndsProp']*config['length'], earShape['ymax']-config['length']*config['holeEarProp']]
-                    end   = [  width/2 - config['holeFromEndsProp']*config['length'], earShape['ymax']-config['length']*config['holeEarProp']]
+                    start = [ -width/2 + config['holeFromEndsProp']*config['length'], (earShape['ymax']-config['length']*config['holeEarProp'])/Scos]
+                    end   = [  width/2 - config['holeFromEndsProp']*config['length'], (earShape['ymax']-config['length']*config['holeEarProp'])/Scos]
+                    #S=(-config['length']+er)*math.sin(float(slope)/180*math.pi)
+                    Sx+=(config['length'])*math.sin(float(slope)/180*math.pi)
+                    Ox+=(config['length'])*math.sin(float(slope)/180*math.pi)
+
                 elif e=='bottom':
                     earShape['ymin']-=config['length']
-                    start = [ -width/2 + config['holeFromEndsProp']*config['length'], earShape['ymin']+config['length']*config['holeEarProp']]
-                    end   = [  width/2 - config['holeFromEndsProp']*config['length'], earShape['ymin']+config['length']*config['holeEarProp']]
+                    start = [ -width/2 + config['holeFromEndsProp']*config['length'], (earShape['ymin']+config['length']*config['holeEarProp'])/Scos]
+                    end   = [  width/2 - config['holeFromEndsProp']*config['length'], (earShape['ymin']+config['length']*config['holeEarProp'])/Scos]
+                    Sx+=(config['length'])*math.sin(float(slope)/180*math.pi)
                 # add holes
                 for i in range(0, config['numHoles']):
                     hp = [start[0] + (end[0]-start[0])/(config['numHoles']-1)*i, start[1] + (end[1]-start[1])/(config['numHoles']-1)*i]
                     print("hp"+str(hp)+e+" start="+str(start)+" end="+str(end))
                     earHoles.append(translate([hp[0], hp[1], -depth/2])(cylinder(r=config['holeRad'], h=earThickness+10, center=True)))
-        er = earThickness/4*math.cos(float(slope)/180*math.pi)
 
         S=(height-2*er)*math.sin(float(slope)/180*math.pi)
-        earHole=self.doTransform(union()(*earHoles), [{'rotate3D':[[slope,0,0],V(0,0,-depth/2)]}, {'translate3D':V(0,0,-S/2)}
+        earHole=self.doTransform(union()(*earHoles), [{'rotate3D':[[slope,0,0],V(0,0,-depth/2)]}, {'translate3D':V(0,0,-(S+Sx)/2+Ox)}
             ])
         print("S+"+str(S))
         earbox = difference()(
-                        self.rbox(earShape['xmax']-er, earShape['xmin']+er, earShape['ymax']-er, earShape['ymin']+er, -depth/2+earThickness-er , -depth/2+er, er, S, S )
+                        self.rbox(earShape['xmax']-er, earShape['xmin']+er, earShape['ymax']-er, earShape['ymin']+er, -depth/2+earThickness-er+Ox , -depth/2+er+Ox, er, S+Sx, S+Sx )
                     ,earHole)
 #                    [{'rotate3D':[[slope,0,0],V(0,-height/2,-depth/2)]}])
 
