@@ -36,8 +36,8 @@ class ProjectBox(Part):
 
         # mounting ears
         er = earThickness/4*math.cos(float(slope)/180*math.pi)
-        Sx = 0
-        Ox = 0
+        Sx = 0 # extra slope due to the ears being longer
+        Ox = 0 # a fudge offset as SX puts the ears in the wrong place vertically sometimes
         Scos = math.cos(float(slope)/180*math.pi)
         for e in earEdges:
             if e in mountingEars:
@@ -75,7 +75,6 @@ class ProjectBox(Part):
         S=(height-2*er)*math.sin(float(slope)/180*math.pi)
         earHole=self.doTransform(union()(*earHoles), [{'rotate3D':[[slope,0,0],V(0,0,-depth/2)]}, {'translate3D':V(0,0,-(S+Sx)/2+Ox)}
             ])
-        print("S+"+str(S))
         earbox = difference()(
                         self.rbox(earShape['xmax']-er, earShape['xmin']+er, earShape['ymax']-er, earShape['ymin']+er, -depth/2+earThickness-er+Ox , -depth/2+er+Ox, er, S+Sx, S+Sx )
                     ,earHole)
@@ -221,7 +220,7 @@ class ProjectBox(Part):
     def SlotPrism(self,width, height,depth):
         return linear_extrude(height=depth, center=True)(self.PointyRect(width, height))
 
-
+    # slope is a sloped back panel along the Y axis in degrees
     def box(self,width, height, depth, rad,slope):
             W=width/2-rad
             H=height/2-rad
@@ -234,6 +233,8 @@ class ProjectBox(Part):
             print ("sleop= "+str(slope)+" S="+str(S))
             return self.rbox(W, -W, H, -H, D, -D, R, S)
 
+    # S is a slope in mm on the bottom along Y axis
+    # ST is a slope in mm on the top along Y axis
     def rbox(self,Wa, Wi, Ha, Hi, Da, Di, R, S=0, ST=0):
             print([Wa, Wi, Ha, Hi, Da, Di, R, S])
             return  hull()(
