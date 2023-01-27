@@ -64,7 +64,7 @@ class Cylinder(SolidPath):
         self.height=height
         self.closed=True
         self.add_point(pos,'circle',rad2)
-        self.centre=pos
+      #  self.centre=pos
 
     def getSolid(self):
         return solid.translate(self.pos)(solid.cylinder(r1=self.rad1, r2=self.rad2, h=self.height, center=self.centre))
@@ -577,6 +577,19 @@ class SurfacePolyhedron(Polyhedron):
         return [ [p[2], p[1], p[0]], [p[3],p[2],p[0]] ]
 #class Hull(SolidPath):
 #    def __init__(self, ):
+
+class RoundedSolid(SolidPath):
+    def __init__(self, pos, spheres, **config):
+        self.init(config)
+        self.pos=pos
+        self.spheres=spheres
+    def getSolid(self):
+        spheres = []
+        for r,sl in self.spheres.items():
+            for s in sl:
+                spheres.append(solid.translate(s+self.pos)(solid.sphere(r=r)))
+        return solid.hull()(*spheres)
+
 
 class RoundedBox(SolidPath):
     def __init__(self,pos, width, height, depth, rad,**config):
