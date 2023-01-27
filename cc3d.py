@@ -336,7 +336,10 @@ def plane_make_part3D(self, thepart, pconfig):
                 if 'translate3D' in transform:
                     thepart.border3D=solid.translate([transform['translate3D'][0], transform['translate3D'][1],transform['translate3D'][2] ])(thepart.border3D)
         c+=1
-        p=p.parent
+        if not hasattr(p, 'subpart') and not p.subpart:
+            p=p.parent
+        else:
+            p=False
 
 def plane_render_part3D(self, thepart, pconfig, filename=False):
     print ("RENDER "+thepart.name)

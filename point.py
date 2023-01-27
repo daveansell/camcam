@@ -593,7 +593,6 @@ class PInsharp(PAroundcurve):
                 nextpoint=self.nextorigin()
                 if nextpoint==self.pos:
                     nextpoint=self.next().nextorigin()
-
                 # fail more gracefully if two points are in the same place
                 if (self.pos - lastpoint).length()==0 or (nextpoint-self.pos).length()==0:
                     self.radius=0
@@ -605,16 +604,14 @@ class PInsharp(PAroundcurve):
                     self.cp1=self.pos-(((lastpoint-self.pos).normalize()+(nextpoint-self.pos).normalize())/2).normalize()*d
                 else:
                     self.cp1 = self.pos
-                if self.radius>0:
-                    pass
-                elif  ( self.config['cutside']=='right' and self.direction=='cw' or self.config['cutside']=='left' and self.direction=='ccw') == self.reverse or abs(angle<0.01):
+                #if self.radius>0:
+                #    pass
+                if  ( self.config['cutside']=='right' and self.direction=='cw' or self.config['cutside']=='left' and self.direction=='ccw') == self.reverse or abs(angle<0.01):
                     self.radius=0
                 elif 'original_cutter' in self.config:
-                    print ("original cutter="+str(self.config['original_cutter']))
                     self.radius = self.config['original_cutter']['cutterrad']
                 else:
                     self.radius=0
-
 class PIncurve(PSharp):
     def __init__(self, pos, radius=0, direction=False, transform=False):
         """Create a point at position=pos which is then rounded off wot a rad=raidius, as if it were a piece of wood you have sanded off"""

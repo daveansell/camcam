@@ -21,7 +21,7 @@ class Milling:
 
                 self.mode_config={
                         "dave-emc":{
-                                'prefix':'M03\nG21\nG0Z%zclear%\nG64 p.001 q.001\nG17\n',
+                                'prefix':'M03\nG21\nG0Z%zclear%\nG17\n',
                                 'postfix':'M05\nM02\n',
                                 'settool_prefix':'T',
                                 'settool_postfix':' M6\nS100\nM03',

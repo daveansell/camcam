@@ -51,6 +51,24 @@ class Sphere(SolidPath):
     def getSolid(self):
         return solid.translate(self.pos)(solid.sphere(r=self.rad))
 
+class Cuboid(SolidPath):
+    def __init__(self, pos, width, height, depth, **config):
+        self.init(config)
+        if 'centre' in config:
+            self.centre= config['centre']
+        else:
+            self.centre= False
+        self.pos=pos
+        self.width=width
+        self.height=height
+        self.depth=depth
+        self.closed=True
+        self.add_point(pos,'circle',width/2)
+
+    def getSolid(self):
+        return solid.translate(self.pos)(solid.cube([self.width, self.height, self.depth], center=self.centre))
+
+
 class Cylinder(SolidPath):
     def __init__(self, pos, rad1, rad2, height, **config):
         self.init(config)
@@ -65,6 +83,7 @@ class Cylinder(SolidPath):
         self.closed=True
         self.add_point(pos,'circle',rad2)
       #  self.centre=pos
+        #self.centre=pos
 
     def getSolid(self):
         return solid.translate(self.pos)(solid.cylinder(r1=self.rad1, r2=self.rad2, h=self.height, center=self.centre))
@@ -102,6 +121,23 @@ class CSScrew(SolidPath):
         )
         return solid.translate(self.pos)(solid.union()(*ret))
 
+class HullSpheres(SolidPath):
+    def __init__(self, pos, corners, **config):
+        self.init(config)
+        self.closed=True
+        self.pos=pos
+        if 'rad' in config:
+            self.rad=config['rad']
+        else:
+            self.rad=0.01
+        self.corners = corners
+    def getSolid(self):
+        spheres=[]
+        for c in self.corners: 
+            spheres.append(solid.translate(c)( solid.sphere(r=self.rad)))
+        return solid.translate(self.pos)(
+                solid.hull()(*spheres)
+                )
 class RoundedCuboid(SolidPath):
     def __init__(self, pos, width, height, depth, rad, **config):
         self.init(config)
@@ -119,7 +155,6 @@ class RoundedCuboid(SolidPath):
         rad=self.rad
         return solid.translate(self.pos)(
                 solid.hull()(
-                    solid.translate([W,H,D])( solid.sphere(r=rad)),
                     solid.translate([-W,H,D])( solid.sphere(r=rad)),
                     solid.translate([-W,-H,D])( solid.sphere(r=rad)),
                     solid.translate([W,-H,D])( solid.sphere(r=rad)),

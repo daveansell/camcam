@@ -7,14 +7,18 @@ sys.path.append("../../../camcam/")
 import kicad
 
 class ProjectBox(Part):
-    def __init__(self,width, height, depth, thickness, outerrad, innerWidth, innerHeight, innerRad, cutz, screwFromEdge, pcbScrewLength,pcbScrewCylinderRad, pcbScrewThreadRad, screwPoses,  screwCylinderRad, screwThreadRad, screwRad,screwHeadRad,overlap, mountingEars, earThickness, edge, holePoses, pcbs, extraSolids=[], extraHoles=[]):
-
+    def __init__(self,width, height, depth, thickness, outerrad, innerWidth, innerHeight, innerRad, cutz, screwFromEdge, pcbScrewLength,pcbScrewCylinderRad, pcbScrewThreadRad, screwPoses,  screwCylinderRad, screwThreadRad, screwRad,screwHeadRad,overlap, mountingEars, earThickness, edge, holePoses, pcbs, extraSolids=[], extraHoles=[], **config):
+        if 'slope' in config:
+            slope = config['slope']
+        else:
+            slope = 0
         print(width)
         print("Hello")
 
+        Sf=(height-2*thickness)*math.sin(float(slope)/180*math.pi)
         faces = {
-                'front' :[ {'rotate3D':[[0,0,0], V(0,0,0)]},   {'translate3D':V(0,0,depth/2+1)}],
-                'back'  :[ {'rotate3D':[[0,0,0], V(0,0,0)]},   {'translate3D':V(0,0,-depth/2+1)}],
+                'front' :[ {'rotate3D':[[0,180,0], V(0,0,0)]},   {'translate3D':V(0,0,depth/2-1)}],
+                'back'  :[ {'rotate3D':[[0,0,0], V(0,0,0)]},  {'rotate3D':[[slope,0,0],V(0,0,0)]}, {'translate3D':V(0,0,-depth/2+1-Sf/2)}],
                 'left'  :[ {'rotate3D':[[90,0,90], V(0,0,0)]}, {'translate3D':V(-width/2+1,0,0)}],
                 'right' :[ {'rotate3D':[[90,0,-90], V(0,0,0)]},{'translate3D':V( width/2-1,0,0)}],
                 'top'   :[ {'rotate3D':[[0,90,90], V(0,0,0)]}, {'rotate3D':[[0,90,0], V(0,0,0)]},{'translate3D':V( 0,height/2+1,0)}],
@@ -24,13 +28,17 @@ class ProjectBox(Part):
         defaultEar = {'length':12, 'holeEarProp':0.5, 'holeFromEndsProp':0.5, 'numHoles':2, 'holeRad':4.5/2}
         innerRad = max(innerRad,0.5)
 
-        outerbox = self.box(width, height, depth, outerrad)
-        innerbox = self.box(width-2*thickness, height-2*thickness, depth=depth -2*thickness, rad=max(outerrad-thickness,0.5))
+        outerbox = self.box(width, height, depth, outerrad,slope)
+        innerbox = self.box(width-2*thickness, height-2*thickness, depth=depth -2*thickness, rad=max(outerrad-thickness,0.5),slope=slope)
         earShape={'xmin':-width/2, 'xmax':width/2, 'ymin':-height/2, 'ymax':height/2}
         doEars = False
         earHoles = []
 
         # mounting ears
+        er = earThickness/4*math.cos(float(slope)/180*math.pi)
+        Sx = 0 # extra slope due to the ears being longer
+        Ox = 0 # a fudge offset as SX puts the ears in the wrong place vertically sometimes
+        Scos = math.cos(float(slope)/180*math.pi)
         for e in earEdges:
             if e in mountingEars:
                 doEars = True
@@ -44,24 +52,34 @@ class ProjectBox(Part):
                     earShape['xmax']+=config['length']
                     start = [  earShape['xmax']-config['length']*config['holeEarProp'], height/2 - config['holeFromEndsProp']*config['length']]
                     end   = [  earShape['xmax']-config['length']*config['holeEarProp'], -height/2 + config['holeFromEndsProp']*config['length']]
+                    S=(height-2*er)*math.sin(float(slope)/180*math.pi)
                 elif e=='top':
                     earShape['ymax']+=config['length']
-                    start = [ -width/2 + config['holeFromEndsProp']*config['length'], earShape['ymax']-config['length']*config['holeEarProp']]
-                    end   = [  width/2 - config['holeFromEndsProp']*config['length'], earShape['ymax']-config['length']*config['holeEarProp']]
+                    start = [ -width/2 + config['holeFromEndsProp']*config['length'], (earShape['ymax']-config['length']*config['holeEarProp'])/Scos]
+                    end   = [  width/2 - config['holeFromEndsProp']*config['length'], (earShape['ymax']-config['length']*config['holeEarProp'])/Scos]
+                    #S=(-config['length']+er)*math.sin(float(slope)/180*math.pi)
+                    Sx+=(config['length'])*math.sin(float(slope)/180*math.pi)
+                    Ox+=(config['length'])*math.sin(float(slope)/180*math.pi)
+
                 elif e=='bottom':
                     earShape['ymin']-=config['length']
-                    start = [ -width/2 + config['holeFromEndsProp']*config['length'], earShape['ymin']+config['length']*config['holeEarProp']]
-                    end   = [  width/2 - config['holeFromEndsProp']*config['length'], earShape['ymin']+config['length']*config['holeEarProp']]
+                    start = [ -width/2 + config['holeFromEndsProp']*config['length'], (earShape['ymin']+config['length']*config['holeEarProp'])/Scos]
+                    end   = [  width/2 - config['holeFromEndsProp']*config['length'], (earShape['ymin']+config['length']*config['holeEarProp'])/Scos]
+                    Sx+=(config['length'])*math.sin(float(slope)/180*math.pi)
                 # add holes
                 for i in range(0, config['numHoles']):
                     hp = [start[0] + (end[0]-start[0])/(config['numHoles']-1)*i, start[1] + (end[1]-start[1])/(config['numHoles']-1)*i]
                     print("hp"+str(hp)+e+" start="+str(start)+" end="+str(end))
                     earHoles.append(translate([hp[0], hp[1], -depth/2])(cylinder(r=config['holeRad'], h=earThickness+10, center=True)))
-        earHole=union()(*earHoles)
-        er = earThickness/4
+
+        S=(height-2*er)*math.sin(float(slope)/180*math.pi)
+        earHole=self.doTransform(union()(*earHoles), [{'rotate3D':[[slope,0,0],V(0,0,-depth/2)]}, {'translate3D':V(0,0,-(S+Sx)/2+Ox)}
+            ])
         earbox = difference()(
-                self.rbox(earShape['xmax']-er, earShape['xmin']+er, earShape['ymax']-er, earShape['ymin']+er, -depth/2+earThickness-er , -depth/2+er, er )
-                ,earHole)
+                        self.rbox(earShape['xmax']-er, earShape['xmin']+er, earShape['ymax']-er, earShape['ymin']+er, -depth/2+earThickness-er+Ox , -depth/2+er+Ox, er, S+Sx, S+Sx )
+                    ,earHole)
+#                    [{'rotate3D':[[slope,0,0],V(0,-height/2,-depth/2)]}])
+
         outer = union()(outerbox, earbox)
 
 
@@ -115,7 +133,9 @@ class ProjectBox(Part):
             print(pcbs[face])
             for pcb in pcbs[face]:
                 p=importpcb(pcb, depth)
-                pillars+=p.getPillars()
+                newpillars=p.getPillars()
+                for pillar in newpillars:
+                    pillars.append(self.doTransform(pillar, faces[face]))
                 # apply transforms
             for hole in holePoses[face]:
                 print (hole)
@@ -128,7 +148,7 @@ class ProjectBox(Part):
                         holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2-1])(cylinder(r=hole['rad'], h=hole['length']+1)), faces[face]))
                         rods.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2])(cylinder(r=hole['pillarRad'], h=hole['length']+1)), faces[face]))
                     else:
-                        holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2+hole['length']+1])(cylinder(r=hole['rad'], h=hole['length']+1)), faces[face]))
+                        holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], 1])(cylinder(r=hole['rad'], h=hole['length']+1)), faces[face]))
                         rods.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2+0.1])(cylinder(r=hole['pillarRad'], h=hole['length']-0.1)), faces[face]))
                 elif hole['shape']=='slot':
                     holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2+1])(self.SlotPrism(hole['width'], hole['height'], thickness+1)), faces[face]))
@@ -162,7 +182,14 @@ class ProjectBox(Part):
         for tr in transforms:
             for t in tr.keys():
                 if t=='rotate3D':
-                    ret = solid.rotate(tr[t][0])(ret)
+                    if len(tr[t])>=2:
+                        ret = solid.translate(tr[t][1])(
+                                solid.rotate(tr[t][0])(
+                                    solid.translate(-tr[t][1])(ret)
+                                ))
+                    else:
+                        ret = solid.rotate(tr[t][0])(ret)
+
                 elif t=='translate3D':
                     ret = translate(tr[t])(ret)
         return ret
@@ -193,29 +220,33 @@ class ProjectBox(Part):
     def SlotPrism(self,width, height,depth):
         return linear_extrude(height=depth, center=True)(self.PointyRect(width, height))
 
-
-    def box(self,width, height, depth, rad):
+    # slope is a sloped back panel along the Y axis in degrees
+    def box(self,width, height, depth, rad,slope):
             W=width/2-rad
             H=height/2-rad
             D=depth/2-rad
+            S=(height-2*rad)*math.sin(float(slope)/180*math.pi)
             if rad<0:
                 R=0
             else:
                 R=rad
-            return self.rbox(W, -W, H, -H, D, -D, R)
+            print ("sleop= "+str(slope)+" S="+str(S))
+            return self.rbox(W, -W, H, -H, D, -D, R, S)
 
-    def rbox(self,Wa, Wi, Ha, Hi, Da, Di, R):
-            print([Wa, Wi, Ha, Hi, Da, Di, R])
+    # S is a slope in mm on the bottom along Y axis
+    # ST is a slope in mm on the top along Y axis
+    def rbox(self,Wa, Wi, Ha, Hi, Da, Di, R, S=0, ST=0):
+            print([Wa, Wi, Ha, Hi, Da, Di, R, S])
             return  hull()(
             translate([Wa,Ha,Da])(sphere(r=R)),
             translate([Wi,Ha,Da])(sphere(r=R)),
-            translate([Wi,Hi,Da])(sphere(r=R)),
-            translate([Wa,Hi,Da])(sphere(r=R)),
+            translate([Wi,Hi,Da-ST])(sphere(r=R)),
+            translate([Wa,Hi,Da-ST])(sphere(r=R)),
 
             translate([Wa,Ha,Di])(sphere(r=R)),
             translate([Wi,Ha,Di])(sphere(r=R)),
-            translate([Wi,Hi,Di])(sphere(r=R)),
-            translate([Wa,Hi,Di])(sphere(r=R)),
+            translate([Wi,Hi,Di-S])(sphere(r=R)),
+            translate([Wa,Hi,Di-S])(sphere(r=R)),
             )
 
 
@@ -259,7 +290,7 @@ class importpcb:
                     if p['diameter']==rad*2:
                         print('append')
                         pillars.append(
-                                translate([mod['pos'][0]+self.offset[0], mod['pos'][1]+self.offset[1],-self.depth/2+self.conf['fromBottom']-0.1])(
+                                translate([mod['pos'][0]+self.offset[0], mod['pos'][1]+self.offset[1],-0.1])(
                                 difference()(
                                 cylinder(r=p['cylinderRad'], h=self.conf['fromBottom']+0.1),
                                 translate([0,0,-1])(cylinder(r=p['holeRad'], h=self.conf['fromBottom']+2))

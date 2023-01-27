@@ -653,7 +653,7 @@ class Path(object):
             for p,point in enumerate(self.points):
                 if (point.point_type in ['sharp', 'clear', 'doubleclear', 'insharp'] ):
                     point.setangle()
-                    if point.dot==-1 and (self.closed or p!=0 and p!=len(self.points)-1):
+                    if point.dot==-1 and (self.closed and p!=0 and p!=len(self.points)-1):
                         print( "deleting point as pos="+str(point.pos))
                         self.delete_point(p)
 
@@ -1504,9 +1504,10 @@ class Path(object):
             if 'blendTolerance' in config:
                 if config['blendTolerance']>0:
                     ret+="G64P"+str(config['blendTolerance'])+"\n"
+                    print("blendTolerance="+str(config['blendTolerance']))
                 else:
                     if 'blendTolerance' in config:
-                        ret+="G64\n"
+                        ret+="G61\n"
             if 'spindleRPM' in config and  config['spindleRPM'] is not None:
                 ret+='M03 S'+str(round(config['spindleRPM'],2))+'\n'
         for point in path:
