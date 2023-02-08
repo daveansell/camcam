@@ -157,7 +157,9 @@ class RoundedCuboid(SolidPath):
                 solid.hull()(
                     solid.translate([-W,H,D])( solid.sphere(r=rad)),
                     solid.translate([-W,-H,D])( solid.sphere(r=rad)),
-                    solid.translate([W,-H,D])( solid.sphere(r=rad)),
+                    solid.translate([W,H,D])( solid.sphere(r=rad)),
+                    solid.translate([W, -H,D])( solid.sphere(r=rad)),
+
                     solid.translate([W, H,-D])( solid.sphere(r=rad)),
                     solid.translate([-W, H,-D])( solid.sphere(r=rad)),
                     solid.translate([ W,-H,-D])( solid.sphere(r=rad)),
