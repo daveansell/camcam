@@ -135,7 +135,11 @@ class ProjectBox(Part):
                 p=importpcb(pcb, depth)
                 newpillars=p.getPillars()
                 for pillar in newpillars:
-                    pillars.append(self.doTransform(pillar, faces[face]))
+                    if 'transform' in pcb:
+                        trans = pcb['transform']
+                    else:
+                        trans=[]
+                    pillars.append(self.doTransform(pillar, trans+faces[face]))
                 # apply transforms
             for hole in holePoses[face]:
                 print (hole)
@@ -151,7 +155,7 @@ class ProjectBox(Part):
                         holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], 1])(cylinder(r=hole['rad'], h=hole['length']+1)), faces[face]))
                         rods.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2+0.1])(cylinder(r=hole['pillarRad'], h=hole['length']-0.1)), faces[face]))
                 elif hole['shape']=='slot':
-                    holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2+1])(self.SlotPrism(hole['width'], hole['height'], thickness+1)), faces[face]))
+                    holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness-1])(self.SlotPrism(hole['width'], hole['height'], thickness+2)), faces[face]))
 
         #if len(rods):
         wholebox = union()(wholebox,*rods, *extraSolids)
