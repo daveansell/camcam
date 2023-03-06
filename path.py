@@ -284,6 +284,8 @@ class Path(object):
             else:
                 c['downmode']='ramp'
             config['original_cutter']=c
+        if config['cutterrad']==0:
+            config['cutterrad']=0.001
         if 'vertfeed' in config and config['vertfeed']:
             config['vertfeed'] *= tool['diameter']/4.0
         if 'stepdown' in config and config['stepdown']:
@@ -2886,12 +2888,13 @@ class Plane(Part):
         key = ''
         if self.modeconfig['mode']=='svg' or self.modeconfig['mode']=='scr':
         #       f=open(parent.name+"_"+self.name+"_"+part.name)
-            if part.border != None:
+            if part.border != None and type(part.border.centre)=='array' and len(part.border.centre):
                 centre=part.border.centre
             else:
                 centre=V(0,0)
             print (part.border)
-            if self.modeconfig['label'] and  self.modeconfig['mode'] == 'svg' and hasattr(part, 'name'):
+            print (centre)
+            if self.modeconfig['label'] and  self.modeconfig['mode'] == 'svg' and hasattr(part, 'name') :
                 out+="<text transform='scale(1,-1)' text-anchor='middle' x='"+\
                     str(int(centre[0]))+"' y='"+\
                     str(-int(centre[1]))+"'>"+\
