@@ -100,7 +100,10 @@ class CSScrew(SolidPath):
             self.add_point(PCircle(pos,radius=milling.bolts[self.size]['clearance']/2))
         else:
             self.add_point(PCircle(pos,radius=milling.bolts[self.size]['tap']/2))
-
+        if 'rotate' in config:
+            self.rotate=config['rotate']
+        else:
+            self.rotate=[0,0,0]
     def getSolid(self):
         ret = []
         if self.mode=='clearance':
@@ -119,7 +122,7 @@ class CSScrew(SolidPath):
                 )
             )
         )
-        return solid.translate(self.pos)(solid.union()(*ret))
+        return solid.translate(self.pos)(solid.rotate(self.rotate)(solid.union()(*ret)))
 
 class HullSpheres(SolidPath):
     def __init__(self, pos, corners, **config):
@@ -254,10 +257,15 @@ class Torus(SolidOfRotation):
             self.convexity = config['convexity']
         else:
             self.convexity = 10
-        self.add_points(PCircle(pos, radius=smallRad))
+        if 'angle' in config:
+            self.angle=config['angle']
+        else:
+            self.angle=360.0
+        self.closed=True
+        self.add_point(PCircle(pos, radius=smallRad))
 
     def getSolid(self):
-        return solid.rotate_extrude(convexity = self.convexity)(solid.translate([self.bigRad,0,0])(solid.circle(r=self.smallRad)))
+        return solid.rotate_extrude(convexity = self.convexity, angle=self.angle)(solid.translate([self.bigRad,0,0])(solid.circle(r=self.smallRad)))
 
 
 class RoundedTube(SolidOfRotation):
