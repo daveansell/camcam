@@ -798,6 +798,23 @@ class Milling:
                },
         }
                 self.bolts={
+                'M2':{
+                        'diam':2.0,
+                        'tap':1.6,
+                        'clearance':2.2,
+                        'allen':{
+                                'head_d':3.98,
+                                'head_l':2.0,
+                        },
+                        'button':{
+                                'head_d':3.8,
+                                'head_l':1.3,
+                        },
+                        'cs':{
+                            'head_d':3.85,
+                            'head_l':1.3,
+                        },
+                },
                 'M2.5':{
                         'diam':2.5,
                         'tap':2.1,
