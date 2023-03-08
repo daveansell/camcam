@@ -2558,38 +2558,38 @@ class Part(object):
         self.copied = True
 
     # flatten the parts tree
-    def get_layers(self):
+    def get_layers(self, doParts=True):
         """Get all the Path/Pathgroupd in a part grouped by layer. Used when rendering"""
         layers={}
 
-
-        for part in self.parts:
-            # find all the contents of layers
-            part.mode=self.mode
-            part.callmode=self.callmode
+        if doParts:
+            for part in self.parts:
+                # find all the contents of layers
+                part.mode=self.mode
+                part.callmode=self.callmode
 # this may be dangerous as pre_render will be called more than oncee
-            ls=part.get_layers()
-            p=""
-            if(ls is not False and ls is not None):
-                for l in list(ls.keys()):
-                    # if the part had no layer of its own we will inherit it from self
-                    if l is None and hasattr(self, 'layer') and self.layer is not False:
-                        tl=self.layer
-                    else:
-                        tl=l
-                    if not part.isCopy:
-                        if tl not in layers:
-                            layers[tl]=[]
-                        layers[tl].extend(ls[l])
-                    # if the part should be copied, copy its parts which aren't in its core layer
-                    # This means you can add an object in lots of places and mounting holes will be drilled
-                    # or we are in an overview mode
-                    elif not hasattr(part,'layer') or part.layer==False or l!=part.layer or hasattr(self, 'callmode') and milling.mode_config[self.callmode]['overview']:
-                        if l not in layers:
-                            layers[l]=[]
-                        layers[l].extend(ls[l])
-                    else:
-                        pass
+                ls=part.get_layers()
+                p=""
+                if(ls is not False and ls is not None):
+                    for l in list(ls.keys()):
+                        # if the part had no layer of its own we will inherit it from self
+                        if l is None and hasattr(self, 'layer') and self.layer is not False:
+                            tl=self.layer
+                        else:
+                            tl=l
+                        if not part.isCopy:
+                            if tl not in layers:
+                                layers[tl]=[]
+                            layers[tl].extend(ls[l])
+                        # if the part should be copied, copy its parts which aren't in its core layer
+                        # This means you can add an object in lots of places and mounting holes will be drilled
+                        # or we are in an overview mode
+                        elif not hasattr(part,'layer') or part.layer==False or l!=part.layer or hasattr(self, 'callmode') and milling.mode_config[self.callmode]['overview']:
+                            if l not in layers:
+                                layers[l]=[]
+                            layers[l].extend(ls[l])
+                        else:
+                            pass
 #                                               for copytrans in part.copies:
 #                                                       for p in ls[l]:
 #                                                               t = copy.deepcopy(p)
