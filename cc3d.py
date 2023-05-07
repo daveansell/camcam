@@ -386,7 +386,7 @@ def plane_render_part3D(self, thepart, pconfig, layers={}, filename=False):
         filename = filename +',scad'
     if hasattr(thepart, 'border3D'):
         print("border3d "+str(thepart.border3D))
-        solid.scad_render_to_file(thepart.border3D, filename,file_header = '$fa = 2.5;\n$fs = 2.5;', include_orig_code=False)
+        solid.scad_render_to_file(thepart.border3D, filename,file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=False)
 
 def part_get_layers3D(self):
     """collect subparts with a different layer to parent"""
@@ -426,7 +426,7 @@ def plane_render_all3D(self,callmode,config):
                         scene = solid.part()(thepart.border3D)
                     else:
                         scene += solid.part()(thepart.border3D)
-        solid.scad_render_to_file(scene, 'Overview.scad',file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=False)
+        solid.scad_render_to_file(scene, 'Overview.scad',file_header = '$fa = 2.5;\n$fs = 2.5;', include_orig_code=False)
 
 Part.get_layers3D = part_get_layers3D
 Plane.get_layers3D = part_get_layers3D
