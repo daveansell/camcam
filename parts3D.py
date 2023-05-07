@@ -108,20 +108,29 @@ class CSScrew(SolidPath):
         ret = []
         if self.mode=='clearance':
             ret.append(solid.cylinder(r=milling.bolts[self.size]['clearance']/2, h=self.length)) 
+            ret.append(
+                solid.translate(V(0,0,-1))(
+                    solid.cylinder(
+                        r1=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+1)/milling.bolts[self.size]['cs']['head_l'], 
+                        r2=milling.bolts[self.size]['tap']/2, 
+                        h=milling.bolts[self.size]['cs']['head_l']+1
+                    )
+                )
+            )
+            ret.append(
+                solid.translate(V(0,0,-milling.bolts[self.size]['cs']['head_l']-11))(
+                    solid.cylinder(
+                        r1=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+1)/milling.bolts[self.size]['cs']['head_l'], 
+                        r2=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+1)/milling.bolts[self.size]['cs']['head_l'], 
+                        h=milling.bolts[self.size]['cs']['head_l']+10
+                    )
+                )   
+            )
                 
         elif self.mode=='thread':
             ret.append(solid.cylinder(r=milling.bolts[self.size]['tap']/2, h=self.length)) 
 
 
-        ret.append(
-            solid.translate(V(0,0,-1))(
-                solid.cylinder(
-                    r1=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+1)/milling.bolts[self.size]['cs']['head_l'], 
-                    r2=milling.bolts[self.size]['tap']/2, 
-                    h=milling.bolts[self.size]['cs']['head_l']+1
-                )
-            )
-        )
         return solid.translate(self.pos)(solid.rotate(self.rotate)(solid.union()(*ret)))
 
 class HullSpheres(SolidPath):
