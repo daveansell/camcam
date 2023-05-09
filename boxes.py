@@ -81,6 +81,7 @@ class ArbitraryBox(Part):
         self.sides={}
         self.normals = {}
         self.side_angles={}
+        self.cut_prisms=[]
         self.config = config
         wood_direction_face = None
         wood_direction_faces = []
@@ -92,6 +93,7 @@ class ArbitraryBox(Part):
         else:
             self.name='box'
         for f, face in faces.items():
+            face['name']=f
             self.extract_sides(face)
             if 'rotate' in face:
                 face['points']=copy.deepcopy(face['points'])
@@ -1802,3 +1804,63 @@ class ArbitraryBox(Part):
       #      intersections.append([p, Path.intersects(False, line2D, [face['ppoints'][(p-1)%len(face['ppoints'])],face['ppoints'][p]])])
        # return intersections
 
+    def line_face_intersection(self, p0, u, face, epsilon=1e-6):
+        """
+        p0   : Line origin.
+        u    : vector along line.
+        face : face you are intersecting it with
+
+        Return a Vector or None (when the intersection can't be found).
+        """
+
+        dot = face['normal'].dot( u)
+
+        if abs(dot) > epsilon:
+            # The factor of the point between p0 -> p1 (0 - 1)
+            # if 'fac' is between (0 - 1) the point intersects with the segment.
+            # Otherwise:
+            #  < 0.0: behind p0.
+            #  > 1.0: infront of p1.
+            w = p0 - face['origin']
+            fac = -face['normal'].dot( w) / dot
+            u = u * fac
+            return p0 + u
+
+        # The segment is parallel to plane.
+        return None
+
+    def add_cut_prism(self, path, origin, along, x):
+        self.cut_prisms.append({'path':path, 'origin':origin, 'along':along, 'x':x.normalize()})
+
+    def project_prisms_on_face(self, face):
+        for prism in self.cut_prisms:
+            intersection3D = self.line_face_intersection(prism['origin'], prism['along'], face)
+            if intersection3D is not None:
+                intersection2D = self.project(intersection3D, face)
+                print("intersection3D="+str(intersection3D)+"intersection2D="+str(intersection2D))
+                prism['along']=prism['along'].normalize()
+                prism['x'] = prism['x'].normalize()
+                prism['y'] = prism['x'].cross(prism['along']).normalize()
+                xp = self.project(prism['x'], face)
+                yp = self.project(prism['y'], face)
+                x = self.project(self.line_face_intersection(prism['x']+face['origin'], prism['along'], face),face)
+                y = self.project(self.line_face_intersection(prism['y']+face['origin'], prism['along'], face),face)
+                # the extra bit because you need to cut clearance at both the front and back of the wood
+                overlap = self.project(self.line_face_intersection(face['wood_direction']*face['normal'].normalize()+face['origin'], prism['along'], face),face)*face['thickness']
+                polygon = prism['path'].polygonise(3)
+                ppath = Path(closed=True, side='in')
+                for p in polygon:
+                    ppath.add_point(p[0]*x + p[1]*y+intersection2D)
+                ppath.polygonise()
+                for p,point in enumerate(ppath.points):
+                    if (point.pos-ppath.centre).dot(overlap) >0:
+                        pass
+                        ppath.points[p].pos+=overlap
+        #        for p in ppath.points:
+         #           print (p.pos)
+                print(getattr(self, 'face_'+face['name']))
+                getattr(self, 'face_'+face['name']).add(ppath)
+
+    def project_prisms_on_faces(self):
+        for f in self.faces:
+            self.project_prisms_on_face(self.faces[f])
