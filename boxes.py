@@ -288,7 +288,6 @@ class ArbitraryBox(Part):
 
         for f in faces:
             face=faces[f]
-            print("GENERATE BORDER FOR FACE-="+str(f))
             if 'internal' in face and face['internal']:
                 self.get_border(face['part'],  f, face, 'internal')
             else:
