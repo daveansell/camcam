@@ -267,6 +267,7 @@ def plane_generate_part3D(self, thepart, pconfig):
         config.update(self.get_layer_config(thepart.layer))
     else:
         paths=[]
+    paths.extend(thepart.paths[thepart.layer].paths)
     if 'all' in layers:
         paths.extend(layers['all'])
     config = thepart.overwrite(config,thepart.get_config())
@@ -308,8 +309,11 @@ def plane_make_part3D(self, thepart, layers, pconfig, root=True):
         return False
     cutouts = [thepart.border3D]
     for cutout in thepart.cutouts3D:
-        for c in cutout:
-            cutouts.append(c)
+        if type(cutout) is list:
+            for c in cutout:
+                cutouts.append(c)
+        else:
+            cutouts.append(cutout)
 
     thepart.border3D = solid.difference()(*cutouts)
     if len(thepart.intersections3D):
