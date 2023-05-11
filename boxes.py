@@ -1829,15 +1829,21 @@ class ArbitraryBox(Part):
         # The segment is parallel to plane.
         return None
 
-    def add_cut_prism(self, path, origin, along, x):
-        self.cut_prisms.append({'path':path, 'origin':origin, 'along':along, 'x':x.normalize()})
+    def add_cut_prism(self, path, origin, along, x, start=None, end=None):
+        self.cut_prisms.append({'path':path, 'origin':origin, 'along':along, 'x':x.normalize(), 'start':start, 'end':end})
 
     def project_prisms_on_face(self, face):
         for prism in self.cut_prisms:
             intersection3D = self.line_face_intersection(prism['origin'], prism['along'], face)
             if intersection3D is not None:
+                # find how far we are from the prism origin, and see if the prism should be rendered there
+                dist = (intersection3D-prism['origin']).dot(prism['along'])
+                if prism['start'] is not None and dist<prism['start']:
+                    return
+                if prism['end'] is not None and dist>prism['end']:
+                    return
                 intersection2D = self.project(intersection3D, face)
-                print("intersection3D="+str(intersection3D)+"intersection2D="+str(intersection2D))
+##                print("intersection3D="+str(intersection3D)+"intersection2D="+str(intersection2D))
                 prism['along']=prism['along'].normalize()
                 prism['x'] = prism['x'].normalize()
                 prism['y'] = prism['x'].cross(prism['along']).normalize()
@@ -1858,7 +1864,7 @@ class ArbitraryBox(Part):
                         ppath.points[p].pos+=overlap
         #        for p in ppath.points:
          #           print (p.pos)
-                print(getattr(self, 'face_'+face['name']))
+#                print(getattr(self, 'face_'+face['name']))
                 getattr(self, 'face_'+face['name']).add(ppath)
 
     def project_prisms_on_faces(self):
