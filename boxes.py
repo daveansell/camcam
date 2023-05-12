@@ -367,9 +367,9 @@ class ArbitraryBox(Part):
     def align3d_face(self, p, f, face):
 #               config = p.get_config()
         if face['wood_direction'] >0:#== face['good_direction']:
-            flip=-1#-face['wood_direction']
+            flip= 1#-face['wood_direction']
         else:
-            flip = 1
+            flip =-1
         z = (face['normal'] * flip).normalize()
 
         x =  face['x'].normalize()
