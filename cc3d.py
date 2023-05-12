@@ -267,7 +267,8 @@ def plane_generate_part3D(self, thepart, pconfig):
         config.update(self.get_layer_config(thepart.layer))
     else:
         paths=[]
-    paths.extend(thepart.paths[thepart.layer].paths)
+    if thepart.layer in thepart.paths :
+        paths.extend(thepart.paths[thepart.layer].paths)
     if 'all' in layers:
         paths.extend(layers['all'])
     config = thepart.overwrite(config,thepart.get_config())
