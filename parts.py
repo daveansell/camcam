@@ -214,9 +214,17 @@ class Post(Part):
         self.add(Hole(pos-s, rad=5/2), 'base')
 
 class Bracket(Pathgroup):
-    def __init__(self, pos, bracket_type, side, **config):
+    def __init__(self, pos, along, perp, bracket_type, side, mode, **config):
         self.init(config)
-        self.translate(pos)
+#        self.translate(pos)
+        print("bracket="+str(pos)+" type="+str(bracket_type)+" side="+str(side))
+        if 'z1' in config:
+            z1=config['z1']
+        else:
+            z1=False
+        if mode=='straight':
+            mode='off'
+
         dat = {
                 'bpc60x40':{
                         'holerad':3.3/2,
@@ -225,14 +233,25 @@ class Bracket(Pathgroup):
                                         'off':[V(12.5, 17.5), V(25,34), V(0,34), V(-25,34), V(-12.5,17.5)],
                         },
                 },
+                'KekuEH':{
+                        'holerad':3.3/2,
+                        'holes':{
+                                        'on':[V(-8.0, 16), V(-8,-16)],
+                                        'off':[V(14, 48), V(14,16)],
+                        },
+                },
 
         }
         if bracket_type in dat:
             d=dat[bracket_type]
-            if side in d['holes']:
-                for p in d['holes'][side]:
-                    self.add(Hole(p, rad=d['holerad']))
-
+            if mode in d['holes']:
+                for p in d['holes'][mode]:
+                    if type(z1) is dict:
+                        z = z1[mode]
+                    else:
+                        z = z1
+                    self.add(Hole(pos+p[0]*perp+ p[1]*along, rad=d['holerad'], z1=z))
+                    print ("Hole at"+str(pos+p[0]*perp+ p[1]*along))
 
 class Barn(Part):
     def __init__(self, pos, width, height,**config):
