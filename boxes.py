@@ -72,6 +72,7 @@ class ArbitraryBox(Part):
                 'slot_extra':0, # how much longer to cut the slots than theoretical minimum
                 'fold_rad':False, # radius of the fold
                 'fold_comp':False,  # fold compensation, the amount to add to the length of the internal side of the joint to make the fold correct
+                'slot_rad':0,
                 }
         for prop in self.auto_properties:
             if prop in config:
@@ -196,7 +197,8 @@ class ArbitraryBox(Part):
             if face['cut_from']<0:
                 pass
                 face['isback']=True
-                face['good_direction'] *= face['cut_from']
+            face['good_direction'] = face['cut_from']
+            
         #               face['zoffset'] += face['thickness']
             if 'x' in face:
                 if abs(face['x'].dot(face['normal'])) > 0.0000001 :
@@ -1210,12 +1212,12 @@ class ArbitraryBox(Part):
                 if t not in newface:
                     self.faces[newf][t] = d * face[t]
                     self.propagate_direction(t, newf, recursion)
-        for f in self.faces:
-            if t not in self.faces[f] and 'alt_'+t in self.faces[f]:
-                if self.faces[f]['alt_'+t].dot(self.faces[f]['normal'])>0:
-                    self.faces[f][t]=1
+        for fa in self.faces:
+            if t not in self.faces[fa] and 'alt_'+t in self.faces[fa]:
+                if self.faces[fa]['alt_'+t].dot(self.faces[fa]['normal'])>0:
+                    self.faces[fa][t]=1
                 else:
-                    self.faces[f][t]=-1
+                    self.faces[fa][t]=-1
 
     def set_corners(self, side, f, scount):
         face = self.faces[f]
@@ -1750,11 +1752,14 @@ class ArbitraryBox(Part):
                 slotAlong = (intersection['midPoint'] - intersection['edgePoint'] ).normalize()
                 edgeAlong = (point-lastpoint).normalize()
                 slotW = D*slotPerp/abs(self.unproject(slotPerp,face).dot(otherface['normal']))*otherface['thickness']
-
-                p  = PSharp(intersection['edgePoint'])
+                # fix slot direction being different from edge direction (edge seems to be right)
+                if (edgeAlong*d).dot(slotW) <0:
+                    slotW *=-1
+                        
+                p  = PIncurve(intersection['edgePoint'], radius=self.slot_rad)
                 p1 = PSharp(intersection['midPoint']+slotAlong*self.slot_extra)
                 p2 = PSharp(intersection['midPoint']+slotW + slotAlong*self.slot_extra)
-                p3 = PSharp(intersection['edgePoint']+edgeAlong *otherface['thickness']*d/ abs(slotPerp.normalize().dot(edgeAlong)))
+                p3 = PIncurve(intersection['edgePoint']+edgeAlong *otherface['thickness']*d/ abs(slotPerp.normalize().dot(edgeAlong)), radius=self.slot_rad)
                 if(d==1):
                     ret.append([p, p1,p2,p3])
                 else:
