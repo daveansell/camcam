@@ -355,7 +355,7 @@ class CamCam(App):
 
             for p in self.sheet_widgets[s]:
                 if p.part is not None:
-                    print (p.part.name)
+                    print (p.part.name+" "+str(p.deleted))
                     rec = {}
                     rec['name']=str(p.part.name)
                     tempr=p.rotation
@@ -386,7 +386,11 @@ class CamCam(App):
                         print("*deleted*")
 
 #                               print p.get_window_matrix(0,0)
-        h = open( 'layout_file', 'w')
+        if camcam.command_args.parts:
+            extra='_'+'_'.join(camcam.command_args.parts)
+        else:
+            extra=''
+        h = open( 'layout_file'+extra, 'w')
         json.dump(data,h, indent=4)
 #               pickle.dump(data, h)
 
