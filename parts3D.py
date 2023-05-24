@@ -70,12 +70,15 @@ class Cuboid(SolidPath):
 
 
 class Cylinder(SolidPath):
-    def __init__(self, pos, rad1, rad2, height, **config):
+    def __init__(self, pos, rad1=None, rad2=None, height, rad=None, **config):
         self.init(config)
         if 'centre' in config:
             self.centre= config['centre']
         else:
             self.centre= False
+        if rad is not None:
+            rad1=rad
+            rad2=rad
         self.pos=pos
         self.rad1=rad1
         self.rad2=rad2
