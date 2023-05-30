@@ -71,7 +71,8 @@ class ArbitraryBox(Part):
                 'butt_outline':False, # outline the butt joint on the long side for assembly
                 'slot_extra':0, # how much longer to cut the slots than theoretical minimum
                 'fold_rad':False, # radius of the fold
-                'fold_comp':False  # fold compensation, the amount to add to the length of the internal side of the joint to make the fold correct
+                'fold_comp':False,  # fold compensation, the amount to add to the length of the internal side of the joint to make the fold correct
+                'slot_rad':0,
                 }
         for prop in self.auto_properties:
             if prop in config:
@@ -81,6 +82,7 @@ class ArbitraryBox(Part):
         self.sides={}
         self.normals = {}
         self.side_angles={}
+        self.cut_prisms=[]
         self.config = config
         wood_direction_face = None
         wood_direction_faces = []
@@ -92,6 +94,7 @@ class ArbitraryBox(Part):
         else:
             self.name='box'
         for f, face in faces.items():
+            face['name']=f
             self.extract_sides(face)
             if 'rotate' in face:
                 face['points']=copy.deepcopy(face['points'])
@@ -115,6 +118,8 @@ class ArbitraryBox(Part):
             if 'layer' not in face:
                 face['layer']='layer_'+f
                 self.new_layers.append(f)
+            if 'slot_direction' not in face:
+                face['slot_direction']=False
             self.preparsePoints(face)
             self.make_sides(f,face['points'])
             self.make_normal(f, face['points'])
@@ -186,13 +191,14 @@ class ArbitraryBox(Part):
             face=self.faces[f]
             self.get_cut_side(f, face)
 #                       face['good_direction'] *= face['cut_from']
-            print (f+" cut_from "+str(face['cut_from'])+" "+str(face['cut_from']*face['normal']))
-            print (f+" wood_direction "+str(face['wood_direction'])+" "+str(face['wood_direction']*face['normal']))
-            print (f+" good_direction "+str(face['good_direction'])+" "+str(face['good_direction']*face['normal']))
+            #print (f+" cut_from "+str(face['cut_from'])+" "+str(face['cut_from']*face['normal']))
+            #print (f+" wood_direction "+str(face['wood_direction'])+" "+str(face['wood_direction']*face['normal']))
+            #print (f+" good_direction "+str(face['good_direction'])+" "+str(face['good_direction']*face['normal']))
             if face['cut_from']<0:
                 pass
                 face['isback']=True
-                face['good_direction'] *= face['cut_from']
+            face['good_direction'] = face['cut_from']
+            
         #               face['zoffset'] += face['thickness']
             if 'x' in face:
                 if abs(face['x'].dot(face['normal'])) > 0.0000001 :
@@ -284,7 +290,6 @@ class ArbitraryBox(Part):
 
         for f in faces:
             face=faces[f]
-            print("GENERATE BORDER FOR FACE-="+str(f))
             if 'internal' in face and face['internal']:
                 self.get_border(face['part'],  f, face, 'internal')
             else:
@@ -364,9 +369,9 @@ class ArbitraryBox(Part):
     def align3d_face(self, p, f, face):
 #               config = p.get_config()
         if face['wood_direction'] >0:#== face['good_direction']:
-            flip=-1#-face['wood_direction']
+            flip= 1#-face['wood_direction']
         else:
-            flip = 1
+            flip =-1
         z = (face['normal'] * flip).normalize()
 
         x =  face['x'].normalize()
@@ -547,7 +552,7 @@ class ArbitraryBox(Part):
                     if face['point_type'][(p-1)%len(face['sides'])] not in ['sharp', 'insharp', 'clear', 'doubleclear']:
                         nointersect=True
                 else:
-                    print("simple");
+                    #print("simple");
                     newpoints.append(PIgnore((lastpoint+point)/2))
                     newpoints.append(PInsharp(lastpoint))
 
@@ -920,7 +925,7 @@ class ArbitraryBox(Part):
                 pass
             elif joint['joint_mode']=='butt':
                 pass
-                print(cutside)
+                #print(cutside)
                 part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes'], joint_type='convex', fudge=fudge, butt_outline=joint['butt_outline'], hole_depth=face['hole_depth']))
             elif joint['joint_mode']=='bracket':
                 part.add(BracketJointHoles(
@@ -1118,7 +1123,7 @@ class ArbitraryBox(Part):
                 K=False
                 Ks = milling.materials[face['material']]['K']
                 for k in Ks['bending']:
-                    print (k)
+                    #print (k)
                     if face['thickness']<=k or k==10:
                         K = Ks['bending'][k]
                 angle = side[0][8]
@@ -1207,12 +1212,12 @@ class ArbitraryBox(Part):
                 if t not in newface:
                     self.faces[newf][t] = d * face[t]
                     self.propagate_direction(t, newf, recursion)
-        for f in self.faces:
-            if t not in self.faces[f] and 'alt_'+t in self.faces[f]:
-                if self.faces[f]['alt_'+t].dot(self.faces[f]['normal'])>0:
-                    self.faces[f][t]=1
+        for fa in self.faces:
+            if t not in self.faces[fa] and 'alt_'+t in self.faces[fa]:
+                if self.faces[fa]['alt_'+t].dot(self.faces[fa]['normal'])>0:
+                    self.faces[fa][t]=1
                 else:
-                    self.faces[f][t]=-1
+                    self.faces[fa][t]=-1
 
     def set_corners(self, side, f, scount):
         face = self.faces[f]
@@ -1369,7 +1374,7 @@ class ArbitraryBox(Part):
             p+=1
 
         if len(self.sides[sid]) > 2:
-            print(self.sides[sid])
+            #print(self.sides[sid])
             raise ValueError("more than 2 faces with the same side "+str(self.sides[sid]))
 
     def set_joint_type(self, s, side):
@@ -1498,8 +1503,8 @@ class ArbitraryBox(Part):
                     face['controlPoints'][np]=[]
             else:
                 face['controlPoints'][np].append(pnt)
-        print (face['controlPoints'])
-        print (face['points'])
+        #print (face['controlPoints'])
+        #print (face['points'])
         face['points']=newpoints
         p=0
         for pnt in face['points']:
@@ -1605,20 +1610,64 @@ class ArbitraryBox(Part):
             return False
         t1 = self.unproject(intersection_line_f1, face1)
         t2 = self.unproject(intersection_line_f2, face2)
+            
+        # Find out if one of the intersection lines is completely within the other
+        # First project the ends of the intersections on both faces onto the intersection line
         a1a=t1[0].dot(intersection_normal.normalize())
         a1b=t1[1].dot(intersection_normal.normalize())
         a2a=t2[0].dot(intersection_normal.normalize())
         a2b=t2[1].dot(intersection_normal.normalize())
         intersectionLine = {}
-        b = self.which_between( a1a, a1b, a2a, a2b)
-        if b is not None:
-            intersectionLine[0] = b
-        b = self.which_between( a2a, a2b, a1a, a1b)
-        if b is not None:
-            intersectionLine[1] = b
-        
+        # now work out which end of a1 is inside a2
+        b1 = self.which_between( a1a, a1b, a2a, a2b)
+        b2 = self.which_between( a2a, a2b, a1a, a1b)
+        if b1 is not None:
+           intersectionLine[0] = b1
+        if b2 is not None:
+           intersectionLine[1] = b2
+
+        if face1['slot_direction'] or face2['slot_direction']:
+            # if both are specified then check they want the slots in opposite directions
+            if face1['slot_direction']:
+                slotDir1 = face1['slot_direction'].dot(intersection_normal)
+            else:
+                slotDir1 = False
+            if face2['slot_direction']:
+                slotDir2 = face2['slot_direction'].dot(intersection_normal)
+            else:
+                slotDir2 = False
+
+            if face1['slot_direction'] and face2['slot_direction']:
+                if slotDir1 * slotDir2 >=0:
+                    print ("face "+f1+" and "+f2+" disagree over slot direction");
+            if slotDir1>0 or slotDir2<0:
+                # face1 slot is in the direction of intersection_normal
+                if a1a>a1b:
+                    intersectionLine[0]=0
+                else:
+                    intersectionLine[0]=1
+                if a2a<a2b:
+                    intersectionLine[1]=0
+                else:
+                    intersectionLine[1]=1
+            else:
+                # face2 slot is in the direction of intersection_normal
+                if a1a>a1b:
+                    intersectionLine[0]=1
+                else:
+                    intersectionLine[0]=0
+                if a2a<a2b:
+                    intersectionLine[1]=1
+                else:
+                    intersectionLine[1]=0
+        # work out what this means wrt slot direction
+
+        # extrapolate the cut to the correct edge
+        # want to keep the midpoint the middle of the smaller piece        
         # check there is a valid intersection and that the intersection is not in the plane of either face (as then it is a different kind of joint)
         # ************* This is to stop joints at an edge. We are checking the wrong planes
+
+        print("intersection"+str(intersectionLine)+f1+f2+"aas"+str(( a1a, a1b, a2a, a2b))+"t1="+str(t1)+"t2="+str(t2)  )#"t1="+str(self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face1) )+ " t2="+str(self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face2)))i
         if len(intersectionLine)==2 and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face1) and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face2):
             otherEnd1=self.project(t2[intersectionLine[1]], face1)
             thisEnd1=self.project(t1[intersectionLine[0]], face1)
@@ -1703,11 +1752,14 @@ class ArbitraryBox(Part):
                 slotAlong = (intersection['midPoint'] - intersection['edgePoint'] ).normalize()
                 edgeAlong = (point-lastpoint).normalize()
                 slotW = D*slotPerp/abs(self.unproject(slotPerp,face).dot(otherface['normal']))*otherface['thickness']
-
-                p  = PSharp(intersection['edgePoint'])
+                # fix slot direction being different from edge direction (edge seems to be right)
+                if (edgeAlong*d).dot(slotW) <0:
+                    slotW *=-1
+                        
+                p  = PIncurve(intersection['edgePoint'], radius=self.slot_rad)
                 p1 = PSharp(intersection['midPoint']+slotAlong*self.slot_extra)
                 p2 = PSharp(intersection['midPoint']+slotW + slotAlong*self.slot_extra)
-                p3 = PSharp(intersection['edgePoint']+edgeAlong *otherface['thickness']*d/ abs(slotPerp.normalize().dot(edgeAlong)))
+                p3 = PIncurve(intersection['edgePoint']+edgeAlong *otherface['thickness']*d/ abs(slotPerp.normalize().dot(edgeAlong)), radius=self.slot_rad)
                 if(d==1):
                     ret.append([p, p1,p2,p3])
                 else:
@@ -1722,14 +1774,29 @@ class ArbitraryBox(Part):
                 else:
                     return ret[0]+ret[1]
 
+    # check if point is on a line
+    def point_on_line(self, point, line):
+        return (line[0]-point).length() + (line[1]-point).length() - (line[1]-line[0]).length() <0.001
+
     def point_from_face(self, point, face ):
         return (point-face['origin']).dot(face['normal'])
 
+    
+
     def line_in_plane(self, line, face):
-        if self.point_from_face(line[0], face) < 0.01 and self.point_from_face(line[0],face)<0.01:
-            return True
-        else:
-            return False
+        along = line[1]-line[0]
+        for p,point in enumerate(face['points']):    
+            lastpoint = face['points'][(p-1)%len(face['points'])]
+            if (point-lastpoint).cross(along).length()<0.01:
+                if self.point_on_line(line[0], [point,lastpoint]) or self.point_on_line(line[1], [point, lastpoint]):
+                    return True
+
+        return False
+
+    #    if self.point_from_face(line[0], face) < 0.01 and self.point_from_face(line[0],face)<0.01:
+     #       return True
+      #  else:
+       #     return False
             
 
 #    def line_intersect_face(self, face, line):
@@ -1741,3 +1808,69 @@ class ArbitraryBox(Part):
       #      intersections.append([p, Path.intersects(False, line2D, [face['ppoints'][(p-1)%len(face['ppoints'])],face['ppoints'][p]])])
        # return intersections
 
+    def line_face_intersection(self, p0, u, face, epsilon=1e-6):
+        """
+        p0   : Line origin.
+        u    : vector along line.
+        face : face you are intersecting it with
+
+        Return a Vector or None (when the intersection can't be found).
+        """
+
+        dot = face['normal'].dot( u)
+
+        if abs(dot) > epsilon:
+            # The factor of the point between p0 -> p1 (0 - 1)
+            # if 'fac' is between (0 - 1) the point intersects with the segment.
+            # Otherwise:
+            #  < 0.0: behind p0.
+            #  > 1.0: infront of p1.
+            w = p0 - face['origin']
+            fac = -face['normal'].dot( w) / dot
+            u = u * fac
+            return p0 + u
+
+        # The segment is parallel to plane.
+        return None
+
+    def add_cut_prism(self, path, origin, along, x, start=None, end=None):
+        self.cut_prisms.append({'path':path, 'origin':origin, 'along':along, 'x':x.normalize(), 'start':start, 'end':end})
+
+    def project_prisms_on_face(self, face):
+        for prism in self.cut_prisms:
+            intersection3D = self.line_face_intersection(prism['origin'], prism['along'], face)
+            if intersection3D is not None:
+                # find how far we are from the prism origin, and see if the prism should be rendered there
+                dist = (intersection3D-prism['origin']).dot(prism['along'])
+                if prism['start'] is not None and dist<prism['start']:
+                    return
+                if prism['end'] is not None and dist>prism['end']:
+                    return
+                intersection2D = self.project(intersection3D, face)
+##                print("intersection3D="+str(intersection3D)+"intersection2D="+str(intersection2D))
+                prism['along']=prism['along'].normalize()
+                prism['x'] = prism['x'].normalize()
+                prism['y'] = prism['x'].cross(prism['along']).normalize()
+                xp = self.project(prism['x'], face)
+                yp = self.project(prism['y'], face)
+                x = self.project(self.line_face_intersection(prism['x']+face['origin'], prism['along'], face),face)
+                y = self.project(self.line_face_intersection(prism['y']+face['origin'], prism['along'], face),face)
+                # the extra bit because you need to cut clearance at both the front and back of the wood
+                overlap = self.project(self.line_face_intersection(face['wood_direction']*face['normal'].normalize()+face['origin'], prism['along'], face),face)*face['thickness']
+                polygon = prism['path'].polygonise(3)
+                ppath = Path(closed=True, side='in')
+                for p in polygon:
+                    ppath.add_point(p[0]*x + p[1]*y+intersection2D)
+                ppath.polygonise()
+                for p,point in enumerate(ppath.points):
+                    if (point.pos-ppath.centre).dot(overlap) >0:
+                        pass
+                        ppath.points[p].pos+=overlap
+        #        for p in ppath.points:
+         #           print (p.pos)
+#                print(getattr(self, 'face_'+face['name']))
+                getattr(self, 'face_'+face['name']).add(ppath)
+
+    def project_prisms_on_faces(self):
+        for f in self.faces:
+            self.project_prisms_on_face(self.faces[f])

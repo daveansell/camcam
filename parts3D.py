@@ -100,26 +100,38 @@ class CSScrew(SolidPath):
             self.add_point(PCircle(pos,radius=milling.bolts[self.size]['clearance']/2))
         else:
             self.add_point(PCircle(pos,radius=milling.bolts[self.size]['tap']/2))
-
+        if 'rotate' in config:
+            self.rotate=config['rotate']
+        else:
+            self.rotate=[0,0,0]
     def getSolid(self):
         ret = []
         if self.mode=='clearance':
             ret.append(solid.cylinder(r=milling.bolts[self.size]['clearance']/2, h=self.length)) 
+            ret.append(
+                solid.translate(V(0,0,-1))(
+                    solid.cylinder(
+                        r1=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+1)/milling.bolts[self.size]['cs']['head_l'], 
+                        r2=milling.bolts[self.size]['tap']/2, 
+                        h=milling.bolts[self.size]['cs']['head_l']+1
+                    )
+                )
+            )
+            ret.append(
+                solid.translate(V(0,0,-milling.bolts[self.size]['cs']['head_l']-11))(
+                    solid.cylinder(
+                        r1=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+1)/milling.bolts[self.size]['cs']['head_l'], 
+                        r2=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+1)/milling.bolts[self.size]['cs']['head_l'], 
+                        h=milling.bolts[self.size]['cs']['head_l']+10
+                    )
+                )   
+            )
                 
         elif self.mode=='thread':
             ret.append(solid.cylinder(r=milling.bolts[self.size]['tap']/2, h=self.length)) 
 
 
-        ret.append(
-            solid.translate(V(0,0,-1))(
-                solid.cylinder(
-                    r1=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+1)/milling.bolts[self.size]['cs']['head_l'], 
-                    r2=milling.bolts[self.size]['tap']/2, 
-                    h=milling.bolts[self.size]['cs']['head_l']+1
-                )
-            )
-        )
-        return solid.translate(self.pos)(solid.union()(*ret))
+        return solid.translate(self.pos)(solid.rotate(self.rotate)(solid.union()(*ret)))
 
 class HullSpheres(SolidPath):
     def __init__(self, pos, corners, **config):
@@ -256,10 +268,15 @@ class Torus(SolidOfRotation):
             self.convexity = config['convexity']
         else:
             self.convexity = 10
-        self.add_points(PCircle(pos, radius=smallRad))
+        if 'angle' in config:
+            self.angle=config['angle']
+        else:
+            self.angle=360.0
+        self.closed=True
+        self.add_point(PCircle(pos, radius=smallRad))
 
     def getSolid(self):
-        return solid.rotate_extrude(convexity = self.convexity)(solid.translate([self.bigRad,0,0])(solid.circle(r=self.smallRad)))
+        return solid.rotate_extrude(convexity = self.convexity, angle=self.angle)(solid.translate([self.bigRad,0,0])(solid.circle(r=self.smallRad)))
 
 
 class RoundedTube(SolidOfRotation):

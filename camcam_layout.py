@@ -230,13 +230,15 @@ class CamCam(App):
         else:
             for plane in self.planes:
                 for part in plane.getParts():
-                    layer = plane.layers[part.layer].config
-                    sheetid = layer['material']+' '+str(layer['thickness'])
-                    if sheetid not in sheets:
-                        sheets[sheetid]=[]
-                        self.sheet_widgets[sheetid] = []
-                    part.sheet = sheetid
-                    sheets[sheetid].append( part)
+                    print("parts="+str(self.command_args.parts)+" part="+str(part.name))
+                    if(not self.command_args.parts or type(self.command_args.parts) is list  and part.name in self.command_args.parts):
+                        layer = plane.layers[part.layer].config
+                        sheetid = layer['material']+' '+str(layer['thickness'])
+                        if sheetid not in sheets:
+                            sheets[sheetid]=[]
+                            self.sheet_widgets[sheetid] = []
+                        part.sheet = sheetid
+                        sheets[sheetid].append( part)
         if hasattr( self.command_args, "sheets") and self.command_args.sheets:
             sheetlist = self.command_args.sheets.split(',')
         else:
@@ -353,7 +355,7 @@ class CamCam(App):
 
             for p in self.sheet_widgets[s]:
                 if p.part is not None:
-                    print (p.part.name)
+                    print (p.part.name+" "+str(p.deleted))
                     rec = {}
                     rec['name']=str(p.part.name)
                     tempr=p.rotation
@@ -384,7 +386,11 @@ class CamCam(App):
                         print("*deleted*")
 
 #                               print p.get_window_matrix(0,0)
-        h = open( 'layout_file', 'w')
+        if camcam.command_args.parts:
+            extra='_'+'_'.join(camcam.command_args.parts)
+        else:
+            extra=''
+        h = open( 'layout_file'+extra, 'w')
         json.dump(data,h, indent=4)
 #               pickle.dump(data, h)
 
@@ -458,12 +464,18 @@ parser.add_option("-q", "--offsetx", dest="offsetx",
                   help="offset x")
 parser.add_option("-Q", "--offsety", dest="offsety",
                   help="offset y")
+parser.add_option("-A", "--parts", dest="parts",
+                  help="parts to render")
 
 (options, args) = parser.parse_args()
 config={}
 print("****options"+str(options))
+if options.parts:
+    options.parts=options.parts.split(',')
+
 camcam.command_args=options
 camcam.files=args
+
 if camcam.command_args.layout_file:
     def byteify(input):
         if isinstance(input, dict):
@@ -490,9 +502,6 @@ if camcam.command_args.layout_file:
                 layoutData['command_args'][v] = camcam.command_args.__dict__[v]
         print("****"+str(layoutData['command_args']))
         camcam.command_args.__dict__ = layoutData['command_args']
-
-
-print(camcam.command_args)
 config['command_args']=camcam.command_args
 # load all the requested files
 files = {}

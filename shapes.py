@@ -2105,9 +2105,14 @@ class BracketJointHoles(Pathgroup):
 #                       angle=-angle
 #               else:
         angle=-angle
-        args['side']=startmode
+        args['mode']=startmode
+        args['side']=side
+        if(side=='left'):
+            perp = rotate(parallel, -90)
+        else:
+            perp = rotate(parallel, 90)
         for i in range(0, num_holes-1):
-            t=self.add( bracket(start+dl*(0.5+i), **args))
+            t=self.add( bracket(start+dl*(0.5+i), along=parallel, perp=perp, **args))
     #                       t.transform={'mirror':[V(0,0),'x']}
             t.rotate(V(0,0), angle)
 

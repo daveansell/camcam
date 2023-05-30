@@ -284,6 +284,8 @@ class Path(object):
             else:
                 c['downmode']='ramp'
             config['original_cutter']=c
+        if config['cutterrad']==0:
+            config['cutterrad']=0.001
         if 'vertfeed' in config and config['vertfeed']:
             config['vertfeed'] *= tool['diameter']/4.0
         if 'stepdown' in config and config['stepdown']:
@@ -2559,38 +2561,38 @@ class Part(object):
         self.copied = True
 
     # flatten the parts tree
-    def get_layers(self):
+    def get_layers(self, doParts=True):
         """Get all the Path/Pathgroupd in a part grouped by layer. Used when rendering"""
         layers={}
 
-
-        for part in self.parts:
-            # find all the contents of layers
-            part.mode=self.mode
-            part.callmode=self.callmode
+        if doParts:
+            for part in self.parts:
+                # find all the contents of layers
+                part.mode=self.mode
+                part.callmode=self.callmode
 # this may be dangerous as pre_render will be called more than oncee
-            ls=part.get_layers()
-            p=""
-            if(ls is not False and ls is not None):
-                for l in list(ls.keys()):
-                    # if the part had no layer of its own we will inherit it from self
-                    if l is None and hasattr(self, 'layer') and self.layer is not False:
-                        tl=self.layer
-                    else:
-                        tl=l
-                    if not part.isCopy:
-                        if tl not in layers:
-                            layers[tl]=[]
-                        layers[tl].extend(ls[l])
-                    # if the part should be copied, copy its parts which aren't in its core layer
-                    # This means you can add an object in lots of places and mounting holes will be drilled
-                    # or we are in an overview mode
-                    elif not hasattr(part,'layer') or part.layer==False or l!=part.layer or hasattr(self, 'callmode') and milling.mode_config[self.callmode]['overview']:
-                        if l not in layers:
-                            layers[l]=[]
-                        layers[l].extend(ls[l])
-                    else:
-                        pass
+                ls=part.get_layers()
+                p=""
+                if(ls is not False and ls is not None):
+                    for l in list(ls.keys()):
+                        # if the part had no layer of its own we will inherit it from self
+                        if l is None and hasattr(self, 'layer') and self.layer is not False:
+                            tl=self.layer
+                        else:
+                            tl=l
+                        if not part.isCopy:
+                            if tl not in layers:
+                                layers[tl]=[]
+                            layers[tl].extend(ls[l])
+                        # if the part should be copied, copy its parts which aren't in its core layer
+                        # This means you can add an object in lots of places and mounting holes will be drilled
+                        # or we are in an overview mode
+                        elif not hasattr(part,'layer') or part.layer==False or l!=part.layer or hasattr(self, 'callmode') and milling.mode_config[self.callmode]['overview']:
+                            if l not in layers:
+                                layers[l]=[]
+                            layers[l].extend(ls[l])
+                        else:
+                            pass
 #                                               for copytrans in part.copies:
 #                                                       for p in ls[l]:
 #                                                               t = copy.deepcopy(p)
@@ -2889,12 +2891,13 @@ class Plane(Part):
         key = ''
         if self.modeconfig['mode']=='svg' or self.modeconfig['mode']=='scr':
         #       f=open(parent.name+"_"+self.name+"_"+part.name)
-            if part.border != None:
+            if part.border != None and type(part.border.centre)=='array' and len(part.border.centre):
                 centre=part.border.centre
             else:
                 centre=V(0,0)
             print (part.border)
-            if self.modeconfig['label'] and  self.modeconfig['mode'] == 'svg' and hasattr(part, 'name'):
+            print (centre)
+            if self.modeconfig['label'] and  self.modeconfig['mode'] == 'svg' and hasattr(part, 'name') :
                 out+="<text transform='scale(1,-1)' text-anchor='middle' x='"+\
                     str(int(centre[0]))+"' y='"+\
                     str(-int(centre[1]))+"'>"+\

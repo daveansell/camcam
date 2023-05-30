@@ -253,7 +253,7 @@ Part.matrix3D = part_matrix3D
 def plane_generate_part3D(self, thepart, pconfig):
     self.mode='3D'
     self.callmode='3D'
-    layers = self.get_layers()
+    layers = self.get_layers(False)
     config=pconfig
     config['layer'] = thepart.layer
 #       thepart.renderable = False
@@ -267,6 +267,8 @@ def plane_generate_part3D(self, thepart, pconfig):
         config.update(self.get_layer_config(thepart.layer))
     else:
         paths=[]
+    if thepart.layer in thepart.paths :
+        paths.extend(thepart.paths[thepart.layer].paths)
     if 'all' in layers:
         paths.extend(layers['all'])
     config = thepart.overwrite(config,thepart.get_config())
@@ -275,18 +277,23 @@ def plane_generate_part3D(self, thepart, pconfig):
 #       else:
 #               thepart.renderable=False
     thepart.cutouts3D = []
+    thepart.layercutouts3D = []
     thepart.intersections3D = []
+    thepart.layerintersections3D = []
     for path in paths:
         thepart.cutouts3D.extend(path.render3D(config))
-def plane_make_part3D(self, thepart, pconfig):
+
+def plane_make_part3D(self, thepart, layers, pconfig, root=True):
     self.generate_part3D(thepart, pconfig)
 #       for cutout in thepart.cutouts3D:
 #               for c in cutout:
 #                       thepart.border3D = thepart.border3D - c
     subparts = []
+            
     for sp in thepart.parts:
-        if hasattr(sp, 'subpart') and sp.subpart:
-            self.make_part3D(sp, pconfig)
+        if hasattr(sp, 'subpart') and sp.subpart and sp!=thepart:
+            print('subpart='+str(sp))
+            self.make_part3D(sp, layers, pconfig, False)
             if hasattr(sp, 'border3D'):
                 if(sp.subpart=='subtract'):
                     thepart.cutouts3D.append([sp.border3D])
@@ -303,8 +310,11 @@ def plane_make_part3D(self, thepart, pconfig):
         return False
     cutouts = [thepart.border3D]
     for cutout in thepart.cutouts3D:
-        for c in cutout:
-            cutouts.append(c)
+        if type(cutout) is list:
+            for c in cutout:
+                cutouts.append(c)
+        else:
+            cutouts.append(cutout)
 
     thepart.border3D = solid.difference()(*cutouts)
     if len(thepart.intersections3D):
@@ -336,14 +346,43 @@ def plane_make_part3D(self, thepart, pconfig):
                 if 'translate3D' in transform:
                     thepart.border3D=solid.translate([transform['translate3D'][0], transform['translate3D'][1],transform['translate3D'][2] ])(thepart.border3D)
         c+=1
-        if not hasattr(p, 'subpart') and not p.subpart:
+        if not hasattr(p, 'subpart') and not p.subpart or hasattr(p,'layer') and hasattr(p.parent, 'layer') and p.layer != p.parent.layer: # if this is a root part add parent's transforms, or if it has come in via layers 
             p=p.parent
         else:
             p=False
+    layersubparts = []
+    if hasattr(thepart, 'layer') and thepart.layer in layers and root:
+        # has issue that these get wrapped with root part transforms
+        pass
+        for sp in layers[thepart.layer]:
+            if hasattr(sp, 'subpart') and sp.subpart and sp!=thepart:
+                print('subpart='+str(sp))
+                self.make_part3D(sp, layers, pconfig, False)
+                if hasattr(sp, 'border3D'):
+                    if(sp.subpart=='subtract'):
+                        thepart.layercutouts3D.append([sp.border3D])
+                    elif(sp.subpart=='intersect'):
+                        thepart.layerintersections3D.append(sp.border3D)
+                    else:    
+                        layersubparts.append(sp.border3D)
+    if len(layersubparts):
+        if hasattr(thepart, 'border3D'):
+            thepart.border3D=solid.union()(thepart.border3D,*layersubparts)
+        else:
+            thepart.border3D=solid.union()(*layersubparts)
+    if len(thepart.layercutouts3D):
+        cutouts = [thepart.border3D]
+        for cutout in thepart.layercutouts3D:
+            for c in cutout:
+                cutouts.append(c)
+        thepart.border3D = solid.difference()(*cutouts)
+    if len(thepart.layerintersections3D):
+        thepart.border3D = solid.intersection()(thepart.border3D, *thepart.intersections3D)
 
-def plane_render_part3D(self, thepart, pconfig, filename=False):
+
+def plane_render_part3D(self, thepart, pconfig, layers={}, filename=False):
     print ("RENDER "+thepart.name)
-    self.make_part3D(thepart, pconfig)
+    self.make_part3D(thepart, layers, pconfig)
     if filename==False:
         if thepart.name is None:
             return
@@ -354,28 +393,48 @@ def plane_render_part3D(self, thepart, pconfig, filename=False):
         print("border3d "+str(thepart.border3D))
         solid.scad_render_to_file(thepart.border3D, filename,file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=False)
 
+def part_get_layers3D(self):
+    """collect subparts with a different layer to parent"""
+    layers={}
+    for part in self.parts:
+        ls = part.get_layers3D()
+        for l,ly in ls.items():
+            if l not in layers.keys():
+                layers[l]=ly
+            else:
+                layers[l]=layers[l]+ls[l]
+        if hasattr(part,'subpart') and part.subpart and part.layer!=self.layer:
+            if part.layer not in layers:
+                layers[part.layer]=[]
+            layers[part.layer].append(part)
+    return layers
+
 def plane_render_all3D(self,callmode,config):
     """Render all parts in the Plane"""
     self.modeconfig=milling.mode_config[callmode]
     self.make_copies()
+    layers = self.get_layers3D()
+    print(layers)
     config=copy.copy(self.modeconfig)
     if(self.modeconfig['overview']==False):
         for thepart in self.getParts(False):
             if not (hasattr(thepart, 'subpart') and thepart.subpart):
-                self.render_part3D(thepart,config)
+                self.render_part3D(thepart,config, layers)
     else:
         scene = False
         for thepart in self.getParts(True):
             if not (hasattr(thepart, 'subpart') and thepart.subpart):
 
-                self.make_part3D(thepart, config)
+                self.make_part3D(thepart, layers, config)
                 if hasattr(thepart,"border3D"):
                     if scene==False:
                         scene = solid.part()(thepart.border3D)
                     else:
                         scene += solid.part()(thepart.border3D)
-        solid.scad_render_to_file(scene, 'Overview.scad',file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=False)
+        solid.scad_render_to_file(scene, 'Overview.scad',file_header = '$fa = 2.5;\n$fs = 2.5;', include_orig_code=False)
 
+Part.get_layers3D = part_get_layers3D
+Plane.get_layers3D = part_get_layers3D
 Plane.generate_part3D = plane_generate_part3D# MethodType(plane_generate_part3D, Plane)
 Plane.make_part3D = plane_make_part3D#MethodType(plane_render_part3D, Plane)
 Plane.render_part3D = plane_render_part3D#MethodType(plane_render_part3D, Plane)
