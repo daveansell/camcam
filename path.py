@@ -3002,10 +3002,11 @@ class Plane(Part):
                 offset = V(0,0)
                 if 'offset' in config:
                     offset = config['offset']
-            elif not hasattr(border,'boundingBox') or 'bl' not in list(border.boundingBox.keys()):
-                border.polygonise()
-            offset=-border.boundingBox['bl']
-            output = self.offset_gcode( output, offset)
+            else:
+                if not hasattr(border,'boundingBox') or 'bl' not in list(border.boundingBox.keys()):
+                    border.polygonise()
+                offset=-border.boundingBox['bl']
+                output = self.offset_gcode( output, offset)
         else:
             offset = V(0,0)
         if 'repeatx' in config and 'repeaty' in config and 'xspacing' in config and 'yspacing' in config and ('layout' not in config or not config['layout']):
