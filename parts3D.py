@@ -70,7 +70,7 @@ class Cuboid(SolidPath):
 
 
 class Cylinder(SolidPath):
-    def __init__(self, pos, rad1=None, rad2=None, height, rad=None, **config):
+    def __init__(self, pos, rad1=None, rad2=None, height=1, rad=None, **config):
         self.init(config)
         if 'centre' in config:
             self.centre= config['centre']
