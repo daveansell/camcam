@@ -216,9 +216,9 @@ class SubCircle(Path):
         self.closed=True
         xoff = math.sqrt(rad*rad - yoff*yoff)
         self.add_point(PSharp(centre + V( xoff, yoff)))
-        self.add_point(PArc(centre, radius=rad))
+        self.add_point(PArc(centre, radius=rad, direction='ccw'))
         self.add_point(PSharp(centre + V( 0, rad)))
-        self.add_point(PArc(centre, radius=rad))
+        self.add_point(PArc(centre, radius=rad, direction='ccw'))
         self.add_point(PSharp(centre + V(-xoff, yoff)))
         if 'extraSquare' in config and config['extraSquare']>0:
             self.add_point(PSharp(centre + V(-xoff, yoff-config['extraSquare'])))
@@ -778,6 +778,14 @@ class RoundSlotsGrill(Pathgroup):
                         else:
                             self.add(RoundedRect(pos+V(x, y), centred=True, width=slotWidth, height=slotHeight, rad=slotRad, side='in'))
 
+class RectSlitGrill(Pathgroup):
+    def __init__(self,pos, width, height, slitWidth, spacing, **config):
+        self.init(config)
+        numSlits = int((width - slitWidth)/(slitWidth+spacing))
+        x0 = (slitWidth+spacing)*numSlits /2
+        for i in range(0,numSlits+1):
+                self.add(RoundedRect(pos+V(-x0+i*(slitWidth+spacing), 0), width = slitWidth, height=height, rad=slitWidth/2-0.01, side='in'))
+
 class RectSpeakerGrill(Pathgroup):
     def __init__(self,pos, width, height, holerad, spacing, **config):
         self.init(config)
@@ -870,6 +878,8 @@ class FilledCircle(Pathgroup):
             else:
                 steps=math.ceil(r/c['cutterrad']/1.2)
             if 'overview' in config and config['overview'] or c['cutterrad']<0.1:
+                steps=1
+            if steps==0:
                 steps=1
             step=r/steps
         for i in range(0,int(steps)+1):
