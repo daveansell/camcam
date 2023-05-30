@@ -65,6 +65,8 @@ class CamCam:
         parts={}
         out = []
         config['layout'] = True
+  #      config['lzero'] = config['zero']
+   #     config['zero']=False
         for plane in self.planes:
             for part in plane.getParts(config=modeconfig):
                 part.make_copies()
@@ -81,15 +83,30 @@ class CamCam:
                 if p is not None and p['name']!='None':
                     (plane, part) = parts[p['name']]
                     tconfig = config
+                    print("")
+                    print (p)
+                    part.border.polygonise()
+                    if hasattr(part, 'border') and part.border:
+                        cx=(part.border.boundingBox['bl'][0]+part.border.boundingBox['tr'][0])/2
+                        cy=(part.border.boundingBox['bl'][1]+part.border.boundingBox['tr'][1])/2
+                        print(p['name']+" translate="+str(p['translate'])+" origin="+str(p['origin'])+" center="+str(V(cx,cy)))
+                    print(part.border.boundingBox)
+                    layout_transforms = [
+                            {'rotate':[V(cx+p['translate'][0],cy+p['translate'][1]), -p['rotate']]},
+                            { 'translate':V(p['translate'][0], p['translate'][1] ) },
+                    ]
+                    print(layout_transforms)
+                    old_transform = copy.copy(part.transform)
+                    part.transform+=layout_transforms
+                    print(part.transform)
                     part.border.polygonise()
                     if hasattr(part, 'border') and part.border:
                         minx=min(minx, part.border.boundingBox['bl'][0])
                         miny=min(miny, part.border.boundingBox['bl'][1])
                         maxx=max(maxx, part.border.boundingBox['tr'][0])
                         maxy=max(maxy, part.border.boundingBox['tr'][1])
-                        cx=(part.border.boundingBox['bl'][0]+part.border.boundingBox['tr'][0])/2
-                        cy=(part.border.boundingBox['bl'][1]+part.border.boundingBox['tr'][1])/2
-                        print(p['name']+" translate="+str(p['translate'])+" origin="+str(p['origin'])+" center="+str(V(cx,cy)))
+                    print(part.border.boundingBox)
+                    part.transform = old_transform
                     tconfig['transformations'] = [
                             { 'translate':V(p['translate'][0], p['translate'][1] ) },
                             {'rotate':[V(cx+p['translate'][0],cy+p['translate'][1]), -p['rotate']]},
@@ -115,13 +132,19 @@ class CamCam:
             modeconfig['prefix']=modeconfig['prefix'].replace("%zclear%", str(10))
             if 'suffix' not in modeconfig:
                 modeconfig['suffix'] = ''
-            for i in out:
+            print(out.keys())
+            for i in out.keys():
+                print("min"+str(V(minx,miny))+"max = "+str(V(maxx,maxy)))#+"maxx="+str(maxx)+" miny"+str(miny)+"maxy"+str(maxy)))
 
                 if 'zero' in config:
                     if config['zero']=='bottom_left':
-                        out[i]=plane.offset_gcode( out[i], V(-minx,-miny))
+                        pass
+                        print("bottom_left")
+                        print(V(-minx,-miny))
+
+                        #out[i]=plane.offset_gcode( out[i], V(-minx,-miny))
                     elif config['zero']=='top_right':
-                        out[i]= plane.offset_gcode( out[i], V(-maxx,-maxy))
+                         out[i]= plane.offset_gcode( out[i], V(-maxx,-maxy))
                     elif config['zero']=='centre':
                         out[i]=plane.offset_gcode( out[i], V(-(maxx+minny)/2,-(miny+maxy)/2))
                 if 'repeatx' in config and 'repeaty' in config and 'xspacing' in config and 'yspacing' in config:
