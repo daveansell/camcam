@@ -1236,7 +1236,7 @@ class FourObjects(Part):
     """Copy object :param ob: onto four corners of a rectangle defined form :param bl: and :param tr: or :param bl: :param width: :param height: when :param centrend: is true"""
     def __init__(self, bl, ob, **config):
         self.init(config)
-        if 'centred' in config:
+        if 'centred' in config or 'tr' not in config:
             if 'width' in config and 'height' in config:
                 w=config['width']/2
                 h=config['height']/2
