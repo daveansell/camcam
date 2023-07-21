@@ -308,7 +308,8 @@ class PointyTube(RoundedTube):
         self.length=length
         self.rad=rad
         self.convexity=10
-        self.add_points(shape.points)
+        self.closed=True
+        self.add_points(self.shape.points)
 
 class Polyhedron(SolidPath):
     def __init__(self, points, faces, **config):
@@ -428,12 +429,16 @@ class PathPolyhedron(Polyhedron):
             gradient = config['gradient']
         else:
             gradient = V(0,0)
+        if xsection.find_direction({})=='cw':
+            xsection.points.reverse()
+            print("faces=reverse")
         pxsection = xsection.polygonise()
         ppath = path.polygonise()
         self.faces = []
         self.rings=[]
         self.inPoints=[]
         pc=0
+        
         for p in range(0,len(ppath)):
             if p==0:
                 along = (ppath[1]-ppath[0]).normalize()
@@ -443,15 +448,26 @@ class PathPolyhedron(Polyhedron):
                 along = ((ppath[p]-ppath[p-1]).normalize()+(ppath[p+1]-ppath[p]).normalize())/2
             if samex:
                 x = lastx
-                y = along.cross(lastx).normalize()
+                y = -along.cross(lastx).normalize()
+            elif p==0: # if x hasn't been specified pick an arbitrary x
+                y=along.cross(V(1,0,0))
+                if y.length()<0.001:
+                    y=along.cross(V(0,1,0)).normalize()
+                else:
+                    y=y.normalize()
+                x=along.cross(y).normalize()
+                lastx=x
+                samex=True
             else:
                 y = along.cross(lastx).normalize()
                 x = along.cross(y).normalize()
             if(x.dot(lastx)<0):
                 x*=-1
-            print ("along="+str(along)+"x"+str(x))
+            print ("faces along="+str(along)+"x"+str(x))
+            print ("faces x="+str(x)+" y="+str(y)) 
             self.rings.append([])
             for o in range(0,len(pxsection)):
+                print("faces ppath="+str(ppath[p])+" pxsection[][0]="+str(pxsection[o][0]*x)+" [1]"+str(pxsection[o][1]*y))
                 self.inPoints.append(ppath[p]+x*pxsection[o][0]+y*pxsection[o][1])
                 self.rings[-1].append(pc)
                 if p>0 and o>0:
@@ -460,12 +476,13 @@ class PathPolyhedron(Polyhedron):
             if p>0:
                 self.faces.append([ self.rings[-1][0], self.rings[-1][-1], self.rings[-2][-1], self.rings[-2][0]])
             lastx = x
-        self.faces.append(self.rings[0])
-        self.faces[-1].reverse()
+        self.faces.append(reversed(self.rings[0]))
+#        self.faces[-1].reverse()
         self.faces.append(self.rings[-1])
         self.add_point(PCircle(V(0,0), radius=1))
         self.closed=True
-
+        print("faces Points="+str(self.inPoints))
+        print("faces="+str(self.faces))
 #class Hull(SolidPath):
 #    def __init__(self, ):
 class SurfacePolyhedron(Polyhedron):
