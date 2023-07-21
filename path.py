@@ -301,7 +301,9 @@ class Path(object):
                         config['spindleRPM']= mat['surface_speed']/config['cutterrad']/math.pi/2
             if 'sidefeed' not in config or config['sidefeed'] is None and 'type' not in tool or tool['type'] !='lathe':
                 #    config['sidefeed']=mat['sidefeed']
-               # print("chip loading ="+str(self.get_chip_loading(config['cutterrad'], mat['chip_loading']['low']) ))
+             #   print("mat ="+str(config['material']))
+             #   print("mat ="+str(mat))
+             #   print("chip loading ="+str(mat['chip_loading']))
                 config['sidefeed']= self.get_chip_loading(config['cutterrad'], mat['chip_loading']['low']) * config['spindleRPM']*tool['flutes']
         if 'stepdown' in config and config['stepdown'] and 'sidefeed' in config and config['sidefeed'] and config['stepdown']>1.5*tool['diameter']:
             config['sidefeed']*= 1.5*tool['diameter']/config['stepdown']
@@ -2363,11 +2365,12 @@ class Part(object):
             pconfig = False
 
         config = {}
-        if hasattr(builtins, 'cuttingMode') and builtins.cuttingMode['cuttingMode'] and \
+        print("builtins="+str(builtins.cuttingmode))
+        if hasattr(builtins, 'cuttingmode') and builtins.cuttingmode['doFold'] and \
             hasattr(self, 'cutTransforms') and \
             type(self.cutTransforms) is list:
-#            print("self.cutTransform="+str(self.cutTransforms))
             config['transformations']=self.cutTransforms
+            print("built DO FOLDING")
         else:
             config['transformations']=[]
         if not (pconfig is None or pconfig is False or 'transformations' not in pconfig or  pconfig['transformations'] is None):
