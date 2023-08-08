@@ -628,7 +628,7 @@ class ArbitraryBox(Part):
                 else:
                     fudge = self.fudge
                #terrible kludge to not generate nets when we don't want to 
-                if hasattr( builtins, 'cuttingMode') and not builtins.cuttingmode['cuttingMode'] and face['joint_mode'][scount]=='fold':
+                if hasattr( builtins, 'cuttingmode') and not builtins.cuttingmode['doFold'] and face['joint_mode'][scount]=='fold':
                     face['joint_mode'][scount]='straight'
 
                 if face['joint_mode'][scount]=='straight':
@@ -1129,6 +1129,7 @@ class ArbitraryBox(Part):
                 angle = side[0][8]
                 obtuse = side[0][7]
                 print ("bend rad="+str(face['fold_rad'][pnt])+" along="+str(along)+" perp="+str(perp))
+                r = face['fold_rad'][pnt]
                 if face['fold_comp'][pnt] is not False:
                     arcConst = float(face['fold_comp'][pnt]) /math.pi * 2
                 else:
@@ -1140,16 +1141,17 @@ class ArbitraryBox(Part):
                 else:
                     e = -2 * face['thickness']* math.tan(angle/180*math.pi/2)
                 print("angle="+str(angle)+"arcLen"+str(arcLen)+" straightLen="+str(straightLen)+"bend comp="+str((arcLen - straightLen + e)))
-                newtransforms.insert(0,{'translate':perp * (arcLen - straightLen + e)})
+                #newtransforms.insert(0,{'translate':perp * (arcLen - straightLen + e)})
+                newtransforms.append({'translate':perp * (arcLen - straightLen + e)})
 
                 #  *********** ADD cutback from line of fold if angle of receeding path>90 d = (- arcLen +e )/2 in each direction
 
-                newface['part'].cutTransforms = transforms+newtransforms#+transforms
+                newface['part'].cutTransforms = newtransforms + transforms
                 if not hasattr(rootPart, 'xLayers') or type(rootPart.xLayers ) is not list:
                     rootPart.xLayers=[]
                 if newface['part'].layer != rootPart.layer and newface['part'].layer not in rootPart.xLayers:
                     rootPart.xLayers.append(newface['part'].layer)
-                new_points=self.get_border( rootPart, newf, newface, 'fold', firstPoint=newpnt, transforms=transforms+newtransforms, rootPart=rootPart, recursion=recursion)
+                new_points=self.get_border( rootPart, newf, newface, 'fold', firstPoint=newpnt, transforms=newtransforms+transforms, rootPart=rootPart, recursion=recursion)
 
                 for p in range(0,len(new_points)):
                     #new_points[p].transform+=newtransforms
@@ -1177,8 +1179,8 @@ class ArbitraryBox(Part):
         t=math.atan2(d[0], d[1])
         T=math.atan2(D[0], D[1])
         return [
-                {'translate':A-a},
                 { 'rotate':[a, (T-t)/math.pi*180+r]},
+                {'translate':A-a},
                 ]
 
     def previous(self, array, num):
@@ -1667,7 +1669,7 @@ class ArbitraryBox(Part):
         # check there is a valid intersection and that the intersection is not in the plane of either face (as then it is a different kind of joint)
         # ************* This is to stop joints at an edge. We are checking the wrong planes
 
-        print("intersection"+str(intersectionLine)+f1+f2+"aas"+str(( a1a, a1b, a2a, a2b))+"t1="+str(t1)+"t2="+str(t2)  )#"t1="+str(self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face1) )+ " t2="+str(self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face2)))i
+       # print("intersection"+str(intersectionLine)+f1+f2+"aas"+str(( a1a, a1b, a2a, a2b))+"t1="+str(t1)+"t2="+str(t2)  )#"t1="+str(self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face1) )+ " t2="+str(self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face2)))i
         if len(intersectionLine)==2 and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face1) and not self.line_in_plane([t1[intersectionLine[0]],t2[intersectionLine[1]]], face2):
             otherEnd1=self.project(t2[intersectionLine[1]], face1)
             thisEnd1=self.project(t1[intersectionLine[0]], face1)
