@@ -104,6 +104,14 @@ def rotate(pos, a, *config):
     else:
         return False
 
+def mirror(pos, d='x'):
+    if d=='y':
+        return V(pos[0], -pos[1], pos[2])
+    elif d=='z':
+        return V(pos[0], pos[1], -pos[2])
+    else:
+        return V(-pos[0], pos[1], pos[2])
+
 
 # Interpolate between p1 and p2
 # x - return point on line where x=x
@@ -1890,6 +1898,8 @@ class Path(object):
     #       else:
         seg=0
         segments=self.Fsegments
+        if len(segments)==0:
+            return 
         #if len(self.Bsegments)==0:
         cutto=segments[seg].cutto
         cutfrom=segments[seg].cutfrom
