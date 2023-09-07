@@ -2365,7 +2365,7 @@ class Part(object):
             pconfig = False
 
         config = {}
-        print("builtins="+str(builtins.cuttingmode))
+        #print("builtins="+str(builtins.cuttingmode))
         if hasattr(builtins, 'cuttingmode') and builtins.cuttingmode['doFold'] and \
             hasattr(self, 'cutTransforms') and \
             type(self.cutTransforms) is list:
