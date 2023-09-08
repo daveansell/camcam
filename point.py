@@ -295,7 +295,7 @@ class Point(object):
         else:
             s=1
         if dis<0.0001:
-            print("Dis is less than 0 dis="+str(dis)+" dr="+str(dr)+" D="+str(D)+" p1="+str(p1)+" p2="+str(p2)+" centre="+str(centre))
+            #print("Dis is less than 0 dis="+str(dis)+" dr="+str(dr)+" D="+str(D)+" p1="+str(p1)+" p2="+str(p2)+" centre="+str(centre))
             return False
         else:
             if dis<0:
@@ -530,7 +530,7 @@ class PAroundcurve(PSharp):
         if not self.cp1==self.pos:
             a= self.lineArcIntersect(self.pos, nextpoint, self.cp1, self.radius)
             if a is False or a is None:
-                print("ERROR:LAI nextpoint="+str(nextpoint)+" rad="+str(self.radius)+" self.pos"+str(self.pos))
+                #print("ERROR:LAI nextpoint="+str(nextpoint)+" rad="+str(self.radius)+" self.pos"+str(self.pos))
                 return self.pos
         else:
             a= self.pos+(nextpoint-self.pos).normalize()*self.radius
