@@ -15,7 +15,7 @@
 
 #    Author Dave Ansell
 
-
+import path
 
 def rotate(pos, a):
     if type(pos) is Vec:
@@ -348,6 +348,15 @@ class PSharp(Point):
     def offset(self, side, distance, direction):
         return self.offsetSharp( side, distance, direction, self.sharp)
 
+# check if offsetting a point will cross the line between the last and next point
+    def checkOffsetCross(self, newpos, offset):
+        return False
+        intersection= path.Path().intersect_lines(self.lastorigin(), self.nextorigin(), self.pos, newpos)
+        if (newpos-intersection).length()>offset*40:
+                print ("Offset cross ="+str(intersection)+"length="+str((newpos-intersection).length())+" newpos="+str(newpos)+"oldpos="+str(self.pos)+" last="+str(self.lastorigin())+" next="+str(self.nextorigin()))
+                return intersection
+        return False
+
     def offsetSharp(self, side, distance, direction, sharp=True):
         self.setangle()
         if self.corner_side(side, direction)=='external':# and side=='out' or corner=='internal' and side=='in':
@@ -392,6 +401,9 @@ class PSharp(Point):
                 else:
                     a=(math.pi-self.angle)/2
                     t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.sin(a)))
+        c=self.checkOffsetCross(t.pos, distance)
+        if c:
+                t.pos=c
         return [t]
 
     def makeSegment(self, config):
@@ -648,6 +660,8 @@ class PIncurve(PSharp):
         if angle==180 or angle==0:
           #  print("STRAIGHT LINE")
             return self.pos
+      #  if abs(dl)>self.radius*2:
+      #      return self.pos
         return self.pos+(nextpoint-self.pos).normalize()*dl
     def start(self):
         lastpoint=self.lastorigin()
@@ -689,11 +703,15 @@ class PIncurve(PSharp):
             startcurve=self.pos-(self.pos-lastpoint).normalize()*dl
             endcurve = self.pos+(nextpoint-self.pos).normalize()*dl
             # If these are straight there should be no curve or the maths blows up so just behave like a normal point
-            if(((startcurve + endcurve)/2-self.pos).length()<0.001 or angle==0 or angle==180):
+            if(((startcurve + endcurve)/2-self.pos).length()<0.001 or angle<0.1 or angle>179):
                 return [Line(self.last().end(),self.pos)]
             else:
                 d = math.sqrt(dl*dl+self.radius*self.radius)/((startcurve + endcurve)/2-self.pos).length()
                 centre = self.pos + ((startcurve + endcurve)/2-self.pos)*d
+# if the incurve is moving the centre beyond the nextpoint there are doing to be issues so don't
+            #    if (self.pos-nextpoint).length() < (self.pos-centre).length() + self.radius or (self.pos-lastpoint).length() < (self.pos-centre).length() + self.radius:
+             #       self.radius=0
+             #       return [Line(self.last().end(),self.pos)]
 
 # this may break insharps
 #                                tempdir=(self.pos-self.last().end()).cross(nextpoint-self.pos)
