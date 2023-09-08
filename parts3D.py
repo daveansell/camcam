@@ -261,6 +261,29 @@ class SolidOfRotation(SolidPath):
         polygon = solid.polygon(outline)
         return solid.rotate_extrude(convexity=self.convexity)(polygon)
 
+class SlopedDisc(SolidOfRotation): 
+    def __init__(self, pos, innerRad, outerRad, height, **config):
+        self.init(config)
+        if 'holeRad' in config:
+            holeRad=config['innerRad']
+        else:
+            holeRad=0.01
+        self.shape=Path(closed=True)
+        self.shape.add_point(V(outerRad,0))
+        self.shape.add_point(V(innerRad,height/2))
+        self.shape.add_point(V(holeRad,height/2))
+        self.shape.add_point(V(holeRad,-height/2))
+        self.shape.add_point(V(innerRad,-height/2))
+        self.pos = pos
+        self.closed=True
+        self.translate3D(pos)
+        print("****##"+str(pos))
+        if 'convexity' in config:
+            self.convexity = config['convexity']
+        else:
+            self.convexity = 10
+        self.add_points(self.shape.points)
+
 class Torus(SolidOfRotation):
     def __init__(self, pos, bigRad, smallRad, **config):
         self.init(config)
