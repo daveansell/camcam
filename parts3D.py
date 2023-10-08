@@ -136,6 +136,42 @@ class CSScrew(SolidPath):
 
         return solid.translate(self.pos)(solid.rotate(self.rotate)(solid.union()(*ret)))
 
+class CapScrew(SolidPath):
+    def __init__(self, pos, size, length, mode,**config):
+        self.init(config)
+        self.closed=True
+        self.pos=pos
+        self.size=size
+        self.length=length
+        self.mode=mode
+        if mode=='clearance':
+            self.add_point(PCircle(pos,radius=milling.bolts[self.size]['clearance']/2))
+        else:
+            self.add_point(PCircle(pos,radius=milling.bolts[self.size]['tap']/2))
+        if 'rotate' in config:
+            self.rotate=config['rotate']
+        else:
+            self.rotate=[0,0,0]
+    def getSolid(self):
+        ret = []
+        if self.mode=='clearance':
+            ret.append(solid.cylinder(r=milling.bolts[self.size]['clearance']/2, h=self.length)) 
+            ret.append(
+                solid.translate(V(0,0,-10))(
+                    solid.cylinder(
+                        r1=milling.bolts[self.size]['allen']['head_d']/2+0.3,
+                        r2=milling.bolts[self.size]['allen']['head_d']/2+0.3, 
+                        h=milling.bolts[self.size]['cs']['head_l']+10
+                    )
+                )
+            )
+                
+        elif self.mode=='thread':
+            ret.append(solid.cylinder(r=milling.bolts[self.size]['tap']/2, h=self.length)) 
+
+
+        return solid.translate(self.pos)(solid.rotate(self.rotate)(solid.union()(*ret)))
+
 class HullSpheres(SolidPath):
     def __init__(self, pos, corners, **config):
         self.init(config)
@@ -250,6 +286,8 @@ class SolidOfRotation(SolidPath):
             self.convexity = config['convexity']
         else:
             self.convexity = 10
+        if 'angle' in config:
+            self.angle = config['angle']
         self.add_points(shape.points)
     def getSolid(self):
         global RESOLUTION
@@ -259,7 +297,10 @@ class SolidOfRotation(SolidPath):
             outline.append( [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
         outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
         polygon = solid.polygon(outline)
-        return solid.rotate_extrude(convexity=self.convexity)(polygon)
+        if hasattr(self,"angle"):
+            return solid.rotate_extrude(convexity=self.convexity, angle = self.angle)(polygon)
+        else:
+            return solid.rotate_extrude(convexity=self.convexity)(polygon)
 
 class SlopedDisc(SolidOfRotation): 
     def __init__(self, pos, innerRad, outerRad, height, **config):
