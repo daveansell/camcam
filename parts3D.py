@@ -270,7 +270,7 @@ class SolidExtrude(SolidPath):
             outline.append( [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
         outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
         polygon = solid.polygon(outline)
-        return solid.linear_extrude(height=self.height, convexity=self.convexity, scale=self.scale,  center=self.centre, twist=self.twist)(polygon)
+        return self.transform3D(self, solid.linear_extrude(height=self.height, convexity=self.convexity, scale=self.scale,  center=self.centre, twist=self.twist)(polygon))
 
 
 
@@ -375,6 +375,35 @@ class PointyTube(RoundedTube):
         self.closed=True
         self.add_points(self.shape.points)
 
+class PointyTopCuboid(SolidExtrude):
+    def __init__(self, pos, width, height, depth, **config):
+        self.init(config)
+        if 'convexity' in config:
+            self.convexity=config['convexity']
+        else:
+            self.convexity=10
+        if 'double' in config:
+            double=True
+        else:
+            double=False
+
+        self.twist=0
+        self.init(config)
+        self.shape=Path(closed=True)
+        self.shape.add_point(V(-depth/2,-width/2))
+        self.shape.add_point(V(-depth/2, width/2))
+        self.shape.add_point(V( depth/2, width/2))
+        if double:
+            self.shape.add_point(V( depth/2+width/2, 0))
+            self.shape.add_point(V( depth/2, -width/2))
+        else:
+            self.shape.add_point(V( depth/2+width, -width/2))
+        self.height=height
+        self.translate3D(V(0,0,-height/2))
+        self.rotate3D([0,-90,90])
+        self.scale =1
+        self.translate3D(pos)
+        print(self.transform)
 class Polyhedron(SolidPath):
     def __init__(self, points, faces, **config):
         self.init(config)
