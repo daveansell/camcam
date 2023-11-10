@@ -302,6 +302,42 @@ class SolidOfRotation(SolidPath):
         else:
             return solid.rotate_extrude(convexity=self.convexity)(polygon)
 
+class ExtrudeU(SolidPath):
+    def __init__(self, pos, shape, straightLen, **config):
+        self.init(config)
+        self.shape=shape
+        self.closed=True
+        self.straightLen=straightLen
+        self.pos=pos
+        self.translate3D(pos)
+        if 'convexity' in config:
+            self.convexity = config['convexity']
+        else:
+            self.convexity = 10
+        print("ExtrudeU __init_-")
+    def getSolid(self):
+        global RESOLUTION
+        print("ExtrudeU getSolid")
+        outline=[]
+        points = self.shape.polygonise(RESOLUTION)
+        for p in points:
+            outline.append( [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
+        outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
+
+        outline2 = copy.deepcopy(outline)
+        for p in points:
+            outline2.append( [-round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
+        polygon = solid.polygon(outline)
+        polygon2 = solid.polygon(outline2)
+
+        return self.transform3D(self, 
+                solid.hull()(
+                    solid.rotate_extrude(convexity=self.convexity)(polygon),
+                    solid.rotate([90,0,0])(
+                        solid.linear_extrude(height=self.straightLen)(solid.hull()(polygon2))
+                    )
+                )
+            )
 class SlopedDisc(SolidOfRotation): 
     def __init__(self, pos, innerRad, outerRad, height, **config):
         self.init(config)
@@ -533,6 +569,7 @@ class PathPolyhedron(Polyhedron):
         pc=0
         
         for p in range(0,len(ppath)):
+            print("lastx="+str(lastx))
             if p==0:
                 along = (ppath[1]-ppath[0]).normalize()
             elif p==len(ppath)-1:
