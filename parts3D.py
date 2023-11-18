@@ -11,7 +11,6 @@ class SolidPath(Path):
 
     def render3D(self, pconfig, border=False):
         global _delta, PRECISION, SCALEUP
-        print ("custom render3D")
         extruded=self.getSolid()
         p=self
         p.rotations_to_3D()
@@ -36,8 +35,6 @@ class SolidPath(Path):
                 if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and 'translate3D' in p.transform:
                         extruded=solid.translate([p.transform['translate3D'][0], p.transform['translate3D'][1],p.transform['translate3D'][2] ])(extruded)
                 p=p.parent
-        print ("hello")
-        print (extruded)
         return [extruded]
 
 class Sphere(SolidPath):
@@ -66,6 +63,7 @@ class Cuboid(SolidPath):
         self.add_point(pos,'circle',width/2)
 
     def getSolid(self):
+        print(solid.translate(self.pos)(solid.cube([self.width, self.height, self.depth], center=self.centre)))
         return solid.translate(self.pos)(solid.cube([self.width, self.height, self.depth], center=self.centre))
 
 
@@ -85,6 +83,7 @@ class Cylinder(SolidPath):
         self.height=height
         self.closed=True
         self.add_point(pos,'circle',rad2)
+        self.translate3D(pos)
       #  self.centre=pos
         #self.centre=pos
 
@@ -112,19 +111,19 @@ class CSScrew(SolidPath):
         if self.mode=='clearance':
             ret.append(solid.cylinder(r=milling.bolts[self.size]['clearance']/2, h=self.length)) 
             ret.append(
-                solid.translate(V(0,0,-1))(
+                solid.translate(V(0,0,-0.1))(
                     solid.cylinder(
-                        r1=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+1)/milling.bolts[self.size]['cs']['head_l'], 
+                        r1=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+0.1)/milling.bolts[self.size]['cs']['head_l'], 
                         r2=milling.bolts[self.size]['tap']/2, 
-                        h=milling.bolts[self.size]['cs']['head_l']+1
+                        h=milling.bolts[self.size]['cs']['head_l']+0.1
                     )
                 )
             )
             ret.append(
-                solid.translate(V(0,0,-milling.bolts[self.size]['cs']['head_l']-11))(
+                solid.translate(V(0,0,-milling.bolts[self.size]['cs']['head_l']-10.1))(
                     solid.cylinder(
-                        r1=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+1)/milling.bolts[self.size]['cs']['head_l'], 
-                        r2=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+1)/milling.bolts[self.size]['cs']['head_l'], 
+                        r1=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+0.1)/milling.bolts[self.size]['cs']['head_l'], 
+                        r2=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+0.1)/milling.bolts[self.size]['cs']['head_l'], 
                         h=milling.bolts[self.size]['cs']['head_l']+10
                     )
                 )   
@@ -235,7 +234,6 @@ class Text3D(SolidPath):
     def getSolid(self):
         self.translate3D(self.pos)
         return solid.linear_extrude(height=self.height)(solid.text(**self.args))
-print (Sphere.render3D)
 
 class SolidExtrude(SolidPath):
     def __init__(self, pos, shape,height, **config):
@@ -314,10 +312,10 @@ class ExtrudeU(SolidPath):
             self.convexity = config['convexity']
         else:
             self.convexity = 10
-        print("ExtrudeU __init_-")
+        #print("ExtrudeU __init_-")
     def getSolid(self):
         global RESOLUTION
-        print("ExtrudeU getSolid")
+        #print("ExtrudeU getSolid")
         outline=[]
         points = self.shape.polygonise(RESOLUTION)
         for p in points:
@@ -354,7 +352,6 @@ class SlopedDisc(SolidOfRotation):
         self.pos = pos
         self.closed=True
         self.translate3D(pos)
-        print("****##"+str(pos))
         if 'convexity' in config:
             self.convexity = config['convexity']
         else:
@@ -439,7 +436,7 @@ class PointyTopCuboid(SolidExtrude):
         self.rotate3D([0,-90,90])
         self.scale =1
         self.translate3D(pos)
-        print(self.transform)
+
 class Polyhedron(SolidPath):
     def __init__(self, points, faces, **config):
         self.init(config)
@@ -542,9 +539,7 @@ class PathPolyhedron(Polyhedron):
             zStep = config['zStep']
         else:
             zStep = 1.0
-        print(config)
         if 'x0' in config:
-            print("X0="+str(config['x0']))
             lastx=config['x0'].normalize()
         else:
             lastx = V(1,0,0)
@@ -560,16 +555,17 @@ class PathPolyhedron(Polyhedron):
             gradient = V(0,0)
         if xsection.find_direction({})=='cw':
             xsection.points.reverse()
-            print("faces=reverse")
         pxsection = xsection.polygonise()
         ppath = path.polygonise()
         self.faces = []
         self.rings=[]
         self.inPoints=[]
         pc=0
+        s="path="
+        for p in path.points:
+            s+=str(p.pos)+" "
         
         for p in range(0,len(ppath)):
-            print("lastx="+str(lastx))
             if p==0:
                 along = (ppath[1]-ppath[0]).normalize()
             elif p==len(ppath)-1:
@@ -593,11 +589,9 @@ class PathPolyhedron(Polyhedron):
                 x = along.cross(y).normalize()
             if(x.dot(lastx)<0):
                 x*=-1
-            print ("faces along="+str(along)+"x"+str(x))
-            print ("faces x="+str(x)+" y="+str(y)) 
             self.rings.append([])
             for o in range(0,len(pxsection)):
-                print("faces ppath="+str(ppath[p])+" pxsection[][0]="+str(pxsection[o][0]*x)+" [1]"+str(pxsection[o][1]*y))
+                #print("faces ppath="+str(ppath[p])+" pxsection[][0]="+str(pxsection[o][0]*x)+" [1]"+str(pxsection[o][1]*y))
                 self.inPoints.append(ppath[p]+x*pxsection[o][0]+y*pxsection[o][1])
                 self.rings[-1].append(pc)
                 if p>0 and o>0:
@@ -611,8 +605,8 @@ class PathPolyhedron(Polyhedron):
         self.faces.append(self.rings[-1])
         self.add_point(PCircle(V(0,0), radius=1))
         self.closed=True
-        print("faces Points="+str(self.inPoints))
-        print("faces="+str(self.faces))
+#        print("faces Points="+str(self.inPoints))
+ #       print("faces="+str(self.faces))
 #class Hull(SolidPath):
 #    def __init__(self, ):
 class SurfacePolyhedron(Polyhedron):

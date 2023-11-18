@@ -292,7 +292,7 @@ def plane_make_part3D(self, thepart, layers, pconfig, root=True):
             
     for sp in thepart.parts:
         if hasattr(sp, 'subpart') and sp.subpart and sp!=thepart:
-            print('subpart='+str(sp))
+            #print('subpart='+str(sp))
             self.make_part3D(sp, layers, pconfig, False)
             if hasattr(sp, 'border3D'):
                 if(sp.subpart=='subtract'):
@@ -302,10 +302,17 @@ def plane_make_part3D(self, thepart, layers, pconfig, root=True):
                 else:    
                     subparts.append(sp.border3D)
     if len(subparts):
-        if hasattr(thepart, 'border3D'):
-            thepart.border3D=solid.union()(thepart.border3D,*subparts)
+        if hasattr(thepart,'compose') and thepart.compose=='hull':
+            #print("DO hull")
+            if hasattr(thepart, 'border3D'):
+                thepart.border3D=solid.hull()(thepart.border3D,*subparts)
+            else:
+                thepart.border3D=solid.hull()(*subparts)
         else:
-            thepart.border3D=solid.union()(*subparts)
+            if hasattr(thepart, 'border3D'):
+                thepart.border3D=solid.union()(thepart.border3D,*subparts)
+            else:
+                thepart.border3D=solid.union()(*subparts)
     if not hasattr(thepart, 'border3D'):
         return False
     cutouts = [thepart.border3D]
@@ -356,7 +363,7 @@ def plane_make_part3D(self, thepart, layers, pconfig, root=True):
         pass
         for sp in layers[thepart.layer]:
             if hasattr(sp, 'subpart') and sp.subpart and sp!=thepart:
-                print('subpart='+str(sp))
+                #print('subpart='+str(sp))
                 self.make_part3D(sp, layers, pconfig, False)
                 if hasattr(sp, 'border3D'):
                     if(sp.subpart=='subtract'):
@@ -366,10 +373,10 @@ def plane_make_part3D(self, thepart, layers, pconfig, root=True):
                     else:    
                         layersubparts.append(sp.border3D)
     if len(layersubparts):
-        if hasattr(thepart, 'border3D'):
-            thepart.border3D=solid.union()(thepart.border3D,*layersubparts)
-        else:
-            thepart.border3D=solid.union()(*layersubparts)
+            if hasattr(thepart, 'border3D'):
+                thepart.border3D=solid.union()(thepart.border3D,*layersubparts)
+            else:
+                thepart.border3D=solid.union()(*layersubparts)
     if len(thepart.layercutouts3D):
         cutouts = [thepart.border3D]
         for cutout in thepart.layercutouts3D:
@@ -381,7 +388,6 @@ def plane_make_part3D(self, thepart, layers, pconfig, root=True):
 
 
 def plane_render_part3D(self, thepart, pconfig, layers={}, filename=False):
-    print ("RENDER "+thepart.name)
     self.make_part3D(thepart, layers, pconfig)
     if filename==False:
         if thepart.name is None:
@@ -390,7 +396,6 @@ def plane_render_part3D(self, thepart, pconfig, layers={}, filename=False):
     else:
         filename = filename +',scad'
     if hasattr(thepart, 'border3D'):
-        print("border3d "+str(thepart.border3D))
         solid.scad_render_to_file(thepart.border3D, filename,file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=False)
 
 def part_get_layers3D(self):
@@ -414,7 +419,7 @@ def plane_render_all3D(self,callmode,config):
     self.modeconfig=milling.mode_config[callmode]
     self.make_copies()
     layers = self.get_layers3D()
-    print(layers)
+   # print(layers)
     config=copy.copy(self.modeconfig)
     if(self.modeconfig['overview']==False):
         for thepart in self.getParts(False):
