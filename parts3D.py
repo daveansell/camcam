@@ -268,6 +268,7 @@ class SolidExtrude(SolidPath):
             outline.append( [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
         outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
         polygon = solid.polygon(outline)
+        print("scale="+str(self.scale))
         return self.transform3D(self, solid.linear_extrude(height=self.height, convexity=self.convexity, scale=self.scale,  center=self.centre, twist=self.twist)(polygon))
 
 
@@ -822,3 +823,27 @@ class RoundedBox(SolidPath):
             spheres.append(solid.translate(c+self.pos)(solid.sphere(r=R)))
         return solid.hull()(*spheres)
 
+class Thread(SolidExtrude):
+    def __init__(self, pos, rad, height, pitch, **config):
+        self.init(config)
+        self.shape=Path(closed=True)
+        for a in range(0,180,5):
+            self.shape.add_point(PSharp(rotate(V(rad-pitch+pitch/2/180*a,0), a)))
+            self.shape.add_point(PSharp(rotate(V(rad-pitch+pitch/2/180*a,0), -a)))
+        self.pos = pos
+        self.closed=True
+        self.translate3D(pos)
+        self.height=height
+        self.twist = 360.0*rad
+        if 'centre' in config:
+                self.centre=config['centre']
+        else:
+                self.centre=False
+        if 'convexity' in config:
+                self.convexity=config['convexity']
+        else:
+                self.convexity=10
+        self.scale=1
+        print (self.shape)
+#        screwP.insert_point(0,PSharp(rotate(V(domeRad+-pitch+pitch*math.sqrt(3)/3/180*a,0),-a)))
+ #       SolidExtrude(V(0,0), shape=screwP, height=domeRad, twist=360.0*domeRad/pitch))
