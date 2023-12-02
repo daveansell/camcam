@@ -131,6 +131,7 @@ def path_render3D(self, pconfig, border=False):
 
     if self.extrude_scale is not None:
         scale = self.extrude_scale
+        print("scaling ="+str(scale))
         if self.extrude_centre is None:
             self.extrude_centre = V(0,0)
         centre = (PSharp(V(0,0)).point_transform(config['transformations']).pos+self.extrude_centre)

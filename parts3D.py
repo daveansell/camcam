@@ -825,16 +825,17 @@ class RoundedBox(SolidPath):
 
 class Thread(SolidExtrude):
     def __init__(self, pos, rad, height, pitch, **config):
+        global RESOLUTION
         self.init(config)
         self.shape=Path(closed=True)
         for a in range(0,180,5):
             self.shape.add_point(PSharp(rotate(V(rad-pitch+pitch/2/180*a,0), a)))
-            self.shape.add_point(PSharp(rotate(V(rad-pitch+pitch/2/180*a,0), -a)))
+            self.shape.insert_point(0,PSharp(rotate(V(rad-pitch+pitch/2/180*a,0), -a)))
         self.pos = pos
         self.closed=True
         self.translate3D(pos)
         self.height=height
-        self.twist = 360.0*rad
+        self.twist = 360.0*rad/4
         if 'centre' in config:
                 self.centre=config['centre']
         else:
@@ -844,6 +845,20 @@ class Thread(SolidExtrude):
         else:
                 self.convexity=10
         self.scale=1
+        if 'resolution' in config:
+            self.resolution=config['resolution']
+        else:
+            self.resolution = RESOLUTION
         print (self.shape)
 #        screwP.insert_point(0,PSharp(rotate(V(domeRad+-pitch+pitch*math.sqrt(3)/3/180*a,0),-a)))
  #       SolidExtrude(V(0,0), shape=screwP, height=domeRad, twist=360.0*domeRad/pitch))
+    def getSolid(self):
+        global RESOLUTION
+        outline=[]
+        points = self.shape.polygonise(self.resolution)
+        for p in points:
+            outline.append( [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
+        outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
+        polygon = solid.polygon(outline)
+        print("scale="+str(self.scale))
+        return self.transform3D(self, solid.linear_extrude(height=self.height, convexity=self.convexity, scale=self.scale,  center=self.centre, twist=self.twist)(polygon))
