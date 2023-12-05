@@ -829,13 +829,14 @@ class Thread(SolidExtrude):
         self.init(config)
         self.shape=Path(closed=True)
         for a in range(0,180,5):
-            self.shape.add_point(PSharp(rotate(V(rad-pitch+pitch/2/180*a,0), a)))
-            self.shape.insert_point(0,PSharp(rotate(V(rad-pitch+pitch/2/180*a,0), -a)))
+            self.shape.add_point(PSharp(rotate(V(rad-pitch/2+pitch/2/180*a,0), a)))
+            self.shape.insert_point(0,PSharp(rotate(V(rad-pitch/2+pitch/2/180*a,0), -a)))
         self.pos = pos
         self.closed=True
         self.translate3D(pos)
         self.height=height
-        self.twist = 360.0*rad/4
+        self.twist = -360.0*height/pitch
+        pitch=abs(pitch)
         if 'centre' in config:
                 self.centre=config['centre']
         else:
