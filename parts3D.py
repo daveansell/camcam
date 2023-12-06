@@ -540,6 +540,10 @@ class PathPolyhedron(Polyhedron):
             zStep = config['zStep']
         else:
             zStep = 1.0
+        if 'pStep' in config:
+            pStep = config['pStep']
+        else:
+            pStep = 1.0
         if 'x0' in config:
             lastx=config['x0'].normalize()
         else:
@@ -556,7 +560,7 @@ class PathPolyhedron(Polyhedron):
             gradient = V(0,0)
         if xsection.find_direction({})=='cw':
             xsection.points.reverse()
-        pxsection = xsection.polygonise()
+        pxsection = xsection.polygonise(pStep)
         ppath = path.polygonise(zStep)
         self.faces = []
         self.rings=[]
