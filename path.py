@@ -839,6 +839,12 @@ class Path(object):
             self.make_segments(direction,self.Fsegments,config)
             for s in self.Fsegments:
                 ret.extend(s.polygon(resolution))
+            #remove repeated points
+            ret2=[]
+            for p in ret:
+                    if len(ret2)==0 or not (p-ret2[-1]).length()<0.001:
+                        ret2.append(p)
+            ret=ret2
             for p in ret:
                 if 'bl' not in self.boundingBox:
                     self.boundingBox={'bl':[1000000000,1000000000],'tr':[-1000000000,-1000000000]}

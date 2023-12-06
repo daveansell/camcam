@@ -221,14 +221,25 @@ class Arc(Segment):
         hasrisen=0
         dot=r.dot(r2)
         points=[]
+       # print("cutfrom"+str(cutfrom)+" cutto"+str(cutto)+" dtheta="+str(dtheta)+" centre="+str(self.centre))
         while thetasum<360:
+            r0=r 
+            rh=rotate(r,dtheta/2)
             r=rotate(r,dtheta)
             newdot=r.dot(r2)
-            if newdot>dot:
-                hasrisen=1
-            if hasrisen and newdot<dot:
+         #   newdoth=rh.dot(r2)
+         #   if newdot>dot:# or newdot>newdoth or newdoth>dot:
+         #       hasrisen=1
+            olddot = r0.dot(r2)
+            cross0 = r0.cross(r2)
+            cross1 = r.cross(r2)
+            # test if we have gone over the point we are aiming for. if the cross product changes and the two vectors are pointing in the same semicircle we have gone past it
+            if olddot>0 and newdot>0 and cross0[2]*cross1[2]<0:
+                    break
+          #  print("thetasum="+str(thetasum)+" r="+str(self.centre+r)+" dot="+str(dot)+" newdoth="+str(newdoth)+" newdot="+str(newdot)+" hasrisen="+str(hasrisen))
+           # if hasrisen and (newdot<dot or newdot<newdoth):
                   #  points.append(cutto)
-                break
+            #    break
             points.append(self.centre+r)
             thetasum+=dtheta
             dot=newdot
