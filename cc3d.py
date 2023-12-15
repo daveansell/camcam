@@ -415,7 +415,7 @@ def part_get_layers3D(self):
             layers[part.layer].append(part)
     return layers
 
-def plane_render_all3D(self,callmode,config):
+def plane_render_all3D(self,callmode,cmdconfig):
     """Render all parts in the Plane"""
     self.modeconfig=milling.mode_config[callmode]
     self.make_copies()
@@ -429,7 +429,8 @@ def plane_render_all3D(self,callmode,config):
     else:
         scene = False
         for thepart in self.getParts(True):
-            if not (hasattr(thepart, 'subpart') and thepart.subpart):
+            print(config)
+            if not (hasattr(thepart, 'subpart') and thepart.subpart) and ('parts' not in cmdconfig or len(cmdconfig['parts'])==0 or thepart.name in cmdconfig['parts']):
 
                 self.make_part3D(thepart, layers, config)
                 if hasattr(thepart,"border3D"):
