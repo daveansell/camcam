@@ -401,9 +401,9 @@ class PSharp(Point):
                 else:
                     a=(math.pi-self.angle)/2
                     t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.sin(a)))
-        c=self.checkOffsetCross(t.pos, distance)
-        if c:
-                t.pos=c
+        #c=self.checkOffsetCross(t.pos, distance)
+        #if c:
+        #        t.pos=c
         return [t]
 
     def makeSegment(self, config):
