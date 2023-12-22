@@ -386,7 +386,7 @@ class CamCam(App):
                         print("*deleted*")
 
 #                               print p.get_window_matrix(0,0)
-        if camcam.command_args.parts:
+        if hasattr(camcam.command_args,'parts') and camcam.command_args.parts:
             extra='_'+'_'.join(camcam.command_args.parts)
         else:
             extra=''

@@ -118,6 +118,9 @@ parser.add_option('-z', '--nozbase', dest='zbase',
                   action='store_false', help='set z=0 to top of material (default)')
 parser.add_option("-L", "--layout-file", dest="layout_file",
                   help="file for layout")
+parser.add_option("-A", "--parts", dest="parts",
+                  help="comma deliminated list of part names (can be found by -l)")
+
 (options, args) = parser.parse_args()
 config={}
 
@@ -144,7 +147,8 @@ for arg in args:
     _currentFolder=os.getcwd()
     print("currentFolder="+os.getcwd())
     exec(compile(open(arg, "rb").read(), arg, 'exec'))
-
+if options.parts:
+    config['parts']=options.parts.split(',')
 if options.listparts:
     camcam.listparts()
 if options.bom:

@@ -839,6 +839,12 @@ class Path(object):
             self.make_segments(direction,self.Fsegments,config)
             for s in self.Fsegments:
                 ret.extend(s.polygon(resolution))
+            #remove repeated points
+            ret2=[]
+            for p in ret:
+                    if len(ret2)==0 or not (p-ret2[-1]).length()<0.001:
+                        ret2.append(p)
+            ret=ret2
             for p in ret:
                 if 'bl' not in self.boundingBox:
                     self.boundingBox={'bl':[1000000000,1000000000],'tr':[-1000000000,-1000000000]}
@@ -2244,7 +2250,7 @@ class Part(object):
         self.internal_borders=[]
         self.ignore_border=False
         self.transform=[]
-        varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'isback','use_point_z','clear_height', 'offset', 'blendTolerance', 'vertfeed', 'blendTolerance','finalpass', 'cutTransforms', 'xLayers', 'spindleRPM']
+        varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'compose', 'isback','use_point_z','clear_height', 'offset', 'blendTolerance', 'vertfeed', 'blendTolerance','finalpass', 'cutTransforms', 'xLayers', 'spindleRPM']
         self.otherargs=''
         if hasattr(self, 'varlist') and type(self.varlist) is list:
             self.varlist+=varlist
@@ -2381,7 +2387,6 @@ class Part(object):
             pconfig = False
 
         config = {}
-        #print("builtins="+str(builtins.cuttingmode))
         if hasattr(builtins, 'cuttingmode') and builtins.cuttingmode['doFold'] and \
             hasattr(self, 'cutTransforms') and \
             type(self.cutTransforms) is list:
