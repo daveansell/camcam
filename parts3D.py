@@ -526,8 +526,23 @@ class CylindricalPolyhedron(Polyhedron):
     def pn(self, facet, c):
         return int(self.first+(facet%self.facets) * self.facetLength + c) 
 
-#class Hull(SolidPath):
-#    def __init__(self, ):
+class Hull(SolidPath):
+    def __init__(self, pos,parts, **config):
+        self.init(config)
+        self.pos=pos
+        self.parts=parts
+    def getSolid(self):
+        spheres=[]
+        for p in self.parts: 
+            print(p.obType)
+            if p.obType=='Part':
+                spheres.append(self.get_plane().render_part3D(p,{}))
+            elif p.obType=='Path':
+                spheres.append(p.render3D({}))
+        print(spheres)
+        return solid.translate(self.pos)(
+                solid.hull()(*spheres)
+                )
 class PathPolyhedron(Polyhedron):
     def __init__(self, xsection, path, **config):
         self.init(config)
