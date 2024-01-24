@@ -418,7 +418,12 @@ class Polygon(Path):
         else:
             startAngle=0
         for i in range(0,int(sides)):
-            self.add_point(pos+rotate(V(rad,0), i*step+startAngle),cornertype,cornerrad,direction=cornerdir)
+            self.add_point(
+                    pos+rotate(V(rad,0), 
+                    i*step+startAngle),
+                    cornertype,
+                    cornerrad,
+                    direction=cornerdir)
         self.comment("Polygon")
         self.comment("pos="+str(pos)+" rad="+str(rad)+" sides="+str(sides)+" cornertype="+cornertype)
 
