@@ -508,7 +508,7 @@ class Path(object):
     def ccw(self, a, b, c):
         return (b[0] - a[0]) * (c[1] - a[1]) - (c[0] - a[0]) * (b[1] - a[1]);
 
-    def circleIntersectsCircle(c1, r1, c2,r2):
+    def circleIntersectsCircle(self,c1, r1, c2,r2):
         R = (c1-c2).length()
         b= 0.5*(c1+c2)+(r1**2-r2**2)/2/R**2*(c2-c1)
         c= 0.5*math.sqrt( 2*(r1**2+r2**2)/R**2-(r1**2-r2**2)**2/R**4 -1)*V(c2[1]-c1[1], c1[0]-c2[0])
@@ -2387,7 +2387,6 @@ class Part(object):
             pconfig = False
 
         config = {}
-       # print("builtins="+str(builtins.cuttingmode))
         if hasattr(builtins, 'cuttingmode') and builtins.cuttingmode['doFold'] and \
             hasattr(self, 'cutTransforms') and \
             type(self.cutTransforms) is list:

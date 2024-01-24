@@ -634,7 +634,7 @@ class Milling:
                         "sidefeed":1000,
                         "stepdown":3.0,
                         "kress_setting":2.0,
-                        "mill_dir":'down',
+                        "mill_dir":'up',
                         "surface_speed":500*300, # mm/min
                         "chip_loading":{
                             'low':{3.16:	0.0508	,6.32:	0.1524	,9.48:	0.2032	,12.64:	0.254},
@@ -747,7 +747,7 @@ class Milling:
                         "sidefeed":1000,
                         "stepdown":15.0,
                         "kress_setting":1.5,
-			            "mill_dir":'down',
+			            "mill_dir":'up',
                         "surface_speed":450*300, # mm/min
                         "chip_loading":{  
                             'low':{3.16:	0.0762	,0.25:	0.1778	,9.48:	0.254	,12.64:	0.3048},
