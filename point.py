@@ -1311,7 +1311,6 @@ If it can't reach either point with the arc, it will join up to them perpendicul
                 t.radius-=distance
             else:
                 t.radius=0
-
         return [t]
 class PCircle(Point):
     def __init__(self, pos=False, radius=False, transform = False):

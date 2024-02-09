@@ -423,6 +423,7 @@ class PointyTopCuboid(SolidExtrude):
 
         self.twist=0
         self.init(config)
+        self.closed=True
         self.shape=Path(closed=True)
         self.shape.add_point(V(-depth/2,-width/2))
         self.shape.add_point(V(-depth/2, width/2))

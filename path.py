@@ -725,7 +725,7 @@ class Path(object):
                     p.radius-=distance
                 elif side=='out':
                     p.radius+=distance
-
+		
                 newpath.points.append(p)
                 return newpath
     #       mirrored=1
