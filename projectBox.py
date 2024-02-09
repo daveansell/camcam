@@ -144,9 +144,9 @@ class ProjectBox(Part):
             for hole in holePoses[face]:
                 print (hole)
                 if hole['shape']=='rect':
-                    holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness-2])(self.RoundedRectPrism(hole['width'], hole['height'], hole['rad'], thickness+4)), faces[face]))
+                    holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness+2])(self.RoundedRectPrism(hole['width'], hole['height'], hole['rad'], thickness+4)), faces[face]))
                 elif hole['shape']=='circle':
-                    holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2-1])(cylinder(r=hole['rad'], h=thickness+5, center=True)), faces[face]))
+                    holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2+1])(cylinder(r=hole['rad'], h=thickness+5, center=True)), faces[face]))
                 elif hole['shape']=='pillar':
                     if hole['from']=='out':
                         holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2-1])(cylinder(r=hole['rad'], h=hole['length']+1)), faces[face]))
