@@ -98,6 +98,9 @@ class CSScrew(SolidPath):
         self.size=size
         self.length=length
         self.mode=mode
+   #     if 'rotate' in config:
+   #         self.rotate3D(config['rotate'])
+        self.translate3D(pos)
         if mode=='clearance':
             self.add_point(PCircle(pos,radius=milling.bolts[self.size]['clearance']/2))
         else:
@@ -131,9 +134,9 @@ class CSScrew(SolidPath):
                 
         elif self.mode=='thread':
             ret.append(solid.cylinder(r=milling.bolts[self.size]['tap']/2, h=self.length)) 
+        print(self.transform)
 
-
-        return solid.translate(self.pos)(solid.rotate(self.rotate)(solid.union()(*ret)))
+        return self.transform3D(self,solid.rotate(self.rotate)(solid.union()(*ret)))
 
 class CapScrew(SolidPath):
     def __init__(self, pos, size, length, mode,**config):
@@ -297,9 +300,9 @@ class SolidOfRotation(SolidPath):
         outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
         polygon = solid.polygon(outline)
         if hasattr(self,"angle"):
-            return solid.rotate_extrude(convexity=self.convexity, angle = self.angle)(polygon)
+            return self.transform3D(self,solid.rotate_extrude(convexity=self.convexity, angle = self.angle)(polygon))
         else:
-            return solid.rotate_extrude(convexity=self.convexity)(polygon)
+            return self.transform3D(self,solid.rotate_extrude(convexity=self.convexity)(polygon))
 
 class ExtrudeU(SolidPath):
     def __init__(self, pos, shape, straightLen, **config):
@@ -378,6 +381,28 @@ class Torus(SolidOfRotation):
 
     def getSolid(self):
         return solid.rotate_extrude(convexity = self.convexity, angle=self.angle)(solid.translate([self.bigRad,0,0])(solid.circle(r=self.smallRad)))
+
+class HalfTorus(SolidOfRotation):
+    def __init__(self, pos, bigRad, smallRad, extraHeight, **config):
+        self.init(config)
+        self.translate3D(pos)
+        self.smallRad = smallRad
+        self.bigRad = bigRad
+        if 'convexity' in config:
+            self.convexity = config['convexity']
+        else:
+            self.convexity = 10
+        if 'angle' in config:
+            self.angle=config['angle']
+        else:
+            self.angle=360.0
+        self.closed=True
+        self.add_point(PCircle(pos, radius=smallRad))
+        self.shape=Path(closed=True)
+        self.shape.add_point(V(bigRad-smallRad, 0))
+        self.shape.add_point(V(bigRad+smallRad, 0))
+        self.shape.add_point(PIncurve(V(bigRad+smallRad, extraHeight+smallRad), radius=smallRad-0.001))
+        self.shape.add_point(PIncurve(V(bigRad-smallRad, extraHeight+smallRad), radius=smallRad-0.001))
 
 
 class RoundedTube(SolidOfRotation):
