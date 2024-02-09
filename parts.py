@@ -1154,7 +1154,7 @@ class Fan(Pathgroup):
         self.translate(pos)
         data={
                 '40mm':{'centrerad':38/2,  'hole_off':31.6/2, 'holeRad':4.5/2, 'threadRad':3.3/2},
-                '60mm':{'centrerad':58/2,  'hole_off':50/2, 'holeRad':4.5/2, 'threadRad':3.3/2},
+                '60mm':{'centrerad':58/2,  'hole_off':50/2, 'holeRad':4.5/2, 'threadRad':3.3/2, 'cableSlotFromEdge' : 12, 'cableSlotLength':7.0, 'fanWidth':60.0},
                 '80mm':{'centrerad':92/2, 'centre_limit':78/2, 'hole_off':71.5/2, 'holeRad':4.5/2, 'threadRad':3.3/2 },
                 '92mm':{'centrerad':104/2, 'centre_limit':90/2, 'hole_off':82.5/2, 'holeRad':4.5/2, 'threadRad':3.3/2 },
                 '120mm':{'centrerad':132/2, 'centre_limit':118/2, 'hole_off':105/2, 'holeRad':4.5/2, 'threadRad':3.3/2 },
@@ -1221,6 +1221,15 @@ class Fan(Pathgroup):
             self.add(Hole(-V(d['hole_off'],d['hole_off']), d['holeRad']))
             self.add(Hole(-V(d['hole_off'],-d['hole_off']), d['holeRad']))
             self.add(Hole(V(d['hole_off'],-d['hole_off']), d['holeRad']))
+        if 'cable_slot' in config and config['cable_slot'] and 'cableSlotFromEdge' in d and 'cableSlotLength' in d and 'fanWidth' in d:
+            self.add(Lines([
+                V(d['fanWidth']/2, d['fanWidth']/2-d['cableSlotFromEdge']),
+                V(d['fanWidth']/2-d['cableSlotLength'], d['fanWidth']/2-d['cableSlotFromEdge'])],
+                ))
+            self.add(Lines([
+                V(d['fanWidth']/2, -d['fanWidth']/2+d['cableSlotFromEdge']),
+                V(d['fanWidth']/2-d['cableSlotLength'], -d['fanWidth']/2+d['cableSlotFromEdge'])],
+                ))
 
 class StepperDriver(Pathgroup):
     def __init__(self, pos, **config):
