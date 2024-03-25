@@ -1126,8 +1126,16 @@ class Path(object):
                 config['z1'] = - thickness
         return config
 
-        
 
+    def centreOfMass(self):
+        self.makeShapely()
+        c=shapely.centroid(self.shapelyPolygon).coords[0]
+        print(c[0])
+        return V(c[0],c[1])
+
+    def area(self):
+        self.makeShapely()
+        return self.shapelyPolygon.area
 
     def fill_path(self, side, cutterrad, distance=False, step=False, cutDirection=None):
         if step==False:
