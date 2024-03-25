@@ -191,15 +191,26 @@ class Text(Pathgroup):
                 out.add_point(PSharp(offset + V(point[0], point[1])*self.scale, sharp=False))
             else:
                 if point!=outline.points[lp]:
-                    if( (outline.tags[lp]&1)!=1):
-                        out.add_point( PSharp(offset+(V(point[0], point[1])+V(outline.points[lp][0], outline.points[lp][1]))/2*self.scale, sharp=False))
+                    if (outline.tags[p] & 2):
+                        out.add_point( PBezierControl(offset+(V(point[0], point[1])+V(outline.points[lp][0], outline.points[lp][1]))/2*self.scale))
+                    else:
+                        if( (outline.tags[lp] & 1 )==0):
+                            lastpoint = outline.points[lp]
+                            midpoint = V( (point[0]+lastpoint[0])/2, (point[1]+lastpoint[1])/2)
+                            out.add_point(PSharp(offset + midpoint*self.scale, sharp=False))
+
+                            #out.add_point( PSharp(offset+(V(point[0], point[1])+V(outline.points[lp][0], outline.points[lp][1]))/2*self.scale, sharp=False))
+                        out.add_point( PBezierControl(offset+(V(point[0], point[1])*self.scale)))
 # lets just move to straight lines as beziers don't offset yet
         out2=Path(closed=True, side=side)
-        for p in out.polygonise(0.2):
+        for p in out.polygonise(0.1):
             out2.add_point(PSharp(p, sharp=False))
         out2.simplify_points()
+
 # we will need to know what the original direction was to work out if this is internal or not
         out2.orig_direction = out.find_direction({})
+        out.orig_direction = out.find_direction({})
+        print (len(out2.points))
         return out2
 
 class CurvedHersheyText(Pathgroup):
