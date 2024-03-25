@@ -588,6 +588,10 @@ class PathPolyhedron(Polyhedron):
             lastx=config['x0'].normalize()
         else:
             lastx = V(1,0,0)
+        if 'xfunc' in config:
+            xfunc= config['xfunc']
+        else:
+            xfunc = False
         # preserve x direction
         if 'samex' in config:
             samex=config['samex']
@@ -607,19 +611,23 @@ class PathPolyhedron(Polyhedron):
         self.inPoints=[]
         pc=0
         s="path="
-        
         for p in range(0,len(ppath)):
-            print (str(p) + " "+str(ppath[p]))
+          #  print (str(p) + " "+str(ppath[p]))
             if p==0:
                 along = (ppath[1]-ppath[0]).normalize()
             elif p==len(ppath)-1:
                 along = (ppath[len(ppath)-1]-ppath[len(ppath)-2]).normalize()
             else:
                 along = ((ppath[p]-ppath[p-1]).normalize()+(ppath[p+1]-ppath[p]).normalize())/2
-            if samex:
+            if xfunc:
+                x=xfunc(float(p)/len(ppath))
+                print("xfunc="+str(x))
+                y = -along.cross(x).normalize()
+                lastx=x
+            elif samex:
                 x = lastx
                 y = -along.cross(lastx).normalize()
-            elif p==0: # if x hasn't been specified pick an arbitrary x
+            elif p==0 and 1==0: # if x hasn't been specified pick an arbitrary x
                 y=along.cross(V(1,0,0))
                 if y.length()<0.001:
                     y=along.cross(V(0,1,0)).normalize()
@@ -631,6 +639,7 @@ class PathPolyhedron(Polyhedron):
             else:
                 y = along.cross(lastx).normalize()
                 x = along.cross(y).normalize()
+            print("lastx="+str(lastx)+" x="+str(x)+" y="+str(y)+" along="+str(along))
             if(x.dot(lastx)<0):
                 x*=-1
             self.rings.append([])
