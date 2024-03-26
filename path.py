@@ -166,7 +166,7 @@ class Path(object):
         self.Bsegments = []
         self.transform=[]
         self.otherargs=''
-        varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance', 'vertfeed', 'downmode', 'blendTolerance','finalpass', 'spindleRPM', 'stepdown']
+        varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance', 'vertfeed', 'downmode', 'blendTolerance','finalpass', 'spindleRPM', 'stepdown','fill_colour']
         if hasattr(self, 'varlist') and type(self.varlist) is list:
             self.varlist+=varlist
         else:

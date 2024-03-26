@@ -90,6 +90,15 @@ class Text(Pathgroup):
         else:
             side='on'
             notside='on'
+        if 'textFill' in config:
+            self.textFill = config['textFill']
+        else:
+            self.textFill = None
+        if 'background' in config:
+            self.background = config['background']
+        else:
+            self.background = None
+
         prev_glyph = None
         x=0
         face = Face(font)
@@ -124,8 +133,12 @@ class Text(Pathgroup):
                 o = self.import_outline(outline,lastc+1, c, side)
                 if o.orig_direction=='cw':
                     o.side = side
+                    if self.textFill:
+                        o.fill_colour = self.textFill
                 else:
                     o.side = notside
+                    if self.background:
+                        o.fill_colour = self.background
                 char.add(o)
                 lastc=c
 
@@ -210,7 +223,6 @@ class Text(Pathgroup):
 # we will need to know what the original direction was to work out if this is internal or not
         out2.orig_direction = out.find_direction({})
         out.orig_direction = out.find_direction({})
-        print (len(out2.points))
         return out2
 
 class CurvedHersheyText(Pathgroup):
