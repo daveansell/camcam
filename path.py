@@ -1968,10 +1968,9 @@ class Pathgroup(object):
         # List of paths and pathgroups
     def init(self,  args):
         global arg_meanings
-        self.obType = "Pathgroup"
         self.paths=[]
         self.trace = traceback.extract_stack()
-        varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height', 'blendTolerance', 'roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', 'chipBreak', 'justRoughing', 'vertfeed', 'blendTolerance','finalpass','spindleRPM']
+        varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height', 'blendTolerance', 'roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', 'chipBreak', 'justRoughing', 'vertfeed', 'blendTolerance','finalpass','spindleRPM', 'obType']
         if hasattr(self, 'varlist') and type(self.varlist) is list:
             self.varlist+=varlist
         else:
@@ -1987,6 +1986,7 @@ class Pathgroup(object):
         self.parent=False
         self.comments=[]
         self.transform=[]#{}
+        self.obType = "Pathgroup"
 
     def get_plane(self):
         if self.parent:
@@ -2010,6 +2010,7 @@ class Pathgroup(object):
         ret.paths=copy.deepcopy(self.paths)
         for p in ret.paths:
             p.parent=ret
+        ret.obType='Pathgroup'
         return ret
 
     def _pre_render(self, config):
@@ -2826,7 +2827,7 @@ class Plane(Part):
             paths.extend(layers['all'])
 # probably don't need this any more as it is now done in get_layers automatically
         #paths.extend(part.get_own_paths(config))
-
+        
         # iterate through all the paths in the part's layer
         for path in paths:
             if getattr(path, "_pre_render", None) and callable(path._pre_render):
@@ -2851,7 +2852,6 @@ class Plane(Part):
                             output[k]=[]
                         output[k].append(pa)
                     lastcutter=k
-
             if path.obType=="Pathgroup":
                 for p in path.get_paths(config):
                     if not hasattr(part, 'border') or part.ignore_border or part.contains(p)>-1:
@@ -2927,8 +2927,6 @@ class Plane(Part):
                 centre=part.border.centre
             else:
                 centre=V(0,0)
-            print (part.border)
-            print (centre)
             if self.modeconfig['label'] and  self.modeconfig['mode'] == 'svg' and hasattr(part, 'name') :
                 out+="<text transform='scale(1,-1)' text-anchor='middle' x='"+\
                     str(int(centre[0]))+"' y='"+\
@@ -2963,7 +2961,6 @@ class Plane(Part):
         else:
             repeatoffset=None
         output2=''
-        print( "repeatmode="+str(repeatmode))
         if repeatmode=='gcode':
             for y in range(0,int(config['repeaty'])):
               #  output2+='\nG0X0Y0\nG10 L20 P0'+'Y%0.4f'%(float(config['yspacing']))
@@ -2999,7 +2996,6 @@ class Plane(Part):
                         xp=x
                     if repeatpattern=='cp_ext' or repeatpattern=='cp_int' or repeatpattern=='cp_int2':
                         xoff=float(x)*float(config['xspacing'])*math.sin(math.pi/3)
-                        print(type(repeatoffset))
                         if xp%2:
                             yoff=float(y)*float(config['yspacing'])
                         else:
@@ -3007,7 +3003,6 @@ class Plane(Part):
                                 yoff = 1.0*float(repeatoffset) + float(y)*float(config['yspacing'])
                             else:
                                 yoff=(0.5+float(y))*float(config['yspacing'])
-                        print("yoff = "+str(yoff))
                         if repeatpattern in ['cp_int', 'cp_int2'] and y==int(config['repeaty'])-1 and not xp%2:
                             docut=False
                     else:
@@ -3065,7 +3060,6 @@ class Plane(Part):
         else:
             output = config['prefix']+"\n"+output+"\n"+config['postfix']
             if 'noblank' in config and config['noblank']:
-                print("removing blank lines")
                 lines = output.split("\n")
 
                 lines2 = [line for line in lines if line.strip() != ""]
