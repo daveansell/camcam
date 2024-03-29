@@ -113,8 +113,12 @@ class Text(Pathgroup):
                 offsety = float(self.getVoffset(face, 'aCentre')) *self.scale
         else:
             offset = 0
-            offsety = 0
+            offsety =0
         self.translate(pos-V(offset,offsety))
+        minx=100000
+        maxx=-100000
+        miny=100000
+        maxy=-100000
         for ch in text :
             char = self.add(Pathgroup())
             char.translate(V(x,0))
@@ -141,10 +145,20 @@ class Text(Pathgroup):
                         o.fill_colour = self.background
                 char.add(o)
                 lastc=c
-
+            lx=x
             x+= self.scale*float(face.glyph.linearHoriAdvance)/1000 + kern
             prev_glyph = glyph_index
             self.chars.append(char)
+            bbox = self.getBBox(slot)
+            minx = min(minx, bbox['minx']+lx/self.scale)
+            miny = min(miny, bbox['miny'])
+            maxx = max(maxx, bbox['maxx']+lx/self.scale)
+            maxy = max(maxy, bbox['maxy'])
+        self.bbox = {
+                'minx':minx*self.scale-offset, 
+                'maxx':maxx*self.scale-offset,
+                'miny':miny*self.scale-offsety, 
+                'maxy':maxy*self.scale-offsety}
     def get_length(self, text, face):
         x=0
         prev_glyph = None
