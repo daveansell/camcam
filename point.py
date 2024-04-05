@@ -653,7 +653,7 @@ class PIncurve(PSharp):
         lastpoint=self.lastorigin()
         nextpoint=self.nextorigin()
         if((self.pos-nextpoint).length()<0.0001 or (self.pos-lastpoint).length()<0.0001):
-            print("overlapping points")
+            #print("overlapping points")
             return self.pos
         angle=(self.pos-lastpoint).angle(nextpoint-self.pos)
         dl=self.radius*math.tan((angle/180)/2*math.pi)
