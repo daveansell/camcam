@@ -1584,10 +1584,12 @@ class Path(object):
     # this gets the feed rate we should be using considering that the cutter may be moving in both Z and horizontally. attempts to make it so that vertfeed and sidefeed are not exceeded.
     def get_feedrate(self, dx, dy, dz, config):
         ds = math.sqrt(dx**2+dy**2)
-        if ds>0 and 'sidefeed' not in config or config['sidefeed']==0:
-            raise ValueError( "ERROR trying to cut sideways with a cutter "+str(self.cutter)+"with no sidefeed")
-        if dz>0 and 'vertfeed' not in config or config['vertfeed']==0:
-            raise ValueError( "ERROR trying to cut down with a cutter "+str(self.cutter)+" with no vertfeed")
+        if ds>0 and 'sidefeed' not in config or not config['sidefeed']:
+             print( "ERROR trying to cut sideways with a cutter "+str(self.cutter)+"with no sidefeed"+str(self.points))
+             return 1
+        if dz>0 and 'vertfeed' not in config or not config['vertfeed']:
+            print( "ERROR trying to cut down with a cutter "+str(self.cutter)+" with no vertfeed")
+            return 1
         dst = abs(ds/config['sidefeed'])
         dzt = abs(dz/config['vertfeed'])
         if dst>dzt:
