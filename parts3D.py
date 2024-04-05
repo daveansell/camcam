@@ -563,7 +563,7 @@ class Hull(SolidPath):
             if p.obType=='Part':
                 spheres.append(self.get_plane().render_part3D(p,{}))
             elif p.obType=='Path':
-                spheres.append(p.render3D({}))
+                spheres.append(self.transform3D(p,p.render3D({})))
         print(spheres)
         return solid.translate(self.pos)(
                 solid.hull()(*spheres)
