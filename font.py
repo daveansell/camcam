@@ -51,7 +51,7 @@ class HersheyText(Pathgroup):
             maxy = max(maxy, y1, y2)
             minx = min(minx, x1, x2)
             miny = min(miny, y1, y2)
-            self.bbox = {'minx':minx, 'maxx':maxx, 'miny':miny, 'maxy':maxy}
+            self.bbox = {'minx':minx*self.scale, 'maxx':maxx*self.scale, 'miny':miny*self.scale, 'maxy':maxy*self.scale}
         if 'centred' in config and config['centred']:
             self.translate(-V((maxx+minx)/2, (maxy+miny)/2)*self.scale)
 

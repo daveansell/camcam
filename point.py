@@ -85,8 +85,9 @@ class Point(object):
     def __deepcopy__(self,memo):
         obj_copy = object.__new__(type(self))
         for v in self.__dict__:
-            if v in ['parent', 'nextpoint', 'lastpoint']:
-                obj_copy.__dict__[v]=copy.copy(self.__dict__[v])
+            # don't deepcopy referencess to other objects
+            if v in ['parent', 'nextpoint', 'lastpoint','forcelastpoint', 'forcenextpoint']:
+                obj_copy.__dict__[v]=self.__dict__[v]
             else:
                 obj_copy.__dict__[v]=copy.deepcopy(self.__dict__[v],memo)
         return obj_copy
