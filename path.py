@@ -1718,7 +1718,8 @@ class Path(object):
 #                       if downmode=='ramp'
 #                               self.add_out(self.Fsegments[-1].out(self.mode, depths[0]))
            # if downmode=='down':
-            self.add_out(self.quickdown(depths[0]-step+config['precut_z']))
+            if 'precut_z' in config and config['precut_z']:
+                self.add_out(self.quickdown(depths[0]-step+config['precut_z']))
             for depth in depths:
                 if downmode=='down' or downmode=='cutdown':
                     self.add_out(self.cutdown(depth))
