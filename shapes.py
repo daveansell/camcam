@@ -920,7 +920,11 @@ class FilledRect(Pathgroup):
 #               sides=int(max(8, rad))
 
 #               self.add(Polygon(pos, rad, sides, partial_fill=rad-0.5, fill_direction='in', side='in'))
-        filldist= min(self.width,self.height)/2
+        if 'cutterrad' in config:
+                cutterrad = config['cutterrad']
+        else:
+                cutterrad = 0
+        filldist= min(self.width,self.height)/2 -cutterrad
         self.add(RoundedRect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in', fill_direction='in', partial_fill=filldist, noFinal=self.noFinal))
         #self.rect=RoundedRect(self.pos, rad=self.rad, width=self.width, height=self.height, centred=True, side='in')
 #       def __render__(self,config):
