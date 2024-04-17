@@ -25,6 +25,7 @@ import types
 Segment.seg_types['dxf']='dxf'
 colours = {None:1, False:1}
 colourcount = 2
+renderModes['dxf'] = 'render_path_dxf'
 def colour_from_z(z):
     global colourcount, colours
     if z not in colours:

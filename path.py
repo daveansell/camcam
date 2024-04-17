@@ -33,6 +33,8 @@ spindleDir = False
 import builtins
 inch = 25.4
 
+renderModes={}
+
 milling=Milling.Milling()
 arg_meanings = {'order':'A field to sort paths by',
                'transform':"""Transformations you can apply to the object this is a dict, and can include:
@@ -1466,12 +1468,18 @@ class Path(object):
 
     def render_path(self,path,config):
         ret=""
+        global renderModes
+        print(str(self)+" "+str(hasattr(self, renderModes[config['mode']])))
         if config['mode']=='svg':
             ret+=self.render_path_svg(self.output,config)
         elif config['mode']=='gcode' or config['mode']=='simplegcode':
             ret+=self.render_path_gcode(self.output,config)
         elif config['mode']=='scr':
             ret+=self.render_path_scr(self.output,config)
+        elif config['mode'] in renderModes and hasattr(self, renderModes[config['mode']]):
+            print("CIRCLE DXF ")
+            return getattr(self, renderModes[config['mode']])(self.output, config)
+
         else:
             return self.output
 #               elif config['mode']=='simplegcode':
