@@ -20,6 +20,8 @@
 from path import *
 from minivec import *
 from segments import *
+from dxfwrite import DXFEngine as dxf
+
 # create a rectangular path
 class Rect(Path):
     def __init__(self, bl,  **config):
@@ -492,6 +494,10 @@ class Circle(Path):
             self.add_point(pos,'circle',rad)
             self.comment("Circle")
             self.comment("pos="+str(pos)+" rad="+str(rad))
+    def render_path_dxf(self,output, config):
+        p=self.points[0].point_transform(config['transformations'])
+        return [dxf.circle(radius = self.rad, center=p.pos)]
+
 class Drill(Circle):
     def __init__(self, pos, **config):
         self.init(config)
