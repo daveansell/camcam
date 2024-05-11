@@ -25,7 +25,7 @@ if has3D:
 class Side:
     def __init__(self,**config):
         self.config={}
-        self.auto_properties = {'tab_length':100, 'joint_mode':'finger', 'butt_depression':None, 'butt_holerad':4.2, 'butt_numholes':None, 'hole_spacing':100, 'hole_offset':0, 'butt_outline':False, 'slot_extra':0}
+        self.auto_properties = {'tab_length':100, 'joint_mode':'finger', 'butt_depression':None, 'butt_holerad':4.2, 'butt_numholes':None, 'hole_spacing':100, 'hole_offset':0, 'butt_outline':False, 'slot_extra':0, 'joint_depth':0}
         for prop in self.auto_properties:
             if prop in config:
                 self.config[prop] = config[prop]
@@ -73,6 +73,7 @@ class ArbitraryBox(Part):
                 'fold_rad':False, # radius of the fold
                 'fold_comp':False,  # fold compensation, the amount to add to the length of the internal side of the joint to make the fold correct
                 'slot_rad':0,
+                'joint_depth':0,
                 }
         for prop in self.auto_properties:
             if prop in config:
@@ -156,6 +157,8 @@ class ArbitraryBox(Part):
                 face['fold_rad'] = {}
             if 'fold_comp' not in face:
                 face['fold_comp'] = {}
+            if 'joint_depth' not in face:
+                face['joint_depth'] = {}
             if 'wood_direction' in face:
   #                              if wood_direction_face is not None or wood_direction_face !=None:
  #                                       raise ValueError('wood direction defined more than once')
@@ -253,6 +256,7 @@ class ArbitraryBox(Part):
                 self.set_corners(self.sides[s], f, scount)
 #                               self.set_tab_length(self.sides[s], f, scount)
                 self.set_property(self.sides[s], f, scount, 'joint_mode')
+                self.set_property(self.sides[s], f, scount, 'joint_depth')
                 self.set_property(self.sides[s], f, scount, 'fold_rad')
                 self.set_property(self.sides[s], f, scount, 'fold_comp')
                 self.set_property(self.sides[s], f, scount, 'tab_length')
@@ -844,6 +848,10 @@ class ArbitraryBox(Part):
                             newpoints = AngledFingerJointNoSlope(lastpoint, point, cutside, mode, corner, corner, face['tab_length'][scount], otherface['thickness'], 0, angle, lineside, fudge, material_thickness=face['thickness'])
                     else:
                         cutside=self.get_cutside( cutside0, joint_type)
+                        if face['joint_depth'][scount]:
+                            depth = face['joint_depth'][scount]
+                        else:
+                            depth = face['thickness']
                         newpoints = FingerJoint(
                                 lastpoint,
                                 point,
@@ -852,7 +860,7 @@ class ArbitraryBox(Part):
                                 corner,
                                 corner,
                                 face['tab_length'][scount],
-                                face['thickness'],
+                                depth,
                                 0, fudge,
                                 nextcorner=nextcorner,
                                 lastcorner=lastcorner)
@@ -947,7 +955,8 @@ class ArbitraryBox(Part):
                         bracket=self.config['bracket'],
                         args=self.config['bracket_args']))
             else:
-                part.add(FingerJointMid( joint['from'], joint['to'], cutside,'internal',  joint['corners'], joint['corners'], joint['tab_length'], joint['otherface']['thickness'], 0, prevmode, nextmode, fudge=fudge))
+                print("&&&&&&&&&& joint_depth="+str(joint['joint_depth']))
+                part.add(FingerJointMid( joint['from'], joint['to'], cutside,'internal',  joint['corners'], joint['corners'], joint['tab_length'], joint['otherface']['thickness'], 0, prevmode, nextmode, fudge=fudge, depth=joint['joint_depth']))
         if mode=='fold':
             return path.points
 
@@ -1290,6 +1299,10 @@ class ArbitraryBox(Part):
                 else:
                     face[prop][scount]=None
                     intJoint[prop] = None
+                if prop=='joint_depth':
+                    print("***** joint_depth")
+                    print(prop)
+                    print(intJoint)
                 return
             if side[0][0]==f:
                 otherf = side[1][0]
