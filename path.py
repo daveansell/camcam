@@ -168,7 +168,7 @@ class Path(object):
         self.Bsegments = []
         self.transform=[]
         self.otherargs=''
-        varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance', 'vertfeed', 'downmode', 'blendTolerance','finalpass', 'spindleRPM', 'stepdown','fill_colour']
+        varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter', 'partial_fill','fill_direction','finishing', 'input_direction', 'extrude_scale', 'extrude_centre', 'zoffset', 'isback', 'no_mirror','use_point_z','clear_height', 'finishdepth', 'sidefeed', 'blendTolerance', 'vertfeed', 'downmode', 'blendTolerance','finalpass', 'spindleRPM', 'stepdown','fill_colour', 'stroke']
         if hasattr(self, 'varlist') and type(self.varlist) is list:
             self.varlist+=varlist
         else:
@@ -1551,7 +1551,11 @@ class Path(object):
             else:
                 z=''
         ret+=z
-        return comments+"<path d=\""+ret+"\"  style='stroke-width:0.1px;"+opacity+"' fill='"+fill+"' stroke='"+colour+"'/>\n"
+        if config['stroke']:
+            stroke=config['stroke']
+        else:
+            stroke='0.1px'
+        return comments+"<path d=\""+ret+"\"  style='stroke-width:"+str(stroke)+";"+opacity+"' fill='"+fill+"' stroke='"+colour+"'/>\n"
 
     def render_path_gcode(self,path,config):
         ret=""
@@ -1993,7 +1997,7 @@ class Pathgroup(object):
         global arg_meanings
         self.paths=[]
         self.trace = traceback.extract_stack()
-        varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height', 'blendTolerance', 'roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', 'chipBreak', 'justRoughing', 'vertfeed', 'blendTolerance','finalpass','spindleRPM', 'obType']
+        varlist = ['order','transform','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth','forcestepdown', 'forcecutter',  'stepdown','finishdepth', 'forcecolour', 'rendermode','partial_fill','finishing','fill_direction','cutter','precut_z', 'zoffset','layer','no_mirror', 'part_thickness','use_point_z','clear_height', 'blendTolerance', 'roughClearance', 'matEnd', 'latheMode', 'matRad', 'step', 'cutClear', 'handedness', 'cutFromBack', 'chipBreak', 'justRoughing', 'vertfeed', 'blendTolerance','finalpass','spindleRPM', 'obType', 'stroke']
         if hasattr(self, 'varlist') and type(self.varlist) is list:
             self.varlist+=varlist
         else:
@@ -2282,7 +2286,7 @@ class Part(object):
         self.internal_borders=[]
         self.ignore_border=False
         self.transform=[]
-        varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'compose', 'isback','use_point_z','clear_height', 'offset', 'blendTolerance', 'vertfeed', 'blendTolerance','finalpass', 'cutTransforms', 'xLayers', 'spindleRPM']
+        varlist = ['order','side','z0', 'z1', 'thickness', 'material', 'colour', 'cutter','downmode','mode','prefix','postfix','settool_prefix','settool_postfix','rendermode','mode', 'sort', 'toolchange', 'linewidth', 'forcestepdown','forcecutter', 'stepdown','finishdepth', 'forcecolour', 'border', 'layer', 'name','partial_fill','finishing','fill_direction','precut_z','ignore_border', 'material_shape', 'material_length', 'material_diameter', 'zoffset', 'no_mirror','subpart', 'compose', 'isback','use_point_z','clear_height', 'offset', 'blendTolerance', 'vertfeed', 'blendTolerance','finalpass', 'cutTransforms', 'xLayers', 'spindleRPM', 'stroke']
         self.otherargs=''
         if hasattr(self, 'varlist') and type(self.varlist) is list:
             self.varlist+=varlist

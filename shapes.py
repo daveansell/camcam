@@ -1642,6 +1642,11 @@ The line defines the
             perp = rotate((end-start).normalize(),-90)
         else:
             perp = rotate((end-start).normalize(),90)
+        if 'depth' in config:
+            depth = config['depth']
+            print("depth="+str(depth))
+        else:
+            depth = False
         parallel=(end-start).normalize( )
         along=parallel*tab_length
         cra=(end-start).normalize()*-(cutterrad+fudge)
@@ -1650,7 +1655,12 @@ The line defines the
         if startmode=='on':
             # cut a bit extra on first tab if the previous tab was off as well
             if prevmode=='on':
-                self.add(Lines([start-parallel*thickness+cra+crp, start+cra-crp, start+along+cutin-cra-crp, start+along+cutin+cra-crp-parallel*thickness], closed=True, side='in', cornertype=PInsharp))
+                if depth:
+                    print("doedepth")
+                    self.add(Lines([start-parallel*thickness+cra+crp, start+cra-crp, start+along+cutin-cra-crp, start+along+cutin+cra-crp-parallel*thickness], closed=True, side='in', cornertype=PInsharp, z1=-depth).fill_path('in', 3.17/2))
+
+                else:
+                    self.add(Lines([start-parallel*thickness+cra+crp, start+cra-crp, start+along+cutin-cra-crp, start+along+cutin+cra-crp-parallel*thickness], closed=True, side='in', cornertype=PInsharp))
 #                               self.add(ClearRect(bl=start-parallel*thickness+cra+crp, tr=start+along+cutin-cra-crp, direction='cw', side='in'))
             else:
                 pass
@@ -1662,12 +1672,16 @@ The line defines the
             if m=='on':
                 # cut a bit extra on last tab if the next tab was off as well
                 if i==num_tabs and nextmode=='off':
-                    self.add(Lines([start+along*i+-cra-crp, start+along*(i+1)+cra-crp, start+along*(i+1)+cutin+cra+crp+parallel*thickness, start+along*i+cutin-cra+crp+parallel*thickness], closed=True, side='in', cornertype=PInsharp))
+                    p=Lines([start+along*i+-cra-crp, start+along*(i+1)+cra-crp, start+along*(i+1)+cutin+cra+crp+parallel*thickness, start+along*i+cutin-cra+crp+parallel*thickness], closed=True, side='in', cornertype=PInsharp)
 #                                       self.add(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp+parallel*thickness, direction='cw', side='in'))
                 else:
-                    self.add(Lines([start+along*i-cra-crp, start+along*(i+1)+cra-crp, start+along*(i+1)+cutin+cra+crp, start+along*i+cutin-cra+crp], closed=True, side='in', cornertype=PInsharp))
+                    p=Lines([start+along*i-cra-crp, start+along*(i+1)+cra-crp, start+along*(i+1)+cutin+cra+crp, start+along*i+cutin-cra+crp], closed=True, side='in', cornertype=PInsharp)
 #                                       self.add(ClearRect(bl=start+along*i+cra+crp, tr=start+along*(i+1)+cutin-cra-crp, direction='cw', side='in'))
 
+                if depth:
+                    self.add(p.fill_path('in', 3.17/2))
+                else:
+                    self.add(p)
                 m='off'
             else:
                 m='on'

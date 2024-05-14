@@ -107,7 +107,7 @@ class Text(Pathgroup):
         self.chars=[]
 
         if 'centred' in config and config['centred']:
-            offset = self.get_length(text, face)/2 *self.scale
+            offset = 0#self.get_length(text, face)/2 *self.scale
             if 'YcentreMode' in config and config['YcentreMode']:
                 offsety = float(self.getVoffset(face, config['YcentreMode'])) *self.scale
             else:
@@ -160,6 +160,8 @@ class Text(Pathgroup):
                 'maxx':maxx*self.scale-offset,
                 'miny':miny*self.scale-offsety, 
                 'maxy':maxy*self.scale-offsety}
+        if 'centred' in config and config['centred']:
+            self.translate(V(-(self.bbox['minx']+self.bbox['maxx'])/2,0))
     def get_length(self, text, face):
         x=0
         prev_glyph = None
