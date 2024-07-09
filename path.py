@@ -263,6 +263,7 @@ class Path(object):
     def set_cutter(self, config):
         if 'forcecutter' in config and config['forcecutter'] is not None:
             cutter = config['forcecutter']
+            print("forcecutter"+str(config['forcecutter']))
         elif 'partcutter' in config and config['partcutter'] is not None:
             cutter = config['partcutter']
         else:
@@ -1859,7 +1860,8 @@ class Path(object):
             # if we are in ramp mode, redo the first segment
 #                       if downmode=='ramp' and (mode=='gcode' or mode=='simplegcode'):
             if  (mode=='gcode' or mode=='simplegcode'):
-                self.add_out(self.Fsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
+                if len(self.Fsegments):
+                    self.add_out(self.Fsegments[0].out(direction,mode, depth, depth, config['use_point_z']))
             self.add_out(self.runout(config['cutterrad'],config['direction'],config['downmode'],config['side']))
 
     # Deal with open lines
