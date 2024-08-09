@@ -109,6 +109,10 @@ class CSScrew(SolidPath):
             self.rotate=config['rotate']
         else:
             self.rotate=[0,0,0]
+        if 'backLen' in config:
+            self.backLen = config['backLen']
+        else:
+            self.backLen = 10
     def getSolid(self):
         ret = []
         if self.mode=='clearance':
@@ -123,11 +127,11 @@ class CSScrew(SolidPath):
                 )
             )
             ret.append(
-                solid.translate(V(0,0,-milling.bolts[self.size]['cs']['head_l']-10.1))(
+                solid.translate(V(0,0,-milling.bolts[self.size]['cs']['head_l']-self.backLen-0.1))(
                     solid.cylinder(
                         r1=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+0.1)/milling.bolts[self.size]['cs']['head_l'], 
                         r2=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+0.1)/milling.bolts[self.size]['cs']['head_l'], 
-                        h=milling.bolts[self.size]['cs']['head_l']+10
+                        h=milling.bolts[self.size]['cs']['head_l']+self.backLen
                     )
                 )   
             )
@@ -201,22 +205,35 @@ class RoundedCuboid(SolidPath):
         self.rad = rad
         self.pos = pos
         self.add_point(pos,'circle',rad)
+        if 'sphere' in config and config['sphere']:
+            print(config['sphere'])
+            print(self.parent)
+            self.sphere = config['sphere']
+        else:
+            self.sphere = None
     def getSolid(self):
         W=self.W
         H=self.H
         D=self.D
         rad=self.rad
+        if self.sphere is None:
+            sphere = solid.sphere(r=rad)
+        else:
+            self.sphere.layer=self.parent.layer
+            sphere = self.sphere.render3D({})
+
+            print("sphere="+str(sphere))
         return solid.translate(self.pos)(
                 solid.hull()(
-                    solid.translate([-W,H,D])( solid.sphere(r=rad)),
-                    solid.translate([-W,-H,D])( solid.sphere(r=rad)),
-                    solid.translate([W,H,D])( solid.sphere(r=rad)),
-                    solid.translate([W, -H,D])( solid.sphere(r=rad)),
+                    solid.translate([-W,H,D])( sphere),
+                    solid.translate([-W,-H,D])( sphere),
+                    solid.translate([W,H,D])( sphere),
+                    solid.translate([W, -H,D])( sphere),
 
-                    solid.translate([W, H,-D])( solid.sphere(r=rad)),
-                    solid.translate([-W, H,-D])( solid.sphere(r=rad)),
-                    solid.translate([ W,-H,-D])( solid.sphere(r=rad)),
-                    solid.translate([-W,-H,-D])( solid.sphere(r=rad))
+                    solid.translate([W, H,-D])( sphere),
+                    solid.translate([-W, H,-D])( sphere),
+                    solid.translate([ W,-H,-D])( sphere),
+                    solid.translate([-W,-H,-D])( sphere)
                 )
                 )
 class Text3D(SolidPath):

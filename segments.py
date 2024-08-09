@@ -222,7 +222,7 @@ class Arc(Segment):
         dot=r.dot(r2)
         points=[]
        # dprint("cutfrom"+str(cutfrom)+" cutto"+str(cutto)+" dtheta="+str(dtheta)+" centre="+str(self.centre))
-        while thetasum<360:
+        while abs(thetasum)<360:
             r0=r 
             rh=rotate(r,dtheta/2)
             r=rotate(r,dtheta)

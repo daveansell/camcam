@@ -377,7 +377,7 @@ class Lines(Path):
         else:
             rad = 0
         for p in points:
-            if(type(p) is not 'Vec' and hasattr(p, 'obType')):
+            if(type(p) != 'Vec' and hasattr(p, 'obType')):
                 self.add_point(p)
             elif(type(cornertype) is str):
                 self.add_point(p, cornertype, radius=rad)
@@ -2173,7 +2173,18 @@ class KeyHoleArc(Path):
         self.add_point(PArc(pos+V(-keyOff,rad), radius=keyHoleRad, direction='cw', transform={'rotate':[pos, a1]}))
 
 
-
+class Arrow(Path):
+    def __init__(self, pos, length, width, headwidth, headlength,  **config):
+        """ An arc of length angle with width - width with arrow head on the end """
+        self.init(config)
+        self.closed=True
+        self.add_point(PSharp(pos+V(0,length/2)))
+        self.add_point(PSharp(pos+V( headwidth/2,length/2-headlength)))
+        self.add_point(PSharp(pos+V( width/2,length/2-headlength)))
+        self.add_point(PSharp(pos+V( width/2,-length/2)))
+        self.add_point(PSharp(pos+V(-width/2,-length/2)))
+        self.add_point(PSharp(pos+V(-width/2,length/2-headlength)))
+        self.add_point(PSharp(pos+V(-headwidth/2,length/2-headlength)))
 
 class RoundedArrow(Path):
     def __init__(self, pos, rad, width, headwidth, headlength, angle,  **config):
