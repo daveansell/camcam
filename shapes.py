@@ -704,8 +704,12 @@ class RoundSpeakerGrill(Pathgroup):
     def __init__(self,pos, rad, holerad, spacing, **config):
         self.init(config)
         """Cut a circular grid with radius :param rad: of holes with radius :param holerad: and :param spacing:"""+self.otherargs
-
-        yspacing=spacing*math.cos(math.pi/6)
+        if 'pattern' not in config or  not config['pattern'] or config['pattern'] == 'tri':
+                yspacing=spacing*math.cos(math.pi/6)
+                offset = 0.5
+        elif config['pattern']=='square':
+                yspacing = spacing
+                offset = 0
         numholesx = int(math.ceil(rad/spacing)+1)
         numholesy = int(math.ceil(rad/yspacing))
         for x in range(-numholesx,numholesx):
@@ -713,14 +717,13 @@ class RoundSpeakerGrill(Pathgroup):
                 if y%2:
                     p=V(x*spacing, y*yspacing)
                 else:
-                    p=V((x+0.5)*spacing, y*yspacing)
+                    p=V((x+offset)*spacing, y*yspacing)
                 if p.length()<rad-holerad:
                     if 'shape' in config and config['shape']=='hexagon':
                         p=self.add(Polygon(pos+p, sides=6, rad=holerad, startAngle=30))
                     elif 'shape' in config and config['shape']=='drill':
                         p=self.add(Drill(pos+p, rad=holerad))
                     else:
-                        print("ROundspeakergrill"+str(pos)+" p="+str(p)+" holerad="+str(holerad))
                         self.add(Hole(pos+p, rad=holerad))
 class RoundSlitGrill(Pathgroup):
     def __init__(self,pos, rad, slotWidth, spacing, **config):

@@ -263,7 +263,6 @@ class Path(object):
     def set_cutter(self, config):
         if 'forcecutter' in config and config['forcecutter'] is not None:
             cutter = config['forcecutter']
-            print("forcecutter"+str(config['forcecutter']))
         elif 'partcutter' in config and config['partcutter'] is not None:
             cutter = config['partcutter']
         else:
@@ -306,9 +305,7 @@ class Path(object):
         if('material' in config and config['material'] is not None):
             mat=milling.materials[config['material']]
             if 'spindleRPM' not in config or config['spindleRPM'] is None:
-                    print(config.keys())
                     if 'surface_speed' in mat:
-                        print("have surface speed")
                         if config['cutterrad']==0:
                             config['spindleRPM']= mat['surface_speed']/2/math.pi/2
                         else:
@@ -2912,7 +2909,6 @@ class Plane(Part):
                     for p in path.get_paths(config):
 
                         if not hasattr(part, 'border') or part.ignore_border or p.obType=='Pathgroup' or part.contains(p)>-1:
-                            print("www"+str(p))
                             if self.modeconfig['mode']=='svg' and p.obType=='Pathgroup' and hasattr(p, 'render_svg') and callable(getattr(p, 'render_svg')):
                                 (k,pa) = p.render_svg(config)
                             
