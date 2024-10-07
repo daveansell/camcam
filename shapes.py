@@ -429,6 +429,28 @@ class Polygon(Path):
         self.comment("Polygon")
         self.comment("pos="+str(pos)+" rad="+str(rad)+" sides="+str(sides)+" cornertype="+cornertype)
 
+class ScallopedCircle(Path):
+    def __init__(self, pos, rad, num, scallopRad, width, **config):
+        self.init(config)
+        if width/2 >= scallopRad:
+            print("scallopRad must be less than half of width (ScallopedCircle)")
+        scallopDist = math.sqrt(rad*rad-width*width/4)+ math.sqrt( scallopRad*scallopRad-width*width/4)
+        scallopAngle = math.asin(width/2 / rad) / math.pi * 180
+        angleStep = 360.0/num
+        self.closed=True
+        for i in range(0,num):
+            a0 = angleStep * i
+            self.add_point( PSharp(rotate(V(rad,0), a0-scallopAngle)))
+            self.add_point( 
+				PArc(
+					rotate(V(scallopDist, a0), scallopAngle), 
+					radius = scallopRad, 
+					direction='ccw'
+				)
+			)
+            self.add_point( PSharp(rotate(V(rad,0), a0+scallopAngle)))
+            self.add_point( PArc(V(0,0), radius = rad, direction='cw'))
+		
 
 class Star(Path):
     def __init__(self, pos, outerRad, innerRad, sides, **config):
