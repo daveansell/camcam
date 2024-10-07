@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+
 # This file is part of CamCam.
 
 #    CamCam is free software: you can redistribute it and/or modify
@@ -132,7 +133,7 @@ class CamCam:
             modeconfig['prefix']=modeconfig['prefix'].replace("%zclear%", str(10))
             if 'suffix' not in modeconfig:
                 modeconfig['suffix'] = ''
-            print(out.keys())
+            #print(out.keys())
             for i in out.keys():
                 print("min"+str(V(minx,miny))+"max = "+str(V(maxx,maxy)))#+"maxx="+str(maxx)+" miny"+str(miny)+"maxy"+str(maxy)))
 
