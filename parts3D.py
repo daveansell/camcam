@@ -109,6 +109,10 @@ class CSScrew(SolidPath):
             self.rotate=config['rotate']
         else:
             self.rotate=[0,0,0]
+        if 'backLen' in config:
+            self.backLen = config['backLen']
+        else:
+            self.backLen = 10
     def getSolid(self):
         ret = []
         if self.mode=='clearance':
@@ -123,11 +127,11 @@ class CSScrew(SolidPath):
                 )
             )
             ret.append(
-                solid.translate(V(0,0,-milling.bolts[self.size]['cs']['head_l']-10.1))(
+                solid.translate(V(0,0,-milling.bolts[self.size]['cs']['head_l']-self.backLen-0.1))(
                     solid.cylinder(
                         r1=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+0.1)/milling.bolts[self.size]['cs']['head_l'], 
                         r2=milling.bolts[self.size]['cs']['head_d']/2*(milling.bolts[self.size]['cs']['head_l']+0.1)/milling.bolts[self.size]['cs']['head_l'], 
-                        h=milling.bolts[self.size]['cs']['head_l']+10
+                        h=milling.bolts[self.size]['cs']['head_l']+self.backLen
                     )
                 )   
             )
@@ -201,22 +205,35 @@ class RoundedCuboid(SolidPath):
         self.rad = rad
         self.pos = pos
         self.add_point(pos,'circle',rad)
+        if 'sphere' in config and config['sphere']:
+            print(config['sphere'])
+            print(self.parent)
+            self.sphere = config['sphere']
+        else:
+            self.sphere = None
     def getSolid(self):
         W=self.W
         H=self.H
         D=self.D
         rad=self.rad
+        if self.sphere is None:
+            sphere = solid.sphere(r=rad)
+        else:
+            self.sphere.layer=self.parent.layer
+            sphere = self.sphere.render3D({})
+
+            print("sphere="+str(sphere))
         return solid.translate(self.pos)(
                 solid.hull()(
-                    solid.translate([-W,H,D])( solid.sphere(r=rad)),
-                    solid.translate([-W,-H,D])( solid.sphere(r=rad)),
-                    solid.translate([W,H,D])( solid.sphere(r=rad)),
-                    solid.translate([W, -H,D])( solid.sphere(r=rad)),
+                    solid.translate([-W,H,D])( sphere),
+                    solid.translate([-W,-H,D])( sphere),
+                    solid.translate([W,H,D])( sphere),
+                    solid.translate([W, -H,D])( sphere),
 
-                    solid.translate([W, H,-D])( solid.sphere(r=rad)),
-                    solid.translate([-W, H,-D])( solid.sphere(r=rad)),
-                    solid.translate([ W,-H,-D])( solid.sphere(r=rad)),
-                    solid.translate([-W,-H,-D])( solid.sphere(r=rad))
+                    solid.translate([W, H,-D])( sphere),
+                    solid.translate([-W, H,-D])( sphere),
+                    solid.translate([ W,-H,-D])( sphere),
+                    solid.translate([-W,-H,-D])( sphere)
                 )
                 )
 class Text3D(SolidPath):
@@ -552,6 +569,9 @@ class CylindricalPolyhedron(Polyhedron):
     def pn(self, facet, c):
         return int(self.first+(facet%self.facets) * self.facetLength + c) 
 
+
+
+
 class Hull(SolidPath):
     def __init__(self, pos,parts, **config):
         self.init(config)
@@ -569,6 +589,8 @@ class Hull(SolidPath):
         return solid.translate(self.pos)(
                 solid.hull()(*spheres)
                 )
+
+# Extrude xsection along path use xfunc to rotate the xsection
 class PathPolyhedron(Polyhedron):
     def __init__(self, xsection, path, **config):
         self.init(config)
@@ -663,6 +685,105 @@ class PathPolyhedron(Polyhedron):
  #       print("faces="+str(self.faces))
 #class Hull(SolidPath):
 #    def __init__(self, ):
+# Extrude xsection along path use xfunc to rotate the xsection
+# xsection is produced by a function, and must always return the same number of points, and be in a clockwise direction and is a function of point number
+# path should have as many points in it as you want slices
+class PathFuncPolyhedron(Polyhedron):
+    def __init__(self, xsectionFunc, path, **config):
+        self.init(config)
+        self.closed=True
+        if 'convexity' in config:
+            self.convexity=config['convexity']
+        else:
+            self.convexity=10
+        if 'zStep' in config:
+            zStep = config['zStep']
+        else:
+            zStep = 1.0
+        if 'pStep' in config:
+            pStep = config['pStep']
+        else:
+            pStep = 1.0
+        if 'x0' in config:
+            lastx=config['x0'].normalize()
+        else:
+            lastx = V(1,0,0)
+        if 'xfunc' in config:
+            xfunc= config['xfunc']
+        else:
+            xfunc = False
+        # preserve x direction
+        if 'samex' in config:
+            samex=config['samex']
+        else:
+            samex=False
+
+        if 'gradient' in config:
+            gradient = config['gradient']
+        else:
+            gradient = V(0,0)
+        ppath = path.polygonise(zStep)
+        self.faces = []
+        self.rings=[]
+        self.inPoints=[]
+        pc=0
+        s="path="
+        for p in range(0,len(ppath)):
+            pos = float(p)/len(ppath)
+            xsection = xsectionFunc(pos)
+            pxsection = xsection.polygonise(pStep)
+          #  print (str(p) + " "+str(ppath[p]))
+            if p==0:
+                along = (ppath[1]-ppath[0]).normalize()
+            elif p==len(ppath)-1:
+                along = (ppath[len(ppath)-1]-ppath[len(ppath)-2]).normalize()
+            else:
+                along = ((ppath[p]-ppath[p-1]).normalize()+(ppath[p+1]-ppath[p]).normalize())/2
+            if xfunc:
+                x=xfunc(float(p)/len(ppath))
+                print("xfunc="+str(x))
+                y = -along.cross(x).normalize()
+                lastx=x
+            elif samex:
+                x = lastx
+                y = -along.cross(lastx).normalize()
+            elif p==0 and 1==0: # if x hasn't been specified pick an arbitrary x
+                y=along.cross(V(1,0,0))
+                if y.length()<0.001:
+                    y=along.cross(V(0,1,0)).normalize()
+                else:
+                    y=y.normalize()
+                x=along.cross(y).normalize()
+                lastx=x
+                samex=True
+            else:
+                y = along.cross(lastx).normalize()
+                x = along.cross(y).normalize()
+            print("lastx="+str(lastx)+" x="+str(x)+" y="+str(y)+" along="+str(along))
+            if(x.dot(lastx)<0):
+                x*=-1
+            self.rings.append([])
+            for o in range(0,len(pxsection)):
+                #print("faces ppath="+str(ppath[p])+" pxsection[][0]="+str(pxsection[o][0]*x)+" [1]"+str(pxsection[o][1]*y))
+                self.inPoints.append(ppath[p]+x*pxsection[o][0]+y*pxsection[o][1])
+                self.rings[-1].append(pc)
+                if p>0 and o>0:
+                    self.faces.append([ self.rings[-1][o], self.rings[-1][o-1], self.rings[-2][o-1], self.rings[-2][o]])
+                pc+=1
+            if p>0:
+                self.faces.append([ self.rings[-1][0], self.rings[-1][-1], self.rings[-2][-1], self.rings[-2][0]])
+            lastx = x
+        self.faces.append(reversed(self.rings[0]))
+#        self.faces[-1].reverse()
+        self.faces.append(self.rings[-1])
+        self.add_point(PCircle(V(0,0), radius=1))
+        self.closed=True
+#        print("faces Points="+str(self.inPoints))
+ #       print("faces="+str(self.faces))
+#class Hull(SolidPath):
+#    def __init__(self, ):
+
+# create a polyhedron of a surface
 class SurfacePolyhedron(Polyhedron):
     def __init__(self, vFunc, bFunc, xmin, xmax, ymin, ymax, **config):
 

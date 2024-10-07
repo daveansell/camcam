@@ -892,7 +892,7 @@ class Milling:
                         },
                         'cs':{
                             'head_d':7.6,
-                            'head_l':2.6,
+                            'head_l':2.6+0.2,
                         },
                 },
                 'M5':{

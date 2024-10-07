@@ -263,7 +263,6 @@ class Path(object):
     def set_cutter(self, config):
         if 'forcecutter' in config and config['forcecutter'] is not None:
             cutter = config['forcecutter']
-            print("forcecutter"+str(config['forcecutter']))
         elif 'partcutter' in config and config['partcutter'] is not None:
             cutter = config['partcutter']
         else:
@@ -306,9 +305,7 @@ class Path(object):
         if('material' in config and config['material'] is not None):
             mat=milling.materials[config['material']]
             if 'spindleRPM' not in config or config['spindleRPM'] is None:
-                    print(config.keys())
                     if 'surface_speed' in mat:
-                        print("have surface speed")
                         if config['cutterrad']==0:
                             config['spindleRPM']= mat['surface_speed']/2/math.pi/2
                         else:
@@ -2173,7 +2170,10 @@ class Pathgroup(object):
             if p.obType=='Path':
                 paths.append(p)
             elif p.obType=='Pathgroup':
-                paths.extend(p.get_paths(config))
+                if(config['mode']=='svg'  and hasattr(p, 'render_svg') and callable(getattr(p, 'render_svg'))):
+                    paths.append(p)
+                else:
+                    paths.extend(p.get_paths(config))
         return paths
 
     def rotate(self,pos, angle):
@@ -2604,6 +2604,7 @@ class Part(object):
 
 # deepcopy problem:
                     p=copy.deepcopy(path)
+                    print("addQQ"+str(p))
                     p.parent=self.paths[layer]
                     path.parent=self.paths[layer]
                     self.paths[layer].add_path(p, prepend)
@@ -2888,24 +2889,50 @@ class Plane(Part):
                         output[k].append(pa)
                     lastcutter=k
             if path.obType=="Pathgroup":
-                for p in path.get_paths(config):
-                    if not hasattr(part, 'border') or part.ignore_border or part.contains(p)>-1:
-                        (k,pa)=p.render(config)
-                        if self.modeconfig['group'] is False:
+                if self.modeconfig['mode']=='svg' and hasattr(path, 'render_svg') and callable(getattr(path, 'render_svg')):
+                    (k,p) = path.render(config)
+                    if self.modeconfig['group'] is False:
                             k=c
                             c=c+1
-                        #else:
-                        #       k=config[self.modeconfig['group']]#getattr(p,self.modeconfig['group'])
-                        if 'render_string' not in self.modeconfig or self.modeconfig['render_string']:
+                    if 'render_string' not in self.modeconfig or self.modeconfig['render_string']:
                             if k not in list(output.keys()):
                                 output[k]=''
                             output[k] += ''.join(pa)
-                        else:
+                    else:
                             if k not in list(output.keys()):
                                 output[k]=[]
                             output[k].append(pa)
 
-                        lastcutter = k
+                    lastcutter = k
+
+                else:
+                    for p in path.get_paths(config):
+
+                        if not hasattr(part, 'border') or part.ignore_border or p.obType=='Pathgroup' or part.contains(p)>-1:
+                            if self.modeconfig['mode']=='svg' and p.obType=='Pathgroup' and hasattr(p, 'render_svg') and callable(getattr(p, 'render_svg')):
+                                (k,pa) = p.render_svg(config)
+                            
+                                print("mode="+self.modeconfig['mode'])
+                                print(path)
+                                print(pa)
+                            else:
+                                (k,pa)=p.render(config)
+                            if self.modeconfig['group'] is False:
+                                k=c
+                                c=c+1
+
+                        #else:
+                        #       k=config[self.modeconfig['group']]#getattr(p,self.modeconfig['group'])
+                            if 'render_string' not in self.modeconfig or self.modeconfig['render_string']:
+                                if k not in list(output.keys()):
+                                    output[k]=''
+                                output[k] += ''.join(pa)
+                            else:
+                                if k not in list(output.keys()):
+                                    output[k]=[]
+                                output[k].append(pa)
+
+                            lastcutter = k
 
                 # this may be a pathgroup - needs flattening - needs config to propagate earlier or upwards- drill a hole of non-infinite depth through several layers??
                 # possibly propagate config by getting from parent, plus feed it a layer config as render arguement

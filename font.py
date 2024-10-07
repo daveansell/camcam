@@ -55,11 +55,17 @@ class HersheyText(Pathgroup):
         if 'centred' in config and config['centred']:
             self.translate(-V((maxx+minx)/2, (maxy+miny)/2)*self.scale)
 
+
 class Text(Pathgroup):
     def __init__(self, pos, text, **config):
         self.init(config)
+        print(self.obType)
+        print(self)
+        self.text=text
+        self.pos=pos
         if 'font' in config:
             font=config['font']
+            self.font=config['font']
         else:
             font='/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf'
             try:
@@ -99,7 +105,10 @@ class Text(Pathgroup):
             self.background = config['background']
         else:
             self.background = None
-
+        if 'font_weight' in config:
+            self.font_weight = config['font_weight']
+        else:
+            self.font_weight='nornal'
         prev_glyph = None
         x=0
         face = Face(font)
@@ -162,6 +171,29 @@ class Text(Pathgroup):
                 'maxy':maxy*self.scale-offsety}
         if 'centred' in config and config['centred']:
             self.translate(V(-(self.bbox['minx']+self.bbox['maxx'])/2,0))
+
+    def render_svg(self, pconfig):
+        print ("RENDER TEXT"+str(self.text))
+        if pconfig['mode']=='svg':
+            config=pconfig#self.generate_config(pconfig)
+       
+            p = PSharp(self.pos).point_transform(config['transformations'])
+            print(p.pos)
+            print(self.pos)
+            scale = self.scale*5
+            f = ' fill="'+str(self.textFill)+'" '
+            if self.font_weight:
+                w = "font-weight='"+str(self.font_weight)+"' "
+            else:
+                w=''
+            return [config['cutter'], "<text transform='scale("+str(scale)+",-"+str(scale)+")' text-anchor='middle' x='"+\
+                    str(p.pos[0]/scale)+"' y='"+\
+                    str(-p.pos[1]/scale)+"' "+f+w+">"+\
+                    str(self.text)+"</text>" 
+                    ]
+        else:
+            return super().render(pconfig)
+
     def get_length(self, text, face):
         x=0
         prev_glyph = None

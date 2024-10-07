@@ -398,7 +398,7 @@ def plane_render_part3D(self, thepart, pconfig, layers={}, filename=False):
         filename = filename +',scad'
     if hasattr(thepart, 'border3D'):
         solid.scad_render_to_file(thepart.border3D, filename,file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=False)
-
+import inspect
 def part_get_layers3D(self):
     """collect subparts with a different layer to parent"""
     layers={}
@@ -409,7 +409,7 @@ def part_get_layers3D(self):
                 layers[l]=ly
             else:
                 layers[l]=layers[l]+ls[l]
-        if hasattr(part,'subpart') and part.subpart and part.layer!=self.layer:
+        if hasattr(part,'subpart') and part.subpart and hasattr(self, 'layer') and part.layer!=self.layer:
             if part.layer not in layers:
                 layers[part.layer]=[]
             layers[part.layer].append(part)

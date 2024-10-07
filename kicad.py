@@ -18,7 +18,7 @@ class Kicad:
     def getModules(self, modulePrefix=None, moduleName=None, output='simple'):
         positions=[]
         for module in self.pcb.module:
-            prefix, name = module[0].split(':')
+            prefix, name = module[0].strip('"').split(':')
             if (prefix==modulePrefix or modulePrefix==None) and (name==moduleName or moduleName==None):
                 if output=='simple':
                     positions.append(self.toV(module['at']))
