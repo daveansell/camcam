@@ -443,7 +443,7 @@ class ScallopedCircle(Path):
             self.add_point( PSharp(rotate(V(rad,0), a0-scallopAngle)))
             self.add_point( 
 				PArc(
-					rotate(V(scallopDist, a0), scallopAngle), 
+					rotate(V(scallopDist, 0), a0), 
 					radius = scallopRad, 
 					direction='ccw'
 				)
