@@ -804,7 +804,12 @@ class Milling:
                         "vertfeed":100,
                         "sidefeed":300,
                         "stepdown":2.0,
+                        "surface_speed":650*300, # mm/min
                         "kress_setting":3.0,
+                        "chip_loading":{
+                            'low':{3.16:	0.1016	,6.32:	0.2794	,9.48:	0.4318	,12.64:	0.5334},
+                            'high':{3.16:	0.1524	,6.32:	0.3302	,9.48:	0.508	,12.64:	0.5842},
+                            },
                },
                 "piezo":{
                         "vertfeed":20,
