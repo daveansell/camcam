@@ -12,6 +12,10 @@ class ProjectBox(Part):
             slope = config['slope']
         else:
             slope = 0
+        if 'name' in config:
+            prefix = str(config['name'])+"_"
+        else:
+            prefix = ''
         print(width)
         print("Hello")
 
@@ -174,11 +178,11 @@ class ProjectBox(Part):
                 )
         ttop = intersection()(wbox,cut)
 
-        scad_render_to_file(temp, 'fullbox.scad' , file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=True)
+        scad_render_to_file(temp, prefix+'fullbox.scad' , file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=True)
         top = intersection()(wholebox, cut)
         top2 = union ()(top,innerbox)
-        scad_render_to_file(top, 'top.scad' , file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=True)
-        scad_render_to_file(bottom, 'bottom.scad' , file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=True)
+        scad_render_to_file(top, prefix+'top.scad' , file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=True)
+        scad_render_to_file(bottom, prefix+'bottom.scad' , file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=True)
 
 
     def doTransform(self, ob, transforms):
