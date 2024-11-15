@@ -262,6 +262,9 @@ class Spiral(Path):
             self.closed=True
         if "turns" in config:
             self.turns=config["turns"]
+        elif 'spacing' in config:
+            self.turns = (r2-r1)/config['spacing']
+            turns= self.turns
         else:
             self.turns = 1.0
         if "steps" in config:
@@ -302,7 +305,7 @@ class Spiral(Path):
 #                       self.add_point(PSharp(pos+rotate(V(r1+rstep*t, 0), astep*t)))
             self.add_point(PSharp(self.alongSpiral(t)))
             if t>startTurns+rad and t<endTurns-rad:
-                self.length += (self.alongSpiral( t)-self.alongSpiral(t-tstep))
+                self.length += (self.alongSpiral( t)-self.alongSpiral(t-tstep)).length()
 #                            self.length += (V(r1+rstep*t,0) - rotate(V(r1+rstep*(t-tstep),0), astep*tstep)).length()
         #self.add_point(PSharp(pos+rotate(V(r1+rstep*endTurns,0), endTurns*astep)))
             t+=tstep
