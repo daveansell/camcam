@@ -1037,3 +1037,51 @@ class Thread(SolidExtrude):
         polygon = solid.polygon(outline)
         print("scale="+str(self.scale))
         return self.transform3D(self, solid.linear_extrude(height=self.height, convexity=self.convexity, scale=self.scale,  center=self.centre, twist=self.twist)(polygon))
+
+
+class Picam3(Part):
+    def __init__(self, pos, screwLen, wallThickness, **config):
+        if 'IR' in config:
+            IR=config['IR']
+        else:
+            IR=False
+        if 'subpart' in config:
+            subpart=config['subpart']
+        else:
+            subpart=True
+        if 'pillars' in config:
+            pillars=config['pillars']
+        else:
+            pillars=False
+        lensWidth= 11.5
+        lensLength = 6.3
+        sx = 25.0/2 - 4.75/2
+        sy = -7.3-10.8/2
+        self.init(config)
+        self.subpart=subpart
+        self.translate3D(pos)
+        if not pillars:
+            lens=self.add(Part(subpart=True, border=Cuboid(V(0,0,),width = lensWidth, height=lensWidth, depth = lensLength+1, centre=True)))
+            lens.translate3D(V(0,0,lensLength/2))
+
+        sposes=[ V(sx,0), V(-sx,0), V(sx, -sy), V(-sx,-sy)]
+        for s in sposes:
+            if not pillars:
+                self.add(Part(subpart=True,  border=Cylinder(s+V(0,0,-screwLen/2), rad = 2.0/2, height=screwLen)))
+                self.add(Part(subpart=True,  border=Cylinder(s+V(0,0,-screwLen/2), rad = 2.0/2, height=screwLen)))
+            else:
+                self.add(Part(subpart=True,  border=Cylinder(s+V(0,0,-screwLen/2), rad = 4.75/2, height=screwLen)))
+                self.add(Part(subpart='subtract',  border=Cylinder(s+V(0,0,-screwLen/2), rad = 1.5/2, height=screwLen+1)))
+
+            #self.add(Part(subpart=True,  border=Cylinder(s+V(0,0,-100), rad = 28.0/2, height=100)))
+        if not pillars:
+            x=self.add(Part(subpart=True, border=Cuboid(V(0,-(-11-7.5)/2), width = 12, height = 9, depth=3.0)))
+            x.translate3D(V(0,0,1.5))
+
+        steps = int(wallThickness - 7)+1
+        print (steps)
+        for i in range(0,steps):
+            self.add(Part(subpart=True, border=Cylinder(V(0,0,7+i), rad = 2.5+i, height=steps-i)))
+        if IR:
+            self.add(Part(subpart=True, border=Cylinder(V(0,0,6), rad = 11/2, height=3)))
+
