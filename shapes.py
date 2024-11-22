@@ -523,6 +523,43 @@ class Circle(Path):
         p=self.points[0].point_transform(config['transformations'])
         return [dxf.circle(radius = self.rad, center=p.pos)]
 
+class Raster(Path):
+    def __init__(self, pos, filename, width, height, **config):
+        self.init(config)
+        self.pos=pos
+        self.width=width
+        self.height=height
+        self.filename=filename
+        self.closed=False
+        self.add_point(pos)
+        self.add_point(pos+V(0,1))
+
+    def transform2svg(self, transforms):
+        ret=''
+        if not transforms or not type(transforms) == list:
+            return ""
+        for t in transforms:
+            if t:
+                if 'translate' in t:
+                    ret+="translate("+str(t['rotate'][0][0])+" "+str(t['rotate'][0][1])+") "
+                if 'rotate' in t:
+                    ret+="rotate("+str(t['rotate'][1])+" "+str(t['rotate'][0][0])+" "+str(t['rotate'][0][1])+") "
+                if 'mirror' in t:
+                    if t['mirror']=='x':
+                        ret+='scale ( -1 1) '
+                    elif t['mirror']=='y':
+                        ret+='scale ( 1 -1) '
+        return ret
+
+    def render(self, pconfig):
+        config=self.generate_config(pconfig)
+        print(config['transformations'])
+        if config['mode']=='svg':
+            preTrans = "translate("+str(-self.width/2+self.pos[0])+" "+str(-self.height/2+self.pos[1])+") "
+            return [config['cutter'],"<image width=\""+str(self.width)+"\" height=\""+str(self.height)+"\" xlink:href=\"file://"+str(self.filename)+"\" transform=\""+self.transform2svg(config['transformations'])+preTrans+"\" />"]
+        else:
+            return [config['cutter'],""]
+
 class Drill(Circle):
     def __init__(self, pos, **config):
         self.init(config)
