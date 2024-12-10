@@ -61,6 +61,11 @@ class Rect(Path):
                 args['direction']=config['direction']
             else:
                 args['direction'] = 'ccw'
+        if ct=='chamfer':
+            if 'chamfer' in config:
+                args['chamfer'] = config['chamfer']
+            else:
+                args['chamfer'] = config['rad']
         self.closed=True
         if 'rad' not in config or config['rad'] is False:
             rad = 0.01
