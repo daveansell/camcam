@@ -577,6 +577,7 @@ class Hull(SolidPath):
         self.init(config)
         self.pos=pos
         self.parts=parts
+        self.closed=True
     def getSolid(self):
         spheres=[]
         for p in self.parts: 
