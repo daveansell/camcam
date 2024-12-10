@@ -2604,7 +2604,7 @@ class Part(object):
 
 # deepcopy problem:
                     p=copy.deepcopy(path)
-                    print("addQQ"+str(p))
+#                    print("addQQ"+str(p))
                     p.parent=self.paths[layer]
                     path.parent=self.paths[layer]
                     self.paths[layer].add_path(p, prepend)
@@ -2912,9 +2912,6 @@ class Plane(Part):
                             if self.modeconfig['mode']=='svg' and p.obType=='Pathgroup' and hasattr(p, 'render_svg') and callable(getattr(p, 'render_svg')):
                                 (k,pa) = p.render_svg(config)
                             
-                                print("mode="+self.modeconfig['mode'])
-                                print(path)
-                                print(pa)
                             else:
                                 (k,pa)=p.render(config)
                             if self.modeconfig['group'] is False:

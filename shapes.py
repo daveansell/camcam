@@ -267,6 +267,9 @@ class Spiral(Path):
             self.closed=True
         if "turns" in config:
             self.turns=config["turns"]
+        elif 'spacing' in config:
+            self.turns = (r2-r1)/config['spacing']
+            turns= self.turns
         else:
             self.turns = 1.0
         if "steps" in config:
@@ -307,7 +310,7 @@ class Spiral(Path):
 #                       self.add_point(PSharp(pos+rotate(V(r1+rstep*t, 0), astep*t)))
             self.add_point(PSharp(self.alongSpiral(t)))
             if t>startTurns+rad and t<endTurns-rad:
-                self.length += (self.alongSpiral( t)-self.alongSpiral(t-tstep))
+                self.length += (self.alongSpiral( t)-self.alongSpiral(t-tstep)).length()
 #                            self.length += (V(r1+rstep*t,0) - rotate(V(r1+rstep*(t-tstep),0), astep*tstep)).length()
         #self.add_point(PSharp(pos+rotate(V(r1+rstep*endTurns,0), endTurns*astep)))
             t+=tstep
@@ -524,6 +527,43 @@ class Circle(Path):
     def render_path_dxf(self,output, config):
         p=self.points[0].point_transform(config['transformations'])
         return [dxf.circle(radius = self.rad, center=p.pos)]
+
+class Raster(Path):
+    def __init__(self, pos, filename, width, height, **config):
+        self.init(config)
+        self.pos=pos
+        self.width=width
+        self.height=height
+        self.filename=filename
+        self.closed=False
+        self.add_point(pos)
+        self.add_point(pos+V(0,1))
+
+    def transform2svg(self, transforms):
+        ret=''
+        if not transforms or not type(transforms) == list:
+            return ""
+        for t in transforms:
+            if t:
+                if 'translate' in t:
+                    ret+="translate("+str(t['rotate'][0][0])+" "+str(t['rotate'][0][1])+") "
+                if 'rotate' in t:
+                    ret+="rotate("+str(t['rotate'][1])+" "+str(t['rotate'][0][0])+" "+str(t['rotate'][0][1])+") "
+                if 'mirror' in t:
+                    if t['mirror']=='x':
+                        ret+='scale ( -1 1) '
+                    elif t['mirror']=='y':
+                        ret+='scale ( 1 -1) '
+        return ret
+
+    def render(self, pconfig):
+        config=self.generate_config(pconfig)
+        print(config['transformations'])
+        if config['mode']=='svg':
+            preTrans = "translate("+str(-self.width/2+self.pos[0])+" "+str(-self.height/2+self.pos[1])+") "
+            return [config['cutter'],"<image width=\""+str(self.width)+"\" height=\""+str(self.height)+"\" xlink:href=\"file://"+str(self.filename)+"\" transform=\""+self.transform2svg(config['transformations'])+preTrans+"\" />"]
+        else:
+            return [config['cutter'],""]
 
 class Drill(Circle):
     def __init__(self, pos, **config):
