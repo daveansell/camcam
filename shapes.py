@@ -2353,7 +2353,7 @@ class ArcRect(Path):
         self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a1]}))
         self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
         self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a2]}))
-        if(minorrad):
+        if(minorrad!=[0,0,0,0]):
             self.add_point(PIncurve(pos+V(minorrad[0], rad+w), radius=minorrad[0], transform={'rotate':[pos, a2]}))
             self.add_point(PSharp(pos+V(minorrad[0], rad+w-minorrad[0]), transform={'rotate':[pos, a2]}))
             self.add_point(PSharp(pos+V(minorrad[1], rad-w+minorrad[1]), transform={'rotate':[pos, a2]}))
