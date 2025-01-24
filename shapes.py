@@ -556,7 +556,7 @@ class Raster(Path):
         print(config['transformations'])
         if config['mode']=='svg':
             preTrans = "translate("+str(-self.width/2+self.pos[0])+" "+str(-self.height/2+self.pos[1])+") "
-            return [config['cutter'],"<image width=\""+str(self.width)+"\" height=\""+str(self.height)+"\" xlink:href=\"file://"+str(self.filename)+"\" transform=\""+self.transform2svg(config['transformations'])+preTrans+"\" />"]
+            return [config['cutter'],"<image width=\""+str(self.width)+"\" height=\""+str(self.height)+"\" xlink:href=\""+str(self.filename)+"\" transform=\""+self.transform2svg(config['transformations'])+preTrans+"\" />"]
         else:
             return [config['cutter'],""]
 
