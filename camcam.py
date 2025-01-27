@@ -255,6 +255,9 @@ parser.add_option("-q", "--offsetx", dest="offsetx",
                   help="offset x")
 parser.add_option("-Q", "--offsety", dest="offsety",
                   help="offset y")
+
+parser.add_option("-P", "--pause", dest="pause",action='store_true',
+                  help="Pause before border.")
 (options, args) = parser.parse_args()
 config={}
 builtins.cuttingmode = milling.mode_config[options.mode]
@@ -314,6 +317,10 @@ if options.offsety:
     offsety = float(options.offsety)
 else:
     offsety =0
+if options.pause:
+    config['pause']=True
+else:
+    config['pause']=False
 config['offset']=V(offsetx,offsety)
 config['transformations']=[{}]
 if options.rotate:
