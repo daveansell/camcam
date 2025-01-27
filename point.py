@@ -869,6 +869,7 @@ class POutcurve(Point):
         dl=self.radius*math.tan((angle/180)/2*math.pi)
         return self.pos+(lastpoint-self.pos).normalize()*dl
     def offset(self, side, distance, direction):
+        print("Offset Act"+str(self))
         t=copy.copy(self)
         self.setangle()
         if self.direction in ['cw', 'ccw']:
@@ -892,6 +893,7 @@ class POutcurve(Point):
                     t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.sin((self.angle)/2)))
                 else:
                     t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.cos((math.pi/4-self.angle)/2)))
+        print("****"+str(t))
         return [t]
 # Find 2 points joined by a line from r1 from point1 and r2 from point2
     def tangent_points(self, point1, r1, dir1, point2, r2, dir2):
@@ -1241,7 +1243,7 @@ If it can't reach either point with the arc, it will join up to them perpendicul
             self.radius=min((self.next().pos-self.pos).length(), (self.pos- self.last().pos).length())
     def makeSegment(self, config):
         self.checkArc()
-        if self.last().point_type not in ['sharp', 'clear', 'doubleclear', 'insharp'] or self.next().point_type not in ['sharp', 'clear', 'doubleclear', 'insharp']:
+        if self.last().point_type not in ['sharp', 'clear', 'doubleclear', 'insharp','incurve'] or self.next().point_type not in ['sharp', 'clear', 'doubleclear', 'insharp','incurve']:
             print("points either side of an Arc should be sharp"+str(self.next().point_type)+" "+str(self.last().point_type))
             return []
         else:

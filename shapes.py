@@ -2350,6 +2350,7 @@ class ArcRect(Path):
         a1 = -float(angle)/2+startangle
         a2 = float(angle)/2+startangle
         w = float(width)/2
+        print("minorrad "+str(minorrad))
         if not minorrad:
             pass
         if not type(minorrad) is list:
@@ -2359,7 +2360,7 @@ class ArcRect(Path):
         self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a1]}))
         self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
         self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a2]}))
-        if(minorrad!=[0,0,0,0]):
+        if(minorrad and minorrad != [0, 0, 0, 0]):
             self.add_point(PIncurve(pos+V(minorrad[0], rad+w), radius=minorrad[0], transform={'rotate':[pos, a2]}))
             self.add_point(PSharp(pos+V(minorrad[0], rad+w-minorrad[0]), transform={'rotate':[pos, a2]}))
             self.add_point(PSharp(pos+V(minorrad[1], rad-w+minorrad[1]), transform={'rotate':[pos, a2]}))
@@ -2373,7 +2374,7 @@ class ArcRect(Path):
             self.add_point(PSharp(pos+V(-minorrad[2], rad-w+minorrad[2]), transform={'rotate':[pos, a1]}))
             self.add_point(PSharp(pos+V(-minorrad[3], rad+w-minorrad[3]), transform={'rotate':[pos, a1]}))
             self.add_point(PIncurve(pos+V(-minorrad[3], rad+w), radius=minorrad[3], transform={'rotate':[pos, a1]}))
-        self.add_point(PSharp(pos+V(0, rad+w), transform={'rotate':[pos, a1]}))
+     #   self.add_point(PSharp(pos+V(0, rad+w), transform={'rotate':[pos, a1]}))
 
 # The bit you cut out to make a spoke
 class AntiSpoke(Path):

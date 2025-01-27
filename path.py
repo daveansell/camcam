@@ -1596,8 +1596,8 @@ class Path(object):
             if 'F' in point:
                 ret+="F%0.2f"%point['F']
             ret+="\n"
-        if config['mode']=='gcode':
-            ret+="G64\n"
+        #if config['mode']=='gcode':
+        #    ret+="G64\n"
         return ret
 
     def render_path_scr(self, path, config):
@@ -2938,6 +2938,15 @@ class Plane(Part):
         if(part.border is not False and part.border is not None):
             (k,b)=part.border.render(config)
             if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
+                print("PART_CONFIG****"+str(part_config))
+                print("CONFIG****"+str(config))
+                if self.modeconfig['mode']=='gcode' and 'pause' in part_config and part_config['pause']:
+                    if not k in output:
+                            output[k]=''
+
+                    output[k]+="G0 Z"+str(config['clear_height']+50)+"\n"
+                    output[k]+="M5\n"
+                    output[k]+="M0\n"
                 if part.cutter==None:
                     part.cutter=config['cutter']
                 if not config['sep_border']: #1==1 or part.cutter == lastcutter:
