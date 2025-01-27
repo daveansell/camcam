@@ -561,7 +561,7 @@ class Raster(Path):
         print(config['transformations'])
         if config['mode']=='svg':
             preTrans = "translate("+str(-self.width/2+self.pos[0])+" "+str(-self.height/2+self.pos[1])+") "
-            return [config['cutter'],"<image width=\""+str(self.width)+"\" height=\""+str(self.height)+"\" xlink:href=\"file://"+str(self.filename)+"\" transform=\""+self.transform2svg(config['transformations'])+preTrans+"\" />"]
+            return [config['cutter'],"<image width=\""+str(self.width)+"\" height=\""+str(self.height)+"\" xlink:href=\""+str(self.filename)+"\" transform=\""+self.transform2svg(config['transformations'])+preTrans+"\" />"]
         else:
             return [config['cutter'],""]
 
@@ -2360,7 +2360,6 @@ class ArcRect(Path):
         self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
         self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a2]}))
         if(minorrad and minorrad != [0, 0, 0, 0]):
-            print("do minorrad "+str(minorrad))
             self.add_point(PIncurve(pos+V(minorrad[0], rad+w), radius=minorrad[0], transform={'rotate':[pos, a2]}))
             self.add_point(PSharp(pos+V(minorrad[0], rad+w-minorrad[0]), transform={'rotate':[pos, a2]}))
             self.add_point(PSharp(pos+V(minorrad[1], rad-w+minorrad[1]), transform={'rotate':[pos, a2]}))
