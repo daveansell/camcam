@@ -678,7 +678,7 @@ class Path(object):
             return
         if len(self.points)>3:
             for p,point in enumerate(self.points):
-                if (point.point_type in ['sharp', 'clear', 'doubleclear', 'insharp'] ):
+                if (point.point_type in ['sharp', 'clear', 'doubleclear', 'insharp'] and point.last().point_type in ['sharp', 'clear', 'doubleclear', 'insharp'] and point.next().point_type in ['sharp', 'clear', 'doubleclear', 'insharp']):
                     point.setangle()
                     if point.dot==-1 and (self.closed and p!=0 and p!=len(self.points)-1):
                         print( "deleting point as pos="+str(point.pos))

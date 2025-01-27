@@ -1289,6 +1289,7 @@ class Screw(Part):
         if 'layer_config' in config:
             layer_conf=config['layer_config']
             for c in list(layer_conf.keys()):
+                print("c"+str(c)+" pos="+str(pos))
                 conf = copy.deepcopy(layer_conf[c])
                 if 'drill' in conf and conf['drill']:
                     self.add(Drill(pos, **conf), c)
