@@ -1,7 +1,7 @@
 import solid
 from  path import *
 from cc3d import *
-
+from font import *
 class SolidPath(Path):
     def __init__(self, **config):
         self.init(config)
@@ -1085,4 +1085,50 @@ class Picam3(Part):
             self.add(Part(subpart=True, border=Cylinder(V(0,0,7+i), rad = 2.5+i, height=steps-i)))
         if IR:
             self.add(Part(subpart=True, border=Cylinder(V(0,0,6), rad = 11/2, height=3)))
+
+
+class Text3D(Part):
+    def __init__(self, pos, text,  **config):
+        self.init(config)
+        self.ignore_border=True
+        if not 'font' in config:
+            self.font = '/usr/share/fonts/truetype/ubuntu/Ubuntu-B.ttf'
+        else:
+            self.font = config['font']
+
+        if not 'scale' in config:
+            scale = 1
+        else:
+            scale = config['scale']
+
+#        if 'subpart' in config:
+#            self.subpart=config['subpart']
+#        if 'layer' in config:
+#            self.layer = config['layer']
+        self.doLetter(text, scale)
+        self.translate3D(pos)
+    def doLetter(self, text, scale):
+        letters = Text(V(0,0), text, font=self.font, scale = scale, centred=True)
+        l=self.add(Part(subpart=True, ignore_border=True))
+        l.translate3D(V(-(letters.bbox['minx']+letters.bbox['maxx'])/2, -5))
+        for letter in letters.paths:
+            print("letter transform"+str(letter.transform))
+            paths = letter.paths
+            for path in paths:
+                outer=True
+                for path2 in paths:
+                    if path is not path2:
+                        if path2.contains(path)==1:
+                            print(str(path)+" is not outer ")
+                            outer=False
+                print(path)
+                if outer:
+                    s=l.add(Part(subpart=True, border=path, thickness=self.thickness))
+                    s.translate3D(letter.transform[0]['translate'])
+                else:
+                    s=l.add(Part(subpart='subtract', border=path, thickness=self.thickness+0.1))
+                    s.translate3D(V(0,0,0.05))
+                    s.translate3D(letter.transform[0]['translate'])
+
+    
 
