@@ -318,7 +318,10 @@ class Path(object):
              #   print("mat ="+str(config['material']))
              #   print("mat ="+str(mat))
              #   print("chip loading ="+str(mat['chip_loading']))
-                config['sidefeed']= self.get_chip_loading(config['cutterrad'], mat['chip_loading']['low']) * config['spindleRPM']*tool['flutes']
+                if 'chip_loading' in mat:   
+                    config['sidefeed']= self.get_chip_loading(config['cutterrad'], mat['chip_loading']['low']) * config['spindleRPM']*tool['flutes']
+                else:
+                    config['sidefeed'] = mat['sidefeed']
         if 'stepdown' in config and config['stepdown'] and 'sidefeed' in config and config['sidefeed'] and config['stepdown']>1.5*tool['diameter']:
             config['sidefeed']*= 1.5*tool['diameter']/config['stepdown']
             print("cutter"+str(cutter)+'spindleRPM'+str(config['spindleRPM'])+ 'sidefeed'+str(config['sidefeed']))
