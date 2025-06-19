@@ -68,6 +68,7 @@ def path_render3D(self, pconfig, border=False):
     config=self.overwrite(config,pconfig)
     inherited = self.get_config()
 #               if('transformations' in config):
+    print("++COLOUR"+str(config['colour']))
     config=self.overwrite(config, inherited)
     if border==False and 'zoffset' in pconfig:
         zoffset= pconfig['zoffset']
@@ -147,6 +148,7 @@ def path_render3D(self, pconfig, border=False):
     #extruded = translate([0,0,bottom])(linear_extrude(height=h, center=False)(solid.polygon(points=outline)))
 #       if not border and 'isback' in config and config['isback'] and border==False:
 #               extruded = solid.mirror([1,0,0])(extruded )
+    print("COLOUR"+str(config['colour']))
     if 'colour' in config and config['colour']:
         extruded = solid.color(self.scad_colour(config['colour']))(extruded)
     return self.transform3D(self, extruded)
@@ -274,6 +276,7 @@ def plane_generate_part3D(self, thepart, pconfig):
         paths.extend(layers['all'])
     config = thepart.overwrite(config,thepart.get_config())
     if(thepart.border is not False and thepart.border is not None):
+        print("--COLOUR"+str(config['colour']))
         thepart.border3D = thepart.border.render3D(config, True)[0]
 #       else:
 #               thepart.renderable=False

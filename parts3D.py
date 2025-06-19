@@ -35,6 +35,9 @@ class SolidPath(Path):
                 if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and 'translate3D' in p.transform:
                         extruded=solid.translate([p.transform['translate3D'][0], p.transform['translate3D'][1],p.transform['translate3D'][2] ])(extruded)
                 p=p.parent
+        if 'colour' in pconfig and pconfig['colour']:
+            extruded = solid.color(self.scad_colour(pconfig['colour']))(extruded)
+        
         return [extruded]
 
 class Sphere(SolidPath):
@@ -306,7 +309,10 @@ class SolidOfRotation(SolidPath):
         else:
             self.convexity = 10
         if 'angle' in config:
-            self.angle = config['angle']
+            print("angle="+str(config['angle']))
+            self.extrudeAngle = config['angle']
+        else:
+            self.extrudeAngle = 360
         self.add_points(shape.points)
     def getSolid(self):
         global RESOLUTION
@@ -316,10 +322,10 @@ class SolidOfRotation(SolidPath):
             outline.append( [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
         outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
         polygon = solid.polygon(outline)
-        if hasattr(self,"angle"):
-            return self.transform3D(self,solid.rotate_extrude(convexity=self.convexity, angle = self.angle)(polygon))
-        else:
-            return self.transform3D(self,solid.rotate_extrude(convexity=self.convexity)(polygon))
+        #if hasattr(self,"angle"):
+        return self.transform3D(self,solid.rotate_extrude(convexity=self.convexity, angle = self.extrudeAngle)(polygon))
+        #else:
+        #    return self.transform3D(self,solid.rotate_extrude(convexity=self.convexity)(polygon))
 
 class ExtrudeU(SolidPath):
     def __init__(self, pos, shape, straightLen, **config):
