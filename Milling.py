@@ -925,7 +925,7 @@ class Milling:
                         },
                         'cs':{
                             'head_d':10.0,
-                            'head_l':3.1,
+                            'head_l':3.1+0.2,
                         },
                 },
                 'M6':{
