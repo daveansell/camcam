@@ -72,11 +72,37 @@ class SVGimport(Pathgroup):
         if transform is None:
             return pos
         commands=transform.split(';')
+        print(commands)
         for command in commands:
-            m= re.search('(.*?)\((.*?),(.*?)\)', command)
+            m= re.search('(.*?)\((.*?),?(.*?)\)', command)
 #                       m = re.search('(.*?)\(([-,\d]+),\s*([-,\d]+)\)', command)
             if m.groups(1)[0] == 'scale':
-                pos=V(pos[0]*float(m.groups(1)[1]), pos[1]*float(m.groups(1)[2]))
+                xgood=True
+                ygood=True
+                try:
+                    xscale = float(m.groups(1)[1])
+                except ValueError:
+                    xgood=False
+
+                try:
+                    yscale = float(m.groups(1)[2])
+                except ValueError:
+                    ygood=False
+                if not ygood and not xgood:
+                    xscale=1.0
+                    yscale=1.0
+                elif not xgood:
+                    xscale=yscale
+                elif not ygood:
+                    yscale=xscale
+
+
+                
+                print(m.groups(1)[1])
+                print(float(m.groups(1)[2]))
+                print(command+" xscale="+str(xscale)+" yscale="+str(yscale)+"_"+str(m.groups(1)[1])+"_"+str(m.groups(1)[2].isnumeric()))
+                pos=V(pos[0]*xscale,#float(m.groups(1)[2]), 
+                        pos[1]*yscale)#float(m.groups(1)[2]))
             if m.groups(1)[0] == 'transform':
                 pos+=V(m.groups(1)[1],m.groups(1)[2])
             if m.groups(1)[0] == 'matrix':
@@ -264,6 +290,7 @@ class SVGimport(Pathgroup):
                     elif config['side']=='right':
                         outpaths[i].side='left'
         return outpaths
+        
     def is_number(self,s):
         try:
             float(s)
