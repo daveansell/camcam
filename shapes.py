@@ -2272,6 +2272,7 @@ class RoundedArrow(Path):
         w = float(width)/2
         headw = headwidth/2
         ahead = headlength/(math.pi*2*rad)*360
+        print("headlength="+str(headlength)+"ahead="+str(ahead))
         heads = [True, True]
         if 'heads' in config:
                 if config['heads'] == 'cw':
@@ -2285,16 +2286,18 @@ class RoundedArrow(Path):
                 self.side='on'
                 if(heads[0]):
                         self.add_point(PSharp(pos+V(0,rad), transform={'rotate':[pos, a1]}))
-                        self.add_point(PSharp(pos+rotate(V(0,rad+headw), a1+ahead)))
+                        self.add_point(PSharp(pos+V(0,rad)+rotate(V(headlength,-headw),ahead/2), transform={'rotate':[pos, a1]}))
                         self.add_point(PSharp(pos+V(0,rad), transform={'rotate':[pos, a1]}))
-                        self.add_point(PSharp(pos+V(0,rad-headw), transform={'rotate':[pos, a1+ahead]}))
+                        self.add_point(PSharp(pos+V(0,rad)+rotate(V(headlength,headw),ahead/2), transform={'rotate':[pos, a1]}))
                 self.add_point(PSharp(pos+rotate(V(0,rad),a1)))
                 self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
                 self.add_point(PSharp(pos+rotate(V(0,rad), a2)))
                 if(heads[1]):
-                        self.add_point(PSharp(pos+rotate(V(0,rad-headw), a2-ahead)))
+                        #self.add_point(PSharp(pos+rotate(V(-headlength,rad-headw), a2)))
+                        self.add_point(PSharp(pos+V(0,rad)+rotate(V(-headlength,-headw),-ahead/2), transform={'rotate':[pos, a2]}))
                         self.add_point(PSharp(pos+V(0,rad), transform={'rotate':[pos, a2]}))
-                        self.add_point(PSharp(pos+rotate(V(0,rad+headw), a2-ahead)))
+                        self.add_point(PSharp(pos+V(0,rad)+rotate(V(-headlength,headw),-ahead/2), transform={'rotate':[pos, a2]}))
+                        #self.add_point(PSharp(pos+rotate(V(-headlength,rad+headw), a2)))
                         self.add_point(PSharp(pos+V(0,rad), transform={'rotate':[pos, a2]}))
                 for p in self.points:
                         print ("qqq"+str(p)+str(p.pos))
