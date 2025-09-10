@@ -269,9 +269,9 @@ class Spiral(Path):
             self.turns=config["turns"]
         elif 'spacing' in config:
             self.turns = (r2-r1)/config['spacing']
-            turns= self.turns
         else:
             self.turns = 1.0
+        turns= self.turns
         if "steps" in config:
             steps = config["steps"]
         else:
