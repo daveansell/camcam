@@ -269,9 +269,9 @@ class Spiral(Path):
             self.turns=config["turns"]
         elif 'spacing' in config:
             self.turns = (r2-r1)/config['spacing']
-            turns= self.turns
         else:
             self.turns = 1.0
+        turns= self.turns
         if "steps" in config:
             steps = config["steps"]
         else:
@@ -631,7 +631,7 @@ class Drill(Circle):
                 ret+='G0Z%0.2f\n'% config['z0']+0.5
             ret += 'G0Z%0.2f\n'%config['clear_height']
             return [config['cutter'], ret]
-
+        return [config['cutter'], []]
 #       def polygonise(self, resolution=0):
 #               config=self.generate_config({'cutterrad':0})
 #               p=PSharp(self.pos).point_transform(config['transformations'])
