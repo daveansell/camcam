@@ -271,7 +271,7 @@ class Point(object):
         if  last.pos is not None and self.pos is not None and last.pos==self.pos:
             return last.lastorigin()
         else:
-            return last.origin(False)
+            return last.origin(not self.reverse)
 
     def nextorigin(self):
         nnext=next(self)
@@ -279,7 +279,7 @@ class Point(object):
         if  nnext.pos is not None and self.pos is not None and nnext.pos==self.pos:
             return nnext.nextorigin()
         else:
-            return nnext.origin(True)
+            return nnext.origin(self.reverse)
 
     def otherDir(self,direction):
         if direction=='cw':
@@ -603,6 +603,7 @@ class PInsharp(PAroundcurve):
 #                       self.direction=self.otherDir(self.direction)
             if self.dosetup and self.config is not False and  self.last() != None and self.next() !=None:
                 self.setup=True
+                self.dosetup=False
                 lastpoint=self.lastorigin()
                 if lastpoint==self.pos:
                     lastpoint=self.last().lastorigin()
@@ -628,6 +629,7 @@ class PInsharp(PAroundcurve):
                     self.radius = self.config['original_cutter']['cutterrad']
                 else:
                     self.radius=0
+
 class PIncurve(PSharp):
     def __init__(self, pos, radius=0, direction=False, transform=False):
         """Create a point at position=pos which is then rounded off wot a rad=raidius, as if it were a piece of wood you have sanded off"""
@@ -869,7 +871,6 @@ class POutcurve(Point):
         dl=self.radius*math.tan((angle/180)/2*math.pi)
         return self.pos+(lastpoint-self.pos).normalize()*dl
     def offset(self, side, distance, direction):
-        print("Offset Act"+str(self))
         t=copy.copy(self)
         self.setangle()
         if self.direction in ['cw', 'ccw']:
@@ -893,7 +894,6 @@ class POutcurve(Point):
                     t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.sin((self.angle)/2)))
                 else:
                     t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.cos((math.pi/4-self.angle)/2)))
-        print("****"+str(t))
         return [t]
 # Find 2 points joined by a line from r1 from point1 and r2 from point2
     def tangent_points(self, point1, r1, dir1, point2, r2, dir2):
@@ -1197,7 +1197,9 @@ If it can't reach either point with the arc, it will join up to them perpendicul
         t.invert = self.invert
         return t
     def _setup(self):
-        self.checkArc()
+        if(not self.setup):
+            self.setup=True
+            self.checkArc()
     def checkArc(self):
         # if we don't have a centre yet work one out
         if self.pos is None and self.radius is not False and self.direction is not False:
