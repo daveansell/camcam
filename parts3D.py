@@ -239,13 +239,14 @@ class RoundedCuboid(SolidPath):
                     solid.translate([-W,-H,-D])( sphere)
                 )
                 )
-class Text3D(SolidPath):
+class Text3D2(SolidPath):
     def __init__(self, pos, text, height, **config):
         self.init(config)
         self.pos=pos
         self.text=text
         self.args = {}
         self.height = height
+        self.thickness=height
         argNames = ['valign', 'size', 'halign', 'font']
         for n in argNames:
             if n in config:

@@ -318,7 +318,9 @@ class Path(object):
              #   print("mat ="+str(config['material']))
              #   print("mat ="+str(mat))
              #   print("chip loading ="+str(mat['chip_loading']))
-                if 'chip_loading' in mat:   
+                if 'chip_loading' in mat:  
+                    if 'flutes' not in tool:
+                        tool['flutes']=2
                     config['sidefeed']= self.get_chip_loading(config['cutterrad'], mat['chip_loading']['low']) * config['spindleRPM']*tool['flutes']
                 else:
                     config['sidefeed'] = mat['sidefeed']
