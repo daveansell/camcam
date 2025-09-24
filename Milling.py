@@ -846,6 +846,13 @@ class Milling:
                         "kress_setting":3,
                         "mill_dir":'down',
                },
+                "rubber":{
+                        "vertfeed":100,
+                        "sidefeed":200,
+                        "stepdown":0.2,
+                        "kress_setting":3,
+                        "mill_dir":'down',
+               },
         }
                 self.bolts={
                 'M2':{
