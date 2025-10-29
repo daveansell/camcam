@@ -30,6 +30,7 @@ as the docs indicate this is very alpha atm
 
 python-kivy
 dos2unix
+python3-shapely
 
 # for 3d
 openscad
@@ -38,6 +39,19 @@ pip packages
 
 freetype-py
 dxfwrite
+shapely
+
+in Ubuntu 24.04 we have to use virtual environments and general pain. So cd to the camcam directory
+
+python3 -m venv camcam
+./camcam/bin/pip3 install shapely
+./camcam/bin/pip3 install dxfwrite
+./camcam/bin/pip3 install solidpython
+./camcam/bin/pip3 install setuptools
+./camcam/bin/pip3 install freetype-py
+./camcam/bin/pip3 install Hershey-Fonts
+./camcam/bin/pip3 install  lxml
+
 
 # for experimental 3D
 euclid
