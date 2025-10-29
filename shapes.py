@@ -2877,20 +2877,22 @@ class Module(Plane):
                 self.add(Hole(V(width-radius,height/2),rad=13/2,side='in'),cornerHoleLayers)
 
         self.add(Hole(V(radius,radius),rad=13/2,side='in'),cornerHoleLayers)
-        if not ('no_holdown' in config and  config['no_holdown']):
-            self.add(RepeatLine(V(fromends, fromedge), V(width-fromends,fromedge), holesX, Bolt, bolt_config,layers=['base', 'underbase','perspex','paper','top'])
-)
+        print(config)
+        if 'no_holdown' not in config or not  config['no_holdown']:
+            print("Module")
+            self.add(LineObjects(V(fromends, fromedge), V(width-fromends,fromedge), fromends=0, num=holesX, ob=Bolt(V(0,0), 'M4',insert_layer='base', underinsert_layer='underbase',clearance_layers=['perspex','paper','top'])))
+
         self.add(Hole(V(width-radius,radius),rad=13/2,side='in'),cornerHoleLayers)
-        if not ('no_holdown' in config and  config['no_holdown']):
-            self.add(RepeatLine(V(width-fromedge, fromends), V(width-fromedge,height-fromends), holesY, Bolt, bolt_config,layers=['base', 'underbase','perspex','paper','top']))
+        if not ('no_holdown' in config )or not  config['no_holdown']:
+            self.add(LineObjects(V(width-fromedge, fromends), V(width-fromedge,height-fromends), fromends=0, num=holesX, ob=Bolt(V(0,0), 'M4',insert_layer='base', underinsert_layer='underbase',clearance_layers=['perspex','paper','top'])))
 
         self.add(Hole(V(width-radius,height-radius),rad=13/2,side='in'),cornerHoleLayers)
-        if not ('no_holdown' in config and  config['no_holdown']):
-            self.add(RepeatLine(V(width-fromends, height-fromedge), V(fromends,height-fromedge), holesX, Bolt, bolt_config,layers=['base', 'underbase','perspex','paper','top']))
+        if not ('no_holdown' in config )or not  config['no_holdown']:
+            self.add(LineObjects(V(width-fromends, height-fromedge), V(fromends,height-fromedge), fromends=0, num=holesX, ob=Bolt(V(0,0), 'M4',insert_layer='base', underinsert_layer='underbase',clearance_layers=['perspex','paper','top'])))
         self.add(Hole(V(radius,height-radius),rad=13/2,side='in'),cornerHoleLayers)
 
-        if not ('no_holdown' in config and  config['no_holdown']):
-            self.add(RepeatLine(V(fromedge, height-fromends), V(fromedge,fromends), holesY, Bolt,bolt_config,layers=['base', 'underbase','perspex','paper','top']))
+        if not ('no_holdown' in config ) or not  config['no_holdown']:
+            self.add(LineObjects(V(fromedge, height-fromends), V(fromedge,fromends), fromends=0, num=holesX, ob=Bolt(V(0,0), 'M4',insert_layer='base', underinsert_layer='underbase',clearance_layers=['perspex','paper','top'])))
 
 
 class ModuleClearBack(Part):
