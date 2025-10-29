@@ -1364,6 +1364,7 @@ class LineObjects(Part):
             points=[]
             for i in range(0, num):
                 points.append(start+step*i)
+            print("lineObjects"+str(points))
             if ob.obType=='Part':
                 self.add(CopyObject(ob, points))
             else:
@@ -2771,7 +2772,7 @@ class Module(Plane):
         self.bom=[]
         bolt_config={}
         if('fromends' in config):
-            fromends=config['fromemds']
+            fromends=config['fromends']
         else:
             fromends=40
         if('fromedge' in config):
