@@ -8,6 +8,7 @@ import kicad
 
 class ProjectBox(Part):
     def __init__(self,width, height, depth, thickness, outerrad, innerWidth, innerHeight, innerRad, cutz, screwFromEdge, pcbScrewLength,pcbScrewCylinderRad, pcbScrewThreadRad, screwPoses,  screwCylinderRad, screwThreadRad, screwRad,screwHeadRad,overlap, mountingEars, earThickness, edge, holePoses, pcbs, extraSolids=[], extraHoles=[], **config):
+        self.init(config)
         if 'slope' in config:
             slope = config['slope']
         else:
@@ -150,14 +151,14 @@ class ProjectBox(Part):
                 if hole['shape']=='rect':
                     holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness])(self.RoundedRectPrism(hole['width'], hole['height'], hole['rad'], thickness+2)), faces[face]))
                 elif hole['shape']=='circle':
-                    holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], thickness/2+0.1])(cylinder(r=hole['rad'], h=thickness+5, center=True)), faces[face]))
+                    holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], thickness/2-1])(cylinder(r=hole['rad'], h=thickness+10, center=True)), faces[face]))
                 elif hole['shape']=='pillar':
                     if hole['from']=='out':
                         holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2-1])(cylinder(r=hole['rad'], h=hole['length']+1)), faces[face]))
                         rods.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2])(cylinder(r=hole['pillarRad'], h=hole['length']+1)), faces[face]))
                     else:
                         holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], 1])(cylinder(r=hole['rad'], h=hole['length']+1)), faces[face]))
-                        rods.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2+0.1])(cylinder(r=hole['pillarRad'], h=hole['length']-0.1)), faces[face]))
+                        rods.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -0.1])(cylinder(r=hole['pillarRad'], h=hole['length']-0.1)), faces[face]))
                 elif hole['shape']=='slot':
                     holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness])(self.SlotPrism(hole['width'], hole['height'], thickness+2)), faces[face]))
 
