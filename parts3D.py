@@ -252,6 +252,7 @@ class Text3D2(SolidPath):
             if n in config:
                 self.args[n]=config[n]
         self.args['text']=text
+        print(self.args)
         self.closed=True
         self.add_point(pos,'circle',1)
 
@@ -628,14 +629,22 @@ class PathPolyhedron(Polyhedron):
             samex=config['samex']
         else:
             samex=False
+        if 'args' in config and type(config['args']) is dict:
+            args=config['args']
+        else:
+            args={}
 
         if 'gradient' in config:
             gradient = config['gradient']
         else:
             gradient = V(0,0)
-        if xsection.find_direction({})=='cw':
-            xsection.points.reverse()
-        pxsection = xsection.polygonise(pStep)
+        if not callable(xsection):
+            if(type(xsection) is list):
+                pxsection = xsection
+            else:
+                pxsection = xsection.polygonise(pStep)
+            if xsection.find_direction({})=='cw':
+                xsection.points.reverse()
         ppath = path.polygonise(zStep)
         self.faces = []
         self.rings=[]
@@ -643,6 +652,14 @@ class PathPolyhedron(Polyhedron):
         pc=0
         s="path="
         for p in range(0,len(ppath)):
+            if callable(xsection):
+                txsection = xsection(p, len(ppath), **args)
+                if type(txsection is list):
+                    pxsection = txsection
+                else:
+                    if txsection.find_direction({})=='cw':
+                        txsection.points.reverse()
+                    pxsection = txsection.polygonise(pStep)
           #  print (str(p) + " "+str(ppath[p]))
             if p==0:
                 along = (ppath[1]-ppath[0]).normalize()
@@ -652,7 +669,6 @@ class PathPolyhedron(Polyhedron):
                 along = ((ppath[p]-ppath[p-1]).normalize()+(ppath[p+1]-ppath[p]).normalize())/2
             if xfunc:
                 x=xfunc(float(p)/len(ppath))
-                print("xfunc="+str(x))
                 y = -along.cross(x).normalize()
                 lastx=x
             elif samex:
@@ -670,13 +686,12 @@ class PathPolyhedron(Polyhedron):
             else:
                 y = along.cross(lastx).normalize()
                 x = along.cross(y).normalize()
-            print("lastx="+str(lastx)+" x="+str(x)+" y="+str(y)+" along="+str(along))
             if(x.dot(lastx)<0):
                 x*=-1
             self.rings.append([])
             for o in range(0,len(pxsection)):
-                #print("faces ppath="+str(ppath[p])+" pxsection[][0]="+str(pxsection[o][0]*x)+" [1]"+str(pxsection[o][1]*y))
                 self.inPoints.append(ppath[p]+x*pxsection[o][0]+y*pxsection[o][1])
+                #if o==0:
                 self.rings[-1].append(pc)
                 if p>0 and o>0:
                     self.faces.append([ self.rings[-1][o], self.rings[-1][o-1], self.rings[-2][o-1], self.rings[-2][o]])
