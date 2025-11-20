@@ -653,7 +653,7 @@ class Milling:
 
                 },
                 "delrin":{
-                        "vertfeed":120,
+                        "vertfeed":180,
                         "sidefeed":1000,
                         "stepdown":3.0,
                         "kress_setting":2.0,
