@@ -645,7 +645,10 @@ class PathPolyhedron(Polyhedron):
                 pxsection = xsection.polygonise(pStep)
             if xsection.find_direction({})=='cw':
                 xsection.points.reverse()
-        ppath = path.polygonise(zStep)
+        if type(path) is list:
+            ppath=path
+        else:
+            ppath = path.polygonise(zStep)
         self.faces = []
         self.rings=[]
         self.inPoints=[]
