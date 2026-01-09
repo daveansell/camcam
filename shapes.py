@@ -269,9 +269,9 @@ class Spiral(Path):
             self.turns=config["turns"]
         elif 'spacing' in config:
             self.turns = (r2-r1)/config['spacing']
-            turns= self.turns
         else:
             self.turns = 1.0
+        turns= self.turns
         if "steps" in config:
             steps = config["steps"]
         else:
@@ -631,7 +631,7 @@ class Drill(Circle):
                 ret+='G0Z%0.2f\n'% config['z0']+0.5
             ret += 'G0Z%0.2f\n'%config['clear_height']
             return [config['cutter'], ret]
-
+        return [config['cutter'], []]
 #       def polygonise(self, resolution=0):
 #               config=self.generate_config({'cutterrad':0})
 #               p=PSharp(self.pos).point_transform(config['transformations'])
@@ -1364,6 +1364,7 @@ class LineObjects(Part):
             points=[]
             for i in range(0, num):
                 points.append(start+step*i)
+            print("lineObjects"+str(points))
             if ob.obType=='Part':
                 self.add(CopyObject(ob, points))
             else:
@@ -2272,6 +2273,7 @@ class RoundedArrow(Path):
         w = float(width)/2
         headw = headwidth/2
         ahead = headlength/(math.pi*2*rad)*360
+        print("headlength="+str(headlength)+"ahead="+str(ahead))
         heads = [True, True]
         if 'heads' in config:
                 if config['heads'] == 'cw':
@@ -2285,16 +2287,18 @@ class RoundedArrow(Path):
                 self.side='on'
                 if(heads[0]):
                         self.add_point(PSharp(pos+V(0,rad), transform={'rotate':[pos, a1]}))
-                        self.add_point(PSharp(pos+rotate(V(0,rad+headw), a1+ahead)))
+                        self.add_point(PSharp(pos+V(0,rad)+rotate(V(headlength,-headw),ahead/2), transform={'rotate':[pos, a1]}))
                         self.add_point(PSharp(pos+V(0,rad), transform={'rotate':[pos, a1]}))
-                        self.add_point(PSharp(pos+V(0,rad-headw), transform={'rotate':[pos, a1+ahead]}))
+                        self.add_point(PSharp(pos+V(0,rad)+rotate(V(headlength,headw),ahead/2), transform={'rotate':[pos, a1]}))
                 self.add_point(PSharp(pos+rotate(V(0,rad),a1)))
                 self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
                 self.add_point(PSharp(pos+rotate(V(0,rad), a2)))
                 if(heads[1]):
-                        self.add_point(PSharp(pos+rotate(V(0,rad-headw), a2-ahead)))
+                        #self.add_point(PSharp(pos+rotate(V(-headlength,rad-headw), a2)))
+                        self.add_point(PSharp(pos+V(0,rad)+rotate(V(-headlength,-headw),-ahead/2), transform={'rotate':[pos, a2]}))
                         self.add_point(PSharp(pos+V(0,rad), transform={'rotate':[pos, a2]}))
-                        self.add_point(PSharp(pos+rotate(V(0,rad+headw), a2-ahead)))
+                        self.add_point(PSharp(pos+V(0,rad)+rotate(V(-headlength,headw),-ahead/2), transform={'rotate':[pos, a2]}))
+                        #self.add_point(PSharp(pos+rotate(V(-headlength,rad+headw), a2)))
                         self.add_point(PSharp(pos+V(0,rad), transform={'rotate':[pos, a2]}))
                 for p in self.points:
                         print ("qqq"+str(p)+str(p.pos))
@@ -2768,7 +2772,7 @@ class Module(Plane):
         self.bom=[]
         bolt_config={}
         if('fromends' in config):
-            fromends=config['fromemds']
+            fromends=config['fromends']
         else:
             fromends=40
         if('fromedge' in config):
@@ -2873,20 +2877,22 @@ class Module(Plane):
                 self.add(Hole(V(width-radius,height/2),rad=13/2,side='in'),cornerHoleLayers)
 
         self.add(Hole(V(radius,radius),rad=13/2,side='in'),cornerHoleLayers)
-        if not ('no_holdown' in config and  config['no_holdown']):
-            self.add(RepeatLine(V(fromends, fromedge), V(width-fromends,fromedge), holesX, Bolt, bolt_config,layers=['base', 'underbase','perspex','paper','top'])
-)
+        print(config)
+        if 'no_holdown' not in config or not  config['no_holdown']:
+            print("Module")
+            self.add(LineObjects(V(fromends, fromedge), V(width-fromends,fromedge), fromends=0, num=holesX, ob=Bolt(V(0,0), 'M4',insert_layer='base', underinsert_layer='underbase',clearance_layers=['perspex','paper','top'])))
+
         self.add(Hole(V(width-radius,radius),rad=13/2,side='in'),cornerHoleLayers)
-        if not ('no_holdown' in config and  config['no_holdown']):
-            self.add(RepeatLine(V(width-fromedge, fromends), V(width-fromedge,height-fromends), holesY, Bolt, bolt_config,layers=['base', 'underbase','perspex','paper','top']))
+        if not ('no_holdown' in config )or not  config['no_holdown']:
+            self.add(LineObjects(V(width-fromedge, fromends), V(width-fromedge,height-fromends), fromends=0, num=holesX, ob=Bolt(V(0,0), 'M4',insert_layer='base', underinsert_layer='underbase',clearance_layers=['perspex','paper','top'])))
 
         self.add(Hole(V(width-radius,height-radius),rad=13/2,side='in'),cornerHoleLayers)
-        if not ('no_holdown' in config and  config['no_holdown']):
-            self.add(RepeatLine(V(width-fromends, height-fromedge), V(fromends,height-fromedge), holesX, Bolt, bolt_config,layers=['base', 'underbase','perspex','paper','top']))
+        if not ('no_holdown' in config )or not  config['no_holdown']:
+            self.add(LineObjects(V(width-fromends, height-fromedge), V(fromends,height-fromedge), fromends=0, num=holesX, ob=Bolt(V(0,0), 'M4',insert_layer='base', underinsert_layer='underbase',clearance_layers=['perspex','paper','top'])))
         self.add(Hole(V(radius,height-radius),rad=13/2,side='in'),cornerHoleLayers)
 
-        if not ('no_holdown' in config and  config['no_holdown']):
-            self.add(RepeatLine(V(fromedge, height-fromends), V(fromedge,fromends), holesY, Bolt,bolt_config,layers=['base', 'underbase','perspex','paper','top']))
+        if not ('no_holdown' in config ) or not  config['no_holdown']:
+            self.add(LineObjects(V(fromedge, height-fromends), V(fromedge,fromends), fromends=0, num=holesX, ob=Bolt(V(0,0), 'M4',insert_layer='base', underinsert_layer='underbase',clearance_layers=['perspex','paper','top'])))
 
 
 class ModuleClearBack(Part):

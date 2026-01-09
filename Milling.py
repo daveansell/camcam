@@ -494,30 +494,35 @@ class Milling:
                         "diameter":0.8,
                         "endcut":1,
                         "sidecut":0,
+                        "flutes":2,
                 },
                 "1.54mm_drill":{
                         "id":16,
                         "diameter":1.54,
                         "endcut":1,
                         "sidecut":0,
+                        "flutes":2,
                 },
                 "1.5mm_drill":{
                         "id":16,
                         "diameter":1.5,
                         "endcut":1,
                         "sidecut":0,
+                        "flutes":2,
                 },
                 "2.5mm_drill":{
                         "id":19,
                         "diameter":2.5,
                         "endcut":1,
                         "sidecut":0,
+                        "flutes":2,
                 },
                 "ovolo":{
                         "id":18,
                         "diameter":10.0,
                         "endcut":1,
                         "sidecut":1,
+                        "flutes":2,
                 },
                 "bevel_trim":{
                         "id":17,
@@ -653,7 +658,7 @@ class Milling:
                         "stepdown":3.0,
                         "kress_setting":2.0,
                         "mill_dir":'down',
-                        "surface_speed":500*300, # mm/min
+                        "surface_speed":1.2*500*300, # mm/min
                         "chip_loading":{
                             'low':{3.16:	0.0508	,6.32:	0.1524	,9.48:	0.2032	,12.64:	0.254},
                             'high':{3.16:	0.1016	,6.32:	0.2286	,9.48:	0.254	,12.64:	0.3048},
@@ -841,6 +846,13 @@ class Milling:
                         "kress_setting":3,
                         "mill_dir":'down',
                },
+                "rubber":{
+                        "vertfeed":100,
+                        "sidefeed":200,
+                        "stepdown":0.2,
+                        "kress_setting":3,
+                        "mill_dir":'down',
+               },
         }
                 self.bolts={
                 'M2':{
@@ -925,7 +937,7 @@ class Milling:
                         },
                         'cs':{
                             'head_d':10.0,
-                            'head_l':3.1,
+                            'head_l':3.1+0.2,
                         },
                 },
                 'M6':{

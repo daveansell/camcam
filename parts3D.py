@@ -1,7 +1,7 @@
 import solid
 from  path import *
 from cc3d import *
-
+from font import *
 class SolidPath(Path):
     def __init__(self, **config):
         self.init(config)
@@ -35,6 +35,9 @@ class SolidPath(Path):
                 if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and 'translate3D' in p.transform:
                         extruded=solid.translate([p.transform['translate3D'][0], p.transform['translate3D'][1],p.transform['translate3D'][2] ])(extruded)
                 p=p.parent
+        if 'colour' in pconfig and pconfig['colour']:
+            extruded = solid.color(self.scad_colour(pconfig['colour']))(extruded)
+        
         return [extruded]
 
 class Sphere(SolidPath):
@@ -236,18 +239,20 @@ class RoundedCuboid(SolidPath):
                     solid.translate([-W,-H,-D])( sphere)
                 )
                 )
-class Text3D(SolidPath):
+class Text3D2(SolidPath):
     def __init__(self, pos, text, height, **config):
         self.init(config)
         self.pos=pos
         self.text=text
         self.args = {}
         self.height = height
+        self.thickness=height
         argNames = ['valign', 'size', 'halign', 'font']
         for n in argNames:
             if n in config:
                 self.args[n]=config[n]
         self.args['text']=text
+        print(self.args)
         self.closed=True
         self.add_point(pos,'circle',1)
 
@@ -306,7 +311,10 @@ class SolidOfRotation(SolidPath):
         else:
             self.convexity = 10
         if 'angle' in config:
-            self.angle = config['angle']
+            print("angle="+str(config['angle']))
+            self.extrudeAngle = config['angle']
+        else:
+            self.extrudeAngle = 360
         self.add_points(shape.points)
     def getSolid(self):
         global RESOLUTION
@@ -316,10 +324,10 @@ class SolidOfRotation(SolidPath):
             outline.append( [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
         outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
         polygon = solid.polygon(outline)
-        if hasattr(self,"angle"):
-            return self.transform3D(self,solid.rotate_extrude(convexity=self.convexity, angle = self.angle)(polygon))
-        else:
-            return self.transform3D(self,solid.rotate_extrude(convexity=self.convexity)(polygon))
+        #if hasattr(self,"angle"):
+        return self.transform3D(self,solid.rotate_extrude(convexity=self.convexity, angle = self.extrudeAngle)(polygon))
+        #else:
+        #    return self.transform3D(self,solid.rotate_extrude(convexity=self.convexity)(polygon))
 
 class ExtrudeU(SolidPath):
     def __init__(self, pos, shape, straightLen, **config):
@@ -621,21 +629,40 @@ class PathPolyhedron(Polyhedron):
             samex=config['samex']
         else:
             samex=False
+        if 'args' in config and type(config['args']) is dict:
+            args=config['args']
+        else:
+            args={}
 
         if 'gradient' in config:
             gradient = config['gradient']
         else:
             gradient = V(0,0)
-        if xsection.find_direction({})=='cw':
-            xsection.points.reverse()
-        pxsection = xsection.polygonise(pStep)
-        ppath = path.polygonise(zStep)
+        if not callable(xsection):
+            if(type(xsection) is list):
+                pxsection = xsection
+            else:
+                pxsection = xsection.polygonise(pStep)
+            if xsection.find_direction({})=='cw':
+                xsection.points.reverse()
+        if type(path) is list:
+            ppath=path
+        else:
+            ppath = path.polygonise(zStep)
         self.faces = []
         self.rings=[]
         self.inPoints=[]
         pc=0
         s="path="
         for p in range(0,len(ppath)):
+            if callable(xsection):
+                txsection = xsection(p, len(ppath), **args)
+                if type(txsection is list):
+                    pxsection = txsection
+                else:
+                    if txsection.find_direction({})=='cw':
+                        txsection.points.reverse()
+                    pxsection = txsection.polygonise(pStep)
           #  print (str(p) + " "+str(ppath[p]))
             if p==0:
                 along = (ppath[1]-ppath[0]).normalize()
@@ -645,7 +672,6 @@ class PathPolyhedron(Polyhedron):
                 along = ((ppath[p]-ppath[p-1]).normalize()+(ppath[p+1]-ppath[p]).normalize())/2
             if xfunc:
                 x=xfunc(float(p)/len(ppath))
-                print("xfunc="+str(x))
                 y = -along.cross(x).normalize()
                 lastx=x
             elif samex:
@@ -663,13 +689,12 @@ class PathPolyhedron(Polyhedron):
             else:
                 y = along.cross(lastx).normalize()
                 x = along.cross(y).normalize()
-            print("lastx="+str(lastx)+" x="+str(x)+" y="+str(y)+" along="+str(along))
             if(x.dot(lastx)<0):
                 x*=-1
             self.rings.append([])
             for o in range(0,len(pxsection)):
-                #print("faces ppath="+str(ppath[p])+" pxsection[][0]="+str(pxsection[o][0]*x)+" [1]"+str(pxsection[o][1]*y))
                 self.inPoints.append(ppath[p]+x*pxsection[o][0]+y*pxsection[o][1])
+                #if o==0:
                 self.rings[-1].append(pc)
                 if p>0 and o>0:
                     self.faces.append([ self.rings[-1][o], self.rings[-1][o-1], self.rings[-2][o-1], self.rings[-2][o]])
@@ -1085,4 +1110,50 @@ class Picam3(Part):
             self.add(Part(subpart=True, border=Cylinder(V(0,0,7+i), rad = 2.5+i, height=steps-i)))
         if IR:
             self.add(Part(subpart=True, border=Cylinder(V(0,0,6), rad = 11/2, height=3)))
+
+
+class Text3D(Part):
+    def __init__(self, pos, text,  **config):
+        self.init(config)
+        self.ignore_border=True
+        if not 'font' in config:
+            self.font = '/usr/share/fonts/truetype/ubuntu/Ubuntu-B.ttf'
+        else:
+            self.font = config['font']
+
+        if not 'scale' in config:
+            scale = 1
+        else:
+            scale = config['scale']
+
+#        if 'subpart' in config:
+#            self.subpart=config['subpart']
+#        if 'layer' in config:
+#            self.layer = config['layer']
+        self.doLetter(text, scale)
+        self.translate3D(pos)
+    def doLetter(self, text, scale):
+        letters = Text(V(0,0), text, font=self.font, scale = scale, centred=True)
+        l=self.add(Part(subpart=True, ignore_border=True))
+        l.translate3D(V(-(letters.bbox['minx']+letters.bbox['maxx'])/2, -5))
+        for letter in letters.paths:
+            print("letter transform"+str(letter.transform))
+            paths = letter.paths
+            for path in paths:
+                outer=True
+                for path2 in paths:
+                    if path is not path2:
+                        if path2.contains(path)==1:
+                            print(str(path)+" is not outer ")
+                            outer=False
+                print(path)
+                if outer:
+                    s=l.add(Part(subpart=True, border=path, thickness=self.thickness))
+                    s.translate3D(letter.transform[0]['translate'])
+                else:
+                    s=l.add(Part(subpart='subtract', border=path, thickness=self.thickness+0.1))
+                    s.translate3D(V(0,0,0.05))
+                    s.translate3D(letter.transform[0]['translate'])
+
+    
 

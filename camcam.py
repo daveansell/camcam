@@ -258,6 +258,9 @@ parser.add_option("-Q", "--offsety", dest="offsety",
 
 parser.add_option("-P", "--pause", dest="pause",action='store_true',
                   help="Pause before border.")
+parser.add_option("-s", "--passThough", dest="passthrough",
+                  help="Pass data to program.")
+
 (options, args) = parser.parse_args()
 config={}
 builtins.cuttingmode = milling.mode_config[options.mode]
