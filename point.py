@@ -267,14 +267,16 @@ class Point(object):
 #                       last=self.forcelastpoint
 ##              else:
         last=self.last()
-        if hasattr(last, 'control') and last.control or last.pos is not None and self.pos is not None and last.pos==self.pos:
+        #if hasattr(last, 'control') and last.control or last.pos is not None and self.pos is not None and last.pos==self.pos:
+        if  last.pos is not None and self.pos is not None and last.pos==self.pos:
             return last.lastorigin()
         else:
             return last.origin(False)
 
     def nextorigin(self):
         nnext=next(self)
-        if hasattr(nnext, 'control') and nnext.control or nnext.pos is not None and self.pos is not None and nnext.pos==self.pos:
+        #if hasattr(nnext, 'control') and nnext.control or nnext.pos is not None and self.pos is not None and nnext.pos==self.pos:
+        if  nnext.pos is not None and self.pos is not None and nnext.pos==self.pos:
             return nnext.nextorigin()
         else:
             return nnext.origin(True)
@@ -354,7 +356,7 @@ class PSharp(Point):
         return False
         intersection= path.Path().intersect_lines(self.lastorigin(), self.nextorigin(), self.pos, newpos)
         if (newpos-intersection).length()>offset*40:
-                print ("Offset cross ="+str(intersection)+"length="+str((newpos-intersection).length())+" newpos="+str(newpos)+"oldpos="+str(self.pos)+" last="+str(self.lastorigin())+" next="+str(self.nextorigin()))
+                #print ("Offset cross ="+str(intersection)+"length="+str((newpos-intersection).length())+" newpos="+str(newpos)+"oldpos="+str(self.pos)+" last="+str(self.lastorigin())+" next="+str(self.nextorigin()))
                 return intersection
         return False
 
@@ -405,6 +407,7 @@ class PSharp(Point):
         #c=self.checkOffsetCross(t.pos, distance)
         #if c:
         #        t.pos=c
+        #print( str(self)+"\t"+str(self.pos)+"->"+str(t.pos))
         return [t]
 
     def makeSegment(self, config):
@@ -866,6 +869,7 @@ class POutcurve(Point):
         dl=self.radius*math.tan((angle/180)/2*math.pi)
         return self.pos+(lastpoint-self.pos).normalize()*dl
     def offset(self, side, distance, direction):
+        print("Offset Act"+str(self))
         t=copy.copy(self)
         self.setangle()
         if self.direction in ['cw', 'ccw']:
@@ -889,6 +893,7 @@ class POutcurve(Point):
                     t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.sin((self.angle)/2)))
                 else:
                     t.pos = self.offset_move_point(self.lastorigin(), self.nextorigin(), side, distance/abs(math.cos((math.pi/4-self.angle)/2)))
+        print("****"+str(t))
         return [t]
 # Find 2 points joined by a line from r1 from point1 and r2 from point2
     def tangent_points(self, point1, r1, dir1, point2, r2, dir2):
@@ -1199,9 +1204,6 @@ If it can't reach either point with the arc, it will join up to them perpendicul
             l = self.lastpoint.pos
             n = self.nextpoint.pos
             d = n-l
-            print (self.radius * self.radius - d.length()*d.length()/4)
-            print ("length="+str(d.length())+" rad="+str(self.radius))
-            print (self)
             perpdist = math.sqrt(self.radius * self.radius - d.length()*d.length()/4)
             perp = rotate(d.normalize(),90)
             if self.direction == 'cw':
@@ -1241,7 +1243,7 @@ If it can't reach either point with the arc, it will join up to them perpendicul
             self.radius=min((self.next().pos-self.pos).length(), (self.pos- self.last().pos).length())
     def makeSegment(self, config):
         self.checkArc()
-        if self.last().point_type not in ['sharp', 'clear', 'doubleclear', 'insharp'] or self.next().point_type not in ['sharp', 'clear', 'doubleclear', 'insharp']:
+        if self.last().point_type not in ['sharp', 'clear', 'doubleclear', 'insharp','incurve'] or self.next().point_type not in ['sharp', 'clear', 'doubleclear', 'insharp','incurve']:
             print("points either side of an Arc should be sharp"+str(self.next().point_type)+" "+str(self.last().point_type))
             return []
         else:
@@ -1267,7 +1269,7 @@ If it can't reach either point with the arc, it will join up to them perpendicul
         else:
             op=self.next().pos
             r=-self.pos+self.next().pos
-        if abs(r.length()-self.radius)<0.001:
+        if abs(r.length()-self.radius)>-0.001:
             vecin=r.normalize()*20
             if (self.direction=='cw' and self.reverse==self.invert or self.direction=='ccw' and self.reverse!=self.invert)==forward:
                 return op+rotate(vecin,90)
@@ -1315,7 +1317,9 @@ If it can't reach either point with the arc, it will join up to them perpendicul
                 t.radius-=distance
             else:
                 t.radius=0
-        return [t]
+        pre = PSharp( self.pos + (self.lastorigin()-self.pos).normalize() * t.radius)
+        post = PSharp( self.pos + (self.nextorigin()-self.pos).normalize() * t.radius)
+        return [pre, t, post]
 class PCircle(Point):
     def __init__(self, pos=False, radius=False, transform = False):
         self.init()

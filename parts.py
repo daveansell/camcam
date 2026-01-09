@@ -693,9 +693,6 @@ class PiCam(Pathgroup):
 
 
 
-
-
-
 class CableTie(Pathgroup):
     def __init__(self, pos, cable_width, tie_width,**config):
         self.init(config)

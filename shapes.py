@@ -61,6 +61,11 @@ class Rect(Path):
                 args['direction']=config['direction']
             else:
                 args['direction'] = 'ccw'
+        if ct=='chamfer':
+            if 'chamfer' in config:
+                args['chamfer'] = config['chamfer']
+            else:
+                args['chamfer'] = config['rad']
         self.closed=True
         if 'rad' not in config or config['rad'] is False:
             rad = 0.01
@@ -262,6 +267,9 @@ class Spiral(Path):
             self.closed=True
         if "turns" in config:
             self.turns=config["turns"]
+        elif 'spacing' in config:
+            self.turns = (r2-r1)/config['spacing']
+            turns= self.turns
         else:
             self.turns = 1.0
         if "steps" in config:
@@ -302,7 +310,7 @@ class Spiral(Path):
 #                       self.add_point(PSharp(pos+rotate(V(r1+rstep*t, 0), astep*t)))
             self.add_point(PSharp(self.alongSpiral(t)))
             if t>startTurns+rad and t<endTurns-rad:
-                self.length += (self.alongSpiral( t)-self.alongSpiral(t-tstep))
+                self.length += (self.alongSpiral( t)-self.alongSpiral(t-tstep)).length()
 #                            self.length += (V(r1+rstep*t,0) - rotate(V(r1+rstep*(t-tstep),0), astep*tstep)).length()
         #self.add_point(PSharp(pos+rotate(V(r1+rstep*endTurns,0), endTurns*astep)))
             t+=tstep
@@ -519,6 +527,43 @@ class Circle(Path):
     def render_path_dxf(self,output, config):
         p=self.points[0].point_transform(config['transformations'])
         return [dxf.circle(radius = self.rad, center=p.pos)]
+
+class Raster(Path):
+    def __init__(self, pos, filename, width, height, **config):
+        self.init(config)
+        self.pos=pos
+        self.width=width
+        self.height=height
+        self.filename=filename
+        self.closed=False
+        self.add_point(pos)
+        self.add_point(pos+V(0,1))
+
+    def transform2svg(self, transforms):
+        ret=''
+        if not transforms or not type(transforms) == list:
+            return ""
+        for t in transforms:
+            if t:
+                if 'translate' in t:
+                    ret+="translate("+str(t['rotate'][0][0])+" "+str(t['rotate'][0][1])+") "
+                if 'rotate' in t:
+                    ret+="rotate("+str(t['rotate'][1])+" "+str(t['rotate'][0][0])+" "+str(t['rotate'][0][1])+") "
+                if 'mirror' in t:
+                    if t['mirror']=='x':
+                        ret+='scale ( -1 1) '
+                    elif t['mirror']=='y':
+                        ret+='scale ( 1 -1) '
+        return ret
+
+    def render(self, pconfig):
+        config=self.generate_config(pconfig)
+        print(config['transformations'])
+        if config['mode']=='svg':
+            preTrans = "translate("+str(-self.width/2+self.pos[0])+" "+str(-self.height/2+self.pos[1])+") "
+            return [config['cutter'],"<image width=\""+str(self.width)+"\" height=\""+str(self.height)+"\" xlink:href=\""+str(self.filename)+"\" transform=\""+self.transform2svg(config['transformations'])+preTrans+"\" />"]
+        else:
+            return [config['cutter'],""]
 
 class Drill(Circle):
     def __init__(self, pos, **config):
@@ -1244,6 +1289,7 @@ class Screw(Part):
         if 'layer_config' in config:
             layer_conf=config['layer_config']
             for c in list(layer_conf.keys()):
+                print("c"+str(c)+" pos="+str(pos))
                 conf = copy.deepcopy(layer_conf[c])
                 if 'drill' in conf and conf['drill']:
                     self.add(Drill(pos, **conf), c)
@@ -2304,6 +2350,7 @@ class ArcRect(Path):
         a1 = -float(angle)/2+startangle
         a2 = float(angle)/2+startangle
         w = float(width)/2
+        print("minorrad "+str(minorrad))
         if not minorrad:
             pass
         if not type(minorrad) is list:
@@ -2313,7 +2360,7 @@ class ArcRect(Path):
         self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a1]}))
         self.add_point(PArc(pos+V(0,0), radius=rad+w, direction='cw'))
         self.add_point(PSharp(pos+V(0,rad+w), transform={'rotate':[pos, a2]}))
-        if(minorrad):
+        if(minorrad and minorrad != [0, 0, 0, 0]):
             self.add_point(PIncurve(pos+V(minorrad[0], rad+w), radius=minorrad[0], transform={'rotate':[pos, a2]}))
             self.add_point(PSharp(pos+V(minorrad[0], rad+w-minorrad[0]), transform={'rotate':[pos, a2]}))
             self.add_point(PSharp(pos+V(minorrad[1], rad-w+minorrad[1]), transform={'rotate':[pos, a2]}))
@@ -2327,7 +2374,7 @@ class ArcRect(Path):
             self.add_point(PSharp(pos+V(-minorrad[2], rad-w+minorrad[2]), transform={'rotate':[pos, a1]}))
             self.add_point(PSharp(pos+V(-minorrad[3], rad+w-minorrad[3]), transform={'rotate':[pos, a1]}))
             self.add_point(PIncurve(pos+V(-minorrad[3], rad+w), radius=minorrad[3], transform={'rotate':[pos, a1]}))
-        self.add_point(PSharp(pos+V(0, rad+w), transform={'rotate':[pos, a1]}))
+     #   self.add_point(PSharp(pos+V(0, rad+w), transform={'rotate':[pos, a1]}))
 
 # The bit you cut out to make a spoke
 class AntiSpoke(Path):

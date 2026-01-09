@@ -678,7 +678,7 @@ class Path(object):
             return
         if len(self.points)>3:
             for p,point in enumerate(self.points):
-                if (point.point_type in ['sharp', 'clear', 'doubleclear', 'insharp'] ):
+                if (point.point_type in ['sharp', 'clear', 'doubleclear', 'insharp'] and point.last().point_type in ['sharp', 'clear', 'doubleclear', 'insharp'] and point.next().point_type in ['sharp', 'clear', 'doubleclear', 'insharp']):
                     point.setangle()
                     if point.dot==-1 and (self.closed and p!=0 and p!=len(self.points)-1):
                         print( "deleting point as pos="+str(point.pos))
@@ -1598,8 +1598,8 @@ class Path(object):
             if 'F' in point:
                 ret+="F%0.2f"%point['F']
             ret+="\n"
-        if config['mode']=='gcode':
-            ret+="G64\n"
+        #if config['mode']=='gcode':
+        #    ret+="G64\n"
         return ret
 
     def render_path_scr(self, path, config):
@@ -2917,9 +2917,6 @@ class Plane(Part):
                             if self.modeconfig['mode']=='svg' and p.obType=='Pathgroup' and hasattr(p, 'render_svg') and callable(getattr(p, 'render_svg')):
                                 (k,pa) = p.render_svg(config)
                             
-                                print("mode="+self.modeconfig['mode'])
-                                print(path)
-                                print(pa)
                             else:
                                 (k,pa)=p.render(config)
                             if self.modeconfig['group'] is False:
@@ -2946,6 +2943,15 @@ class Plane(Part):
         if(part.border is not False and part.border is not None):
             (k,b)=part.border.render(config)
             if self.modeconfig['mode']=='gcode' or self.modeconfig['mode']=="simplegcode":
+                print("PART_CONFIG****"+str(part_config))
+                print("CONFIG****"+str(config))
+                if self.modeconfig['mode']=='gcode' and 'pause' in part_config and part_config['pause']:
+                    if not k in output:
+                            output[k]=''
+
+                    output[k]+="G0 Z"+str(config['clear_height']+50)+"\n"
+                    output[k]+="M5\n"
+                    output[k]+="M0\n"
                 if part.cutter==None:
                     part.cutter=config['cutter']
                 if not config['sep_border']: #1==1 or part.cutter == lastcutter:

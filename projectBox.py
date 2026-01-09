@@ -12,12 +12,16 @@ class ProjectBox(Part):
             slope = config['slope']
         else:
             slope = 0
+        if 'name' in config:
+            prefix = str(config['name'])+"_"
+        else:
+            prefix = ''
         print(width)
         print("Hello")
 
         Sf=(height-2*thickness)*math.sin(float(slope)/180*math.pi)
         faces = {
-                'front' :[ {'rotate3D':[[0,180,0], V(0,0,0)]},   {'translate3D':V(0,0,depth/2-1)}],
+                'front' :[ {'rotate3D':[[0,180,0], V(0,0,0)]},   {'translate3D':V(0,0,depth/2-1)}, {'mirror':V(1,0,0)}],
                 'back'  :[ {'rotate3D':[[0,0,0], V(0,0,0)]},  {'rotate3D':[[slope,0,0],V(0,0,0)]}, {'translate3D':V(0,0,-depth/2+1-Sf/2)}],
                 'left'  :[ {'rotate3D':[[90,0,90], V(0,0,0)]}, {'translate3D':V(-width/2+1,0,0)}],
                 'right' :[ {'rotate3D':[[90,0,-90], V(0,0,0)]},{'translate3D':V( width/2-1,0,0)}],
@@ -144,9 +148,9 @@ class ProjectBox(Part):
             for hole in holePoses[face]:
                 print (hole)
                 if hole['shape']=='rect':
-                    holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness+2])(self.RoundedRectPrism(hole['width'], hole['height'], hole['rad'], thickness+4)), faces[face]))
+                    holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness])(self.RoundedRectPrism(hole['width'], hole['height'], hole['rad'], thickness+2)), faces[face]))
                 elif hole['shape']=='circle':
-                    holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2+1])(cylinder(r=hole['rad'], h=thickness+5, center=True)), faces[face]))
+                    holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], thickness/2+0.1])(cylinder(r=hole['rad'], h=thickness+5, center=True)), faces[face]))
                 elif hole['shape']=='pillar':
                     if hole['from']=='out':
                         holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2-1])(cylinder(r=hole['rad'], h=hole['length']+1)), faces[face]))
@@ -155,7 +159,7 @@ class ProjectBox(Part):
                         holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], 1])(cylinder(r=hole['rad'], h=hole['length']+1)), faces[face]))
                         rods.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness/2+0.1])(cylinder(r=hole['pillarRad'], h=hole['length']-0.1)), faces[face]))
                 elif hole['shape']=='slot':
-                    holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness-1])(self.SlotPrism(hole['width'], hole['height'], thickness+2)), faces[face]))
+                    holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness])(self.SlotPrism(hole['width'], hole['height'], thickness+2)), faces[face]))
 
         #if len(rods):
         wholebox = union()(wholebox,*rods, *extraSolids)
@@ -174,11 +178,11 @@ class ProjectBox(Part):
                 )
         ttop = intersection()(wbox,cut)
 
-        scad_render_to_file(temp, 'fullbox.scad' , file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=True)
+        scad_render_to_file(temp, prefix+'fullbox.scad' , file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=True)
         top = intersection()(wholebox, cut)
         top2 = union ()(top,innerbox)
-        scad_render_to_file(top, 'top.scad' , file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=True)
-        scad_render_to_file(bottom, 'bottom.scad' , file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=True)
+        scad_render_to_file(top, prefix+'top.scad' , file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=True)
+        scad_render_to_file(bottom, prefix+'bottom.scad' , file_header = '$fa = 0.5;\n$fs = 0.5;', include_orig_code=True)
 
 
     def doTransform(self, ob, transforms):
@@ -196,6 +200,8 @@ class ProjectBox(Part):
 
                 elif t=='translate3D':
                     ret = translate(tr[t])(ret)
+                elif t=='mirror':
+                    ret = solid.mirror(tr[t])(ret)
         return ret
                 
     def screw(self, rad, headRad, threadRad, length, clearanceLength):

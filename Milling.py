@@ -39,7 +39,7 @@ class Milling:
                                 'z_overshoot':0.4,
                                 'label':False,
                                 'zero':False,
-				'blendTolerance':True,
+				'blendTolerance':0.01,
                                 'cuttingMode':True,   
                                 'doFold':True,   
                         },
@@ -384,6 +384,22 @@ class Milling:
 
                         "sidecut":1,
                         "flutes":2,
+                },
+                "25.4mm_endmill":{
+                        "id":33,
+                        "diameter":25.4,
+                        "endcut":1,
+
+                        "sidecut":1,
+                        "flutes":2,
+                },
+                "50mm_facemill":{
+                        "id":32,
+                        "diameter":50.0,
+                        "endcut":0,
+
+                        "sidecut":1,
+                        "flutes":4,
                 },
                 "6mm_endmill":{
                         "id":2,
