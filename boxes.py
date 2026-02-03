@@ -321,11 +321,11 @@ class ArbitraryBox(Part):
             if type(points) is Vec:
                 p=points
                 p2 = p-face['origin']
-                return V(p2.dot(face['x']), p2.dot(face['y']))
+                return V(p2.dot(face['x']*face['good_direction']), p2.dot(face['y']))
             ret = []
             for p in points:
                 p2 = p-face['origin']
-                ret.append(V(p2.dot(face['x']), p2.dot(face['y'])))
+                ret.append(V(p2.dot(face['x']*face['good_direction']), p2.dot(face['y'])))
             return ret
 
     def unproject(self, points, face):
@@ -1229,7 +1229,6 @@ class ArbitraryBox(Part):
                     self.faces[fa][t]=1
                 else:
                     self.faces[fa][t]=-1
-
     def set_corners(self, side, f, scount):
         face = self.faces[f]
         if len(side)==0:
