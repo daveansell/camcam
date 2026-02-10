@@ -656,7 +656,7 @@ class PathPolyhedron(Polyhedron):
         s="path="
         for p in range(0,len(ppath)):
             if callable(xsection):
-                txsection = xsection(p, len(ppath), **args)
+                txsection = xsection(p, len(ppath)-1, **args)
                 if type(txsection is list):
                     pxsection = txsection
                 else:
