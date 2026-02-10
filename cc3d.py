@@ -68,7 +68,6 @@ def path_render3D(self, pconfig, border=False):
     config=self.overwrite(config,pconfig)
     inherited = self.get_config()
 #               if('transformations' in config):
-    print("++COLOUR"+str(config['colour']))
     config=self.overwrite(config, inherited)
     if border==False and 'zoffset' in pconfig:
         zoffset= pconfig['zoffset']
@@ -129,7 +128,6 @@ def path_render3D(self, pconfig, border=False):
         pass
         h = 2*h
 #       extruded = extrude_along_path(shape_pts=outline, path_pts=extrude_path)
-
     if self.extrude_scale is not None:
         scale = self.extrude_scale
         print("scaling ="+str(scale))
@@ -148,7 +146,6 @@ def path_render3D(self, pconfig, border=False):
     #extruded = translate([0,0,bottom])(linear_extrude(height=h, center=False)(solid.polygon(points=outline)))
 #       if not border and 'isback' in config and config['isback'] and border==False:
 #               extruded = solid.mirror([1,0,0])(extruded )
-    print("COLOUR"+str(config['colour']))
     if 'colour' in config and config['colour']:
         extruded = solid.color(self.scad_colour(config['colour']))(extruded)
     return self.transform3D(self, extruded)
@@ -276,7 +273,6 @@ def plane_generate_part3D(self, thepart, pconfig):
         paths.extend(layers['all'])
     config = thepart.overwrite(config,thepart.get_config())
     if(thepart.border is not False and thepart.border is not None):
-        print("--COLOUR"+str(config['colour']))
         thepart.border3D = thepart.border.render3D(config, True)[0]
 #       else:
 #               thepart.renderable=False
@@ -337,9 +333,11 @@ def plane_make_part3D(self, thepart, layers, pconfig, root=True):
     c=0
     while(p and type(p) is not Plane):# and (c==0 or not p.renderable() ):
         p.rotations_to_3D()
+        transforms = copy.copy(p.transform)
         if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and type(p.transform) is list and (c==0 or p.name is None):
-            print(p.transform)
             for transform in p.transform:
+                print()
+                print("Transform="+str(transform))
                 if 'matrix3D' in transform:
                     if type(transform['matrix3D'][0]) is list or type(transform['matrix3D'][0]) is Vec:
                         thepart.border3D=solid.translate([-transform['matrix3D'][0][0], -transform['matrix3D'][0][1],-transform['matrix3D'][0][2]])(thepart.border3D)
@@ -435,9 +433,31 @@ def plane_render_all3D(self,callmode,cmdconfig):
         for thepart in self.getParts(True):
             print(config)
             if not (hasattr(thepart, 'subpart') and thepart.subpart) and ('parts' not in cmdconfig or len(cmdconfig['parts'])==0 or thepart.name in cmdconfig['parts']):
-
+# get transformations for a Part
+                conf=thepart.parent.get_config()
+                if 'transformations' in conf:
+                    transforms = conf['transformations']
+               # print("TRANSPFORMA="+str(transforms))
                 self.make_part3D(thepart, layers, config)
                 if hasattr(thepart,"border3D"):
+                    for transform in transforms:
+                        if 'matrix3D' in transform:
+                            if type(transform['matrix3D'][0]) is list or type(transform['matrix3D'][0]) is Vec:
+                                thepart.border3D=solid.translate([-transform['matrix3D'][0][0], -transform['matrix3D'][0][1],-transform['matrix3D'][0][2]])(thepart.border3D)
+                                thepart.border3D=solid.multmatrix(m=transform['matrix3D'][1])(thepart.border3D)
+                                thepart.border3D=solid.translate([transform['matrix3D'][0][0], transform['matrix3D'][0][1],transform['matrix3D'][0][2]])(thepart.border3D)
+                            else:
+                                thepart.border3D=solid.multmatrix(m=transform['matrix3D'])(thepart.border3D)
+
+                        if 'rotate3D' in transform:
+                            if type(transform['rotate3D'][0]) is list or type(transform['rotate3D'][0]) is Vec:
+                                thepart.border3D=solid.translate([-transform['rotate3D'][0][0], -transform['rotate3D'][0][1],-transform['rotate3D'][0][2]])(thepart.border3D)
+                                thepart.border3D=solid.rotate([transform['rotate3D'][1][0], transform['rotate3D'][1][1],transform['rotate3D'][1][2] ])(thepart.border3D)
+                                thepart.border3D=solid.translate([transform['rotate3D'][0][0], transform['rotate3D'][0][1],transform['rotate3D'][0][2]])(thepart.border3D)
+                            else:
+                                thepart.border3D=solid.rotate([transform['rotate3D'][0], transform['rotate3D'][1],transform['rotate3D'][2] ])(thepart.border3D)
+                        if 'translate3D' in transform:
+                            thepart.border3D=solid.translate([transform['translate3D'][0], transform['translate3D'][1],transform['translate3D'][2] ])(thepart.border3D)
                     if scene==False:
                         scene = solid.part()(thepart.border3D)
                     else:
