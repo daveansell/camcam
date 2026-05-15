@@ -774,9 +774,11 @@ class Path(object):
                     t=[]
                     tp = copy.deepcopy(point)
                     tp.pos+=perp*distance
+                    tp.radius=p.radius
                     t.append(copy.deepcopy(tp))
             else:
                 t=point.offset(side, distance, thisdir)
+                
             if t:
                 newpath.points.extend(t)
             lookup.append(len(newpath.points))
@@ -1069,7 +1071,8 @@ class Path(object):
         if  hasattr(self,'isback') and getattr(self,'isback') or l['isback']:
             config['zoffset'] += l['thickness'] * config['zdir']
 
-
+   #     print("XX transformations="+str(config['transformations']))
+   #     print("XX transform="+str(self.transform))
         return config
     def pre_render(self, config):
 
