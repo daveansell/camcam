@@ -66,7 +66,7 @@ class Cuboid(SolidPath):
         self.add_point(pos,'circle',width/2)
 
     def getSolid(self):
-        print(solid.translate(self.pos)(solid.cube([self.width, self.height, self.depth], center=self.centre)))
+        #print(solid.translate(self.pos)(solid.cube([self.width, self.height, self.depth], center=self.centre)))
         return solid.translate(self.pos)(solid.cube([self.width, self.height, self.depth], center=self.centre))
 
 
@@ -141,7 +141,7 @@ class CSScrew(SolidPath):
                 
         elif self.mode=='thread':
             ret.append(solid.cylinder(r=milling.bolts[self.size]['tap']/2, h=self.length)) 
-        print(self.transform)
+        #print(self.transform)
 
         return self.transform3D(self,solid.rotate(self.rotate)(solid.union()(*ret)))
 
@@ -198,6 +198,42 @@ class HullSpheres(SolidPath):
         return solid.translate(self.pos)(
                 solid.hull()(*spheres)
                 )
+
+class HullChamfer(SolidPath):
+    def __init__(self, pos, corners, **config):
+        self.init(config)
+        self.closed=True
+        self.pos=pos
+        if 'chamfer' in config:
+            self.chamfer=config['chamfer']
+        else:
+            self.rad=0.01
+        self.corners = corners
+        self.convexity = 4
+    def cornerPoint(self, corner):
+        p=        solid.polygon(
+                    [V(corner['rad']-self.chamfer, -self.chamfer), 
+                        V(0.01,-self.chamfer), 
+                        V(0.01, self.chamfer), 
+                        V(corner['rad']-self.chamfer,self.chamfer), 
+                        V(corner['rad'], 0)
+                     ]) 
+        if 'extrude_angle'  in corner:
+            r = solid.rotate_extrude(convexity=self.convexity, angle=corner['extrude_angle'])(p) 
+        else:
+            r = solid.rotate_extrude(convexity=self.convexity)(p) 
+        if 'rotate_angle' in corner:
+            r = solid.rotate([0,0,corner['rotate_angle']])(r)
+        return solid.translate(corner['pos'])(r)
+            
+    def getSolid(self):
+        spheres=[]
+        for c in self.corners: 
+            spheres.append( self.cornerPoint(c) )
+        return solid.translate(self.pos)(
+                solid.hull()(*spheres)
+                )
+
 class RoundedCuboid(SolidPath):
     def __init__(self, pos, width, height, depth, rad, **config):
         self.init(config)
@@ -209,8 +245,8 @@ class RoundedCuboid(SolidPath):
         self.pos = pos
         self.add_point(pos,'circle',rad)
         if 'sphere' in config and config['sphere']:
-            print(config['sphere'])
-            print(self.parent)
+            #print(config['sphere'])
+            #print(self.parent)
             self.sphere = config['sphere']
         else:
             self.sphere = None
@@ -225,7 +261,7 @@ class RoundedCuboid(SolidPath):
             self.sphere.layer=self.parent.layer
             sphere = self.sphere.render3D({})
 
-            print("sphere="+str(sphere))
+            #print("sphere="+str(sphere))
         return solid.translate(self.pos)(
                 solid.hull()(
                     solid.translate([-W,H,D])( sphere),
@@ -252,7 +288,7 @@ class Text3D2(SolidPath):
             if n in config:
                 self.args[n]=config[n]
         self.args['text']=text
-        print(self.args)
+        #print(self.args)
         self.closed=True
         self.add_point(pos,'circle',1)
 
@@ -293,7 +329,7 @@ class SolidExtrude(SolidPath):
             outline.append( [round(p[0],PRECISION)*SCALEUP, round(p[1],PRECISION)*SCALEUP ])
         outline.append([round(points[0][0],PRECISION)*SCALEUP, round(points[0][1],PRECISION)*SCALEUP])
         polygon = solid.polygon(outline)
-        print("scale="+str(self.scale))
+        #print("scale="+str(self.scale))
         return self.transform3D(self, solid.linear_extrude(height=self.height, convexity=self.convexity, scale=self.scale,  center=self.centre, twist=self.twist)(polygon))
 
 
@@ -311,7 +347,7 @@ class SolidOfRotation(SolidPath):
         else:
             self.convexity = 10
         if 'angle' in config:
-            print("angle="+str(config['angle']))
+            #print("angle="+str(config['angle']))
             self.extrudeAngle = config['angle']
         else:
             self.extrudeAngle = 360
@@ -589,12 +625,12 @@ class Hull(SolidPath):
     def getSolid(self):
         spheres=[]
         for p in self.parts: 
-            print(p.obType)
+            #print(p.obType)
             if p.obType=='Part':
                 spheres.append(self.get_plane().render_part3D(p,{}))
             elif p.obType=='Path':
                 spheres.append(self.transform3D(p,p.render3D({})))
-        print(spheres)
+        #print(spheres)
         return solid.translate(self.pos)(
                 solid.hull()(*spheres)
                 )
@@ -767,7 +803,7 @@ class PathFuncPolyhedron(Polyhedron):
                 along = ((ppath[p]-ppath[p-1]).normalize()+(ppath[p+1]-ppath[p]).normalize())/2
             if xfunc:
                 x=xfunc(float(p)/len(ppath))
-                print("xfunc="+str(x))
+            #    print("xfunc="+str(x))
                 y = -along.cross(x).normalize()
                 lastx=x
             elif samex:
@@ -785,7 +821,7 @@ class PathFuncPolyhedron(Polyhedron):
             else:
                 y = along.cross(lastx).normalize()
                 x = along.cross(y).normalize()
-            print("lastx="+str(lastx)+" x="+str(x)+" y="+str(y)+" along="+str(along))
+            #print("lastx="+str(lastx)+" x="+str(x)+" y="+str(y)+" along="+str(along))
             if(x.dot(lastx)<0):
                 x*=-1
             self.rings.append([])
@@ -1137,7 +1173,7 @@ class Text3D(Part):
         l=self.add(Part(subpart=True, ignore_border=True))
         l.translate3D(V(-(letters.bbox['minx']+letters.bbox['maxx'])/2, -5))
         for letter in letters.paths:
-            print("letter transform"+str(letter.transform))
+      #      print("letter transform"+str(letter.transform))
             paths = letter.paths
             for path in paths:
                 outer=True
@@ -1146,7 +1182,7 @@ class Text3D(Part):
                         if path2.contains(path)==1:
                             print(str(path)+" is not outer ")
                             outer=False
-                print(path)
+      #          print(path)
                 if outer:
                     s=l.add(Part(subpart=True, border=path, thickness=self.thickness))
                     s.translate3D(letter.transform[0]['translate'])
