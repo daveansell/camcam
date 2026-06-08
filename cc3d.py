@@ -130,7 +130,7 @@ def path_render3D(self, pconfig, border=False):
 #       extruded = extrude_along_path(shape_pts=outline, path_pts=extrude_path)
     if self.extrude_scale is not None:
         scale = self.extrude_scale
-        print("scaling ="+str(scale))
+        #print("scaling ="+str(scale))
         if self.extrude_centre is None:
             self.extrude_centre = V(0,0)
         centre = (PSharp(V(0,0)).point_transform(config['transformations']).pos+self.extrude_centre)
@@ -336,8 +336,8 @@ def plane_make_part3D(self, thepart, layers, pconfig, root=True):
         transforms = copy.copy(p.transform)
         if hasattr(p, 'transform') and p.transform is not None and p.transform is not False and type(p.transform) is list and (c==0 or p.name is None):
             for transform in p.transform:
-                print()
-                print("Transform="+str(transform))
+               # print()
+               # print("Transform="+str(transform))
                 if 'matrix3D' in transform:
                     if type(transform['matrix3D'][0]) is list or type(transform['matrix3D'][0]) is Vec:
                         thepart.border3D=solid.translate([-transform['matrix3D'][0][0], -transform['matrix3D'][0][1],-transform['matrix3D'][0][2]])(thepart.border3D)
@@ -431,7 +431,7 @@ def plane_render_all3D(self,callmode,cmdconfig):
     else:
         scene = False
         for thepart in self.getParts(True):
-            print(config)
+            #print(config)
             if not (hasattr(thepart, 'subpart') and thepart.subpart) and ('parts' not in cmdconfig or len(cmdconfig['parts'])==0 or thepart.name in cmdconfig['parts']):
 # get transformations for a Part
                 conf=thepart.parent.get_config()
