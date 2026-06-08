@@ -1555,6 +1555,7 @@ class Path(object):
                 colour='black'
             if '_fill' in point and point['_fill'] is not None:
                 fill = point['_fill']
+                print("point fill"+str(fill))
             else:
                 fill = 'none'
             if '_opacity' in point:
@@ -1570,6 +1571,7 @@ class Path(object):
             stroke=config['stroke']
         else:
             stroke='0.1px'
+        print("<path d=\""+ret+"\"  style='stroke-width:"+str(stroke)+";"+opacity+"' fill='"+fill+"' stroke='"+colour+"'/>\n")
         return comments+"<path d=\""+ret+"\"  style='stroke-width:"+str(stroke)+";"+opacity+"' fill='"+fill+"' stroke='"+colour+"'/>\n"
 
     def render_path_gcode(self,path,config):
@@ -1672,9 +1674,13 @@ class Path(object):
             fill = config['fill_colour']
         else:
             fill = 'none'
+        print("add_colour"+str(self))
         for cut in self.output:
-            cut['_colour']=colour
-            cut['_fill']=fill
+            if '_colour' not in cut or not cut['_colour']:
+                cut['_colour']=colour
+            if '_fill' not in cut or not cut['_fill']:
+                cut['_fill']=fill
+            print("cut fill"+str(fill))
             if 'opacity' in config:
                 cut['_opacity'] = config['opacity']
             if self.closed:
@@ -2615,7 +2621,6 @@ class Part(object):
 
 # deepcopy problem:
                     p=copy.deepcopy(path)
-#                    print("addQQ"+str(p))
                     p.parent=self.paths[layer]
                     path.parent=self.paths[layer]
                     self.paths[layer].add_path(p, prepend)
