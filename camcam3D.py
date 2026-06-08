@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+
 # This file is part of CamCam.
 
 #    CamCam is free software: you can redistribute it and/or modify
@@ -120,6 +121,8 @@ parser.add_option("-L", "--layout-file", dest="layout_file",
                   help="file for layout")
 parser.add_option("-A", "--parts", dest="parts",
                   help="comma deliminated list of part names (can be found by -l)")
+parser.add_option("-s", "--passThough", dest="passthrough",
+                  help="Pass data to program.")
 
 (options, args) = parser.parse_args()
 config={}
