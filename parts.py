@@ -251,7 +251,6 @@ class Bracket(Pathgroup):
                     else:
                         z = z1
                     self.add(Hole(pos+p[0]*perp+ p[1]*along, rad=d['holerad'], z1=z))
-                    print ("Hole at"+str(pos+p[0]*perp+ p[1]*along))
 
 class Barn(Part):
     def __init__(self, pos, width, height,**config):
