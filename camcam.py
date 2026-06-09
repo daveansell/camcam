@@ -54,7 +54,7 @@ class CamCam:
             for plane in self.planes:
                 plane.render_all(mode,config)
                 out+=plane.out
-            f=open("Overview_"+mode+"_"+self.files[0]+"_"+".svg",'w')
+            f=open("Overview_"+mode+"_"+(self.files[-1]).replace("/","").replace(".","")+"_"+".svg",'w')
             f.write(modeconfig['prefix'] + out + modeconfig['postfix'])
             f.close()
 
