@@ -29,18 +29,35 @@ def V(x=False,y=False,z=False):
         z=False
     return Vec(x,y,z)
 
-def rotate(pos, a, *config):
-    if len(config):
-        axis = config[0]
+def rotate(pos, a, **config):
+    if 'axis' in config:
+        axis = config['axis']
     else:
         axis = V(0,0,-1)
-
+    if 'centre' in config:
+        centre = config['centre']
+        print("rotate centre="+str(centre))
+    else:
+        centre = V(0,0,0)
     if type(pos) is Vec:
         M=Mat(1).rotateAxis(a, axis)
-        pos=pos.transform(M)
+        pos=(pos-centre).transform(M)+centre
         return pos
     else:
         return False
+
+#def rotate(pos, a, *config):
+#    if len(config):
+#        axis = config[0]
+#    else:
+#        axis = V(0,0,-1)
+
+#    if type(pos) is Vec:
+#        M=Mat(1).rotateAxis(a, axis)
+#        pos=pos.transform(M)
+#        return pos
+#    else:
+#        return False
 
 class Segment(object):
     seg_types = {}

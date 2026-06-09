@@ -9,3 +9,21 @@ pip3 install dxfwrite
 pip3 install shapely
 pip3 install kivy
 pip3 install Hershey-Fonts
+
+
+on 24.04 they have made it more difficult and you have to run in a virtual envirnment
+
+in camcam folder
+python -m venv camcam
+
+camcam/bin/pip3 install solidpython
+camcam/bin/pip3 install freetype-py
+camcam/bin/pip3 install dxfwrite
+camcam/bin/pip3 install shapely
+camcam/bin/pip3 install kivy
+camcam/bin/pip3 install Hershey-Fonts
+
+you then have to change the 
+#!/usr/bin/python3
+to
+#![camcam folder]/camcam/bin/python3

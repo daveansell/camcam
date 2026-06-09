@@ -17,13 +17,13 @@
 
 import path
 
-def rotate(pos, a):
-    if type(pos) is Vec:
-        M=Mat(1).rotateAxis(a,V(0,0,-1))
-        pos=pos.transform(M)
-        return pos
-    else:
-        return False
+#def rotate(pos, a):
+#    if type(pos) is Vec:
+#        M=Mat(1).rotateAxis(a,V(0,0,-1))
+#        pos=pos.transform(M)
+#        return pos
+#    else:
+#        return False
 
 import math
 from minivec import Vec, Mat

@@ -321,11 +321,11 @@ class ArbitraryBox(Part):
             if type(points) is Vec:
                 p=points
                 p2 = p-face['origin']
-                return V(p2.dot(face['x']), p2.dot(face['y']))
+                return V(p2.dot(face['x']*face['good_direction']), p2.dot(face['y']))
             ret = []
             for p in points:
                 p2 = p-face['origin']
-                ret.append(V(p2.dot(face['x']), p2.dot(face['y'])))
+                ret.append(V(p2.dot(face['x']*face['good_direction']), p2.dot(face['y'])))
             return ret
 
     def unproject(self, points, face):
@@ -936,20 +936,22 @@ class ArbitraryBox(Part):
                 #print(cutside)
                 part.add(ButtJointMid(joint['from'], joint['to'], cutside, 'external', joint['corners'], joint['corners'], joint['hole_spacing'],  joint['otherface']['thickness'], 0, 'on', 'on',  butt_depression=joint['butt_depression'], holerad=joint['butt_holerad'], butt_numholes=joint['butt_numholes'], joint_type='convex', fudge=fudge, butt_outline=joint['butt_outline'], hole_depth=face['hole_depth']))
             elif joint['joint_mode']=='bracket':
+                print("joint="+str(joint))
                 part.add(BracketJointHoles(
                         joint['from'],
                         joint['to'],
                         cutside,
                         'external',
-                        corner,
-                        corner,
+                       # corner,
+                       # corner,
+                        'on','on', # corner doesn't exist, I am not sure why it is there
                         joint['hole_spacing'],
                         joint['otherface']['thickness'],
                         0, 'on', 'on',
                         butt_depression=joint['butt_depression'],
                         butt_holerad=joint['butt_holerad'],
                         butt_numholes=joint['butt_numholes'],
-                        joint_type=joint_type,
+                        joint_type=joint['joint_mode'],
                         fudge=fudge,
                         hole_offset=joint['hole_offset'],
                         bracket=self.config['bracket'],
@@ -1229,7 +1231,6 @@ class ArbitraryBox(Part):
                     self.faces[fa][t]=1
                 else:
                     self.faces[fa][t]=-1
-
     def set_corners(self, side, f, scount):
         face = self.faces[f]
         if len(side)==0:

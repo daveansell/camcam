@@ -108,7 +108,13 @@ class SVGimport(Pathgroup):
             if m.groups(1)[0] == 'matrix':
                 ma = m.groups(1)[2].split(',')
                 ma.insert(0, m.groups(1)[1])
-                ma = [float(i) for i in ma]
+                print (ma)
+                ma2=[]
+                for i in ma:
+                    if not i=='':
+                        ma2.append(float(i))
+#                ma = [float(i) for i in ma]
+                ma = ma2
                 pos = V(
                         ma[0]*pos[0] + ma[2]*pos[1] + ma[4],
                         ma[1]*pos[0] + ma[3]*pos[1] + ma[3],

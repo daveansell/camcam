@@ -94,14 +94,18 @@ def V(x=False,y=False,z=False):
         z=False
     return Vec(x,y,z)
 
-def rotate(pos, a, *config):
-    if len(config):
-        axis = config[0]
+def rotate(pos, a, **config):
+    if 'axis' in config:
+        axis = config['axis']
     else:
         axis = V(0,0,-1)
+    if 'centre' in config:
+        centre = config['centre']
+    else:
+        centre = V(0,0,0)
     if type(pos) is Vec:
         M=Mat(1).rotateAxis(a, axis)
-        pos=pos.transform(M)
+        pos=(pos-centre).transform(M)+centre
         return pos
     else:
         return False
@@ -777,6 +781,7 @@ class Path(object):
                     t.append(copy.deepcopy(tp))
             else:
                 t=point.offset(side, distance, thisdir)
+                
             if t:
                 newpath.points.extend(t)
             lookup.append(len(newpath.points))
@@ -1069,7 +1074,8 @@ class Path(object):
         if  hasattr(self,'isback') and getattr(self,'isback') or l['isback']:
             config['zoffset'] += l['thickness'] * config['zdir']
 
-
+   #     print("XX transformations="+str(config['transformations']))
+   #     print("XX transform="+str(self.transform))
         return config
     def pre_render(self, config):
 
@@ -1549,6 +1555,7 @@ class Path(object):
                 colour='black'
             if '_fill' in point and point['_fill'] is not None:
                 fill = point['_fill']
+                print("point fill"+str(fill))
             else:
                 fill = 'none'
             if '_opacity' in point:
@@ -1564,6 +1571,7 @@ class Path(object):
             stroke=config['stroke']
         else:
             stroke='0.1px'
+        print("<path d=\""+ret+"\"  style='stroke-width:"+str(stroke)+";"+opacity+"' fill='"+fill+"' stroke='"+colour+"'/>\n")
         return comments+"<path d=\""+ret+"\"  style='stroke-width:"+str(stroke)+";"+opacity+"' fill='"+fill+"' stroke='"+colour+"'/>\n"
 
     def render_path_gcode(self,path,config):
@@ -1666,9 +1674,13 @@ class Path(object):
             fill = config['fill_colour']
         else:
             fill = 'none'
+        print("add_colour"+str(self))
         for cut in self.output:
-            cut['_colour']=colour
-            cut['_fill']=fill
+            if '_colour' not in cut or not cut['_colour']:
+                cut['_colour']=colour
+            if '_fill' not in cut or not cut['_fill']:
+                cut['_fill']=fill
+            print("cut fill"+str(fill))
             if 'opacity' in config:
                 cut['_opacity'] = config['opacity']
             if self.closed:
@@ -2609,7 +2621,6 @@ class Part(object):
 
 # deepcopy problem:
                     p=copy.deepcopy(path)
-#                    print("addQQ"+str(p))
                     p.parent=self.paths[layer]
                     path.parent=self.paths[layer]
                     self.paths[layer].add_path(p, prepend)

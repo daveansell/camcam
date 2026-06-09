@@ -2273,7 +2273,7 @@ class RoundedArrow(Path):
         w = float(width)/2
         headw = headwidth/2
         ahead = headlength/(math.pi*2*rad)*360
-        print("headlength="+str(headlength)+"ahead="+str(ahead))
+        #print("headlength="+str(headlength)+"ahead="+str(ahead))
         heads = [True, True]
         if 'heads' in config:
                 if config['heads'] == 'cw':
