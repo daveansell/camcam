@@ -1,4 +1,4 @@
-#!/home/rosy/cnc/camcam/camcam/bin/python3
+#!/usr/bin/python3
 
 
 
