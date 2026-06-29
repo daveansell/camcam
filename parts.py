@@ -1150,6 +1150,7 @@ class Fan(Pathgroup):
         self.translate(pos)
         data={
                 '40mm':{'centrerad':38/2,  'hole_off':31.6/2, 'holeRad':4.5/2, 'threadRad':3.3/2},
+                '50mm':{'centrerad':48/2,  'hole_off':40.0/2, 'holeRad':4.5/2, 'threadRad':3.3/2},
                 '60mm':{'centrerad':58/2,  'hole_off':50/2, 'holeRad':4.5/2, 'threadRad':3.3/2, 'cableSlotFromEdge' : 12, 'cableSlotLength':7.0, 'fanWidth':60.0},
                 '80mm':{'centrerad':92/2, 'centre_limit':78/2, 'hole_off':71.5/2, 'holeRad':4.5/2, 'threadRad':3.3/2 },
                 '92mm':{'centrerad':104/2, 'centre_limit':90/2, 'hole_off':82.5/2, 'holeRad':4.5/2, 'threadRad':3.3/2 },
