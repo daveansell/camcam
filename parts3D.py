@@ -275,6 +275,7 @@ class RoundedCuboid(SolidPath):
                     solid.translate([-W,-H,-D])( sphere)
                 )
                 )
+
 class Text3D2(SolidPath):
     def __init__(self, pos, text, height, **config):
         self.init(config)
@@ -295,6 +296,8 @@ class Text3D2(SolidPath):
     def getSolid(self):
         self.translate3D(self.pos)
         return solid.linear_extrude(height=self.height)(solid.text(**self.args))
+
+
 
 class SolidExtrude(SolidPath):
     def __init__(self, pos, shape,height, **config):
@@ -1192,4 +1195,71 @@ class Text3D(Part):
                     s.translate3D(letter.transform[0]['translate'])
 
     
+class CurvedText3D(SolidPath):
+    def __init__(self, pos, rad, text, height, **config):
+        if 'startAngle' in config:
+            startAngle = config['startAngle']
+        else:
+            startAngle = 0
+        if 'centre' in config:
+            self.centre = config['centre']
+        else:
+            self.centre = 0
+        if 'font' in config:
+            self.font = 'FONT_'+config['font']
+        else:
+            self.font = 'FONT_LiberationSans'
+        if 'advance' in config:
+            self.advance = config['advance']
+        else:
+            self.advance= 10
+        if 'centre' in config and config['centre']:
+            self.centreText=1
+        else:
+            self.centre=Text0
+        self.textdir = -1#rad/abs(rad)
+        self.init(config)
+        self.pos=pos
+        self.text=text
+        self.rad = rad
+        self.args = {'size':10}
+        self.height = height
+        self.thickness=height
+        argNames = ['valign', 'size', 'halign', 'font']
+        for n in argNames:
+            if n in config:
+                self.args[n]=config[n]
+        self.text=text
+        #print(self.args)
+        self.closed=True
+        self.add_point(pos,'circle',1)
+
+    def getSolid(self):
+        import fontData
+        theFont = fontData.data[self.font]
+        print("curved text getSolid centre="+str(self.centreText))
+        letters=[]
+        angle=0
+        scale = theFont['unitsPerEm'] / self.args['size']
+        oHeight = theFont['characters']['o'][6]/scale
+        for c in self.text:
+            xoffset = -(theFont['characters'][c][3]+theFont['characters'][c][5])/2/scale
+            if self.rad>0:
+                offsetAngle = xoffset*self.textdir/self.rad/math.pi*180
+            else:
+                offsetAngle = xoffset*self.textdir/(self.rad)/math.pi*180
+
+            print("xoffset="+str(xoffset))
+            advance = (theFont['characters'][c][1]+theFont['characters'][c][2])/scale*1.2 #solid.textmetrics(c,**self.args)
+            letters.append( solid.rotate([0,0,angle-offsetAngle])(solid.translate([xoffset,self.rad])(solid.linear_extrude(height=self.height)(solid.text(text=c, **self.args)))))
+            if self.rad>0:
+                angle += self.textdir*advance/(self.rad)/math.pi*180
+            else:
+                angle += self.textdir*advance/(self.rad+oHeight)/math.pi*180
+            print(angle)
+        self.translate3D(self.pos)
+        print(letters)
+        print("final rotate"+str(-angle/2*self.centreText))
+        return solid.translate(self.pos)(solid.rotate([0,0,-angle/2*self.centreText])(solid.union()(*letters)))
+
 

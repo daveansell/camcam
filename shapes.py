@@ -425,6 +425,7 @@ class Polygon(Path):
             rad = rad/ 2 / math.sin(a/2)
         if 'startAngle' in config:
             startAngle= config['startAngle']
+            print("startangle="+str(startAngle))
         else:
             startAngle=0
         for i in range(0,int(sides)):
