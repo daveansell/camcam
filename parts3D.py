@@ -207,16 +207,23 @@ class HullChamfer(SolidPath):
         if 'chamfer' in config:
             self.chamfer=config['chamfer']
         else:
-            self.rad=0.01
+            self.chamfer=0.01
+        if 'thickness' in config:
+            self.thickness = config['thickness']
+        else:
+            self.thickness = 2*self.chamfer+0.01
         self.corners = corners
         self.convexity = 4
     def cornerPoint(self, corner):
+        T = self.thickness/2
         p=        solid.polygon(
-                    [V(corner['rad']-self.chamfer, -self.chamfer), 
-                        V(0.01,-self.chamfer), 
-                        V(0.01, self.chamfer), 
-                        V(corner['rad']-self.chamfer,self.chamfer), 
-                        V(corner['rad'], 0)
+                    [
+                        V(corner['rad']-self.chamfer, -T), 
+                        V(0.01,-T), 
+                        V(0.01, T), 
+                        V(corner['rad']-self.chamfer,T), 
+                        V(corner['rad'], T-self.chamfer),
+                        V(corner['rad'], -T+self.chamfer),
                      ]) 
         if 'extrude_angle'  in corner:
             r = solid.rotate_extrude(convexity=self.convexity, angle=corner['extrude_angle'])(p) 
@@ -1198,9 +1205,9 @@ class Text3D(Part):
 class CurvedText3D(SolidPath):
     def __init__(self, pos, rad, text, height, **config):
         if 'startAngle' in config:
-            startAngle = config['startAngle']
+            self.startAngle = config['startAngle']
         else:
-            startAngle = 0
+            self.startAngle = 0
         if 'centre' in config:
             self.centre = config['centre']
         else:
@@ -1217,6 +1224,10 @@ class CurvedText3D(SolidPath):
             self.centreText=1
         else:
             self.centre=Text0
+        if 'letterRotate' in config and config['letterRotate']:
+            self.letterRotate=config['letterRotate']
+        else:
+            self.letterRotate=False
         self.textdir = -1#rad/abs(rad)
         self.init(config)
         self.pos=pos
@@ -1239,7 +1250,7 @@ class CurvedText3D(SolidPath):
         theFont = fontData.data[self.font]
         print("curved text getSolid centre="+str(self.centreText))
         letters=[]
-        angle=0
+        angle=self.startAngle*2
         scale = theFont['unitsPerEm'] / self.args['size']
         oHeight = theFont['characters']['o'][6]/scale
         for c in self.text:
@@ -1251,7 +1262,11 @@ class CurvedText3D(SolidPath):
 
             print("xoffset="+str(xoffset))
             advance = (theFont['characters'][c][1]+theFont['characters'][c][2])/scale*1.2 #solid.textmetrics(c,**self.args)
-            letters.append( solid.rotate([0,0,angle-offsetAngle])(solid.translate([xoffset,self.rad])(solid.linear_extrude(height=self.height)(solid.text(text=c, **self.args)))))
+            if self.letterRotate:
+                letters.append( solid.rotate([0,0,angle-offsetAngle])(solid.translate([xoffset,self.rad])(solid.rotate(self.letterRotate)(solid.linear_extrude(height=self.height)(solid.text(text=c, **self.args))))))
+            else:
+                letters.append( solid.rotate([0,0,angle-offsetAngle])(solid.translate([xoffset,self.rad])(solid.linear_extrude(height=self.height)(solid.text(text=c, **self.args)))))
+
             if self.rad>0:
                 angle += self.textdir*advance/(self.rad)/math.pi*180
             else:
