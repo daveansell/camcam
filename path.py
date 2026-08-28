@@ -2799,6 +2799,13 @@ class Plane(Part):
         else:
             self.layers[name] = Layer(name,material, thickness, z0, zoffset, isback=isback, colour=colour)
         return self.layers[name]
+    """Check if this plane has layer"""
+    def has_layer(self, layer):
+        if layer in self.layers:
+            return True
+        else:
+            return False
+
     def render_layer(self,layer):
         """Render all the parts in a layer"""
 
