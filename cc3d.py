@@ -439,8 +439,8 @@ def plane_render_all3D(self,callmode,cmdconfig):
                     transforms = conf['transformations']
                # print("TRANSPFORMA="+str(transforms))
                 self.make_part3D(thepart, layers, config)
-                if hasattr(thepart,"border3D"):
-                    for transform in transforms:
+                if hasattr(thepart,"border3D" ):
+                    for transform in thepart.transform:
                         if 'matrix3D' in transform:
                             if type(transform['matrix3D'][0]) is list or type(transform['matrix3D'][0]) is Vec:
                                 thepart.border3D=solid.translate([-transform['matrix3D'][0][0], -transform['matrix3D'][0][1],-transform['matrix3D'][0][2]])(thepart.border3D)
