@@ -34,7 +34,7 @@ class Kicad:
         part=Part(name=name, layer=layer, border=self.border)
         for path in self.paths:
             part.add(path)
-        p=re.compile('(\d+)mm')
+        p=re.compile(r'(\d+)mm')
         for hole in self.getModules('MountingHole', None, 'dict'):
             m=p.search(hole['name'])
             if m and m.group(1):
@@ -46,12 +46,12 @@ class Kicad:
         segments=[]
         # collect all the sections
         for section in self.pcb.gr_line:
-            if section['layer'] == layer:
+            if section['layer'].strip("\"") == layer:
                 section['type']='line'
                 newsect={'start':self.toTuple(section['start']), 'end':self.toTuple(section['end']), 'width':section['width'], 'type':'line'}
                 segments.append(newsect)
         for section in self.pcb.gr_arc:
-            if section['layer'] == layer:
+            if section['layer'].strip("\"") == layer:
                 newsect={'start':self.toTuple(section['end']), 'centre':self.toTuple(section['start']), 'angle':section['angle'], 'width':section['width']}
                 r = [newsect['start'][0]-newsect['centre'][0], newsect['start'][1]-newsect['centre'][1]]
                 a = section['angle']*math.pi/180
@@ -59,6 +59,24 @@ class Kicad:
                 newsect['end']=self.toTuple(end)
                 newsect['type']='arc'
                 segments.append(newsect)
+        if hasattr(self.pcb,'gr_rect') and type(self.pcb.gr_rect) is kicad_pcb.sexp_parser.SexpParser:
+            section = self.pcb.gr_rect
+            if section['layer'].strip("\"") == layer:
+                segments.append( {'start':(section['start'][0], section['start'][0]), 'end':(section['start'][0], section['end'][1]), 'width':0.1, 'type':'line'})
+                segments.append( {'start':(section['start'][0], section['end'][1]), 'end':(section['end'][0], section['end'][1]), 'width':0.1, 'type':'line'})
+                segments.append( {'start':(section['end'][0], section['end'][1]), 'end':(section['end'][0], section['start'][1]), 'width':0.1, 'type':'line'})
+                segments.append( {'start':(section['end'][0], section['start'][1]), 'end':(section['start'][0], section['start'][0]), 'width':0.1, 'type':'line'})
+        if hasattr(self.pcb,'gr_rect') and type(self.pcb.gr_rect) is kicad_pcb.sexp_parser.SexpList:
+            for section in self.pcb.gr_rect:
+                if section['layer'].strip("\"") == layer:
+                    segments.append( {'start':(section['start'][0], section['start'][0]), 'end':(section['start'][0], section['end'][1]), 'width':0.1, 'type':'line'})
+                    segments.append( {'start':(section['start'][0], section['end'][1]), 'end':(section['end'][0], section['end'][1]), 'width':0.1, 'type':'line'})
+                    segments.append( {'start':(section['end'][0], section['end'][1]), 'end':(section['end'][0], section['start'][1]), 'width':0.1, 'type':'line'})
+                    segments.append( {'start':(section['end'][0], section['start'][1]), 'end':(section['start'][0], section['start'][0]), 'width':0.1, 'type':'line'})
+
+       # print("gr_rect::"+str(self.pcb.gr_rect))
+#        print("layer:"+str(self.pcb.gr_rect['layer']))
+
         count=0
         ends={}
         {'start': (156.593634, 89.100001), 'end': (163.406366, 89.100001), 'width': 0.2, 'type': 'line', 'id': 3}
@@ -118,7 +136,6 @@ class Kicad:
     def makePath(self, loop):
         path = Path(closed=True)
         for l in loop:
-            print (l)
             if l['reversed']:
                 end='start'
                 if 'angle' in l and l['angle']>0:
