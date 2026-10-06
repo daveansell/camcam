@@ -138,7 +138,9 @@ class ProjectBox(Part):
             print(pcbs[face])
             for pcb in pcbs[face]:
                 p=importpcb(pcb, depth)
+                print("Imported Pillars")
                 newpillars=p.getPillars()
+                print("newpillars="+str(newpillars))
                 for pillar in newpillars:
                     if 'transform' in pcb:
                         trans = pcb['transform']
@@ -147,9 +149,8 @@ class ProjectBox(Part):
                     pillars.append(self.doTransform(pillar, trans+faces[face]))
                 # apply transforms
             for hole in holePoses[face]:
-                print (hole)
                 if hole['shape']=='rect':
-                    holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness])(self.RoundedRectPrism(hole['width'], hole['height'], hole['rad'], thickness+2)), faces[face]))
+                    holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], -thickness])(self.RoundedRectPrism(hole['width'], hole['height'], hole['rad'], thickness+12)), faces[face]))
                 elif hole['shape']=='circle':
                     holes.append(self.doTransform(translate([hole['pos'][0], hole['pos'][1], thickness/2-1])(cylinder(r=hole['rad'], h=thickness+10, center=True)), faces[face]))
                 elif hole['shape']=='pillar':
@@ -172,6 +173,7 @@ class ProjectBox(Part):
         #if len(allHoles):
             
         wholebox=difference()(wholebox,allHoles)
+#        wholebox=union()(wholebox,allHoles)
 
         bottom = union()(
                 difference()(wholebox,cut),
@@ -267,7 +269,7 @@ class importpcb:
         pcb = kicad.Kicad(conf['filename'])
         pcb.makeBorders('')
         part=pcb.getPart('','')
-        border = part.border
+        border =  part.border
         bb=pcb.border.get_bounding_box()
         if 'pos' in conf:
             pos=conf['pos']
@@ -282,7 +284,7 @@ class importpcb:
         return translate(self.conf['pos'])(translate([self.offset[0],self.offset[1]])(self.part.render3D()))
     def getPillars(self):
         pillars=[]
-        print(self.conf['pillars'])
+        print("getPillars = "+str(self.conf['pillars']))
         for p in self.conf['pillars']:
             print ("p="+str(p))
             pattern=re.compile('(\d+\.*\d*)mm')    
@@ -291,13 +293,13 @@ class importpcb:
                 if a in p:
                     args[a]=p[a]
             args['output']='dict'
-            print ("kicad args="+str(args))
-            for mod in self.pcb.getModules(**args):
-                print (mod)
+            mods=self.pcb.getModules(**args)
+            for mod in mods:#self.pcb.getModules(**args):
+                print ("mod="+str(mod))
                 if 'diameter' in p: 
                     m=pattern.search(mod['name'])
                     rad=float(m.group(1))/2
-                    print('rad='+str(rad*2))
+                    print('rad='+str(rad*2)+"  "+str(p['diameter']))
                     if p['diameter']==rad*2:
                         print('append')
                         pillars.append(
@@ -308,6 +310,5 @@ class importpcb:
                                 )
                                 )
                         )
-                        print(pillars)
-        print (pillars)
+        print ("pillars++"+str(pillars))
         return pillars
