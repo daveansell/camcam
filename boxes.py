@@ -317,14 +317,22 @@ class ArbitraryBox(Part):
                     scount+=1
         face['points']=newpoints
 
-    def project(self,points, face):
+    # project a point onto a face. If you want to project a direction use zeroOrigin=True
+    def project(self,points, face, zeroOrigin=False):
             if type(points) is Vec:
                 p=points
-                p2 = p-face['origin']
+                if not zeroOrigin:
+                    p2 = p-face['origin']
+                else: 
+                    p2 = p
                 return V(p2.dot(face['x']*face['good_direction']), p2.dot(face['y']))
             ret = []
             for p in points:
-                p2 = p-face['origin']
+                if not zeroOrigin:
+                    p2 = p-face['origin']
+                else: 
+                    p2 = p
+                #p2 = p-face['origin']
                 ret.append(V(p2.dot(face['x']*face['good_direction']), p2.dot(face['y'])))
             return ret
 
@@ -525,7 +533,7 @@ class ArbitraryBox(Part):
             #clear newpoints
             newpoints=[]
             if len(side)==2:
-                if (point-lastpoint).cross(self.project(otherface['normal'] * otherface['wood_direction'],face))[2]>0:
+                if (point-lastpoint).cross(self.project(otherface['normal'] * otherface['wood_direction'],face, True))[2]>0:
                     cutside0='left'
                 else:
                     cutside0='right'
@@ -1244,6 +1252,7 @@ class ArbitraryBox(Part):
                 intJoint = self.faces[otherf]['internal_joints'][otherIJ]
                 if scount in face['corners']:
                     intJoint['corners'] = self.other_side_mode(face['corners'][scount])
+                  
                     pass
                 else:
                     face['corners'][scount] = 'on'
@@ -1390,7 +1399,8 @@ class ArbitraryBox(Part):
             p+=1
 
         if len(self.sides[sid]) > 2:
-            #print(self.sides[sid])
+            print(self.sides[sid])
+            print(sid)
             raise ValueError("more than 2 faces with the same side "+str(self.sides[sid]))
 
     def set_joint_type(self, s, side):
