@@ -174,6 +174,12 @@ def path_transform3D(self, ob, extruded):
                         extruded=solid.rotate([transform['rotate3D'][0], transform['rotate3D'][1],transform['rotate3D'][2] ])(extruded)
                 if 'translate3D' in transform:
                     extruded=solid.translate([transform['translate3D'][0], transform['translate3D'][1],transform['translate3D'][2] ])(extruded)
+
+                if 'scale3D' in transform:
+                    extruded=solid.scale([transform['scale3D'][0], transform['scale3D'][1],transform['scale3D'][2] ])(extruded)
+                if 'mirror3D' in transform:
+                    thepart.border3D=solid.mirror([transform['mirror3D'][0], transform['mirror3D'][1],transform['mirror3D'][2] ])(thepart.border3D)
+
    #     c+=1
 #        p=p.parent
     return [extruded]
@@ -218,6 +224,14 @@ def pathgroup_render3D(self, pconfig):
 
 Pathgroup.render3D = pathgroup_render3D
 
+def part_scale3D(self, vec):
+    if self.transform is False or self.transform is None:
+        self.transform=[]
+    self.transform.append({'scale3D':vec})
+
+Part.scale3D = part_scale3D
+Path.scale3D = part_scale3D
+Pathgroup.scale3D = part_scale3D
 
 
 def part_translate3D(self, vec):
@@ -228,6 +242,15 @@ def part_translate3D(self, vec):
 Part.translate3D = part_translate3D
 Path.translate3D = part_translate3D
 Pathgroup.translate3D = part_translate3D
+
+def part_mirror3D(self, vec):
+    if self.transform is False or self.transform is None:
+        self.transform=[]
+    self.transform.append({'mirror3D':vec})
+
+Part.mirror3D = part_mirror3D
+Path.mirror3D = part_mirror3D
+Pathgroup.mirror3D = part_mirror3D
 
 def part_rotate3D(self, vec, pos=False):
     if self.transform is False or self.transform is None:
@@ -355,6 +378,12 @@ def plane_make_part3D(self, thepart, layers, pconfig, root=True):
                         thepart.border3D=solid.rotate([transform['rotate3D'][0], transform['rotate3D'][1],transform['rotate3D'][2] ])(thepart.border3D)
                 if 'translate3D' in transform:
                     thepart.border3D=solid.translate([transform['translate3D'][0], transform['translate3D'][1],transform['translate3D'][2] ])(thepart.border3D)
+                if 'mirror3D' in transform:
+                    thepart.border3D=solid.mirror([transform['mirror3D'][0], transform['mirror3D'][1],transform['mirror3D'][2] ])(thepart.border3D)
+                if 'scale3D' in transform:
+                    thepart.border3D=solid.scale([transform['scale3D'][0], transform['scale3D'][1],transform['scale3D'][2] ])(thepart.border3D)
+
+
         c+=1
         if not hasattr(p, 'subpart') and not p.subpart or hasattr(p,'layer') and hasattr(p.parent, 'layer') and p.layer != p.parent.layer: # if this is a root part add parent's transforms, or if it has come in via layers 
             p=p.parent
@@ -458,6 +487,14 @@ def plane_render_all3D(self,callmode,cmdconfig):
                                 thepart.border3D=solid.rotate([transform['rotate3D'][0], transform['rotate3D'][1],transform['rotate3D'][2] ])(thepart.border3D)
                         if 'translate3D' in transform:
                             thepart.border3D=solid.translate([transform['translate3D'][0], transform['translate3D'][1],transform['translate3D'][2] ])(thepart.border3D)
+                        if 'scale3D' in transform:
+                            thepart.border3D=solid.scale([transform['scale3D'][0], transform['scale3D'][1],transform['scale3D'][2] ])(thepart.border3D)
+
+                        if 'mirror3D' in transform:
+                            thepart.border3D=solid.mirror([transform['mirror3D'][0], transform['mirror3D'][1],transform['mirror3D'][2] ])(thepart.border3D)
+                        if 'scale3D' in transform:
+                            thepart.border3D=solid.scale([transform['scale3D'][0], transform['scale3D'][1],transform['scale3D'][2] ])(thepart.border3D)
+
                     if scene==False:
                         scene = solid.part()(thepart.border3D)
                     else:
